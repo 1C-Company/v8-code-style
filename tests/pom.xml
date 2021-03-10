@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright (c) 2020 1C-Soft LLC
+   This program and the accompanying materials are made available under
+   the terms of the Eclipse Public License 2.0 which is available at
+   https://www.eclipse.org/legal/epl-2.0/
+   SPDX-License-Identifier: EPL-2.0
+   Contributors:
+       1C-Soft LLC - initial API and implementation
+-->
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.e1c.v8codestyle</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>tests</artifactId>
+  <packaging>pom</packaging>
+  <name>Tests</name>
+
+  <modules>
+    <module>com.e1c.v8codestyle.md.itests</module>
+  </modules>
+
+  <profiles>
+    <profile>
+      <id>macosx</id>
+      <activation>
+        <os>
+          <name>mac os x</name>
+          <family>mac</family>
+        </os>
+      </activation>
+      <properties>
+        <ui.test.vmargs>-XstartOnFirstThread</ui.test.vmargs>
+      </properties>
+    </profile>
+    <profile>
+      <id>other-os</id>
+      <activation>
+        <os>
+          <name>!mac</name>
+          <family>!mac</family>
+        </os>
+      </activation>
+      <properties>
+        <ui.test.vmargs></ui.test.vmargs>
+      </properties>
+    </profile>
+    <profile>
+      <id>debug</id>
+      <properties>
+        <debug.vmargs>-agentlib:jdwp=transport=dt_socket,server=y,address=8000,suspend=y</debug.vmargs>
+      </properties>
+    </profile>
+  </profiles>
+
+  <properties>
+    <tycho-surefire-plugin.vmargs>-Xms80m -Xmx2g -Dosgi.module.lock.timeout=24 --add-modules=ALL-SYSTEM</tycho-surefire-plugin.vmargs>
+    <debug.vmargs></debug.vmargs>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>target-platform-configuration</artifactId>
+        <configuration>
+          <target>
+            <artifact>
+              <groupId>com.e1c.v8codestyle</groupId>
+              <artifactId>default</artifactId>
+              <version>0.1.0-SNAPSHOT</version>
+            </artifact>
+          </target>
+          <dependency-resolution>
+            <extraRequirements>
+              <requirement>
+                <type>p2-installable-unit</type>
+                <id>com._1c.g5.v8.dt.rcp</id>
+                <versionRange>0.0.0</versionRange>
+              </requirement>
+            </extraRequirements>
+          </dependency-resolution>
+          <resolver>p2</resolver>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report-aggregate</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>report-aggregate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-surefire-plugin</artifactId>
+          <configuration>
+            <useUIHarness>true</useUIHarness>
+            <useUIThread>true</useUIThread>
+            <argLine>${ui.test.vmargs} ${tycho-surefire-plugin.vmargs} ${debug.vmargs} ${tycho.testArgLine}</argLine>
+            <work>${project.build.directory}/work</work>
+            <testRuntime>p2Installed</testRuntime>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+</project>

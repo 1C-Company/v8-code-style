@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="23d0a2fd-afe4-425e-b2f1-aa92ca5657d1">
+  <producedTypes>
+    <objectType typeId="9f90ddab-f957-4ad3-93cb-b03cc6b7e245" valueTypeId="a779b89a-2ee8-4459-af96-e5b1216ab168"/>
+    <refType typeId="281622c1-1914-4266-afcd-40b15c334ba1" valueTypeId="cb2e330f-107c-404a-8390-046f28cb8fa1"/>
+    <selectionType typeId="2f795e1c-4561-4e01-bb3d-e92ddc20e39e" valueTypeId="197317bc-95eb-42ea-8c36-26b9096ffefd"/>
+    <listType typeId="2d9a349d-f809-400c-943c-9d372043281e" valueTypeId="23a623ca-f980-4634-9452-ad48d752790b"/>
+    <managerType typeId="988bc77f-e750-4706-903c-7e1a2a585c7e" valueTypeId="e1f95038-eb6c-4929-b45d-b0a980631404"/>
+  </producedTypes>
+  <name>ProductsTooLong</name>
+  <synonym>
+    <key>en</key>
+    <value>Products too long</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.ProductsTooLong.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.ProductsTooLong.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

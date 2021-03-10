@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: com.e1c.v8codestyle;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-Activator: com.e1c.v8codestyle.internal.CorePlugin
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.18.0,4.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Automatic-Module-Name: com.e1c.v8codestyle
+Bundle-ActivationPolicy: lazy
+Import-Package: com._1c.g5.v8.dt.check;version="[1.0.0,2.0.0)",
+ com._1c.g5.wiring;version="[2.2.0,3.0.0)",
+ com._1c.g5.wiring.binder;version="[1.1.0,2.0.0)",
+ com.google.inject;version="[1.3.0,2.0.0)"
