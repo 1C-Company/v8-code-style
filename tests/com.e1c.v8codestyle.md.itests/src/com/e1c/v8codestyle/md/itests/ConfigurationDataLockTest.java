@@ -6,7 +6,6 @@ package com.e1c.v8codestyle.md.itests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.Test;
 
@@ -25,10 +24,11 @@ import com.e1c.v8codestyle.md.check.ConfigurationDataLock;
  *
  * @author Dmitriy Marmyshev
  */
-@SuppressWarnings("nls")
 public class ConfigurationDataLockTest
     extends CheckTestBase
 {
+
+    private static final String CHECK_ID = "configuration-data-lock-mode";
 
     private static final String PROJECT_NAME = "DataLock";
 
@@ -40,22 +40,18 @@ public class ConfigurationDataLockTest
     @Test
     public void testDataLock() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         long id = getTopObjectIdByFqn("Configuration", dtProject);
-        Marker marker = getFirstMarker(ConfigurationDataLock.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
     @Test
     public void testManagedDataLockMode() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         IBmModel model = bmModelManager.getModel(dtProject);
@@ -73,7 +69,7 @@ public class ConfigurationDataLockTest
         waitForDD(dtProject);
 
         long id = getTopObjectIdByFqn("Configuration", dtProject);
-        Marker marker = getFirstMarker(ConfigurationDataLock.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 }

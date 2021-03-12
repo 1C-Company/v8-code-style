@@ -9,7 +9,6 @@ import static org.junit.Assert.assertNull;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
@@ -31,35 +30,32 @@ import com.e1c.v8codestyle.md.check.CommonModuleType;
  * @author Dmitriy Marmyshev
  *
  */
-@SuppressWarnings("nls")
 public class CommonModuleNameGlobalTest
     extends CheckTestBase
 {
+
+    private static final String CHECK_ID = "common-module-name-global"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "CommonModuleName";
 
     @Test
     public void testCommonModuleNameClientServer() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         String fqn = "CommonModule.CommonModuleName";
 
         updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_GLOBAL, null);
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
     @Test
     public void testCommonModuleNameClientCorrect() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         String fqn = "CommonModule.CommonModuleName";
@@ -68,7 +64,7 @@ public class CommonModuleNameGlobalTest
 
         fqn = "CommonModule.CommonModuleClientGlobal";
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 

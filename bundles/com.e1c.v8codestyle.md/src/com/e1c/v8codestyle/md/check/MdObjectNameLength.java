@@ -25,7 +25,6 @@ import com._1c.g5.v8.dt.check.components.BasicCheck;
 import com._1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com._1c.g5.v8.dt.check.settings.IssueSeverity;
 import com._1c.g5.v8.dt.check.settings.IssueType;
-import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 
@@ -34,15 +33,13 @@ import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
  *
  * @author Dmitriy Marmyshev
  */
-public class MdObjectNameLength
+public final class MdObjectNameLength
     extends BasicCheck
 {
 
-    public static final String CHECK_ID = "mdo-name-length"; //$NON-NLS-1$
+    private static final String CHECK_ID = "mdo-name-length"; //$NON-NLS-1$
 
     public static final String MAX_NAME_LENGTH = "max-name-length"; //$NON-NLS-1$
-
-    public static final String EXCLUDE_NAME_PATTERN_PARAMETER_NAME = "excludeNamePattern"; //$NON-NLS-1$
 
     public static final String MAX_NAME_LENGTH_DEFAULT = "80"; //$NON-NLS-1$
 
@@ -55,26 +52,17 @@ public class MdObjectNameLength
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        //@formatter:off
         builder.title(Messages.MdObjectNameLength_title)
             .description(MessageFormat.format(Messages.MdObjectNameLength_description, MAX_NAME_LENGTH_DEFAULT))
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.CRITICAL)
-            .extension(new TopObjectFilterExtension(
-                EXCLUDE_NAME_PATTERN_PARAMETER_NAME,
-                Messages.common_Exclude_name_pattern,
-                StringUtils.EMPTY,
-                MD_OBJECT__NAME))
+            .extension(new TopObjectFilterExtension())
             .issueType(IssueType.PORTABILITY)
             .topObject(MD_OBJECT)
             .checkTop()
             .features(MD_OBJECT__NAME)
-            .parameter(MAX_NAME_LENGTH,
-                Integer.class,
-                MAX_NAME_LENGTH_DEFAULT,
+            .parameter(MAX_NAME_LENGTH, Integer.class, MAX_NAME_LENGTH_DEFAULT,
                 Messages.MdObjectNameLength_Maximum_name_length_description);
-        //@formatter:on
-
     }
 
     @Override

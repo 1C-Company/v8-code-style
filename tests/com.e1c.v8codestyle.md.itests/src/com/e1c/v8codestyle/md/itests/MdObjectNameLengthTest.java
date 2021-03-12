@@ -6,7 +6,6 @@ package com.e1c.v8codestyle.md.itests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import org.eclipse.core.resources.IProject;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.core.platform.IDtProject;
@@ -20,11 +19,11 @@ import com.e1c.v8codestyle.md.check.MdObjectNameLength;
  * @author Dmitriy Marmyshev
  *
  */
-@SuppressWarnings("nls")
 public class MdObjectNameLengthTest
     extends CheckTestBase
 {
 
+    private static final String CHECK_ID = "mdo-name-length"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "MdObjectNameLength";
 
@@ -36,14 +35,11 @@ public class MdObjectNameLengthTest
     @Test
     public void testMdObjectNameLength() throws Exception
     {
-
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         long id = getTopObjectIdByFqn("Catalog.ProductsTooLong", dtProject);
-        Marker marker = getFirstMarker(MdObjectNameLength.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -55,13 +51,11 @@ public class MdObjectNameLengthTest
     @Test
     public void testConfigurationNameLengthIgnore() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         long id = getTopObjectIdByFqn("Configuration", dtProject);
-        Marker marker = getFirstMarker(MdObjectNameLength.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 }

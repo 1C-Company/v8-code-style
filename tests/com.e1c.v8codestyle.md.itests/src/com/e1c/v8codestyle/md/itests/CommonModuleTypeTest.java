@@ -9,7 +9,6 @@ import static org.junit.Assert.assertNull;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
@@ -29,10 +28,11 @@ import com.e1c.v8codestyle.md.check.CommonModuleType;
  * @author Dmitriy Marmyshev
  *
  */
-@SuppressWarnings("nls")
 public class CommonModuleTypeTest
     extends CheckTestBase
 {
+
+    private static final String CHECK_ID = "common-module-type";
 
     private static final String PROJECT_NAME = "CommonModuleType";
 
@@ -44,13 +44,11 @@ public class CommonModuleTypeTest
     @Test
     public void testTypeServer() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         long id = getTopObjectIdByFqn("CommonModule.Common", dtProject);
-        Marker marker = getFirstMarker(CommonModuleType.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -62,16 +60,14 @@ public class CommonModuleTypeTest
     @Test
     public void testTypeServerCorrect() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         String fqn = "CommonModule.Common";
 
         updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER);
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleType.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -83,13 +79,11 @@ public class CommonModuleTypeTest
     @Test
     public void testTypeServerCall() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         long id = getTopObjectIdByFqn("CommonModule.CommonServerCall", dtProject);
-        Marker marker = getFirstMarker(CommonModuleType.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -101,16 +95,14 @@ public class CommonModuleTypeTest
     @Test
     public void testTypeServerCallCorrect() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         String fqn = "CommonModule.CommonServerCall";
 
         updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER_CALL);
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleType.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -122,13 +114,11 @@ public class CommonModuleTypeTest
     @Test
     public void testTypeClient() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         long id = getTopObjectIdByFqn("CommonModule.CommonClient", dtProject);
-        Marker marker = getFirstMarker(CommonModuleType.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -140,16 +130,14 @@ public class CommonModuleTypeTest
     @Test
     public void testTypeClientCorrect() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         String fqn = "CommonModule.CommonClient";
 
         updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT);
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleType.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -161,13 +149,11 @@ public class CommonModuleTypeTest
     @Test
     public void testTypeServerClient() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         long id = getTopObjectIdByFqn("CommonModule.CommonServerClient", dtProject);
-        Marker marker = getFirstMarker(CommonModuleType.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -179,16 +165,14 @@ public class CommonModuleTypeTest
     @Test
     public void testTypeServerClientCorrect() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        assertNotNull(project);
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         String fqn = "CommonModule.CommonServerClient";
 
         updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_SERVER);
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleType.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 

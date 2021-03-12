@@ -26,15 +26,15 @@ import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.metadata.mdclass.DefaultDataLockControlMode;
 
 /**
- * Check configuration data lock mode shoul be managed
+ * Check configuration data lock mode should be managed
  *
  * @author Dmitriy Marmyshev
  */
-public class ConfigurationDataLock
+public final class ConfigurationDataLock
     extends BasicCheck
 {
 
-    public static final String CHECK_ID = "configuration-data-lock-mode"; //$NON-NLS-1$
+    private static final String CHECK_ID = "configuration-data-lock-mode"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -45,7 +45,6 @@ public class ConfigurationDataLock
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        //@formatter:off
         builder.title(Messages.ConfigurationDataLock_title)
             .description(Messages.ConfigurationDataLock_description)
             .complexity(CheckComplexity.NORMAL)
@@ -54,7 +53,6 @@ public class ConfigurationDataLock
             .topObject(CONFIGURATION)
             .checkTop()
             .features(CONFIGURATION__DATA_LOCK_CONTROL_MODE);
-        //@formatter:on
     }
 
     @Override
@@ -62,7 +60,7 @@ public class ConfigurationDataLock
         IProgressMonitor monitor)
     {
         Configuration configuration = (Configuration)object;
-        if (!DefaultDataLockControlMode.MANAGED.equals(configuration.getDataLockControlMode()))
+        if (DefaultDataLockControlMode.MANAGED != configuration.getDataLockControlMode())
         {
             resultAceptor.addIssue(Messages.ConfigurationDataLock_message, CONFIGURATION__DATA_LOCK_CONTROL_MODE);
         }

@@ -38,7 +38,6 @@ import com._1c.g5.v8.dt.check.components.BasicCheck;
 import com._1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com._1c.g5.v8.dt.check.settings.IssueSeverity;
 import com._1c.g5.v8.dt.check.settings.IssueType;
-import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 
 /**
@@ -47,13 +46,11 @@ import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
  * @author Dmitriy Marmyshev
  *
  */
-public class CommonModuleType
+public final class CommonModuleType
     extends BasicCheck
 {
 
-    public static final String CHECK_ID = "common-module-type"; //$NON-NLS-1$
-
-    public static final String EXCLUDE_NAME_PATTERN_PARAMETER_NAME = "excludeNamePattern"; //$NON-NLS-1$
+    private static final String CHECK_ID = "common-module-type"; //$NON-NLS-1$
 
     //@formatter:off
     public static final Map<EStructuralFeature, Boolean> TYPE_SERVER = Map.of(
@@ -127,11 +124,7 @@ public class CommonModuleType
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.BLOCKER)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new TopObjectFilterExtension(
-                EXCLUDE_NAME_PATTERN_PARAMETER_NAME,
-                Messages.common_Exclude_name_pattern,
-                StringUtils.EMPTY,
-                MD_OBJECT__NAME))
+            .extension(new TopObjectFilterExtension())
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(COMMON_MODULE__CLIENT_MANAGED_APPLICATION,

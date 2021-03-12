@@ -33,8 +33,6 @@ public class CorePlugin
 
     private static CorePlugin plugin;
 
-    private static BundleContext context;
-
     private Injector injector;
 
     /**
@@ -102,35 +100,25 @@ public class CorePlugin
         return new Status(IStatus.WARNING, PLUGIN_ID, 0, message, throwable);
     }
 
-    static BundleContext getContext()
-    {
-        return context;
-    }
-
-/*
- * (non-Javadoc)
- * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
- */
+    /*
+     * (non-Javadoc)
+     * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+     */
     @Override
     public void start(BundleContext bundleContext) throws Exception
     {
-        CorePlugin.context = bundleContext;
-
         super.start(bundleContext);
 
         plugin = this;
-
     }
 
-/*
- * (non-Javadoc)
- * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
- */
+    /*
+     * (non-Javadoc)
+     * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+     */
     @Override
     public void stop(BundleContext bundleContext) throws Exception
     {
-        CorePlugin.context = null;
-
         plugin = null;
         injector = null;
 
@@ -142,13 +130,21 @@ public class CorePlugin
      *
      * @return Guice injector for this plugin, never <code>null</code>
      */
-    public synchronized Injector getInjector()
+    /* package */ Injector getInjector()
     {
-        if (injector == null)
+        Injector localInstance = injector;
+        if (localInstance == null)
         {
-            injector = createInjector();
+            synchronized (CorePlugin.class)
+            {
+                localInstance = injector;
+                if (localInstance == null)
+                {
+                    injector = localInstance = createInjector();
+                }
+            }
         }
-        return injector;
+        return localInstance;
     }
 
     private Injector createInjector()

@@ -27,7 +27,7 @@ final class Messages
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.md.check.messages"; //$NON-NLS-1$
     public static String CommonModuleNameClient_description;
     public static String CommonModuleNameClient_message;
-    public static String CommonModuleName_Name_suffix_list_title;
+    public static String MdObjectNameWithoutSuffix_Name_suffix_list_title;
     public static String CommonModuleNameClient_title;
     public static String CommonModuleNameClientServer_description;
     public static String CommonModuleNameClientServer_message;
@@ -42,7 +42,6 @@ final class Messages
     public static String ConfigurationDataLock_message;
     public static String ConfigurationDataLock_title;
     public static String MdObjectNameLength_description;
-    public static String common_Exclude_name_pattern;
     public static String MdObjectNameLength_Maximum_name_length_description;
     public static String MdObjectNameLength_message;
     public static String MdObjectNameLength_title;
