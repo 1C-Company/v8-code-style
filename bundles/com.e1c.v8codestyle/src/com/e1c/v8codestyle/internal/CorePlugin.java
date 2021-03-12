@@ -140,7 +140,8 @@ public class CorePlugin
                 localInstance = injector;
                 if (localInstance == null)
                 {
-                    injector = localInstance = createInjector();
+                    localInstance = createInjector();
+                    injector = localInstance;
                 }
             }
         }

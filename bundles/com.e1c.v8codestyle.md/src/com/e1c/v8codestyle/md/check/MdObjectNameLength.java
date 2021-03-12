@@ -25,7 +25,6 @@ import com._1c.g5.v8.dt.check.components.BasicCheck;
 import com._1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com._1c.g5.v8.dt.check.settings.IssueSeverity;
 import com._1c.g5.v8.dt.check.settings.IssueType;
-import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 
 /**
@@ -70,9 +69,6 @@ public final class MdObjectNameLength
         IProgressMonitor monitor)
     {
         MdObject mdObject = (MdObject)object;
-        if (mdObject instanceof Configuration)
-            return;
-
         String name = mdObject.getName();
         int max = parameters.getInt(MAX_NAME_LENGTH);
         if (name != null && name.length() > max && max > 0)

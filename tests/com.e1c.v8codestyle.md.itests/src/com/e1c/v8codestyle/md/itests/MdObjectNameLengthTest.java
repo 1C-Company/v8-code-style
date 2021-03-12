@@ -38,7 +38,7 @@ public class MdObjectNameLengthTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        long id = getTopObjectIdByFqn("Catalog.ProductsTooLong", dtProject);
+        long id = getTopObjectIdByFqn("Configuration", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
@@ -54,7 +54,7 @@ public class MdObjectNameLengthTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        long id = getTopObjectIdByFqn("Configuration", dtProject);
+        long id = getTopObjectIdByFqn("Catalog.Products", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }

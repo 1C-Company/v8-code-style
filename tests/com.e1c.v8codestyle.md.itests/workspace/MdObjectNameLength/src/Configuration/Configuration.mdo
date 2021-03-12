@@ -38,5 +38,5 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <catalogs>Catalog.ProductsTooLong</catalogs>
+  <catalogs>Catalog.Products</catalogs>
 </mdclass:Configuration>
