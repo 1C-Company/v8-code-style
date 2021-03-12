@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-SymbolicName: com.e1c.v8codestyle.docs;singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Bundle-Vendor: %providerName
+Automatic-Module-Name: com.e1c.v8codestyle.docs
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-Localization: plugin

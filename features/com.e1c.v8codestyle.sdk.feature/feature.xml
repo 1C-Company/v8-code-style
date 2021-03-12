@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (C) 2021, 1C-Soft LLC and others.
+   
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        1C-Soft LLC - initial API and implementation
+ -->
+<feature
+      id="com.e1c.v8codestyle.sdk"
+      label="%featureName"
+      version="0.1.0.qualifier"
+      provider-name="%providerName"
+      license-feature="org.eclipse.license"
+      license-feature-version="2.0.2.qualifier">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <includes
+         id="com.e1c.v8codestyle.feature.source"
+         version="0.1.0.qualifier"
+         optional="true"/>
+
+   <includes
+         id="com.e1c.v8codestyle.feature"
+         version="0.1.0.qualifier"/>
+
+</feature>

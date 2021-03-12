@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="889d5ad5-4e84-4ffd-bafc-329b6d993f5f">
+  <name>CommonModuleType</name>
+  <synonym>
+    <key>ru</key>
+    <value>Common module type</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="881b6f6c-060d-44d5-8d3d-dace424d5d5a"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="9f9de3cb-31e3-47ad-8b09-4363fa02d3f3"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="9c1ce39e-9b56-4e86-8e9f-60bed38aa524"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="de278a91-b704-481a-bf4f-35521f3232be"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="824d81ec-e4eb-4653-99aa-c52474cca97b"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="4c9bfc54-b65a-40df-87cf-304e88f090d2"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="888f00ed-28cf-4aef-b79d-e44b63850717"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <scriptVariant>Russian</scriptVariant>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.Русский</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="9fd62840-ff35-4538-a478-3b450697c4f6">
+    <name>Русский</name>
+    <synonym>
+      <key>ru</key>
+      <value>Русский</value>
+    </synonym>
+    <languageCode>ru</languageCode>
+  </languages>
+  <commonModules>CommonModule.CommonClient</commonModules>
+  <commonModules>CommonModule.Common</commonModules>
+  <commonModules>CommonModule.CommonServerCall</commonModules>
+  <commonModules>CommonModule.CommonServerClient</commonModules>
+</mdclass:Configuration>

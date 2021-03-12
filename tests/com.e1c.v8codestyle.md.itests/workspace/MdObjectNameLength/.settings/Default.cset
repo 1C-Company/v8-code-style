@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "settings": {
+    "mdo-name-length": {
+      "properties": {
+        "max-name-length": "12"
+      }
+    }
+  }
+}

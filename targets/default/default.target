@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+   Copyright (c) 2020 1C-Soft LLC.
+   This program and the accompanying materials are made available under
+   the terms of the Eclipse Public License 2.0 which is available at
+   https://www.eclipse.org/legal/epl-2.0/
+   SPDX-License-Identifier: EPL-2.0
+   Contributors:
+       1C-Soft LLC - initial API and implementation
+-->
+<?pde version="3.8"?><target name="1C:EDT Ruby Platform" sequenceNumber="1">
+<locations>
+
+<!-- EDT -->
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<repository location="https://edt.1c.ru/downloads/releases/experimental/validation"/>
+<unit id="com._1c.g5.aef.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.commons.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.edt.license.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.gumtree.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.ides.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.ides.monitoring.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.jface.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.license.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.lwt.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.properties.ui.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.bp.scheme.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.cli.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.diagram.framework.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.erd.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.eventhandlers.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.extension.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.geographicalschema.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.handly.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.markermatcher.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.platform.services.mobile.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.platform.support_v8.3.19.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.product.docs.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.product.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.profiling.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.rcp" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.ring.feature.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.testing.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.thirdparty.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.wst.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.xtext.runtime.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.v8.dt.xtext.ui.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.wiring.feature.feature.group" version="0.0.0"/>
+<unit id="com.e1c.g5.v8.dt.javadocs" version="0.0.0"/>
+<unit id="com.company1c.link.agent.core.feature.feature.group" version="0.0.0"/>
+<unit id="com.company1c.link.agent.dependencies.feature.feature.group" version="0.0.0"/>
+<unit id="com.company1c.link.ide.edt.feature.feature.group" version="0.0.0"/>
+<unit id="com.e1c.g5.v8.dt.gsw.feature.feature.group" version="0.0.0"/>
+<unit id="com.e1c.g5.v8.dt.mw.feature.feature.group" version="0.0.0"/>
+<unit id="com.make.chromium.cef.feature.feature.group" version="0.0.0"/>
+<unit id="de.itemis.xtext.antlr.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.babel.nls_eclipse_ru.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.babel.nls_technology.egit_ru.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.babel.nls_technology.jgit_ru.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.babel.nls_webtools_ru.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.draw2d.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.e4.rcp.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ecf.core.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.egit.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.common.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.common.ui.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.databinding.edit.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.databinding.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.ecore.edit.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.ecore.editor.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.ecore.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.ecore.xcore.lib.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.edit.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.edit.ui.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.query.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.query.ocl.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.transaction.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.validation.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.validation.ocl.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.emf.workspace.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.epp.mpc.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.discovery.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.rcp.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.gef.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.gmf.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.gmf.runtime.notation.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.gmf.runtime.thirdparty.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.help.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jgit.http.apache.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jgit.lfs.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jgit.pgm.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.nebula.widgets.datechooser.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.nebula.widgets.formattedtext.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.ocl.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.rcp.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.userstorage.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.xsd.edit.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.xsd.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.xtext.xbase.lib.feature.group" version="0.0.0"/>
+</location>
+
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.license.feature.group" version="0.0.0"/>
+<repository location="http://download.eclipse.org/cbi/updates/license/2.0.2.v20181016-2210"/>
+</location>
+
+<!-- LIBS -->
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.mockito" version="0.0.0"/>
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20201130205003/repository/"/>
+</location>
+
+<!-- Eclipse -->
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
+<repository id="eclipse_repository" location="https://download.eclipse.org/releases/2020-06/"/>
+</location>
+
+</locations>
+<environment>
+<nl>en_US</nl>
+</environment>
+</target>

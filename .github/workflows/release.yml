@@ -1,0 +1,97 @@
+name: Build and upload Release Asset
+
+on:
+  push:
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+        java-package: jdk+fx
+        server-id: dt_repository
+        server-username: MAVEN_USERNAME
+        server-password: MAVEN_CENTRAL_TOKEN
+
+    - name: Cache maven repo
+      uses: actions/cache@v1
+      if: github.event_name == 'push'
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-base-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('targets/base/base.target') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-base-  
+  
+    - name: Build with Maven
+      env:
+        MAVEN_USERNAME: ${{ secrets.P2_USER }}
+        MAVEN_CENTRAL_TOKEN: ${{ secrets.P2_TOKEN }}
+      working-directory: ./
+      run: |
+        Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &
+        export DISPLAY=:5
+        mvn clean verify -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V
+
+    - name: Publish Test Report
+      uses: scacap/action-surefire-report@v1
+      if: always()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+  
+    - name: Upload repo
+      uses: actions/upload-artifact@v2
+      with:
+        name: repo
+        path: repositories/com.e1c.v8codestyle.repository/target/repository/
+        
+    - name: Upload SDK repo
+      uses: actions/upload-artifact@v2
+      with:
+        name: sdk-repo
+        path: repositories/com.e1c.v8codestyle.repository.sdk/target/repository/
+    
+    - name: Upload JaCoCo exec data
+      uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: jacoco
+        path: |
+          ./**/target/jacoco.exec
+          ./**/target/site/jacoco*/
+    
+    - name: Upload test logs on failure
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: logs
+        path: ./**/.log
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@latest
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: true
+        
+    - name: Upload Release Asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./repositories/com.e1c.v8codestyle.repository.sdk/target/com.e1c.v8codestyle.repository.sdk.zip
+        asset_name: repo.zip
+        asset_content_type: application/zip  
