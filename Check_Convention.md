@@ -167,7 +167,7 @@ function-has-no-return-type
 4. Заголовок параметра должен быть локализован через NLS класс
 
 
-### Компоненты расширяющие функциональность
+### Компоненты, расширяющие функциональность
 
 - Проверки, проверяющие 1 объект на наличие ошибок, в общем случае следует наследовать от `com._1c.g5.v8.dt.check.components.BasicCheck` или аналогичных для специфичных областей `com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck`, `com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck`
 - При наличии нескольих повторяющихся фрагментов кода c параметризацией и фильтрацией объектов - желательно создавать компонент `com._1c.g5.v8.dt.check.components.IBasicCheckExtension` для переиспользования.
