@@ -53,7 +53,7 @@ method-never-used
 НЕПРАВИЛЬНО:
 
 ```bsl
-//@skip-ckeck check-method-never-used
+//@skip-check check-method-never-used
 ```
 
 ПРАВИЛЬНО
