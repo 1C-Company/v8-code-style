@@ -59,7 +59,7 @@ method-never-used
 ПРАВИЛЬНО
 
 ```bsl
-//@skip-ckeck method-never-used
+//@skip-check method-never-used
 ```
 
 #### Слова-паразиты
