@@ -15,13 +15,13 @@ package com.e1c.v8codestyle.md.check;
 import java.util.List;
 
 import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.check.CheckParameterDefinition;
-import com._1c.g5.v8.dt.check.ICheckDefinition;
-import com._1c.g5.v8.dt.check.ICheckParameters;
-import com._1c.g5.v8.dt.check.components.IBasicCheckExtension;
-import com._1c.g5.v8.dt.check.ext.ITopObjectFilter;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com.e1c.g5.v8.dt.check.CheckParameterDefinition;
+import com.e1c.g5.v8.dt.check.ICheckDefinition;
+import com.e1c.g5.v8.dt.check.ICheckParameters;
+import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
+import com.e1c.g5.v8.dt.check.ext.ITopObjectFilter;
 
 /**
  * The extention allows to filter {@link MdObject} name that has no suffix listed in parameters.
