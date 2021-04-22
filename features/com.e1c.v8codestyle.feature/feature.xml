@@ -46,4 +46,25 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="com.e1c.v8codestyle.autosort"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.e1c.v8codestyle.autosort.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.e1c.v8codestyle.docs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
