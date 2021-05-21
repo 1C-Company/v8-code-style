@@ -24,7 +24,7 @@
 
 #### Прежде чем зарегистрировать ошибку
 
-* Проверьте [Wiki](https://github.com/1C-Company/v8-code-style/wiki) на наличие описания, что не является ошибкой
+* Проверьте [Docs](https://github.com/1C-Company/v8-code-style/docs/) на наличие описания, что не является ошибкой
 * Проверьте раздел [Issues](https://github.com/1C-Company/v8-code-style/issues), чтобы не создавать дубликатов
 
 #### Как сообщить об ошибке эффективно
