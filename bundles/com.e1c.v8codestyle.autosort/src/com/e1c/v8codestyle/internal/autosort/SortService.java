@@ -263,7 +263,7 @@ public class SortService
 
         private final IProject project;
 
-        public MdObjectChangeListener(IProject project)
+        private MdObjectChangeListener(IProject project)
         {
             Assert.isNotNull(project);
             this.project = project;

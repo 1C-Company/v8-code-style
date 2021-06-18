@@ -29,7 +29,7 @@ class ExternalDependenciesModule
     extends AbstractServiceAwareModule
 {
 
-    public ExternalDependenciesModule(Plugin plugin)
+    ExternalDependenciesModule(Plugin plugin)
     {
         super(plugin);
     }

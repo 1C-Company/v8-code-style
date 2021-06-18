@@ -99,7 +99,7 @@ public class SortBmTask
         private final Comparator<EObject> sorter;
 
         @SuppressWarnings("unchecked")
-        public SortCommand(EObject parent, EReference listFeature, Comparator<EObject> sorter)
+        private SortCommand(EObject parent, EReference listFeature, Comparator<EObject> sorter)
         {
             super(parent);
             Assert.isNotNull(parent);

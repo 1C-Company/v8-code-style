@@ -169,4 +169,9 @@ public final class AutoSortPreferences
         return rootNode.node(KEY_SUBORDINATE_NODE).getBoolean(listRef.getName(), DEFAULT_SORT);
     }
 
+    private AutoSortPreferences()
+    {
+        throw new IllegalAccessError("Utility class"); //$NON-NLS-1$
+    }
+
 }
