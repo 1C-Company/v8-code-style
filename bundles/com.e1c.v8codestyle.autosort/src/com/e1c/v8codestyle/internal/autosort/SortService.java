@@ -280,8 +280,7 @@ public class SortService
 
             for (BmChangeEvent changeEvent : change.values())
             {
-                if (changeEvent.getObject() instanceof IBmObject
-                    && ((IBmObject)changeEvent.getObject()).bmIsTop()
+                if (changeEvent.getObject() instanceof IBmObject && ((IBmObject)changeEvent.getObject()).bmIsTop()
                     && ((IBmObject)changeEvent.getObject()).bmGetFqn() != null)
                 {
                     Map<EStructuralFeature, List<Notification>> notifications = changeEvent.getNotifications();

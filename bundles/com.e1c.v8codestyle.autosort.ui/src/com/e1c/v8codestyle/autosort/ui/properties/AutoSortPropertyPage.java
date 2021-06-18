@@ -54,7 +54,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
-import  com._1c.g5.v8.dt.common.Functions;
+import com._1c.g5.v8.dt.common.Functions;
 import com.e1c.v8codestyle.autosort.AutoSortPreferences;
 import com.e1c.v8codestyle.autosort.ISortService;
 import com.e1c.v8codestyle.autosort.ListConstants;
