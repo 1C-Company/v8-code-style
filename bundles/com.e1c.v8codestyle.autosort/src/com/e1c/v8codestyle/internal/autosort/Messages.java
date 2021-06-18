@@ -11,7 +11,7 @@
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
 /**
- * 
+ *
  */
 package com.e1c.v8codestyle.internal.autosort;
 
@@ -25,6 +25,7 @@ public class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.internal.autosort.messages"; //$NON-NLS-1$
+    public static String SortJob_Sort_metadata_objects__0;
     public static String SortService_Read_all_objects_to_sort;
     static
     {

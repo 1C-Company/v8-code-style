@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.autosort;
+package com.e1c.v8codestyle.internal.autosort;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -28,6 +28,8 @@ import org.eclipse.core.runtime.jobs.Job;
 import com._1c.g5.v8.dt.core.operations.ProjectPipelineJob;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IWorkspaceOrchestrator;
+import com.e1c.v8codestyle.autosort.ISortService;
+import com.e1c.v8codestyle.autosort.SortItem;
 
 /**
  * The Eclipse platform job to sort the project.

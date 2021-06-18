@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.autosort;
+package com.e1c.v8codestyle.internal.autosort;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +28,7 @@ import org.eclipse.emf.edit.command.ChangeCommand;
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
+import com.e1c.v8codestyle.autosort.SortItem;
 
 /**
  * The task to sort BM objects.
@@ -46,12 +47,15 @@ public class SortBmTask
     /**
      * Instantiates a new sort BM task.
      *
-     * @param items the items to sort
+     * <br>
+     * <b>WARNING!</b> the collection of items must be immutable or unmodifiable for callers.
+     *
+     * @param items the unmodifiable collection of items to sort, cannot be {@code null}.
      */
     public SortBmTask(final Collection<SortItem> items)
     {
         super("Sort Md objects"); //$NON-NLS-1$
-        this.items = items;
+        this.items = new ArrayList<>(items);
     }
 
     @Override

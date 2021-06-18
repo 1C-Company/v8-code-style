@@ -31,8 +31,9 @@ import org.osgi.service.prefs.BackingStoreException;
 import com.e1c.v8codestyle.internal.autosort.AutoSortPlugin;
 
 /**
- * @author Dmitriy Marmyshev
+ * Public constants and utility method for sort preferences in the project.
  *
+ * @author Dmitriy Marmyshev
  */
 public final class AutoSortPreferences
 {
@@ -69,24 +70,49 @@ public final class AutoSortPreferences
 
     public static final boolean DEFAULT_SORT = false;
 
+    /**
+     * Checks if the sort direction is ascending in the project.
+     *
+     * @param project the project to check, cannot be {@code null}.
+     * @return true, if the sort is ascending, or return true as default if not set for project.
+     */
     public static boolean isSortAscending(IProject project)
     {
         IEclipsePreferences rootNode = getPreferences(project);
         return rootNode.getBoolean(KEY_ASCENDING, DEFAULT_SORT_ASCENDING);
     }
 
+    /**
+     * Checks if need to sort all top object.
+     *
+     * @param project the project, cannot be {@code null}.
+     * @return true, if need to sort all top object
+     */
     public static boolean isSortAllTop(IProject project)
     {
         IEclipsePreferences rootNode = getPreferences(project);
         return rootNode.getBoolean(KEY_ALL_TOP, DEFAULT_SORT);
     }
 
+    /**
+     * Checks if need to sort sub-ordinate objects of the top object.
+     *
+     * @param project the project, cannot be {@code null}.
+     * @return true, if need to sort sub-ordinate objects
+     */
     public static boolean isSortSubOrdinateObjects(IProject project)
     {
         IEclipsePreferences rootNode = getPreferences(project);
         return rootNode.getBoolean(KEY_SUBORDINATE_OBJECTS, DEFAULT_SORT);
     }
 
+    /**
+     * Checks if it is allowed to sort the list reference in the project.
+     *
+     * @param project the project, cannot be {@code null}.
+     * @param listRef the list reference, cannot be {@code null}.
+     * @return true, if it is allowed to sort the list
+     */
     public static boolean isAllowedToSort(IProject project, EReference listRef)
     {
         if (ListConstants.TOP_OPBJECT_LISTS.contains(listRef))
@@ -98,6 +124,12 @@ public final class AutoSortPreferences
         return false;
     }
 
+    /**
+     * Gets the preferences for the project.
+     *
+     * @param project the project, cannot be {@code null}.
+     * @return the preferences for the project, cannot return {@code null}.
+     */
     public static IEclipsePreferences getPreferences(IProject project)
     {
         ProjectScope projectScope = new ProjectScope(project);
@@ -105,6 +137,11 @@ public final class AutoSortPreferences
         return rootNode;
     }
 
+    /**
+     * Setup the project default values.
+     *
+     * @param project the project to setup default, cannot be {@code null}.
+     */
     public static void setupProjectDefault(IProject project)
     {
         IEclipsePreferences prefs = getPreferences(project);

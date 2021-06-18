@@ -69,9 +69,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com.e1c.v8codestyle.autosort.AutoSortPreferences;
 import com.e1c.v8codestyle.autosort.ISortService;
 import com.e1c.v8codestyle.autosort.MdObjectByNameComparator;
-import com.e1c.v8codestyle.autosort.SortBmTask;
 import com.e1c.v8codestyle.autosort.SortItem;
-import com.e1c.v8codestyle.autosort.SortJob;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -201,7 +199,7 @@ public class SortService
         if (model == null || model.isDisposed())
             return Status.OK_STATUS;
 
-        if (monitor.isCanceled())
+        if (monitor.isCanceled() || items == null || items.isEmpty())
             return Status.CANCEL_STATUS;
 
         model.getGlobalContext().execute(new SortBmTask(items));

@@ -14,12 +14,12 @@ package com.e1c.v8codestyle.autosort;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.*;
 
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.emf.ecore.EReference;
 
 /**
- * The constants with lists that can be sorted in TOP or subordinate objects..
+ * The constants with lists that can be sorted in TOP or subordinate objects.
  *
  * @author Dmitriy Marmyshev
  */
@@ -27,7 +27,7 @@ public final class ListConstants
 {
 
     // @formatter:off
-    public static final List<EReference> TOP_OPBJECT_LISTS = List.of(
+    public static final Set<EReference> TOP_OPBJECT_LISTS = Set.of(
         CONFIGURATION__LANGUAGES,
         CONFIGURATION__SUBSYSTEMS,
         SUBSYSTEM__SUBSYSTEMS,
@@ -75,7 +75,7 @@ public final class ListConstants
     // @formatter:on
 
     // @formatter:off
-    public static final List<EReference> SUBORDINATE_OBJECT_LISTS = List.of(
+    public static final Set<EReference> SUBORDINATE_OBJECT_LISTS = Set.of(
         CATALOG__FORMS,
         CATALOG__TEMPLATES,
         CATALOG__COMMANDS,
