@@ -16,7 +16,7 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EReference;
 
-import  com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals;
+import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals;
 
 /**
  * The constants with lists that can be sorted in TOP or subordinate objects.

@@ -90,7 +90,7 @@ public class SortBmTask
         return null;
     }
 
-    private static class SortCommand
+    private static final class SortCommand
         extends ChangeCommand
     {
 

@@ -34,7 +34,7 @@ public interface ISortService
 {
 
     /** The name of the service */
-    final String SERVICE_NAME = "SortService"; //$NON-NLS-1$
+    String SERVICE_NAME = "SortService"; //$NON-NLS-1$
 
     /**
      * Sort all metadata object in the project.
