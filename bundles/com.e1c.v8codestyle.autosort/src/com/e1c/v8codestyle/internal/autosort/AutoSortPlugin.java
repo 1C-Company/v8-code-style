@@ -148,6 +148,9 @@ public class AutoSortPlugin
     public void stop(BundleContext bundleContext) throws Exception
     {
 
+        registrator.deactivateManagedServices(this);
+        registrator.unregisterServices();
+
         injector = null;
         plugin = null;
         super.stop(bundleContext);
