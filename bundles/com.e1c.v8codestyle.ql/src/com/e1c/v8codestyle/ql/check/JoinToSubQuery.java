@@ -25,6 +25,11 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
 
+/**
+ * The check of QL query that join with sub query, which lead to performance decrease.
+ *
+ * @author Dmitriy Marmyshev
+ */
 public class JoinToSubQuery
     extends QlBasicDelegateCheck
 {

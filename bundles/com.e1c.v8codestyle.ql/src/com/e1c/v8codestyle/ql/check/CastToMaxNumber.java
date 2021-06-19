@@ -27,6 +27,11 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
 
+/**
+ * The check of query CAST to Number(31, N) because max allowed number is different in for supported SQL servers.
+ *
+ * @author Dmitriy Marmyshev
+ */
 public class CastToMaxNumber
     extends QlBasicDelegateCheck
 {

@@ -18,8 +18,9 @@
          point="com.e1c.g5.v8.dt.check.checks">
       <category
             category="com.e1c.v8codestyle"
+            description="%category.ql.description"
             id="com.e1c.v8codestyle.ql"
-            title="Query language checks by standards">
+            title="%category.ql.title">
       </category>
       <check
             category="com.e1c.v8codestyle.ql"
