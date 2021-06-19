@@ -26,6 +26,7 @@
   <modules>
     <module>com.e1c.v8codestyle.md.itests</module>
     <module>com.e1c.v8codestyle.autosort.itests</module>
+    <module>com.e1c.v8codestyle.ql.itests</module>
   </modules>
 
   <profiles>
