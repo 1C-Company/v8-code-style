@@ -14,22 +14,20 @@
 
 <project
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.e1c.v8codestyle</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>bundles</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>com.e1c.v8codestyle.docs</artifactId>
+	<artifactId>com.e1c.v8codestyle.bsl</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
-	<groupId>com.e1c.v8codestyle</groupId>
 	<packaging>eclipse-plugin</packaging>
 	
 	<properties>
-		<!-- base dir of bom module: bom/parent/this-module -->
-		<markdown.page.generator.html.file.path>${project.parent.parent.basedir}</markdown.page.generator.html.file.path>
+		<!-- base dir of bom module: bom/parent/bundle/this-module -->
+		<markdown.page.generator.html.file.path>${project.parent.parent.parent.basedir}</markdown.page.generator.html.file.path>
 	</properties>
 	
 	<build>
@@ -38,8 +36,8 @@
 				<groupId>com.ruleoftech</groupId>
 				<artifactId>markdown-page-generator-plugin</artifactId>
 				<configuration>
-					<inputDirectory>${project.basedir}/</inputDirectory>
-					<outputDirectory>${project.basedir}/html</outputDirectory>
+					<inputDirectory>${project.basedir}/markdown</inputDirectory>
+					<outputDirectory>${project.basedir}/check.descriptions</outputDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -50,17 +48,11 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<target>
-								<copy
-									file="${project.basedir}/../CHANGELOG.md"
-									tofile="${project.basedir}/changelog.md" />
-								<copy
-									file="${project.basedir}/README.md"
-									tofile="${project.basedir}/toc.md" />
-								<property name="source" value="${project.basedir}/../bom"/>
-								<copy toDir="${project.basedir}/html/css">
+								<property name="source" value="${project.basedir}/../../bom"/>
+								<copy toDir="${project.basedir}/check.descriptions/css">
 									<fileset dir="${source}/html/css" />
 								</copy>
-								<copy toDir="${project.basedir}/html/js">
+								<copy toDir="${project.basedir}/check.descriptions/js">
 									<fileset dir="${source}/html/js" />
 								</copy>
 							</target>
@@ -73,5 +65,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	
 </project>
