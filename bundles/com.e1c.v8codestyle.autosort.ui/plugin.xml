@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (C) 2021, 1C-Soft LLC and others.
+   
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        1C-Soft LLC - initial API and implementation
+ -->
+
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            name="%propertypage.autosort.name"
+            category="com._1c.g5.v8.dt.ui.V8Property"
+            class="com.e1c.v8codestyle.internal.autosort.ui.UiExecutableExtensionFactory:com.e1c.v8codestyle.autosort.ui.properties.AutoSortPropertyPage"
+            selectionFilter="single"
+            id="com.e1c.v8codestyle.autosort.ui.properties.PropertyPage">
+         <enabledWhen>
+            <instanceof
+                  value="org.eclipse.core.resources.IProject">
+            </instanceof>
+         </enabledWhen>
+      </page>
+   </extension>
+
+</plugin>
