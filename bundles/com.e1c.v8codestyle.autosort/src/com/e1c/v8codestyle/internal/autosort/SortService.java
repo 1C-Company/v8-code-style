@@ -199,8 +199,10 @@ public class SortService
         if (model == null || model.isDisposed())
             return Status.OK_STATUS;
 
-        if (monitor.isCanceled() || items == null || items.isEmpty())
+        if (monitor.isCanceled() || items == null)
             return Status.CANCEL_STATUS;
+        if (items.isEmpty())
+            return Status.OK_STATUS;
 
         model.getGlobalContext().execute(new SortBmTask(items));
         return Status.OK_STATUS;

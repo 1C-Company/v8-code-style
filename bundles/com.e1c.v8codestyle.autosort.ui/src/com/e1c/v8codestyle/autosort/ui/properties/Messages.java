@@ -18,7 +18,7 @@ import org.eclipse.osgi.util.NLS;
  * @author Dmitriy Marmyshev
  *
  */
-class Messages
+final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.autosort.ui.properties.messages"; //$NON-NLS-1$

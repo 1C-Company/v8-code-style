@@ -31,7 +31,6 @@ import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
-import com._1c.g5.v8.bm.integration.IBmTask;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
@@ -116,7 +115,7 @@ public class SortServiceTest
     protected IBmObject getTopObjectByFqn(final String fqn, IDtProject dtProject)
     {
         IBmModel model = this.bmModelManager.getModel(dtProject);
-        return (IBmObject)model.executeReadonlyTask((IBmTask)new AbstractBmTask<IBmObject>("GetObject")
+        return model.executeReadonlyTask(new AbstractBmTask<IBmObject>("GetObject")
         {
 
             @Override
