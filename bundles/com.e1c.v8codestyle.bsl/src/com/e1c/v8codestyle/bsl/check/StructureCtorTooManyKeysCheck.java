@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
+import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -29,8 +30,10 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 
 /**
- * @author Dmitriy Marmyshev
+ * Checks Structure constructor string literal that contains too may keys.
+ * Default value is 3 keys in literal. Otherwise it need to use {@code Structure.Insert()} functions to insert all keys.
  *
+ * @author Dmitriy Marmyshev
  */
 public class StructureCtorTooManyKeysCheck
     extends BasicCheck
@@ -70,7 +73,7 @@ public class StructureCtorTooManyKeysCheck
             return;
 
         OperatorStyleCreator osc = (OperatorStyleCreator)object;
-        if (IEObjectTypeNames.STRUCTURE.equals(osc.getType().getName()) && !osc.getParams().isEmpty()
+        if (IEObjectTypeNames.STRUCTURE.equals(McoreUtil.getTypeName(osc.getType())) && !osc.getParams().isEmpty()
             && osc.getParams().get(0) instanceof StringLiteral)
         {
             StringLiteral literal = (StringLiteral)osc.getParams().get(0);

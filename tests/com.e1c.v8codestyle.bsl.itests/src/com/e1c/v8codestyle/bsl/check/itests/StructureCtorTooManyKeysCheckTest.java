@@ -73,7 +73,7 @@ public class StructureCtorTooManyKeysCheckTest
         assertEquals(1, markers.length);
 
         Marker marker = markers[0];
-        assertEquals("10", marker.getExtraInfo().get("line"));
+        assertEquals("11", marker.getExtraInfo().get("line"));
         String uriToProblem = EcoreUtil2.getURI(literals.get(1)).toString();
         assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
         CheckUid checkUid =
