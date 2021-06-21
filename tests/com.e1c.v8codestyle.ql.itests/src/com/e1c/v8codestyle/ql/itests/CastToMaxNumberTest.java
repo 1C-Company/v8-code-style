@@ -87,4 +87,36 @@ public class CastToMaxNumberTest
         marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), project);
         assertNull(marker);
     }
+
+    @Test
+    public void testCastToMaxNumberPrecisionAbsent() throws Exception
+    {
+        IDtProject project = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(project);
+        IBmObject object = getTopObjectByFqn("CommonForm.Form.Form", project);
+        assertTrue(object instanceof Form);
+        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), project);
+        assertNotNull(marker);
+
+        // update query text
+        long id = object.bmGetId();
+        IBmModel model = bmModelManager.getModel(project);
+        object = model.getGlobalContext().execute(new AbstractBmTask<IBmObject>("Edit Form")
+        {
+
+            @Override
+            public IBmObject execute(IBmTransaction transaction, IProgressMonitor monitor)
+            {
+                Form form = (Form)transaction.getObjectById(id);
+                FormAttribute attribute = form.getAttributes().get(0);
+                ((DynamicListExtInfo)attribute.getExtInfo())
+                    .setQueryText("SELECT\r\n   CAST(10. AS NUMBER(31)) AS Field");
+                return form;
+            }
+        });
+        waitForDD(project);
+
+        marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), project);
+        assertNull(marker);
+    }
 }
