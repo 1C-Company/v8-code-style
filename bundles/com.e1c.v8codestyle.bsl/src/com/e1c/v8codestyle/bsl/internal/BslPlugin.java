@@ -10,16 +10,16 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.internal.autosort;
+package com.e1c.v8codestyle.bsl.internal;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
+import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
 import com._1c.g5.wiring.ServiceInitialization;
-import com.e1c.v8codestyle.autosort.ISortService;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -28,17 +28,17 @@ import com.google.inject.Injector;
  *
  * @author Dmitriy Marmyshev
  */
-public class AutoSortPlugin
+public class BslPlugin
     extends Plugin
 {
 
-    public static final String PLUGIN_ID = "com.e1c.v8codestyle.autosort"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "com.e1c.v8codestyle.bsl"; //$NON-NLS-1$
 
-    private static AutoSortPlugin plugin;
-
-    private InjectorAwareServiceRegistrator registrator;
+    private static BslPlugin plugin;
 
     private volatile Injector injector;
+
+    private InjectorAwareServiceRegistrator registrator;
 
     private static BundleContext context;
 
@@ -47,7 +47,7 @@ public class AutoSortPlugin
      *
      * @return the shared instance
      */
-    public static AutoSortPlugin getDefault()
+    public static BslPlugin getDefault()
     {
         return plugin;
     }
@@ -122,19 +122,15 @@ public class AutoSortPlugin
 
         super.start(bundleContext);
 
-        AutoSortPlugin.context = bundleContext;
+        BslPlugin.context = bundleContext;
         plugin = this;
 
-        registrator = new InjectorAwareServiceRegistrator(context, this::getInjector);
+        BslPackage.eINSTANCE.eClass();
+
+        registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
+
         ServiceInitialization.schedule(() -> {
-            try
-            {
-                registrator.service(ISortService.class).registerInjected();
-            }
-            catch (Exception e)
-            {
-                logError(e);
-            }
+            // register services from injector
         });
 
     }
@@ -154,7 +150,7 @@ public class AutoSortPlugin
         plugin = null;
         super.stop(bundleContext);
 
-        AutoSortPlugin.context = null;
+        BslPlugin.context = null;
     }
 
     /**
@@ -167,7 +163,7 @@ public class AutoSortPlugin
         Injector localInstance = injector;
         if (localInstance == null)
         {
-            synchronized (AutoSortPlugin.class)
+            synchronized (BslPlugin.class)
             {
                 localInstance = injector;
                 if (localInstance == null)
@@ -184,7 +180,7 @@ public class AutoSortPlugin
     {
         try
         {
-            return Guice.createInjector(new ServiceModule(), new ExternalDependenciesModule(this));
+            return Guice.createInjector(new ExternalDependenciesModule(this));
         }
         catch (Exception e)
         {
@@ -194,5 +190,4 @@ public class AutoSortPlugin
                 + getBundle().getSymbolicName(), e);
         }
     }
-
 }
