@@ -27,6 +27,7 @@
     <module>com.e1c.v8codestyle.md</module>
     <module>com.e1c.v8codestyle.autosort</module>
     <module>com.e1c.v8codestyle.autosort.ui</module>
+    <module>com.e1c.v8codestyle.ql</module>
   </modules>
   
   <build>
