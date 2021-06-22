@@ -24,15 +24,19 @@
       </category>
       <check
             category="com.e1c.v8codestyle.ql"
-            class="com.e1c.v8codestyle.ql.check.CamelCaseStringLiteral">
+            class="com.e1c.v8codestyle.internal.ql.ExecutableExtensionFactory:com.e1c.v8codestyle.ql.check.CamelCaseStringLiteral">
       </check>
       <check
             category="com.e1c.v8codestyle.ql"
-            class="com.e1c.v8codestyle.ql.check.JoinToSubQuery">
+            class="com.e1c.v8codestyle.internal.ql.ExecutableExtensionFactory:com.e1c.v8codestyle.ql.check.JoinToSubQuery">
       </check>
       <check
             category="com.e1c.v8codestyle.ql"
-            class="com.e1c.v8codestyle.ql.check.CastToMaxNumber">
+            class="com.e1c.v8codestyle.internal.ql.ExecutableExtensionFactory:com.e1c.v8codestyle.ql.check.CastToMaxNumber">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.ql"
+            class="com.e1c.v8codestyle.internal.ql.ExecutableExtensionFactory:com.e1c.v8codestyle.ql.check.TempTableHasIndex">
       </check>
    </extension>
 

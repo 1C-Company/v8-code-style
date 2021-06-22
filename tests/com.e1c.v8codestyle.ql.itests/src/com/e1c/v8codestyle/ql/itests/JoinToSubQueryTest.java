@@ -20,11 +20,10 @@ import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.ql.check.CamelCaseStringLiteral;
+import com.e1c.v8codestyle.ql.check.JoinToSubQuery;
 
 /**
- * Test {@link CamelCaseStringLiteral} class that checks string literal contains only camel-case words
- * or non-word symbols.
+ * Test {@link JoinToSubQuery} class that checks that selection query has join with some sub query.
  *
  * @author Dmitriy Marmyshev
  */
