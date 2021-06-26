@@ -28,23 +28,23 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.MdObjectNameLength">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdObjectNameLength">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.CommonModuleNameClient">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameClient">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.CommonModuleNameClientServer">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameClientServer">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.CommonModuleNameGlobal">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameGlobal">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.CommonModuleType">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleType">
       </check>
    </extension>
 
