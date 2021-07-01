@@ -29,11 +29,10 @@ import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.ql.check.CamelCaseStringLiteral;
+import com.e1c.v8codestyle.ql.check.CastToMaxNumber;
 
 /**
- * Test {@link CamelCaseStringLiteral} class that checks string literal contains only camel-case words
- * or non-word symbols.
+ * Test {@link CastToMaxNumber} class that checks CAST(10, NUMBER(31,2)) expression to max allowed number.
  *
  * @author Dmitriy Marmyshev
  */
