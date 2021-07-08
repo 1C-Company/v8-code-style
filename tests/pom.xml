@@ -28,6 +28,7 @@
     <module>com.e1c.v8codestyle.bsl.itests</module>
     <module>com.e1c.v8codestyle.autosort.itests</module>
     <module>com.e1c.v8codestyle.ql.itests</module>
+    <module>com.e1c.v8codestyle.right.itests</module>
   </modules>
 
   <profiles>
