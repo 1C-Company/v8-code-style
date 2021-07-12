@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #15
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
@@ -116,29 +117,6 @@ public final class CommonModuleType
     }
 
     @Override
-    protected void configureCheck(CheckConfigurer builder)
-    {
-        //@formatter:off
-        builder.title(Messages.CommonModuleType_title)
-            .description(Messages.CommonModuleType_description)
-            .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.BLOCKER)
-            .issueType(IssueType.CODE_STYLE)
-            .extension(new TopObjectFilterExtension())
-            .topObject(COMMON_MODULE)
-            .checkTop()
-            .features(COMMON_MODULE__CLIENT_MANAGED_APPLICATION,
-                COMMON_MODULE__SERVER,
-                COMMON_MODULE__SERVER_CALL,
-                COMMON_MODULE__EXTERNAL_CONNECTION,
-                COMMON_MODULE__GLOBAL,
-                COMMON_MODULE__PRIVILEGED,
-                COMMON_MODULE__CLIENT_ORDINARY_APPLICATION);
-        //@formatter:on
-
-    }
-
-    @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
@@ -151,7 +129,8 @@ public final class CommonModuleType
         }
 
         if (values.equals(TYPE_SERVER) || values.equals(TYPE_SERVER_CALL) || values.equals(TYPE_CLIENT)
-            || values.equals(TYPE_CLIENT_SERVER))
+            || values.equals(TYPE_CLIENT_SERVER) || values.equals(TYPE_SERVER_GLOBAL)
+            || values.equals(TYPE_CLIENT_GLOBAL))
         {
             return;
         }
@@ -177,6 +156,29 @@ public final class CommonModuleType
         //@formatter:on
 
         resultAceptor.addIssue(message, feature);
+    }
+
+    @Override
+    protected void configureCheck(CheckConfigurer builder)
+    {
+        //@formatter:off
+        builder.title(Messages.CommonModuleType_title)
+            .description(Messages.CommonModuleType_description)
+            .complexity(CheckComplexity.NORMAL)
+            .severity(IssueSeverity.BLOCKER)
+            .issueType(IssueType.CODE_STYLE)
+            .extension(new TopObjectFilterExtension())
+            .topObject(COMMON_MODULE)
+            .checkTop()
+            .features(COMMON_MODULE__CLIENT_MANAGED_APPLICATION,
+                COMMON_MODULE__SERVER,
+                COMMON_MODULE__SERVER_CALL,
+                COMMON_MODULE__EXTERNAL_CONNECTION,
+                COMMON_MODULE__GLOBAL,
+                COMMON_MODULE__PRIVILEGED,
+                COMMON_MODULE__CLIENT_ORDINARY_APPLICATION);
+        //@formatter:on
+
     }
 
 }
