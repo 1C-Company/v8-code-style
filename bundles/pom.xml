@@ -50,6 +50,10 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>native2ascii-maven-plugin</artifactId>
+      </plugin>
     </plugins>
   </build>
 </project>
