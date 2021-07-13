@@ -65,7 +65,7 @@ public class StructureCtorTooManyKeysCheckTest
         List<StringLiteral> literals = EcoreUtil2.eAllOfType(module, StringLiteral.class);
         assertEquals(3, literals.size());
 
-        String id = module.eResource().getURI().toString();
+        String id = module.eResource().getURI().toPlatformString(true);
         Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
         assertNotNull(markers);
 
