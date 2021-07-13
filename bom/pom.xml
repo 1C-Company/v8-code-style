@@ -248,13 +248,16 @@
                 <goal>resources</goal>
               </goals>
               <phase>compile</phase>
-              <configuration>
-                <srcDir>src</srcDir>
-                <targetDir>${project.build.outputDirectory}</targetDir>
-                <encoding>${project.build.sourceEncoding}</encoding>
-              </configuration>
             </execution>
           </executions>
+          <configuration>
+            <srcDir>src</srcDir>
+            <targetDir>${project.build.outputDirectory}</targetDir>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <excludes>
+              <exclude>**/build.properties</exclude>
+            </excludes>
+           </configuration>
         </plugin>
       </plugins>
     </pluginManagement>
