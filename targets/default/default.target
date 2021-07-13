@@ -122,7 +122,7 @@
 <!-- Eclipse -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
-<repository id="eclipse_repository" location="https://download.eclipse.org/releases/2020-12/"/>
+<repository id="eclipse_repository" location="https://download.eclipse.org/releases/2020-06/"/>
 </location>
 
 </locations>
