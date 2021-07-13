@@ -238,7 +238,7 @@ public class CommonModuleTypeTest
     }
 
     /**
-     * Test common module type - server client is correct.
+     * Test common module type - client global is correct.
      *
      * @throws Exception the exception
      */
