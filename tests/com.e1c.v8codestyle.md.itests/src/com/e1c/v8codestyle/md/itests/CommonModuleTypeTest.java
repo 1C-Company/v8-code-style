@@ -1,6 +1,16 @@
-/**
+/*******************************************************************************
+ * Copyright (C) 2021, 1C-Soft LLC and others.
  *
- */
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #15
+ *******************************************************************************/
 package com.e1c.v8codestyle.md.itests;
 
 import static org.junit.Assert.assertNotNull;
@@ -171,6 +181,76 @@ public class CommonModuleTypeTest
         String fqn = "CommonModule.CommonServerClient";
 
         updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_SERVER);
+        long id = getTopObjectIdByFqn(fqn, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    /**
+     * Test common module type - server global.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeServerGlobal() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("CommonModule.CommonServerGlobal", dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    /**
+     * Test common module type - server global is correct.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeServerGlobalCorrect() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        String fqn = "CommonModule.CommonServerGlobal";
+
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER_GLOBAL);
+        long id = getTopObjectIdByFqn(fqn, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    /**
+     * Test common module type - client global.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeClientGlobal() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("CommonModule.CommonClientGlobal", dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    /**
+     * Test common module type - client global is correct.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeClientGlobalCorrect() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        String fqn = "CommonModule.CommonClientGlobal";
+
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_GLOBAL);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
