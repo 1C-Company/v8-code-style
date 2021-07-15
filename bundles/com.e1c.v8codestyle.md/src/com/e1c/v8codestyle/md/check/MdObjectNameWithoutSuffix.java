@@ -102,7 +102,7 @@ public class MdObjectNameWithoutSuffix
 
             List<String> nameSuffixes = List.of(nameSuffix.replace(" ", "").split(",")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-            return (nameSuffixes.stream().noneMatch(s -> name.indexOf(s, 1) != -1));
+            return nameSuffixes.stream().noneMatch(s -> name.indexOf(s, 1) != -1);
         };
     }
 }
