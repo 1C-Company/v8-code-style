@@ -1,6 +1,16 @@
-/**
+/*******************************************************************************
+ * Copyright (C) 2021, 1C-Soft LLC and others.
  *
- */
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #14
+ *******************************************************************************/
 package com.e1c.v8codestyle.md.itests;
 
 import static org.junit.Assert.assertNotNull;
@@ -9,6 +19,7 @@ import static org.junit.Assert.assertNull;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
@@ -38,34 +49,64 @@ public class CommonModuleNameClientServerTest
 
     private static final String PROJECT_NAME = "CommonModuleName";
 
+    private static final String MODULE_DEFAULT_FQN = "CommonModule.CommonModuleName";
+
     @Test
-    public void testCommonModuleNameClientServer() throws Exception
+    public void testCommonModuleNameClientServer() throws CoreException
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleName";
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, null);
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_SERVER, null);
-        long id = getTopObjectIdByFqn(fqn, dtProject);
+        long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
     @Test
-    public void testCommonModuleNameClientServerCorrect() throws Exception
+    public void testCommonModuleNameClientServerCorrect() throws CoreException
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleName";
+        String fqn = "CommonModule.CommonModuleClientServer";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_SERVER, "CommonModuleClientServer");
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
-        fqn = "CommonModule.CommonModuleClientServer";
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
+    }
+
+    @Test
+    public void testCommonModuleNameClientServerWithPostfixCorrect() throws CoreException
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        String fqn = "CommonModule.CommonModuleClientServerPredefined";
+
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
+
+        long id = getTopObjectIdByFqn(fqn, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testCommonModuleNameClientServerWithPrefixIncorrect() throws CoreException
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        String fqn = "CommonModule.ClientServerCommonModule";
+
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
+
+        long id = getTopObjectIdByFqn(fqn, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
     }
 
     private void updateCommonModule(IDtProject dtProject, String fqn, Map<EStructuralFeature, Boolean> types,
@@ -79,14 +120,13 @@ public class CommonModuleNameClientServerTest
             {
                 IBmObject object = transaction.getTopObjectByFqn(fqn);
                 for (Entry<EStructuralFeature, Boolean> entry : types.entrySet())
-                {
                     object.eSet(entry.getKey(), entry.getValue());
-                }
+
                 if (newName != null && object instanceof CommonModule)
                 {
                     CommonModule module = (CommonModule)object;
-                    module.setName(newName);
-                    transaction.updateTopObjectFqn(object, module.eClass().getName() + "." + newName);
+                    module.setName(newName.split("[.]")[1]);
+                    transaction.updateTopObjectFqn(object, newName);
                 }
                 return null;
             }

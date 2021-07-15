@@ -5,5 +5,5 @@
     <key>en</key>
     <value>Common module name</value>
   </synonym>
-  <server>true</server>
+  <externalConnection>true</externalConnection>
 </mdclass:CommonModule>

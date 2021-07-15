@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #14
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
@@ -88,30 +89,20 @@ public class MdObjectNameWithoutSuffix
         return (IBmObject topObject, ICheckParameters parameters) -> {
 
             if (!(topObject instanceof MdObject))
-            {
                 return false;
-            }
 
             MdObject mdObject = (MdObject)topObject;
             String name = mdObject.getName();
             if (name == null)
-            {
                 return false;
-            }
 
             String nameSuffix = parameters.getString(parameterName);
             if (nameSuffix == null || nameSuffix.isBlank())
-            {
                 return false;
-            }
 
-            List<String> nameSuffixs = List.of(nameSuffix.replace(" ", "").split(",")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            List<String> nameSuffixes = List.of(nameSuffix.replace(" ", "").split(",")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-            if (nameSuffixs.stream().noneMatch(name::endsWith))
-            {
-                return true;
-            }
-            return false;
+            return (nameSuffixes.stream().noneMatch(s -> name.indexOf(s, 1) != -1));
         };
     }
 }

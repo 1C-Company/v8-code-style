@@ -9,15 +9,16 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #14
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__CLIENT_MANAGED_APPLICATION;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__CLIENT_ORDINARY_APPLICATION;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__EXTERNAL_CONNECTION;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__GLOBAL;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__PRIVILEGED;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__RETURN_VALUES_REUSE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER_CALL;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
@@ -61,6 +62,7 @@ public final class CommonModuleNameClientServer
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
+        //@formatter:off
         builder.title(Messages.CommonModuleNameClientServer_title)
             .description(Messages.CommonModuleNameClientServer_description)
             .complexity(CheckComplexity.NORMAL)
@@ -70,10 +72,15 @@ public final class CommonModuleNameClientServer
             .extension(new MdObjectNameWithoutSuffix(NAME_SUFFIX_DEFAULT))
             .topObject(COMMON_MODULE)
             .checkTop()
-            .features(MD_OBJECT__NAME, COMMON_MODULE__CLIENT_MANAGED_APPLICATION, COMMON_MODULE__SERVER,
-                COMMON_MODULE__SERVER_CALL, COMMON_MODULE__EXTERNAL_CONNECTION, COMMON_MODULE__GLOBAL,
-                COMMON_MODULE__PRIVILEGED, COMMON_MODULE__RETURN_VALUES_REUSE);
-
+            .features(MD_OBJECT__NAME,
+                COMMON_MODULE__CLIENT_MANAGED_APPLICATION,
+                COMMON_MODULE__CLIENT_ORDINARY_APPLICATION,
+                COMMON_MODULE__SERVER,
+                COMMON_MODULE__SERVER_CALL,
+                COMMON_MODULE__EXTERNAL_CONNECTION,
+                COMMON_MODULE__GLOBAL,
+                COMMON_MODULE__PRIVILEGED);
+        //@formatter:on
     }
 
     @Override
@@ -82,22 +89,18 @@ public final class CommonModuleNameClientServer
     {
         CommonModule commonModule = (CommonModule)object;
         if (commonModule.getReturnValuesReuse() != ReturnValuesReuse.DONT_USE)
-        {
             return;
-        }
 
         Map<EStructuralFeature, Boolean> values = new HashMap<>();
         for (EStructuralFeature feature : CommonModuleType.TYPE_CLIENT_SERVER.keySet())
-        {
             values.put(feature, (Boolean)commonModule.eGet(feature));
-        }
 
-        if (values.equals(CommonModuleType.TYPE_CLIENT_SERVER))
-        {
-            String message = MessageFormat.format(Messages.CommonModuleNameClientServer_message,
-                parameters.getString(MdObjectNameWithoutSuffix.NAME_SUFFIX_PARAMETER_NAME));
-            resultAceptor.addIssue(message, MD_OBJECT__NAME);
-        }
+        if (!values.equals(CommonModuleType.TYPE_CLIENT_SERVER))
+            return;
+
+        String message = MessageFormat.format(Messages.CommonModuleNameClientServer_message,
+            parameters.getString(MdObjectNameWithoutSuffix.NAME_SUFFIX_PARAMETER_NAME));
+        resultAceptor.addIssue(message, MD_OBJECT__NAME);
     }
 
 }
