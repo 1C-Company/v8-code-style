@@ -23,10 +23,65 @@
             id="com.e1c.v8codestyle.right"
             title="%category.right.title">
       </category>
-      
+
       <check
             category="com.e1c.v8codestyle.right"
             class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.AdministrationRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.OutputToPrinterFileClipboardRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartAutomationRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartWebClientRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartExternalConnectionRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartThickClientRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartThinClientRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.InteractiveOpenExternalReportsAndDataProcessorsRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.UpdateDatabaseConfigurationRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ViewEventLogRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.AllFunctionsModeRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.SaveUserDataRight">
       </check>
 
    </extension>
