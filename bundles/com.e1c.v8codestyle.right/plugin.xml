@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (C) 2021, 1C-Soft LLC and others.
+   
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        1C-Soft LLC - initial API and implementation
+        Aleksandr Kapralov - issue #20
+ -->
+
+<plugin>
+   <extension
+         point="com.e1c.g5.v8.dt.check.checks">
+      <category
+            category="com.e1c.v8codestyle"
+            description="%category.right.description"
+            id="com.e1c.v8codestyle.right"
+            title="%category.right.title">
+      </category>
+      
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.AdministrationRight">
+      </check>
+
+   </extension>
+
+</plugin>
