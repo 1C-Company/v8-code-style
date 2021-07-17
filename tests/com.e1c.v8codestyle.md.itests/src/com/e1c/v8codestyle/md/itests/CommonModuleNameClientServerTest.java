@@ -30,7 +30,6 @@ import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
-import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.check.CommonModuleNameClientServer;
 import com.e1c.v8codestyle.md.check.CommonModuleType;
@@ -45,8 +44,6 @@ public class CommonModuleNameClientServerTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "common-module-name-client-server";
-
     private static final String PROJECT_NAME = "CommonModuleName";
 
     private static final String MODULE_DEFAULT_FQN = "CommonModule.CommonModuleName";
@@ -60,7 +57,7 @@ public class CommonModuleNameClientServerTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, null);
 
         long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        var marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -70,12 +67,12 @@ public class CommonModuleNameClientServerTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleClientServer";
+        var fqn = "CommonModule.CommonModuleClientServer";
 
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        var marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -85,12 +82,12 @@ public class CommonModuleNameClientServerTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleClientServerPredefined";
+        var fqn = "CommonModule.CommonModuleClientServerPredefined";
 
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        var marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -100,12 +97,12 @@ public class CommonModuleNameClientServerTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.ClientServerCommonModule";
+        var fqn = "CommonModule.ClientServerCommonModule";
 
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        var marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -119,6 +116,7 @@ public class CommonModuleNameClientServerTest
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
             {
                 IBmObject object = transaction.getTopObjectByFqn(fqn);
+
                 for (Entry<EStructuralFeature, Boolean> entry : types.entrySet())
                     object.eSet(entry.getKey(), entry.getValue());
 

@@ -48,7 +48,7 @@ public final class CommonModuleNameClient
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "common-module-name-client"; //$NON-NLS-1$
+    public static final String CHECK_ID = "common-module-name-client"; //$NON-NLS-1$
 
     private static final String NAME_SUFFIX_DEFAULT = "Клиент,Client"; //$NON-NLS-1$
 
@@ -86,7 +86,7 @@ public final class CommonModuleNameClient
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        CommonModule commonModule = (CommonModule)object;
+        var commonModule = (CommonModule)object;
         if (commonModule.getReturnValuesReuse() != ReturnValuesReuse.DONT_USE)
             return;
 

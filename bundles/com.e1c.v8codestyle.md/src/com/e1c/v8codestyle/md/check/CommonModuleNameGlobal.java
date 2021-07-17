@@ -48,7 +48,7 @@ public final class CommonModuleNameGlobal
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "common-module-name-global"; //$NON-NLS-1$
+    public static final String CHECK_ID = "common-module-name-global"; //$NON-NLS-1$
 
     private static final String NAME_SUFFIX_DEFAULT = "Глобальный,Global"; //$NON-NLS-1$
 
@@ -86,7 +86,7 @@ public final class CommonModuleNameGlobal
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        CommonModule commonModule = (CommonModule)object;
+        var commonModule = (CommonModule)object;
         if (commonModule.getReturnValuesReuse() != ReturnValuesReuse.DONT_USE)
             return;
 

@@ -78,7 +78,7 @@ public class MdObjectNameWithoutSuffix
     @Override
     public void configureContextCollector(ICheckDefinition definition)
     {
-        CheckParameterDefinition parameterDefinition =
+        var parameterDefinition =
             new CheckParameterDefinition(this.parameterName, String.class, this.defaultValue, this.parameterTitle);
         definition.addParameterDefinition(parameterDefinition);
     }
@@ -87,16 +87,15 @@ public class MdObjectNameWithoutSuffix
     public ITopObjectFilter contributeTopObjectFilter()
     {
         return (IBmObject topObject, ICheckParameters parameters) -> {
-
             if (!(topObject instanceof MdObject))
                 return false;
 
-            MdObject mdObject = (MdObject)topObject;
+            var mdObject = (MdObject)topObject;
             String name = mdObject.getName();
             if (name == null)
                 return false;
 
-            String nameSuffix = parameters.getString(parameterName);
+            var nameSuffix = parameters.getString(parameterName);
             if (nameSuffix == null || nameSuffix.isBlank())
                 return false;
 
