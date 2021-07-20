@@ -19,7 +19,6 @@ import static org.junit.Assert.assertNull;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
@@ -52,7 +51,7 @@ public class CommonModuleNameClientServerTest
     private static final String MODULE_DEFAULT_FQN = "CommonModule.CommonModuleName";
 
     @Test
-    public void testCommonModuleNameClientServer() throws CoreException
+    public void testCommonModuleNameClientServer() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -65,7 +64,7 @@ public class CommonModuleNameClientServerTest
     }
 
     @Test
-    public void testCommonModuleNameClientServerCorrect() throws CoreException
+    public void testCommonModuleNameClientServerCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -80,7 +79,7 @@ public class CommonModuleNameClientServerTest
     }
 
     @Test
-    public void testCommonModuleNameClientServerWithPostfixCorrect() throws CoreException
+    public void testCommonModuleNameClientServerWithPostfixCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -95,7 +94,7 @@ public class CommonModuleNameClientServerTest
     }
 
     @Test
-    public void testCommonModuleNameClientServerWithPrefixIncorrect() throws CoreException
+    public void testCommonModuleNameClientServerWithPrefixIncorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);

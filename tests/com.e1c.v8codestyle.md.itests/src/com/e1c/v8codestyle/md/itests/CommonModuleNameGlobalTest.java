@@ -19,7 +19,6 @@ import static org.junit.Assert.assertNull;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Test;
@@ -52,7 +51,7 @@ public class CommonModuleNameGlobalTest
     private static final String MODULE_DEFAULT_FQN = "CommonModule.CommonModuleName";
 
     @Test
-    public void testCommonModuleNameClientGlobal() throws CoreException
+    public void testCommonModuleNameClientGlobal() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -65,7 +64,7 @@ public class CommonModuleNameGlobalTest
     }
 
     @Test
-    public void testCommonModuleNameClientGlobalCorrect() throws CoreException
+    public void testCommonModuleNameClientGlobalCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -80,7 +79,7 @@ public class CommonModuleNameGlobalTest
     }
 
     @Test
-    public void testCommonModuleNameClientGlobalWithPostfixCorrect() throws CoreException
+    public void testCommonModuleNameClientGlobalWithPostfixCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -95,7 +94,7 @@ public class CommonModuleNameGlobalTest
     }
 
     @Test
-    public void testCommonModuleNameClientGlobalWithPrefixIncorrect() throws CoreException
+    public void testCommonModuleNameClientGlobalWithPrefixIncorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -110,7 +109,7 @@ public class CommonModuleNameGlobalTest
     }
 
     @Test
-    public void testCommonModuleNameServerGlobal() throws CoreException
+    public void testCommonModuleNameServerGlobal() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -123,7 +122,7 @@ public class CommonModuleNameGlobalTest
     }
 
     @Test
-    public void testCommonModuleNameServerGlobalCorrect() throws CoreException
+    public void testCommonModuleNameServerGlobalCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -138,7 +137,7 @@ public class CommonModuleNameGlobalTest
     }
 
     @Test
-    public void testCommonModuleNameServerGlobalWithPostfixCorrect() throws CoreException
+    public void testCommonModuleNameServerGlobalWithPostfixCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -153,7 +152,7 @@ public class CommonModuleNameGlobalTest
     }
 
     @Test
-    public void testCommonModuleNameServerGlobalWithPrefixIncorrect() throws CoreException
+    public void testCommonModuleNameServerGlobalWithPrefixIncorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
