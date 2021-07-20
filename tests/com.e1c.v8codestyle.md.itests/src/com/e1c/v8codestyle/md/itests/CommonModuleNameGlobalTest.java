@@ -45,6 +45,8 @@ public class CommonModuleNameGlobalTest
     extends CheckTestBase
 {
 
+    private static final String CHECK_ID = "common-module-name-global"; //$NON-NLS-1$
+
     private static final String PROJECT_NAME = "CommonModuleName";
 
     private static final String MODULE_DEFAULT_FQN = "CommonModule.CommonModuleName";
@@ -58,7 +60,7 @@ public class CommonModuleNameGlobalTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL, null);
 
         long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -73,7 +75,7 @@ public class CommonModuleNameGlobalTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -88,7 +90,7 @@ public class CommonModuleNameGlobalTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -103,7 +105,7 @@ public class CommonModuleNameGlobalTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -116,7 +118,7 @@ public class CommonModuleNameGlobalTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL, null);
 
         long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -131,7 +133,7 @@ public class CommonModuleNameGlobalTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -146,7 +148,7 @@ public class CommonModuleNameGlobalTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -161,7 +163,7 @@ public class CommonModuleNameGlobalTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameGlobal.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 

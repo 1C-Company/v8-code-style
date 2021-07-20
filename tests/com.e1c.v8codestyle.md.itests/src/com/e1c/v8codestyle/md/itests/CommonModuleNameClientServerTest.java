@@ -45,6 +45,8 @@ public class CommonModuleNameClientServerTest
     extends CheckTestBase
 {
 
+    private static final String CHECK_ID = "common-module-name-client-server"; //$NON-NLS-1$
+
     private static final String PROJECT_NAME = "CommonModuleName";
 
     private static final String MODULE_DEFAULT_FQN = "CommonModule.CommonModuleName";
@@ -58,7 +60,7 @@ public class CommonModuleNameClientServerTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, null);
 
         long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -73,7 +75,7 @@ public class CommonModuleNameClientServerTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -88,7 +90,7 @@ public class CommonModuleNameClientServerTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -103,7 +105,7 @@ public class CommonModuleNameClientServerTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 

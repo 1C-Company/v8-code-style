@@ -48,7 +48,7 @@ public final class CommonModuleNameGlobal
     extends BasicCheck
 {
 
-    public static final String CHECK_ID = "common-module-name-global"; //$NON-NLS-1$
+    private static final String CHECK_ID = "common-module-name-global"; //$NON-NLS-1$
 
     private static final String NAME_SUFFIX_DEFAULT = "Глобальный,Global"; //$NON-NLS-1$
 

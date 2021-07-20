@@ -48,7 +48,7 @@ public final class CommonModuleNameClient
     extends BasicCheck
 {
 
-    public static final String CHECK_ID = "common-module-name-client"; //$NON-NLS-1$
+    private static final String CHECK_ID = "common-module-name-client"; //$NON-NLS-1$
 
     private static final String NAME_SUFFIX_DEFAULT = "Клиент,Client"; //$NON-NLS-1$
 
