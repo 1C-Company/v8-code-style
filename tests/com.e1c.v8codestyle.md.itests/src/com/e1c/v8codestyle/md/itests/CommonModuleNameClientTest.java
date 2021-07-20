@@ -29,6 +29,7 @@ import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.metadata.mdclass.ReturnValuesReuse;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.check.CommonModuleNameClient;
@@ -56,7 +57,8 @@ public class CommonModuleNameClientTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT, null);
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT, ReturnValuesReuse.DONT_USE,
+            null);
 
         long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
@@ -71,7 +73,8 @@ public class CommonModuleNameClientTest
 
         String fqn = "CommonModule.CommonModuleClient";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT, fqn);
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT, ReturnValuesReuse.DONT_USE,
+            fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
@@ -86,7 +89,8 @@ public class CommonModuleNameClientTest
 
         String fqn = "CommonModule.CommonModuleClientPredefined";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT, fqn);
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT, ReturnValuesReuse.DONT_USE,
+            fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
@@ -101,15 +105,30 @@ public class CommonModuleNameClientTest
 
         String fqn = "CommonModule.ClientCommonModule";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT, fqn);
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT, ReturnValuesReuse.DONT_USE,
+            fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
+    @Test
+    public void testCommonModuleNameClientReturnValueReuseCorrect() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT,
+            ReturnValuesReuse.DURING_SESSION, null);
+
+        long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
     private void updateCommonModule(IDtProject dtProject, String fqn, Map<EStructuralFeature, Boolean> types,
-        String newName)
+        ReturnValuesReuse returnValueReuse, String newFqn)
     {
         IBmModel model = bmModelManager.getModel(dtProject);
         model.execute(new AbstractBmTask<Void>("change type")
@@ -124,11 +143,23 @@ public class CommonModuleNameClientTest
                     object.eSet(entry.getKey(), entry.getValue());
                 }
 
-                if (newName != null && object instanceof CommonModule)
+                if (!(object instanceof CommonModule))
                 {
-                    CommonModule module = (CommonModule)object;
-                    module.setName(newName.split("[.]")[1]);
-                    transaction.updateTopObjectFqn(object, newName);
+                    return null;
+                }
+
+                CommonModule module = (CommonModule)object;
+
+                module.setReturnValuesReuse(returnValueReuse);
+
+                if (newFqn != null)
+                {
+                    String[] fqnArray = newFqn.split("[.]");
+                    if (fqnArray.length == 2)
+                    {
+                        module.setName(fqnArray[1]);
+                        transaction.updateTopObjectFqn(object, newFqn);
+                    }
                 }
 
                 return null;

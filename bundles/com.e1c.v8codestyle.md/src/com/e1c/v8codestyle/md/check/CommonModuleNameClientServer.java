@@ -19,6 +19,7 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_M
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__EXTERNAL_CONNECTION;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__GLOBAL;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__PRIVILEGED;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__RETURN_VALUES_REUSE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER_CALL;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
@@ -73,6 +74,7 @@ public final class CommonModuleNameClientServer
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(MD_OBJECT__NAME,
+                COMMON_MODULE__RETURN_VALUES_REUSE,
                 COMMON_MODULE__CLIENT_MANAGED_APPLICATION,
                 COMMON_MODULE__CLIENT_ORDINARY_APPLICATION,
                 COMMON_MODULE__SERVER,

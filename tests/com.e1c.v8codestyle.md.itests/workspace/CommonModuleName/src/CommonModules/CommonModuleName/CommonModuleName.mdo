@@ -6,4 +6,5 @@
     <value>Common module name</value>
   </synonym>
   <externalConnection>true</externalConnection>
+  <returnValuesReuse>DuringSession</returnValuesReuse>
 </mdclass:CommonModule>
