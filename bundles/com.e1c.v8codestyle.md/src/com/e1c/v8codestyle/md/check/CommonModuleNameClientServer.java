@@ -87,7 +87,7 @@ public final class CommonModuleNameClientServer
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        var commonModule = (CommonModule)object;
+        CommonModule commonModule = (CommonModule)object;
         if (commonModule.getReturnValuesReuse() != ReturnValuesReuse.DONT_USE)
             return;
 

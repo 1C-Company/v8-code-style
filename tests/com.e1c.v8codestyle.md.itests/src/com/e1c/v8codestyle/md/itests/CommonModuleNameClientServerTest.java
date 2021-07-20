@@ -30,6 +30,7 @@ import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.check.CommonModuleNameClientServer;
 import com.e1c.v8codestyle.md.check.CommonModuleType;
@@ -57,7 +58,7 @@ public class CommonModuleNameClientServerTest
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, null);
 
         long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
-        var marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
@@ -67,12 +68,12 @@ public class CommonModuleNameClientServerTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        var fqn = "CommonModule.CommonModuleClientServer";
+        String fqn = "CommonModule.CommonModuleClientServer";
 
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        var marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -82,12 +83,12 @@ public class CommonModuleNameClientServerTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        var fqn = "CommonModule.CommonModuleClientServerPredefined";
+        String fqn = "CommonModule.CommonModuleClientServerPredefined";
 
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        var marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
@@ -97,12 +98,12 @@ public class CommonModuleNameClientServerTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        var fqn = "CommonModule.ClientServerCommonModule";
+        String fqn = "CommonModule.ClientServerCommonModule";
 
         updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
-        var marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
+        Marker marker = getFirstMarker(CommonModuleNameClientServer.CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
