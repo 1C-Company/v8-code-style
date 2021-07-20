@@ -88,16 +88,22 @@ public class MdObjectNameWithoutSuffix
     {
         return (IBmObject topObject, ICheckParameters parameters) -> {
             if (!(topObject instanceof MdObject))
+            {
                 return false;
+            }
 
             MdObject mdObject = (MdObject)topObject;
             String name = mdObject.getName();
             if (name == null)
+            {
                 return false;
+            }
 
             String nameSuffix = parameters.getString(parameterName);
             if (nameSuffix == null || nameSuffix.isBlank())
+            {
                 return false;
+            }
 
             List<String> nameSuffixes = List.of(nameSuffix.replace(" ", "").split(",")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 

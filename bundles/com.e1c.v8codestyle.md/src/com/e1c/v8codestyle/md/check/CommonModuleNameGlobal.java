@@ -88,19 +88,27 @@ public final class CommonModuleNameGlobal
     {
         CommonModule commonModule = (CommonModule)object;
         if (commonModule.getReturnValuesReuse() != ReturnValuesReuse.DONT_USE)
+        {
             return;
+        }
 
         Map<EStructuralFeature, Boolean> valuesServer = new HashMap<>();
         for (EStructuralFeature feature : CommonModuleType.TYPE_SERVER_GLOBAL.keySet())
+        {
             valuesServer.put(feature, (Boolean)commonModule.eGet(feature));
+        }
 
         Map<EStructuralFeature, Boolean> valuesClient = new HashMap<>();
         for (EStructuralFeature feature : CommonModuleType.TYPE_CLIENT_GLOBAL.keySet())
+        {
             valuesClient.put(feature, (Boolean)commonModule.eGet(feature));
+        }
 
         if (!valuesServer.equals(CommonModuleType.TYPE_SERVER_GLOBAL)
             && !valuesClient.equals(CommonModuleType.TYPE_CLIENT_GLOBAL))
+        {
             return;
+        }
 
         String message = MessageFormat.format(Messages.CommonModuleNameGlobal_message,
             parameters.getString(MdObjectNameWithoutSuffix.NAME_SUFFIX_PARAMETER_NAME));

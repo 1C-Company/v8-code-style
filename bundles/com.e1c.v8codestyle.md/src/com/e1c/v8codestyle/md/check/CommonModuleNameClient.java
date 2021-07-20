@@ -88,14 +88,20 @@ public final class CommonModuleNameClient
     {
         CommonModule commonModule = (CommonModule)object;
         if (commonModule.getReturnValuesReuse() != ReturnValuesReuse.DONT_USE)
+        {
             return;
+        }
 
         Map<EStructuralFeature, Boolean> values = new HashMap<>();
         for (EStructuralFeature feature : CommonModuleType.TYPE_CLIENT.keySet())
+        {
             values.put(feature, (Boolean)commonModule.eGet(feature));
+        }
 
         if (!values.equals(CommonModuleType.TYPE_CLIENT))
+        {
             return;
+        }
 
         String message = MessageFormat.format(Messages.CommonModuleNameClient_message,
             parameters.getString(MdObjectNameWithoutSuffix.NAME_SUFFIX_PARAMETER_NAME));

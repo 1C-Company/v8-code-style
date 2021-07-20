@@ -179,7 +179,9 @@ public class CommonModuleNameGlobalTest
                 IBmObject object = transaction.getTopObjectByFqn(fqn);
 
                 for (Entry<EStructuralFeature, Boolean> entry : types.entrySet())
+                {
                     object.eSet(entry.getKey(), entry.getValue());
+                }
 
                 if (newName != null && object instanceof CommonModule)
                 {
@@ -187,6 +189,7 @@ public class CommonModuleNameGlobalTest
                     module.setName(newName.split("[.]")[1]);
                     transaction.updateTopObjectFqn(object, newName);
                 }
+
                 return null;
             }
         });
