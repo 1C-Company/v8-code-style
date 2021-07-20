@@ -46,7 +46,7 @@ jobs:
 
     - name: Publish Test Report
       uses: scacap/action-surefire-report@v1
-      if: always()
+      if: github.event.pull_request.head.repo.full_name == github.repository
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     
