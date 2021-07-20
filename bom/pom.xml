@@ -37,7 +37,7 @@
     <spotbugs.maven.plugin.version>3.1.12.2</spotbugs.maven.plugin.version>
     <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
     <checkstyle.version>8.29</checkstyle.version>
-    <checkstyle.header.file>java.header</checkstyle.header.file>
+    <checkstyle.header.file>bom/java.header</checkstyle.header.file>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -192,7 +192,7 @@
             </dependency>
           </dependencies>
           <configuration>
-            <configLocation>checkstyle.xml</configLocation>
+            <configLocation>bom/checkstyle.xml</configLocation>
             <consoleOutput>true</consoleOutput>
             <failOnViolation>true</failOnViolation>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
