@@ -108,7 +108,7 @@
         <module name="MethodParamPad" />
         <module name="NoLineWrap" />
         <module name="NoWhitespaceAfter">
-            <property name="tokens" value="ARRAY_INIT, INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, ARRAY_DECLARATOR, INDEX_OP, METHOD_REF" />
+            <property name="tokens" value="INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, INDEX_OP, METHOD_REF" />
         </module>
         <module name="NoWhitespaceBefore">
             <property name="tokens" value="DOT" />
