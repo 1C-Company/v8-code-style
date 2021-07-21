@@ -60,6 +60,7 @@ public final class CommonModuleNameClient
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
+        //@formatter:off
         builder.title(Messages.CommonModuleNameClient_title)
             .description(Messages.CommonModuleNameClient_description)
             .complexity(CheckComplexity.NORMAL)
@@ -69,9 +70,15 @@ public final class CommonModuleNameClient
             .extension(new MdObjectNameWithoutSuffix(NAME_SUFFIX_DEFAULT))
             .topObject(COMMON_MODULE)
             .checkTop()
-            .features(MD_OBJECT__NAME, COMMON_MODULE__CLIENT_MANAGED_APPLICATION, COMMON_MODULE__SERVER,
-                COMMON_MODULE__SERVER_CALL, COMMON_MODULE__EXTERNAL_CONNECTION, COMMON_MODULE__GLOBAL,
-                COMMON_MODULE__PRIVILEGED, COMMON_MODULE__RETURN_VALUES_REUSE);
+            .features(MD_OBJECT__NAME,
+                COMMON_MODULE__RETURN_VALUES_REUSE,
+                COMMON_MODULE__CLIENT_MANAGED_APPLICATION,
+                COMMON_MODULE__SERVER,
+                COMMON_MODULE__SERVER_CALL,
+                COMMON_MODULE__EXTERNAL_CONNECTION,
+                COMMON_MODULE__GLOBAL,
+                COMMON_MODULE__PRIVILEGED);
+        //@formatter:on
     }
 
     @Override
