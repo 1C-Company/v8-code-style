@@ -27,10 +27,10 @@ jobs:
 
     - name: Free disk space
       uses: easimon/maximize-build-space@master
-        with:
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
+      with:
+        remove-dotnet: 'true'
+        remove-android: 'true'
+        remove-haskell: 'true'
 
     - name: Cache maven repo
       uses: actions/cache@v1
