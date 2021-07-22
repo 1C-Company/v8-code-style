@@ -15,8 +15,6 @@ package com.e1c.v8codestyle.right.check.itests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.List;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -26,10 +24,11 @@ import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
-import com._1c.g5.v8.dt.common.Pair;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.Role;
 import com._1c.g5.v8.dt.rights.model.ObjectRights;
+import com._1c.g5.v8.dt.rights.model.Right;
+import com._1c.g5.v8.dt.rights.model.RightsFactory;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
@@ -48,22 +47,22 @@ public class AdministrationRightTest
 
     private static final String PROJECT_NAME = "StandartRoles";
 
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ADMINISTRATION,
+        RightName.DATA_ADMINISTRATION, RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS };
+
     @Test
     public void testStandartRoleCorrect() throws CoreException
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        updateRole(dtProject, "Role.StandartRole.Rights", new RightName[] { RightName.ADMINISTRATION,
-            RightName.DATA_ADMINISTRATION, RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS },
-            "Administration");
+        updateRole(dtProject, "Role.StandartRole.Rights", STANDART_ROLES, "Administration");
 
         IBmObject top = getTopObjectByFqn("Role.Administration.Rights", dtProject);
 
         Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
         assertNotNull(markers);
         assertEquals(0, markers.length);
-
     }
 
     @Test
@@ -73,15 +72,14 @@ public class AdministrationRightTest
         assertNotNull(dtProject);
 
         String standartFqn = "Role.CustomRole.Rights";
-        updateRole(dtProject, standartFqn, new RightName[] { RightName.ADMINISTRATION, RightName.DATA_ADMINISTRATION,
-            RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS }, null);
+
+        updateRole(dtProject, standartFqn, STANDART_ROLES, null);
 
         IBmObject top = getTopObjectByFqn(standartFqn, dtProject);
 
         Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
         assertNotNull(markers);
         assertEquals(0, markers.length);
-
     }
 
     private void updateRole(IDtProject dtProject, String fqn, RightName[] rightNames, String newName)
@@ -93,7 +91,6 @@ public class AdministrationRightTest
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
             {
                 IBmObject object = transaction.getTopObjectByFqn(fqn);
-
                 if (!(object instanceof RoleDescription))
                 {
                     return null;
@@ -101,12 +98,17 @@ public class AdministrationRightTest
 
                 RoleDescription description = (RoleDescription)object;
 
-                List<Pair<EObject, ObjectRights>> rightsMap = RightsModelUtil.getObjectsToRightsMap(description);
+                EObject configuration = transaction.getTopObjectByFqn("Configuration");
 
-                for (Pair<EObject, ObjectRights> right : rightsMap)
+                ObjectRights objectRights = RightsModelUtil.getOrCreateObjectRights(configuration, description);
+                objectRights.getRights().clear();
+
+                for (RightName rightName : rightNames)
                 {
-                    // TODO: Сделать установку прав из rightNames
-                    continue;
+                    Right right = RightsFactory.eINSTANCE.createRight();
+                    right.setName(rightName.getName());
+                    RightsModelUtil.changeObjectRight(RightsModelUtil.getRightValue(true),
+                        RightsModelUtil.getRightValue(false), objectRights, right);
                 }
 
                 if (newName != null)
