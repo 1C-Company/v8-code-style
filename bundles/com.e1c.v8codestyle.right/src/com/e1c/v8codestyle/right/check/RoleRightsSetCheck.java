@@ -29,6 +29,7 @@ import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.md.MdUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.metadata.mdclass.Role;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.rights.model.ObjectRight;
 import com._1c.g5.v8.dt.rights.model.Right;
@@ -77,18 +78,22 @@ public abstract class RoleRightsSetCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        var objectRight = (ObjectRight)object;
-        var right = objectRight.getRight();
+        ObjectRight objectRight = (ObjectRight)object;
+        Right right = objectRight.getRight();
 
         if (right == null || List.of(getRightNames()).stream().noneMatch(s -> s.getName().equals(right.getName())))
+        {
             return;
+        }
 
         IBmModel model = bmModelManager.getModel(objectRight);
         RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
-        var mdObject = RightsModelUtil.getOwner(description, model);
+        Role mdObject = RightsModelUtil.getOwner(description, model);
 
         if (mdObject == null)
+        {
             return;
+        }
 
         String message = getIssueMessage(right, mdObject);
         resultAceptor.addIssue(message, OBJECT_RIGHT__RIGHT);
@@ -110,7 +115,9 @@ public abstract class RoleRightsSetCheck
     private String getRightName(Right right, IV8Project project)
     {
         if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        {
             return right.getNameRu();
+        }
 
         return right.getName();
     }
@@ -118,10 +125,14 @@ public abstract class RoleRightsSetCheck
     private String getMdObjectName(MdObject mdObject, IV8Project project)
     {
         if (mdObject == null)
+        {
             return "Unknown"; //$NON-NLS-1$
+        }
 
         if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        {
             return MdUtil.getFullyQualifiedNameRu(mdObject).toString();
+        }
 
         return MdUtil.getFullyQualifiedName(mdObject).toString();
     }

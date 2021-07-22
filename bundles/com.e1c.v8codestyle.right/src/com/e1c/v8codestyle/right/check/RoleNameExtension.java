@@ -19,6 +19,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.metadata.mdclass.Role;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com.e1c.g5.v8.dt.check.CheckParameterDefinition;
@@ -59,7 +60,7 @@ public class RoleNameExtension
     @Override
     public void configureContextCollector(final ICheckDefinition definition)
     {
-        final var parameterDefinition =
+        final CheckParameterDefinition parameterDefinition =
             new CheckParameterDefinition(this.parameterName, String.class, this.defaultValue, this.parameterTitle);
         definition.addParameterDefinition(parameterDefinition);
     }
@@ -68,19 +69,23 @@ public class RoleNameExtension
     public ITopObjectFilter contributeTopObjectFilter()
     {
         return (IBmObject objectRight, ICheckParameters parameters) -> {
-            final var excludeRoleNamePattern = parameters.getString(ROLE_NAMES_LIST_PARAMETER_NAME);
+            final String excludeRoleNamePattern = parameters.getString(ROLE_NAMES_LIST_PARAMETER_NAME);
             if (excludeRoleNamePattern == null || excludeRoleNamePattern.isBlank())
+            {
                 return true;
+            }
 
             IBmModel model = bmModelManager.getModel(objectRight);
             RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
-            var role = RightsModelUtil.getOwner(description, model);
+            Role role = RightsModelUtil.getOwner(description, model);
             if (role == null)
+            {
                 return true;
+            }
 
             List<String> roleNames = List.of(excludeRoleNamePattern.replace(" ", "").split(",")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-            return (roleNames.stream().noneMatch(s -> role.getName().equalsIgnoreCase(s)));
+            return roleNames.stream().noneMatch(s -> role.getName().equalsIgnoreCase(s));
         };
     }
 }

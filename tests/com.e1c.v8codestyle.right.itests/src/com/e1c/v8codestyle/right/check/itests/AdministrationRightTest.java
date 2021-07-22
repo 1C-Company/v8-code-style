@@ -15,15 +15,21 @@ package com.e1c.v8codestyle.right.check.itests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.dt.common.Pair;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.metadata.mdclass.Role;
+import com._1c.g5.v8.dt.rights.model.ObjectRights;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
@@ -66,7 +72,7 @@ public class AdministrationRightTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        var standartFqn = "Role.CustomRole.Rights";
+        String standartFqn = "Role.CustomRole.Rights";
         updateRole(dtProject, standartFqn, new RightName[] { RightName.ADMINISTRATION, RightName.DATA_ADMINISTRATION,
             RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS }, null);
 
@@ -89,19 +95,27 @@ public class AdministrationRightTest
                 IBmObject object = transaction.getTopObjectByFqn(fqn);
 
                 if (!(object instanceof RoleDescription))
+                {
                     return null;
+                }
 
                 RoleDescription description = (RoleDescription)object;
 
-                for (RightName rightName : rightNames)
+                List<Pair<EObject, ObjectRights>> rightsMap = RightsModelUtil.getObjectsToRightsMap(description);
+
+                for (Pair<EObject, ObjectRights> right : rightsMap)
+                {
+                    // TODO: Сделать установку прав из rightNames
                     continue;
+                }
 
                 if (newName != null)
                 {
-                    var role = RightsModelUtil.getOwner(description, model);
+                    Role role = RightsModelUtil.getOwner(description, model);
                     role.setName(newName);
                     transaction.updateTopObjectFqn(object, role.eClass().getName() + "." + newName);
                 }
+
                 return null;
             }
         });
