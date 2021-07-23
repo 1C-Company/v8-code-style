@@ -15,10 +15,12 @@ package com.e1c.v8codestyle.right.check.itests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.resource.IEObjectDescription;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -27,15 +29,19 @@ import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.Role;
+import com._1c.g5.v8.dt.platform.IEObjectProvider;
+import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
+import com._1c.g5.v8.dt.platform.version.Version;
 import com._1c.g5.v8.dt.rights.model.ObjectRight;
 import com._1c.g5.v8.dt.rights.model.ObjectRights;
 import com._1c.g5.v8.dt.rights.model.Right;
 import com._1c.g5.v8.dt.rights.model.RightValue;
-import com._1c.g5.v8.dt.rights.model.RightsFactory;
+import com._1c.g5.v8.dt.rights.model.RightsPackage;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.right.check.AdministrationRight;
 
@@ -83,6 +89,23 @@ public class AdministrationRightTest
         assertNotNull(marker);
     }
 
+    private Right addRight(IProject project, RightName rightName)
+    {
+        IRuntimeVersionSupport runtimeVersionSupport = ServiceAccess.get(IRuntimeVersionSupport.class);
+        Version version = runtimeVersionSupport.getRuntimeVersion(project);
+        IEObjectProvider rightsProvider = IEObjectProvider.Registry.INSTANCE.get(RightsPackage.Literals.RIGHT, version);
+        Iterable<IEObjectDescription> descrs = rightsProvider.getEObjectDescriptions(input -> true);
+        for (IEObjectDescription descr : descrs)
+        {
+            String name = descr.getName().toString();
+            if (rightName.getName().equals(name))
+            {
+                return (Right)descr.getEObjectOrProxy();
+            }
+        }
+        return null;
+    }
+
     private void updateRole(IDtProject dtProject, String fqn, RightName[] rightNames, String newName)
     {
         IBmModel model = bmModelManager.getModel(dtProject);
@@ -114,8 +137,11 @@ public class AdministrationRightTest
 
                 for (RightName rightName : rightNames)
                 {
-                    Right right = RightsFactory.eINSTANCE.createRight();
-                    right.setName(rightName.getName());
+                    Right right = addRight(dtProject.getWorkspaceProject(), rightName);
+                    if (right == null)
+                    {
+                        continue;
+                    }
                     RightsModelUtil.changeObjectRight(RightsModelUtil.getRightValue(true), defaultRightValue,
                         objectRights, right);
                 }
