@@ -5,6 +5,5 @@
     <key>en</key>
     <value>Common module name</value>
   </synonym>
-  <externalConnection>true</externalConnection>
-  <returnValuesReuse>DuringSession</returnValuesReuse>
+  <server>true</server>
 </mdclass:CommonModule>

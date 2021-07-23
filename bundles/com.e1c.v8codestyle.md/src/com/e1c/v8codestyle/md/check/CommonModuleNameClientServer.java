@@ -101,14 +101,12 @@ public final class CommonModuleNameClientServer
             values.put(feature, (Boolean)commonModule.eGet(feature));
         }
 
-        if (!values.equals(CommonModuleType.TYPE_CLIENT_SERVER))
+        if (values.equals(CommonModuleType.TYPE_CLIENT_SERVER))
         {
-            return;
+            String message = MessageFormat.format(Messages.CommonModuleNameClientServer_message,
+                parameters.getString(MdObjectNameWithoutSuffix.NAME_SUFFIX_PARAMETER_NAME));
+            resultAceptor.addIssue(message, MD_OBJECT__NAME);
         }
-
-        String message = MessageFormat.format(Messages.CommonModuleNameClientServer_message,
-            parameters.getString(MdObjectNameWithoutSuffix.NAME_SUFFIX_PARAMETER_NAME));
-        resultAceptor.addIssue(message, MD_OBJECT__NAME);
     }
 
 }

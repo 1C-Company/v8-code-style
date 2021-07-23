@@ -45,7 +45,7 @@ public class CommonModuleNameClientServerTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "common-module-name-client-server"; //$NON-NLS-1$
+    private static final String CHECK_ID = "common-module-name-client-server";
 
     private static final String PROJECT_NAME = "CommonModuleName";
 
