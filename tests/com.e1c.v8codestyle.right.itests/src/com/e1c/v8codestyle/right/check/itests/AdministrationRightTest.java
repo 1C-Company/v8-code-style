@@ -12,11 +12,12 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check.itests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.ECollections;
 import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
@@ -26,8 +27,10 @@ import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.Role;
+import com._1c.g5.v8.dt.rights.model.ObjectRight;
 import com._1c.g5.v8.dt.rights.model.ObjectRights;
 import com._1c.g5.v8.dt.rights.model.Right;
+import com._1c.g5.v8.dt.rights.model.RightValue;
 import com._1c.g5.v8.dt.rights.model.RightsFactory;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
@@ -45,6 +48,8 @@ public class AdministrationRightTest
     extends CheckTestBase
 {
 
+    private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
+
     private static final String PROJECT_NAME = "StandartRoles";
 
     private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ADMINISTRATION,
@@ -58,11 +63,9 @@ public class AdministrationRightTest
 
         updateRole(dtProject, "Role.StandartRole.Rights", STANDART_ROLES, "Administration");
 
-        IBmObject top = getTopObjectByFqn("Role.Administration.Rights", dtProject);
-
-        Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
-        assertNotNull(markers);
-        assertEquals(0, markers.length);
+        long id = getTopObjectIdByFqn("Role.Administration.Rights", dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
     }
 
     @Test
@@ -75,11 +78,9 @@ public class AdministrationRightTest
 
         updateRole(dtProject, standartFqn, STANDART_ROLES, null);
 
-        IBmObject top = getTopObjectByFqn(standartFqn, dtProject);
-
-        Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
-        assertNotNull(markers);
-        assertEquals(0, markers.length);
+        long id = getTopObjectIdByFqn(standartFqn, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
     }
 
     private void updateRole(IDtProject dtProject, String fqn, RightName[] rightNames, String newName)
@@ -97,25 +98,34 @@ public class AdministrationRightTest
                 }
 
                 RoleDescription description = (RoleDescription)object;
+                Role role = RightsModelUtil.getOwner(description, model);
 
                 EObject configuration = transaction.getTopObjectByFqn("Configuration");
 
+                RightValue defaultRightValue = RightsModelUtil.getDefaultRightValue(configuration, role);
+
                 ObjectRights objectRights = RightsModelUtil.getOrCreateObjectRights(configuration, description);
-                objectRights.getRights().clear();
+
+                for (ObjectRight objectRight : ECollections.newBasicEList(objectRights.getRights()))
+                {
+                    RightsModelUtil.changeObjectRight(defaultRightValue, defaultRightValue, objectRights,
+                        objectRight.getRight());
+                }
 
                 for (RightName rightName : rightNames)
                 {
                     Right right = RightsFactory.eINSTANCE.createRight();
                     right.setName(rightName.getName());
-                    RightsModelUtil.changeObjectRight(RightsModelUtil.getRightValue(true),
-                        RightsModelUtil.getRightValue(false), objectRights, right);
+                    RightsModelUtil.changeObjectRight(RightsModelUtil.getRightValue(true), defaultRightValue,
+                        objectRights, right);
                 }
+
+                RightsModelUtil.removeEmptyObjectRights(description, objectRights);
 
                 if (newName != null)
                 {
-                    Role role = RightsModelUtil.getOwner(description, model);
                     role.setName(newName);
-                    transaction.updateTopObjectFqn(object, role.eClass().getName() + "." + newName);
+                    transaction.updateTopObjectFqn(object, role.eClass().getName() + "." + newName + ".Rights");
                 }
 
                 return null;

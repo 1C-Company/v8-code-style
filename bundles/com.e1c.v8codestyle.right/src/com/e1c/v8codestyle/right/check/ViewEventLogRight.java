@@ -25,7 +25,7 @@ public class ViewEventLogRight
     extends RoleRightsSetCheck
 {
 
-    public static final String CHECK_ID = "view-event-log-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "view-event-log-right"; //$NON-NLS-1$
 
     protected static final String NAMES_DEFAULT = "ПросмотрЖурналаРегистрации,ViewEventLog"; //$NON-NLS-1$
 

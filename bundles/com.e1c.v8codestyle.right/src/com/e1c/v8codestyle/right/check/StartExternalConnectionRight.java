@@ -25,7 +25,7 @@ public class StartExternalConnectionRight
     extends RoleRightsSetCheck
 {
 
-    public static final String CHECK_ID = "start-external-connection-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "start-external-connection-right"; //$NON-NLS-1$
 
     protected static final String NAMES_DEFAULT = "ЗапускВнешнегоСоединения,StartExternalConnection"; //$NON-NLS-1$
 

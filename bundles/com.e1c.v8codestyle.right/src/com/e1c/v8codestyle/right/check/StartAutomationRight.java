@@ -25,7 +25,7 @@ public class StartAutomationRight
     extends RoleRightsSetCheck
 {
 
-    public static final String CHECK_ID = "start-automation-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "start-automation-right"; //$NON-NLS-1$
 
     protected static final String NAMES_DEFAULT = "ЗапускAutomation,StartAutomation"; //$NON-NLS-1$
 

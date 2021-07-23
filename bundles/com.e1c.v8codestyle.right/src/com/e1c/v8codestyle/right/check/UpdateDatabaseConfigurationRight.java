@@ -25,7 +25,7 @@ public class UpdateDatabaseConfigurationRight
     extends RoleRightsSetCheck
 {
 
-    public static final String CHECK_ID = "update-database-configuration-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "update-database-configuration-right"; //$NON-NLS-1$
 
     protected static final String NAMES_DEFAULT = "ОбновлениеКонфигурацииБазыДанных,UpdateDatabaseConfiguration"; //$NON-NLS-1$
 

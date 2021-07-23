@@ -25,7 +25,7 @@ public class OutputToPrinterFileClipboardRight
     extends RoleRightsSetCheck
 {
 
-    public static final String CHECK_ID = "output-to-printer-file-clipboard-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "output-to-printer-file-clipboard-right"; //$NON-NLS-1$
 
     protected static final String NAMES_DEFAULT = "ВыводНаПринтерФайлБуферОбмена,OutputToPrinterFileClipboard"; //$NON-NLS-1$
 

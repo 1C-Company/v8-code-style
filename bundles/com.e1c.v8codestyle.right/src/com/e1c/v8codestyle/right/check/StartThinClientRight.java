@@ -25,7 +25,7 @@ public class StartThinClientRight
     extends RoleRightsSetCheck
 {
 
-    public static final String CHECK_ID = "start-thin-client-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "start-thin-client-right"; //$NON-NLS-1$
 
     protected static final String NAMES_DEFAULT = "ЗапускТонкогоКлиента,StartThinClient"; //$NON-NLS-1$
 

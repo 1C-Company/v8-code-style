@@ -25,7 +25,7 @@ public class AdministrationRight
     extends RoleRightsSetCheck
 {
 
-    public static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
 
     protected static final String NAMES_DEFAULT = "Администрирование,Administration"; //$NON-NLS-1$
 
