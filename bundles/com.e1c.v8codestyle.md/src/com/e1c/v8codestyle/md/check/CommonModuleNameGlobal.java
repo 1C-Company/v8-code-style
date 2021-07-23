@@ -52,6 +52,7 @@ public final class CommonModuleNameGlobal
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
+        //@formatter:off
         builder.title(Messages.CommonModuleNameGlobal_title)
             .description(Messages.CommonModuleNameGlobal_description)
             .complexity(CheckComplexity.NORMAL)
@@ -61,8 +62,10 @@ public final class CommonModuleNameGlobal
             .extension(new MdObjectNameWithoutSuffix(NAME_SUFFIX_DEFAULT))
             .topObject(COMMON_MODULE)
             .checkTop()
-            .features(MD_OBJECT__NAME, COMMON_MODULE__GLOBAL, COMMON_MODULE__RETURN_VALUES_REUSE);
-
+            .features(MD_OBJECT__NAME,
+                COMMON_MODULE__RETURN_VALUES_REUSE,
+                COMMON_MODULE__GLOBAL);
+        //@formatter:on
     }
 
     @Override
