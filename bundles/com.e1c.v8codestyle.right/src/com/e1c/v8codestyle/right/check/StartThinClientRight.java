@@ -25,9 +25,11 @@ public class StartThinClientRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "ЗапускТонкогоКлиента,StartThinClient"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "start-thin-client-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "ЗапускТонкогоКлиента,StartThinClient"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.THIN_CLIENT };
 
     @Inject
     public StartThinClientRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -57,7 +59,7 @@ public class StartThinClientRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.THIN_CLIENT };
+        return STANDART_ROLES;
     }
 
 }

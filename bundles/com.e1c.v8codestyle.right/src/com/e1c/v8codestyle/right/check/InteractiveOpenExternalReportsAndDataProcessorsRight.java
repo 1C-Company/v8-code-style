@@ -25,10 +25,13 @@ public class InteractiveOpenExternalReportsAndDataProcessorsRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT =
+        "ИнтерактивноеОткрытиеВнешнихОтчетовИОбработок,InteractiveOpenExternalReportsAndDataProcessors"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "interactive-open-external-reports-and-data-processors-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT =
-        "ИнтерактивноеОткрытиеВнешнихОтчетовИОбработок,InteractiveOpenExternalReportsAndDataProcessors"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES =
+        new RightName[] { RightName.INTERACTIVE_OPEN_EXT_DATA_PROCESSORS, RightName.INTERACTIVE_OPEN_EXT_REPORTS };
 
     @Inject
     public InteractiveOpenExternalReportsAndDataProcessorsRight(IV8ProjectManager v8ProjectManager,
@@ -60,8 +63,7 @@ public class InteractiveOpenExternalReportsAndDataProcessorsRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.INTERACTIVE_OPEN_EXT_DATA_PROCESSORS,
-            RightName.INTERACTIVE_OPEN_EXT_REPORTS };
+        return STANDART_ROLES;
     }
 
 }

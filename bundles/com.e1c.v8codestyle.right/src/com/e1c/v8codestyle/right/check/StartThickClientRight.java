@@ -25,9 +25,11 @@ public class StartThickClientRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "ЗапускТолстогоКлиента,StartThickClient"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "start-thick-client-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "ЗапускТолстогоКлиента,StartThickClient"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.THICK_CLIENT };
 
     @Inject
     public StartThickClientRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -57,7 +59,7 @@ public class StartThickClientRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.THICK_CLIENT };
+        return STANDART_ROLES;
     }
 
 }

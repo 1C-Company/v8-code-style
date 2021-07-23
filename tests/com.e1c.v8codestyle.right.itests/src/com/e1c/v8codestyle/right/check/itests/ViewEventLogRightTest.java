@@ -44,14 +44,14 @@ import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.right.check.AdministrationRight;
+import com.e1c.v8codestyle.right.check.ViewEventLogRight;
 
 /**
- * Tests for {@link AdministrationRight} check.
+ * Tests for {@link ViewEventLogRight} check.
  *
  * @author Aleksandr Kapralov
  */
-public class AdministrationRightTest
+public class ViewEventLogRightTest
     extends CheckTestBase
 {
 
@@ -59,10 +59,9 @@ public class AdministrationRightTest
 
     private static final String CONFIGURATION_FQN = "Configuration";
 
-    private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "view-event-log-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ADMINISTRATION,
-        RightName.DATA_ADMINISTRATION, RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS };
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.EVENT_LOG };
 
     @Test
     public void testStandartRoleCorrect() throws CoreException
@@ -70,9 +69,9 @@ public class AdministrationRightTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        updateRole(dtProject, "Role.StandartRole.Rights", STANDART_ROLES, "Administration");
+        updateRole(dtProject, "Role.StandartRole.Rights", STANDART_ROLES, "ViewEventLog");
 
-        IBmObject top = getTopObjectByFqn("Role.Administration.Rights", dtProject);
+        IBmObject top = getTopObjectByFqn("Role.ViewEventLog.Rights", dtProject);
         assertTrue(top instanceof RoleDescription);
 
         RoleDescription description = (RoleDescription)top;

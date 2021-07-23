@@ -25,9 +25,11 @@ public class SaveUserDataRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "СохранениеДанныхПользователя,SaveUserData"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "save-user-data-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "СохранениеДанныхПользователя,SaveUserData"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.SAVE_USER_DATA };
 
     @Inject
     public SaveUserDataRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -57,7 +59,7 @@ public class SaveUserDataRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.SAVE_USER_DATA };
+        return STANDART_ROLES;
     }
 
 }

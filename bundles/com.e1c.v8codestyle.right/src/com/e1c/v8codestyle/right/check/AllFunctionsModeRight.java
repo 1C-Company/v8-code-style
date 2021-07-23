@@ -25,9 +25,11 @@ public class AllFunctionsModeRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "РежимВсеФункции,AllFunctionsMode"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "all-functions-mode-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "РежимВсеФункции,AllFunctionsMode"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ALL_FUNCTIONS_MODE };
 
     @Inject
     public AllFunctionsModeRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -57,7 +59,7 @@ public class AllFunctionsModeRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.ALL_FUNCTIONS_MODE };
+        return STANDART_ROLES;
     }
 
 }

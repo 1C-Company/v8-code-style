@@ -25,9 +25,11 @@ public class StartAutomationRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "ЗапускAutomation,StartAutomation"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "start-automation-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "ЗапускAutomation,StartAutomation"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.AUTOMATION };
 
     @Inject
     public StartAutomationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -57,7 +59,7 @@ public class StartAutomationRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.AUTOMATION };
+        return STANDART_ROLES;
     }
 
 }

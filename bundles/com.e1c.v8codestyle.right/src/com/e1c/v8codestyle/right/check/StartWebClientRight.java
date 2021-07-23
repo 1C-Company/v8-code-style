@@ -25,9 +25,11 @@ public class StartWebClientRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "ЗапускВебКлиента,StartWebClient"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "start-web-client-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "ЗапускВебКлиента,StartWebClient"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.WEB_CLIENT };
 
     @Inject
     public StartWebClientRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -57,7 +59,7 @@ public class StartWebClientRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.WEB_CLIENT };
+        return STANDART_ROLES;
     }
 
 }

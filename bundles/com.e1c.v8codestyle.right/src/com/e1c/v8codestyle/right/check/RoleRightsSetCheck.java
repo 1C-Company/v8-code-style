@@ -64,6 +64,7 @@ public abstract class RoleRightsSetCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
+        //@formatter:off
         builder.complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
@@ -72,6 +73,7 @@ public abstract class RoleRightsSetCheck
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)
             .features(OBJECT_RIGHT__RIGHT);
+        //@formatter:on
     }
 
     @Override

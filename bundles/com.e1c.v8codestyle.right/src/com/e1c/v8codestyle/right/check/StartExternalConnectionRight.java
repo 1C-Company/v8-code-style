@@ -25,9 +25,11 @@ public class StartExternalConnectionRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "ЗапускВнешнегоСоединения,StartExternalConnection"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "start-external-connection-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "ЗапускВнешнегоСоединения,StartExternalConnection"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.EXTERNAL_CONNECTION };
 
     @Inject
     public StartExternalConnectionRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -58,7 +60,7 @@ public class StartExternalConnectionRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.EXTERNAL_CONNECTION };
+        return STANDART_ROLES;
     }
 
 }

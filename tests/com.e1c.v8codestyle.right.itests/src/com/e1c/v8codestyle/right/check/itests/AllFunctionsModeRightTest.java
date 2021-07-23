@@ -44,14 +44,14 @@ import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.right.check.AdministrationRight;
+import com.e1c.v8codestyle.right.check.AllFunctionsModeRight;
 
 /**
- * Tests for {@link AdministrationRight} check.
+ * Tests for {@link AllFunctionsModeRight} check.
  *
  * @author Aleksandr Kapralov
  */
-public class AdministrationRightTest
+public class AllFunctionsModeRightTest
     extends CheckTestBase
 {
 
@@ -59,10 +59,9 @@ public class AdministrationRightTest
 
     private static final String CONFIGURATION_FQN = "Configuration";
 
-    private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "all-functions-mode-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ADMINISTRATION,
-        RightName.DATA_ADMINISTRATION, RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS };
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ALL_FUNCTIONS_MODE };
 
     @Test
     public void testStandartRoleCorrect() throws CoreException

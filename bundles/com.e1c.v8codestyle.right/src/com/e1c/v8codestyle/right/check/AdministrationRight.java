@@ -25,9 +25,12 @@ public class AdministrationRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "Администрирование,Administration"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "Администрирование,Administration"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ADMINISTRATION,
+        RightName.DATA_ADMINISTRATION, RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS };
 
     @Inject
     public AdministrationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -57,8 +60,7 @@ public class AdministrationRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.ADMINISTRATION, RightName.DATA_ADMINISTRATION,
-            RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS };
+        return STANDART_ROLES;
     }
 
 }

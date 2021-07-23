@@ -25,9 +25,11 @@ public class UpdateDatabaseConfigurationRight
     extends RoleRightsSetCheck
 {
 
+    private static final String NAMES_DEFAULT = "ОбновлениеКонфигурацииБазыДанных,UpdateDatabaseConfiguration"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "update-database-configuration-right"; //$NON-NLS-1$
 
-    protected static final String NAMES_DEFAULT = "ОбновлениеКонфигурацииБазыДанных,UpdateDatabaseConfiguration"; //$NON-NLS-1$
+    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.UPDATE_DATA_BASE_CONFIGURATION };
 
     @Inject
     public UpdateDatabaseConfigurationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -58,7 +60,7 @@ public class UpdateDatabaseConfigurationRight
     @Override
     protected RightName[] getRightNames()
     {
-        return new RightName[] { RightName.UPDATE_DATA_BASE_CONFIGURATION };
+        return STANDART_ROLES;
     }
 
 }
