@@ -12,20 +12,29 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
+
 import java.util.List;
 
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.bm.core.IBmObject;
+import com._1c.g5.v8.bm.core.event.BmSubEvent;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
 import com._1c.g5.v8.dt.metadata.mdclass.Role;
+import com._1c.g5.v8.dt.rights.model.ObjectRight;
+import com._1c.g5.v8.dt.rights.model.ObjectRights;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com.e1c.g5.v8.dt.check.CheckParameterDefinition;
 import com.e1c.g5.v8.dt.check.ICheckDefinition;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
+import com.e1c.g5.v8.dt.check.context.CheckContextCollectingSession;
+import com.e1c.g5.v8.dt.check.context.OnModelFeatureChangeContextCollector;
 import com.e1c.g5.v8.dt.check.ext.ITopObjectFilter;
 
 /**
@@ -63,6 +72,25 @@ public class RoleNameExtension
         final CheckParameterDefinition parameterDefinition =
             new CheckParameterDefinition(this.parameterName, String.class, this.defaultValue, this.parameterTitle);
         definition.addParameterDefinition(parameterDefinition);
+
+        OnModelFeatureChangeContextCollector collector = (IBmObject bmObject, EStructuralFeature feature,
+            BmSubEvent bmEvent, CheckContextCollectingSession contextSession) -> {
+            if (!(feature == MD_OBJECT__NAME && bmObject instanceof Role))
+            {
+                return;
+            }
+
+            Role role = (Role)bmObject;
+            RoleDescription description = (RoleDescription)role.getRights();
+            for (ObjectRights objectRights : description.getRights())
+            {
+                for (ObjectRight objectRight : objectRights.getRights())
+                {
+                    contextSession.addModelCheck((IBmObject)objectRight);
+                }
+            }
+        };
+        definition.addModelFeatureChangeContextCollector(collector, MdClassPackage.Literals.ROLE);
     }
 
     @Override
