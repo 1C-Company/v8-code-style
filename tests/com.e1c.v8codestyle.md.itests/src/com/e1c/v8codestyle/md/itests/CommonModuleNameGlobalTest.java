@@ -39,7 +39,7 @@ public class CommonModuleNameGlobalTest
     private static final String PROJECT_NAME = "CommonModuleName";
 
     @Test
-    public void testCommonModuleNameClientServer() throws Exception
+    public void testCommonModuleNameClientGlobal() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -53,14 +53,14 @@ public class CommonModuleNameGlobalTest
     }
 
     @Test
-    public void testCommonModuleNameClientCorrect() throws Exception
+    public void testCommonModuleNameClientGlobalCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         String fqn = "CommonModule.CommonModuleName";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_SERVER, "CommonModuleClientGlobal");
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_GLOBAL, "CommonModuleClientGlobal");
 
         fqn = "CommonModule.CommonModuleClientGlobal";
         long id = getTopObjectIdByFqn(fqn, dtProject);

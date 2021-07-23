@@ -39,7 +39,7 @@ public class CommonModuleNameClientTest
     private static final String PROJECT_NAME = "CommonModuleName";
 
     @Test
-    public void testCommonModuleNameClientServer() throws Exception
+    public void testCommonModuleNameClient() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
@@ -60,7 +60,7 @@ public class CommonModuleNameClientTest
 
         String fqn = "CommonModule.CommonModuleName";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_SERVER, "CommonModuleClient");
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT, "CommonModuleClient");
 
         fqn = "CommonModule.CommonModuleClient";
         long id = getTopObjectIdByFqn(fqn, dtProject);
