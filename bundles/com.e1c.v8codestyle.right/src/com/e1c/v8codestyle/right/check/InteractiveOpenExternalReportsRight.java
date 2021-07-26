@@ -22,21 +22,19 @@ import com.google.inject.Inject;
  * @author Aleksandr Kapralov
  *
  */
-public class InteractiveOpenExternalReportsAndDataProcessorsRight
-    extends RoleRightsSetCheck
+public class InteractiveOpenExternalReportsRight
+    extends RoleRightSetCheck
 {
 
     private static final String NAMES_DEFAULT =
         "ИнтерактивноеОткрытиеВнешнихОтчетовИОбработок,InteractiveOpenExternalReportsAndDataProcessors"; //$NON-NLS-1$
 
-    private static final String CHECK_ID = "interactive-open-external-reports-and-data-processors-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "interactive-open-external-reports-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES =
-        new RightName[] { RightName.INTERACTIVE_OPEN_EXT_DATA_PROCESSORS, RightName.INTERACTIVE_OPEN_EXT_REPORTS };
+    private static final String STANDART_ROLE = RightName.INTERACTIVE_OPEN_EXT_REPORTS.getName();
 
     @Inject
-    public InteractiveOpenExternalReportsAndDataProcessorsRight(IV8ProjectManager v8ProjectManager,
-        IBmModelManager bmModelManager)
+    public InteractiveOpenExternalReportsRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {
         super(v8ProjectManager, bmModelManager);
     }
@@ -52,8 +50,8 @@ public class InteractiveOpenExternalReportsAndDataProcessorsRight
     {
         super.configureCheck(builder);
         builder.severity(IssueSeverity.MAJOR)
-            .title(Messages.InteractiveOpenExternalReportsAndDataProcessorsRight_title)
-            .description(Messages.InteractiveOpenExternalReportsAndDataProcessorsRight_description);
+            .title(Messages.InteractiveOpenExternalReportsRight_title)
+            .description(Messages.InteractiveOpenExternalReportsRight_description);
     }
 
     @Override
@@ -63,9 +61,9 @@ public class InteractiveOpenExternalReportsAndDataProcessorsRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

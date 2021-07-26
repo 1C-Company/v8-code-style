@@ -12,6 +12,10 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check.itests;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.ECollections;
@@ -33,8 +37,8 @@ import com._1c.g5.v8.dt.rights.model.Right;
 import com._1c.g5.v8.dt.rights.model.RightValue;
 import com._1c.g5.v8.dt.rights.model.RightsPackage;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
-import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
+import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 
@@ -46,8 +50,66 @@ public class CheckTestRights
     extends CheckTestBase
 {
 
-    protected void updateRole(IDtProject dtProject, String roleFqn, String objectFqn, RightName[] rightNames,
-        String newName)
+    protected void checkRoleCorrect(String checkId, String projectName, String workspaceRightsFqn, String mdObjectFqn,
+        String rightName, String newRoleName) throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(projectName);
+        assertNotNull(dtProject);
+
+        ObjectRights objectRights = checkRole(dtProject, workspaceRightsFqn, mdObjectFqn, rightName, newRoleName);
+
+        checkMarkerCorrect(objectRights, checkId, dtProject);
+    }
+
+    protected void checkRoleIncorrect(String checkId, String projectName, String workspaceRightsFqn, String mdObjectFqn,
+        String rightName, String newRoleName) throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(projectName);
+        assertNotNull(dtProject);
+
+        ObjectRights objectRights = checkRole(dtProject, workspaceRightsFqn, mdObjectFqn, rightName, newRoleName);
+
+        checkMarkerIncorrect(objectRights, checkId, dtProject);
+    }
+
+    private ObjectRights checkRole(IDtProject dtProject, String workspaceRightsFqn, String mdObjectFqn,
+        String rightName, String newRoleName)
+    {
+        updateRole(dtProject, workspaceRightsFqn, mdObjectFqn, rightName, newRoleName);
+
+        String roleRightsFqn = workspaceRightsFqn;
+        if (newRoleName != null)
+        {
+            roleRightsFqn = String.join(".", "Role", newRoleName, "Rights");
+        }
+        IBmObject top = getTopObjectByFqn(roleRightsFqn, dtProject);
+        assertTrue(top instanceof RoleDescription);
+
+        RoleDescription description = (RoleDescription)top;
+        EObject mdObject = getTopObjectByFqn(mdObjectFqn, dtProject);
+        return RightsModelUtil.getOrCreateObjectRights(mdObject, description);
+    }
+
+    private void checkMarkerCorrect(ObjectRights objectRights, String checkId, IDtProject dtProject)
+    {
+        for (ObjectRight objectRight : objectRights.getRights())
+        {
+            Marker marker = getFirstMarker(checkId, objectRight, dtProject);
+            assertNull(marker);
+        }
+    }
+
+    private void checkMarkerIncorrect(ObjectRights objectRights, String checkId, IDtProject dtProject)
+    {
+        for (ObjectRight objectRight : objectRights.getRights())
+        {
+            Marker marker = getFirstMarker(checkId, objectRight, dtProject);
+            assertNotNull(marker);
+        }
+    }
+
+    private void updateRole(IDtProject dtProject, String roleRightsFqn, String objectFqn, String rightName,
+        String newRoleName)
     {
         IBmModel model = bmModelManager.getModel(dtProject);
         model.execute(new AbstractBmTask<Void>("change type")
@@ -55,7 +117,7 @@ public class CheckTestRights
             @Override
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
             {
-                IBmObject object = transaction.getTopObjectByFqn(roleFqn);
+                IBmObject object = transaction.getTopObjectByFqn(roleRightsFqn);
                 if (!(object instanceof RoleDescription))
                 {
                     return null;
@@ -76,25 +138,21 @@ public class CheckTestRights
                         objectRight.getRight());
                 }
 
-                for (RightName rightName : rightNames)
+                Right right = addRight(rightName, dtProject.getWorkspaceProject());
+                if (right != null)
                 {
-                    Right right = addRight(rightName, dtProject.getWorkspaceProject());
-                    if (right == null)
-                    {
-                        continue;
-                    }
                     RightsModelUtil.changeObjectRight(RightsModelUtil.getRightValue(true), defaultRightValue,
                         objectRights, right);
                 }
 
                 RightsModelUtil.removeEmptyObjectRights(description, objectRights);
 
-                if (newName != null)
+                if (newRoleName != null)
                 {
-                    role.setName(newName);
-                    transaction.updateTopObjectFqn(object, String.join(".", role.eClass().getName(), newName));
+                    role.setName(newRoleName);
+                    transaction.updateTopObjectFqn(object, String.join(".", role.eClass().getName(), newRoleName));
                     transaction.updateTopObjectFqn(object,
-                        String.join(".", role.eClass().getName(), newName, "Rights"));
+                        String.join(".", role.eClass().getName(), newRoleName, "Rights"));
                 }
 
                 return null;
@@ -103,7 +161,7 @@ public class CheckTestRights
         waitForDD(dtProject);
     }
 
-    private Right addRight(RightName rightName, IProject project)
+    private Right addRight(String rightName, IProject project)
     {
         IRuntimeVersionSupport runtimeVersionSupport = ServiceAccess.get(IRuntimeVersionSupport.class);
         Version version = runtimeVersionSupport.getRuntimeVersion(project);
@@ -112,7 +170,7 @@ public class CheckTestRights
         for (IEObjectDescription descr : descrs)
         {
             String name = descr.getName().toString();
-            if (rightName.getName().equals(name))
+            if (rightName.equals(name))
             {
                 return (Right)descr.getEObjectOrProxy();
             }

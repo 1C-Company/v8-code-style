@@ -15,14 +15,14 @@ package com.e1c.v8codestyle.right.check.itests;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.rights.model.util.RightName;
-import com.e1c.v8codestyle.right.check.AdministrationRight;
+import com.e1c.v8codestyle.right.check.InteractiveOpenExternalDataProcessorsRight;
 
 /**
- * Tests for {@link AdministrationRight} check.
+ * Tests for {@link InteractiveOpenExternalDataProcessorsRight} check.
  *
  * @author Aleksandr Kapralov
  */
-public class AdministrationRightTest
+public class InteractiveOpenExternalDataProcessorsRightTest
     extends CheckTestRights
 {
 
@@ -31,14 +31,15 @@ public class AdministrationRightTest
     private static final String ROLE_FQN = "Role.StandartRole.Rights";
     private static final String CONFIGURATION_FQN = "Configuration";
 
-    private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "interactive-open-external-data-processors-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.ADMINISTRATION.getName();
+    private static final String STANDART_ROLE = RightName.INTERACTIVE_OPEN_EXT_DATA_PROCESSORS.getName();
 
     @Test
     public void testStandartRoleCorrect() throws Exception
     {
-        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "Administration");
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE,
+            "InteractiveOpenExternalReportsAndDataProcessors");
     }
 
     @Test
@@ -54,9 +55,9 @@ public class AdministrationRightTest
     }
 
     @Test
-    public void testSystemAdministratorRoleCorrect() throws Exception
+    public void testSystemAdministratorRoleIncorrect() throws Exception
     {
-        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "SystemAdministrator");
+        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "SystemAdministrator");
     }
 
 }

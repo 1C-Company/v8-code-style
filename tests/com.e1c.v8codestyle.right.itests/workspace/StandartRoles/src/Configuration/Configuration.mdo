@@ -33,5 +33,4 @@
     <languageCode>en</languageCode>
   </languages>
   <roles>Role.StandartRole</roles>
-  <roles>Role.CustomRole</roles>
 </mdclass:Configuration>

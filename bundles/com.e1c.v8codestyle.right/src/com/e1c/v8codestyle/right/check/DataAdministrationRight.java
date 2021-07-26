@@ -22,19 +22,19 @@ import com.google.inject.Inject;
  * @author Aleksandr Kapralov
  *
  */
-public class StartThickClientRight
+public class DataAdministrationRight
     extends RoleRightSetCheck
 {
 
     private static final String NAMES_DEFAULT =
-        "ЗапускТолстогоКлиента,StartThickClient,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
+        "Администрирование,Administration,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
-    private static final String CHECK_ID = "start-thick-client-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "data-administration-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.THICK_CLIENT.getName();
+    private static final String STANDART_ROLE = RightName.DATA_ADMINISTRATION.getName();
 
     @Inject
-    public StartThickClientRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
+    public DataAdministrationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {
         super(v8ProjectManager, bmModelManager);
     }
@@ -50,8 +50,8 @@ public class StartThickClientRight
     {
         super.configureCheck(builder);
         builder.severity(IssueSeverity.MAJOR)
-            .title(Messages.StartThickClientRight_title)
-            .description(Messages.StartThickClientRight_description);
+            .title(Messages.DataAdministrationRight_title)
+            .description(Messages.DataAdministrationRight_description);
     }
 
     @Override

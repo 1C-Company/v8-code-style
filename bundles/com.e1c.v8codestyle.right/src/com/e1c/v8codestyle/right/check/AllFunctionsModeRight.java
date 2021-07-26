@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class AllFunctionsModeRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "РежимВсеФункции,AllFunctionsMode"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "РежимВсеФункции,AllFunctionsMode,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "all-functions-mode-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ALL_FUNCTIONS_MODE };
+    private static final String STANDART_ROLE = RightName.ALL_FUNCTIONS_MODE.getName();
 
     @Inject
     public AllFunctionsModeRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class AllFunctionsModeRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

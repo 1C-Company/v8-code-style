@@ -18,7 +18,6 @@ import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.OBJECT_RIGHT_
 import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.ROLE_DESCRIPTION;
 
 import java.text.MessageFormat;
-import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
@@ -34,7 +33,6 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.rights.model.ObjectRight;
 import com._1c.g5.v8.dt.rights.model.Right;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
-import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -46,7 +44,7 @@ import com.google.inject.Inject;
  * @author Dmitriy Marmyshev
  *
  */
-public abstract class RoleRightsSetCheck
+public abstract class RoleRightSetCheck
     extends BasicCheck
 {
 
@@ -54,7 +52,7 @@ public abstract class RoleRightsSetCheck
     private final IBmModelManager bmModelManager;
 
     @Inject
-    protected RoleRightsSetCheck(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
+    protected RoleRightSetCheck(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {
         this.v8ProjectManager = v8ProjectManager;
         this.bmModelManager = bmModelManager;
@@ -82,7 +80,7 @@ public abstract class RoleRightsSetCheck
         ObjectRight objectRight = (ObjectRight)object;
         Right right = objectRight.getRight();
 
-        if (right == null || List.of(getRightNames()).stream().noneMatch(s -> s.getName().equals(right.getName())))
+        if (right == null || !getAllowedRightName().equals(right.getName()))
         {
             return;
         }
@@ -103,14 +101,14 @@ public abstract class RoleRightsSetCheck
 
     protected abstract String getStandartRoleNames();
 
-    protected abstract RightName[] getRightNames();
+    protected abstract String getAllowedRightName();
 
     protected String getIssueMessage(Right right, MdObject mdObject)
     {
         IV8Project project = v8ProjectManager.getProject(right);
         String rightName = getRightName(right, project);
         String mdObjectName = getMdObjectName(mdObject, project);
-        return MessageFormat.format(Messages.RoleRightsSetCheck_Role_right__0__set_for__1, rightName, mdObjectName);
+        return MessageFormat.format(Messages.RoleRightSetCheck_Role_right__0__set_for__1, rightName, mdObjectName);
     }
 
     private String getRightName(Right right, IV8Project project)

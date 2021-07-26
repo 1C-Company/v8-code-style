@@ -22,19 +22,20 @@ import com.google.inject.Inject;
  * @author Aleksandr Kapralov
  *
  */
-public class StartThickClientRight
+public class InteractiveOpenExternalDataProcessorsRight
     extends RoleRightSetCheck
 {
 
     private static final String NAMES_DEFAULT =
-        "ЗапускТолстогоКлиента,StartThickClient,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
+        "ИнтерактивноеОткрытиеВнешнихОтчетовИОбработок,InteractiveOpenExternalReportsAndDataProcessors"; //$NON-NLS-1$
 
-    private static final String CHECK_ID = "start-thick-client-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "interactive-open-external-data-processors-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.THICK_CLIENT.getName();
+    private static final String STANDART_ROLE = RightName.INTERACTIVE_OPEN_EXT_DATA_PROCESSORS.getName();
 
     @Inject
-    public StartThickClientRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
+    public InteractiveOpenExternalDataProcessorsRight(IV8ProjectManager v8ProjectManager,
+        IBmModelManager bmModelManager)
     {
         super(v8ProjectManager, bmModelManager);
     }
@@ -50,8 +51,8 @@ public class StartThickClientRight
     {
         super.configureCheck(builder);
         builder.severity(IssueSeverity.MAJOR)
-            .title(Messages.StartThickClientRight_title)
-            .description(Messages.StartThickClientRight_description);
+            .title(Messages.InteractiveOpenExternalDataProcessorsRight_title)
+            .description(Messages.InteractiveOpenExternalDataProcessorsRight_description);
     }
 
     @Override

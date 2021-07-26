@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class StartWebClientRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "ЗапускВебКлиента,StartWebClient"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "ЗапускВебКлиента,StartWebClient,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "start-web-client-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.WEB_CLIENT };
+    private static final String STANDART_ROLE = RightName.WEB_CLIENT.getName();
 
     @Inject
     public StartWebClientRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class StartWebClientRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

@@ -26,7 +26,42 @@
 
       <check
             category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ActiveUsersRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
             class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.AdministrationRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.AllFunctionsModeRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ConfigurationExtensionsAdministrationRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.DataAdministrationRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ExclusiveModeRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.InteractiveOpenExternalDataProcessorsRight">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.InteractiveOpenExternalReportsRight">
       </check>
 
       <check
@@ -36,12 +71,12 @@
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartAutomationRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.SaveUserDataRight">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartWebClientRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartAutomationRight">
       </check>
 
       <check
@@ -61,7 +96,7 @@
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.InteractiveOpenExternalReportsAndDataProcessorsRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartWebClientRight">
       </check>
 
       <check
@@ -72,16 +107,6 @@
       <check
             category="com.e1c.v8codestyle.right"
             class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ViewEventLogRight">
-      </check>
-
-      <check
-            category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.AllFunctionsModeRight">
-      </check>
-
-      <check
-            category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.SaveUserDataRight">
       </check>
 
    </extension>

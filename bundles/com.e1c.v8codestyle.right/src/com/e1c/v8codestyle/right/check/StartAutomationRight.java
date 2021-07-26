@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class StartAutomationRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "ЗапускAutomation,StartAutomation"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "ЗапускAutomation,StartAutomation,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "start-automation-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.AUTOMATION };
+    private static final String STANDART_ROLE = RightName.AUTOMATION.getName();
 
     @Inject
     public StartAutomationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class StartAutomationRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

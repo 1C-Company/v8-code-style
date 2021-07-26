@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class StartThinClientRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "ЗапускТонкогоКлиента,StartThinClient"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "ЗапускТонкогоКлиента,StartThinClient,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "start-thin-client-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.THIN_CLIENT };
+    private static final String STANDART_ROLE = RightName.THIN_CLIENT.getName();
 
     @Inject
     public StartThinClientRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class StartThinClientRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

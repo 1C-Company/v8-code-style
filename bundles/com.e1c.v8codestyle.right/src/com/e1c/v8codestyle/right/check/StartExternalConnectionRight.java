@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class StartExternalConnectionRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "ЗапускВнешнегоСоединения,StartExternalConnection"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "ЗапускВнешнегоСоединения,StartExternalConnection,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "start-external-connection-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.EXTERNAL_CONNECTION };
+    private static final String STANDART_ROLE = RightName.EXTERNAL_CONNECTION.getName();
 
     @Inject
     public StartExternalConnectionRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class StartExternalConnectionRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

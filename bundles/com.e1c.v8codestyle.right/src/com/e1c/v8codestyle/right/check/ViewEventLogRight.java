@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class ViewEventLogRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "ПросмотрЖурналаРегистрации,ViewEventLog"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "ПросмотрЖурналаРегистрации,ViewEventLog,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "view-event-log-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.EVENT_LOG };
+    private static final String STANDART_ROLE = RightName.EVENT_LOG.getName();
 
     @Inject
     public ViewEventLogRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class ViewEventLogRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

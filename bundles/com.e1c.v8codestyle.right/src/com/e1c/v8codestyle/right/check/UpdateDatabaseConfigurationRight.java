@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class UpdateDatabaseConfigurationRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "ОбновлениеКонфигурацииБазыДанных,UpdateDatabaseConfiguration"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "ОбновлениеКонфигурацииБазыДанных,UpdateDatabaseConfiguration,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "update-database-configuration-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.UPDATE_DATA_BASE_CONFIGURATION };
+    private static final String STANDART_ROLE = RightName.UPDATE_DATA_BASE_CONFIGURATION.getName();
 
     @Inject
     public UpdateDatabaseConfigurationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class UpdateDatabaseConfigurationRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

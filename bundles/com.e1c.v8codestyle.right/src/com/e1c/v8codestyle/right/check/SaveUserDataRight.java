@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class SaveUserDataRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "СохранениеДанныхПользователя,SaveUserData"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "СохранениеДанныхПользователя,SaveUserData,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "save-user-data-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.SAVE_USER_DATA };
+    private static final String STANDART_ROLE = RightName.SAVE_USER_DATA.getName();
 
     @Inject
     public SaveUserDataRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class SaveUserDataRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

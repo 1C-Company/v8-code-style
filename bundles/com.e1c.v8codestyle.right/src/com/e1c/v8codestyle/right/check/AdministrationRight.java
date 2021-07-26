@@ -23,15 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class AdministrationRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "Администрирование,Administration"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "Администрирование,Administration,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.ADMINISTRATION,
-        RightName.DATA_ADMINISTRATION, RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION, RightName.ACTIVE_USERS };
+    private static final String STANDART_ROLE = RightName.ADMINISTRATION.getName();
 
     @Inject
     public AdministrationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -61,9 +61,9 @@ public class AdministrationRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }

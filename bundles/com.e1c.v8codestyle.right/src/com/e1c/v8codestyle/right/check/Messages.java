@@ -28,33 +28,43 @@ final class Messages
 
     public static String RoleNameExtension_Role_names_list;
 
-    public static String RoleRightsSetCheck_Exclude_Right_Object_name_pattern;
-    public static String RoleRightsSetCheck_Role_right__0__set_for__1;
+    public static String RoleRightSetCheck_Exclude_Right_Object_name_pattern;
+    public static String RoleRightSetCheck_Role_right__0__set_for__1;
 
+    public static String ActiveUsersRight_title;
+    public static String ActiveUsersRight_description;
     public static String AdministrationRight_title;
     public static String AdministrationRight_description;
+    public static String AllFunctionsModeRight_title;
+    public static String AllFunctionsModeRight_description;
+    public static String ConfigurationExtensionsAdministrationRight_title;
+    public static String ConfigurationExtensionsAdministrationRight_description;
+    public static String DataAdministrationRight_title;
+    public static String DataAdministrationRight_description;
+    public static String ExclusiveModeRight_title;
+    public static String ExclusiveModeRight_description;
+    public static String InteractiveOpenExternalDataProcessorsRight_title;
+    public static String InteractiveOpenExternalDataProcessorsRight_description;
+    public static String InteractiveOpenExternalReportsRight_title;
+    public static String InteractiveOpenExternalReportsRight_description;
     public static String OutputToPrinterFileClipboardRight_title;
     public static String OutputToPrinterFileClipboardRight_description;
+    public static String SaveUserDataRight_title;
+    public static String SaveUserDataRight_description;
     public static String StartAutomationRight_title;
     public static String StartAutomationRight_description;
-    public static String StartWebClientRight_title;
-    public static String StartWebClientRight_description;
     public static String StartExternalConnectionRight_title;
     public static String StartExternalConnectionRight_description;
     public static String StartThickClientRight_title;
     public static String StartThickClientRight_description;
     public static String StartThinClientRight_title;
     public static String StartThinClientRight_description;
-    public static String InteractiveOpenExternalReportsAndDataProcessorsRight_title;
-    public static String InteractiveOpenExternalReportsAndDataProcessorsRight_description;
+    public static String StartWebClientRight_title;
+    public static String StartWebClientRight_description;
     public static String UpdateDatabaseConfigurationRight_title;
     public static String UpdateDatabaseConfigurationRight_description;
     public static String ViewEventLogRight_title;
     public static String ViewEventLogRight_description;
-    public static String AllFunctionsModeRight_title;
-    public static String AllFunctionsModeRight_description;
-    public static String SaveUserDataRight_title;
-    public static String SaveUserDataRight_description;
 
     static
     {

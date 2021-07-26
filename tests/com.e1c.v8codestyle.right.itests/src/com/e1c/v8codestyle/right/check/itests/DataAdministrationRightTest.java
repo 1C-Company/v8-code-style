@@ -15,14 +15,14 @@ package com.e1c.v8codestyle.right.check.itests;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.rights.model.util.RightName;
-import com.e1c.v8codestyle.right.check.AdministrationRight;
+import com.e1c.v8codestyle.right.check.DataAdministrationRight;
 
 /**
- * Tests for {@link AdministrationRight} check.
+ * Tests for {@link DataAdministrationRight} check.
  *
  * @author Aleksandr Kapralov
  */
-public class AdministrationRightTest
+public class DataAdministrationRightTest
     extends CheckTestRights
 {
 
@@ -31,9 +31,9 @@ public class AdministrationRightTest
     private static final String ROLE_FQN = "Role.StandartRole.Rights";
     private static final String CONFIGURATION_FQN = "Configuration";
 
-    private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
+    private static final String CHECK_ID = "data-administration-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.ADMINISTRATION.getName();
+    private static final String STANDART_ROLE = RightName.DATA_ADMINISTRATION.getName();
 
     @Test
     public void testStandartRoleCorrect() throws Exception
@@ -48,9 +48,9 @@ public class AdministrationRightTest
     }
 
     @Test
-    public void testFullAccessRoleIncorrect() throws Exception
+    public void testFullAccessRoleCorrect() throws Exception
     {
-        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "FullAccess");
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "FullAccess");
     }
 
     @Test

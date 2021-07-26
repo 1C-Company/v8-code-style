@@ -12,22 +12,9 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check.itests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.emf.ecore.EObject;
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.rights.model.ObjectRight;
-import com._1c.g5.v8.dt.rights.model.ObjectRights;
-import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
-import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
-import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.v8codestyle.right.check.OutputToPrinterFileClipboardRight;
 
 /**
@@ -41,57 +28,36 @@ public class OutputToPrinterFileClipboardRightTest
 
     private static final String PROJECT_NAME = "StandartRoles";
 
+    private static final String ROLE_FQN = "Role.StandartRole.Rights";
     private static final String CONFIGURATION_FQN = "Configuration";
 
     private static final String CHECK_ID = "output-to-printer-file-clipboard-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.OUTPUT };
+    private static final String STANDART_ROLE = RightName.OUTPUT.getName();
 
     @Test
-    public void testStandartRoleCorrect() throws CoreException
+    public void testStandartRoleCorrect() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        updateRole(dtProject, "Role.StandartRole.Rights", CONFIGURATION_FQN, STANDART_ROLES,
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE,
             "OutputToPrinterFileClipboard");
-
-        IBmObject top = getTopObjectByFqn("Role.OutputToPrinterFileClipboard.Rights", dtProject);
-        assertTrue(top instanceof RoleDescription);
-
-        RoleDescription description = (RoleDescription)top;
-        EObject configuration = getTopObjectByFqn(CONFIGURATION_FQN, dtProject);
-        ObjectRights objectRights = RightsModelUtil.getOrCreateObjectRights(configuration, description);
-
-        for (ObjectRight objectRight : objectRights.getRights())
-        {
-            Marker marker = getFirstMarker(CHECK_ID, objectRight, dtProject);
-            assertNull(marker);
-        }
     }
 
     @Test
-    public void testCustomRoleIncorrect() throws CoreException
+    public void testCustomRoleIncorrect() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
+        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, null);
+    }
 
-        String roleFqn = "Role.CustomRole.Rights";
+    @Test
+    public void testFullAccessRoleCorrect() throws Exception
+    {
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "FullAccess");
+    }
 
-        updateRole(dtProject, roleFqn, CONFIGURATION_FQN, STANDART_ROLES, null);
-
-        IBmObject top = getTopObjectByFqn(roleFqn, dtProject);
-        assertTrue(top instanceof RoleDescription);
-
-        RoleDescription description = (RoleDescription)top;
-        EObject configuration = getTopObjectByFqn(CONFIGURATION_FQN, dtProject);
-        ObjectRights objectRights = RightsModelUtil.getOrCreateObjectRights(configuration, description);
-
-        for (ObjectRight objectRight : objectRights.getRights())
-        {
-            Marker marker = getFirstMarker(CHECK_ID, objectRight, dtProject);
-            assertNotNull(marker);
-        }
+    @Test
+    public void testSystemAdministratorRoleCorrect() throws Exception
+    {
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "SystemAdministrator");
     }
 
 }

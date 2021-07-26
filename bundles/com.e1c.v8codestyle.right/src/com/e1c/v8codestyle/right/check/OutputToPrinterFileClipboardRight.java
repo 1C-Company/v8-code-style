@@ -23,14 +23,15 @@ import com.google.inject.Inject;
  *
  */
 public class OutputToPrinterFileClipboardRight
-    extends RoleRightsSetCheck
+    extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "ВыводНаПринтерФайлБуферОбмена,OutputToPrinterFileClipboard"; //$NON-NLS-1$
+    private static final String NAMES_DEFAULT =
+        "ВыводНаПринтерФайлБуферОбмена,OutputToPrinterFileClipboard,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "output-to-printer-file-clipboard-right"; //$NON-NLS-1$
 
-    private static final RightName[] STANDART_ROLES = new RightName[] { RightName.OUTPUT };
+    private static final String STANDART_ROLE = RightName.OUTPUT.getName();
 
     @Inject
     public OutputToPrinterFileClipboardRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -60,9 +61,9 @@ public class OutputToPrinterFileClipboardRight
     }
 
     @Override
-    protected RightName[] getRightNames()
+    protected String getAllowedRightName()
     {
-        return STANDART_ROLES;
+        return STANDART_ROLE;
     }
 
 }
