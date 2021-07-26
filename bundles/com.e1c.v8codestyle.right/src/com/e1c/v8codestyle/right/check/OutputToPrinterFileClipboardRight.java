@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.right.check;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
+import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.google.inject.Inject;
 
 /**
@@ -47,7 +48,8 @@ public class OutputToPrinterFileClipboardRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.title(Messages.OutputToPrinterFileClipboardRight_title)
+        builder.severity(IssueSeverity.MAJOR)
+            .title(Messages.OutputToPrinterFileClipboardRight_title)
             .description(Messages.OutputToPrinterFileClipboardRight_description);
     }
 

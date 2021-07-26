@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.right.check;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
+import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.google.inject.Inject;
 
 /**
@@ -50,7 +51,8 @@ public class InteractiveOpenExternalReportsAndDataProcessorsRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.title(Messages.InteractiveOpenExternalReportsAndDataProcessorsRight_title)
+        builder.severity(IssueSeverity.MAJOR)
+            .title(Messages.InteractiveOpenExternalReportsAndDataProcessorsRight_title)
             .description(Messages.InteractiveOpenExternalReportsAndDataProcessorsRight_description);
     }
 

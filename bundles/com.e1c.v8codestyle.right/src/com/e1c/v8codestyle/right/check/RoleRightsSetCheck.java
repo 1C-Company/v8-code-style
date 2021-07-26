@@ -39,7 +39,6 @@ import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
-import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
@@ -66,10 +65,10 @@ public abstract class RoleRightsSetCheck
     {
         //@formatter:off
         builder.complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.WARNING)
+            .issueType(IssueType.SECURITY)
             .extension(new RoleFilterExtension(bmModelManager))
             .extension(new RoleNameExtension(getStandartRoleNames(), bmModelManager))
+            .extension(new RoleNameChangeExtension())
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)
             .features(OBJECT_RIGHT__RIGHT);
