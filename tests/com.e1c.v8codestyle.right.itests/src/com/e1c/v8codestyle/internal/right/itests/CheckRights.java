@@ -10,11 +10,14 @@
  * Contributors:
  *     Aleksandr Kapralov - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.right.check.itests;
+package com.e1c.v8codestyle.internal.right.itests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.text.MessageFormat;
+import java.util.Collection;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,10 +30,12 @@ import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.md.refactoring.IMdRefactoringService;
 import com._1c.g5.v8.dt.metadata.mdclass.Role;
 import com._1c.g5.v8.dt.platform.IEObjectProvider;
 import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.v8.dt.platform.version.Version;
+import com._1c.g5.v8.dt.refactoring.core.IRefactoring;
 import com._1c.g5.v8.dt.rights.model.ObjectRight;
 import com._1c.g5.v8.dt.rights.model.ObjectRights;
 import com._1c.g5.v8.dt.rights.model.Right;
@@ -38,17 +43,23 @@ import com._1c.g5.v8.dt.rights.model.RightValue;
 import com._1c.g5.v8.dt.rights.model.RightsPackage;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
+import com._1c.g5.v8.dt.testing.GuiceModules;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.google.inject.Inject;
 
 /**
  * @author Aleksandr Kapralov
  *
  */
-public class CheckTestRights
+@GuiceModules(modules = { CheckExternalDependenciesModule.class })
+public class CheckRights
     extends CheckTestBase
 {
+
+    @Inject
+    IMdRefactoringService refactoringService;
 
     protected void checkRoleCorrect(String checkId, String projectName, String workspaceRightsFqn, String mdObjectFqn,
         String rightName, String newRoleName) throws Exception
@@ -73,7 +84,7 @@ public class CheckTestRights
     }
 
     private ObjectRights checkRole(IDtProject dtProject, String workspaceRightsFqn, String mdObjectFqn,
-        String rightName, String newRoleName)
+        String rightName, String newRoleName) throws Exception
     {
         updateRole(dtProject, workspaceRightsFqn, mdObjectFqn, rightName, newRoleName);
 
@@ -109,28 +120,39 @@ public class CheckTestRights
     }
 
     private void updateRole(IDtProject dtProject, String roleRightsFqn, String objectFqn, String rightName,
-        String newRoleName)
+        String newRoleName) throws ClassCastException, NullPointerException
     {
         IBmModel model = bmModelManager.getModel(dtProject);
-        model.execute(new AbstractBmTask<Void>("change type")
+        Role role = model.execute(new AbstractBmTask<Role>("change type")
         {
             @Override
-            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+            public Role execute(IBmTransaction transaction, IProgressMonitor monitor)
             {
                 IBmObject object = transaction.getTopObjectByFqn(roleRightsFqn);
                 if (!(object instanceof RoleDescription))
                 {
-                    return null;
+                    throw new ClassCastException(MessageFormat.format("Не удалось получить {0} по Fqn {1}",
+                        RoleDescription.class, roleRightsFqn));
                 }
 
                 RoleDescription description = (RoleDescription)object;
                 Role role = RightsModelUtil.getOwner(description, model);
+                if (role == null)
+                {
+                    throw new NullPointerException(
+                        MessageFormat.format("Не удалось получить {0} из {1}", Role.class, RoleDescription.class));
+                }
 
-                EObject configuration = transaction.getTopObjectByFqn(objectFqn);
+                EObject mdObject = transaction.getTopObjectByFqn(objectFqn);
+                if (mdObject == null)
+                {
+                    throw new NullPointerException(
+                        MessageFormat.format("Не удалось получить {0} по Fqn {1}", EObject.class, objectFqn));
+                }
 
-                RightValue defaultRightValue = RightsModelUtil.getDefaultRightValue(configuration, role);
+                RightValue defaultRightValue = RightsModelUtil.getDefaultRightValue(mdObject, role);
 
-                ObjectRights objectRights = RightsModelUtil.getOrCreateObjectRights(configuration, description);
+                ObjectRights objectRights = RightsModelUtil.getOrCreateObjectRights(mdObject, description);
 
                 for (ObjectRight objectRight : ECollections.newBasicEList(objectRights.getRights()))
                 {
@@ -139,25 +161,29 @@ public class CheckTestRights
                 }
 
                 Right right = addRight(rightName, dtProject.getWorkspaceProject());
-                if (right != null)
+                if (right == null)
                 {
-                    RightsModelUtil.changeObjectRight(RightsModelUtil.getRightValue(true), defaultRightValue,
-                        objectRights, right);
+                    throw new NullPointerException(
+                        MessageFormat.format("Не удалось получить {0} по имени {1}", Right.class, rightName));
                 }
+
+                RightsModelUtil.changeObjectRight(RightsModelUtil.getRightValue(true), defaultRightValue, objectRights,
+                    right);
 
                 RightsModelUtil.removeEmptyObjectRights(description, objectRights);
 
-                if (newRoleName != null)
-                {
-                    role.setName(newRoleName);
-                    transaction.updateTopObjectFqn(object, String.join(".", role.eClass().getName(), newRoleName));
-                    transaction.updateTopObjectFqn(object,
-                        String.join(".", role.eClass().getName(), newRoleName, "Rights"));
-                }
-
-                return null;
+                return role;
             }
         });
+
+        if (newRoleName != null)
+        {
+            Collection<IRefactoring> refactoring =
+                refactoringService.createMdObjectRenameRefactoring(role, newRoleName);
+            IRefactoring renameRefactoring = refactoring.iterator().next();
+            renameRefactoring.perform();
+        }
+
         waitForDD(dtProject);
     }
 

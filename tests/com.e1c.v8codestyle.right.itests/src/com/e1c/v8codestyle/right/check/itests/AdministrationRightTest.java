@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.right.check.itests;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.rights.model.util.RightName;
+import com.e1c.v8codestyle.internal.right.itests.CheckRights;
 import com.e1c.v8codestyle.right.check.AdministrationRight;
 
 /**
@@ -23,7 +24,7 @@ import com.e1c.v8codestyle.right.check.AdministrationRight;
  * @author Aleksandr Kapralov
  */
 public class AdministrationRightTest
-    extends CheckTestRights
+    extends CheckRights
 {
 
     private static final String PROJECT_NAME = "StandartRoles";
