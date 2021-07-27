@@ -54,7 +54,7 @@ import com.google.inject.Inject;
  *
  */
 @GuiceModules(modules = { CheckExternalDependenciesModule.class })
-public class CheckRights
+public abstract class CheckRights
     extends CheckTestBase
 {
 
