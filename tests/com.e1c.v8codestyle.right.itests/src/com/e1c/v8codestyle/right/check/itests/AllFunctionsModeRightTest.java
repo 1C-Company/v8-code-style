@@ -39,7 +39,7 @@ public class AllFunctionsModeRightTest
     @Test
     public void testStandartRoleCorrect() throws Exception
     {
-        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "Administration");
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "AllFunctionsMode");
     }
 
     @Test
