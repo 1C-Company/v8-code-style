@@ -1,6 +1,4 @@
-# role-right-has-rls
-
-
+# configuration-extensions-administration-right
 
 ## Неправильно
 

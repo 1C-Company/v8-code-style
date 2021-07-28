@@ -1,6 +1,4 @@
-# role-right-has-rls
-
-
+# data-administration-right
 
 ## Неправильно
 

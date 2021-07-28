@@ -1,6 +1,4 @@
-# role-right-has-rls
-
-
+# output-to-printer-file-clipboard-right
 
 ## Неправильно
 

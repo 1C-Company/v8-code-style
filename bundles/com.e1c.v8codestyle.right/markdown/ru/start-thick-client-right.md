@@ -1,6 +1,4 @@
-# role-right-has-rls
-
-
+# start-thick-client-right
 
 ## Неправильно
 

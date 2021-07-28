@@ -1,6 +1,4 @@
-# role-right-has-rls
-
-
+# exclusive-mode-right
 
 ## Неправильно
 

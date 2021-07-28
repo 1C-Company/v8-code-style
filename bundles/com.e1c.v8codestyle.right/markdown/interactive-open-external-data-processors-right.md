@@ -1,13 +1,8 @@
-# role-right-has-rls
-
-
+# interactive-open-external-data-processors-right
 
 ## Noncompliant Code Example
 
-
-
 ## Compliant Solution
-
 
 ## See
 https://its.1c.ru/db/v8std#content:488:hdoc

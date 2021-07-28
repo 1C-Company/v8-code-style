@@ -1,6 +1,4 @@
-# role-right-has-rls
-
-
+# view-event-log-right
 
 ## Неправильно
 

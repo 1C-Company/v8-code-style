@@ -1,13 +1,8 @@
-# role-right-has-rls
-
-
+# active-users-right
 
 ## Noncompliant Code Example
 
-
-
 ## Compliant Solution
-
 
 ## See
 https://its.1c.ru/db/v8std#content:488:hdoc

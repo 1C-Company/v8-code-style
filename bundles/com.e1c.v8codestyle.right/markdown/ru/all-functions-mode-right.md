@@ -1,6 +1,4 @@
-# role-right-has-rls
-
-
+# all-functions-mode-right
 
 ## Неправильно
 

@@ -1,6 +1,4 @@
-# role-right-has-rls
-
-
+# update-database-configuration-right
 
 ## Неправильно
 
