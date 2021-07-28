@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #17
  *******************************************************************************/
 /**
  *
@@ -29,6 +30,11 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
+
+    public static String QueryInLoop_title;
+    public static String QueryInLoop_description;
+    public static String QueryInLoop_Loop_has_Query;
+
     static
     {
         // initialize resource bundle
