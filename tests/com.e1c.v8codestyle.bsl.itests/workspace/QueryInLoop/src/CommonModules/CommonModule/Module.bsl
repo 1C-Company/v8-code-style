@@ -12,11 +12,13 @@ Procedure QueryCorrect(SomeParameter) Export
 
 EndProcedure
 
-Procedure QueryExecutionCorrect(Query) Export
+Function QueryExecutionCorrect(Query) Export
 
-	Query.Execute();
+	Result = Query.Execute();
 
-EndProcedure
+	Return Result;
+
+EndFunction
 
 Procedure MethodCallsQueryCorrect(SomeParameter) Export
 
@@ -34,7 +36,8 @@ Procedure ForEachStatementIncorrect(SomeArray) Export
 
 	For Each ArrayElement In SomeArray Do
 		Query.SetParameter("SomeParameter", ArrayElement);
-		Query.Execute();
+		Selection = Query.Execute().Select();
+		Selection.Next();
 	EndDo;
 
 EndProcedure
@@ -49,7 +52,8 @@ Procedure ForToStatementIncorrect(SomeArray) Export
 
 	For ArrayElement = 1 To 10 Do
 		Query.SetParameter("SomeParameter", ArrayElement);
-		Query.ExecuteBatch();
+		Result = Query.ExecuteBatch();
+		Result[0].Select();
 	EndDo;
 
 EndProcedure
@@ -83,7 +87,8 @@ Procedure LoopCallsMethodIncorrect(SomeParameter) Export
 	|	1";
 
 	While True Do
-		QueryExecutionCorrect(Query);
+		Result = QueryExecutionCorrect(Query);
+		Result.Select();
 	EndDo;
 
 EndProcedure
@@ -107,13 +112,13 @@ Procedure LoopWithConditionsIncorrect(SomeArray) Export
 	While True Do
 		If SomeArray.Size() = 1 Then
 			ForEachStatementIncorrect(SomeArray);
-			
+
 		ElsIf SomeArray.Size() = 2 Then
 			ForToStatementIncorrect(SomeArray);
-			
+
 		Else
 			WhileStatementIncorrect(SomeArray);
-			
+
 		EndIf;
 	EndDo;
 

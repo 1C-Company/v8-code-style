@@ -38,7 +38,7 @@ import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.WrongParameterException;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
-import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
+import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.bsl.check.QueryInLoopCheck;
 
 /**
@@ -47,7 +47,7 @@ import com.e1c.v8codestyle.bsl.check.QueryInLoopCheck;
  * @author Aleksandr Kapralov
  */
 public class QueryInLoopCheckTest
-    extends SingleProjectReadOnlyCheckTestBase
+    extends CheckTestBase
 {
 
     private static final String PROJECT_NAME = "QueryInLoop";
@@ -57,7 +57,7 @@ public class QueryInLoopCheckTest
     @Test
     public void testQueryInLoop() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         IBmObject mdObject = getTopObjectByFqn("CommonModule.CommonModule", dtProject);
@@ -88,13 +88,13 @@ public class QueryInLoopCheckTest
 
             case "ForEachStatementIncorrect":
                 {
-                    assertEquals(4, statements.size());
+                    assertEquals(5, statements.size());
                     uriErrors.add(EcoreUtil.getURI(statements.get(3)).toString());
                     break;
                 }
             case "ForToStatementIncorrect":
                 {
-                    assertEquals(4, statements.size());
+                    assertEquals(5, statements.size());
                     uriErrors.add(EcoreUtil.getURI(statements.get(3)).toString());
                     break;
                 }
@@ -106,7 +106,7 @@ public class QueryInLoopCheckTest
                 }
             case "LoopCallsMethodIncorrect":
                 {
-                    assertEquals(3, statements.size());
+                    assertEquals(4, statements.size());
                     uriErrors.add(EcoreUtil.getURI(statements.get(2)).toString());
                     break;
                 }
@@ -147,9 +147,4 @@ public class QueryInLoopCheckTest
         assertEquals(0, uriErrors.size());
     }
 
-    @Override
-    protected String getTestConfigurationName()
-    {
-        return PROJECT_NAME;
-    }
 }

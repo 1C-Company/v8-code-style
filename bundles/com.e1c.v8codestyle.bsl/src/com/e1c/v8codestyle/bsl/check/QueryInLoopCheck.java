@@ -14,10 +14,14 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT__LEFT;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT__RIGHT;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -25,6 +29,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
@@ -40,6 +45,7 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
+import com._1c.g5.v8.dt.mcore.ContextDef;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.Type;
@@ -93,7 +99,7 @@ public class QueryInLoopCheck
         builder.title(Messages.QueryInLoop_title)
             .description(Messages.QueryInLoop_description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
+            .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.PERFORMANCE)
             .module()
             .checkedObjectType(MODULE);
@@ -112,6 +118,10 @@ public class QueryInLoopCheck
         Module module = (Module)object;
 
         Set<String> queryExecutionMethods = getQueryExecutionMethods(module);
+        if (queryExecutionMethods.isEmpty())
+        {
+            return;
+        }
 
         Set<String> methodsWithQuery = getMethodsWithQuery(module, queryExecutionMethods, monitor);
         if (methodsWithQuery.isEmpty())
@@ -125,21 +135,24 @@ public class QueryInLoopCheck
             return;
         }
 
-        Set<Statement> statementsWithQueryInLoop =
+        Map<EReference, Set<Statement>> statementsWithQueryInLoop =
             getStatementsWithQueryInLoop(module, methodsWithQuery, queryExecutionMethods, monitor);
         if (statementsWithQueryInLoop.isEmpty())
         {
             return;
         }
 
-        for (Statement statement : statementsWithQueryInLoop)
+        for (Entry<EReference, Set<Statement>> entryStatement : statementsWithQueryInLoop.entrySet())
         {
-            if (monitor.isCanceled())
+            for (Statement statement : entryStatement.getValue())
             {
-                return;
-            }
+                if (monitor.isCanceled())
+                {
+                    return;
+                }
 
-            resultAceptor.addIssue(Messages.QueryInLoop_Loop_has_Query, statement, SIMPLE_STATEMENT__LEFT);
+                resultAceptor.addIssue(Messages.QueryInLoop_Loop_has_Query, statement, entryStatement.getKey());
+            }
         }
 
     }
@@ -152,8 +165,18 @@ public class QueryInLoopCheck
             versionSupport.getRuntimeVersionOrDefault(object, Version.LATEST));
         EObject proxyType = provider.getProxy(IEObjectTypeNames.QUERY);
         Type queryType = (Type)EcoreUtil2.cloneWithProxies((TypeItem)EcoreUtil.resolve(proxyType, object));
+        if (queryType == null)
+        {
+            return queryExecuteMethods;
+        }
 
-        EList<com._1c.g5.v8.dt.mcore.Method> queryMethods = queryType.getContextDef().allMethods();
+        ContextDef contextDef = queryType.getContextDef();
+        if (contextDef == null)
+        {
+            return queryExecuteMethods;
+        }
+
+        EList<com._1c.g5.v8.dt.mcore.Method> queryMethods = contextDef.allMethods();
         for (com._1c.g5.v8.dt.mcore.Method queryMethod : queryMethods)
         {
             if (!queryMethod.getName().startsWith("Execute")) //$NON-NLS-1$
@@ -168,27 +191,8 @@ public class QueryInLoopCheck
         return queryExecuteMethods;
     }
 
-    private boolean isQueryExecution(Statement statement, Set<String> queryExecutionMethods)
+    private boolean isQueryTypeSource(Expression source)
     {
-        if (!(statement instanceof SimpleStatement))
-        {
-            return false;
-        }
-
-        Expression leftStatement = ((SimpleStatement)statement).getLeft();
-        if (!(leftStatement instanceof Invocation))
-        {
-            return false;
-        }
-
-        FeatureAccess methodAccess = ((Invocation)leftStatement).getMethodAccess();
-        if (!(methodAccess instanceof DynamicFeatureAccess))
-        {
-            return false;
-        }
-
-        Expression source = ((DynamicFeatureAccess)methodAccess).getSource();
-
         Environmental envs = EcoreUtil2.getContainerOfType(source, Environmental.class);
         List<TypeItem> sourceTypes = typesComputer.computeTypes(source, envs.environments());
         if (sourceTypes.isEmpty())
@@ -196,12 +200,55 @@ public class QueryInLoopCheck
             return false;
         }
 
-        if (!McoreUtil.getTypeName(sourceTypes.get(0)).equals(IEObjectTypeNames.QUERY))
+        return McoreUtil.getTypeName(sourceTypes.get(0)).equals(IEObjectTypeNames.QUERY);
+    }
+
+    private boolean isQueryExecutionExpression(Expression expr, Set<String> queryExecutionMethods)
+    {
+        if (!(expr instanceof Invocation))
+        {
+            return false;
+        }
+
+        FeatureAccess methodAccess = ((Invocation)expr).getMethodAccess();
+        if (!(methodAccess instanceof DynamicFeatureAccess))
+        {
+            return false;
+        }
+
+        Expression source = ((DynamicFeatureAccess)methodAccess).getSource();
+
+        if (source instanceof Invocation)
+        {
+            return isQueryExecutionExpression(source, queryExecutionMethods);
+        }
+
+        if (!isQueryTypeSource(source))
         {
             return false;
         }
 
         return queryExecutionMethods.stream().anyMatch(s -> s.equalsIgnoreCase(methodAccess.getName()));
+    }
+
+    private boolean isQueryExecutionLeftStatement(Statement statement, Set<String> queryExecutionMethods)
+    {
+        if (!(statement instanceof SimpleStatement))
+        {
+            return false;
+        }
+
+        return isQueryExecutionExpression(((SimpleStatement)statement).getLeft(), queryExecutionMethods);
+    }
+
+    private boolean isQueryExecutionRightStatement(Statement statement, Set<String> queryExecutionMethods)
+    {
+        if (!(statement instanceof SimpleStatement))
+        {
+            return false;
+        }
+
+        return isQueryExecutionExpression(((SimpleStatement)statement).getRight(), queryExecutionMethods);
     }
 
     private Set<String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods, IProgressMonitor monitor)
@@ -215,7 +262,8 @@ public class QueryInLoopCheck
                 return Collections.emptySet();
             }
 
-            if (isQueryExecution(statement, queryExecutionMethods))
+            if (isQueryExecutionLeftStatement(statement, queryExecutionMethods)
+                || isQueryExecutionRightStatement(statement, queryExecutionMethods))
             {
                 Method method = EcoreUtil2.getContainerOfType(statement, Method.class);
                 result.add(method.getName());
@@ -225,26 +273,40 @@ public class QueryInLoopCheck
         return result;
     }
 
-    private boolean isMethodCalled(Statement statement, Set<String> methodsWithQuery)
+    private boolean isMethodCalledExpression(Expression expr, Set<String> methodsWithQuery)
     {
-        if (!(statement instanceof SimpleStatement))
+        if (!(expr instanceof Invocation))
         {
             return false;
         }
 
-        Expression leftStatement = ((SimpleStatement)statement).getLeft();
-        if (!(leftStatement instanceof Invocation))
-        {
-            return false;
-        }
-
-        FeatureAccess methodAccess = ((Invocation)leftStatement).getMethodAccess();
+        FeatureAccess methodAccess = ((Invocation)expr).getMethodAccess();
         if (!(methodAccess instanceof StaticFeatureAccess))
         {
             return false;
         }
 
         return methodsWithQuery.contains(methodAccess.getName());
+    }
+
+    private boolean isMethodCalledLeftStatement(Statement statement, Set<String> methodsWithQuery)
+    {
+        if (!(statement instanceof SimpleStatement))
+        {
+            return false;
+        }
+
+        return isMethodCalledExpression(((SimpleStatement)statement).getLeft(), methodsWithQuery);
+    }
+
+    private boolean isMethodCalledRightStatement(Statement statement, Set<String> methodsWithQuery)
+    {
+        if (!(statement instanceof SimpleStatement))
+        {
+            return false;
+        }
+
+        return isMethodCalledExpression(((SimpleStatement)statement).getRight(), methodsWithQuery);
     }
 
     private void expandMethodsWithQuery(Set<String> methodsWithQuery, Module module, IProgressMonitor monitor)
@@ -266,7 +328,8 @@ public class QueryInLoopCheck
                         return;
                     }
 
-                    if (isMethodCalled(statement, methodsWithQuery))
+                    if (isMethodCalledLeftStatement(statement, methodsWithQuery)
+                        || isMethodCalledRightStatement(statement, methodsWithQuery))
                     {
                         methodsWithQuery.add(method.getName());
                         break;
@@ -279,10 +342,12 @@ public class QueryInLoopCheck
 
     }
 
-    private Set<Statement> getStatementsWithQueryInLoop(Module module, Set<String> methodsWithQuery,
+    private Map<EReference, Set<Statement>> getStatementsWithQueryInLoop(Module module, Set<String> methodsWithQuery,
         Set<String> queryExecutionMethods, IProgressMonitor monitor)
     {
-        Set<Statement> result = new HashSet<>();
+        Map<EReference, Set<Statement>> result = new HashMap<>();
+        result.put(SIMPLE_STATEMENT__LEFT, new HashSet<>());
+        result.put(SIMPLE_STATEMENT__RIGHT, new HashSet<>());
 
         for (LoopStatement loopStatement : EcoreUtil2.eAllOfType(module, LoopStatement.class))
         {
@@ -290,12 +355,22 @@ public class QueryInLoopCheck
             {
                 if (monitor.isCanceled())
                 {
-                    return Collections.emptySet();
+                    result.clear();
+                    return result;
                 }
 
-                if (isMethodCalled(statement, methodsWithQuery) || isQueryExecution(statement, queryExecutionMethods))
+                if (isMethodCalledLeftStatement(statement, methodsWithQuery)
+                    || isQueryExecutionLeftStatement(statement, queryExecutionMethods))
                 {
-                    result.add(statement);
+                    Set<Statement> leftSet = result.get(SIMPLE_STATEMENT__LEFT);
+                    leftSet.add(statement);
+                }
+
+                if (isMethodCalledRightStatement(statement, methodsWithQuery)
+                    || isQueryExecutionRightStatement(statement, queryExecutionMethods))
+                {
+                    Set<Statement> rightSet = result.get(SIMPLE_STATEMENT__RIGHT);
+                    rightSet.add(statement);
                 }
             }
         }
