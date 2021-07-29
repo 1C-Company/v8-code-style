@@ -31,7 +31,7 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
-import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
+import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 
 /**
  * Tests for {@link ConfigurationDataLock} check.
@@ -39,7 +39,7 @@ import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
  * @author Dmitriy Marmyshev
  */
 public class StructureCtorTooManyKeysCheckTest
-    extends SingleProjectReadOnlyCheckTestBase
+    extends CheckTestBase
 {
 
     private static final String CHECK_ID = "structure-consructor-too-many-keys"; //$NON-NLS-1$
@@ -54,7 +54,7 @@ public class StructureCtorTooManyKeysCheckTest
     @Test
     public void testStructureConstructorKeys() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         IBmObject mdObject = getTopObjectByFqn("CommonModule.CommonModule", dtProject);
@@ -81,11 +81,5 @@ public class StructureCtorTooManyKeysCheckTest
         assertNotNull(checkUid);
         assertTrue(CHECK_ID.equals(checkUid.getCheckId()));
 
-    }
-
-    @Override
-    protected String getTestConfigurationName()
-    {
-        return PROJECT_NAME;
     }
 }
