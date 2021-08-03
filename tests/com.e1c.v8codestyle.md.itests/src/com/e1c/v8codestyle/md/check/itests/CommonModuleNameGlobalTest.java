@@ -11,7 +11,7 @@
  *     1C-Soft LLC - initial API and implementation
  *     Aleksandr Kapralov - issue #14
  *******************************************************************************/
-package com.e1c.v8codestyle.md.itests;
+package com.e1c.v8codestyle.md.check.itests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
