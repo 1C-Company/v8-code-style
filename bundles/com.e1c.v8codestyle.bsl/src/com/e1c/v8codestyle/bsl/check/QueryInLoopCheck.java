@@ -142,10 +142,10 @@ public class QueryInLoopCheck
         }
 
         Boolean checkQueriesForInfiniteLoops = parameters.getBoolean(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP);
-        Set<FeatureAccess> statementsWithQueryInLoop = getStatementsWithQueryInLoop(module, methodsWithQuery,
-            queryExecutionMethods, checkQueriesForInfiniteLoops, monitor);
+        Set<FeatureAccess> faWithQueryInLoop = getFaWithQueryInLoop(module, methodsWithQuery, queryExecutionMethods,
+            checkQueriesForInfiniteLoops, monitor);
 
-        for (FeatureAccess featureAccess : statementsWithQueryInLoop)
+        for (FeatureAccess featureAccess : faWithQueryInLoop)
         {
             if (monitor.isCanceled())
             {
@@ -296,7 +296,7 @@ public class QueryInLoopCheck
         return predicate instanceof BooleanLiteral;
     }
 
-    private Set<FeatureAccess> getStatementsWithQueryInLoop(Module module, Set<String> methodsWithQuery,
+    private Set<FeatureAccess> getFaWithQueryInLoop(Module module, Set<String> methodsWithQuery,
         Set<String> queryExecutionMethods, Boolean checkQueriesForInfiniteLoops, IProgressMonitor monitor)
     {
         Set<FeatureAccess> result = new HashSet<>();
