@@ -31,9 +31,9 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
+import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
@@ -76,7 +76,7 @@ public class QueryInLoopCheckTest
 
         for (Method method : module.allMethods())
         {
-            List<SimpleStatement> statements = EcoreUtil2.eAllOfType(method, SimpleStatement.class);
+            List<FeatureAccess> featureAccessList = EcoreUtil2.eAllOfType(method, FeatureAccess.class);
 
             switch (method.getName())
             {
@@ -92,46 +92,46 @@ public class QueryInLoopCheckTest
 
             case "ForEachStatementIncorrect":
                 {
-                    assertEquals(5, statements.size());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(3)).toString());
+                    assertEquals(14, featureAccessList.size());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(8)).toString());
                     break;
                 }
             case "ForToStatementIncorrect":
                 {
-                    assertEquals(5, statements.size());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(3)).toString());
+                    assertEquals(12, featureAccessList.size());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(7)).toString());
                     break;
                 }
             case "WhileStatementIncorrect":
                 {
-                    assertEquals(3, statements.size());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(2)).toString());
+                    assertEquals(9, featureAccessList.size());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(3)).toString());
                     break;
                 }
             case "LoopCallsMethodIncorrect":
                 {
-                    assertEquals(4, statements.size());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(2)).toString());
+                    assertEquals(9, featureAccessList.size());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(4)).toString());
                     break;
                 }
             case "LoopCallsMethodWithOtherMethodIncorrect":
                 {
-                    assertEquals(3, statements.size());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(2)).toString());
+                    assertEquals(6, featureAccessList.size());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(3)).toString());
                     break;
                 }
             case "LoopWithConditionsIncorrect":
                 {
-                    assertEquals(3, statements.size());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(0)).toString());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(1)).toString());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(2)).toString());
+                    assertEquals(12, featureAccessList.size());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(2)).toString());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(6)).toString());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(8)).toString());
                     break;
                 }
             case "QueryTypeFromFunctionIncorrect":
                 {
-                    assertEquals(2, statements.size());
-                    uriErrors.add(EcoreUtil.getURI(statements.get(0)).toString());
+                    assertEquals(9, featureAccessList.size());
+                    uriErrors.add(EcoreUtil.getURI(featureAccessList.get(2)).toString());
                     break;
                 }
 
