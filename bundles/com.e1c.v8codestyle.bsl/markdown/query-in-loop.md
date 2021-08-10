@@ -6,4 +6,4 @@
 
 ## See
 
-https://its.1c.ru/db/pubqlang#content:150:hdoc
+https://1c-dn.com/library/sample_queries_for_operations_with_hierarchical_catalogs/
