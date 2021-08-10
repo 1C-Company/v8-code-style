@@ -240,12 +240,7 @@ public class QueryInLoopCheck
             return isQueryExecutionExpression(source, queryExecutionMethods);
         }
 
-        if (!isQueryTypeSource(source))
-        {
-            return false;
-        }
-
-        return true;
+        return isQueryTypeSource(source);
     }
 
     private boolean isQueryExecutionLeftStatement(Statement statement, Set<String> queryExecutionMethods)
