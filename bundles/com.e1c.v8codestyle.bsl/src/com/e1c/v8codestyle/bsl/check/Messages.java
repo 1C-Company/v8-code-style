@@ -26,14 +26,16 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.check.messages"; //$NON-NLS-1$
+
+    public static String QueryInLoop_check_queries_for_infinite_loops;
+    public static String QueryInLoop_description;
+    public static String QueryInLoop_Loop_has_Query;
+    public static String QueryInLoop_title;
+
     public static String StructureCtorTooManyKeysCheck_description;
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
-
-    public static String QueryInLoop_title;
-    public static String QueryInLoop_description;
-    public static String QueryInLoop_Loop_has_Query;
 
     static
     {

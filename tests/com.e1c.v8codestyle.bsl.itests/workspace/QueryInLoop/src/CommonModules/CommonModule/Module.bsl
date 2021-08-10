@@ -66,7 +66,7 @@ Procedure WhileStatementIncorrect(SomeArray) Export
 	"SELECT
 	|	1";
 
-	While True Do
+	While SomeArray.Count() > 0 And SomeArray.Count() < 5 Do
 		Query.ExecuteBatchWithIntermediateData();
 	EndDo;
 
@@ -86,7 +86,7 @@ Procedure LoopCallsMethodIncorrect(SomeParameter) Export
 	"SELECT
 	|	1";
 
-	While True Do
+	While SomeParameter = 0 Do
 		Result = QueryExecutionCorrect(Query);
 		Result.Select();
 	EndDo;
@@ -101,7 +101,7 @@ Procedure LoopCallsMethodWithOtherMethodIncorrect(SomeParameter) Export
 	"SELECT
 	|	1";
 
-	While True Do
+	While SomeParameter = 0 Do
 		MethodCallsQueryCorrect(Query);
 	EndDo;
 
@@ -109,7 +109,7 @@ EndProcedure
 
 Procedure LoopWithConditionsIncorrect(SomeArray) Export
 
-	While True Do
+	While SomeArray.Count() = 0 Do
 		If SomeArray.Size() = 1 Then
 			ForEachStatementIncorrect(SomeArray);
 

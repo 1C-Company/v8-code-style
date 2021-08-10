@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 
+import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
@@ -45,6 +46,7 @@ import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.WhileStatement;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.mcore.ContextDef;
 import com._1c.g5.v8.dt.mcore.Environmental;
@@ -72,6 +74,10 @@ public class QueryInLoopCheck
 {
 
     private static final String CHECK_ID = "query-in-loop"; //$NON-NLS-1$
+
+    private static final String PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS = "checkQueriesForInfiniteLoops"; //$NON-NLS-1$
+
+    private static final String DEFAULT_CHECK_QUERIES_FOR_INFINITE_LOOPS = Boolean.toString(false);
 
     private final TypesComputer typesComputer;
 
@@ -103,7 +109,9 @@ public class QueryInLoopCheck
             .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.PERFORMANCE)
             .module()
-            .checkedObjectType(MODULE);
+            .checkedObjectType(MODULE)
+        .parameter(PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS,  Boolean.class, DEFAULT_CHECK_QUERIES_FOR_INFINITE_LOOPS,
+            Messages.QueryInLoop_check_queries_for_infinite_loops);
         //@formatter:on
     }
 
@@ -136,8 +144,9 @@ public class QueryInLoopCheck
             return;
         }
 
-        Map<EReference, Set<Statement>> statementsWithQueryInLoop =
-            getStatementsWithQueryInLoop(module, methodsWithQuery, queryExecutionMethods, monitor);
+        Boolean checkQueriesForInfiniteLoops = parameters.getBoolean(PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS);
+        Map<EReference, Set<Statement>> statementsWithQueryInLoop = getStatementsWithQueryInLoop(module,
+            methodsWithQuery, queryExecutionMethods, checkQueriesForInfiniteLoops, monitor);
         if (statementsWithQueryInLoop.isEmpty())
         {
             return;
@@ -257,7 +266,7 @@ public class QueryInLoopCheck
     {
         Set<String> result = new HashSet<>();
 
-        for (Statement statement : EcoreUtil2.eAllOfType(module, SimpleStatement.class))
+        for (SimpleStatement statement : EcoreUtil2.eAllOfType(module, SimpleStatement.class))
         {
             if (monitor.isCanceled())
             {
@@ -323,7 +332,7 @@ public class QueryInLoopCheck
 
             for (Method method : filteredMethods)
             {
-                for (Statement statement : EcoreUtil2.eAllOfType(method, SimpleStatement.class))
+                for (SimpleStatement statement : EcoreUtil2.eAllOfType(method, SimpleStatement.class))
                 {
                     if (monitor.isCanceled())
                     {
@@ -344,8 +353,38 @@ public class QueryInLoopCheck
 
     }
 
+    private boolean isInfiniteWhileLoop(LoopStatement loopStatement)
+    {
+        if (!(loopStatement instanceof WhileStatement))
+        {
+            return false;
+        }
+
+        Expression predicate = ((WhileStatement)loopStatement).getPredicate();
+        return predicate instanceof BooleanLiteral;
+
+    }
+
+    private void addStatementWithQueryInLoop(Map<EReference, Set<Statement>> result, SimpleStatement statement,
+        Set<String> methodsWithQuery, Set<String> queryExecutionMethods)
+    {
+        if (isMethodCalledLeftStatement(statement, methodsWithQuery)
+            || isQueryExecutionLeftStatement(statement, queryExecutionMethods))
+        {
+            Set<Statement> leftSet = result.get(SIMPLE_STATEMENT__LEFT);
+            leftSet.add(statement);
+        }
+
+        if (isMethodCalledRightStatement(statement, methodsWithQuery)
+            || isQueryExecutionRightStatement(statement, queryExecutionMethods))
+        {
+            Set<Statement> rightSet = result.get(SIMPLE_STATEMENT__RIGHT);
+            rightSet.add(statement);
+        }
+    }
+
     private Map<EReference, Set<Statement>> getStatementsWithQueryInLoop(Module module, Set<String> methodsWithQuery,
-        Set<String> queryExecutionMethods, IProgressMonitor monitor)
+        Set<String> queryExecutionMethods, Boolean checkQueriesForInfiniteLoops, IProgressMonitor monitor)
     {
         Map<EReference, Set<Statement>> result = new HashMap<>();
         result.put(SIMPLE_STATEMENT__LEFT, new HashSet<>());
@@ -353,7 +392,12 @@ public class QueryInLoopCheck
 
         for (LoopStatement loopStatement : EcoreUtil2.eAllOfType(module, LoopStatement.class))
         {
-            for (Statement statement : EcoreUtil2.eAllOfType(loopStatement, SimpleStatement.class))
+            if (Boolean.FALSE.equals(checkQueriesForInfiniteLoops) && isInfiniteWhileLoop(loopStatement))
+            {
+                continue;
+            }
+
+            for (SimpleStatement statement : EcoreUtil2.eAllOfType(loopStatement, SimpleStatement.class))
             {
                 if (monitor.isCanceled())
                 {
@@ -361,19 +405,7 @@ public class QueryInLoopCheck
                     return result;
                 }
 
-                if (isMethodCalledLeftStatement(statement, methodsWithQuery)
-                    || isQueryExecutionLeftStatement(statement, queryExecutionMethods))
-                {
-                    Set<Statement> leftSet = result.get(SIMPLE_STATEMENT__LEFT);
-                    leftSet.add(statement);
-                }
-
-                if (isMethodCalledRightStatement(statement, methodsWithQuery)
-                    || isQueryExecutionRightStatement(statement, queryExecutionMethods))
-                {
-                    Set<Statement> rightSet = result.get(SIMPLE_STATEMENT__RIGHT);
-                    rightSet.add(statement);
-                }
+                addStatementWithQueryInLoop(result, statement, methodsWithQuery, queryExecutionMethods);
             }
         }
 
