@@ -165,11 +165,12 @@ public class QueryInLoopCheck
         IEObjectProvider provider = IEObjectProvider.Registry.INSTANCE.get(McorePackage.Literals.TYPE_ITEM,
             versionSupport.getRuntimeVersionOrDefault(object, Version.LATEST));
         EObject proxyType = provider.getProxy(IEObjectTypeNames.QUERY);
-        Type queryType = (Type)EcoreUtil2.cloneWithProxies((TypeItem)EcoreUtil.resolve(proxyType, object));
-        if (queryType == null)
+        if (!(proxyType instanceof Type))
         {
             return queryExecuteMethods;
         }
+
+        Type queryType = (Type)EcoreUtil.resolve(proxyType, object);
 
         ContextDef contextDef = queryType.getContextDef();
         if (contextDef == null)
