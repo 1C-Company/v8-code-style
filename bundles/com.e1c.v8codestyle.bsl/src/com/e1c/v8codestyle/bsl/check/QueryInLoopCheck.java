@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
@@ -201,7 +200,15 @@ public class QueryInLoopCheck
             return false;
         }
 
-        return sourceTypes.stream().anyMatch(t -> IEObjectTypeNames.QUERY.equals(McoreUtil.getTypeName(t)));
+        for (TypeItem sourceType : sourceTypes)
+        {
+            if (IEObjectTypeNames.QUERY.equals(McoreUtil.getTypeName(sourceType)))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean isQueryExecution(DynamicFeatureAccess dfa, Set<String> queryExecutionMethods)
@@ -236,6 +243,19 @@ public class QueryInLoopCheck
         return methodsWithQuery.contains(sfa.getName()) && BslUtil.getInvocation(sfa) != null;
     }
 
+    private boolean isMethodWithQuery(Method method, Set<String> methodsWithQuery)
+    {
+        for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(method, StaticFeatureAccess.class))
+        {
+            if (isMethodWithQueryCalled(sfa, methodsWithQuery))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void expandMethodsWithQuery(Set<String> methodsWithQuery, Module module, IProgressMonitor monitor)
     {
         EList<Method> methods = module.allMethods();
@@ -243,23 +263,21 @@ public class QueryInLoopCheck
         int methodsCount = 0;
         while (methodsWithQuery.size() != methodsCount)
         {
-            List<Method> filteredMethods =
-                methods.stream().filter(m -> !methodsWithQuery.contains(m.getName())).collect(Collectors.toList());
-
-            for (Method method : filteredMethods)
+            for (Method method : methods)
             {
-                for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(method, StaticFeatureAccess.class))
+                if (monitor.isCanceled())
                 {
-                    if (monitor.isCanceled())
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    if (isMethodWithQueryCalled(sfa, methodsWithQuery))
-                    {
-                        methodsWithQuery.add(method.getName());
-                        break;
-                    }
+                if (methodsWithQuery.contains(method.getName()))
+                {
+                    continue;
+                }
+
+                if (isMethodWithQuery(method, methodsWithQuery))
+                {
+                    methodsWithQuery.add(method.getName());
                 }
             }
 
