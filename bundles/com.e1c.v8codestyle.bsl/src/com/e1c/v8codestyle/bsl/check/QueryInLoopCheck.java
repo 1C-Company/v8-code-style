@@ -202,7 +202,7 @@ public class QueryInLoopCheck
             return false;
         }
 
-        return McoreUtil.getTypeName(sourceTypes.get(0)).equals(IEObjectTypeNames.QUERY);
+        return sourceTypes.stream().anyMatch(t -> IEObjectTypeNames.QUERY.equals(McoreUtil.getTypeName(t)));
     }
 
     private boolean isQueryExecutionExpression(Expression expr, Set<String> queryExecutionMethods)
