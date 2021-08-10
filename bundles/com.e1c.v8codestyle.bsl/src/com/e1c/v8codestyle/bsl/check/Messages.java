@@ -27,7 +27,7 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.check.messages"; //$NON-NLS-1$
 
-    public static String QueryInLoop_check_queries_for_infinite_loops;
+    public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_Query;
     public static String QueryInLoop_title;

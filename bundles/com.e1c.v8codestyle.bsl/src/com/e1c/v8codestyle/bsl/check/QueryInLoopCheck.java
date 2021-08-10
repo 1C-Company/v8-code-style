@@ -66,6 +66,9 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
+ * Checks queries in loops.
+ * Skip checks for queries in infinite while loops by default.
+ *
  * @author Aleksandr Kapralov
  *
  */
@@ -75,22 +78,24 @@ public class QueryInLoopCheck
 
     private static final String CHECK_ID = "query-in-loop"; //$NON-NLS-1$
 
-    private static final String PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS = "checkQueriesForInfiniteLoops"; //$NON-NLS-1$
+    private static final String PARAM_CHECK_QUERIY_IN_INFINITE_LOOP = "checkQueryInInfiniteLoop"; //$NON-NLS-1$
 
-    private static final String DEFAULT_CHECK_QUERIES_FOR_INFINITE_LOOPS = Boolean.toString(false);
+    private static final String DEFAULT_CHECK_QUERY_IN_INFINITE_LOOP = Boolean.toString(false);
 
     private final TypesComputer typesComputer;
 
-    @Inject
-    protected IRuntimeVersionSupport versionSupport;
+    private final IRuntimeVersionSupport versionSupport;
 
-    public QueryInLoopCheck()
+    @Inject
+    public QueryInLoopCheck(IRuntimeVersionSupport versionSupport)
     {
         super();
 
         IResourceServiceProvider rsp =
             IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
         typesComputer = rsp.get(TypesComputer.class);
+
+        this.versionSupport = versionSupport;
     }
 
     @Override
@@ -110,8 +115,8 @@ public class QueryInLoopCheck
             .issueType(IssueType.PERFORMANCE)
             .module()
             .checkedObjectType(MODULE)
-            .parameter(PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS, Boolean.class, DEFAULT_CHECK_QUERIES_FOR_INFINITE_LOOPS,
-                Messages.QueryInLoop_check_queries_for_infinite_loops);
+            .parameter(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP, Boolean.class, DEFAULT_CHECK_QUERY_IN_INFINITE_LOOP,
+                Messages.QueryInLoop_check_query_in_infinite_loop);
         //@formatter:on
     }
 
@@ -144,7 +149,7 @@ public class QueryInLoopCheck
             return;
         }
 
-        Boolean checkQueriesForInfiniteLoops = parameters.getBoolean(PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS);
+        Boolean checkQueriesForInfiniteLoops = parameters.getBoolean(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP);
         Map<EReference, Set<Statement>> statementsWithQueryInLoop = getStatementsWithQueryInLoop(module,
             methodsWithQuery, queryExecutionMethods, checkQueriesForInfiniteLoops, monitor);
         if (statementsWithQueryInLoop.isEmpty())

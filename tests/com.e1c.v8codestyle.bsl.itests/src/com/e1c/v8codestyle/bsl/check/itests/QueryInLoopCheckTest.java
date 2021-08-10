@@ -149,7 +149,7 @@ public class QueryInLoopCheckTest
         assertEquals(0, uriErrors.size());
     }
 
-    private static final String PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS = "checkQueriesForInfiniteLoops"; //$NON-NLS-1$
+    private static final String PARAM_CHECK_QUERIY_IN_INFINITE_LOOP = "checkQueryInInfiniteLoop"; //$NON-NLS-1$
 
     private CheckUid cuid(String checkId)
     {
@@ -175,7 +175,7 @@ public class QueryInLoopCheckTest
 
         IProject project = dtProject.getWorkspaceProject();
         ICheckSettings settings = checkRepository.getSettings(cuid(CHECK_ID), project);
-        settings.getParameters().get(PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS).setValue(Boolean.toString(true));
+        settings.getParameters().get(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP).setValue(Boolean.toString(true));
         checkRepository.applyChanges(Collections.singleton(settings), project);
         waitForDD(dtProject);
 
