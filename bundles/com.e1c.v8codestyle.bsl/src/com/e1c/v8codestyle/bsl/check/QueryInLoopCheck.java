@@ -46,6 +46,7 @@ import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.WhileStatement;
+import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.mcore.ContextDef;
 import com._1c.g5.v8.dt.mcore.Environmental;
@@ -313,15 +314,15 @@ public class QueryInLoopCheck
 
             for (Method method : filteredMethods)
             {
-                for (SimpleStatement statement : EcoreUtil2.eAllOfType(method, SimpleStatement.class))
+                for (StaticFeatureAccess featureAccess : EcoreUtil2.eAllOfType(method, StaticFeatureAccess.class))
                 {
                     if (monitor.isCanceled())
                     {
                         return;
                     }
 
-                    if (isMethodCalledLeftStatement(statement, methodsWithQuery)
-                        || isMethodCalledRightStatement(statement, methodsWithQuery))
+                    if (methodsWithQuery.contains(featureAccess.getName())
+                        && BslUtil.getInvocation(featureAccess) != null)
                     {
                         methodsWithQuery.add(method.getName());
                         break;
