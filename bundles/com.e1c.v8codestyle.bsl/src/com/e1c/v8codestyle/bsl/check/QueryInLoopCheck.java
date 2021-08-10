@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -159,7 +160,7 @@ public class QueryInLoopCheck
 
     private Set<String> getQueryExecutionMethods(EObject object)
     {
-        Set<String> queryExecuteMethods = new HashSet<>();
+        Set<String> queryExecuteMethods = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
         IEObjectProvider provider = IEObjectProvider.Registry.INSTANCE.get(McorePackage.Literals.TYPE_ITEM,
             versionSupport.getRuntimeVersionOrDefault(object, Version.LATEST));
@@ -228,7 +229,7 @@ public class QueryInLoopCheck
             return false;
         }
 
-        return queryExecutionMethods.stream().anyMatch(s -> s.equalsIgnoreCase(methodAccess.getName()));
+        return queryExecutionMethods.contains(methodAccess.getName());
     }
 
     private boolean isQueryExecutionLeftStatement(Statement statement, Set<String> queryExecutionMethods)
