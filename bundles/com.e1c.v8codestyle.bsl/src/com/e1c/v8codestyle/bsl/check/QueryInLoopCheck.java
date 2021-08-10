@@ -222,6 +222,12 @@ public class QueryInLoopCheck
         }
 
         FeatureAccess methodAccess = ((Invocation)expr).getMethodAccess();
+
+        if (!(queryExecutionMethods.contains(methodAccess.getName())))
+        {
+            return false;
+        }
+
         if (!(methodAccess instanceof DynamicFeatureAccess))
         {
             return false;
@@ -239,7 +245,7 @@ public class QueryInLoopCheck
             return false;
         }
 
-        return queryExecutionMethods.contains(methodAccess.getName());
+        return true;
     }
 
     private boolean isQueryExecutionLeftStatement(Statement statement, Set<String> queryExecutionMethods)
