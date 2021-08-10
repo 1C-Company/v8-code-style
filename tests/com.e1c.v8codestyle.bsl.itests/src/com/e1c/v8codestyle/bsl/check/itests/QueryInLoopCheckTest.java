@@ -36,7 +36,6 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.check.WrongParameterException;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.bsl.check.QueryInLoopCheck;
@@ -82,7 +81,7 @@ public class QueryInLoopCheckTest
             case "MethodCallsQueryCorrect":
             case "MethodCallsIncorrectMethodCorrect":
                 {
-                    // Методы без ошибок, пропускаем
+                    // Those methods doesn't have errors
                     break;
                 }
 
@@ -127,8 +126,7 @@ public class QueryInLoopCheckTest
 
             default:
                 {
-                    throw new WrongParameterException(
-                        MessageFormat.format("Unknown method name {0}", method.getName()));
+                    throw new IllegalStateException(MessageFormat.format("Unknown method name {0}", method.getName()));
                 }
             }
         }
