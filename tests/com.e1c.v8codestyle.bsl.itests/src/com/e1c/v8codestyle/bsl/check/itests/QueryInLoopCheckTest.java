@@ -84,6 +84,7 @@ public class QueryInLoopCheckTest
             case "QueryExecutionCorrect":
             case "MethodCallsQueryCorrect":
             case "MethodCallsIncorrectMethodCorrect":
+            case "GetNewQuery":
                 {
                     // Those methods doesn't have errors
                     break;
@@ -125,6 +126,12 @@ public class QueryInLoopCheckTest
                     uriErrors.add(EcoreUtil.getURI(statements.get(0)).toString());
                     uriErrors.add(EcoreUtil.getURI(statements.get(1)).toString());
                     uriErrors.add(EcoreUtil.getURI(statements.get(2)).toString());
+                    break;
+                }
+            case "QueryTypeFromFunctionIncorrect":
+                {
+                    assertEquals(2, statements.size());
+                    uriErrors.add(EcoreUtil.getURI(statements.get(0)).toString());
                     break;
                 }
 

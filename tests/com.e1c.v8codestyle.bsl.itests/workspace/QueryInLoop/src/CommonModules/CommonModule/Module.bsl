@@ -123,3 +123,26 @@ Procedure LoopWithConditionsIncorrect(SomeArray) Export
 	EndDo;
 
 EndProcedure
+
+Function GetNewQuery(ArrayElement)
+	
+	Query = New Query;
+
+	Query.Text =
+	"SELECT
+	|	1";
+	
+	Query.SetParameter("SomeParameter", ArrayElement);
+
+	Return Query;
+	
+EndFunction
+
+Procedure QueryTypeFromFunctionIncorrect(SomeArray) Export
+	
+	For Each ArrayElement In SomeArray Do
+		Selection = GetNewQuery(ArrayElement).Execute().Select();
+		Selection.Next();
+	EndDo;
+	
+EndProcedure

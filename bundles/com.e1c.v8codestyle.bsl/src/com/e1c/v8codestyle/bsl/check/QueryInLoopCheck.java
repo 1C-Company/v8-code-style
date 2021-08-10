@@ -44,7 +44,6 @@ import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
-import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.WhileStatement;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
@@ -150,16 +149,12 @@ public class QueryInLoopCheck
         }
 
         Boolean checkQueriesForInfiniteLoops = parameters.getBoolean(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP);
-        Map<EReference, Set<Statement>> statementsWithQueryInLoop = getStatementsWithQueryInLoop(module,
+        Map<EReference, Set<SimpleStatement>> statementsWithQueryInLoop = getStatementsWithQueryInLoop(module,
             methodsWithQuery, queryExecutionMethods, checkQueriesForInfiniteLoops, monitor);
-        if (statementsWithQueryInLoop.isEmpty())
-        {
-            return;
-        }
 
-        for (Entry<EReference, Set<Statement>> entryStatement : statementsWithQueryInLoop.entrySet())
+        for (Entry<EReference, Set<SimpleStatement>> entryStatement : statementsWithQueryInLoop.entrySet())
         {
-            for (Statement statement : entryStatement.getValue())
+            for (SimpleStatement statement : entryStatement.getValue())
             {
                 if (monitor.isCanceled())
                 {
@@ -235,37 +230,27 @@ public class QueryInLoopCheck
 
         Expression source = ((DynamicFeatureAccess)methodAccess).getSource();
 
+        if (isQueryTypeSource(source))
+        {
+            return queryExecutionMethods.contains(methodAccess.getName());
+        }
+
         if (source instanceof Invocation)
         {
             return isQueryExecutionExpression(source, queryExecutionMethods);
         }
 
-        if (!(isQueryTypeSource(source)))
-        {
-            return false;
-        }
-
-        return queryExecutionMethods.contains(methodAccess.getName());
+        return false;
     }
 
-    private boolean isQueryExecutionLeftStatement(Statement statement, Set<String> queryExecutionMethods)
+    private boolean isQueryExecutionLeftStatement(SimpleStatement statement, Set<String> queryExecutionMethods)
     {
-        if (!(statement instanceof SimpleStatement))
-        {
-            return false;
-        }
-
-        return isQueryExecutionExpression(((SimpleStatement)statement).getLeft(), queryExecutionMethods);
+        return isQueryExecutionExpression(statement.getLeft(), queryExecutionMethods);
     }
 
-    private boolean isQueryExecutionRightStatement(Statement statement, Set<String> queryExecutionMethods)
+    private boolean isQueryExecutionRightStatement(SimpleStatement statement, Set<String> queryExecutionMethods)
     {
-        if (!(statement instanceof SimpleStatement))
-        {
-            return false;
-        }
-
-        return isQueryExecutionExpression(((SimpleStatement)statement).getRight(), queryExecutionMethods);
+        return isQueryExecutionExpression(statement.getRight(), queryExecutionMethods);
     }
 
     private Set<String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods, IProgressMonitor monitor)
@@ -306,24 +291,14 @@ public class QueryInLoopCheck
         return methodsWithQuery.contains(methodAccess.getName());
     }
 
-    private boolean isMethodCalledLeftStatement(Statement statement, Set<String> methodsWithQuery)
+    private boolean isMethodCalledLeftStatement(SimpleStatement statement, Set<String> methodsWithQuery)
     {
-        if (!(statement instanceof SimpleStatement))
-        {
-            return false;
-        }
-
-        return isMethodCalledExpression(((SimpleStatement)statement).getLeft(), methodsWithQuery);
+        return isMethodCalledExpression(statement.getLeft(), methodsWithQuery);
     }
 
-    private boolean isMethodCalledRightStatement(Statement statement, Set<String> methodsWithQuery)
+    private boolean isMethodCalledRightStatement(SimpleStatement statement, Set<String> methodsWithQuery)
     {
-        if (!(statement instanceof SimpleStatement))
-        {
-            return false;
-        }
-
-        return isMethodCalledExpression(((SimpleStatement)statement).getRight(), methodsWithQuery);
+        return isMethodCalledExpression(statement.getRight(), methodsWithQuery);
     }
 
     private void expandMethodsWithQuery(Set<String> methodsWithQuery, Module module, IProgressMonitor monitor)
@@ -371,28 +346,29 @@ public class QueryInLoopCheck
 
     }
 
-    private void addStatementWithQueryInLoop(Map<EReference, Set<Statement>> result, SimpleStatement statement,
+    private void addStatementWithQueryInLoop(Map<EReference, Set<SimpleStatement>> result, SimpleStatement statement,
         Set<String> methodsWithQuery, Set<String> queryExecutionMethods)
     {
         if (isMethodCalledLeftStatement(statement, methodsWithQuery)
             || isQueryExecutionLeftStatement(statement, queryExecutionMethods))
         {
-            Set<Statement> leftSet = result.get(SIMPLE_STATEMENT__LEFT);
+            Set<SimpleStatement> leftSet = result.get(SIMPLE_STATEMENT__LEFT);
             leftSet.add(statement);
         }
 
         if (isMethodCalledRightStatement(statement, methodsWithQuery)
             || isQueryExecutionRightStatement(statement, queryExecutionMethods))
         {
-            Set<Statement> rightSet = result.get(SIMPLE_STATEMENT__RIGHT);
+            Set<SimpleStatement> rightSet = result.get(SIMPLE_STATEMENT__RIGHT);
             rightSet.add(statement);
         }
     }
 
-    private Map<EReference, Set<Statement>> getStatementsWithQueryInLoop(Module module, Set<String> methodsWithQuery,
-        Set<String> queryExecutionMethods, Boolean checkQueriesForInfiniteLoops, IProgressMonitor monitor)
+    private Map<EReference, Set<SimpleStatement>> getStatementsWithQueryInLoop(Module module,
+        Set<String> methodsWithQuery, Set<String> queryExecutionMethods, Boolean checkQueriesForInfiniteLoops,
+        IProgressMonitor monitor)
     {
-        Map<EReference, Set<Statement>> result = new HashMap<>();
+        Map<EReference, Set<SimpleStatement>> result = new HashMap<>();
         result.put(SIMPLE_STATEMENT__LEFT, new HashSet<>());
         result.put(SIMPLE_STATEMENT__RIGHT, new HashSet<>());
 
