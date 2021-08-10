@@ -110,7 +110,7 @@ public class QueryInLoopCheck
             .issueType(IssueType.PERFORMANCE)
             .module()
             .checkedObjectType(MODULE)
-            .parameter(PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS,  Boolean.class, DEFAULT_CHECK_QUERIES_FOR_INFINITE_LOOPS,
+            .parameter(PARAM_CHECK_QUERIES_FOR_INFINITE_LOOPS, Boolean.class, DEFAULT_CHECK_QUERIES_FOR_INFINITE_LOOPS,
                 Messages.QueryInLoop_check_queries_for_infinite_loops);
         //@formatter:on
     }
