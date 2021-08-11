@@ -142,15 +142,9 @@ public class QueryInLoopCheck
             return;
         }
 
-        Map<String, String> methodsCalledFromQuery = expandMethodsWithQuery(methodsWithQuery, module, monitor);
-        if (monitor.isCanceled())
-        {
-            return;
-        }
-
-        Boolean checkQueriesForInfiniteLoops = parameters.getBoolean(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP);
-        Set<FeatureAccess> faWithQueryInLoop = getFaWithQueryInLoop(module, methodsCalledFromQuery,
-            queryExecutionMethods, checkQueriesForInfiniteLoops, monitor);
+        Boolean checkQueryInInfiniteLoop = parameters.getBoolean(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP);
+        Set<FeatureAccess> faWithQueryInLoop =
+            getFaWithQueryInLoop(module, methodsWithQuery, queryExecutionMethods, checkQueryInInfiniteLoop, monitor);
 
         for (FeatureAccess featureAccess : faWithQueryInLoop)
         {
@@ -166,7 +160,7 @@ public class QueryInLoopCheck
 
             if (featureAccess instanceof StaticFeatureAccess)
             {
-                String errorPath = methodsCalledFromQuery.get(featureAccess.getName());
+                String errorPath = methodsWithQuery.get(featureAccess.getName());
                 String errorMessage =
                     MessageFormat.format(Messages.QueryInLoop_Loop_has_method_with_query__0, errorPath);
                 resultAceptor.addIssue(errorMessage, featureAccess, FEATURE_ACCESS__NAME);
@@ -260,6 +254,29 @@ public class QueryInLoopCheck
             String.valueOf(lineColumn.getColumn()));
     }
 
+    private String getMethodPath(Method method, Map<String, String> result)
+    {
+        if (result.containsKey(method.getName()))
+        {
+            return null;
+        }
+
+        StaticFeatureAccess calledMethod = isMethodWithQuery(method, result);
+        if (calledMethod == null)
+        {
+            return null;
+        }
+
+        String calledMethodPath = result.get(calledMethod.getName());
+        if (calledMethodPath == null)
+        {
+            calledMethodPath = calledMethod.getName() + "()"; //$NON-NLS-1$
+        }
+
+        return String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
+            getPositionForEObject(calledMethod), calledMethodPath);
+    }
+
     private Map<String, String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
         IProgressMonitor monitor)
     {
@@ -283,6 +300,30 @@ public class QueryInLoopCheck
             }
         }
 
+        EList<Method> methods = module.allMethods();
+
+        int methodsCount = 0;
+        while (result.size() != methodsCount)
+        {
+            for (Method method : methods)
+            {
+                if (monitor.isCanceled())
+                {
+                    return Collections.emptyMap();
+                }
+
+                String methodPath = getMethodPath(method, result);
+                if (methodPath == null)
+                {
+                    continue;
+                }
+
+                result.put(method.getName(), methodPath);
+            }
+
+            methodsCount = result.size();
+        }
+
         return result;
     }
 
@@ -302,52 +343,6 @@ public class QueryInLoopCheck
         }
 
         return null;
-    }
-
-    private Map<String, String> expandMethodsWithQuery(Map<String, String> methodsWithQuery, Module module,
-        IProgressMonitor monitor)
-    {
-        Map<String, String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        result.putAll(methodsWithQuery);
-
-        EList<Method> methods = module.allMethods();
-
-        int methodsCount = 0;
-        while (result.size() != methodsCount)
-        {
-            for (Method method : methods)
-            {
-                if (monitor.isCanceled())
-                {
-                    return Collections.emptyMap();
-                }
-
-                if (result.containsKey(method.getName()))
-                {
-                    continue;
-                }
-
-                StaticFeatureAccess calledMethod = isMethodWithQuery(method, result);
-                if (calledMethod == null)
-                {
-                    continue;
-                }
-
-                String calledMethodPath = result.get(calledMethod.getName());
-                if (calledMethodPath == null)
-                {
-                    calledMethodPath = calledMethod.getName() + "()"; //$NON-NLS-1$
-                }
-
-                String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
-                    getPositionForEObject(calledMethod), calledMethodPath);
-                result.put(method.getName(), methodPath);
-            }
-
-            methodsCount = result.size();
-        }
-
-        return result;
     }
 
     private boolean isInfiniteWhileLoop(LoopStatement loopStatement)
