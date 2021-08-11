@@ -29,7 +29,8 @@ final class Messages
 
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
-    public static String QueryInLoop_Loop_has_Query;
+    public static String QueryInLoop_Loop_has_query;
+    public static String QueryInLoop_Loop_has_method_with_query__0;
     public static String QueryInLoop_title;
 
     public static String StructureCtorTooManyKeysCheck_description;

@@ -1,14 +1,14 @@
 Procedure QueryCorrect(SomeParameter) Export
 
-	Query = New Query;
+	SimpleQuery = New Query;
 
-	Query.SetParameter("SomeParameter", SomeParameter);
+	SimpleQuery.SetParameter("SomeParameter", SomeParameter);
 
-	Query.Text =
+	SimpleQuery.Text =
 	"SELECT
 	|	1";
 
-	Query.Execute();
+	SimpleQuery.Execute();
 
 EndProcedure
 
@@ -28,15 +28,15 @@ EndProcedure
 
 Procedure ForEachStatementIncorrect(SomeArray) Export
 
-	Query = New Query;
+	ForEachQuery = New Query;
 
-	Query.Text =
+	ForEachQuery.Text =
 	"SELECT
 	|	1";
 
 	For Each ArrayElement In SomeArray Do
-		Query.SetParameter("SomeParameter", ArrayElement);
-		Selection = Query.Execute().Select();
+		ForEachQuery.SetParameter("SomeParameter", ArrayElement);
+		Selection = ForEachQuery.Execute().Select();
 		Selection.Next();
 	EndDo;
 
@@ -44,15 +44,15 @@ EndProcedure
 
 Procedure ForToStatementIncorrect(SomeArray) Export
 
-	Query = New Query;
+	ForToQuery = New Query;
 
-	Query.Text =
+	ForToQuery.Text =
 	"SELECT
 	|	1";
 
 	For ArrayElement = 1 To 10 Do
-		Query.SetParameter("SomeParameter", ArrayElement);
-		Result = Query.ExecuteBatch();
+		ForToQuery.SetParameter("SomeParameter", ArrayElement);
+		Result = ForToQuery.ExecuteBatch();
 		Result[0].Select();
 	EndDo;
 
@@ -60,14 +60,14 @@ EndProcedure
 
 Procedure WhileStatementIncorrect(SomeArray) Export
 
-	Query = New Query;
+	WhileQuery = New Query;
 
-	Query.Text =
+	WhileQuery.Text =
 	"SELECT
 	|	1";
 
 	While SomeArray.Count() > 0 And SomeArray.Count() < 5 Do
-		Query.ExecuteBatchWithIntermediateData();
+		WhileQuery.ExecuteBatchWithIntermediateData();
 	EndDo;
 
 EndProcedure
@@ -80,14 +80,14 @@ EndProcedure
 
 Procedure LoopCallsMethodIncorrect(SomeParameter) Export
 
-	Query = New Query;
+	LoopCallQuery = New Query;
 
-	Query.Text =
+	LoopCallQuery.Text =
 	"SELECT
 	|	1";
 
 	While SomeParameter = 0 Do
-		Result = QueryExecutionCorrect(Query);
+		Result = QueryExecutionCorrect(LoopCallQuery);
 		Result.Select();
 	EndDo;
 
@@ -95,14 +95,14 @@ EndProcedure
 
 Procedure LoopCallsMethodWithOtherMethodIncorrect(SomeParameter) Export
 
-	Query = New Query;
+	MethodCallQuery = New Query;
 
-	Query.Text =
+	MethodCallQuery.Text =
 	"SELECT
 	|	1";
 
 	While SomeParameter = 0 Do
-		MethodCallsQueryCorrect(Query);
+		MethodCallsQueryCorrect(MethodCallQuery);
 	EndDo;
 
 EndProcedure
@@ -126,15 +126,15 @@ EndProcedure
 
 Function GetNewQuery(ArrayElement)
 	
-	Query = New Query;
+	FunctionQuery = New Query;
 
-	Query.Text =
+	FunctionQuery.Text =
 	"SELECT
 	|	1";
 	
-	Query.SetParameter("SomeParameter", ArrayElement);
+	FunctionQuery.SetParameter("SomeParameter", ArrayElement);
 
-	Return Query;
+	Return FunctionQuery;
 	
 EndFunction
 
