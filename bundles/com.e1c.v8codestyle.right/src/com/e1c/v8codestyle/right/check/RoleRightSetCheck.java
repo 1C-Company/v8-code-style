@@ -75,7 +75,7 @@ public abstract class RoleRightSetCheck
     {
         builder.complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.WARNING)
+            .issueType(IssueType.SECURITY)
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)
             .features(OBJECT_RIGHT__RIGHT, OBJECT_RIGHT__VALUE)
@@ -92,48 +92,50 @@ public abstract class RoleRightSetCheck
         ObjectRight objectRight = (ObjectRight)object;
         Right right = objectRight.getRight();
 
-        if (right != null && getRightName().getName().equals(right.getName()))
+        if (right == null || !getRightName().getName().equals(right.getName()))
         {
-            RightValue rightValue = objectRight.getValue();
-            if (rightValue == null && objectRight.eResource() != null
-                && !objectRight.eResource().getContents().isEmpty()
-                && objectRight.eResource().getContents().get(0) instanceof RoleDescription)
-            {
-                IBmModel bmModel = bmModelManager.getModel(objectRight);
-                RoleDescription roleDescription = (RoleDescription)objectRight.eResource().getContents().get(0);
-                Role role = RightsModelUtil.getOwner(roleDescription, bmModel);
-                rightValue = RightsModelUtil.getDefaultRightValue(objectRight, role);
-            }
-            if (!RightsModelUtil.getBooleanRightValue(rightValue) || monitor.isCanceled())
-            {
-                return;
-            }
-
-            String excludeRoleNamePattern = parameters.getString(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME);
-            if (excludeRoleNamePattern != null && !excludeRoleNamePattern.isBlank())
-            {
-                IBmModel model = bmModelManager.getModel(objectRight);
-                RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
-                Role role = RightsModelUtil.getOwner(description, model);
-                if (role == null || !role.getName().matches(excludeRoleNamePattern))
-                {
-                    return;
-                }
-            }
-
-            ObjectRights rights = EcoreUtil2.getContainerOfType(objectRight, ObjectRights.class);
-            MdObject mdObject = rights.getObject() instanceof MdObject ? (MdObject)rights.getObject() : null;
-
-            String excludeObjectNamePattern = parameters.getString(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME);
-            if (excludeObjectNamePattern != null && !excludeObjectNamePattern.isBlank() && mdObject != null
-                && mdObject.getName().matches(excludeObjectNamePattern))
-            {
-                return;
-            }
-
-            String message = getIssueMessage(right, mdObject);
-            resultAceptor.addIssue(message, OBJECT_RIGHT__RIGHT);
+            return;
         }
+
+        RightValue rightValue = objectRight.getValue();
+        if (rightValue == null && objectRight.eResource() != null && !objectRight.eResource().getContents().isEmpty()
+            && objectRight.eResource().getContents().get(0) instanceof RoleDescription)
+        {
+            IBmModel bmModel = bmModelManager.getModel(objectRight);
+            RoleDescription roleDescription = (RoleDescription)objectRight.eResource().getContents().get(0);
+            Role role = RightsModelUtil.getOwner(roleDescription, bmModel);
+            rightValue = RightsModelUtil.getDefaultRightValue(objectRight, role);
+        }
+
+        if (!RightsModelUtil.getBooleanRightValue(rightValue) || monitor.isCanceled())
+        {
+            return;
+        }
+
+        String excludeRoleNamePattern = parameters.getString(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME);
+        if (excludeRoleNamePattern != null && !excludeRoleNamePattern.isBlank())
+        {
+            IBmModel model = bmModelManager.getModel(objectRight);
+            RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
+            Role role = RightsModelUtil.getOwner(description, model);
+            if (role == null || !role.getName().matches(excludeRoleNamePattern))
+            {
+                return;
+            }
+        }
+
+        ObjectRights rights = EcoreUtil2.getContainerOfType(objectRight, ObjectRights.class);
+        MdObject mdObject = rights.getObject() instanceof MdObject ? (MdObject)rights.getObject() : null;
+
+        String excludeObjectNamePattern = parameters.getString(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME);
+        if (excludeObjectNamePattern != null && !excludeObjectNamePattern.isBlank() && mdObject != null
+            && mdObject.getName().matches(excludeObjectNamePattern))
+        {
+            return;
+        }
+
+        String message = getIssueMessage(right, mdObject);
+        resultAceptor.addIssue(message, OBJECT_RIGHT__RIGHT);
     }
 
     protected abstract RightName getRightName();
