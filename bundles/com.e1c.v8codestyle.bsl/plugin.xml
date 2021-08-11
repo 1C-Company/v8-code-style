@@ -24,7 +24,7 @@
       </category>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.internal.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
       </check>
    </extension>
 
