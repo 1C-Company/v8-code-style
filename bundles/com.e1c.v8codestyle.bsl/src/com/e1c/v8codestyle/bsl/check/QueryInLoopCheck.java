@@ -16,8 +16,9 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.FEATURE_ACCESS__NAM
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,7 +34,6 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
-import org.eclipse.xtext.util.LineAndColumn;
 
 import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
@@ -109,6 +109,7 @@ public class QueryInLoopCheck
         //@formatter:off
         builder.title(Messages.QueryInLoop_title)
             .description(Messages.QueryInLoop_description)
+            .disable()
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.PERFORMANCE)
@@ -142,11 +143,11 @@ public class QueryInLoopCheck
             return;
         }
 
-        Boolean checkQueryInInfiniteLoop = parameters.getBoolean(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP);
-        Set<FeatureAccess> faWithQueryInLoop =
-            getFaWithQueryInLoop(module, methodsWithQuery, queryExecutionMethods, checkQueryInInfiniteLoop, monitor);
+        boolean checkQueryInInfiniteLoop = parameters.getBoolean(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP);
+        Collection<FeatureAccess> queryInLoopCallers =
+            getQueryInLoopCallers(module, methodsWithQuery, queryExecutionMethods, checkQueryInInfiniteLoop, monitor);
 
-        for (FeatureAccess featureAccess : faWithQueryInLoop)
+        for (FeatureAccess featureAccess : queryInLoopCallers)
         {
             if (monitor.isCanceled())
             {
@@ -246,12 +247,10 @@ public class QueryInLoopCheck
         return result;
     }
 
-    private String getPositionForEObject(EObject object)
+    private String getPositionForFeatureObject(EObject object)
     {
         ICompositeNode node = NodeModelUtils.findActualNodeFor(object);
-        LineAndColumn lineColumn = NodeModelUtils.getLineAndColumn(node.getRootNode(), node.getOffset());
-        return MessageFormat.format("'{'{0}:{1}'}' ", String.valueOf(lineColumn.getLine()), //$NON-NLS-1$
-            String.valueOf(lineColumn.getColumn()));
+        return MessageFormat.format("'{'{0}'}' ", String.valueOf(node.getStartLine())); //$NON-NLS-1$
     }
 
     private String getMethodPath(Method method, Map<String, String> result)
@@ -261,7 +260,7 @@ public class QueryInLoopCheck
             return null;
         }
 
-        StaticFeatureAccess calledMethod = isMethodWithQuery(method, result);
+        StaticFeatureAccess calledMethod = getMethodWithQuery(method, result);
         if (calledMethod == null)
         {
             return null;
@@ -274,7 +273,7 @@ public class QueryInLoopCheck
         }
 
         return String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
-            getPositionForEObject(calledMethod), calledMethodPath);
+            getPositionForFeatureObject(calledMethod), calledMethodPath);
     }
 
     private Map<String, String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
@@ -295,7 +294,7 @@ public class QueryInLoopCheck
                 String sourceName = getSourceName(dfa.getSource());
 
                 String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
-                    getPositionForEObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
+                    getPositionForFeatureObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
                 result.put(method.getName(), methodPath);
             }
         }
@@ -332,7 +331,7 @@ public class QueryInLoopCheck
         return methodsWithQuery.containsKey(sfa.getName()) && BslUtil.getInvocation(sfa) != null;
     }
 
-    private StaticFeatureAccess isMethodWithQuery(Method method, Map<String, String> methodsWithQuery)
+    private StaticFeatureAccess getMethodWithQuery(Method method, Map<String, String> methodsWithQuery)
     {
         for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(method, StaticFeatureAccess.class))
         {
@@ -356,19 +355,19 @@ public class QueryInLoopCheck
         return predicate instanceof BooleanLiteral;
     }
 
-    private Set<FeatureAccess> getFaWithQueryInLoop(Module module, Map<String, String> methodsWithQuery,
-        Set<String> queryExecutionMethods, Boolean checkQueriesForInfiniteLoops, IProgressMonitor monitor)
+    private Collection<FeatureAccess> getQueryInLoopCallers(Module module, Map<String, String> methodsWithQuery,
+        Set<String> queryExecutionMethods, boolean checkQueryInInfiniteLoop, IProgressMonitor monitor)
     {
-        Set<FeatureAccess> result = new HashSet<>();
+        Collection<FeatureAccess> result = new ArrayList<>();
 
         for (LoopStatement loopStatement : EcoreUtil2.eAllOfType(module, LoopStatement.class))
         {
             if (monitor.isCanceled())
             {
-                return Collections.emptySet();
+                return Collections.emptyList();
             }
 
-            if (Boolean.FALSE.equals(checkQueriesForInfiniteLoops) && isInfiniteWhileLoop(loopStatement))
+            if (!checkQueryInInfiniteLoop && isInfiniteWhileLoop(loopStatement))
             {
                 continue;
             }

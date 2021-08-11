@@ -57,6 +57,8 @@ public class QueryInLoopCheckTest
 
     private static final String CHECK_ID = "query-in-loop"; //$NON-NLS-1$
 
+    private static final String PARAM_CHECK_QUERIY_IN_INFINITE_LOOP = "checkQueryInInfiniteLoop"; //$NON-NLS-1$
+
     @Test
     public void testQueryInLoop() throws Exception
     {
@@ -155,8 +157,6 @@ public class QueryInLoopCheckTest
 
         assertEquals(0, uriErrors.size());
     }
-
-    private static final String PARAM_CHECK_QUERIY_IN_INFINITE_LOOP = "checkQueryInInfiniteLoop"; //$NON-NLS-1$
 
     private CheckUid cuid(String checkId)
     {
