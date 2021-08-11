@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "settings": {
+    "query-in-loop": {
+      "enabled": true
+    }
+  }
+}

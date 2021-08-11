@@ -11,21 +11,30 @@
    
     Contributors:
         1C-Soft LLC - initial API and implementation
+        Aleksandr Kapralov - issue #17
  -->
 
 <plugin>
    <extension
          point="com.e1c.g5.v8.dt.check.checks">
+
       <category
             category="com.e1c.v8codestyle"
             description="%category.bls.description"
             id="com.e1c.v8codestyle.bsl"
             title="%category.bsl.title">
       </category>
+
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
       </check>
+
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.QueryInLoopCheck">
+      </check>
+
    </extension>
 
 </plugin>
