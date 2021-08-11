@@ -9,13 +9,11 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
- *     Aleksandr Kapralov - issue #17
  *******************************************************************************/
 package com.e1c.v8codestyle.internal.bsl;
 
 import org.eclipse.core.runtime.Plugin;
 
-import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 
 /**
@@ -34,7 +32,8 @@ class ExternalDependenciesModule
     @Override
     protected void doConfigure()
     {
-        bind(IRuntimeVersionSupport.class).toService();
+        // bind V8 services
+
     }
 
 }
