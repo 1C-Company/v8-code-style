@@ -46,6 +46,8 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
+ * Abstract check that hole has some right for any object.
+ *
  * @author Dmitriy Marmyshev
  *
  */

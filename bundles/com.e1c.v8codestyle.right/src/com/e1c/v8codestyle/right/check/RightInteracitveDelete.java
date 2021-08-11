@@ -17,6 +17,12 @@ import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com.google.inject.Inject;
 
+/**
+ * Checks that hole has forbidden right: {@code INTERACTIVE_DELETE} for any objects.
+ *
+ * @author Dmitriy Marmyshev
+ *
+ */
 public class RightInteracitveDelete
     extends RoleRightSetCheck
 {
