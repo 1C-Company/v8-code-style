@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="9d9b343b-26c3-46e5-a701-4363dba87338">
+  <name>RoleRightHasForbidden</name>
+  <synonym>
+    <key>en</key>
+    <value>Role right has forbidden</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="ff2d3d9d-70dd-4ccf-b6de-535bb8ca7f4e"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="68a3dfa7-33b5-4aaf-952b-c5872180aa84"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="74d36a43-8a9b-41c8-a2f8-d7fb846e2c47"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="2c79fd8d-314d-4a86-9e47-7d4e65ffc337"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="e325d79d-fb3d-4c12-849d-9e5a0ffc6970"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="95708a14-536e-4155-ab38-61087920fa6b"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="5dbd49ff-26f0-4978-a0ba-ea5f88639553"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="3f22f2b0-8f1b-4df6-ba72-8056676d8b42">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <roles>Role.AllowedRights</roles>
+  <roles>Role.ForbiddenRights</roles>
+  <roles>Role.FullAccess</roles>
+  <catalogs>Catalog.Products</catalogs>
+</mdclass:Configuration>

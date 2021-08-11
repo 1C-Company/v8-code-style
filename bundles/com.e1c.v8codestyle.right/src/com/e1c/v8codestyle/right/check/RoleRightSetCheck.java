@@ -14,6 +14,7 @@ package com.e1c.v8codestyle.right.check;
 
 import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.OBJECT_RIGHT;
 import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.OBJECT_RIGHT__RIGHT;
+import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.OBJECT_RIGHT__VALUE;
 import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.ROLE_DESCRIPTION;
 
 import java.text.MessageFormat;
@@ -33,6 +34,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.rights.model.ObjectRight;
 import com._1c.g5.v8.dt.rights.model.ObjectRights;
 import com._1c.g5.v8.dt.rights.model.Right;
+import com._1c.g5.v8.dt.rights.model.RightValue;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
@@ -74,7 +76,7 @@ public abstract class RoleRightSetCheck
             .issueType(IssueType.WARNING)
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)
-            .features(OBJECT_RIGHT__RIGHT)
+            .features(OBJECT_RIGHT__RIGHT, OBJECT_RIGHT__VALUE)
             .parameter(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
                 Messages.RoleRightSetCheck_Exclude_Role_name_pattern)
             .parameter(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
@@ -90,6 +92,21 @@ public abstract class RoleRightSetCheck
 
         if (right != null && getRightName().getName().equals(right.getName()))
         {
+            RightValue rightValue = objectRight.getValue();
+            if (rightValue == null && objectRight.eResource() != null
+                && !objectRight.eResource().getContents().isEmpty()
+                && objectRight.eResource().getContents().get(0) instanceof RoleDescription)
+            {
+                IBmModel bmModel = bmModelManager.getModel(objectRight);
+                RoleDescription roleDescription = (RoleDescription)objectRight.eResource().getContents().get(0);
+                Role role = RightsModelUtil.getOwner(roleDescription, bmModel);
+                rightValue = RightsModelUtil.getDefaultRightValue(objectRight, role);
+            }
+            if (!RightsModelUtil.getBooleanRightValue(rightValue) || monitor.isCanceled())
+            {
+                return;
+            }
+
             String excludeRoleNamePattern = parameters.getString(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME);
             if (excludeRoleNamePattern != null && !excludeRoleNamePattern.isBlank())
             {
