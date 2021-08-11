@@ -39,8 +39,10 @@
     </synonym>
     <languageCode>ru</languageCode>
   </languages>
-  <commonModules>CommonModule.CommonClient</commonModules>
   <commonModules>CommonModule.Common</commonModules>
+  <commonModules>CommonModule.CommonClient</commonModules>
+  <commonModules>CommonModule.CommonClientGlobal</commonModules>
   <commonModules>CommonModule.CommonServerCall</commonModules>
   <commonModules>CommonModule.CommonServerClient</commonModules>
+  <commonModules>CommonModule.CommonServerGlobal</commonModules>
 </mdclass:Configuration>

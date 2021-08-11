@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #15
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
@@ -151,7 +152,8 @@ public final class CommonModuleType
         }
 
         if (values.equals(TYPE_SERVER) || values.equals(TYPE_SERVER_CALL) || values.equals(TYPE_CLIENT)
-            || values.equals(TYPE_CLIENT_SERVER))
+            || values.equals(TYPE_CLIENT_SERVER) || values.equals(TYPE_SERVER_GLOBAL)
+            || values.equals(TYPE_CLIENT_GLOBAL))
         {
             return;
         }

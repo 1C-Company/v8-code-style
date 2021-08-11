@@ -42,5 +42,27 @@
 
     </profile>
   </profiles>
-
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>native2ascii-maven-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>utf8-to-latin1</id>
+              <goals>
+                <goal>inplace</goal>
+              </goals>
+              <phase>process-resources</phase>
+              <configuration>
+                <dir>./</dir>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
