@@ -19,7 +19,6 @@ import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.ROLE_DESCRIPT
 
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
@@ -161,7 +160,7 @@ public abstract class RoleRightSetCheck
      */
     protected String getIssueMessage(Right right, MdObject mdObject)
     {
-        IV8Project project = v8ProjectManager.getProject(right);
+        IV8Project project = mdObject == null ? null : v8ProjectManager.getProject(mdObject);
         String rightName = getRightName(right, project);
         String mdObjectName = getMdObjectName(mdObject, project);
         return MessageFormat.format(Messages.RoleRightSetCheck_Role_right__0__set_for__1, rightName, mdObjectName);
@@ -177,8 +176,7 @@ public abstract class RoleRightSetCheck
 
     private String getRightName(Right right, IV8Project project)
     {
-        Assert.isNotNull(project);
-        if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
             return right.getNameRu();
         }
@@ -187,11 +185,10 @@ public abstract class RoleRightSetCheck
 
     private String getMdObjectName(MdObject mdObject, IV8Project project)
     {
-        Assert.isNotNull(project);
         if (mdObject == null)
             return "Unknown"; //$NON-NLS-1$
 
-        if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
             return MdUtil.getFullyQualifiedNameRu(mdObject).toString();
         }
