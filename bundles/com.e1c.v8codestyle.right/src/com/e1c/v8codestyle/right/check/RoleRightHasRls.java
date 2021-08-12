@@ -18,6 +18,7 @@ import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.ROLE_DESCRIPT
 
 import java.text.MessageFormat;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
@@ -63,6 +64,12 @@ public class RoleRightHasRls
 
     private final IBmModelManager bmModelManager;
 
+    /**
+     * Creates new instance of check that find RLS set common roles.
+     *
+     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
+     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     */
     @Inject
     public RoleRightHasRls(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {
@@ -137,7 +144,8 @@ public class RoleRightHasRls
 
     private String getRightName(ObjectRight right, IV8Project project)
     {
-        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        Assert.isNotNull(project);
+        if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
             return right.getRight().getNameRu();
         }
@@ -146,10 +154,11 @@ public class RoleRightHasRls
 
     private String getMdObjectName(MdObject mdObject, IV8Project project)
     {
+        Assert.isNotNull(project);
         if (mdObject == null)
             return "Unknown"; //$NON-NLS-1$
 
-        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
             return MdUtil.getFullyQualifiedNameRu(mdObject).toString();
         }
