@@ -10,9 +10,6 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.right.check.itests;
 
 import static org.junit.Assert.assertEquals;

@@ -18,7 +18,7 @@ import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com.google.inject.Inject;
 
 /**
- * Checks that hole has forbidden right: {@code INTERACTIVE_DELETE_PREDEFINED_DATA} for any objects.
+ * Checks that role has forbidden right: {@code INTERACTIVE_DELETE_PREDEFINED_DATA} for any objects.
  *
  * @author Dmitriy Marmyshev
  *

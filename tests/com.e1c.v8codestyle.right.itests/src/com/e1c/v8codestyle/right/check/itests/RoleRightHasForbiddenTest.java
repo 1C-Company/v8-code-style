@@ -10,9 +10,6 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.right.check.itests;
 
 import static org.junit.Assert.assertEquals;
@@ -219,6 +216,7 @@ public class RoleRightHasForbiddenTest
         Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
         Marker marker = getAnyFirstMarker(CHECK_ID_1, markers);
         assertNull(marker);
+
     }
 
     /**
@@ -240,6 +238,7 @@ public class RoleRightHasForbiddenTest
         Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
         Marker marker = getAnyFirstMarker(CHECK_ID_2, markers);
         assertNull(marker);
+
     }
 
     /**
@@ -261,6 +260,7 @@ public class RoleRightHasForbiddenTest
         Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
         Marker marker = getAnyFirstMarker(CHECK_ID_3, markers);
         assertNull(marker);
+
     }
 
     /**
@@ -282,6 +282,7 @@ public class RoleRightHasForbiddenTest
         Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
         Marker marker = getAnyFirstMarker(CHECK_ID_4, markers);
         assertNull(marker);
+
     }
 
     /**

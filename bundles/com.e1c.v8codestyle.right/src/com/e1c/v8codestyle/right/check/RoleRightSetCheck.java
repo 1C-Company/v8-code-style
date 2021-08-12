@@ -19,6 +19,7 @@ import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.ROLE_DESCRIPT
 
 import java.text.MessageFormat;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
@@ -46,7 +47,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
- * Abstract check that hole has some right for any object.
+ * Abstract check that role has some right for any object.
  *
  * @author Dmitriy Marmyshev
  *
@@ -63,6 +64,12 @@ public abstract class RoleRightSetCheck
 
     private final IBmModelManager bmModelManager;
 
+    /**
+     * Creates new instance which helps to check that role has specified right for an object.
+     *
+     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
+     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     */
     @Inject
     public RoleRightSetCheck(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {
@@ -97,13 +104,12 @@ public abstract class RoleRightSetCheck
             return;
         }
 
+        Role role = null;
+
         RightValue rightValue = objectRight.getValue();
-        if (rightValue == null && objectRight.eResource() != null && !objectRight.eResource().getContents().isEmpty()
-            && objectRight.eResource().getContents().get(0) instanceof RoleDescription)
+        if (rightValue == null)
         {
-            IBmModel bmModel = bmModelManager.getModel(objectRight);
-            RoleDescription roleDescription = (RoleDescription)objectRight.eResource().getContents().get(0);
-            Role role = RightsModelUtil.getOwner(roleDescription, bmModel);
+            role = getRole(objectRight);
             rightValue = RightsModelUtil.getDefaultRightValue(objectRight, role);
         }
 
@@ -115,9 +121,10 @@ public abstract class RoleRightSetCheck
         String excludeRoleNamePattern = parameters.getString(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME);
         if (excludeRoleNamePattern != null && !excludeRoleNamePattern.isBlank())
         {
-            IBmModel model = bmModelManager.getModel(objectRight);
-            RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
-            Role role = RightsModelUtil.getOwner(description, model);
+            if (role == null)
+            {
+                role = getRole(objectRight);
+            }
             if (role == null || !role.getName().matches(excludeRoleNamePattern))
             {
                 return;
@@ -138,8 +145,20 @@ public abstract class RoleRightSetCheck
         resultAceptor.addIssue(message, OBJECT_RIGHT__RIGHT);
     }
 
+    /**
+     * Gets the object right name that need to check that exist in role rights.
+     *
+     * @return the right name constant, cannot return {@code null}.
+     */
     protected abstract RightName getRightName();
 
+    /**
+     * Creates formated issue message for the right and the MD object.
+     *
+     * @param right the right that forbidden to set for the MD object, cannot be {@code null}.
+     * @param mdObject the MD object that has forbidden right, cannot be {@code null}.
+     * @return the formatted issue message that right set for the object, cannot return {@code null}.
+     */
     protected String getIssueMessage(Right right, MdObject mdObject)
     {
         IV8Project project = v8ProjectManager.getProject(right);
@@ -148,9 +167,18 @@ public abstract class RoleRightSetCheck
         return MessageFormat.format(Messages.RoleRightSetCheck_Role_right__0__set_for__1, rightName, mdObjectName);
     }
 
+    private Role getRole(ObjectRight objectRight)
+    {
+        IBmModel model = bmModelManager.getModel(objectRight);
+        RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
+        Role role = RightsModelUtil.getOwner(description, model);
+        return role;
+    }
+
     private String getRightName(Right right, IV8Project project)
     {
-        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        Assert.isNotNull(project);
+        if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
             return right.getNameRu();
         }
@@ -159,10 +187,11 @@ public abstract class RoleRightSetCheck
 
     private String getMdObjectName(MdObject mdObject, IV8Project project)
     {
+        Assert.isNotNull(project);
         if (mdObject == null)
             return "Unknown"; //$NON-NLS-1$
 
-        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
             return MdUtil.getFullyQualifiedNameRu(mdObject).toString();
         }
