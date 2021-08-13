@@ -27,6 +27,18 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.check.messages"; //$NON-NLS-1$
 
+    public static String EventDataExchangeLoadCheck_Check_at_the_beginning_of_event_handler;
+
+    public static String EventDataExchangeLoadCheck_description;
+
+    public static String EventDataExchangeLoadCheck_Function_list_that_checks_DataExchange_Load;
+
+    public static String EventDataExchangeLoadCheck_Mandatory_checking_of__DataExchange_Load__is_absent_in_event_handler__0;
+
+    public static String EventDataExchangeLoadCheck_No_return_in__DataExchange_Load__checking;
+
+    public static String EventDataExchangeLoadCheck_title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_query;
