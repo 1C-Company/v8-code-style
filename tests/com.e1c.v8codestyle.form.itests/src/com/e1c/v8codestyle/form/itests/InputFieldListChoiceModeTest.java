@@ -87,15 +87,8 @@ public class InputFieldListChoiceModeTest
             {
                 Form form = (Form)transaction.getTopObjectByFqn(FQN_FORM);
                 InputFieldExtInfo extInfo;
-                try
-                {
-                    extInfo = getItemExtInfo(form);
-                    extInfo.setListChoiceMode(true);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
+                extInfo = getItemExtInfo(form);
+                extInfo.setListChoiceMode(true);
 
                 return null;
             }
@@ -111,7 +104,7 @@ public class InputFieldListChoiceModeTest
         assertNull(marker);
     }
 
-    private InputFieldExtInfo getItemExtInfo(Form form) throws Exception
+    private InputFieldExtInfo getItemExtInfo(Form form)
     {
         assertEquals(1, form.getItems().size());
         FormItem item = form.getItems().get(0);

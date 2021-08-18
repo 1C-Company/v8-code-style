@@ -27,7 +27,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 
 /**
- * Check input filed has correct list choice mode if choice list is not empty.
+ * Check input field has correct list choice mode if choice list is not empty.
  *
  * @author Dmitriy Marmyshev
  */
