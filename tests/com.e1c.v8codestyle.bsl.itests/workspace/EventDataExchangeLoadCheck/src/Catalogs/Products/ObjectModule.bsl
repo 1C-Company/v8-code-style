@@ -2,7 +2,7 @@
 Procedure BeforeDelete(Cancel)
 	
 	If Cancel Then
-		return;
+		Return;
 	EndIf;
 	
 EndProcedure
@@ -10,7 +10,7 @@ EndProcedure
 Procedure BeforeWrite(Cancel)
 	
 	If DataExchange.Load Then
-		return;
+		Return;
 	EndIf;
 	
 EndProcedure
@@ -18,7 +18,7 @@ EndProcedure
 Procedure OnWrite(Cancel)
 	
 	If Cancel Then
-		return;
+		Return;
 	EndIf;
 	
 	If DataExchange.Load Then

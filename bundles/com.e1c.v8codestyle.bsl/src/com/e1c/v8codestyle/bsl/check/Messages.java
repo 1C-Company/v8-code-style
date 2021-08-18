@@ -33,7 +33,7 @@ final class Messages
 
     public static String EventDataExchangeLoadCheck_Function_list_that_checks_DataExchange_Load;
 
-    public static String EventDataExchangeLoadCheck_Mandatory_checking_of__DataExchange_Load__is_absent_in_event_handler__0;
+    public static String EventDataExchangeLoadCheck_Mandatory_checking_of_DataExchangeLoad_is_absent_in_event_handler_0;
 
     public static String EventDataExchangeLoadCheck_No_return_in__DataExchange_Load__checking;
 
