@@ -27,7 +27,7 @@ public class RightInteractiveClearDeletionMarkPredefinedData
     extends RoleRightSetCheck
 {
 
-    public static final String CHECK_ID = "right-interactive-clear-deletion-mark-predefined-data"; //$NON-NLS-1$
+    private static final String CHECK_ID = "right-interactive-clear-deletion-mark-predefined-data"; //$NON-NLS-1$
 
     @Inject
     public RightInteractiveClearDeletionMarkPredefinedData(IV8ProjectManager v8ProjectManager,

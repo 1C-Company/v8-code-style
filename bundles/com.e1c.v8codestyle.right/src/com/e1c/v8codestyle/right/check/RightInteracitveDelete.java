@@ -27,7 +27,7 @@ public class RightInteracitveDelete
     extends RoleRightSetCheck
 {
 
-    public static final String CHECK_ID = "right-interactive-delete"; //$NON-NLS-1$
+    private static final String CHECK_ID = "right-interactive-delete"; //$NON-NLS-1$
 
     @Inject
     public RightInteracitveDelete(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)

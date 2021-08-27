@@ -27,7 +27,7 @@ public class RightInteracitveDeletePredefinedData
     extends RoleRightSetCheck
 {
 
-    public static final String CHECK_ID = "right-interactive-delete-predefined-data"; //$NON-NLS-1$
+    private static final String CHECK_ID = "right-interactive-delete-predefined-data"; //$NON-NLS-1$
 
     @Inject
     public RightInteracitveDeletePredefinedData(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
