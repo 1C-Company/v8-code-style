@@ -29,8 +29,9 @@ import com._1c.g5.v8.dt.metadata.mdclass.ReturnValuesReuse;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 
 /**
- * @author Dmitriy Marmyshev
+ * The Enumeration of common module types with title, suffix and feature settings.
  *
+ * @author Dmitriy Marmyshev
  */
 public enum CommonModuleTypes
 {
@@ -190,9 +191,7 @@ public enum CommonModuleTypes
             COMMON_MODULE__EXTERNAL_CONNECTION, false,
             COMMON_MODULE__GLOBAL, false,
             COMMON_MODULE__PRIVILEGED, false,
-            COMMON_MODULE__RETURN_VALUES_REUSE, ReturnValuesReuse.DONT_USE)),
-
-    ;
+            COMMON_MODULE__RETURN_VALUES_REUSE, ReturnValuesReuse.DONT_USE));
     //@formatter:on
 
     private final String title;
@@ -201,7 +200,7 @@ public enum CommonModuleTypes
 
     private final Map<EStructuralFeature, Object> featureValues;
 
-    private CommonModuleTypes(String title, String[] nameSuffix, Map<EStructuralFeature, Object> featureValues)
+    CommonModuleTypes(String title, String[] nameSuffix, Map<EStructuralFeature, Object> featureValues)
     {
         this.title = title;
         this.nameSuffix = nameSuffix;
