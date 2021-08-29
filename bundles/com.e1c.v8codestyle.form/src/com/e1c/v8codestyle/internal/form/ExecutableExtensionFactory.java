@@ -10,30 +10,30 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.internal;
+package com.e1c.v8codestyle.internal.form;
 
-import org.eclipse.core.runtime.Plugin;
+import org.osgi.framework.Bundle;
 
-import com._1c.g5.wiring.AbstractServiceAwareModule;
+import com._1c.g5.wiring.AbstractGuiceAwareExecutableExtensionFactory;
+import com.google.inject.Injector;
 
 /**
- * @author Dmitriy Marmyshev
+ * Guice module aware executable extension factory for plugin.
  *
+ * @author Dmitriy Marmyshev
  */
-class ExternalDependenciesModule
-    extends AbstractServiceAwareModule
+public class ExecutableExtensionFactory
+    extends AbstractGuiceAwareExecutableExtensionFactory
 {
-
-    ExternalDependenciesModule(Plugin plugin)
+    @Override
+    protected Bundle getBundle()
     {
-        super(plugin);
+        return CorePlugin.getDefault().getBundle();
     }
 
     @Override
-    protected void doConfigure()
+    protected Injector getInjector()
     {
-        // bind V8 services
-
+        return CorePlugin.getDefault().getInjector();
     }
-
 }
