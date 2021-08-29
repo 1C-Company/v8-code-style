@@ -70,7 +70,9 @@ public class StructureCtorTooManyKeysCheck
         IProgressMonitor monitor)
     {
         if (monitor.isCanceled() || !(object instanceof OperatorStyleCreator))
+        {
             return;
+        }
 
         OperatorStyleCreator osc = (OperatorStyleCreator)object;
         if (IEObjectTypeNames.STRUCTURE.equals(McoreUtil.getTypeName(osc.getType())) && !osc.getParams().isEmpty()

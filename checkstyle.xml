@@ -108,7 +108,7 @@
         <module name="MethodParamPad" />
         <module name="NoLineWrap" />
         <module name="NoWhitespaceAfter">
-            <property name="tokens" value="ARRAY_INIT, INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, ARRAY_DECLARATOR, INDEX_OP, METHOD_REF" />
+            <property name="tokens" value="INC, DEC, UNARY_MINUS, UNARY_PLUS, BNOT, LNOT, DOT, INDEX_OP, METHOD_REF" />
         </module>
         <module name="NoWhitespaceBefore">
             <property name="tokens" value="DOT" />
@@ -169,5 +169,13 @@
         <module name="SuperFinalize" />
         <module name="FallThrough" />
         <module name="MissingSwitchDefault" />
+        <module name="NeedBraces" />
+
+        <!-- var -->
+        <module name="IllegalType">
+            <property name="illegalClassNames" value="var"/>
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="id" value="IllegalVar"/>
+        </module>
     </module>
 </module>

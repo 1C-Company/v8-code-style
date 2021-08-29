@@ -186,7 +186,9 @@ public abstract class RoleRightSetCheck
     private String getMdObjectName(MdObject mdObject, IV8Project project)
     {
         if (mdObject == null)
+        {
             return "Unknown"; //$NON-NLS-1$
+        }
 
         if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {

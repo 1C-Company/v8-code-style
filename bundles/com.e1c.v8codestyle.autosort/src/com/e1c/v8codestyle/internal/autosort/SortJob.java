@@ -73,7 +73,9 @@ public class SortJob
     protected IStatus run(IProgressMonitor monitor)
     {
         if (dtProject.getWorkspaceProject() == null)
+        {
             return Status.CANCEL_STATUS;
+        }
 
         Object handler = workspaceOrchestrator.beginBackgroundOperation("Sort-MD-objects", //$NON-NLS-1$
             Arrays.asList(dtProject), ProjectPipelineJob.BUILD);
@@ -85,7 +87,9 @@ public class SortJob
                 execute(monitor);
             }
             if (monitor.isCanceled())
+            {
                 queue.clear();
+            }
         }
         finally
         {

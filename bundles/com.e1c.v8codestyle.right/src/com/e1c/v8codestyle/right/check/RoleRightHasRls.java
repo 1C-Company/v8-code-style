@@ -156,7 +156,9 @@ public class RoleRightHasRls
     {
         Assert.isNotNull(project);
         if (mdObject == null)
+        {
             return "Unknown"; //$NON-NLS-1$
+        }
 
         if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
