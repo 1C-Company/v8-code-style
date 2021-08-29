@@ -64,25 +64,35 @@ public class SortBmTask
         for (SortItem item : items)
         {
             if (monitor.isCanceled())
+            {
                 return null;
+            }
 
             if (!item.getListRef().isMany())
+            {
                 continue;
+            }
 
             EObject parent = transaction.getTopObjectByFqn(item.getFqn());
             if (parent != null)
             {
                 Object value = parent.eGet(item.getListRef());
                 if (!(value instanceof List))
+                {
                     continue;
+                }
 
                 List<?> elements = (List<?>)value;
                 if (elements.size() < 2)
+                {
                     continue;
+                }
 
                 SortCommand command = new SortCommand(parent, item.getListRef(), item.getSorter());
                 if (command.canExecute())
+                {
                     command.execute();
+                }
                 command.dispose();
 
             }

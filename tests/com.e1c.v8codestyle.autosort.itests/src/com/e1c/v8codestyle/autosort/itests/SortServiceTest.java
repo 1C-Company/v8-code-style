@@ -45,7 +45,7 @@ import com.google.inject.Inject;
 /**
  * Tests for {@link ISortService}
  */
-@RunWith(value = JUnitGuiceRunner.class)
+@RunWith(JUnitGuiceRunner.class)
 @GuiceModules(modules = { ExternalDependenciesModule.class })
 public class SortServiceTest
 {
