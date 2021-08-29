@@ -181,13 +181,17 @@ public class EventDataExchangeLoadCheck
         Conditional conditional = statementMethod.getIfPart();
         Expression predicate = conditional.getPredicate();
         if (predicate instanceof DynamicFeatureAccess)
+        {
             return checkDynamicFeatureAccess((DynamicFeatureAccess)predicate, checkCalls);
+        }
         else if (predicate instanceof Invocation)
         {
             FeatureAccess expression = ((Invocation)predicate).getMethodAccess();
             if (expression instanceof DynamicFeatureAccess
                 && checkDynamicFeatureAccess((DynamicFeatureAccess)expression, checkCalls))
+            {
                 return true;
+            }
         }
         else if (predicate instanceof BinaryExpression)
         {
@@ -197,10 +201,14 @@ public class EventDataExchangeLoadCheck
             {
                 Expression expression = temp.getKey();
                 if (expression instanceof Invocation)
+                {
                     expression = ((Invocation)expression).getMethodAccess();
+                }
                 if (expression instanceof DynamicFeatureAccess
                     && checkDynamicFeatureAccess((DynamicFeatureAccess)expression, checkCalls))
+                {
                     return true;
+                }
             }
         }
 
@@ -261,7 +269,9 @@ public class EventDataExchangeLoadCheck
 
         BinaryExpression currentExpression = null;
         if (binaryLeft instanceof BinaryExpression)
+        {
             currentExpression = (BinaryExpression)binaryLeft;
+        }
         else
         {
             mapOperatorOperand.put(binaryLeft, tempOperation);
@@ -275,9 +285,13 @@ public class EventDataExchangeLoadCheck
             tempOperation = currentExpression.getOperation();
             mapOperatorOperand.put(temp, tempOperation);
             if (binaryLeft instanceof BinaryExpression)
+            {
                 currentExpression = (BinaryExpression)binaryLeft;
+            }
             else
+            {
                 currentExpression = null;
+            }
         }
 
         mapOperatorOperand.put(binaryLeft, tempOperation);
