@@ -86,7 +86,7 @@ public class CommonModuleTypeDtNewWizardPage
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
 
         Label label = new Label(composite, SWT.WRAP);
-        String title = com._1c.g5.v8.dt.common.Functions.featureToLabel().apply(MD_OBJECT__NAME) + ":"; //$NON-NLS-1$
+        String title = com._1c.g5.v8.dt.common.Functions.featureToLabel().apply(MD_OBJECT__NAME);
         label.setText(title);
         Text newName = new Text(composite, SWT.BORDER | SWT.READ_ONLY);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(newName);
