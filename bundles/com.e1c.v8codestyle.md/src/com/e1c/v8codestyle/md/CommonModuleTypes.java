@@ -207,21 +207,42 @@ public enum CommonModuleTypes
         this.featureValues = featureValues;
     }
 
+    /**
+     * Gets the localizable title of the type.
+     *
+     * @return the title, cannot return {@code null}.
+     */
     public String getTitle()
     {
         return title;
     }
 
-    public String[] getNameSuffixs()
+    /**
+     * Gets the dually-named name suffixes where first is English script variant and second is Russian script variant.
+     *
+     * @return the name suffixes, cannot return {@code null}.
+     */
+    public String[] getNameSuffixes()
     {
         return nameSuffix;
     }
 
+    /**
+     * Gets the name suffix for the specific script variant of the project.
+     *
+     * @param scriptVariant the script variant, cannot be {@code null}.
+     * @return the name suffix, cannot return {@code null}.
+     */
     public String getNameSuffix(ScriptVariant scriptVariant)
     {
         return nameSuffix[scriptVariant.getValue()];
     }
 
+    /**
+     * Gets the feature values for the type of common module.
+     *
+     * @return the feature values, cannot return {@code null}.
+     */
     public Map<EStructuralFeature, Object> getFeatureValues()
     {
         return featureValues;

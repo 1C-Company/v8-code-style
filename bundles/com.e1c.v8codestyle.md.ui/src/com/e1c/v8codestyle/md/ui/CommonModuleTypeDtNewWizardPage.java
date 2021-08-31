@@ -260,7 +260,7 @@ public class CommonModuleTypeDtNewWizardPage
                 {
                     return type.getTitle();
                 }
-                return type.getTitle() + " +(" + suffix + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                return type.getTitle() + " (" + suffix + ")"; //$NON-NLS-1$ //$NON-NLS-2$
             }
             return super.getText(element);
         }
