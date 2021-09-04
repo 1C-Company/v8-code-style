@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.right.check;
 
 import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.OBJECT_RIGHT;
 import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.OBJECT_RIGHT__RIGHT;
+import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.OBJECT_RIGHT__VALUE;
 import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.ROLE_DESCRIPTION;
 
 import java.text.MessageFormat;
@@ -33,14 +34,18 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.rights.model.ObjectRight;
 import com._1c.g5.v8.dt.rights.model.Right;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
+import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
+import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
+ * Abstract check that role has some right for any object.
+ *
  * @author Dmitriy Marmyshev
  *
  */
@@ -49,8 +54,15 @@ public abstract class RoleRightSetCheck
 {
 
     private final IV8ProjectManager v8ProjectManager;
-    private final IBmModelManager bmModelManager;
 
+    protected final IBmModelManager bmModelManager;
+
+    /**
+     * Creates new instance which helps to check that role has specified right for an object.
+     *
+     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
+     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     */
     @Inject
     protected RoleRightSetCheck(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {
@@ -63,13 +75,13 @@ public abstract class RoleRightSetCheck
     {
         //@formatter:off
         builder.complexity(CheckComplexity.NORMAL)
+            .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.SECURITY)
             .extension(new RoleFilterExtension(bmModelManager))
-            .extension(new RoleNameExtension(getStandartRoleNames(), bmModelManager))
             .extension(new RoleNameChangeExtension())
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)
-            .features(OBJECT_RIGHT__RIGHT);
+            .features(OBJECT_RIGHT__RIGHT, OBJECT_RIGHT__VALUE);
         //@formatter:on
     }
 
@@ -80,7 +92,7 @@ public abstract class RoleRightSetCheck
         ObjectRight objectRight = (ObjectRight)object;
         Right right = objectRight.getRight();
 
-        if (right == null || !getAllowedRightName().equals(right.getName()))
+        if (right == null || !getRightName().getName().equals(right.getName()))
         {
             return;
         }
@@ -99,13 +111,23 @@ public abstract class RoleRightSetCheck
 
     }
 
-    protected abstract String getStandartRoleNames();
+    /**
+     * Gets the object right name that need to check that exist in role rights.
+     *
+     * @return the right name constant, cannot return {@code null}.
+     */
+    protected abstract RightName getRightName();
 
-    protected abstract String getAllowedRightName();
-
+    /**
+     * Creates formated issue message for the right and the MD object.
+     *
+     * @param right the right that forbidden to set for the MD object, cannot be {@code null}.
+     * @param mdObject the MD object that has forbidden right, cannot be {@code null}.
+     * @return the formatted issue message that right set for the object, cannot return {@code null}.
+     */
     protected String getIssueMessage(Right right, MdObject mdObject)
     {
-        IV8Project project = v8ProjectManager.getProject(right);
+        IV8Project project = mdObject == null ? null : v8ProjectManager.getProject(mdObject);
         String rightName = getRightName(right, project);
         String mdObjectName = getMdObjectName(mdObject, project);
         return MessageFormat.format(Messages.RoleRightSetCheck_Role_right__0__set_for__1, rightName, mdObjectName);

@@ -10,44 +10,37 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.internal;
+package com.e1c.v8codestyle.internal.form;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
-import com._1c.g5.v8.dt.bsl.model.BslPackage;
-import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
-import com._1c.g5.wiring.ServiceInitialization;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 /**
- * The bundle activator to support plug-in life-cycle
+ * Plugin activator. The activator class controls the plugin life cycle.
  *
  * @author Dmitriy Marmyshev
  */
-public class BslPlugin
+public class CorePlugin
     extends Plugin
 {
 
-    public static final String PLUGIN_ID = "com.e1c.v8codestyle.bsl"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "com.e1c.v8codestyle.form"; //$NON-NLS-1$
 
-    private static BslPlugin plugin;
+    private static CorePlugin plugin;
 
-    private volatile Injector injector;
-
-    private InjectorAwareServiceRegistrator registrator;
-
-    private static BundleContext context;
+    private Injector injector;
 
     /**
      * Returns the shared instance
      *
      * @return the shared instance
      */
-    public static BslPlugin getDefault()
+    public static CorePlugin getDefault()
     {
         return plugin;
     }
@@ -107,11 +100,6 @@ public class BslPlugin
         return new Status(IStatus.WARNING, PLUGIN_ID, 0, message, throwable);
     }
 
-    static BundleContext getContext()
-    {
-        return context;
-    }
-
     /*
      * (non-Javadoc)
      * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
@@ -119,19 +107,9 @@ public class BslPlugin
     @Override
     public void start(BundleContext bundleContext) throws Exception
     {
-
         super.start(bundleContext);
 
-        BslPlugin.context = bundleContext;
         plugin = this;
-
-        BslPackage.eINSTANCE.eClass();
-
-        registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
-
-        ServiceInitialization.schedule(() -> {
-            // register services from injector
-        });
 
     }
 
@@ -142,28 +120,23 @@ public class BslPlugin
     @Override
     public void stop(BundleContext bundleContext) throws Exception
     {
-
-        registrator.deactivateManagedServices(this);
-        registrator.unregisterServices();
-
-        injector = null;
         plugin = null;
-        super.stop(bundleContext);
+        injector = null;
 
-        BslPlugin.context = null;
+        super.stop(bundleContext);
     }
 
     /**
-     * Returns Guice injector of the plugin
+     * Returns Guice injector for this plugin.
      *
-     * @return Guice injector of the plugin, never <code>null</code> if plugin is started
+     * @return Guice injector for this plugin, never <code>null</code>
      */
     /* package */ Injector getInjector()
     {
         Injector localInstance = injector;
         if (localInstance == null)
         {
-            synchronized (BslPlugin.class)
+            synchronized (CorePlugin.class)
             {
                 localInstance = injector;
                 if (localInstance == null)
@@ -190,4 +163,5 @@ public class BslPlugin
                 + getBundle().getSymbolicName(), e);
         }
     }
+
 }

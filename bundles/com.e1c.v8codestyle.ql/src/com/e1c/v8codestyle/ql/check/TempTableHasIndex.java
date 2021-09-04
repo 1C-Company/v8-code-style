@@ -61,7 +61,9 @@ public class TempTableHasIndex
     {
         QuerySchemaSelectQuery selectQuery = (QuerySchemaSelectQuery)object;
         if (selectQuery.getPlacementTable() == null)
+        {
             return;
+        }
 
         if (selectQuery.getIndexes() == null || selectQuery.getIndexes().isEmpty())
         {

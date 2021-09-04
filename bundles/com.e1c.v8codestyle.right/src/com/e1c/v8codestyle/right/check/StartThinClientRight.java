@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.right.check;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
-import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.google.inject.Inject;
 
 /**
@@ -30,8 +29,6 @@ public class StartThinClientRight
         "ЗапускТонкогоКлиента,StartThinClient,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "start-thin-client-right"; //$NON-NLS-1$
-
-    private static final String STANDART_ROLE = RightName.THIN_CLIENT.getName();
 
     @Inject
     public StartThinClientRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -49,21 +46,15 @@ public class StartThinClientRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.severity(IssueSeverity.MAJOR)
+        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.StartThinClientRight_title)
             .description(Messages.StartThinClientRight_description);
     }
 
     @Override
-    protected String getStandartRoleNames()
+    protected RightName getRightName()
     {
-        return NAMES_DEFAULT;
-    }
-
-    @Override
-    protected String getAllowedRightName()
-    {
-        return STANDART_ROLE;
+        return RightName.THIN_CLIENT;
     }
 
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Role xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="dd94ccd8-de4b-4f1e-b54c-c3977da8fec2">
+  <name>FullAccess</name>
+  <synonym>
+    <key>en</key>
+    <value>Full access</value>
+  </synonym>
+</mdclass:Role>

@@ -116,10 +116,14 @@ public final class AutoSortPreferences
     public static boolean isAllowedToSort(IProject project, EReference listRef)
     {
         if (ListConstants.TOP_OPBJECT_LISTS.contains(listRef))
+        {
             return isSortAllTop(project) || isSortTopList(project, listRef);
+        }
 
         if (ListConstants.SUBORDINATE_OBJECT_LISTS.contains(listRef))
+        {
             return isSortSubOrdinateObjects(project) || isSortSubordinateList(project, listRef);
+        }
 
         return false;
     }

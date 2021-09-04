@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.right.check;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
-import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.google.inject.Inject;
 
 /**
@@ -29,8 +28,6 @@ public class ExclusiveModeRight
     private static final String NAMES_DEFAULT = "ПолныеПрава,FullAccess"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "exclusive-mode-right"; //$NON-NLS-1$
-
-    private static final String STANDART_ROLE = RightName.EXCLUSIVE_MODE.getName();
 
     @Inject
     public ExclusiveModeRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -48,21 +45,15 @@ public class ExclusiveModeRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.severity(IssueSeverity.MAJOR)
+        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.ExclusiveModeRight_title)
             .description(Messages.ExclusiveModeRight_description);
     }
 
     @Override
-    protected String getStandartRoleNames()
+    protected RightName getRightName()
     {
-        return NAMES_DEFAULT;
-    }
-
-    @Override
-    protected String getAllowedRightName()
-    {
-        return STANDART_ROLE;
+        return RightName.EXCLUSIVE_MODE;
     }
 
 }

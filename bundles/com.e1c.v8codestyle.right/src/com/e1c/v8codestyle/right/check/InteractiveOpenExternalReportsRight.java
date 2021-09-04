@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.right.check;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
-import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.google.inject.Inject;
 
 /**
@@ -30,8 +29,6 @@ public class InteractiveOpenExternalReportsRight
         "ИнтерактивноеОткрытиеВнешнихОтчетовИОбработок,InteractiveOpenExternalReportsAndDataProcessors"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "interactive-open-external-reports-right"; //$NON-NLS-1$
-
-    private static final String STANDART_ROLE = RightName.INTERACTIVE_OPEN_EXT_REPORTS.getName();
 
     @Inject
     public InteractiveOpenExternalReportsRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -49,21 +46,15 @@ public class InteractiveOpenExternalReportsRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.severity(IssueSeverity.MAJOR)
+        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.InteractiveOpenExternalReportsRight_title)
             .description(Messages.InteractiveOpenExternalReportsRight_description);
     }
 
     @Override
-    protected String getStandartRoleNames()
+    protected RightName getRightName()
     {
-        return NAMES_DEFAULT;
-    }
-
-    @Override
-    protected String getAllowedRightName()
-    {
-        return STANDART_ROLE;
+        return RightName.INTERACTIVE_OPEN_EXT_REPORTS;
     }
 
 }

@@ -23,6 +23,30 @@
             id="com.e1c.v8codestyle.right"
             title="%category.right.title">
       </category>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDelete">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDeletePredefinedData">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDeleteMarkedPredefinedData">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveClearDeletionMarkPredefinedData">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveSetDeletionMarkPredefinedData">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RoleRightHasRls">
+      </check>
 
       <check
             category="com.e1c.v8codestyle.right"

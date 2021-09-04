@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.right.check;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
-import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.google.inject.Inject;
 
 /**
@@ -30,8 +29,6 @@ public class InteractiveOpenExternalDataProcessorsRight
         "ИнтерактивноеОткрытиеВнешнихОтчетовИОбработок,InteractiveOpenExternalReportsAndDataProcessors"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "interactive-open-external-data-processors-right"; //$NON-NLS-1$
-
-    private static final String STANDART_ROLE = RightName.INTERACTIVE_OPEN_EXT_DATA_PROCESSORS.getName();
 
     @Inject
     public InteractiveOpenExternalDataProcessorsRight(IV8ProjectManager v8ProjectManager,
@@ -50,21 +47,15 @@ public class InteractiveOpenExternalDataProcessorsRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.severity(IssueSeverity.MAJOR)
+        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.InteractiveOpenExternalDataProcessorsRight_title)
             .description(Messages.InteractiveOpenExternalDataProcessorsRight_description);
     }
 
     @Override
-    protected String getStandartRoleNames()
+    protected RightName getRightName()
     {
-        return NAMES_DEFAULT;
-    }
-
-    @Override
-    protected String getAllowedRightName()
-    {
-        return STANDART_ROLE;
+        return RightName.INTERACTIVE_OPEN_EXT_DATA_PROCESSORS;
     }
 
 }
