@@ -18,6 +18,8 @@ import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com.google.inject.Inject;
 
 /**
+ * Checks that only standard role has right: {@code INTERACTIVE_OPEN_EXT_DATA_PROCESSORS} for configuration root.
+ *
  * @author Aleksandr Kapralov
  *
  */

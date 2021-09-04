@@ -50,6 +50,8 @@ import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.google.inject.Inject;
 
 /**
+ * Basic class for role tests
+ *
  * @author Aleksandr Kapralov
  *
  */

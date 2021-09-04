@@ -18,6 +18,8 @@ import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com.google.inject.Inject;
 
 /**
+ * Checks that only standard role has right: {@code EVENT_LOG} for configuration root.
+ *
  * @author Aleksandr Kapralov
  *
  */

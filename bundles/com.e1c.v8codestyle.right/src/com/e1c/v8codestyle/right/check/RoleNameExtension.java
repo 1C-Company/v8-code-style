@@ -29,6 +29,8 @@ import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
 import com.e1c.g5.v8.dt.check.ext.ITopObjectFilter;
 
 /**
+ * Check extension: exclude roles from check based on role name
+ *
  * @author Aleksandr Kapralov
  *
  */

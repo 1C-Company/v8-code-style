@@ -25,6 +25,8 @@ import com.e1c.g5.v8.dt.check.context.CheckContextCollectingSession;
 import com.e1c.g5.v8.dt.check.context.OnModelFeatureChangeContextCollector;
 
 /**
+ * Check extension: run check for role if role right was changed
+ *
  * @author Aleksandr Kapralov
  *
  */
