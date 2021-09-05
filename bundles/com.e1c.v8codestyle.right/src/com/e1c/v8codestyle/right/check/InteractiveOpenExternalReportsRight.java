@@ -33,7 +33,7 @@ public class InteractiveOpenExternalReportsRight
     private static final String CHECK_ID = "interactive-open-external-reports-right"; //$NON-NLS-1$
 
     /**
-     * Creates new instance which helps to check that role has specified right for an object.
+     * Creates new instance which helps to check role rights for configuration root.
      *
      * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
      * @param bmModelManager  the BM model manager, cannot be {@code null}.

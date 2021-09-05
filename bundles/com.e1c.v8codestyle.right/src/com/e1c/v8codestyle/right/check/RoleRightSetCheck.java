@@ -61,7 +61,7 @@ public abstract class RoleRightSetCheck
      * Creates new instance which helps to check that role has specified right for an object.
      *
      * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
-     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     * @param bmModelManager the BM model manager, cannot be {@code null}.
      */
     @Inject
     protected RoleRightSetCheck(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -77,7 +77,7 @@ public abstract class RoleRightSetCheck
         builder.complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.SECURITY)
-            .extension(new RoleFilterExtension(bmModelManager))
+            .extension(new RoleNameFilterExtension(bmModelManager))
             .extension(new RoleNameChangeExtension())
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)

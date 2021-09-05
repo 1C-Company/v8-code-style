@@ -32,7 +32,7 @@ import com.e1c.g5.v8.dt.check.ext.ITopObjectFilter;
  * @author Aleksandr Kapralov
  *
  */
-public class RoleFilterExtension
+public class RoleNameFilterExtension
     implements IBasicCheckExtension
 {
     public static final String EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME = "excludeRoleNamePattern"; //$NON-NLS-1$
@@ -43,13 +43,26 @@ public class RoleFilterExtension
 
     private final IBmModelManager bmModelManager;
 
-    public RoleFilterExtension(final IBmModelManager bmModelManager)
+    /**
+     * Creates new instance with default parameter
+     *
+     * @param bmModelManager the BM model manager, cannot be {@code null}.
+     */
+    public RoleNameFilterExtension(final IBmModelManager bmModelManager)
     {
         this(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME, Messages.RoleFilterExtension_Exclude_Role_name_pattern, "", //$NON-NLS-1$
             bmModelManager);
     }
 
-    public RoleFilterExtension(final String parameterName, final String parameterTitle, final String defaultValue,
+    /**
+     * Creates new instance with custom parameter
+     *
+     * @param parameterName parameter name for settings file
+     * @param parameterTitle parameter title for preferences dialog
+     * @param defaultValue default parameter value
+     * @param bmModelManager the BM model manager, cannot be {@code null}.
+     */
+    public RoleNameFilterExtension(final String parameterName, final String parameterTitle, final String defaultValue,
         final IBmModelManager bmModelManager)
     {
         this.parameterName = parameterName;
