@@ -33,7 +33,9 @@ import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.Role;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.rights.model.ObjectRight;
+import com._1c.g5.v8.dt.rights.model.ObjectRights;
 import com._1c.g5.v8.dt.rights.model.Right;
+import com._1c.g5.v8.dt.rights.model.RightValue;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
@@ -103,10 +105,22 @@ public abstract class RoleRightSetCheck
             return;
         }
 
-        IBmModel model = bmModelManager.getModel(objectRight);
-        RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
-        Role mdObject = RightsModelUtil.getOwner(description, model);
+        Role role = null;
 
+        RightValue rightValue = objectRight.getValue();
+        if (rightValue == null)
+        {
+            role = getRole(objectRight);
+            rightValue = RightsModelUtil.getDefaultRightValue(objectRight, role);
+        }
+
+        if (!RightsModelUtil.getBooleanRightValue(rightValue) || monitor.isCanceled())
+        {
+            return;
+        }
+
+        ObjectRights rights = EcoreUtil2.getContainerOfType(objectRight, ObjectRights.class);
+        MdObject mdObject = rights.getObject() instanceof MdObject ? (MdObject)rights.getObject() : null;
         if (mdObject == null)
         {
             return;
@@ -124,7 +138,6 @@ public abstract class RoleRightSetCheck
 
         String message = getIssueMessage(right, mdObject);
         resultAceptor.addIssue(message, OBJECT_RIGHT__RIGHT);
-
     }
 
     /**
@@ -157,6 +170,13 @@ public abstract class RoleRightSetCheck
     protected boolean needCheckObjectRight()
     {
         return true;
+    }
+
+    private Role getRole(ObjectRight objectRight)
+    {
+        IBmModel model = bmModelManager.getModel(objectRight);
+        RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
+        return RightsModelUtil.getOwner(description, model);
     }
 
     private String getRightName(Right right, IV8Project project)
