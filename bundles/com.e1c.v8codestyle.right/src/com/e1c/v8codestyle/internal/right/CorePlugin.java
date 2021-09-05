@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
-import com._1c.g5.v8.dt.md.ExternalDependenciesModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
