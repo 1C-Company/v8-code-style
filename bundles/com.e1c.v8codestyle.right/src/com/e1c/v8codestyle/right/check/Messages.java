@@ -38,13 +38,12 @@ final class Messages
     public static String RoleRightHasRls_Role_name_pattern;
     public static String RoleRightHasRls_Role_Right__0__for__1__has_RLS;
     public static String RoleRightHasRls_title;
-    public static String RoleRightSetCheck_Exclude_Right_Object_name_pattern;
-    public static String RoleRightSetCheck_Exclude_Role_name_pattern;
+
+    public static String RoleRightSetCheck_Exclude_object_name_pattern;
     public static String RoleRightSetCheck_Role_right__0__set_for__1;
 
-    public static String RoleFilterExtension_Exclude_Role_name_pattern;
-
-    public static String RoleNameExtension_Role_names_list;
+    public static String ExcludeRoleByPatternExtension_Exclude_role_name_pattern;
+    public static String ExcludeRoleByNameListExtension_Exclude_role_names;
 
     public static String ActiveUsersRight_title;
     public static String ActiveUsersRight_description;

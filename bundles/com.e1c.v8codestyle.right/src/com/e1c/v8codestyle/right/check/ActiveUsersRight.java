@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
+import java.util.List;
+
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
@@ -27,16 +29,13 @@ public class ActiveUsersRight
     extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT =
-        "Администрирование,Administration,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
+    private static final List<String> NAMES_DEFAULT = List.of("Администрирование", "Administration", "ПолныеПрава", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        "FullAccess", "АдминистраторСистемы", "SystemAdministrator"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     private static final String CHECK_ID = "active-users-right"; //$NON-NLS-1$
 
     /**
-     * Creates new instance which helps to check role rights for configuration root.
-     *
-     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
-     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     * {@inheritDoc}
      */
     @Inject
     public ActiveUsersRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -54,7 +53,7 @@ public class ActiveUsersRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
+        builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.ActiveUsersRight_title)
             .description(Messages.ActiveUsersRight_description);
     }
@@ -63,6 +62,12 @@ public class ActiveUsersRight
     protected RightName getRightName()
     {
         return RightName.ACTIVE_USERS;
+    }
+
+    @Override
+    protected boolean needCheckObjectRight()
+    {
+        return false;
     }
 
 }

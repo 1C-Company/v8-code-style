@@ -34,7 +34,7 @@ public class StartExternalConnectionRightTest
 
     private static final String CHECK_ID = "start-external-connection-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.EXTERNAL_CONNECTION.getName();
+    private static final RightName STANDART_ROLE = RightName.EXTERNAL_CONNECTION;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

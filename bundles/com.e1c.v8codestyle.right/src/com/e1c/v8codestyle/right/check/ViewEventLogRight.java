@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
+import java.util.List;
+
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
@@ -27,8 +29,8 @@ public class ViewEventLogRight
     extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT =
-        "ПросмотрЖурналаРегистрации,ViewEventLog,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
+    private static final List<String> NAMES_DEFAULT = List.of("ПросмотрЖурналаРегистрации", "ViewEventLog", //$NON-NLS-1$ //$NON-NLS-2$
+        "ПолныеПрава", "FullAccess", "АдминистраторСистемы", "SystemAdministrator"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     private static final String CHECK_ID = "view-event-log-right"; //$NON-NLS-1$
 
@@ -54,7 +56,7 @@ public class ViewEventLogRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
+        builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.ViewEventLogRight_title)
             .description(Messages.ViewEventLogRight_description);
     }
@@ -63,6 +65,12 @@ public class ViewEventLogRight
     protected RightName getRightName()
     {
         return RightName.EVENT_LOG;
+    }
+
+    @Override
+    protected boolean needCheckObjectRight()
+    {
+        return false;
     }
 
 }

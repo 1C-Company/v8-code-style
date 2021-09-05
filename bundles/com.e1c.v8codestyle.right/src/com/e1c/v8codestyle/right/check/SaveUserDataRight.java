@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
+import java.util.List;
+
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
@@ -27,16 +29,13 @@ public class SaveUserDataRight
     extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT =
-        "СохранениеДанныхПользователя,SaveUserData,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
+    private static final List<String> NAMES_DEFAULT = List.of("СохранениеДанныхПользователя", "SaveUserData", //$NON-NLS-1$ //$NON-NLS-2$
+        "ПолныеПрава", "FullAccess", "АдминистраторСистемы", "SystemAdministrator"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     private static final String CHECK_ID = "save-user-data-right"; //$NON-NLS-1$
 
     /**
-     * Creates new instance which helps to check role rights for configuration root.
-     *
-     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
-     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     * {@inheritDoc}
      */
     @Inject
     public SaveUserDataRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -54,7 +53,7 @@ public class SaveUserDataRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
+        builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.SaveUserDataRight_title)
             .description(Messages.SaveUserDataRight_description);
     }
@@ -63,6 +62,12 @@ public class SaveUserDataRight
     protected RightName getRightName()
     {
         return RightName.SAVE_USER_DATA;
+    }
+
+    @Override
+    protected boolean needCheckObjectRight()
+    {
+        return false;
     }
 
 }

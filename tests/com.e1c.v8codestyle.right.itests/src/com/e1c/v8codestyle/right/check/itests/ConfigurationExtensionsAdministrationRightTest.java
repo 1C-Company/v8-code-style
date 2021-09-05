@@ -34,7 +34,7 @@ public class ConfigurationExtensionsAdministrationRightTest
 
     private static final String CHECK_ID = "configuration-extensions-administration-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION.getName();
+    private static final RightName STANDART_ROLE = RightName.CONFIGURATION_EXTENSIONS_ADMINISTRATION;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

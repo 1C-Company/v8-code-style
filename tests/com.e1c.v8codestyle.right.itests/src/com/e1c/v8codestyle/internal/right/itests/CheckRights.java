@@ -42,6 +42,7 @@ import com._1c.g5.v8.dt.rights.model.Right;
 import com._1c.g5.v8.dt.rights.model.RightValue;
 import com._1c.g5.v8.dt.rights.model.RightsPackage;
 import com._1c.g5.v8.dt.rights.model.RoleDescription;
+import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.rights.model.util.RightsModelUtil;
 import com._1c.g5.v8.dt.testing.GuiceModules;
 import com._1c.g5.v8.dt.validation.marker.Marker;
@@ -64,7 +65,7 @@ public abstract class CheckRights
     IMdRefactoringService refactoringService;
 
     protected void checkRoleCorrect(String checkId, String projectName, String workspaceRightsFqn, String mdObjectFqn,
-        String rightName, String newRoleName) throws Exception
+        RightName rightName, String newRoleName) throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(projectName);
         assertNotNull(dtProject);
@@ -75,7 +76,7 @@ public abstract class CheckRights
     }
 
     protected void checkRoleIncorrect(String checkId, String projectName, String workspaceRightsFqn, String mdObjectFqn,
-        String rightName, String newRoleName) throws Exception
+        RightName rightName, String newRoleName) throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(projectName);
         assertNotNull(dtProject);
@@ -86,7 +87,7 @@ public abstract class CheckRights
     }
 
     private ObjectRights checkRole(IDtProject dtProject, String workspaceRightsFqn, String mdObjectFqn,
-        String rightName, String newRoleName) throws Exception
+        RightName rightName, String newRoleName) throws Exception
     {
         updateRole(dtProject, workspaceRightsFqn, mdObjectFqn, rightName, newRoleName);
 
@@ -121,7 +122,7 @@ public abstract class CheckRights
         }
     }
 
-    private void updateRole(IDtProject dtProject, String roleRightsFqn, String objectFqn, String rightName,
+    private void updateRole(IDtProject dtProject, String roleRightsFqn, String objectFqn, RightName rightName,
         String newRoleName) throws ClassCastException, NullPointerException
     {
         IBmModel model = bmModelManager.getModel(dtProject);
@@ -189,7 +190,7 @@ public abstract class CheckRights
         waitForDD(dtProject);
     }
 
-    private Right addRight(String rightName, IProject project)
+    private Right addRight(RightName rightName, IProject project)
     {
         IRuntimeVersionSupport runtimeVersionSupport = ServiceAccess.get(IRuntimeVersionSupport.class);
         Version version = runtimeVersionSupport.getRuntimeVersion(project);
@@ -198,7 +199,7 @@ public abstract class CheckRights
         for (IEObjectDescription descr : descrs)
         {
             String name = descr.getName().toString();
-            if (rightName.equals(name))
+            if (rightName.getName().equals(name))
             {
                 return (Right)descr.getEObjectOrProxy();
             }

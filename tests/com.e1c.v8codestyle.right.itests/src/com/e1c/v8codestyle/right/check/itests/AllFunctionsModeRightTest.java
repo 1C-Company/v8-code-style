@@ -34,7 +34,7 @@ public class AllFunctionsModeRightTest
 
     private static final String CHECK_ID = "all-functions-mode-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.ALL_FUNCTIONS_MODE.getName();
+    private static final RightName STANDART_ROLE = RightName.ALL_FUNCTIONS_MODE;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

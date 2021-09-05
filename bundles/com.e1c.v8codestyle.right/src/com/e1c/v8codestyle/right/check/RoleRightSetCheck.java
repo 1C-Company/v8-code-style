@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -53,15 +54,14 @@ public abstract class RoleRightSetCheck
     extends BasicCheck
 {
 
+    protected static final String EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME = "excludeObjectNamePattern"; //$NON-NLS-1$
+
     private final IV8ProjectManager v8ProjectManager;
 
     protected final IBmModelManager bmModelManager;
 
     /**
-     * Creates new instance which helps to check that role has specified right for an object.
-     *
-     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
-     * @param bmModelManager the BM model manager, cannot be {@code null}.
+     * {@inheritDoc}
      */
     @Inject
     protected RoleRightSetCheck(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -77,12 +77,18 @@ public abstract class RoleRightSetCheck
         builder.complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.SECURITY)
-            .extension(new RoleNameFilterExtension(bmModelManager))
+            .extension(new ExcludeRoleByPatternExtension(bmModelManager))
             .extension(new RoleNameChangeExtension())
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)
             .features(OBJECT_RIGHT__RIGHT, OBJECT_RIGHT__VALUE);
         //@formatter:on
+
+        if (needCheckObjectRight())
+        {
+            builder.parameter(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
+                Messages.RoleRightSetCheck_Exclude_object_name_pattern);
+        }
     }
 
     @Override
@@ -104,6 +110,16 @@ public abstract class RoleRightSetCheck
         if (mdObject == null)
         {
             return;
+        }
+
+        if (needCheckObjectRight())
+        {
+            String excludeObjectNamePattern = parameters.getString(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME);
+            if (excludeObjectNamePattern != null && !excludeObjectNamePattern.isBlank()
+                && mdObject.getName().matches(excludeObjectNamePattern))
+            {
+                return;
+            }
         }
 
         String message = getIssueMessage(right, mdObject);
@@ -131,6 +147,16 @@ public abstract class RoleRightSetCheck
         String rightName = getRightName(right, project);
         String mdObjectName = getMdObjectName(mdObject, project);
         return MessageFormat.format(Messages.RoleRightSetCheck_Role_right__0__set_for__1, rightName, mdObjectName);
+    }
+
+    /**
+     * Enables or disabled parameter for excluding objects
+     *
+     * @return true, if check needs {@link EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME} parameter
+     */
+    protected boolean needCheckObjectRight()
+    {
+        return true;
     }
 
     private String getRightName(Right right, IV8Project project)

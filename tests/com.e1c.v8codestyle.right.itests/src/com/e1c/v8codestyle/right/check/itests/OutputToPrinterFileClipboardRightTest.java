@@ -34,7 +34,7 @@ public class OutputToPrinterFileClipboardRightTest
 
     private static final String CHECK_ID = "output-to-printer-file-clipboard-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.OUTPUT.getName();
+    private static final RightName STANDART_ROLE = RightName.OUTPUT;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

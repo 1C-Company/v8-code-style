@@ -34,7 +34,7 @@ public class DataAdministrationRightTest
 
     private static final String CHECK_ID = "data-administration-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.DATA_ADMINISTRATION.getName();
+    private static final RightName STANDART_ROLE = RightName.DATA_ADMINISTRATION;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
+import java.util.List;
+
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
@@ -27,16 +29,13 @@ public class OutputToPrinterFileClipboardRight
     extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT =
-        "ВыводНаПринтерФайлБуферОбмена,OutputToPrinterFileClipboard,ПолныеПрава,FullAccess,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
+    private static final List<String> NAMES_DEFAULT = List.of("ВыводНаПринтерФайлБуферОбмена", //$NON-NLS-1$
+        "OutputToPrinterFileClipboard", "ПолныеПрава", "FullAccess", "АдминистраторСистемы", "SystemAdministrator"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
     private static final String CHECK_ID = "output-to-printer-file-clipboard-right"; //$NON-NLS-1$
 
     /**
-     * Creates new instance which helps to check role rights for configuration root.
-     *
-     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
-     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     * {@inheritDoc}
      */
     @Inject
     public OutputToPrinterFileClipboardRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -54,7 +53,7 @@ public class OutputToPrinterFileClipboardRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
+        builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.OutputToPrinterFileClipboardRight_title)
             .description(Messages.OutputToPrinterFileClipboardRight_description);
     }
@@ -63,6 +62,12 @@ public class OutputToPrinterFileClipboardRight
     protected RightName getRightName()
     {
         return RightName.OUTPUT;
+    }
+
+    @Override
+    protected boolean needCheckObjectRight()
+    {
+        return false;
     }
 
 }

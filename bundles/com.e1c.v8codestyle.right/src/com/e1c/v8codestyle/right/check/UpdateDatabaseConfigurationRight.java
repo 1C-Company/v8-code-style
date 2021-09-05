@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
+import java.util.List;
+
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
@@ -27,16 +29,13 @@ public class UpdateDatabaseConfigurationRight
     extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT =
-        "ОбновлениеКонфигурацииБазыДанных,UpdateDatabaseConfiguration,АдминистраторСистемы,SystemAdministrator"; //$NON-NLS-1$
+    private static final List<String> NAMES_DEFAULT = List.of("ОбновлениеКонфигурацииБазыДанных", //$NON-NLS-1$
+        "UpdateDatabaseConfiguration", "АдминистраторСистемы", "SystemAdministrator"); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
     private static final String CHECK_ID = "update-database-configuration-right"; //$NON-NLS-1$
 
     /**
-     * Creates new instance which helps to check role rights for configuration root.
-     *
-     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
-     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     * {@inheritDoc}
      */
     @Inject
     public UpdateDatabaseConfigurationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
@@ -54,7 +53,7 @@ public class UpdateDatabaseConfigurationRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
+        builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.UpdateDatabaseConfigurationRight_title)
             .description(Messages.UpdateDatabaseConfigurationRight_description);
     }
@@ -63,6 +62,12 @@ public class UpdateDatabaseConfigurationRight
     protected RightName getRightName()
     {
         return RightName.UPDATE_DATA_BASE_CONFIGURATION;
+    }
+
+    @Override
+    protected boolean needCheckObjectRight()
+    {
+        return false;
     }
 
 }

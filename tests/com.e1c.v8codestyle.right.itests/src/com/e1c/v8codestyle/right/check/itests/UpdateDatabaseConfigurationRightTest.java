@@ -34,7 +34,7 @@ public class UpdateDatabaseConfigurationRightTest
 
     private static final String CHECK_ID = "update-database-configuration-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.UPDATE_DATA_BASE_CONFIGURATION.getName();
+    private static final RightName STANDART_ROLE = RightName.UPDATE_DATA_BASE_CONFIGURATION;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

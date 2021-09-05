@@ -34,7 +34,7 @@ public class AdministrationRightTest
 
     private static final String CHECK_ID = "administration-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.ADMINISTRATION.getName();
+    private static final RightName STANDART_ROLE = RightName.ADMINISTRATION;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

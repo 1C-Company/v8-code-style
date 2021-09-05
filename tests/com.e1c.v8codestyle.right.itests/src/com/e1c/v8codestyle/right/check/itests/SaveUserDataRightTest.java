@@ -34,7 +34,7 @@ public class SaveUserDataRightTest
 
     private static final String CHECK_ID = "save-user-data-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.SAVE_USER_DATA.getName();
+    private static final RightName STANDART_ROLE = RightName.SAVE_USER_DATA;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

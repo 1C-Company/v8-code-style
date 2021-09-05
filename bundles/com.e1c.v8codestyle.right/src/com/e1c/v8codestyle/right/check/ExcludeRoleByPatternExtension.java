@@ -12,8 +12,6 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
-import java.util.List;
-
 import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -29,15 +27,15 @@ import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
 import com.e1c.g5.v8.dt.check.ext.ITopObjectFilter;
 
 /**
- * Check extension: exclude roles from check based on role name
+ * Check extension, exclude roles from check based on RegEx
  *
  * @author Aleksandr Kapralov
  *
  */
-public class RoleNameExtension
+public class ExcludeRoleByPatternExtension
     implements IBasicCheckExtension
 {
-    public static final String ROLE_NAMES_LIST_PARAMETER_NAME = "roleNamesList"; //$NON-NLS-1$
+    public static final String EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME = "excludeRoleNamePattern"; //$NON-NLS-1$
 
     private final String parameterName;
     private final String defaultValue;
@@ -45,13 +43,28 @@ public class RoleNameExtension
 
     private final IBmModelManager bmModelManager;
 
-    public RoleNameExtension(final String defaultValue, final IBmModelManager bmModelManager)
+    /**
+     * Creates new instance with default parameter
+     *
+     * @param bmModelManager the BM model manager, cannot be {@code null}.
+     */
+    public ExcludeRoleByPatternExtension(final IBmModelManager bmModelManager)
     {
-        this(ROLE_NAMES_LIST_PARAMETER_NAME, Messages.RoleNameExtension_Role_names_list, defaultValue, bmModelManager);
+        this(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME, Messages.ExcludeRoleByPatternExtension_Exclude_role_name_pattern,
+            "", //$NON-NLS-1$
+            bmModelManager);
     }
 
-    public RoleNameExtension(final String parameterName, final String parameterTitle, final String defaultValue,
-        final IBmModelManager bmModelManager)
+    /**
+     * Creates new instance with custom parameter
+     *
+     * @param parameterName parameter name for settings file
+     * @param parameterTitle parameter title for preferences dialog
+     * @param defaultValue default parameter value
+     * @param bmModelManager the BM model manager, cannot be {@code null}.
+     */
+    public ExcludeRoleByPatternExtension(final String parameterName, final String parameterTitle,
+        final String defaultValue, final IBmModelManager bmModelManager)
     {
         this.parameterName = parameterName;
         this.parameterTitle = parameterTitle;
@@ -71,7 +84,7 @@ public class RoleNameExtension
     public ITopObjectFilter contributeTopObjectFilter()
     {
         return (IBmObject objectRight, ICheckParameters parameters) -> {
-            final String excludeRoleNamePattern = parameters.getString(ROLE_NAMES_LIST_PARAMETER_NAME);
+            final String excludeRoleNamePattern = parameters.getString(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME);
             if (excludeRoleNamePattern == null || excludeRoleNamePattern.isBlank())
             {
                 return true;
@@ -80,14 +93,8 @@ public class RoleNameExtension
             IBmModel model = bmModelManager.getModel(objectRight);
             RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
             Role role = RightsModelUtil.getOwner(description, model);
-            if (role == null)
-            {
-                return true;
-            }
 
-            List<String> roleNames = List.of(excludeRoleNamePattern.replace(" ", "").split(",")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-            return roleNames.stream().noneMatch(s -> role.getName().equalsIgnoreCase(s));
+            return role == null || !role.getName().matches(excludeRoleNamePattern);
         };
     }
 }

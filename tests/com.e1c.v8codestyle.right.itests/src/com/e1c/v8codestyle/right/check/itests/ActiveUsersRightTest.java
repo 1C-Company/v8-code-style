@@ -34,7 +34,7 @@ public class ActiveUsersRightTest
 
     private static final String CHECK_ID = "active-users-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.ACTIVE_USERS.getName();
+    private static final RightName STANDART_ROLE = RightName.ACTIVE_USERS;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

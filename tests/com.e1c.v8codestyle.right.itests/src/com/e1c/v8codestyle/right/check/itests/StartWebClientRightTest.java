@@ -34,7 +34,7 @@ public class StartWebClientRightTest
 
     private static final String CHECK_ID = "start-web-client-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.WEB_CLIENT.getName();
+    private static final RightName STANDART_ROLE = RightName.WEB_CLIENT;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

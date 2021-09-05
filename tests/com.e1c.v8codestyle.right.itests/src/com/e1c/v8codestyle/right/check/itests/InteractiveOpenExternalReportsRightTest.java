@@ -34,7 +34,7 @@ public class InteractiveOpenExternalReportsRightTest
 
     private static final String CHECK_ID = "interactive-open-external-reports-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.INTERACTIVE_OPEN_EXT_REPORTS.getName();
+    private static final RightName STANDART_ROLE = RightName.INTERACTIVE_OPEN_EXT_REPORTS;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

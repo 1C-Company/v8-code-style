@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #20
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
@@ -29,6 +30,9 @@ public class RightInteracitveDeletePredefinedData
 
     private static final String CHECK_ID = "right-interactive-delete-predefined-data"; //$NON-NLS-1$
 
+    /**
+     * {@inheritDoc}
+     */
     @Inject
     public RightInteracitveDeletePredefinedData(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {

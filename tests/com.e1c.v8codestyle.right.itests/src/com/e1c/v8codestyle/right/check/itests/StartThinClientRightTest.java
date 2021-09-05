@@ -34,7 +34,7 @@ public class StartThinClientRightTest
 
     private static final String CHECK_ID = "start-thin-client-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.THIN_CLIENT.getName();
+    private static final RightName STANDART_ROLE = RightName.THIN_CLIENT;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

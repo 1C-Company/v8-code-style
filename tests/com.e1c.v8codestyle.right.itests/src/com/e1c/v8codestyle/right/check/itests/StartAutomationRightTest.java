@@ -34,7 +34,7 @@ public class StartAutomationRightTest
 
     private static final String CHECK_ID = "start-automation-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.AUTOMATION.getName();
+    private static final RightName STANDART_ROLE = RightName.AUTOMATION;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

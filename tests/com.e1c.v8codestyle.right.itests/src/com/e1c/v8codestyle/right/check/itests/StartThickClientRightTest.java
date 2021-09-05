@@ -34,7 +34,7 @@ public class StartThickClientRightTest
 
     private static final String CHECK_ID = "start-thick-client-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.THICK_CLIENT.getName();
+    private static final RightName STANDART_ROLE = RightName.THICK_CLIENT;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

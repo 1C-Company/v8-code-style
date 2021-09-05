@@ -34,7 +34,7 @@ public class ViewEventLogRightTest
 
     private static final String CHECK_ID = "view-event-log-right"; //$NON-NLS-1$
 
-    private static final String STANDART_ROLE = RightName.EVENT_LOG.getName();
+    private static final RightName STANDART_ROLE = RightName.EVENT_LOG;
 
     @Test
     public void testStandartRoleCorrect() throws Exception

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
+import java.util.List;
+
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
@@ -27,7 +29,7 @@ public class ExclusiveModeRight
     extends RoleRightSetCheck
 {
 
-    private static final String NAMES_DEFAULT = "ПолныеПрава,FullAccess"; //$NON-NLS-1$
+    private static final List<String> NAMES_DEFAULT = List.of("ПолныеПрава", "FullAccess"); //$NON-NLS-1$ //$NON-NLS-2$
 
     private static final String CHECK_ID = "exclusive-mode-right"; //$NON-NLS-1$
 
@@ -53,7 +55,7 @@ public class ExclusiveModeRight
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.extension(new RoleNameExtension(NAMES_DEFAULT, bmModelManager))
+        builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, bmModelManager))
             .title(Messages.ExclusiveModeRight_title)
             .description(Messages.ExclusiveModeRight_description);
     }
@@ -62,6 +64,12 @@ public class ExclusiveModeRight
     protected RightName getRightName()
     {
         return RightName.EXCLUSIVE_MODE;
+    }
+
+    @Override
+    protected boolean needCheckObjectRight()
+    {
+        return false;
     }
 
 }
