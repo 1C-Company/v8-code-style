@@ -32,6 +32,12 @@ public class UpdateDatabaseConfigurationRight
 
     private static final String CHECK_ID = "update-database-configuration-right"; //$NON-NLS-1$
 
+    /**
+     * Creates new instance which helps to check that role has specified right for an object.
+     *
+     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
+     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     */
     @Inject
     public UpdateDatabaseConfigurationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {

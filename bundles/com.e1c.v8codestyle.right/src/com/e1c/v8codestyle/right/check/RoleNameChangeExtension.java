@@ -40,7 +40,8 @@ public class RoleNameChangeExtension
         OnModelFeatureChangeContextCollector collector = (IBmObject bmObject, EStructuralFeature feature,
             BmSubEvent bmEvent, CheckContextCollectingSession contextSession) -> {
 
-            if (bmObject instanceof RoleDescription && ((BmChangeEvent)bmEvent).isFqnChanged())
+            if (bmObject instanceof RoleDescription && bmEvent instanceof BmChangeEvent
+                && ((BmChangeEvent)bmEvent).isFqnChanged())
             {
                 contextSession.addFullCheck(bmObject);
             }

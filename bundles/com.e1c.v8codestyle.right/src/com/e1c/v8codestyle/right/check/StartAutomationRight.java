@@ -32,6 +32,12 @@ public class StartAutomationRight
 
     private static final String CHECK_ID = "start-automation-right"; //$NON-NLS-1$
 
+    /**
+     * Creates new instance which helps to check that role has specified right for an object.
+     *
+     * @param v8ProjectManager the V8 project manager, cannot be {@code null}.
+     * @param bmModelManager  the BM model manager, cannot be {@code null}.
+     */
     @Inject
     public StartAutomationRight(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {
