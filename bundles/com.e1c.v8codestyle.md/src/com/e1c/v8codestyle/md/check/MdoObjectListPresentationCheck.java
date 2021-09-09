@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (C) 2021, 1C-Soft LLC and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_DB_OBJECT;
@@ -8,7 +20,6 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.INFORMAT
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.INFORMATION_REGISTER__RECORD_PRESENTATION;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com._1c.g5.v8.dt.common.StringUtils;
@@ -17,6 +28,8 @@ import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicDbObject;
 import com._1c.g5.v8.dt.metadata.mdclass.InformationRegister;
 import com._1c.g5.v8.dt.metadata.mdclass.Language;
+import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -77,12 +90,19 @@ public class MdoObjectListPresentationCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof EObject))
+        if (monitor.isCanceled() || !(object instanceof MdObject))
         {
             return;
         }
 
-        IV8Project project = v8ProjectManager.getProject((EObject)object);
+        MdObject mdObject = (MdObject)object;
+        if (mdObject.getObjectBelonging() != ObjectBelonging.NATIVE)
+        {
+            // skip extended object in Extension project
+            return;
+        }
+
+        IV8Project project = v8ProjectManager.getProject(mdObject);
         Language language = project.getDefaultLanguage();
         if (monitor.isCanceled() || language == null)
         {
