@@ -57,7 +57,7 @@ public class StructureCtorTooManyKeysCheck
         builder.title(Messages.StructureCtorTooManyKeysCheck_title)
             .description(Messages.StructureCtorTooManyKeysCheck_description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
+            .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .module()
             .checkedObjectType(OPERATOR_STYLE_CREATOR)
