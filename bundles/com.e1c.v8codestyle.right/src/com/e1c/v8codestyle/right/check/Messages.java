@@ -23,6 +23,19 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.right.check.messages"; //$NON-NLS-1$
+
+    public static String RightActiveUsers_description;
+    public static String RightActiveUsers_title;
+    public static String RightAdministration_description;
+    public static String RightAdministration_title;
+    public static String RightAllFunctionsMode_description;
+    public static String RightAllFunctionsMode_title;
+    public static String RightConfigurationExtensionsAdministration_description;
+    public static String RightConfigurationExtensionsAdministration_title;
+    public static String RightDataAdministration_description;
+    public static String RightDataAdministration_title;
+    public static String RightExclusiveMode_description;
+    public static String RightExclusiveMode_title;
     public static String RightInteracitveDelete_description;
     public static String RightInteracitveDelete_title;
     public static String RightInteracitveDeleteMarkedPredefinedData_description;
@@ -31,8 +44,31 @@ final class Messages
     public static String RightInteracitveDeletePredefinedData_title;
     public static String RightInteractiveClearDeletionMarkPredefinedData_description;
     public static String RightInteractiveClearDeletionMarkPredefinedData_title;
+    public static String RightInteractiveOpenExternalDataProcessors_description;
+    public static String RightInteractiveOpenExternalDataProcessors_title;
+    public static String RightInteractiveOpenExternalReports_description;
+    public static String RightInteractiveOpenExternalReports_title;
     public static String RightInteractiveSetDeletionMarkPredefinedData_description;
     public static String RightInteractiveSetDeletionMarkPredefinedData_title;
+    public static String RightOutputToPrinterFileClipboard_description;
+    public static String RightOutputToPrinterFileClipboard_title;
+    public static String RightSaveUserData_description;
+    public static String RightSaveUserData_title;
+    public static String RightStartAutomation_description;
+    public static String RightStartAutomation_title;
+    public static String RightStartExternalConnection_description;
+    public static String RightStartExternalConnection_title;
+    public static String RightStartThickClient_description;
+    public static String RightStartThickClient_title;
+    public static String RightStartThinClient_description;
+    public static String RightStartThinClient_title;
+    public static String RightStartWebClient_description;
+    public static String RightStartWebClient_title;
+    public static String RightUpdateDatabaseConfiguration_description;
+    public static String RightUpdateDatabaseConfiguration_title;
+    public static String RightViewEventLog_description;
+    public static String RightViewEventLog_title;
+
     public static String RoleRightHasRls_description;
     public static String RoleRightHasRls_Exclude_Right_Object_name_pattern;
     public static String RoleRightHasRls_Role_name_pattern;
@@ -44,41 +80,6 @@ final class Messages
 
     public static String ExcludeRoleByPatternExtension_Exclude_role_name_pattern;
     public static String ExcludeRoleByNameListExtension_Exclude_role_names;
-
-    public static String ActiveUsersRight_title;
-    public static String ActiveUsersRight_description;
-    public static String AdministrationRight_title;
-    public static String AdministrationRight_description;
-    public static String AllFunctionsModeRight_title;
-    public static String AllFunctionsModeRight_description;
-    public static String ConfigurationExtensionsAdministrationRight_title;
-    public static String ConfigurationExtensionsAdministrationRight_description;
-    public static String DataAdministrationRight_title;
-    public static String DataAdministrationRight_description;
-    public static String ExclusiveModeRight_title;
-    public static String ExclusiveModeRight_description;
-    public static String InteractiveOpenExternalDataProcessorsRight_title;
-    public static String InteractiveOpenExternalDataProcessorsRight_description;
-    public static String InteractiveOpenExternalReportsRight_title;
-    public static String InteractiveOpenExternalReportsRight_description;
-    public static String OutputToPrinterFileClipboardRight_title;
-    public static String OutputToPrinterFileClipboardRight_description;
-    public static String SaveUserDataRight_title;
-    public static String SaveUserDataRight_description;
-    public static String StartAutomationRight_title;
-    public static String StartAutomationRight_description;
-    public static String StartExternalConnectionRight_title;
-    public static String StartExternalConnectionRight_description;
-    public static String StartThickClientRight_title;
-    public static String StartThickClientRight_description;
-    public static String StartThinClientRight_title;
-    public static String StartThinClientRight_description;
-    public static String StartWebClientRight_title;
-    public static String StartWebClientRight_description;
-    public static String UpdateDatabaseConfigurationRight_title;
-    public static String UpdateDatabaseConfigurationRight_description;
-    public static String ViewEventLogRight_title;
-    public static String ViewEventLogRight_description;
 
     static
     {

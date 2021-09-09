@@ -50,87 +50,87 @@
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ActiveUsersRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightActiveUsers">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.AdministrationRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightAdministration">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.AllFunctionsModeRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightAllFunctionsMode">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ConfigurationExtensionsAdministrationRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightConfigurationExtensionsAdministration">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.DataAdministrationRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightDataAdministration">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ExclusiveModeRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightExclusiveMode">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.InteractiveOpenExternalDataProcessorsRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveOpenExternalDataProcessors">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.InteractiveOpenExternalReportsRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveOpenExternalReports">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.OutputToPrinterFileClipboardRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightOutputToPrinterFileClipboard">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.SaveUserDataRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightSaveUserData">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartAutomationRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartAutomation">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartExternalConnectionRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartExternalConnection">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartThickClientRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartThickClient">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartThinClientRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartThinClient">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.StartWebClientRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartWebClient">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.UpdateDatabaseConfigurationRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightUpdateDatabaseConfiguration">
       </check>
 
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.ViewEventLogRight">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightViewEventLog">
       </check>
 
    </extension>

@@ -134,8 +134,8 @@ public abstract class CheckRights
                 IBmObject object = transaction.getTopObjectByFqn(roleRightsFqn);
                 if (!(object instanceof RoleDescription))
                 {
-                    throw new ClassCastException(MessageFormat.format("Не удалось получить {0} по Fqn {1}",
-                        RoleDescription.class, roleRightsFqn));
+                    throw new ClassCastException(
+                        MessageFormat.format("Failed to get {0} by Fqn {1}", RoleDescription.class, roleRightsFqn));
                 }
 
                 RoleDescription description = (RoleDescription)object;
@@ -143,14 +143,14 @@ public abstract class CheckRights
                 if (role == null)
                 {
                     throw new NullPointerException(
-                        MessageFormat.format("Не удалось получить {0} из {1}", Role.class, RoleDescription.class));
+                        MessageFormat.format("Failed to get {0} from {1}", Role.class, RoleDescription.class));
                 }
 
                 EObject mdObject = transaction.getTopObjectByFqn(objectFqn);
                 if (mdObject == null)
                 {
                     throw new NullPointerException(
-                        MessageFormat.format("Не удалось получить {0} по Fqn {1}", EObject.class, objectFqn));
+                        MessageFormat.format("Failed to get {0} by Fqn {1}", EObject.class, objectFqn));
                 }
 
                 RightValue defaultRightValue = RightsModelUtil.getDefaultRightValue(mdObject, role);
@@ -167,7 +167,7 @@ public abstract class CheckRights
                 if (right == null)
                 {
                     throw new NullPointerException(
-                        MessageFormat.format("Не удалось получить {0} по имени {1}", Right.class, rightName));
+                        MessageFormat.format("Failed to get {0} by name {1}", Right.class, rightName));
                 }
 
                 RightsModelUtil.changeObjectRight(RightsModelUtil.getRightValue(true), defaultRightValue, objectRights,
