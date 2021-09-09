@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Aleksandr Kapralov - issue #20
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
@@ -55,13 +56,11 @@ public abstract class RoleRightSetCheck
     extends BasicCheck
 {
 
-    protected static final String EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME = "excludeRoleNamePattern"; //$NON-NLS-1$
-
     protected static final String EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME = "excludeObjectNamePattern"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
-    private final IBmModelManager bmModelManager;
+    protected final IBmModelManager bmModelManager;
 
     /**
      * Creates new instance which helps to check that role has specified right for an object.
@@ -70,7 +69,7 @@ public abstract class RoleRightSetCheck
      * @param bmModelManager  the BM model manager, cannot be {@code null}.
      */
     @Inject
-    public RoleRightSetCheck(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
+    protected RoleRightSetCheck(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
     {
         this.v8ProjectManager = v8ProjectManager;
         this.bmModelManager = bmModelManager;
@@ -79,16 +78,22 @@ public abstract class RoleRightSetCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
+        //@formatter:off
         builder.complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.SECURITY)
+            .extension(new ExcludeRoleByPatternExtension(bmModelManager))
+            .extension(new RoleNameChangeExtension())
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)
-            .features(OBJECT_RIGHT__RIGHT, OBJECT_RIGHT__VALUE)
-            .parameter(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
-                Messages.RoleRightSetCheck_Exclude_Role_name_pattern)
-            .parameter(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
-                Messages.RoleRightSetCheck_Exclude_Right_Object_name_pattern);
+            .features(OBJECT_RIGHT__RIGHT, OBJECT_RIGHT__VALUE);
+        //@formatter:on
+
+        if (needCheckObjectRight())
+        {
+            builder.parameter(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
+                Messages.RoleRightSetCheck_Exclude_object_name_pattern);
+        }
     }
 
     @Override
@@ -117,27 +122,21 @@ public abstract class RoleRightSetCheck
             return;
         }
 
-        String excludeRoleNamePattern = parameters.getString(EXCLUDE_ROLE_NAME_PATTERN_PARAMETER_NAME);
-        if (excludeRoleNamePattern != null && !excludeRoleNamePattern.isBlank())
+        ObjectRights rights = EcoreUtil2.getContainerOfType(objectRight, ObjectRights.class);
+        MdObject mdObject = rights.getObject() instanceof MdObject ? (MdObject)rights.getObject() : null;
+        if (mdObject == null)
         {
-            if (role == null)
-            {
-                role = getRole(objectRight);
-            }
-            if (role == null || !role.getName().matches(excludeRoleNamePattern))
+            return;
+        }
+
+        if (needCheckObjectRight())
+        {
+            String excludeObjectNamePattern = parameters.getString(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME);
+            if (excludeObjectNamePattern != null && !excludeObjectNamePattern.isBlank()
+                && mdObject.getName().matches(excludeObjectNamePattern))
             {
                 return;
             }
-        }
-
-        ObjectRights rights = EcoreUtil2.getContainerOfType(objectRight, ObjectRights.class);
-        MdObject mdObject = rights.getObject() instanceof MdObject ? (MdObject)rights.getObject() : null;
-
-        String excludeObjectNamePattern = parameters.getString(EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME);
-        if (excludeObjectNamePattern != null && !excludeObjectNamePattern.isBlank() && mdObject != null
-            && mdObject.getName().matches(excludeObjectNamePattern))
-        {
-            return;
         }
 
         String message = getIssueMessage(right, mdObject);
@@ -166,12 +165,21 @@ public abstract class RoleRightSetCheck
         return MessageFormat.format(Messages.RoleRightSetCheck_Role_right__0__set_for__1, rightName, mdObjectName);
     }
 
+    /**
+     * Enables or disabled parameter for excluding objects
+     *
+     * @return true, if check needs {@link EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME} parameter
+     */
+    protected boolean needCheckObjectRight()
+    {
+        return true;
+    }
+
     private Role getRole(ObjectRight objectRight)
     {
         IBmModel model = bmModelManager.getModel(objectRight);
         RoleDescription description = EcoreUtil2.getContainerOfType(objectRight, RoleDescription.class);
-        Role role = RightsModelUtil.getOwner(description, model);
-        return role;
+        return RightsModelUtil.getOwner(description, model);
     }
 
     private String getRightName(Right right, IV8Project project)
@@ -180,6 +188,7 @@ public abstract class RoleRightSetCheck
         {
             return right.getNameRu();
         }
+
         return right.getName();
     }
 
@@ -194,6 +203,7 @@ public abstract class RoleRightSetCheck
         {
             return MdUtil.getFullyQualifiedNameRu(mdObject).toString();
         }
+
         return MdUtil.getFullyQualifiedName(mdObject).toString();
     }
 
