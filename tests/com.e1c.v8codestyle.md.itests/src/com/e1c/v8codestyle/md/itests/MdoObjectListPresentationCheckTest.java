@@ -1,0 +1,48 @@
+/**
+ *
+ */
+package com.e1c.v8codestyle.md.itests;
+
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Test;
+
+import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.validation.marker.Marker;
+import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.v8codestyle.md.check.MdoObjectListPresentationCheck;
+
+/**
+ * The test for class {@link MdoObjectListPresentationCheck}.
+ *
+ * @author Dmitriy Marmyshev
+ */
+public class MdoObjectListPresentationCheckTest
+    extends CheckTestBase
+{
+
+    private static final String CHECK_ID = "mdo-object-list-presentation"; //$NON-NLS-1$
+
+    private static final String PROJECT_NAME = "MdoObjectListPresentation";
+
+    /**
+     * Test MD-Object has  object presentation or list presentation are empty.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testMdoObjectOrListPresentationIsEmpty() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.Products", dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+
+        id = getTopObjectIdByFqn("InformationRegister.Prices", dtProject);
+        marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+}

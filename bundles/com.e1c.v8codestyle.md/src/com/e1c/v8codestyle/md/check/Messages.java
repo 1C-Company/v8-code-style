@@ -45,6 +45,9 @@ final class Messages
     public static String MdObjectNameLength_Maximum_name_length_description;
     public static String MdObjectNameLength_message;
     public static String MdObjectNameLength_title;
+    public static String MdoObjectListPresentationCheck_decription;
+    public static String MdoObjectListPresentationCheck_Neither_Object_presentation_nor_List_presentation_is_not_filled;
+    public static String MdoObjectListPresentationCheck_title;
     static
     {
         // initialize resource bundle
