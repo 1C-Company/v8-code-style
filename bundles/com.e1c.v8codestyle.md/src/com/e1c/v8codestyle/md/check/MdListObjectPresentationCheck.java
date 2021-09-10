@@ -73,8 +73,8 @@ public class MdListObjectPresentationCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.MdoObjectListPresentationCheck_title)
-            .description(Messages.MdoObjectListPresentationCheck_decription)
+        builder.title(Messages.MdListObjectPresentationCheck_title)
+            .description(Messages.MdListObjectPresentationCheck_decription)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
@@ -133,7 +133,7 @@ public class MdListObjectPresentationCheck
         if (StringUtils.isBlank(objectPresentation) && StringUtils.isBlank(listPresentation))
         {
             String message =
-                Messages.MdoObjectListPresentationCheck_Neither_Object_presentation_nor_List_presentation_is_not_filled;
+                Messages.MdListObjectPresentationCheck_Neither_Object_presentation_nor_List_presentation_is_not_filled;
             resultAceptor.addIssue(message, feature);
         }
 
