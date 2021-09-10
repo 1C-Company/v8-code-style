@@ -10,9 +10,6 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.md.itests;
 
 import static org.junit.Assert.assertNotNull;
@@ -22,14 +19,14 @@ import org.junit.Test;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.md.check.MdoObjectListPresentationCheck;
+import com.e1c.v8codestyle.md.check.MdListObjectPresentationCheck;
 
 /**
- * The test for class {@link MdoObjectListPresentationCheck}.
+ * The test for class {@link MdListObjectPresentationCheck}.
  *
  * @author Dmitriy Marmyshev
  */
-public class MdoObjectListPresentationCheckTest
+public class MdListObjectPresentationCheckTest
     extends CheckTestBase
 {
 
@@ -43,7 +40,7 @@ public class MdoObjectListPresentationCheckTest
      * @throws Exception the exception
      */
     @Test
-    public void testMdoObjectAndListPresentationIsEmpty() throws Exception
+    public void testMdListAndObjectPresentationIsEmpty() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);

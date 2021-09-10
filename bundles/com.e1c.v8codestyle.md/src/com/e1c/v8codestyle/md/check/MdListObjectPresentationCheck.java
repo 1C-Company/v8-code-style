@@ -39,15 +39,16 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
- * The Class MdoObjectListPresentationCheck.
+ * The check the {@link MdObject} has list presentation or object presentation filled
+ * for default language of the project.
  *
  * @author Dmitriy Marmyshev
  */
-public class MdoObjectListPresentationCheck
+public class MdListObjectPresentationCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "mdo-object-list-presentation"; //$NON-NLS-1$
+    private static final String CHECK_ID = "md-list-object-presentation"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
@@ -57,7 +58,7 @@ public class MdoObjectListPresentationCheck
      * @param v8ProjectManager the v8 project manager service, cannot be {@code null}.
      */
     @Inject
-    public MdoObjectListPresentationCheck(IV8ProjectManager v8ProjectManager)
+    public MdListObjectPresentationCheck(IV8ProjectManager v8ProjectManager)
     {
         super();
         this.v8ProjectManager = v8ProjectManager;
@@ -77,10 +78,12 @@ public class MdoObjectListPresentationCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
-            .issueType(IssueType.UI_STYLE)
-            .topObject(BASIC_DB_OBJECT)
+            .issueType(IssueType.UI_STYLE);
+
+        builder.topObject(BASIC_DB_OBJECT)
             .checkTop()
             .features(BASIC_DB_OBJECT__OBJECT_PRESENTATION, BASIC_DB_OBJECT__LIST_PRESENTATION);
+
         builder.topObject(INFORMATION_REGISTER)
             .checkTop()
             .features(INFORMATION_REGISTER__RECORD_PRESENTATION, INFORMATION_REGISTER__LIST_PRESENTATION);

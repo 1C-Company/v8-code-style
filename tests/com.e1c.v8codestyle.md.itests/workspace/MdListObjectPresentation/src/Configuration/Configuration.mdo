@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8cfd0ef9-2d3a-4599-a65b-260aa927e856">
-  <name>MdoObjectListPresentation</name>
+  <name>MdListObjectPresentation</name>
   <synonym>
     <key>en</key>
-    <value>Mdo object list presentation</value>
+    <value>Md list object presentation</value>
   </synonym>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="e582738b-293b-4f28-9fbd-0bf3a9880cd3"/>
   <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="1f3b74be-684b-4f00-a819-6b4c4feeb415"/>
