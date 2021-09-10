@@ -35,4 +35,5 @@
     </synonym>
     <languageCode>ru</languageCode>
   </languages>
+  <commonModules>CommonModule.ОбщийМодуль1</commonModules>
 </mdclass:Configuration>
