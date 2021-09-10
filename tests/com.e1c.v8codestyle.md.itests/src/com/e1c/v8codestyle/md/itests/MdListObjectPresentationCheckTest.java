@@ -32,7 +32,7 @@ public class MdListObjectPresentationCheckTest
 
     private static final String CHECK_ID = "md-list-object-presentation"; //$NON-NLS-1$
 
-    private static final String PROJECT_NAME = "MdoObjectListPresentation";
+    private static final String PROJECT_NAME = "MdListObjectPresentation";
 
     /**
      * Test MD-Object has object presentation and list presentation are empty.
