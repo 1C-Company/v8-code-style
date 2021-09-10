@@ -30,7 +30,7 @@ public class MdListObjectPresentationCheckTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "mdo-object-list-presentation"; //$NON-NLS-1$
+    private static final String CHECK_ID = "md-list-object-presentation"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "MdoObjectListPresentation";
 
