@@ -16,11 +16,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.core.runtime.CoreException;
+import org.eclipse.emf.common.util.EList;
 import org.junit.Test;
 
+import com._1c.g5.v8.bm.core.IBmObject;
+import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
+import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck;
 
@@ -33,42 +39,42 @@ import com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck;
 public class EmptyExceptStatementCheckTest
     extends CheckTestBase
 {
-    
+
     private static final String PROJECT_NAME = "EmptyExceptStatement";
     private static final String CHECK_ID = "empty-except-statement";
     private static final String FQN_MODULE_GENERAL = "CommonModule.ОбщийМодуль1";
-    
+
     /**
      * Test common module methods for empty except statements
      * 
-     * @throws CoreException
+     * @throws Exception
      */
     @Test
-    public void testEmptyExceptStatement() throws CoreException
+    public void testEmptyExceptStatement() throws Exception
     {
-        var dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
-        
-        var mdObject = getTopObjectByFqn(FQN_MODULE_GENERAL, dtProject);
+
+        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_GENERAL, dtProject);
         assertTrue(mdObject instanceof CommonModule);
-        
-        var module = ((CommonModule)mdObject).getModule();
+
+        Module module = ((CommonModule)mdObject).getModule();
         assertNotNull(module);
-        
-        var methods = module.allMethods();
+
+        EList<Method> methods = module.allMethods();
         assertEquals(2, methods.size());
-        
-        var badMethod = methods.get(0);
-        var methodStatements = badMethod.allStatements();
+
+        Method badMethod = methods.get(0);
+        EList<Statement> methodStatements = badMethod.allStatements();
         assertEquals(1, methodStatements.size());
-        
-        var statement = methodStatements.get(0);
+
+        Statement statement = methodStatements.get(0);
         assertTrue(statement instanceof TryExceptStatement);
-        
-        var tryExceptStatement = TryExceptStatement.class.cast(statement);
-        
+
+        TryExceptStatement tryExceptStatement = TryExceptStatement.class.cast(statement);
+
         getFirstMarker(CHECK_ID, tryExceptStatement, dtProject);
-        var marker = getFirstMarker(CHECK_ID, tryExceptStatement, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, tryExceptStatement, dtProject);
         assertNotNull(marker);
         assertEquals("2", marker.getExtraInfo().get("line"));
     }

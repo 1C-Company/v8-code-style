@@ -48,12 +48,12 @@ public class EmptyExceptStatementCheck
     @Override
     protected void check(Object object, ResultAcceptor acceptor, ICheckParameters parameters, IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof TryExceptStatement))
+        if (monitor.isCanceled())
         {
             return;
         }
 
-        var tryExceptStatement = TryExceptStatement.class.cast(object);
+        TryExceptStatement tryExceptStatement = TryExceptStatement.class.cast(object);
 
         Optional.of(tryExceptStatement)
             .map(TryExceptStatement::getExceptStatements)
@@ -69,7 +69,7 @@ public class EmptyExceptStatementCheck
             .description(Messages.EmptyExceptStatementCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
-            .issueType(IssueType.WARNING)
+            .issueType(IssueType.CODE_STYLE)
             .module()
             .checkedObjectType(TRY_EXCEPT_STATEMENT);
     }
