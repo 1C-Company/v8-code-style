@@ -14,6 +14,7 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.TRY_EXCEPT_STATEMENT;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -25,8 +26,6 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 
-import java.util.List;
-
 /**
  * Checks try-except-endtry statements, for empty except statement.
  *
@@ -37,8 +36,8 @@ public class EmptyExceptStatementCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "empty-except-statement";
-    
+    private static final String CHECK_ID = "empty-except-statement"; //$NON-NLS-1$
+
     @Override
     public String getCheckId()
     {
