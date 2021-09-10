@@ -1,4 +1,4 @@
-# configuration-data-lock-mode
+# Configuration data lock mode
 
 Application should use managed data lock mode
 

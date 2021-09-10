@@ -1,4 +1,4 @@
-# ql-cast-to-max-number
+# Query cast to max number
 
 
 

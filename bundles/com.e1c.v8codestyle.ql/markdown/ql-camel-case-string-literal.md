@@ -1,4 +1,4 @@
-# ql-camel-case-string-literal
+# Query string literal contains non CamelCase content
 
 
 
