@@ -293,8 +293,8 @@ public class FunctionCtorReturnSectionCheck
         }
     }
 
-    private void addWarningReturnNonDeclaredType(ReturnStatement statment, boolean isRussianScript,
-        TypeItem returnType, String returnTypeName, DocumentationCommentResultAcceptor resultAceptor)
+    private void addWarningReturnNonDeclaredType(ReturnStatement statment, boolean isRussianScript, TypeItem returnType,
+        String returnTypeName, DocumentationCommentResultAcceptor resultAceptor)
     {
         final String message = MessageFormat.format(Messages.FunctionCtorReturnSectionCheck_Return_non_declared_type__T,
             isRussianScript ? McoreUtil.getTypeNameRu(returnType) : returnTypeName);
@@ -311,12 +311,16 @@ public class FunctionCtorReturnSectionCheck
     private boolean isUserDataTypes(List<String> computedReturnTypeNames, Set<String> checkTypes)
     {
         if (computedReturnTypeNames.isEmpty())
+        {
             return false;
+        }
 
         for (String typeName : computedReturnTypeNames)
         {
             if (checkTypes.contains(typeName))
+            {
                 return true;
+            }
         }
         return false;
     }

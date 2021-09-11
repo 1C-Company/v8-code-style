@@ -160,7 +160,7 @@ public class InvocationParamIntersectionCheck
 
             Expression param = inv.getParams().get(i);
             List<TypeItem> sorceTypes = computeTypes(param, actualEnvs);
-            boolean isUndefined = (param == null || param instanceof UndefinedLiteral || isUndefinedType(sorceTypes));
+            boolean isUndefined = param == null || param instanceof UndefinedLiteral || isUndefinedType(sorceTypes);
 
             List<TypeItem> targetTypes = Collections.emptyList();
             boolean isIntersect = false;
@@ -221,15 +221,21 @@ public class InvocationParamIntersectionCheck
         for (int i = 0; i < inv.getParams().size(); i++)
         {
             if (monitor.isCanceled())
+            {
                 return;
+            }
 
             if (targetParams.size() <= i)
+            {
                 return;
+            }
 
             List<TypeItem> targetTypes = computeTypes(targetParams.get(i), actualEnvs);
 
             if (targetTypes.isEmpty())
+            {
                 return;
+            }
 
             Expression param = inv.getParams().get(i);
 
@@ -274,7 +280,9 @@ public class InvocationParamIntersectionCheck
     {
         Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
         if (envs == null)
+        {
             return Environments.EMPTY;
+        }
 
         return bslPreferences.getLoadEnvs(object).intersect(envs.environments());
     }

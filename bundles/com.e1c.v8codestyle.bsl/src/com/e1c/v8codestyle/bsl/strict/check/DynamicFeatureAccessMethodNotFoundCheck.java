@@ -113,7 +113,9 @@ public class DynamicFeatureAccessMethodNotFoundCheck
     {
         Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
         if (envs == null)
+        {
             return true;
+        }
 
         Environments actualEnvs = bslPreferences.getLoadEnvs(object).intersect(envs.environments());
         if (actualEnvs.isEmpty())

@@ -34,7 +34,7 @@ import com._1c.g5.v8.dt.bsl.model.Module;
  *
  * @author Dmitriy Marmyshev
  */
-public class StrictTypeUtil
+public final class StrictTypeUtil
 {
 
     /** The strict-types annotation using in module header to activate checks */
@@ -54,9 +54,13 @@ public class StrictTypeUtil
             {
                 line = line.trim();
                 if (!line.startsWith(IBslCommentToken.LINE_STARTER) && !line.isEmpty())
+                {
                     return false;
+                }
                 if (line.length() > 0 && line.substring(COMMENT_LENGTH).trim().startsWith(STRICT_TYPE_ANNOTATION))
+                {
                     return true;
+                }
 
                 line = reader.readLine();
             }
@@ -107,11 +111,15 @@ public class StrictTypeUtil
         for (ILeafNode node : root.getLeafNodes())
         {
             if (!node.isHidden())
+            {
                 return false;
+            }
 
             if (BslCommentUtils.isCommentNode(node)
                 && node.getText().substring(COMMENT_LENGTH).trim().startsWith(STRICT_TYPE_ANNOTATION))
+            {
                 return true;
+            }
 
         }
         return false;

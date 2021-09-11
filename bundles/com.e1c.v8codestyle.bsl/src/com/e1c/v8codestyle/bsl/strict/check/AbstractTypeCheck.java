@@ -89,7 +89,8 @@ public abstract class AbstractTypeCheck
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
      */
-    protected AbstractTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences, IQualifiedNameConverter qualifiedNameConverter)
+    protected AbstractTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
+        IQualifiedNameConverter qualifiedNameConverter)
     {
         super();
         this.resourceLookup = resourceLookup;
@@ -113,7 +114,9 @@ public abstract class AbstractTypeCheck
     {
         Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
         if (envs == null)
+        {
             return true;
+        }
 
         Environments actualEnvs = bslPreferences.getLoadEnvs(object).intersect(envs.environments());
         if (actualEnvs.isEmpty())
@@ -127,9 +130,8 @@ public abstract class AbstractTypeCheck
             IScope typeScope = scopeProvider.getScope(object, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
             IProject project = resourceLookup.getProject(object);
             boolean oldFormatComment = bslPreferences.getDocumentCommentProperties(project).oldCommentFormat();
-            Collection<TypeItem> commentTypes =
-                TypeSystemUtil.computeCommentTypes(object, typeScope, scopeProvider, qualifiedNameConverter,
-                commentProvider, oldFormatComment);
+            Collection<TypeItem> commentTypes = TypeSystemUtil.computeCommentTypes(object, typeScope, scopeProvider,
+                qualifiedNameConverter, commentProvider, oldFormatComment);
             return commentTypes.isEmpty();
         }
 

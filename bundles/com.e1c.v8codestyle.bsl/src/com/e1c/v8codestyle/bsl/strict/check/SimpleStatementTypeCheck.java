@@ -181,12 +181,16 @@ public class SimpleStatementTypeCheck
         boolean canResetToUndefined)
     {
         if (target.isEmpty())
+        {
             return false;
+        }
 
         Set<String> targetNames = Sets.newLinkedHashSet(BslUtil.transform(target, BslUtil.TYPE_NAME));
 
         if (canResetToUndefined && targetNames.contains(IEObjectTypeNames.UNDEFINED) && targetNames.size() == 1)
+        {
             return true;
+        }
 
         return intersectTypeItem(source, target, context);
     }
@@ -198,7 +202,9 @@ public class SimpleStatementTypeCheck
         for (TypeItem type : types)
         {
             if (sb.length() > 0)
+            {
                 sb.append(", "); //$NON-NLS-1$
+            }
             sb.append(isRussian ? McoreUtil.getTypeNameRu(type) : McoreUtil.getTypeName(type));
         }
         return sb.toString();
