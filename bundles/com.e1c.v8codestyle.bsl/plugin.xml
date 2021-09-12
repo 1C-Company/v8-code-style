@@ -40,6 +40,10 @@
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.NstrStringLiteralFormatCheck">
+      </check>
 
    </extension>
 
