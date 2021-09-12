@@ -55,6 +55,13 @@ final class Messages
     public static String EmptyExceptStatementCheck_description;
     
 
+    public static String FormModuleMissingPragmaCheck_description;
+
+    public static String FormModuleMissingPragmaCheck_Missing_compilation_directives;
+
+    public static String FormModuleMissingPragmaCheck_title;
+
+
     static
     {
         // initialize resource bundle
