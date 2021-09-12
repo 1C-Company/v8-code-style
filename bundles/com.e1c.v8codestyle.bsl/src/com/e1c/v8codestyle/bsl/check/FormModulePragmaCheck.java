@@ -1,6 +1,15 @@
-/**
+/*******************************************************************************
+ * Copyright (C) 2021, 1C-Soft LLC and others.
  *
- */
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.PRAGMA;
@@ -22,9 +31,10 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 
 /**
+ * Check that pragmas is not used in other modules than form or command module.
+ *
  * @author Dmitriy Marmyshev
  * @author Victor Golubev
- *
  */
 public class FormModulePragmaCheck
     extends BasicCheck
