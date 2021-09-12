@@ -87,8 +87,8 @@ public class NstrStringLiteralFormatCheck
         builder.title(Messages.NstrStringLiteralFormatCheck_title)
             .description(Messages.NstrStringLiteralFormatCheck_description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.ERROR)
+            .severity(IssueSeverity.MINOR)
+            .issueType(IssueType.CODE_STYLE)
             .module()
             .checkedObjectType(INVOCATION)
             .parameter(PARAM_CHECK_EMPTY_INTERFACE, Boolean.class, DEFAULT_CHECK_EMPTY_INTERFACE,
