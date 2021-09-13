@@ -12,11 +12,10 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
+import static com._1c.g5.v8.dt.bsl.common.Symbols.COMMAND_MODULE_SYMBOLS;
+import static com._1c.g5.v8.dt.bsl.common.Symbols.FORM_MODULE_SYMBOLS;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.PRAGMA;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.PRAGMA__VALUE;
-
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
@@ -24,6 +23,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.Pragma;
+import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -40,17 +40,6 @@ public class FormModulePragmaCheck
     extends BasicCheck
 {
     private static final String CHECK_ID = "form-module-pragma"; //$NON-NLS-1$
-
-    private static final Set<String> DEFAULT_COMPILATION_DIRECTIVES = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-    static
-    {
-        DEFAULT_COMPILATION_DIRECTIVES.add("НаКлиенте"); //$NON-NLS-1$
-        DEFAULT_COMPILATION_DIRECTIVES.add("AtClient"); //$NON-NLS-1$
-        DEFAULT_COMPILATION_DIRECTIVES.add("НаСервере"); //$NON-NLS-1$
-        DEFAULT_COMPILATION_DIRECTIVES.add("AtServer"); //$NON-NLS-1$
-        DEFAULT_COMPILATION_DIRECTIVES.add("НаСервереБезКонтекста"); //$NON-NLS-1$
-        DEFAULT_COMPILATION_DIRECTIVES.add("AtServerNoContext"); //$NON-NLS-1$
-    }
 
     @Override
     public String getCheckId()
@@ -75,7 +64,8 @@ public class FormModulePragmaCheck
         IProgressMonitor monitor)
     {
         Pragma pragma = (Pragma)object;
-        if (DEFAULT_COMPILATION_DIRECTIVES.contains(pragma.getSymbol()))
+        CaseInsensitiveString symbol = new CaseInsensitiveString(pragma.getSymbol());
+        if (FORM_MODULE_SYMBOLS.contains(symbol) || COMMAND_MODULE_SYMBOLS.contains(symbol))
         {
             Module module = EcoreUtil2.getContainerOfType(pragma, Module.class);
             ModuleType type = module.getModuleType();
