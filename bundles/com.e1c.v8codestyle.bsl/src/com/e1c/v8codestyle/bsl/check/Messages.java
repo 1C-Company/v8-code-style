@@ -27,6 +27,16 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.check.messages"; //$NON-NLS-1$
 
+    public static String AccessibilityAtClientInObjectModuleCheck_Declared_variable_accessible_at_Client;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_description;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Event_handler_should_be_accessible_at_Client;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Method_accessible_at_Client;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_title;
+
     public static String EventDataExchangeLoadCheck_Check_at_the_beginning_of_event_handler;
 
     public static String EventDataExchangeLoadCheck_description;
