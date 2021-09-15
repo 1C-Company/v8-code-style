@@ -12,6 +12,7 @@
     Contributors:
         1C-Soft LLC - initial API and implementation
         Aleksandr Kapralov - issue #17
+        Aleksandr Kapralov - issue #449
  -->
 
 <plugin>
@@ -26,11 +27,11 @@
       </category>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CanonicalPragmaCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.QueryInLoopCheck">
+            class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -38,7 +39,11 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.QueryInLoopCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
       </check>
 
    </extension>
