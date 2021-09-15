@@ -30,7 +30,6 @@
   <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
   <defaultRunMode>ManagedApplication</defaultRunMode>
   <usePurposes>PersonalComputer</usePurposes>
-  <defaultRoles>Role.Ext1_DefaultRole</defaultRoles>
   <defaultLanguage>Language.English</defaultLanguage>
   <compatibilityMode>8.3.19</compatibilityMode>
   <languages uuid="d2b2d800-b5fb-4d45-bec7-76b9fbebfbed">
@@ -41,6 +40,5 @@
     </extension>
     <languageCode>en</languageCode>
   </languages>
-  <roles>Role.Ext1_DefaultRole</roles>
   <commonModules>CommonModule.CommonModule</commonModules>
 </mdclass:Configuration>
