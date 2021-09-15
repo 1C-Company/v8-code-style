@@ -25,6 +25,10 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.check.messages"; //$NON-NLS-1$
 
+    public static String CanonicalPragmaCheck_description;
+    public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically;
+    public static String CanonicalPragmaCheck_title;
+
     public static String EventDataExchangeLoadCheck_Check_at_the_beginning_of_event_handler;
     public static String EventDataExchangeLoadCheck_description;
     public static String EventDataExchangeLoadCheck_Function_list_that_checks_DataExchange_Load;
@@ -45,10 +49,6 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
-
-    public static String CanonicalPragmaCheck_description;
-    public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically;
-    public static String CanonicalPragmaCheck_title;
 
     static
     {
