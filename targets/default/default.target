@@ -14,98 +14,169 @@
 <!-- EDT -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2021.2/"/>
-<unit id="com._1c.g5.aef.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.commons.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.edt.license.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.gumtree.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.ides.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.ides.monitoring.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.jface.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.license.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.lwt.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.properties.ui.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.bp.scheme.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.cli.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.diagram.framework.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.erd.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.eventhandlers.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.extension.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.geographicalschema.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.handly.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.markermatcher.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.platform.services.mobile.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.platform.support_v8.3.19.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.product.docs.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.product.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.profiling.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.rcp" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.ring.feature.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.testing.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.thirdparty.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.wst.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.xtext.runtime.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.v8.dt.xtext.ui.feature.group" version="0.0.0"/>
-<unit id="com._1c.g5.wiring.feature.feature.group" version="0.0.0"/>
-<unit id="com.e1c.g5.v8.dt.javadocs" version="0.0.0"/>
-<unit id="com.company1c.link.agent.core.feature.feature.group" version="0.0.0"/>
-<unit id="com.company1c.link.agent.dependencies.feature.feature.group" version="0.0.0"/>
-<unit id="com.company1c.link.ide.edt.feature.feature.group" version="0.0.0"/>
-<unit id="com.e1c.g5.v8.dt.gsw.feature.feature.group" version="0.0.0"/>
-<unit id="com.e1c.g5.v8.dt.mw.feature.feature.group" version="0.0.0"/>
-<unit id="com.make.chromium.cef.feature.feature.group" version="0.0.0"/>
-<unit id="de.itemis.xtext.antlr.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.babel.nls_eclipse_ru.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.babel.nls_technology.egit_ru.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.babel.nls_technology.jgit_ru.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.babel.nls_webtools_ru.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.draw2d.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.e4.rcp.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.ecf.core.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.egit.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.common.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.common.ui.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.databinding.edit.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.databinding.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.ecore.edit.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.ecore.editor.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.ecore.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.ecore.xcore.lib.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.edit.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.edit.ui.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.query.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.query.ocl.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.transaction.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.validation.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.validation.ocl.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.emf.workspace.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.epp.mpc.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.equinox.p2.discovery.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.equinox.p2.rcp.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.gef.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.gmf.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.gmf.runtime.notation.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.gmf.runtime.thirdparty.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.help.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.jgit.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.jgit.http.apache.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.jgit.lfs.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.jgit.pgm.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.nebula.widgets.datechooser.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.nebula.widgets.formattedtext.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.ocl.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.rcp.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.userstorage.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.xsd.edit.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.xsd.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.xtext.xbase.lib.feature.group" version="0.0.0"/>
+<unit id="com._1c.g5.aef.feature.feature.group" version="1.13.0.v202109081434"/>
+<unit id="com._1c.g5.commons.feature.group" version="3.4.0.v202103240426"/>
+<unit id="com._1c.g5.edt.license.feature.group" version="2.0.0.v1"/>
+<unit id="com._1c.g5.gumtree.feature.feature.group" version="3.2.0.v202012070858"/>
+<unit id="com._1c.g5.ides.feature.group" version="6.4.0.v202101131640"/>
+<unit id="com._1c.g5.ides.monitoring.feature.feature.group" version="0.5.0.v202003131214"/>
+<unit id="com._1c.g5.jface.feature.feature.group" version="2.1.400.v202103220803"/>
+<unit id="com._1c.g5.license.feature.group" version="1.0.0.v20150216-1700"/>
+<unit id="com._1c.g5.lwt.feature.feature.group" version="5.4.0.v202103220803"/>
+<unit id="com._1c.g5.properties.ui.feature.feature.group" version="1.13.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.bp.scheme.feature.feature.group" version="1.17.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.cli.feature.feature.group" version="0.5.0.v202102180838"/>
+<unit id="com._1c.g5.v8.dt.diagram.framework.feature.feature.group" version="4.0.0.v202001150826"/>
+<unit id="com._1c.g5.v8.dt.erd.feature.feature.group" version="3.14.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.eventhandlers.feature.feature.group" version="1.17.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.extension.feature.group" version="1.13.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.feature.feature.group" version="1.24.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.geographicalschema.feature.feature.group" version="2.14.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.handly.feature.feature.group" version="1.5.0.4"/>
+<unit id="com._1c.g5.v8.dt.markermatcher.feature.feature.group" version="1.1.0.v201912091233"/>
+<unit id="com._1c.g5.v8.dt.platform.services.mobile.feature.feature.group" version="1.16.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.platform.support_v8.3.19.feature.feature.group" version="0.15.0.v202108311454"/>
+<unit id="com._1c.g5.v8.dt.product.docs.feature.feature.group" version="1.24.0.v202109071331"/>
+<unit id="com._1c.g5.v8.dt.product.feature.feature.group" version="1.24.5.4"/>
+<unit id="com._1c.g5.v8.dt.profiling.feature.feature.group" version="3.15.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.rcp" version="1.24.5.4"/>
+<unit id="com._1c.g5.v8.dt.ring.feature.feature.group" version="1.24.5.4"/>
+<unit id="com._1c.g5.v8.dt.testing.feature.group" version="5.11.0.v202109081434"/>
+<unit id="com._1c.g5.v8.dt.thirdparty.feature.group" version="1.24.5.4"/>
+<unit id="com._1c.g5.v8.dt.wst.feature.group" version="4.6.0.4"/>
+<unit id="com._1c.g5.v8.dt.xtext.runtime.feature.group" version="2.24.0.4"/>
+<unit id="com._1c.g5.v8.dt.xtext.ui.feature.group" version="2.24.0.4"/>
+<unit id="com._1c.g5.wiring.feature.feature.group" version="2.3.0.v202103110848"/>
+<unit id="com.company1c.link.agent.core.feature.feature.group" version="3.0.3"/>
+<unit id="com.company1c.link.agent.dependencies.feature.feature.group" version="1.0.1"/>
+<unit id="com.company1c.link.ide.edt.feature.feature.group" version="3.0.3"/>
+<unit id="com.e1c.g5.v8.dt.gsw.feature.feature.group" version="1.1.0.v202109081434"/>
+<unit id="com.e1c.g5.v8.dt.mw.feature.feature.group" version="1.24.0.v202109081434"/>
+<unit id="com.make.chromium.cef.feature.feature.group" version="0.4.0.201908130254"/>
+<unit id="de.itemis.xtext.antlr.feature.feature.group" version="2.1.1.v201405091103"/>
+<unit id="org.eclipse.babel.nls_eclipse_ru.feature.group" version="4.18.0.v20210305020001"/>
+<unit id="org.eclipse.babel.nls_technology.egit_ru.feature.group" version="4.18.0.v20210305020001"/>
+<unit id="org.eclipse.babel.nls_technology.jgit_ru.feature.group" version="4.18.0.v20210305020001"/>
+<unit id="org.eclipse.babel.nls_webtools_ru.feature.group" version="4.18.0.v20210305020001"/>
+<unit id="org.eclipse.draw2d.feature.group" version="3.10.100.201606061308"/>
+<unit id="org.eclipse.e4.rcp.feature.group" version="4.19.0.v20210302-1107"/>
+<unit id="org.eclipse.ecf.core.feature.feature.group" version="1.5.701.v20201027-0550"/>
+<unit id="org.eclipse.ecf.filetransfer.feature.feature.group" version="3.14.1702.v20201025-2315"/>
+<unit id="org.eclipse.egit.feature.group" version="5.10.0.202012080955-r"/>
+<unit id="org.eclipse.emf.common.feature.group" version="2.21.0.v20200917-1439"/>
+<unit id="org.eclipse.emf.common.ui.feature.group" version="2.17.0.v20190507-0402"/>
+<unit id="org.eclipse.emf.databinding.edit.feature.group" version="1.7.0.v20190323-1059"/>
+<unit id="org.eclipse.emf.databinding.feature.group" version="1.7.0.v20190323-1059"/>
+<unit id="org.eclipse.emf.ecore.edit.feature.group" version="2.14.0.v20190822-1451"/>
+<unit id="org.eclipse.emf.ecore.editor.feature.group" version="2.17.0.v20190528-0725"/>
+<unit id="org.eclipse.emf.ecore.feature.group" version="2.23.0.v20200630-0516"/>
+<unit id="org.eclipse.emf.ecore.xcore.lib.feature.group" version="1.6.0.v20200630-0516"/>
+<unit id="org.eclipse.emf.edit.feature.group" version="2.16.0.v20190920-0401"/>
+<unit id="org.eclipse.emf.edit.ui.feature.group" version="2.20.0.v20200917-1406"/>
+<unit id="org.eclipse.emf.query.feature.group" version="1.12.0.201805030653"/>
+<unit id="org.eclipse.emf.query.ocl.feature.group" version="1.12.0.201805030653"/>
+<unit id="org.eclipse.emf.transaction.feature.group" version="1.12.0.201805140824"/>
+<unit id="org.eclipse.emf.validation.feature.group" version="1.12.2.202008210805"/>
+<unit id="org.eclipse.emf.validation.ocl.feature.group" version="1.12.2.202008210805"/>
+<unit id="org.eclipse.emf.workspace.feature.group" version="1.12.0.201805140824"/>
+<unit id="org.eclipse.epp.mpc.feature.group" version="1.9.1.v20210204-1408"/>
+<unit id="org.eclipse.equinox.p2.core.feature.feature.group" version="1.6.900.v20210227-0235"/>
+<unit id="org.eclipse.equinox.p2.discovery.feature.feature.group" version="1.2.800.v20200916-1234"/>
+<unit id="org.eclipse.equinox.p2.extras.feature.feature.group" version="1.4.1100.v20210227-0235"/>
+<unit id="org.eclipse.equinox.p2.rcp.feature.feature.group" version="1.4.1100.v20210227-0235"/>
+<unit id="org.eclipse.equinox.p2.user.ui.feature.group" version="2.4.1100.v20210227-0235"/>
+<unit id="org.eclipse.fx.runtime.min.feature.feature.group" version="3.7.0.202010120720"/>
+<unit id="org.eclipse.gef.feature.group" version="3.11.0.201606061308"/>
+<unit id="org.eclipse.gmf.feature.group" version="1.13.0.202004160913"/>
+<unit id="org.eclipse.gmf.runtime.notation.feature.group" version="1.13.0.202004160913"/>
+<unit id="org.eclipse.gmf.runtime.thirdparty.feature.group" version="1.13.0.202004160913"/>
+<unit id="org.eclipse.help.feature.group" version="2.3.500.v20210303-1800"/>
+<unit id="org.eclipse.jgit.feature.group" version="5.10.0.202012080955-r"/>
+<unit id="org.eclipse.jgit.http.apache.feature.group" version="5.10.0.202012080955-r"/>
+<unit id="org.eclipse.jgit.lfs.feature.group" version="5.10.0.202012080955-r"/>
+<unit id="org.eclipse.jgit.pgm.feature.group" version="5.10.0.202012080955-r"/>
+<unit id="org.eclipse.nebula.widgets.datechooser.feature.feature.group" version="1.0.0.201410030017"/>
+<unit id="org.eclipse.nebula.widgets.formattedtext.feature.feature.group" version="1.0.0.201410030017"/>
+<unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="1.0.0.201401021803"/>
+<unit id="org.eclipse.ocl.feature.group" version="3.14.400.v20201208-2229"/>
+<unit id="org.eclipse.platform.feature.group" version="4.19.0.v20210303-1800"/>
+<unit id="org.eclipse.rcp.feature.group" version="4.19.0.v20210303-1800"/>
+<unit id="org.eclipse.userstorage.feature.group" version="1.2.0.v20191120-1614"/>
+<unit id="org.eclipse.xsd.edit.feature.group" version="2.13.0.v20200723-0820"/>
+<unit id="org.eclipse.xsd.feature.group" version="2.19.0.v20200917-0747"/>
+<unit id="org.eclipse.xtext.xbase.lib.feature.group" version="2.24.0.v20201130-0912"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.10.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.11.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.12.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.13.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.14.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.15.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.16.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.17.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.18.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.20.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.8.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com._1c.g5.v8.dt.platform.support_v8.3.9.feature.feature.group" version="0.15.0.v202108311454"/>
+    <unit id="com.e1c.g5.v8.dt.bsl.formatter.feature.feature.group" version="1.0.600.v202109081434"/>
+    <unit id="com.e1c.g5.v8.dt.bsl.ui.templates.feature.feature.group" version="1.0.0.v202109081434"/>
+    <unit id="com.e1c.g5.v8.dt.formatter.feature.feature.group" version="1.0.600.v202109081434"/>
+    <unit id="com.e1c.g5.v8.dt.formatter.ui.feature.feature.group" version="1.0.600.v202109081434"/>
+    <unit id="openjfx.swt.feature.feature.group" version="11.0.0.201901231300"/>
+    <unit id="org.aspectj.feature.group" version="1.9.6.202103162301"/>
+    <unit id="org.aspectj.source.feature.group" version="1.9.6.202103162301"/>
+    <unit id="org.eclipse.babel.nls_modeling.emf_ru.feature.group" version="4.18.0.v20210305020001"/>
+    <unit id="org.eclipse.babel.nls_modeling.tmf.xtext_ru.feature.group" version="4.18.0.v20210305020001"/>
+    <unit id="org.eclipse.draw2d.source.feature.group" version="3.10.100.201606061308"/>
+    <unit id="org.eclipse.e4.rcp.source.feature.group" version="4.19.0.v20210302-1107"/>
+    <unit id="org.eclipse.ecf.core.feature.source.feature.group" version="1.5.701.v20201027-0550"/>
+    <unit id="org.eclipse.ecf.core.ssl.feature.feature.group" version="1.1.500.v20200812-2314"/>
+    <unit id="org.eclipse.ecf.core.ssl.feature.source.feature.group" version="1.1.500.v20200812-2314"/>
+    <unit id="org.eclipse.ecf.filetransfer.httpclient45.feature.feature.group" version="1.0.702.v20201025-2303"/>
+    <unit id="org.eclipse.ecf.filetransfer.ssl.feature.feature.group" version="1.1.400.v20200812-2314"/>
+    <unit id="org.eclipse.emf.common.source.feature.group" version="2.21.0.v20200917-1439"/>
+    <unit id="org.eclipse.emf.common.ui.source.feature.group" version="2.17.0.v20190507-0402"/>
+    <unit id="org.eclipse.emf.databinding.edit.source.feature.group" version="1.7.0.v20190323-1059"/>
+    <unit id="org.eclipse.emf.databinding.source.feature.group" version="1.7.0.v20190323-1059"/>
+    <unit id="org.eclipse.emf.ecore.edit.source.feature.group" version="2.14.0.v20190822-1451"/>
+    <unit id="org.eclipse.emf.ecore.editor.source.feature.group" version="2.17.0.v20190528-0725"/>
+    <unit id="org.eclipse.emf.ecore.source.feature.group" version="2.23.0.v20200630-0516"/>
+    <unit id="org.eclipse.emf.edit.source.feature.group" version="2.16.0.v20190920-0401"/>
+    <unit id="org.eclipse.emf.edit.ui.source.feature.group" version="2.20.0.v20200917-1406"/>
+    <unit id="org.eclipse.emf.mapping.ecore.editor.feature.group" version="2.14.0.v20190528-0725"/>
+    <unit id="org.eclipse.emf.mapping.ecore.editor.source.feature.group" version="2.14.0.v20190528-0725"/>
+    <unit id="org.eclipse.emf.mapping.ecore.feature.group" version="2.12.0.v20190323-1059"/>
+    <unit id="org.eclipse.emf.mapping.ecore.source.feature.group" version="2.12.0.v20190323-1059"/>
+    <unit id="org.eclipse.emf.mapping.feature.group" version="2.13.0.v20190323-1059"/>
+    <unit id="org.eclipse.emf.mapping.source.feature.group" version="2.13.0.v20190323-1059"/>
+    <unit id="org.eclipse.emf.mapping.ui.feature.group" version="2.13.0.v20190323-1059"/>
+    <unit id="org.eclipse.emf.mapping.ui.source.feature.group" version="2.13.0.v20190323-1059"/>
+    <unit id="org.eclipse.emf.query.ocl.source.feature.group" version="1.12.0.201805030653"/>
+    <unit id="org.eclipse.emf.query.source.feature.group" version="1.12.0.201805030653"/>
+    <unit id="org.eclipse.emf.transaction.source.feature.group" version="1.12.0.201805140824"/>
+    <unit id="org.eclipse.emf.validation.ocl.source.feature.group" version="1.12.2.202008210805"/>
+    <unit id="org.eclipse.emf.validation.source.feature.group" version="1.12.2.202008210805"/>
+    <unit id="org.eclipse.emf.workspace.source.feature.group" version="1.12.0.201805140824"/>
+    <unit id="org.eclipse.equinox.p2.core.feature.source.feature.group" version="1.6.900.v20210227-0235"/>
+    <unit id="org.eclipse.equinox.p2.extras.feature.source.feature.group" version="1.4.1100.v20210227-0235"/>
+    <unit id="org.eclipse.equinox.p2.rcp.feature.source.feature.group" version="1.4.1100.v20210227-0235"/>
+    <unit id="org.eclipse.equinox.p2.user.ui.source.feature.group" version="2.4.1100.v20210227-0235"/>
+    <unit id="org.eclipse.gef.source.feature.group" version="3.11.0.201606061308"/>
+    <unit id="org.eclipse.gmf.runtime.notation.source.feature.group" version="1.13.0.202004160913"/>
+    <unit id="org.eclipse.gmf.runtime.thirdparty.source.feature.group" version="1.13.0.202004160913"/>
+    <unit id="org.eclipse.gmf.source.feature.group" version="1.13.0.202004160913"/>
+    <unit id="org.eclipse.help.source.feature.group" version="2.3.500.v20210303-1800"/>
+    <unit id="org.eclipse.jetty.bundles.f.source.feature.group" version="9.4.29.v20200521"/>
+    <unit id="org.eclipse.jgit.gpg.bc.feature.group" version="5.10.0.202012080955-r"/>
+    <unit id="org.eclipse.jgit.ssh.apache.feature.group" version="5.10.0.202012080955-r"/>
+    <unit id="org.eclipse.jgit.ssh.jsch.feature.group" version="5.10.0.202012080955-r"/>
+    <unit id="org.eclipse.platform.source.feature.group" version="4.19.0.v20210303-1800"/>
+    <unit id="org.eclipse.rcp.source.feature.group" version="4.19.0.v20210303-1800"/>
+    <unit id="org.eclipse.sources.feature.group" version="4.11.0.4"/>
+    <unit id="org.eclipse.swt.chromium.feature.feature.group" version="0.10.2.201908130308"/>
+    <unit id="org.eclipse.wst.server_core.feature.feature.group" version="3.3.800.v202007170127"/>
+    <unit id="org.eclipse.wst.server_ui.feature.feature.group" version="3.3.900.v202007170127"/>
+    <unit id="org.eclipse.wst.server_userdoc.feature.feature.group" version="3.3.300.v201901310132"/>
+    <unit id="org.eclipse.xsd.source.feature.group" version="2.19.0.v20200917-0747"/>
 </location>
 
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
