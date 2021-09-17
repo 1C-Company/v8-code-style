@@ -151,7 +151,9 @@ public class SortService
             {
                 IBmAsyncEventListener listener = projectListeners.get(project);
                 if (listener != null)
+                {
                     model.removeAsyncEventListener(listener);
+                }
             }
         }
     }
@@ -161,13 +163,17 @@ public class SortService
     {
         IBmModel model = modelManager.getModel(dtProject);
         if (model == null)
+        {
             return Status.CANCEL_STATUS;
+        }
 
         IProject project = dtProject.getWorkspaceProject();
         Collection<SortItem> items = readAllObjectsToSort(model, project, monitor);
 
         if (monitor.isCanceled())
+        {
             return Status.CANCEL_STATUS;
+        }
 
         if (project != null)
         {
@@ -197,12 +203,18 @@ public class SortService
     {
         IBmModel model = modelManager.getModel(dtProject);
         if (model == null || model.isDisposed())
+        {
             return Status.OK_STATUS;
+        }
 
         if (monitor.isCanceled() || items == null)
+        {
             return Status.CANCEL_STATUS;
+        }
         if (items.isEmpty())
+        {
             return Status.OK_STATUS;
+        }
 
         model.getGlobalContext().execute(new SortBmTask(items));
         return Status.OK_STATUS;
@@ -215,12 +227,16 @@ public class SortService
 
             IBmModel model = modelManager.getModel(project);
             if (model == null)
+            {
                 return Status.CANCEL_STATUS;
+            }
 
             Collection<SortItem> items = readAllObjectsToSort(model, project, monitor);
 
             if (monitor.isCanceled())
+            {
                 return Status.CANCEL_STATUS;
+            }
 
             startSortObject(project, items);
             return Status.OK_STATUS;
@@ -233,7 +249,9 @@ public class SortService
     {
         IDtProject dtProject = dtProjectManager.getDtProject(project);
         if (dtProject == null || items.isEmpty())
+        {
             return;
+        }
 
         SortJob job = jobs.computeIfAbsent(project, p -> new SortJob(dtProject, this, workspaceOrchestrator));
         job.getQueue().addAll(items);
@@ -276,7 +294,9 @@ public class SortService
         {
             IBmLongMap<BmChangeEvent> change = event.getChangeEvents();
             if (change == null)
+            {
                 return;
+            }
 
             Map<String, Set<EReference>> changedItems = new HashMap<>();
 
@@ -344,7 +364,9 @@ public class SortService
                         }
                         if (!(parent instanceof IBmObject) || listRef == null
                             || !AutoSortPreferences.isAllowedToSort(project, listRef))
+                        {
                             continue;
+                        }
 
                         changedItems.computeIfAbsent(((IBmObject)parent).bmGetFqn(), k -> new HashSet<>()).add(listRef);
                     }
@@ -370,7 +392,9 @@ public class SortService
                 }
 
                 if (!items.isEmpty())
+                {
                     startSortObject(project, items);
+                }
             }
         }
 
@@ -380,7 +404,9 @@ public class SortService
             {
                 if (!feature.isMany() || feature.equals(MdClassPackage.Literals.CONFIGURATION__CONTENT)
                     || !feature.getEType().isInstance(mdObject))
+                {
                     continue;
+                }
                 return feature;
             }
             return null;
@@ -417,7 +443,9 @@ public class SortService
                 || project == null && AutoSortPreferences.DEFAULT_SORT)
             {
                 if (monitor.isCanceled() || m.isCanceled())
+                {
                     return result;
+                }
 
                 Iterable<EClass> eClassIterator = transaction.getTopObjectEClasses();
                 Map<EClass, List<EReference>> sortListRefs = getSubordinateListsToSort(eClassIterator, project);
@@ -436,7 +464,9 @@ public class SortService
                     .hasNext();)
                 {
                     if (monitor.isCanceled() || m.isCanceled())
+                    {
                         return;
+                    }
 
                     IBmObject object = iterator.next();
                     String fqn = object.bmGetFqn();
@@ -452,13 +482,17 @@ public class SortService
             for (EClass topObjectEClass : eClassIterator)
             {
                 if (topObjectEClass.equals(CONFIGURATION) || !MD_OBJECT.isSuperTypeOf(topObjectEClass))
+                {
                     continue;
+                }
 
                 for (EReference feature : topObjectEClass.getEAllReferences())
                 {
                     if (!feature.isMany() || project != null && !AutoSortPreferences.isAllowedToSort(project, feature)
                         || project == null && !AutoSortPreferences.DEFAULT_SORT)
+                    {
                         continue;
+                    }
 
                     sortListRefs.computeIfAbsent(topObjectEClass, e -> new ArrayList<>()).add(feature);
                 }
@@ -474,15 +508,21 @@ public class SortService
                 for (EReference feature : CONFIGURATION.getEAllReferences())
                 {
                     if (monitor.isCanceled() || m.isCanceled())
+                    {
                         return;
+                    }
 
                     if (!feature.isMany() || feature.equals(MdClassPackage.Literals.CONFIGURATION__CONTENT)
                         || project != null && !AutoSortPreferences.isAllowedToSort(project, feature)
                         || project == null && !AutoSortPreferences.DEFAULT_SORT)
+                    {
                         continue;
+                    }
                     EList<?> collection = (EList<?>)top.eGet(feature, false);
                     if (collection.size() > 1)
+                    {
                         result.add(new SortItem(CONFIGURATION_FQN, feature, sorter));
+                    }
                 }
             }
         }

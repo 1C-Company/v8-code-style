@@ -191,13 +191,17 @@ public class AutoSortPropertyPage
             {
                 prefs.remove(AutoSortPreferences.KEY_TOP_NODE);
                 if (prefs.nodeExists(AutoSortPreferences.KEY_TOP_NODE))
+                {
                     prefs.node(AutoSortPreferences.KEY_TOP_NODE).removeNode();
+                }
             }
             if (buttons.get(AutoSortPreferences.KEY_SUBORDINATE_OBJECTS).getSelection())
             {
                 prefs.remove(AutoSortPreferences.KEY_SUBORDINATE_NODE);
                 if (prefs.nodeExists(AutoSortPreferences.KEY_SUBORDINATE_NODE))
+                {
                     prefs.node(AutoSortPreferences.KEY_SUBORDINATE_NODE).removeNode();
+                }
             }
             prefs.flush();
         }
@@ -487,7 +491,9 @@ public class AutoSortPropertyPage
         public boolean isChecked(Object element)
         {
             if (element instanceof EReference)
+            {
                 return AutoSortPropertyPage.this.topObjects.getOrDefault(((EReference)element).getName(), false);
+            }
             return false;
         }
 

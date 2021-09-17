@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (C) 2021, 1C-Soft LLC and others.
+   
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        1C-Soft LLC - initial API and implementation
+        Aleksandr Kapralov - issue #20
+ -->
+
+<plugin>
+   <extension
+         point="com.e1c.g5.v8.dt.check.checks">
+      <category
+            category="com.e1c.v8codestyle"
+            description="%category.right.description"
+            id="com.e1c.v8codestyle.right"
+            title="%category.right.title">
+      </category>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDelete">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDeletePredefinedData">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDeleteMarkedPredefinedData">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveClearDeletionMarkPredefinedData">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveSetDeletionMarkPredefinedData">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RoleRightHasRls">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightActiveUsers">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightAdministration">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightAllFunctionsMode">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightConfigurationExtensionsAdministration">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightDataAdministration">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightExclusiveMode">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveOpenExternalDataProcessors">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveOpenExternalReports">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightOutputToPrinterFileClipboard">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightSaveUserData">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartAutomation">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartExternalConnection">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartThickClient">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartThinClient">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightStartWebClient">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightUpdateDatabaseConfiguration">
+      </check>
+
+      <check
+            category="com.e1c.v8codestyle.right"
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightViewEventLog">
+      </check>
+
+   </extension>
+
+</plugin>

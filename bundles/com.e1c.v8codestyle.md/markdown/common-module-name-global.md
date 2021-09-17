@@ -1,4 +1,4 @@
-# common-module-name-global
+# Global common module should end with Global suffix
 
 Global common module should end with Global suffix
 

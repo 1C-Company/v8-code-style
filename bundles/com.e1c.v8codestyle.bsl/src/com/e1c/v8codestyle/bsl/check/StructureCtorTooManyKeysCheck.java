@@ -57,7 +57,7 @@ public class StructureCtorTooManyKeysCheck
         builder.title(Messages.StructureCtorTooManyKeysCheck_title)
             .description(Messages.StructureCtorTooManyKeysCheck_description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
+            .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .module()
             .checkedObjectType(OPERATOR_STYLE_CREATOR)
@@ -70,7 +70,9 @@ public class StructureCtorTooManyKeysCheck
         IProgressMonitor monitor)
     {
         if (monitor.isCanceled() || !(object instanceof OperatorStyleCreator))
+        {
             return;
+        }
 
         OperatorStyleCreator osc = (OperatorStyleCreator)object;
         if (IEObjectTypeNames.STRUCTURE.equals(McoreUtil.getTypeName(osc.getType())) && !osc.getParams().isEmpty()

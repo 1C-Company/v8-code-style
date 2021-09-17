@@ -1,4 +1,4 @@
-# ql-join-to-sub-query
+# Query join with sub query
 
 
 

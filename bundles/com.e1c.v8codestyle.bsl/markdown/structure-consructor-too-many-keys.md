@@ -1,4 +1,4 @@
-# structure-consructor-too-many-keys
+# Structure constructor has too many keys
 
 Check structure constructor has more then 3 keys
 

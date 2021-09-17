@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (C) 2021, 1C-Soft LLC and others.
+   
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        1C-Soft LLC - initial API and implementation
+ -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.e1c.v8codestyle</groupId>
+        <artifactId>bundles</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>com.e1c.v8codestyle.right</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>eclipse-plugin</packaging>
+    
+    <properties>
+        <!-- base dir of bom module: bom/parent/bundle/this-module -->
+        <markdown.page.generator.html.file.path>${project.parent.parent.parent.basedir}</markdown.page.generator.html.file.path>
+    </properties>
+    
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.ruleoftech</groupId>
+                <artifactId>markdown-page-generator-plugin</artifactId>
+                <configuration>
+                    <inputDirectory>${project.basedir}/markdown</inputDirectory>
+                    <outputDirectory>${project.basedir}/check.descriptions</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-resource-files</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <target>
+                                <property name="source" value="${project.basedir}/../../bom"/>
+                                <copy toDir="${project.basedir}/check.descriptions/css">
+                                    <fileset dir="${source}/html/css" />
+                                </copy>
+                                <copy toDir="${project.basedir}/check.descriptions/js">
+                                    <fileset dir="${source}/html/js" />
+                                </copy>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

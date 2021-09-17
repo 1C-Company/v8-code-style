@@ -1,4 +1,4 @@
-# common-module-name-client
+# Client common module should end with Client suffix
 
 Client common module should end with Client suffix
 
