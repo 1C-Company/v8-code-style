@@ -12,7 +12,7 @@ Structure keys initalizing without any default value that set empty types for th
 Procedure Test() Export
 	
 	Params = new Structure("Key1, Key2, Key3");
-	// come code...
+	// some code...
 	
 	Params.Key1 = 1345;
 	Params.Key2 = "New vlaue";
@@ -32,7 +32,7 @@ Procedure Test() Export
 	
 	Params = new Structure("Key1, Key2", 0, "");
 	Params.Insert("Key3", Catalogs.Products.EmptyRef());
-	// come code...
+	// some code...
 	
 	Params.Key1 = 1345;
 	Params.Key2 = "New vlaue";
