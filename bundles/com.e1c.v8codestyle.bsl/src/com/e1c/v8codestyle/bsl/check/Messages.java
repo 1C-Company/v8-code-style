@@ -42,6 +42,20 @@ final class Messages
     public static String EventDataExchangeLoadCheck_No_return_in__DataExchange_Load__checking;
     public static String EventDataExchangeLoadCheck_title;
 
+    public static String EventHandlerBooleanParamCheck_Check_only_in_event_handlers;
+
+    public static String EventHandlerBooleanParamCheck_description;
+
+    public static String EventHandlerBooleanParamCheck_Parameter_0_should_set_to_False_but_expression_may_replace_exiting_value_to_True;
+
+    public static String EventHandlerBooleanParamCheck_Parameter_0_should_set_to_True_but_expression_may_replace_exiting_value_to_False;
+
+    public static String EventHandlerBooleanParamCheck_Prams_to_set_to_False;
+
+    public static String EventHandlerBooleanParamCheck_Prams_to_set_to_True;
+
+    public static String EventHandlerBooleanParamCheck_title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
