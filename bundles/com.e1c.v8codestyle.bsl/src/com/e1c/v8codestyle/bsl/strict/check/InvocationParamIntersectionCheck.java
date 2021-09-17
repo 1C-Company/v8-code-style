@@ -220,12 +220,7 @@ public class InvocationParamIntersectionCheck
         List<FormalParam> targetParams = method.getFormalParams();
         for (int i = 0; i < inv.getParams().size(); i++)
         {
-            if (monitor.isCanceled())
-            {
-                return;
-            }
-
-            if (targetParams.size() <= i)
+            if (monitor.isCanceled() || targetParams.size() <= i)
             {
                 return;
             }

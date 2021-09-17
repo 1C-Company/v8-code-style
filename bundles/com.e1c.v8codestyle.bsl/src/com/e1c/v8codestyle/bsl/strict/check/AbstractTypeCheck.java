@@ -34,7 +34,7 @@ import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
-import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil;
@@ -150,15 +150,15 @@ public abstract class AbstractTypeCheck
         List<TypeItem> types = typeComputer.computeTypes(object, envs);
 
         if (types.isEmpty() && object instanceof DynamicFeatureAccess
-            && ((DynamicFeatureAccess)object).getSource() instanceof StaticFeatureAccess)
+            && ((DynamicFeatureAccess)object).getSource() instanceof FeatureAccess)
         {
             // Bypass system enum types with property without type
             DynamicFeatureAccess dfa = (DynamicFeatureAccess)object;
-            StaticFeatureAccess sfa = (StaticFeatureAccess)dfa.getSource();
-            List<TypeItem> sourceTypes = typeComputer.computeTypes(sfa, envs);
+            FeatureAccess fa = (FeatureAccess)dfa.getSource();
+            List<TypeItem> sourceTypes = typeComputer.computeTypes(fa, envs);
             if (sourceTypes.size() == 1)
             {
-                String typeName = sfa.getName();
+                String typeName = fa.getName();
                 String propertyName = dfa.getName();
                 TypeItem type = sourceTypes.get(0);
                 if ((typeName.equalsIgnoreCase(McoreUtil.getTypeNameRu(type))

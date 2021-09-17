@@ -44,6 +44,14 @@ public final class StrictTypeUtil
 
     private static final int COMMENT_LENGTH = IBslCommentToken.LINE_STARTER.length();
 
+    /**
+     * Checks for {@code @strict-types} annotation in BSL module file.
+     *
+     * @param file the file of BSL module, cannot be {@code null}.
+     * @return true, if the module has {@code @strict-types} annotation in module header
+     * @throws CoreException the core exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     public static boolean hasStrictTypeAnnotation(IFile file) throws CoreException, IOException
     {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents(), file.getCharset())))
@@ -53,7 +61,7 @@ public final class StrictTypeUtil
             while (line != null)
             {
                 line = line.trim();
-                if (!line.startsWith(IBslCommentToken.LINE_STARTER) && !line.isEmpty())
+                if (!line.isEmpty() && !line.startsWith(IBslCommentToken.LINE_STARTER))
                 {
                     return false;
                 }
@@ -70,7 +78,7 @@ public final class StrictTypeUtil
     }
 
     /**
-     * Checks for strict type annotation in module description.
+     * Checks for {@code @strict-types} annotation in module description.
      *
      * @param object the object of BSL module, cannot be {@code null}.
      * @return true, if module has annotation in header
@@ -87,7 +95,7 @@ public final class StrictTypeUtil
     }
 
     /**
-     * Checks for strict type annotation in module description.
+     * Checks for {@code @strict-types} annotation in module description.
      *
      * @param module the module, cannot be {@code null}.
      * @return true, if module has annotation in header
@@ -101,7 +109,7 @@ public final class StrictTypeUtil
     }
 
     /**
-     * Checks for strict type annotation in module description.
+     * Checks for {@code @strict-types} annotation in module description.
      *
      * @param root the root, cannot be {@code null}.
      * @return true, if module has annotation in header

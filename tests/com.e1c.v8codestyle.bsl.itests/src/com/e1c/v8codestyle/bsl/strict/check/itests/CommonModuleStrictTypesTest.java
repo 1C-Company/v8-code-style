@@ -1,6 +1,15 @@
-/**
+/*******************************************************************************
+ * Copyright (C) 2021, 1C-Soft LLC and others.
  *
- */
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *******************************************************************************/
 package com.e1c.v8codestyle.bsl.strict.check.itests;
 
 import static org.junit.Assert.assertEquals;
@@ -45,8 +54,9 @@ import com.e1c.v8codestyle.bsl.strict.check.StructureCtorValueTypeCheck;
 import com.e1c.v8codestyle.bsl.strict.check.VariableTypeCheck;
 
 /**
- * @author Dmitriy Marmyshev
+ * Tests of strict types system in BSL module.
  *
+ * @author Dmitriy Marmyshev
  */
 public class CommonModuleStrictTypesTest
     extends SingleProjectReadOnlyCheckTestBase

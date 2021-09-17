@@ -2,10 +2,10 @@
 
 Procedure NonComplaint() Export
 	Var TestVar;
-	// emtpy
+	// empty
 EndProcedure
 
 Procedure Complaint() Export
 	Var TestVar; // Number
-	// emtpy
+	// empty
 EndProcedure

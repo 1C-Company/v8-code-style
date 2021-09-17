@@ -237,11 +237,7 @@ public class FunctionCtorReturnSectionCheck
         TypeItem returnType, Pair<Collection<Property>, TypeItem> declaredProperties,
         Pair<Collection<Property>, TypeItem> typeProperties, DocumentationCommentResultAcceptor resultAceptor)
     {
-        if (declaredProperties == null)
-        {
-            return;
-        }
-        if (typeProperties == null)
+        if (declaredProperties == null || typeProperties == null)
         {
             return;
         }
@@ -255,6 +251,10 @@ public class FunctionCtorReturnSectionCheck
             declaredProertyNames.add(propertyName);
             List<String> declaredType =
                 declaredProperty.getTypes().stream().map(McoreUtil::getTypeName).collect(Collectors.toList());
+            if (declaredType.isEmpty())
+            {
+                continue;
+            }
 
             List<TypeItem> types = typeProperties.getFirst()
                 .stream()
@@ -266,11 +266,11 @@ public class FunctionCtorReturnSectionCheck
             List<TypeItem> types2 = types.stream()
                 .filter(t -> !declaredType.contains(McoreUtil.getTypeName(t)))
                 .collect(Collectors.toList());
-            if (!declaredType.isEmpty() && types.isEmpty())
+            if (types.isEmpty())
             {
                 addWarningDeclaredNonReturningProperty(statment, useRussianScript, declaredProperty, resultAceptor);
             }
-            else if (!declaredType.isEmpty() && !types2.isEmpty())
+            else if (!types2.isEmpty())
             {
                 addWarningDeclaredNonReturningPropertyType(statment, useRussianScript, declaredProperty, types2,
                     resultAceptor);

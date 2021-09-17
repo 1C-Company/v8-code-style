@@ -1,11 +1,11 @@
 // @strict-types
 
 Procedure NonComplaint(Parameters) Export
-	// emtpy
+	// empty
 EndProcedure
 
 // Parameters:
 //  Parameters - String
 Procedure Complaint(Parameters) Export
-	// emtpy
+	// empty
 EndProcedure
