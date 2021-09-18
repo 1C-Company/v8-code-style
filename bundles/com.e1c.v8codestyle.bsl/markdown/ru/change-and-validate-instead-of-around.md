@@ -1,34 +1,34 @@
-# Use pragma &ChangeAndControl instead of &Around
+# Используется аннотация &ИзменениеИКонтроль вместо &Вместо
 
-Starting with the platform 8.3.16, you can use pragma &ChangeAndControl instead of annotation &Around in cases where there is no ProceedWithCall call inside the method 
+Начиная с релиза платформы 8.3.16, можно использовать аннотацию &ИзменениеИКонтроль вместо аннотации &Вместо в тех случаях, когда внутри метода отсутствует вызов ПродолжитьВызов
 
-## Noncompliant Code Example
-
-```bsl
-&Around("MyFunction")
-Function Ext1_MyFunction()
-	
-	//Return 1;
-	Return 2;
-	
-EndFunction
-```
-
-## Compliant Solution
+## Неправильно
 
 ```bsl
-&ChangeAndValidate("MyFunction")
-Function Ext1_MyFunction()
+&Вместо("МояФункция")
+Функция Расш1_МояФункция()
 	
-	#Delete
-	Return 1;
-	#EndDelete
-	#Insert
-	Return 2;
-	#EndInsert
+	//Возврат 1;
+	Возврат 2;
 	
-EndFunction
+КонецФункции
 ```
 
-## See
+## Правильно
+
+```bsl
+&ИзменениеИКонтроль("МояФункция")
+Функция Расш1_МояФункция()
+	
+	#Удаление
+	Возврат 1;
+	#КонецУдаления
+	#Вставка
+	Возврат 2;
+	#КонецВставки
+	
+КонецФункции
+```
+
+## См.
 
