@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.form.itests;
+package com.e1c.v8codestyle.form.check.itests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -142,7 +142,7 @@ public class DataPathReferredObjectCheckTest
         marker = getFirstMarker(CHECK_ID, dataPath, dtProject);
         assertNull(marker);
 
-        item = getItemByName(form, "Articule");
+        item = getItemByName(form, "Unknown");
         assertTrue(item instanceof FormField);
 
         dataPath = ((FormField)item).getDataPath();
@@ -198,7 +198,7 @@ public class DataPathReferredObjectCheckTest
         marker = getFirstMarker(CHECK_ID, dataPath, dtProject);
         assertNull(marker);
 
-        item = getItemByName(form, "Article");
+        item = getItemByName(form, "Unknown");
         assertTrue(item instanceof FormField);
 
         dataPath = ((FormField)item).getDataPath();

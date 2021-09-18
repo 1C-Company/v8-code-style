@@ -53,6 +53,11 @@ public class DataPathReferredObjectCheck
 
     private IDataSourceInfoAssociationService dataSourceInfoAssociationService;
 
+    /**
+     * Instantiates a new instance of check of data path referred object check.
+     *
+     * @param dataSourceInfoAssociationService the data source info association service, cannot be {@code null}.
+     */
     @Inject
     public DataPathReferredObjectCheck(IDataSourceInfoAssociationService dataSourceInfoAssociationService)
     {

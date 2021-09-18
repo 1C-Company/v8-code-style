@@ -281,7 +281,7 @@
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
-      <name>Articule</name>
+      <name>Unknown</name>
       <id>31</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -289,7 +289,7 @@
         <common>true</common>
       </userVisible>
       <dataPath xsi:type="form:DataPath">
-        <segments>List.Articule</segments>
+        <segments>List.Unknown</segments>
       </dataPath>
       <extendedTooltip>
         <name>SKU1ExtendedTooltip</name>
@@ -577,7 +577,7 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Items.List.CurrentData.Articule</segments>
+      <segments>Items.List.CurrentData.Unknown</segments>
     </dataPath>
     <extendedTooltip>
       <name>CurrentUnknownExtendedTooltip</name>
