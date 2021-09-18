@@ -38,7 +38,7 @@ import com.google.inject.Inject;
  * @author Aleksandr Kapralov
  *
  */
-public class ChangeAndValidateInsteadOfAround
+public class ChangeAndValidateInsteadOfAroundCheck
     extends BasicCheck
 {
     private static final String CHECK_ID = "change-and-validate-instead-of-around"; //$NON-NLS-1$
@@ -54,7 +54,7 @@ public class ChangeAndValidateInsteadOfAround
      * @param versionSupport runtime version support manager, cannot be {@code null}.
      */
     @Inject
-    public ChangeAndValidateInsteadOfAround(IRuntimeVersionSupport versionSupport)
+    public ChangeAndValidateInsteadOfAroundCheck(IRuntimeVersionSupport versionSupport)
     {
         super();
 

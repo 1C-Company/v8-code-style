@@ -35,14 +35,14 @@ import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.bsl.check.ChangeAndValidateInsteadOfAround;
+import com.e1c.v8codestyle.bsl.check.ChangeAndValidateInsteadOfAroundCheck;
 
 /**
- * Tests for {@link ChangeAndValidateInsteadOfAround} check.
+ * Tests for {@link ChangeAndValidateInsteadOfAroundCheck} check.
  *
  * @author Aleksandr Kapralov
  */
-public class ChangeAndValidateInsteadOfAroundTest
+public class ChangeAndValidateInsteadOfAroundCheckTest
     extends CheckTestBase
 {
 
