@@ -48,8 +48,9 @@ final class Messages
     public static String MdListObjectPresentationCheck_decription;
     public static String MdListObjectPresentationCheck_Neither_Object_presentation_nor_List_presentation_is_not_filled;
     public static String MdListObjectPresentationCheck_title;
-    public static String MdScheduledJobPresentationCheck_title;
-    public static String MdScheduledJobPresentationCheck_decription;
+    public static String MdScheduledJobDescriptionCheck_title;
+    public static String MdScheduledJobDescriptionCheck_description;
+    public static String MdScheduledJobDescriptionCheck_message;
     static
     {
         // initialize resource bundle
