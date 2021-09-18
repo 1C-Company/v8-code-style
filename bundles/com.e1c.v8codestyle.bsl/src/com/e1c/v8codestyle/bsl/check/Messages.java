@@ -9,8 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
- *     Aleksandr Kapralov - issue #17
- *     Aleksandr Kapralov - issue #449
+ *     Aleksandr Kapralov - issue #17, #449, #458
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
@@ -28,6 +27,10 @@ final class Messages
     public static String CanonicalPragmaCheck_description;
     public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1;
     public static String CanonicalPragmaCheck_title;
+
+    public static String ChangeAndValidateInsteadOfAroundCheck_description;
+    public static String ChangeAndValidateInsteadOfAroundCheck_Use_ChangeAndValidate_instead_of_Around;
+    public static String ChangeAndValidateInsteadOfAroundCheck_title;
 
     public static String EmptyExceptStatementCheck_description;
     public static String EmptyExceptStatementCheck_title;

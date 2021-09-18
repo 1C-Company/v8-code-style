@@ -11,8 +11,7 @@
    
     Contributors:
         1C-Soft LLC - initial API and implementation
-        Aleksandr Kapralov - issue #17
-        Aleksandr Kapralov - issue #449
+        Aleksandr Kapralov - issue #17, #449, #458
  -->
 
 <plugin>
@@ -45,6 +44,10 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CanonicalPragmaCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ChangeAndValidateInsteadOfAroundCheck">
       </check>
 
    </extension>
