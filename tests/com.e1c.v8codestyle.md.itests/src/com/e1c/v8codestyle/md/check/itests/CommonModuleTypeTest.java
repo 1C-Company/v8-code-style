@@ -9,9 +9,9 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
- *     Aleksandr Kapralov - issue #14
+ *     Aleksandr Kapralov - issue #15
  *******************************************************************************/
-package com.e1c.v8codestyle.md.itests;
+package com.e1c.v8codestyle.md.check.itests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -28,183 +28,235 @@ import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
-import com._1c.g5.v8.dt.metadata.mdclass.ReturnValuesReuse;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.md.check.CommonModuleNameGlobal;
 import com.e1c.v8codestyle.md.check.CommonModuleType;
 
 /**
- * Tests for {@link CommonModuleNameGlobal} check.
+ * Tests for {@link CommonModuleType} check.
  *
  * @author Dmitriy Marmyshev
  *
  */
-public class CommonModuleNameGlobalTest
+public class CommonModuleTypeTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "common-module-name-global";
+    private static final String CHECK_ID = "common-module-type";
 
-    private static final String PROJECT_NAME = "CommonModuleName";
+    private static final String PROJECT_NAME = "CommonModuleType";
 
-    private static final String MODULE_DEFAULT_FQN = "CommonModule.CommonModuleName";
-
+    /**
+     * Test common module type - server.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testCommonModuleNameClientGlobal() throws Exception
+    public void testTypeServer() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL,
-            ReturnValuesReuse.DONT_USE, null);
-
-        long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
+        long id = getTopObjectIdByFqn("CommonModule.Common", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
+    /**
+     * Test common module type - server is correct.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testCommonModuleNameClientGlobalCorrect() throws Exception
+    public void testTypeServerCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleClientGlobal";
+        String fqn = "CommonModule.Common";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL,
-            ReturnValuesReuse.DONT_USE, fqn);
-
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
+    /**
+     * Test common module type - server call.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testCommonModuleNameClientGlobalWithPostfixCorrect() throws Exception
+    public void testTypeServerCall() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleClientGlobalPredefined";
+        long id = getTopObjectIdByFqn("CommonModule.CommonServerCall", dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL,
-            ReturnValuesReuse.DONT_USE, fqn);
+    /**
+     * Test common module type - server call is correct.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeServerCallCorrect() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
 
+        String fqn = "CommonModule.CommonServerCall";
+
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER_CALL);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
+    /**
+     * Test common module type - client.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testCommonModuleNameClientGlobalWithPrefixIncorrect() throws Exception
+    public void testTypeClient() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.GlobalCommonModule";
-
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL,
-            ReturnValuesReuse.DONT_USE, fqn);
-
-        long id = getTopObjectIdByFqn(fqn, dtProject);
+        long id = getTopObjectIdByFqn("CommonModule.CommonClient", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
+    /**
+     * Test common module type - client is correct.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testCommonModuleNameClientGlobalReturnValueReuseCorrect() throws Exception
+    public void testTypeClientCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_GLOBAL,
-            ReturnValuesReuse.DONT_USE, null);
+        String fqn = "CommonModule.CommonClient";
 
-        long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
-        assertNotNull(marker);
-    }
-
-    @Test
-    public void testCommonModuleNameServerGlobal() throws Exception
-    {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL,
-            ReturnValuesReuse.DONT_USE, null);
-
-        long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
-        assertNotNull(marker);
-    }
-
-    @Test
-    public void testCommonModuleNameServerGlobalCorrect() throws Exception
-    {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        String fqn = "CommonModule.CommonModuleServerGlobal";
-
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL,
-            ReturnValuesReuse.DONT_USE, fqn);
-
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
+    /**
+     * Test common module type - server client.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testCommonModuleNameServerGlobalWithPostfixCorrect() throws Exception
+    public void testTypeServerClient() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleServerGlobalPredefined";
-
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL,
-            ReturnValuesReuse.DONT_USE, fqn);
-
-        long id = getTopObjectIdByFqn(fqn, dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
-        assertNull(marker);
-    }
-
-    @Test
-    public void testCommonModuleNameServerGlobalWithPrefixIncorrect() throws Exception
-    {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        String fqn = "CommonModule.GlobalCommonModule";
-
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL,
-            ReturnValuesReuse.DONT_USE, fqn);
-
-        long id = getTopObjectIdByFqn(fqn, dtProject);
+        long id = getTopObjectIdByFqn("CommonModule.CommonServerClient", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
     }
 
+    /**
+     * Test common module type - server client is correct.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testCommonModuleNameServerGlobalReturnValueReuseCorrect() throws Exception
+    public void testTypeServerClientCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_SERVER_GLOBAL,
-            ReturnValuesReuse.DURING_SESSION, null);
+        String fqn = "CommonModule.CommonServerClient";
 
-        long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_SERVER);
+        long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
-    private void updateCommonModule(IDtProject dtProject, String fqn, Map<EStructuralFeature, Boolean> types,
-        ReturnValuesReuse returnValueReuse, String newFqn)
+    /**
+     * Test common module type - server global.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeServerGlobal() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("CommonModule.CommonServerGlobal", dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    /**
+     * Test common module type - server global is correct.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeServerGlobalCorrect() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        String fqn = "CommonModule.CommonServerGlobal";
+
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER_GLOBAL);
+        long id = getTopObjectIdByFqn(fqn, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    /**
+     * Test common module type - client global.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeClientGlobal() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("CommonModule.CommonClientGlobal", dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    /**
+     * Test common module type - client global is correct.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeClientGlobalCorrect() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        String fqn = "CommonModule.CommonClientGlobal";
+
+        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_GLOBAL);
+        long id = getTopObjectIdByFqn(fqn, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    private void updateCommonModule(IDtProject dtProject, String fqn, Map<EStructuralFeature, Boolean> types)
     {
         IBmModel model = bmModelManager.getModel(dtProject);
         model.execute(new AbstractBmTask<Void>("change type")
@@ -213,35 +265,13 @@ public class CommonModuleNameGlobalTest
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
             {
                 IBmObject object = transaction.getTopObjectByFqn(fqn);
-
                 for (Entry<EStructuralFeature, Boolean> entry : types.entrySet())
                 {
                     object.eSet(entry.getKey(), entry.getValue());
                 }
-
-                if (!(object instanceof CommonModule))
-                {
-                    return null;
-                }
-
-                CommonModule module = (CommonModule)object;
-
-                module.setReturnValuesReuse(returnValueReuse);
-
-                if (newFqn != null)
-                {
-                    String[] fqnArray = newFqn.split("[.]");
-                    if (fqnArray.length == 2)
-                    {
-                        module.setName(fqnArray[1]);
-                        transaction.updateTopObjectFqn(object, newFqn);
-                    }
-                }
-
                 return null;
             }
         });
         waitForDD(dtProject);
     }
-
 }

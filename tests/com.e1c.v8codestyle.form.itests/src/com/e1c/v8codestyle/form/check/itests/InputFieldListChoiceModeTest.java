@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.form.itests;
+package com.e1c.v8codestyle.form.check.itests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
