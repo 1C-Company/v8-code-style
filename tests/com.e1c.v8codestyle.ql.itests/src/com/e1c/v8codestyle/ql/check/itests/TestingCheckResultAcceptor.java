@@ -13,7 +13,7 @@
 /**
  *
  */
-package com.e1c.v8codestyle.ql.itests;
+package com.e1c.v8codestyle.ql.check.itests;
 
 import java.util.ArrayList;
 import java.util.Collection;
