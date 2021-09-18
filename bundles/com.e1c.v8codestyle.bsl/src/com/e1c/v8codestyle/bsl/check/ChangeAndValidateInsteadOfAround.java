@@ -78,13 +78,13 @@ public class ChangeAndValidateInsteadOfAround
 
         Pragma pragma = (Pragma)object;
 
-        Version platformVersion = versionSupport.getRuntimeVersionOrDefault(pragma, Version.LATEST);
-        if (platformVersion.isLessThan(Version.V8_3_16))
+        if (!Symbols.AROUND_ANNOTATION_SYMBOLS.contains(new CaseInsensitiveString(pragma.getSymbol())))
         {
             return;
         }
 
-        if (!Symbols.AROUND_ANNOTATION_SYMBOLS.contains(new CaseInsensitiveString(pragma.getSymbol())))
+        Version platformVersion = versionSupport.getRuntimeVersionOrDefault(pragma, Version.LATEST);
+        if (platformVersion.isLessThan(Version.V8_3_16))
         {
             return;
         }
