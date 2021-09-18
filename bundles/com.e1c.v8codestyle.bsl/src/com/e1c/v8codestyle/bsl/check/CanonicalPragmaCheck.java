@@ -89,8 +89,9 @@ public class CanonicalPragmaCheck
         // Case sensitive string comparison
         if (!pragma.getSymbol().equals(canonicalSymbol))
         {
-            String errorMessage = MessageFormat
-                .format(Messages.CanonicalPragmaCheck_Pragma_0_is_not_written_canonically, pragma.getSymbol());
+            String errorMessage = MessageFormat.format(
+                Messages.CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1,
+                pragma.getSymbol(), canonicalSymbol);
             resultAceptor.addIssue(errorMessage, pragma, PRAGMA__SYMBOL);
         }
 

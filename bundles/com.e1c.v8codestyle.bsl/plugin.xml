@@ -25,17 +25,10 @@
             id="com.e1c.v8codestyle.bsl"
             title="%category.bsl.title">
       </category>
+
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CanonicalPragmaCheck">
-      </check>
-      <check
-            category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
-      </check>
-      <check
-            category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.EventDataExchangeLoadCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -43,7 +36,15 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.EventDataExchangeLoadCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CanonicalPragmaCheck">
       </check>
 
    </extension>

@@ -26,8 +26,11 @@ final class Messages
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.check.messages"; //$NON-NLS-1$
 
     public static String CanonicalPragmaCheck_description;
-    public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically;
+    public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1;
     public static String CanonicalPragmaCheck_title;
+
+    public static String EmptyExceptStatementCheck_description;
+    public static String EmptyExceptStatementCheck_title;
 
     public static String EventDataExchangeLoadCheck_Check_at_the_beginning_of_event_handler;
     public static String EventDataExchangeLoadCheck_description;
@@ -36,13 +39,10 @@ final class Messages
     public static String EventDataExchangeLoadCheck_No_return_in__DataExchange_Load__checking;
     public static String EventDataExchangeLoadCheck_title;
 
-    public static String EmptyExceptStatementCheck_description;
-    public static String EmptyExceptStatementCheck_title;
-
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
-    public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_Loop_has_method_with_query__0;
+    public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_title;
 
     public static String StructureCtorTooManyKeysCheck_description;
