@@ -12,24 +12,17 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.common.Symbols.AFTER;
-import static com._1c.g5.v8.dt.bsl.common.Symbols.AFTER_RUS;
-import static com._1c.g5.v8.dt.bsl.common.Symbols.AROUND;
-import static com._1c.g5.v8.dt.bsl.common.Symbols.AROUND_RUS;
-import static com._1c.g5.v8.dt.bsl.common.Symbols.BEFORE;
-import static com._1c.g5.v8.dt.bsl.common.Symbols.BEFORE_RUS;
-import static com._1c.g5.v8.dt.bsl.common.Symbols.CHANGE_AND_VALIDATE;
-import static com._1c.g5.v8.dt.bsl.common.Symbols.CHANGE_AND_VALIDATE_RUS;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.PRAGMA;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.PRAGMA__SYMBOL;
 
 import java.text.MessageFormat;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import com._1c.g5.v8.dt.bsl.common.Symbols;
 import com._1c.g5.v8.dt.bsl.model.Pragma;
+import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -47,21 +40,7 @@ public class CanonicalPragmaCheck
 
     private static final String CHECK_ID = "bsl-canonical-pragma"; //$NON-NLS-1$
 
-    private static final Map<String, String> PRAGMAS;
-
-    static
-    {
-        final Map<String, String> pragmas = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        pragmas.put(BEFORE, BEFORE);
-        pragmas.put(BEFORE_RUS, BEFORE_RUS);
-        pragmas.put(AFTER, AFTER);
-        pragmas.put(AFTER_RUS, AFTER_RUS);
-        pragmas.put(AROUND, AROUND);
-        pragmas.put(AROUND_RUS, AROUND_RUS);
-        pragmas.put(CHANGE_AND_VALIDATE, CHANGE_AND_VALIDATE);
-        pragmas.put(CHANGE_AND_VALIDATE_RUS, CHANGE_AND_VALIDATE_RUS);
-        PRAGMAS = pragmas;
-    }
+    private static final List<CaseInsensitiveString> PRAGMAS = List.copyOf(Symbols.ANNOTATION_SYMBOLS);
 
     @Override
     public String getCheckId()
@@ -80,11 +59,13 @@ public class CanonicalPragmaCheck
 
         Pragma pragma = (Pragma)object;
 
-        String canonicalSymbol = PRAGMAS.get(pragma.getSymbol());
-        if (canonicalSymbol == null)
+        int pragmaIndex = PRAGMAS.indexOf(new CaseInsensitiveString(pragma.getSymbol()));
+        if (pragmaIndex == -1)
         {
             return;
         }
+
+        String canonicalSymbol = PRAGMAS.get(pragmaIndex).getString();
 
         // Case sensitive string comparison
         if (!pragma.getSymbol().equals(canonicalSymbol))

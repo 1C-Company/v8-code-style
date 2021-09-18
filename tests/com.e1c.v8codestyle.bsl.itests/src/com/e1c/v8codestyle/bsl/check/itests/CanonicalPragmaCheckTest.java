@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Test;
@@ -45,14 +46,19 @@ public class CanonicalPragmaCheckTest
     extends CheckTestBase
 {
 
-    private static final String PROJECT_NAME = "CanonicalPragmaExtension";
+    private static final String PROJECT_NAME = "CanonicalPragma";
+    private static final String EXTENSION_NAME = "CanonicalPragmaExtension";
 
     private static final String CHECK_ID = "bsl-canonical-pragma"; //$NON-NLS-1$
 
     @Test
     public void testCanonicalPragma() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
+        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        assertNotNull(dtProject);
+
+        dtProject = openProjectAndWaitForValidationFinish(EXTENSION_NAME);
         assertNotNull(dtProject);
 
         IBmObject mdObject = getTopObjectByFqn("CommonModule.CommonModule", dtProject);
