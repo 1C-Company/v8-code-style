@@ -86,6 +86,7 @@ public class CanonicalPragmaCheck
             return;
         }
 
+        // Case sensitive string comparison
         if (!pragma.getSymbol().equals(canonicalSymbol))
         {
             String errorMessage = MessageFormat
