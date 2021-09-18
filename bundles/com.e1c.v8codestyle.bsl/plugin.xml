@@ -12,6 +12,7 @@
     Contributors:
         1C-Soft LLC - initial API and implementation
         Aleksandr Kapralov - issue #17
+        Aleksandr Kapralov - issue #449
  -->
 
 <plugin>
@@ -24,6 +25,7 @@
             id="com.e1c.v8codestyle.bsl"
             title="%category.bsl.title">
       </category>
+
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
@@ -39,6 +41,10 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CanonicalPragmaCheck">
       </check>
 
    </extension>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="ff0474c9-655d-4dca-b4e8-9dbcc828de64">
+  <name>CanonicalPragmaExtension</name>
+  <synonym>
+    <key>en</key>
+    <value>Canonical pragma extension</value>
+  </synonym>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:ConfigurationExtension">
+    <defaultRunMode>Checked</defaultRunMode>
+    <usePurposes>Checked</usePurposes>
+    <commandInterface>Extended</commandInterface>
+    <mainSectionCommandInterface>Extended</mainSectionCommandInterface>
+    <defaultLanguage>Checked</defaultLanguage>
+    <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
+    <compatibilityMode>Checked</compatibilityMode>
+    <defaultStyle>Extended</defaultStyle>
+    <defaultRoles>Extended</defaultRoles>
+  </extension>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="84fd0d58-3597-4e76-8215-2d00be5bbb90"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="14b0a73b-7781-4f5c-817a-80f133219779"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="c592ce50-5949-4ab7-9bd3-f86251278d88"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="a6a7d496-5e94-4f52-9315-f399424706aa"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="8762104c-0ce5-47b0-83a0-41727643b555"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="27e411f1-0b6f-49b5-b8bf-49f81edef93c"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="77c64f9c-0027-40d6-9f74-6bfbda33e345"/>
+  <keepMappingToExtendedConfigurationObjectsByIDs>true</keepMappingToExtendedConfigurationObjectsByIDs>
+  <namePrefix>Ext_</namePrefix>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="d2b2d800-b5fb-4d45-bec7-76b9fbebfbed">
+    <name>English</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:LanguageExtension">
+      <languageCode>Checked</languageCode>
+    </extension>
+    <languageCode>en</languageCode>
+  </languages>
+  <commonModules>CommonModule.CommonModule</commonModules>
+</mdclass:Configuration>
