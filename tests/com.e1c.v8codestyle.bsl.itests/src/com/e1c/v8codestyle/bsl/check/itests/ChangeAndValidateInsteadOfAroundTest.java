@@ -52,7 +52,7 @@ public class ChangeAndValidateInsteadOfAroundTest
     private static final String CHECK_ID = "change-and-validate-instead-of-around"; //$NON-NLS-1$
 
     @Test
-    public void testCanonicalPragma() throws Exception
+    public void testChangeAndValidateInsteadOfAround() throws Exception
     {
         IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
         IDtProject dtProject = dtProjectManager.getDtProject(project);
