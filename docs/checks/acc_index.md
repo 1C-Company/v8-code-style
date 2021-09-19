@@ -70,6 +70,7 @@
 - улучшить документации по проверкам и инструментам см. [задачи](https://github.com/1C-Company/v8-code-style/labels/documentation),  см. [правила](https://github.com/1C-Company/v8-code-style/blob/master/docs/contributing/documentation.md)
 - написать проверку на Java см. [задачи для новичка](https://github.com/1C-Company/v8-code-style/labels/good%20first%20issue),  см. [правила](https://github.com/1C-Company/v8-code-style/blob/master/docs/contributing/readme.md)
 - написать любую проверку из списка ниже или любой другой инструмент улучшающий разработку по стандартам
+- cообщить нам о [ложном срабатывании проверки](https://github.com/1C-Company/v8-code-style/issues/new?assignees=&labels=standards,bug&template=check_false.md&title=Ложное+срабатывание+проверки%3A+%3Cкод+проверки%3E) или о [не нахождении существующей ошибки](https://github.com/1C-Company/v8-code-style/issues/new?assignees=&labels=standards,bug&template=check_not_found.md&title=Проверка%3A+%3Cкод+проверки%3E+не+находит+ошибку).
 
 
 

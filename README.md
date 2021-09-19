@@ -46,9 +46,11 @@
 
 ## Участие в проекте
 
-Добро пожаловать! [См. правила в соответствующем разделе](CONTRIBUTING.md)
+Добро пожаловать! [См. правила](CONTRIBUTING.md) в соответствующем разделе.
 - [Помочь с документацией](docs/contributing/documentation.md) [см. задачи](https://github.com/1C-Company/v8-code-style/labels/documentation)
 - [Добавить свою проверку](docs/contributing/readme.md) [см. задачи](https://github.com/1C-Company/v8-code-style/labels/good%20first%20issue)
+- Сообщить нам о [ложном срабатывании проверки](https://github.com/1C-Company/v8-code-style/issues/new?assignees=&labels=standards,bug&template=check_false.md&title=Ложное+срабатывание+проверки%3A+%3Cкод+проверки%3E) или о [не нахождении существующей ошибки](https://github.com/1C-Company/v8-code-style/issues/new?assignees=&labels=standards,bug&template=check_not_found.md&title=Проверка%3A+%3Cкод+проверки%3E+не+находит+ошибку).
+
 
 ## Лицензия
 

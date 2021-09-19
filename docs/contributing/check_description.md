@@ -12,11 +12,14 @@
    - Пояснение почему так делать не стоит
    - Добавьте пример правильного кода
    
+Читайте подробнее [советы по наименованию и описанию](Check_Convention.md#наименование-проверки).
+  
 ## Шаблоны файлов
 
 Английский `com.e1c.v8codestyle.bsl/markdown/my-check-id.md`
 
-```
+```txt
+
 # Title of the ckeck
 
 Description of the check
@@ -24,19 +27,19 @@ Description of the check
 ## Noncompliant Code Example
 
 
-```bsl
+ ```bsl
 
 Noncompliant = code example;
 
-```
+ ```
 
 ## Compliant Solution
 
-```bsl
+ ```bsl
 
 Compliant = code example;
 
-```
+ ```
 
 ## See
 
@@ -48,26 +51,27 @@ Compliant = code example;
 Русский `com.e1c.v8codestyle.bsl/markdown/ru/my-check-id.md`
 
 
-```
+```txt
+
 # Заголовок проверки
 
 Описание проверки
 
 ## Неправильно
 
-```bsl
+ ```bsl
 
 Пирмер = не правильного кода;
 
-```
+ ```
 
 ## Правильно
 
-```bsl
+ ```bsl
 
 Пирмер = правильного кода;
 
-```
+ ```
 
 ## См.
 
