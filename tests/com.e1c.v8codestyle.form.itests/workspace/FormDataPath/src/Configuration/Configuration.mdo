@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a73b06e0-bf72-4a43-ad5e-e8741108f352">
+  <name>FormDataPath</name>
+  <synonym>
+    <key>en</key>
+    <value>Form data path</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="b5c06881-556e-40b8-9114-787ac6489313"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="02875f17-03ac-45f8-830a-efb66559f6c1"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="cf8fd765-f1aa-4cf4-8ee2-d925126dadd3"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="2dad9caf-7d90-45c7-8e2d-d4d132d20ff7"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="dbca3c77-38c2-43fd-aa73-3004e6ebf4d2"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="083809da-f4bb-470d-a8e2-945b23d5562b"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="7040ced6-dfad-48fc-a5c1-4566116fe2e5"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="023f10d7-c685-40ba-b389-1accedc5d47d">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <commonForms>CommonForm.ListForm</commonForms>
+  <catalogs>Catalog.Products</catalogs>
+</mdclass:Configuration>
