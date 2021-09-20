@@ -1,8 +1,7 @@
 # The description of the predefine sheduled job is set
 
-Predefined Sheduled jobs should not
-be description in the configuration. Instead, it is enough to set a synonym for a
-predefined sheduled job.
+Description of predefined Scheduled jobs should not be set. 
+Instead, it is enough to set only synonym for a predefined scheduled job.
 
 ## See
 
