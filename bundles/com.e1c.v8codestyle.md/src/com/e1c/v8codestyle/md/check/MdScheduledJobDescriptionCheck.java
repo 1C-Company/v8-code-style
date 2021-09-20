@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (C) 2021, 1C-Soft LLC and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *     Sergey Kozynskiy - issue #431
+ *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SCHEDULED_JOB;
@@ -5,7 +18,6 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SCHEDULE
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SCHEDULED_JOB__PREDEFINED;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.metadata.mdclass.ScheduledJob;
@@ -15,9 +27,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 
+
 /**
- * The Class MdScheduledJobDescriptionCheck.
- *
  * The check the predefined {@link SCHEDULED_JOB} has't description.
  *
  * @author Sergey Kozynskiy
@@ -27,15 +38,6 @@ public class MdScheduledJobDescriptionCheck
 {
 
     private static final String CHECK_ID = "mdo-scheduled-job-description"; //$NON-NLS-1$
-
-    /**
-     * Instantiates a new SheduledJoob object and description check.
-     *
-     */
-    public MdScheduledJobDescriptionCheck()
-    {
-        super();
-    }
 
     @Override
     public String getCheckId()
@@ -60,16 +62,15 @@ public class MdScheduledJobDescriptionCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof EObject))
+        if (monitor.isCanceled())
         {
             return;
         }
 
         ScheduledJob mdObject = (ScheduledJob)object;
         String description = mdObject.getDescription();
-        Boolean predefined = mdObject.isPredefined();
 
-        if (predefined && !StringUtils.isBlank(description))
+        if (mdObject.isPredefined() && !StringUtils.isBlank(description))
         {
             resultAceptor.addIssue(Messages.MdScheduledJobDescriptionCheck_message, SCHEDULED_JOB__DESCRIPTION);
         }
