@@ -20,11 +20,16 @@
 
       <category
             category="com.e1c.v8codestyle"
-            description="%category.bls.description"
+            description="%category.bsl.description"
             id="com.e1c.v8codestyle.bsl"
             title="%category.bsl.title">
       </category>
-
+      <category
+            category="com.e1c.v8codestyle.bsl"
+            description="%category.bsl.strict.description"
+            id="com.e1c.v8codestyle.bsl.strict"
+            title="%category.bsl.strict.title">
+      </category>
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck">
@@ -48,6 +53,48 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ChangeAndValidateInsteadOfAroundCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.MethodParamTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.VariableTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessMethodNotFoundCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.SimpleStatementTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.InvocationParamIntersectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionReturnTypeCheck">
+      </check>
+      <!-- Disabled untill release 2021.2.6+
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionCtorReturnSectionCheck">
+      </check> 
+      -->
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.DocCommentFieldTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.StructureCtorValueTypeCheck">
       </check>
 
    </extension>
