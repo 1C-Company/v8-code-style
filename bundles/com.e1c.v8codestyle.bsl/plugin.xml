@@ -78,10 +78,12 @@
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionReturnTypeCheck">
       </check>
+      <!-- Disabled untill releas 2021.2.6+
       <check
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionCtorReturnSectionCheck">
-      </check>
+      </check> 
+      -->
       <check
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.DocCommentFieldTypeCheck">
