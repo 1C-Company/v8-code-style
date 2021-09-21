@@ -1,4 +1,4 @@
-# query-in-loop
+# Query in loop
 
 ## Noncompliant Code Example
 

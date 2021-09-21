@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="4f8304a6-19b7-4476-8336-c7f27ae9cb9e">
+  <name>ChangeAndValidateInsteadOfAroundExtension</name>
+  <synonym>
+    <key>en</key>
+    <value>Change and validate instead of around extension</value>
+  </synonym>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:ConfigurationExtension">
+    <defaultRunMode>Checked</defaultRunMode>
+    <usePurposes>Checked</usePurposes>
+    <commandInterface>Extended</commandInterface>
+    <mainSectionCommandInterface>Extended</mainSectionCommandInterface>
+    <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
+    <compatibilityMode>Checked</compatibilityMode>
+    <defaultStyle>Extended</defaultStyle>
+    <defaultRoles>Extended</defaultRoles>
+  </extension>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="b42e32d2-a7de-4413-96ac-f77cd80bab41"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="174b3dcf-83cb-46fe-ac5f-cd96d0f3b816"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="018a2e19-b593-40ae-bd9a-013da1f6a6a6"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="a4eea8b4-d0dd-47e6-9f70-03ff752e9a82"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="6d74dc18-8e18-45d6-93a0-0ce25b85b81c"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="b0deabb5-e07b-4af2-b6b6-5397614ed922"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="be51d45b-d4de-4fcb-9099-08f8ffc1866a"/>
+  <keepMappingToExtendedConfigurationObjectsByIDs>true</keepMappingToExtendedConfigurationObjectsByIDs>
+  <namePrefix>Ext_</namePrefix>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <commonModules>CommonModule.CommonModule</commonModules>
+</mdclass:Configuration>

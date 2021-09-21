@@ -1,4 +1,4 @@
-# role-right-has-rls
+# Права в роли содержат RLS
 
 
 

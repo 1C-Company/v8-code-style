@@ -1,4 +1,4 @@
-# common-module-type
+# Common module has incorrect type
 
 Common module has incorrect type
 

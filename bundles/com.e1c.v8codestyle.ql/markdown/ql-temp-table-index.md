@@ -1,4 +1,4 @@
-# ql-temp-table-index
+# Temporary table should have indexes
 
 
 
