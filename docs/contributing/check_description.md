@@ -61,7 +61,7 @@ Compliant = code example;
 
  ```bsl
 
-Пирмер = не правильного кода;
+Пример = не правильного кода;
 
  ```
 
@@ -69,14 +69,14 @@ Compliant = code example;
 
  ```bsl
 
-Пирмер = правильного кода;
+Пример = правильного кода;
 
  ```
 
 ## См.
 
-- [Стандрат поясняющий проблему](https://its.1c.ru/db/pubqlang#content:150:hdoc)
-- [Стандрат поясняющий проблему 2](https://its.1c.ru/db/pubqlang#content:150:hdoc)
+- [Стандарт поясняющий проблему](https://its.1c.ru/db/pubqlang#content:150:hdoc)
+- [Стандарт поясняющий проблему 2](https://its.1c.ru/db/pubqlang#content:150:hdoc)
 
 ```
 
