@@ -8,13 +8,13 @@
 2. [1С:Starter](https://releases.1c.ru/project/DevelopmentTools10) дистрибутив 1C:EDT online, без установки самой 1C:EDT.
 3. Установите дистрибутив `Eclipse for 1C:EDT Plug-ins Developers`, версия 2020-12 (см. актуальную версию в таргет-платформе для ветки `master`) - это стандартный дистрибутив Eclipse JDT с дополнительными плагинами и некоторыми настройками по умолчанию.
 4. Установите плагины из Eclipse-Marketplace:
-   - `JAutodoc` - генерация "рыбы" java-doc на английском - по `CTRL+ALT+J` ускоряет написание документации
-   - `SonarLint` - подсказывает очень много проблем в коде и плохих практик
-   - `ResourceBundle Editor` - редактирование интерфейсных локализируемых файлов `*.properties` на нескольких языках
-   - `Enhanced Class Decompiler` - удобный просмотр классов без исходного кода
-   - `LiClipseText` - редактор поддерживающий множество синтаксиса, например Markdown
-   - `EclEmma Java Code Covarage` - Запуск тестов со снятием покрытия кода
-   - `PDE Source Lookup` - Автоматическая подгрузка исходников для бандлов из целевой платформы из открытых источников
+    - `JAutodoc` - генерация "рыбы" java-doc на английском - по `CTRL+ALT+J` ускоряет написание документации
+    - `SonarLint` - подсказывает очень много проблем в коде и плохих практик
+    - `ResourceBundle Editor` - редактирование интерфейсных локализируемых файлов `*.properties` на нескольких языках
+    - `Enhanced Class Decompiler` - удобный просмотр классов без исходного кода
+    - `LiClipseText` - редактор поддерживающий множество синтаксиса, например Markdown
+    - `EclEmma Java Code Covarage` - Запуск тестов со снятием покрытия кода
+    - `PDE Source Lookup` - Автоматическая подгрузка исходников для бандлов из целевой платформы из открытых источников
 
 
 ## Настроки JDT и проекта
@@ -28,14 +28,14 @@
 ## Настройка дополнительных плагинов
 
 - JAutodoc
-   - Использование встроенного форматера Eclipse `Preferences -> Java -> JAutodoc -> Use Eclipse formatter`
-   - Использование комментария от поля для Getter/Setter `Preferences -> Java -> JAutodoc -> [G,S]etter from field comment`
+    - Использование встроенного форматера Eclipse `Preferences -> Java -> JAutodoc -> Use Eclipse formatter`
+    - Использование комментария от поля для Getter/Setter `Preferences -> Java -> JAutodoc -> [G,S]etter from field comment`
 - ResourceBundle Editor
-   - Кодировка `*.properties` файлов UTF-8 `Preferences -> General -> Content types -> Text -> Java properties File` измените `Default encoditng = UTF-8`
-   - Отключить конвертацию юникода в ХХХ `Preferences -> ResourceBundle Editor -> Formatting -> Convert unicode values to \uXXXX`
+    - Кодировка `*.properties` файлов UTF-8 `Preferences -> General -> Content types -> Text -> Java properties File` измените `Default encoditng = UTF-8`
+    - Отключить конвертацию юникода в ХХХ `Preferences -> ResourceBundle Editor -> Formatting -> Convert unicode values to \uXXXX`
 - Enhanced Class Decompiler
-   - Выбор алгоритма по умолчанию `Preferences -> Java -> Decompiler -> Default class decompiler` = JD-Core (например)
-   - Установка просмотрщика классов по умолчанию `Preferences -> Java -> Decompiler -> Set Class Decompiler viewer as default...`
+    - Выбор алгоритма по умолчанию `Preferences -> Java -> Decompiler -> Default class decompiler` = JD-Core (например)
+    - Установка просмотрщика классов по умолчанию `Preferences -> Java -> Decompiler -> Set Class Decompiler viewer as default...`
 
 
 ## (Опционально) Список плагинов JDT в поставке от 1С

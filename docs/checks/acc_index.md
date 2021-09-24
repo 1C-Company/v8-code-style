@@ -67,6 +67,7 @@
 Присоединяйтесь к проекту  [https://github.com/1C-Company/v8-code-style](https://github.com/1C-Company/v8-code-style)! Будем благодарны Вам за помощь!
 
 Можно помочь:
+
 - улучшить документации по проверкам и инструментам см. [задачи](https://github.com/1C-Company/v8-code-style/labels/documentation),  см. [правила](https://github.com/1C-Company/v8-code-style/blob/master/docs/contributing/documentation.md)
 - написать проверку на Java см. [задачи для новичка](https://github.com/1C-Company/v8-code-style/labels/good%20first%20issue),  см. [правила](https://github.com/1C-Company/v8-code-style/blob/master/docs/contributing/readme.md)
 - написать любую проверку из списка ниже или любой другой инструмент улучшающий разработку по стандартам
