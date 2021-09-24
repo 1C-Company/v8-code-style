@@ -15,7 +15,39 @@
  -->
 
 <toc label="1C:Code style V8" topic="html/toc.html">
+   <topic href="html/checks/readme.html" label="Проверки">
+      <anchor id="checks"/>
+      <topic href="html/checks/check_index.html" label="Индекс проверок">
+      </topic>
+      <topic href="html/checks/md.html" label="Проверки метаданных">
+         <anchor id="md"/>
+      </topic>
+      <topic href="html/checks/form.html" label="Проверки Форм">
+         <anchor id="form"/>
+      </topic>
+      <topic href="html/checks/right.html" label="Проверки прав ролей">
+         <anchor id="right"/>
+      </topic>
+      <topic href="html/checks/bsl.html" label="Проверки модулей">
+         <anchor id="bsl"/>
+      </topic>
+      <topic href="html/checks/ql.html" label="Проверки языка запросов">
+         <anchor id="ql"/>
+      </topic>
+      <topic href="html/checks/acc_index.html" label="АПК ред.1 - Индекс соответствия">
+      </topic>
+   </topic>
+   <topic href="html/tools/readme.html" label="Инструменты">
+      <anchor id="tools"/>
+      <topic href="html/tools/autosort.html" label="Авто-сортировка метаданных">
+      </topic>
+      <topic href="html/tools/common-module-types.html" label="Создание общих модулей по типам">
+      </topic>
+   </topic>
    <topic href="html/changelog.html" label="CHANGELOG">
       <anchor id="changelog"/>
+   </topic>
+   <topic href="html/contributing/readme.html" label="Руководство контрибьютора">
+      <anchor id="contributing"/>
    </topic>
 </toc>

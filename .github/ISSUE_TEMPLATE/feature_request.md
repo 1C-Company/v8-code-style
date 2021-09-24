@@ -1,20 +1,23 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
+name: Предложение функциональности
+about: Предложите вашу идею для проекта поддержки стандартов
 title: ''
 labels: ''
 assignees: ''
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Описание проблемы
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+Ясно и четко опишите в чем проблема, затруднения, что вам мешает.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Описание решиня проблемы
+
+Ясно и четко опишите желаемое решение проблемы.
+
+
+## Доплнительная информация
+
+Любой дополнительный контекст, ссылки, скриншоты очень помогают.
+
