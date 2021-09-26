@@ -80,7 +80,7 @@ public class TempTableHasIndexTest
 
         String queryText =
             new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-no-index.ql").readAllBytes(),
-            StandardCharsets.UTF_8);
+                StandardCharsets.UTF_8);
 
         QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project);
         assertNotNull(querySchema);
@@ -140,9 +140,8 @@ public class TempTableHasIndexTest
     {
         IDtProject project = dtProjectManager.getDtProject(PROJECT_NAME);
 
-        String queryText =
-            new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-index.ql").readAllBytes(),
-                StandardCharsets.UTF_8);
+        String queryText = new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-index.ql").readAllBytes(),
+            StandardCharsets.UTF_8);
 
         QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project);
         assertNotNull(querySchema);
