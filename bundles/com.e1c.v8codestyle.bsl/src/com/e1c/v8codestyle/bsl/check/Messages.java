@@ -46,9 +46,9 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_description;
 
-    public static String EventHandlerBooleanParamCheck_Parameter_0_should_set_to_False_but_expression_may_replace_exiting_value_to_True;
+    public static String EventHandlerBooleanParamCheck_Parameter_0_should_set_to_False;
 
-    public static String EventHandlerBooleanParamCheck_Parameter_0_should_set_to_True_but_expression_may_replace_exiting_value_to_False;
+    public static String EventHandlerBooleanParamCheck_Parameter_0_should_set_to_True;
 
     public static String EventHandlerBooleanParamCheck_Prams_to_set_to_False;
 

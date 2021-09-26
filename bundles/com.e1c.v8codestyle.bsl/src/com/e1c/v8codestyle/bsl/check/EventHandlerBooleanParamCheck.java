@@ -115,7 +115,8 @@ public class EventHandlerBooleanParamCheck
             .issueType(IssueType.WARNING)
             .module()
             .checkedObjectType(SIMPLE_STATEMENT)
-            .parameter(PARAM_CHECK_EVENT_ONLY, Boolean.class, DEFAULT_CHECK_EVENT_ONLY, Messages.EventHandlerBooleanParamCheck_Check_only_in_event_handlers)
+            .parameter(PARAM_CHECK_EVENT_ONLY, Boolean.class, DEFAULT_CHECK_EVENT_ONLY,
+                Messages.EventHandlerBooleanParamCheck_Check_only_in_event_handlers)
             .parameter(PARAM_PARAMS_TO_TRUE, String.class, String.join(DELIMITER, DEFAULT_PARAMS_TO_TRUE),
                 Messages.EventHandlerBooleanParamCheck_Prams_to_set_to_True)
             .parameter(PARAM_PARAMS_TO_FALSE, String.class, String.join(DELIMITER, DEFAULT_PARAMS_TO_FALSE),
@@ -191,14 +192,12 @@ public class EventHandlerBooleanParamCheck
             String message;
             if (checkState)
             {
-                message = MessageFormat.format(
-                    Messages.EventHandlerBooleanParamCheck_Parameter_0_should_set_to_True_but_expression_may_replace_exiting_value_to_False,
+                message = MessageFormat.format(Messages.EventHandlerBooleanParamCheck_Parameter_0_should_set_to_True,
                     paramName);
             }
             else
             {
-                message = MessageFormat.format(
-                    Messages.EventHandlerBooleanParamCheck_Parameter_0_should_set_to_False_but_expression_may_replace_exiting_value_to_True,
+                message = MessageFormat.format(Messages.EventHandlerBooleanParamCheck_Parameter_0_should_set_to_False,
                     paramName);
             }
             resultAceptor.addIssue(message, right);
