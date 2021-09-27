@@ -43,7 +43,7 @@ public class RoleNameChangeExtension
             if (bmObject instanceof RoleDescription && bmEvent instanceof BmChangeEvent
                 && ((BmChangeEvent)bmEvent).isFqnChanged())
             {
-                contextSession.addFullCheck(bmObject);
+                contextSession.addModelCheck(bmObject);
             }
         };
         definition.addModelFeatureChangeContextCollector(collector, RightsPackage.Literals.ROLE_DESCRIPTION);
