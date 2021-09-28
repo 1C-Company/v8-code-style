@@ -14,7 +14,6 @@ package com.e1c.v8codestyle.internal.bsl.ui.views;
 
 import javax.inject.Inject;
 
-import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -106,14 +105,8 @@ public class BslDocCommentView
     {
         MenuManager menuMgr = new MenuManager("#PopupMenu"); //$NON-NLS-1$
         menuMgr.setRemoveAllWhenShown(true);
-        menuMgr.addMenuListener(new IMenuListener()
-        {
-            @Override
-            public void menuAboutToShow(IMenuManager manager)
-            {
-                BslDocCommentView.this.fillContextMenu(manager);
-            }
-        });
+        menuMgr.addMenuListener(this::fillContextMenu);
+
         Menu menu = menuMgr.createContextMenu(viewer.getControl());
         viewer.getControl().setMenu(menu);
         getSite().registerContextMenu(menuMgr, viewer);

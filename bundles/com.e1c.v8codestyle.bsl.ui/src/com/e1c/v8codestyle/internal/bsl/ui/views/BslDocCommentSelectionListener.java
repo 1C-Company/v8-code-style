@@ -228,14 +228,11 @@ public class BslDocCommentSelectionListener
         INode actual = null;
         for (INode node : nodes)
         {
-            if (node.getOffset() < offset)
-            {
-                actual = node;
-            }
-            else
+            if (node.getOffset() > offset)
             {
                 break;
             }
+            actual = node;
         }
 
         if (actual != null && actual.getEndOffset() > offset)

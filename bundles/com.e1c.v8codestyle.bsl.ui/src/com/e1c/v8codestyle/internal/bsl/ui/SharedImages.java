@@ -20,7 +20,7 @@ import org.eclipse.jface.resource.ImageRegistry;
  *
  * @author Dmitriy Marmyshev
  */
-public class SharedImages
+public final class SharedImages
 {
     private static final String T_OBJ16 = "/obj16/"; //$NON-NLS-1$
 
@@ -32,7 +32,12 @@ public class SharedImages
 
     private static final String ICONS_PATH = "/icons"; //$NON-NLS-1$
 
-    public static void initializeImageRegistry(ImageRegistry reg)
+    /**
+     * Initialize image registry with given instance.
+     *
+     * @param reg the registry, cannot be {@code null}.
+     */
+    /* package */ static void initializeImageRegistry(ImageRegistry reg)
     {
         reg.put(IMG_OBJ16_FIELD, createImageDescriptorFromKey(IMG_OBJ16_FIELD));
         reg.put(IMG_OBJ16_LINK, createImageDescriptorFromKey(IMG_OBJ16_LINK));
