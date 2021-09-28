@@ -20,7 +20,7 @@
        point="org.eclipse.ui.views">
     <category
           id="com.e1c.v8codestyle.bsl.ui"
-          name="%viewers.category.name">
+          name="%views.category.name">
     </category>
     <view
           category="com.e1c.v8codestyle.bsl.ui"
