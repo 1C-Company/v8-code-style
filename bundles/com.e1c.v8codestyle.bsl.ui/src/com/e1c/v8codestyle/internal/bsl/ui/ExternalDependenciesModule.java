@@ -10,33 +10,34 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.internal.bsl;
+package com.e1c.v8codestyle.internal.bsl.ui;
 
-import org.osgi.framework.Bundle;
+import org.eclipse.core.runtime.Plugin;
 
-import com._1c.g5.wiring.AbstractGuiceAwareExecutableExtensionFactory;
-import com.google.inject.Injector;
+import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.wiring.AbstractServiceAwareModule;
 
 /**
- * Guice module aware executable extension factory for plugin.
+ * The external dependencies for plugin
  *
  * @author Dmitriy Marmyshev
  *
  */
-public class ExecutableExtensionFactory
-    extends AbstractGuiceAwareExecutableExtensionFactory
+class ExternalDependenciesModule
+    extends AbstractServiceAwareModule
 {
 
-    @Override
-    protected Bundle getBundle()
+    ExternalDependenciesModule(Plugin plugin)
     {
-        return BslPlugin.getDefault().getBundle();
+        super(plugin);
     }
 
     @Override
-    protected Injector getInjector()
+    protected void doConfigure()
     {
-        return BslPlugin.getDefault().getInjector();
+        bind(IResourceLookup.class).toService();
+        bind(IBslPreferences.class).toService();
     }
 
 }

@@ -23,6 +23,8 @@ import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 
 /**
+ * The external dependencies for plugin
+ *
  * @author Dmitriy Marmyshev
  *
  */
