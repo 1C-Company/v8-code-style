@@ -241,7 +241,9 @@ public class BslDocCommentView
             }
             else if (obj instanceof ParametersSection || obj instanceof ReturnSection || obj instanceof Section
                 || obj instanceof TypeSection)
+            {
                 imageKey = ISharedImages.IMG_OBJ_FOLDER;
+            }
             return workbench.getSharedImages().getImage(imageKey);
         }
     }

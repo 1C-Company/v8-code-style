@@ -59,7 +59,7 @@ import com._1c.g5.v8.dt.core.platform.IResourceLookup;
  * The class that is interested in processing a  {@link ISelection}
  * event implements this interface, and the object created
  * with that class is registered with a component using the
- * SelectionService <code>addPostSelectionListener<code> method. When
+ * SelectionService <code>addPostSelectionListener</code> method. When
  * the ISelection event occurs, that object's appropriate
  * method is invoked.
  *
@@ -191,7 +191,9 @@ public class BslDocCommentSelectionListener
                                     return null;
                                 }
                                 if (e instanceof Method)
+                                {
                                     return Pair.newPair(getDocComment((Method)e), null);
+                                }
                             }
                         }
                     }
@@ -219,7 +221,9 @@ public class BslDocCommentSelectionListener
 
         List<INode> nodes = commentProvider.getDocumentationNodes(method);
         if (nodes.isEmpty())
+        {
             return null;
+        }
 
         INode actual = null;
         for (INode node : nodes)

@@ -47,4 +47,9 @@ public class SharedImages
         return UiPlugin.imageDescriptorFromPlugin(UiPlugin.PLUGIN_ID, path);
     }
 
+    private SharedImages()
+    {
+        throw new IllegalAccessError("Utility class"); //$NON-NLS-1$
+    }
+
 }
