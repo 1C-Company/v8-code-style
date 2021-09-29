@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.common.Symbols;
+import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Pragma;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
@@ -97,9 +99,15 @@ public class ChangeAndValidateInsteadOfAroundCheck
         }
 
         boolean hasProceedWithCall = false;
-        for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(method, StaticFeatureAccess.class))
+        for (Invocation inv : EcoreUtil2.eAllOfType(method, Invocation.class))
         {
-            String featureName = sfa.getName();
+            FeatureAccess methodAccess = inv.getMethodAccess();
+            if (!(methodAccess instanceof StaticFeatureAccess))
+            {
+                continue;
+            }
+
+            String featureName = methodAccess.getName();
             if (PROCEED_WITH_CALL.equalsIgnoreCase(featureName) || PROCEED_WITH_CALL_RUS.equalsIgnoreCase(featureName))
             {
                 hasProceedWithCall = true;
