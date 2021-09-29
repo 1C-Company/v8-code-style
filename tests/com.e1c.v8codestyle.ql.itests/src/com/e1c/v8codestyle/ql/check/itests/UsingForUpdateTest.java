@@ -30,7 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.Test;
 
 /**
- * Test {@link ForUpdateUsing} class that checks FOR UPDATE clause existence.
+ * Test {@link UsingForUpdate} class that checks FOR UPDATE clause existence.
  *
  * @author Viktor Gukov
  */

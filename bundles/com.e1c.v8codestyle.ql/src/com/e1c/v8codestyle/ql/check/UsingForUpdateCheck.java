@@ -29,7 +29,7 @@ import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
 import com.google.inject.Inject;
 
 /**
- * The check of query FOR UPDATE using
+ * The check of query using FOR UPDATE
  * 
  * @author Gukov Viktor
  */
