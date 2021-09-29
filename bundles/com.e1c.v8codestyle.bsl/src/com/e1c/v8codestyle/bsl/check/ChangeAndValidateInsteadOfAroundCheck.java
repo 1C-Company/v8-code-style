@@ -33,7 +33,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
- * Checks that pragma &ChangeAndControl is used when there is no call ProceedWithCall
+ * Checks that pragma &ChangeAndValidate is used when there is no call ProceedWithCall
  *
  * @author Aleksandr Kapralov
  *
