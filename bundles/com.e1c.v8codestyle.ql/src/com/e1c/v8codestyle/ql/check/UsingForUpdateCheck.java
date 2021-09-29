@@ -33,15 +33,15 @@ import com.google.inject.Inject;
  * 
  * @author Gukov Viktor
  */
-public class ForUpdateUsingCheck
+public class UsingForUpdateCheck
     extends QlBasicDelegateCheck
 {
 
-    private static final String CHECK_ID = "ql-for-update-using"; //$NON-NLS-1$
+    private static final String CHECK_ID = "ql-using-for-update"; //$NON-NLS-1$
     private final IConfigurationProvider configurationProvider;
 
     @Inject
-    public ForUpdateUsingCheck(IConfigurationProvider provider)
+    public UsingForUpdateCheck(IConfigurationProvider provider)
     {
         this.configurationProvider = provider;
     }
@@ -56,11 +56,6 @@ public class ForUpdateUsingCheck
     protected void checkQlObject(EObject object, QueryOwner owner, IQlResultAcceptor acceptor,
         ICheckParameters parameters, IProgressMonitor monitor)
     {
-        if (monitor.isCanceled())
-        {
-            return;
-        }
-
         Configuration configuration = configurationProvider.getConfiguration(object);
         if (configuration.getDataLockControlMode() != DefaultDataLockControlMode.MANAGED)
         {
@@ -70,15 +65,15 @@ public class ForUpdateUsingCheck
         QuerySchemaOperator schemaOperator = (QuerySchemaOperator)object;
         if (schemaOperator.isSelectForUpdate())
         {
-            acceptor.addIssue(Messages.ForUpdateUsingCheck_title, object, QUERY_SCHEMA_OPERATOR__TABLES_FOR_UPDATE);
+            acceptor.addIssue(Messages.UsingForUpdateCheck_title, object, QUERY_SCHEMA_OPERATOR__TABLES_FOR_UPDATE);
         }
     }
 
     @Override
     protected void configureCheck(CheckConfigurer configurer)
     {
-        configurer.title(Messages.ForUpdateUsingCheck_title)
-            .description(Messages.ForUpdateUsingCheck_description)
+        configurer.title(Messages.UsingForUpdateCheck_title)
+            .description(Messages.UsingForUpdateCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)

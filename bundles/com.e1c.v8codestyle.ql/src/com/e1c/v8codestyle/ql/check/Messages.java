@@ -35,8 +35,6 @@ final class Messages
     public static String CastToMaxNumber_Query_cast_to_number_with_lenth__0__and_max_allowed__1;
     public static String CastToMaxNumber_Query_cast_to_number_with_precision__0__and_max_allowed__1;
     public static String CastToMaxNumber_title;
-    public static String ForUpdateUsingCheck_description;
-    public static String ForUpdateUsingCheck_title;
     public static String JoinToSubQuery_description;
     public static String JoinToSubQuery_Query_join_to_sub_query_not_allowed;
     public static String JoinToSubQuery_title;
@@ -44,6 +42,8 @@ final class Messages
     public static String TempTableHasIndex_Exclude_table_name_pattern;
     public static String TempTableHasIndex_New_temporary_table_should_have_indexes;
     public static String TempTableHasIndex_title;
+    public static String UsingForUpdateCheck_description;
+    public static String UsingForUpdateCheck_title;
     static
     {
         // initialize resource bundle

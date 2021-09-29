@@ -34,11 +34,11 @@ import org.junit.Test;
  *
  * @author Viktor Gukov
  */
-public class ForUpdateUsingTest
+public class UsingForUpdateTest
     extends CheckTestBase
 {
-    private static final String CHECK_ID = "ql-for-update-using"; //$NON-NLS-1$;
-    private static final String PROJECT_NAME = "ForUpdateUsing";
+    private static final String CHECK_ID = "ql-using-for-update"; //$NON-NLS-1$;
+    private static final String PROJECT_NAME = "UsingForUpdate";
 
     @Test
     public void testForUpdateUse() throws Exception
