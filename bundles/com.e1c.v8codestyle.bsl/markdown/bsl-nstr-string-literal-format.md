@@ -87,3 +87,5 @@ EndProcedure
 
 ## See
 
+- [About Nstr](https://1c-dn.com/1c_enterprise/nstr/)
+- [Interface texts in code: localization requirements](https://support.1ci.com/hc/en-us/articles/360011003480-Interface-texts-in-code-localization-requirements)
