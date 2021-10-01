@@ -392,6 +392,30 @@ public class CommonModuleStrictTypesTest
 
     }
 
+    /**
+     * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
+     * with caller type, and skip checking if method has default value parameters.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvocationParamIntersectionCheckWithDefault() throws Exception
+    {
+
+        String checkId = "invocation-parameter-type-intersect";
+        String resouceName = "invocation-parameter-type-intersect-with-default";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(1, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("5", marker.getExtraInfo().get("line"));
+
+    }
+
     private List<Marker> getMarters(String checkId, Module module)
     {
         String id = module.eResource().getURI().toPlatformString(true);
