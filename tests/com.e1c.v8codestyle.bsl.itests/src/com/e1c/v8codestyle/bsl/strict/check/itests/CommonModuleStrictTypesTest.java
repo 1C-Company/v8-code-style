@@ -145,7 +145,6 @@ public class CommonModuleStrictTypesTest
      * @throws Exception the exception
      */
     @Test
-    @Ignore // FIXME check-system fails on issue add
     public void testDocCommentFieldTypeCheck() throws Exception
     {
 
