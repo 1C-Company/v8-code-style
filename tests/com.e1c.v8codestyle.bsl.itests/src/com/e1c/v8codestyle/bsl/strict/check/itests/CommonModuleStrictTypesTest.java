@@ -335,6 +335,34 @@ public class CommonModuleStrictTypesTest
     }
 
     /**
+     * Test of {@link SimpleStatementTypeCheck} that the statement change type of existing object type.
+     * Should respect in-line documentation comment with types
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testSimpleStatementTypeCheckWithDocComment() throws Exception
+    {
+
+        String checkId = "statement-type-change";
+        String resourceName = "statement-type-change-with-doc-comment";
+
+        Module module = updateAndGetModule(resourceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        // FIXME check-system duplicates issues
+        assertEquals(2, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get("line"));
+
+        marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get("line"));
+
+    }
+
+    /**
      * Test of {@link FunctionCtorReturnSectionCheck} that the statement change type of existing object type.
      *
      * @throws Exception the exception

@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.bsl.strict.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT;
 
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +32,7 @@ import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.ImplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.bsl.util.BslUtil;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -108,11 +110,6 @@ public class SimpleStatementTypeCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof EObject))
-        {
-            return;
-        }
-
         SimpleStatement statment = (SimpleStatement)object;
 
         Expression left = statment.getLeft();
@@ -146,7 +143,19 @@ public class SimpleStatementTypeCheck
 
         boolean canResetToUndefined = allowImplicitVarResetToUndefined && isImplicitVariableSource(left, actualEnvs);
 
-        List<TypeItem> newTypes = computeTypes(statment.getRight(), actualEnvs);
+        Expression right = statment.getRight();
+        List<TypeItem> newTypes = computeTypes(right, actualEnvs);
+        if (monitor.isCanceled())
+        {
+            return;
+        }
+        if (left instanceof StaticFeatureAccess && !((StaticFeatureAccess)left).getFeatureEntries().isEmpty()
+            && ((StaticFeatureAccess)left).getFeatureEntries().get(0).getFeature() instanceof Variable)
+        {
+            Collection<TypeItem> commentTypes = computeCommentTypes(right);
+            newTypes.addAll(commentTypes);
+
+        }
         if (!monitor.isCanceled() && !hasTypeIntersection(types, newTypes, statment, canResetToUndefined))
         {
             boolean isRussian = com._1c.g5.v8.dt.bsl.util.BslUtil.isRussian(statment, this.v8ProjectManager);
