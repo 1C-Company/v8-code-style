@@ -27,7 +27,7 @@ import com.e1c.v8codestyle.bsl.check.NstrStringLiteralFormatCheck;
  * @author Dmitriy Marmyshev
  */
 public class NstrStringLiteralFormatCheckTest
-    extends AbstractSingleModuleTest
+    extends AbstractSingleModuleTestBase
 {
 
     private static final String FOLDER = "/resources/nstr-format/";

@@ -45,7 +45,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  *
  * @author Dmitriy Marmyshev
  */
-public class AbstractSingleModuleTest
+public class AbstractSingleModuleTestBase
     extends CheckTestBase
 {
 
@@ -66,7 +66,7 @@ public class AbstractSingleModuleTest
      *
      * @param checkClass the check class, cannot be {@code null}.
      */
-    protected AbstractSingleModuleTest(Class<? extends ICheck> checkClass)
+    protected AbstractSingleModuleTestBase(Class<? extends ICheck> checkClass)
     {
         super();
         this.checkClass = checkClass;
