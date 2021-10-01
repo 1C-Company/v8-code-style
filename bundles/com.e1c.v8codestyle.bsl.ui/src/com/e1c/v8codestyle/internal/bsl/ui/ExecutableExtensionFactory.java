@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.internal.bsl;
+package com.e1c.v8codestyle.internal.bsl.ui;
 
 import org.osgi.framework.Bundle;
 
@@ -30,13 +30,13 @@ public class ExecutableExtensionFactory
     @Override
     protected Bundle getBundle()
     {
-        return BslPlugin.getDefault().getBundle();
+        return UiPlugin.getDefault().getBundle();
     }
 
     @Override
     protected Injector getInjector()
     {
-        return BslPlugin.getDefault().getInjector();
+        return UiPlugin.getDefault().getInjector();
     }
 
 }
