@@ -68,6 +68,11 @@ public class NstrStringLiteralFormatCheck
 
     private IV8ProjectManager v8ProjectManager;
 
+    /**
+     * Instantiates a new NSTR string literal format check.
+     *
+     * @param v8ProjectManager the v 8 project manager service, cannot be {@code null}.
+     */
     @Inject
     public NstrStringLiteralFormatCheck(IV8ProjectManager v8ProjectManager)
     {
@@ -99,9 +104,6 @@ public class NstrStringLiteralFormatCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled())
-            return;
-
         Invocation inv = (Invocation)object;
         if (inv.getParams().isEmpty() || !(NSTR_NAME_RU.equalsIgnoreCase(inv.getMethodAccess().getName())
             || NSTR_NAME.equalsIgnoreCase(inv.getMethodAccess().getName())))
