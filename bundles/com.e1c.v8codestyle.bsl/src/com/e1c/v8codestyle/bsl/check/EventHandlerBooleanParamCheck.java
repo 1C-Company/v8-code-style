@@ -55,7 +55,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
- * Checks boolean parameter of event handler (or for all method if set) used correctly to set boolean value.
+ * Checks that boolean parameter of event handler (or for all method if set) is used correctly to set boolean value.
  *
  * @author Dmitriy Marmyshev
  * @author Victor Golubev
@@ -157,19 +157,20 @@ public class EventHandlerBooleanParamCheck
             return;
         }
 
-        boolean checkState = paramsToTrue.contains(paramName);
-        Parameter eventPram = getEventBooleanParameter(param, monitor);
+        boolean valueToCheckAssignment = paramsToTrue.contains(paramName);
+        Parameter eventParameter = getEventBooleanParameter(param, monitor);
 
-        if (eventPram != null)
+        if (eventParameter != null)
         {
-            if (paramsToTrue.contains(eventPram.getNameRu()) || paramsToTrue.contains(eventPram.getName()))
+            if (paramsToTrue.contains(eventParameter.getNameRu()) || paramsToTrue.contains(eventParameter.getName()))
             {
-                checkState = true;
+                valueToCheckAssignment = true;
 
             }
-            else if (paramsToFalse.contains(eventPram.getNameRu()) || paramsToFalse.contains(eventPram.getName()))
+            else if (paramsToFalse.contains(eventParameter.getNameRu())
+                || paramsToFalse.contains(eventParameter.getName()))
             {
-                checkState = false;
+                valueToCheckAssignment = false;
             }
             else
             {
@@ -187,10 +188,10 @@ public class EventHandlerBooleanParamCheck
         }
 
         // check right expression
-        if (!isCorrectBooleanExpression(right, paramName, checkState, monitor))
+        if (!isCorrectBooleanExpression(right, paramName, valueToCheckAssignment, monitor))
         {
             String message;
-            if (checkState)
+            if (valueToCheckAssignment)
             {
                 message = MessageFormat.format(Messages.EventHandlerBooleanParamCheck_Parameter_0_should_set_to_True,
                     paramName);
@@ -224,7 +225,7 @@ public class EventHandlerBooleanParamCheck
         Map<CaseInsensitiveString, Event> eventHandlers = getAllModuleEvents(module);
         CaseInsensitiveString methodName = new CaseInsensitiveString(method.getName());
         Event event = eventHandlers.get(methodName);
-        if (event == null && isCorrectHanlersModule(module))
+        if (event == null && isCorrectModuleForCustomHandlers(module))
         {
             // Get event for Form Item event handlers or common module event subscription
             List<EObject> enventHandlers = bslEventsService.getEventHandlers(module).get(methodName);
@@ -251,17 +252,17 @@ public class EventHandlerBooleanParamCheck
             return null;
         }
 
-        // get actual param name in case it renamed, but steal boolean
+        // get actual parameter name in case it renamed, but still boolean
         ParamSet paramSet = event.actualParamSet(params.size());
         if (paramSet != null)
         {
             List<Parameter> eventParameters = paramSet.getParams();
             if (index < eventParameters.size())
             {
-                Parameter eventPram = eventParameters.get(index);
-                if (isBooleanParameter(eventPram))
+                Parameter eventParameter = eventParameters.get(index);
+                if (isBooleanParameter(eventParameter))
                 {
-                    return eventPram;
+                    return eventParameter;
                 }
             }
         }
@@ -320,9 +321,9 @@ public class EventHandlerBooleanParamCheck
         return false;
     }
 
-    private boolean isBooleanParameter(Parameter eventPram)
+    private boolean isBooleanParameter(Parameter eventParameter)
     {
-        for (TypeItem type : eventPram.getType())
+        for (TypeItem type : eventParameter.getType())
         {
             if (IEObjectTypeNames.BOOLEAN.equals(McoreUtil.getTypeName(type)))
             {
@@ -362,9 +363,9 @@ public class EventHandlerBooleanParamCheck
         }
         else
         {
-            List<Event> eventHandlers2 = contextDefService.getModuleEvents(module);
+            List<Event> moduleEvents = contextDefService.getModuleEvents(module);
             Map<CaseInsensitiveString, Event> res = new HashMap<>();
-            for (Event event : eventHandlers2)
+            for (Event event : moduleEvents)
             {
                 res.put(new CaseInsensitiveString(event.getName()), event);
                 res.put(new CaseInsensitiveString(event.getNameRu()), event);
@@ -381,7 +382,7 @@ public class EventHandlerBooleanParamCheck
             || type == ModuleType.COMMAND_MODULE || type == ModuleType.COMMON_MODULE;
     }
 
-    private boolean isCorrectHanlersModule(Module module)
+    private boolean isCorrectModuleForCustomHandlers(Module module)
     {
         ModuleType type = module.getModuleType();
         return type == ModuleType.FORM_MODULE || type == ModuleType.COMMON_MODULE;
