@@ -1,4 +1,4 @@
-![Build](https://github.com/1C-Company/v8-code-style/workflows/CI/badge.svg)
+[![Build](https://github.com/1C-Company/v8-code-style/workflows/CI/badge.svg)](https://github.com/1C-Company/v8-code-style/actions)
 
 # 1С:Стандарты разработки V8
 
