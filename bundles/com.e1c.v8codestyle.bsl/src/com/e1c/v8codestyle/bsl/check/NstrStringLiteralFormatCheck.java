@@ -10,9 +10,6 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.FEATURE_ACCESS__NAME;
