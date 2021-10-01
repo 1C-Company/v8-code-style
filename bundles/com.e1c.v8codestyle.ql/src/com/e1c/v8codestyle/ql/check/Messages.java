@@ -42,6 +42,8 @@ final class Messages
     public static String TempTableHasIndex_Exclude_table_name_pattern;
     public static String TempTableHasIndex_New_temporary_table_should_have_indexes;
     public static String TempTableHasIndex_title;
+    public static String UsingForUpdateCheck_description;
+    public static String UsingForUpdateCheck_title;
     static
     {
         // initialize resource bundle
