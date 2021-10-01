@@ -56,15 +56,7 @@ public class BslDocumentationCommentContentProvider
         {
             return null;
         }
-        else if (child instanceof ParametersSection)
-        {
-            return internalRoot;
-        }
-        else if (child instanceof ReturnSection)
-        {
-            return internalRoot;
-        }
-        else if (child instanceof Section)
+        else if (child instanceof ParametersSection || child instanceof ReturnSection || child instanceof Section)
         {
             return internalRoot;
         }

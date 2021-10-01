@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.internal.bsl.ui.views;
 
+import java.text.MessageFormat;
+
 import javax.inject.Inject;
 
 import org.eclipse.jface.action.IMenuManager;
@@ -171,11 +173,11 @@ public class BslDocCommentView
             }
             else if (obj instanceof TextPart)
             {
-                return Messages.BslDocCommentView_Text + " " + ((TextPart)obj).getText(); //$NON-NLS-1$
+                return MessageFormat.format(Messages.BslDocCommentView_Text, ((TextPart)obj).getText());
             }
             else if (obj instanceof LinkPart)
             {
-                return Messages.BslDocCommentView_Link + " " + ((LinkPart)obj).getLinkText(); //$NON-NLS-1$
+                return MessageFormat.format(Messages.BslDocCommentView_Link, ((LinkPart)obj).getLinkText());
             }
             else if (obj instanceof ParametersSection)
             {
@@ -187,7 +189,7 @@ public class BslDocCommentView
             }
             else if (obj instanceof FieldDefinition)
             {
-                return Messages.BslDocCommentView_Field + " " + ((FieldDefinition)obj).getName(); //$NON-NLS-1$
+                return MessageFormat.format(Messages.BslDocCommentView_Field, ((FieldDefinition)obj).getName());
             }
             else if (obj instanceof ReturnSection)
             {
@@ -199,11 +201,12 @@ public class BslDocCommentView
             }
             else if (obj instanceof LinkContainsTypeDefinition)
             {
-                return Messages.BslDocCommentView_Link_type + " " + ((LinkContainsTypeDefinition)obj).getTypeName(); //$NON-NLS-1$
+                return MessageFormat.format(Messages.BslDocCommentView_Link_type,
+                    ((LinkContainsTypeDefinition)obj).getTypeName());
             }
             else if (obj instanceof TypeDefinition)
             {
-                return Messages.BslDocCommentView_Type + " " + ((TypeDefinition)obj).getTypeName(); //$NON-NLS-1$
+                return MessageFormat.format(Messages.BslDocCommentView_Type, ((TypeDefinition)obj).getTypeName());
             }
             return obj.toString();
         }
