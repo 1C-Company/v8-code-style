@@ -15,13 +15,18 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: com.e1c.v8codestyle.bsl
 Bundle-ActivationPolicy: lazy
 Import-Package: com._1c.g5.v8.bm.core;version="[7.0.0,8.0.0)",
+ com._1c.g5.v8.dt.bsl.comment;version="[3.0.0,4.0.0)",
+ com._1c.g5.v8.dt.bsl.common;version="[6.0.0,7.0.0)",
+ com._1c.g5.v8.dt.bsl.documentation.comment;version="[3.0.0,4.0.0)",
  com._1c.g5.v8.dt.bsl.model;version="[4.0.0,5.0.0)",
- com._1c.g5.v8.dt.bsl.model.util;version="[4.6.0,5.0.0)",
+ com._1c.g5.v8.dt.bsl.model.util;version="[4.0.0,5.0.0)",
  com._1c.g5.v8.dt.bsl.resource;version="[13.0.0,14.0.0)",
  com._1c.g5.v8.dt.bsl.typesystem;version="[9.0.0,10.0.0)",
+ com._1c.g5.v8.dt.bsl.typesystem.util;version="[9.0.0,10.0.0)",
  com._1c.g5.v8.dt.bsl.util;version="[7.0.0,8.0.0)",
  com._1c.g5.v8.dt.common;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.core.platform;version="[10.0.0,11.0.0)",
+ com._1c.g5.v8.dt.lcore.util;version="[2.0.0,3.0.0)",
  com._1c.g5.v8.dt.mcore;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.mcore.util;version="[3.6.0,4.0.0)",
  com._1c.g5.v8.dt.metadata.mdclass;version="[8.0.0,9.0.0)",
@@ -33,3 +38,4 @@ Import-Package: com._1c.g5.v8.bm.core;version="[7.0.0,8.0.0)",
  com.e1c.g5.v8.dt.check;version="[1.0.0,2.0.0)",
  com.e1c.g5.v8.dt.check.components;version="[1.0.0,2.0.0)",
  com.e1c.g5.v8.dt.check.settings;version="[1.0.0,2.0.0)"
+Export-Package: com.e1c.v8codestyle.bsl.strict;version="0.1.0"
