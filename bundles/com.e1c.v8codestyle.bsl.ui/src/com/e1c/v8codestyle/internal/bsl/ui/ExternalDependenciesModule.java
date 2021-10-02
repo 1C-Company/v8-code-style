@@ -15,8 +15,10 @@ package com.e1c.v8codestyle.internal.bsl.ui;
 import org.eclipse.core.runtime.Plugin;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
+import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
+import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 
 /**
  * The external dependencies for plugin
@@ -36,8 +38,13 @@ class ExternalDependenciesModule
     @Override
     protected void doConfigure()
     {
+        // V8 services
         bind(IResourceLookup.class).toService();
         bind(IBslPreferences.class).toService();
+        bind(IQualifiedNameFilePathConverter.class).toService();
+
+        // CodeStyle Services
+        bind(IModuleStructureProvider.class).toService();
     }
 
 }
