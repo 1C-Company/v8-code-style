@@ -35,6 +35,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentati
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil;
@@ -127,11 +128,7 @@ public abstract class AbstractTypeCheck
 
         if (types.isEmpty() && object instanceof ExplicitVariable)
         {
-            IScope typeScope = scopeProvider.getScope(object, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
-            IProject project = resourceLookup.getProject(object);
-            boolean oldFormatComment = bslPreferences.getDocumentCommentProperties(project).oldCommentFormat();
-            Collection<TypeItem> commentTypes = TypeSystemUtil.computeCommentTypes(object, typeScope, scopeProvider,
-                qualifiedNameConverter, commentProvider, oldFormatComment);
+            Collection<TypeItem> commentTypes = computeCommentTypes(object);
             return commentTypes.isEmpty();
         }
 
@@ -176,6 +173,23 @@ public abstract class AbstractTypeCheck
 
         return types;
 
+    }
+
+    /**
+     * Compute comment types. This method may be used for {@link SimpleStatement} with variable assignment.
+     * In-line documentation comment with type also may be add to the type collection of the right part of
+     * the statement.
+     *
+     * @param object the object, cannot be {@code null}.
+     * @return the collection of comment types, cannot return {@code null}.
+     */
+    protected Collection<TypeItem> computeCommentTypes(EObject object)
+    {
+        IScope typeScope = scopeProvider.getScope(object, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
+        IProject project = resourceLookup.getProject(object);
+        boolean oldFormatComment = bslPreferences.getDocumentCommentProperties(project).oldCommentFormat();
+        return TypeSystemUtil.computeCommentTypes(object, typeScope, scopeProvider, qualifiedNameConverter,
+            commentProvider, oldFormatComment);
     }
 
     /**

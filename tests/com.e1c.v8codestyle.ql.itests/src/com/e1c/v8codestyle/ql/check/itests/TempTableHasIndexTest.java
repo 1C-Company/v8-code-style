@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -46,9 +47,13 @@ public class TempTableHasIndexTest
 
     private static final String FOLDER = "/resources/";
 
+    private static final String PARAMETER_EXCLUDE_TABLE_NAME_PATTERN = "excludeObjectNamePattern";
+
     private TestingCheckResultAcceptor resultAcceptor;
 
     private TestingQlResultAcceptor qlResultAcceptor;
+
+    private TestingCheckParameters emptyParameters;
 
     private TempTableHasIndex check;
 
@@ -63,6 +68,7 @@ public class TempTableHasIndexTest
     {
         resultAcceptor = new TestingCheckResultAcceptor();
         qlResultAcceptor = new TestingQlResultAcceptor();
+        emptyParameters = new TestingCheckParameters(Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, ""));
         QlBasicDelegateCheck.setResultAcceptor((o, f) -> qlResultAcceptor);
         check = new TempTableHasIndex();
     }
@@ -74,7 +80,7 @@ public class TempTableHasIndexTest
 
         String queryText =
             new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-no-index.ql").readAllBytes(),
-            StandardCharsets.UTF_8);
+                StandardCharsets.UTF_8);
 
         QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project);
         assertNotNull(querySchema);
@@ -84,14 +90,45 @@ public class TempTableHasIndexTest
         EObject selectQuery = querySchema.getQueries().get(1);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
 
-        check.check(selectQuery, resultAcceptor, null, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.messages.isEmpty());
         assertTrue(qlResultAcceptor.featuredMessages.isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
-        check.check(selectQuery, resultAcceptor, null, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
+
+        assertTrue(qlResultAcceptor.messages.isEmpty());
+        assertFalse(qlResultAcceptor.featuredMessages.isEmpty());
+
+    }
+
+    @Test
+    public void testTempTableWithoutIndexWithRecordCount() throws Exception
+    {
+        IDtProject project = dtProjectManager.getDtProject(PROJECT_NAME);
+
+        String queryText =
+            new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-no-index-top.ql").readAllBytes(),
+                StandardCharsets.UTF_8);
+
+        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project);
+        assertNotNull(querySchema);
+        assertEquals(2, querySchema.getQueries().size());
+
+        QlBasicDelegateCheck.setOwner(new QueryOwner(querySchema, null));
+        EObject selectQuery = querySchema.getQueries().get(1);
+        assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
+
+        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
+
+        assertTrue(qlResultAcceptor.messages.isEmpty());
+        assertTrue(qlResultAcceptor.featuredMessages.isEmpty());
+
+        selectQuery = querySchema.getQueries().get(0);
+        assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
+        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.messages.isEmpty());
         assertFalse(qlResultAcceptor.featuredMessages.isEmpty());
@@ -103,9 +140,8 @@ public class TempTableHasIndexTest
     {
         IDtProject project = dtProjectManager.getDtProject(PROJECT_NAME);
 
-        String queryText =
-            new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-index.ql").readAllBytes(),
-                StandardCharsets.UTF_8);
+        String queryText = new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-index.ql").readAllBytes(),
+            StandardCharsets.UTF_8);
 
         QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project);
         assertNotNull(querySchema);
@@ -115,14 +151,14 @@ public class TempTableHasIndexTest
         EObject selectQuery = querySchema.getQueries().get(1);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
 
-        check.check(selectQuery, resultAcceptor, null, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.messages.isEmpty());
         assertTrue(qlResultAcceptor.featuredMessages.isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
-        check.check(selectQuery, resultAcceptor, null, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.messages.isEmpty());
         assertTrue(qlResultAcceptor.featuredMessages.isEmpty());

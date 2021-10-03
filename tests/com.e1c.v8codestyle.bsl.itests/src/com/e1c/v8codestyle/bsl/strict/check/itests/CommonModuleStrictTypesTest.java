@@ -145,7 +145,6 @@ public class CommonModuleStrictTypesTest
      * @throws Exception the exception
      */
     @Test
-    @Ignore // FIXME check-system fails on issue add
     public void testDocCommentFieldTypeCheck() throws Exception
     {
 
@@ -336,6 +335,34 @@ public class CommonModuleStrictTypesTest
     }
 
     /**
+     * Test of {@link SimpleStatementTypeCheck} that the statement change type of existing object type.
+     * Should respect in-line documentation comment with types
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testSimpleStatementTypeCheckWithDocComment() throws Exception
+    {
+
+        String checkId = "statement-type-change";
+        String resourceName = "statement-type-change-with-doc-comment";
+
+        Module module = updateAndGetModule(resourceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        // FIXME check-system duplicates issues
+        assertEquals(2, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get("line"));
+
+        marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get("line"));
+
+    }
+
+    /**
      * Test of {@link FunctionCtorReturnSectionCheck} that the statement change type of existing object type.
      *
      * @throws Exception the exception
@@ -390,6 +417,30 @@ public class CommonModuleStrictTypesTest
         Marker marker = markers.get(0);
         assertEquals("5", marker.getExtraInfo().get("line"));
         assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+
+    }
+
+    /**
+     * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
+     * with caller type, and skip checking if method has default value parameters.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvocationParamIntersectionCheckWithDefault() throws Exception
+    {
+
+        String checkId = "invocation-parameter-type-intersect";
+        String resouceName = "invocation-parameter-type-intersect-with-default";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(1, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("5", marker.getExtraInfo().get("line"));
 
     }
 

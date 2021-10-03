@@ -30,6 +30,7 @@ import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
+import com._1c.g5.v8.dt.bsl.model.EmptyExpression;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
@@ -160,7 +161,8 @@ public class InvocationParamIntersectionCheck
 
             Expression param = inv.getParams().get(i);
             List<TypeItem> sorceTypes = computeTypes(param, actualEnvs);
-            boolean isUndefined = param == null || param instanceof UndefinedLiteral || isUndefinedType(sorceTypes);
+            boolean isUndefined = param == null || param instanceof UndefinedLiteral || param instanceof EmptyExpression
+                || isUndefinedType(sorceTypes);
 
             List<TypeItem> targetTypes = Collections.emptyList();
             boolean isIntersect = false;
@@ -174,7 +176,8 @@ public class InvocationParamIntersectionCheck
                     iterator.remove();
                     continue;
                 }
-                boolean isDefaultValue = targetParams.get(i).isDefaultValue();
+                Parameter parameter = targetParams.get(i);
+                boolean isDefaultValue = parameter.isDefaultValue();
 
                 if (isDefaultValue && isUndefined)
                 {

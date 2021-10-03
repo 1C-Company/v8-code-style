@@ -1,6 +1,6 @@
-# Use pragma &ChangeAndControl instead of &Around
+# Use pragma &ChangeAndValidate instead of &Around
 
-Starting with the platform 8.3.16, you can use pragma &ChangeAndControl instead of pragma &Around in cases where there is no ProceedWithCall call inside the method 
+Starting with the platform 8.3.16, you can use pragma &ChangeAndValidate instead of pragma &Around in cases where there is no ProceedWithCall call inside the method 
 
 ## Noncompliant Code Example
 
