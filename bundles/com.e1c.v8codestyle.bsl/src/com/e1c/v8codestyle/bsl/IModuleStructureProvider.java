@@ -31,10 +31,10 @@ public interface IModuleStructureProvider
 {
 
     /** The key for preferences store the state of the creating module structure. */
-    public static final String PREF_KEY_CREATE_STRUCTURE = "createModuleStructure"; //$NON-NLS-1$
+    static final String PREF_KEY_CREATE_STRUCTURE = "createModuleStructure"; //$NON-NLS-1$
 
     /** The default value of creating module structure. */
-    public static final boolean PREF_DEFAULT_CREATE_STRUCTURE = true;
+    static final boolean PREF_DEFAULT_CREATE_STRUCTURE = true;
 
     /**
      * Can create module structure template for the project. This checks project or default settings.

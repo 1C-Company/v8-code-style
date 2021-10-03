@@ -128,5 +128,19 @@
        </triggers>
     </factory>
  </extension>
+ <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+          category="com._1c.g5.v8.dt.bsl.Bsl"
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ui.properties.ModuleStructurePropertyPage"
+          id="com.e1c.v8codestyle.internal.bsl.ui.properties.moduleStructurePropertyPage"
+          name="%properties.modulestructure.name">
+       <enabledWhen>
+          <instanceof
+                value="org.eclipse.core.resources.IProject">
+          </instanceof>
+       </enabledWhen>
+    </page>
+ </extension>
 
 </plugin>

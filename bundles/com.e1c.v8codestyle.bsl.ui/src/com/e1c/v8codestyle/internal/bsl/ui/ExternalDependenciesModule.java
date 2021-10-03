@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.Plugin;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 
@@ -42,6 +43,7 @@ class ExternalDependenciesModule
         bind(IResourceLookup.class).toService();
         bind(IBslPreferences.class).toService();
         bind(IQualifiedNameFilePathConverter.class).toService();
+        bind(IV8ProjectManager.class).toService();
 
         // CodeStyle Services
         bind(IModuleStructureProvider.class).toService();

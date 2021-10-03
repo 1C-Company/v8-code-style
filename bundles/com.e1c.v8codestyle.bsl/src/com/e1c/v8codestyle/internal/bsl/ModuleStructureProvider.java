@@ -64,7 +64,8 @@ public class ModuleStructureProvider
     }
 
     @Override
-    public Supplier<InputStream> getModuleStructureTemplate(IProject project, ModuleType moduleType, ScriptVariant script)
+    public Supplier<InputStream> getModuleStructureTemplate(IProject project, ModuleType moduleType,
+        ScriptVariant script)
     {
 
         if (moduleType == null || script == null)
@@ -106,7 +107,6 @@ public class ModuleStructureProvider
             };
         }
 
-
         Optional<Path> template = getBundleEntry(path);
         if (template.isPresent())
         {
@@ -124,11 +124,13 @@ public class ModuleStructureProvider
     {
         URL url = getClass().getResource(path);
         if (url == null)
+        {
             return Optional.empty();
+        }
         try
         {
-            URL fileURL = FileLocator.toFileURL(url);
-            return Optional.of(Paths.get(fileURL.toURI()));
+            URL fileUrl = FileLocator.toFileURL(url);
+            return Optional.of(Paths.get(fileUrl.toURI()));
         }
         catch (IOException | java.net.URISyntaxException e)
         {

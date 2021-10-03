@@ -17,7 +17,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: com.e1c.v8codestyle.bsl.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Import-Package: com._1c.g5.v8.bm.core;version="7.5.0",
+Import-Package: com._1c.g5.v8.bm.core;version="[7.5.0,8.0.0)",
  com._1c.g5.v8.dt.bsl.comment;version="[3.0.0,4.0.0)",
  com._1c.g5.v8.dt.bsl.common;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.bsl.documentation.comment;version="[3.0.0,4.0.0)",
@@ -28,7 +28,9 @@ Import-Package: com._1c.g5.v8.bm.core;version="7.5.0",
  com._1c.g5.v8.dt.core.platform;version="[10.0.0,11.0.0)",
  com._1c.g5.v8.dt.mcore;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.metadata.mdclass;version="[8.0.0,9.0.0)",
+ com._1c.g5.v8.dt.ui.util;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.ui.wizards;version="[8.0.0,9.0.0)",
  com._1c.g5.wiring;version="[2.2.0,3.0.0)",
  com._1c.g5.wiring.binder;version="[1.1.0,2.0.0)",
- com.e1c.v8codestyle.bsl;version="[0.1.0,0.2.0)"
+ com.e1c.v8codestyle.bsl;version="[0.1.0,0.2.0)",
+ com.e1c.v8codestyle.bsl.strict;version="[0.1.0,0.2.0)"
