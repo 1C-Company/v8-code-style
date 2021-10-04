@@ -37,11 +37,11 @@ import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
- * Abstract test base for loading project and usually update it's single module from {@code test.bsl} resource.
+ * Abstract test base which loads a project and updates its single module from a {@code test.bsl} resource if necessary.
  * Default project is {@code CommonModule} that allows to load rest resource to common module.
  *<br><br>
- * Clients my override the name of the project and path to the module, module id, and the way how to get the module
- * (for example manage module, object module, form module and etc).
+ * Clients may override the name of the project and path to the module, module id, and the way how to get the module
+ * (for example manager module, object module, form module and etc).
  *
  * @author Dmitriy Marmyshev
  */
@@ -114,7 +114,7 @@ public class AbstractSingleModuleTestBase
     /**
      * Gets the module instance from the project.
      * <br><br>
-     * Clients should override this method if whey need to get module form different path
+     * Clients should override this method if they need to get module form different path
      * then {@code /ProjectName/src/CommonModules/CommonModule/Module.bsl}
      *
      * @return the module, cannot return {@code null}.

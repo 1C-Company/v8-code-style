@@ -12,7 +12,7 @@ Procedure NonCompliant1(Message) Export
 EndProcedure
 ```
 
-The string literal in first parameter should not be emty.
+The string literal in first parameter should not be empty.
 
 ```bsl
 Procedure NonCompliant2(Message) Export
@@ -22,7 +22,7 @@ Procedure NonCompliant2(Message) Export
 EndProcedure
 ```
 
-The format of string literal should be valid: `"key1 = 'value 2'; key2 = 'value 2';"`.
+The format of string literal should be valid: `"key1 = 'value 1'; key2 = 'value 2';"`.
 
 ```bsl
 Procedure NonCompliant3(Message) Export
