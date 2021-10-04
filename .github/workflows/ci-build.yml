@@ -41,16 +41,25 @@ jobs:
         key: ${{ runner.os }}-maven-latest-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('targets/latest/latest.target') }}
         restore-keys: |
           ${{ runner.os }}-maven-latest-
+
+    - name: Cache SonarCloud packages
+        uses: actions/cache@v2
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
   
     - name: Build with Maven
       env:
         MAVEN_USERNAME: ${{ secrets.P2_USER }}
         MAVEN_CENTRAL_TOKEN: ${{ secrets.P2_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       working-directory: ./
       run: |
         Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &
         export DISPLAY=:5
-        mvn clean verify -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V
+        mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -PSDK,find-bugs -Dsonar.projectKey=1C-Company_v8-code-style -Dtycho.localArtifacts=ignore -B -V
 
     - name: Publish Test Report
       uses: scacap/action-surefire-report@v1
