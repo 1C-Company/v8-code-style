@@ -160,7 +160,7 @@ public class BslPlugin
      *
      * @return Guice injector of the plugin, never <code>null</code> if plugin is started
      */
-    /* package */ Injector getInjector()
+    public Injector getInjector()
     {
         Injector localInstance = injector;
         if (localInstance == null)
