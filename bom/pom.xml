@@ -52,9 +52,13 @@
 
     <p2repo.archive.skip>false</p2repo.archive.skip>
     <org.jacoco.version>0.8.6</org.jacoco.version>
-
+    <!-- SonarQube Settings -->
+    <sonar.projectKey>1C-Company_v8-code-style</sonar.projectKey>
     <sonar.organization>1c-company</sonar.organization>
     <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+    <!-- JaCoCo code coverage, pass to SonarQube -->
+    <sonar.coverage.jacoco.xmlReportPaths>../../**/target/site/jacoco*/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
   </properties>
 
   <build>
