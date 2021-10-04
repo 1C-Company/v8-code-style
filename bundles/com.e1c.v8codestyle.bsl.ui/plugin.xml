@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (C) 2021, 1C-Soft LLC and others.
+   
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        1C-Soft LLC - initial API and implementation
+ -->
+
+<plugin>
+
+
+ <extension
+       point="org.eclipse.ui.views">
+    <category
+          id="com.e1c.v8codestyle.bsl.ui"
+          name="%views.category.name">
+    </category>
+    <view
+          category="com.e1c.v8codestyle.bsl.ui"
+          class="com.e1c.v8codestyle.internal.bsl.ui.views.BslDocCommentView"
+          icon="icons/sample.png"
+          id="com.e1c.v8codestyle.bsl.ui.views.BslDocCommentView"
+          inject="true"
+          name="%views.BslDocCommentView.name">
+    </view>
+ </extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+          targetID="com._1c.g5.v8.dt.ui2.perspective">
+       <view
+             id="com.e1c.v8codestyle.bsl.ui.views.BslDocCommentView"
+             ratio="0.5"
+             relationship="stack"
+             relative="org.eclipse.ui.views.PropertySheet"
+             visible="true">
+       </view>
+    </perspectiveExtension>
+ </extension>
+
+</plugin>

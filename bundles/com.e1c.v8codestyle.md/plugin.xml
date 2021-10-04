@@ -50,6 +50,10 @@
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdListObjectPresentationCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdScheduledJobDescriptionCheck">
+      </check>
    </extension>
 
 </plugin>
