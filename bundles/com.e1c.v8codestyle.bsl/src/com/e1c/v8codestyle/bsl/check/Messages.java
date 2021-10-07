@@ -85,6 +85,14 @@ final class Messages
 
     public static String NstrStringLiteralFormatCheck_title;
 
+    public static String UseNotRecommendedMethods_description;
+
+    public static String UseNotRecommendedMethods_message;
+
+    public static String UseNotRecommendedMethods_parameter;
+
+    public static String UseNotRecommendedMethods_title;
+
 
     static
     {
