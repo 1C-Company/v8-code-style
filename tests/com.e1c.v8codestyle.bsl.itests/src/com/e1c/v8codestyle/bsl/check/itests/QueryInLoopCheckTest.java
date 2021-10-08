@@ -16,7 +16,6 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.MessageFormat;
@@ -30,17 +29,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.bsl.check.QueryInLoopCheck;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
@@ -50,29 +45,22 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  * @author Aleksandr Kapralov
  */
 public class QueryInLoopCheckTest
-    extends CheckTestBase
+    extends AbstractSingleModuleTestBase
 {
 
-    private static final String PROJECT_NAME = "QueryInLoop";
-
-    private static final String CHECK_ID = "query-in-loop"; //$NON-NLS-1$
-
     private static final String PARAM_CHECK_QUERIY_IN_INFINITE_LOOP = "checkQueryInInfiniteLoop"; //$NON-NLS-1$
+
+    public QueryInLoopCheckTest()
+    {
+        super(QueryInLoopCheck.class);
+    }
 
     @Test
     public void testQueryInLoop() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
+        Module module = updateAndGetModule(FOLDER_RESOURCE + "query-in-loop.bsl");
 
-        IBmObject mdObject = getTopObjectByFqn("CommonModule.CommonModule", dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
-
-        String id = module.eResource().getURI().toPlatformString(true);
-        Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
-        assertNotNull(markers);
+        List<Marker> markers = getModuleMarkers();
 
         Set<String> uriErrors = new HashSet<>();
 
@@ -146,10 +134,6 @@ public class QueryInLoopCheckTest
 
         for (Marker marker : markers)
         {
-            String checkUid = getCheckIdFromMarker(marker, dtProject);
-            assertNotNull(checkUid);
-            assertTrue(CHECK_ID.equals(checkUid));
-
             String uriToProblem = marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY);
             assertTrue(uriErrors.contains(uriToProblem));
             uriErrors.remove(uriToProblem);
@@ -166,30 +150,21 @@ public class QueryInLoopCheckTest
     @Test
     public void testInfiniteLoop() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
+        updateModule(FOLDER_RESOURCE + "query-in-loop-infinite.bsl");
 
-        IBmObject mdObject = getTopObjectByFqn("CommonModule.InfiniteLoop", dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
 
-        String id = module.eResource().getURI().toPlatformString(true);
-        Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
-        assertNotNull(markers);
-
-        assertEquals(0, markers.length);
-
-        IProject project = dtProject.getWorkspaceProject();
-        ICheckSettings settings = checkRepository.getSettings(cuid(CHECK_ID), project);
+        IProject project = getProject().getWorkspaceProject();
+        ICheckSettings settings = checkRepository.getSettings(cuid(getCheckId()), project);
         settings.getParameters().get(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP).setValue(Boolean.toString(true));
         checkRepository.applyChanges(Collections.singleton(settings), project);
-        waitForDD(dtProject);
+        waitForDD(getProject());
+        updateModule(FOLDER_RESOURCE + "query-in-loop-infinite.bsl");
 
-        markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
-        assertNotNull(markers);
+        markers = getModuleMarkers();
+        assertEquals(1, markers.size());
 
-        assertEquals(1, markers.length);
 
     }
 }
