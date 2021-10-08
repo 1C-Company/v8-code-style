@@ -46,7 +46,7 @@ jobs:
 
     - name: Cache SonarCloud packages
       uses: actions/cache@v2
-      if: github.event_name == 'push' || github.event_name == 'pull_request'
+      if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.event.repository.full_name
       with:
         path: ~/.sonar/cache
         key: ${{ runner.os }}-sonar
@@ -56,17 +56,19 @@ jobs:
       env:
         MAVEN_USERNAME: ${{ secrets.P2_USER }}
         MAVEN_CENTRAL_TOKEN: ${{ secrets.P2_TOKEN }}
+        # Do not start Sonar-scanning for forks
+        SONAR_PARAM: "${{ github.event.pull_request.head.repo.full_name == github.event.repository.full_name && 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar' || '' }}"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       working-directory: ./
       run: |
         Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &
         export DISPLAY=:5
-        mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V
+        mvn clean verify ${SONAR_PARAM} -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V -T 1C
 
     - name: Publish Test Report
       uses: scacap/action-surefire-report@v1
-      if: github.event.pull_request.head.repo.full_name == github.repository
+      if: github.event.pull_request.head.repo.full_name == github.event.repository.full_name
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     
