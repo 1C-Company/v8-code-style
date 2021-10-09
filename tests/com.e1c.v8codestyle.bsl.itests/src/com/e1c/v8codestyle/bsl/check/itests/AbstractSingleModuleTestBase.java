@@ -15,17 +15,20 @@ package com.e1c.v8codestyle.bsl.check.itests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceChangeListener;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.junit.Before;
+import org.junit.Ignore;
 
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -33,6 +36,8 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.ICheck;
+import com.e1c.g5.v8.dt.check.settings.CheckUid;
+import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
@@ -45,6 +50,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  *
  * @author Dmitriy Marmyshev
  */
+@Ignore
 public class AbstractSingleModuleTestBase
     extends CheckTestBase
 {
@@ -54,6 +60,8 @@ public class AbstractSingleModuleTestBase
     private static final String FQN = "CommonModule.CommonModule";
 
     private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
+
+    protected static final String FOLDER_RESOURCE = "/resources/";
 
     private IDtProject dtProject;
 
@@ -93,12 +101,31 @@ public class AbstractSingleModuleTestBase
 
         IProject project = testingWorkspace.getProject(PROJECT_NAME);
 
-        if (!project.exists() || project.isAccessible())
+        if (!project.exists() || !project.isAccessible())
         {
             testingWorkspace.cleanUpWorkspace();
             dtProject = openProjectAndWaitForValidationFinish(getTestConfigurationName());
         }
         dtProject = dtProjectManager.getDtProject(project);
+        setCheckEnable(true);
+    }
+
+    /**
+     * Sets the check enable or disable.
+     *
+     * @param enable the new check enable
+     */
+    protected void setCheckEnable(boolean enable)
+    {
+        IProject project = getProject().getWorkspaceProject();
+        CheckUid cuid = new CheckUid(getCheckId(), BslPlugin.PLUGIN_ID);
+        ICheckSettings settings = checkRepository.getSettings(cuid, project);
+        if (settings.isEnabled() != enable)
+        {
+            settings.setEnabled(enable);
+            checkRepository.applyChanges(Collections.singleton(settings), project);
+            waitForDD(getProject());
+        }
     }
 
     /**
@@ -134,10 +161,9 @@ public class AbstractSingleModuleTestBase
      *
      * @param pathToResource the full path to resource in this bundle, cannot be {@code null}.
      * @return the module after validation, cannot return {@code null}.
-     * @throws CoreException the core exception
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws Exception the exception
      */
-    protected Module updateAndGetModule(String pathToResource) throws CoreException, IOException
+    protected Module updateAndGetModule(String pathToResource) throws Exception
     {
         updateModule(pathToResource);
 
@@ -148,17 +174,39 @@ public class AbstractSingleModuleTestBase
      * Update project module file form bundle resource path and wait until validation finished.
      *
      * @param pathToResource the path to resource
-     * @throws CoreException the core exception
-     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws Exception the exception
      */
-    protected void updateModule(String pathToResource) throws CoreException, IOException
+    protected void updateModule(String pathToResource) throws Exception
     {
+        IProject project = getProject().getWorkspaceProject();
+        IFile file = project.getFile(getModuleFileName());
+        boolean[] wasChanged = new boolean[1];
+        IResourceChangeListener listener = event -> {
+            if (event.getResource() == file
+                || event.getDelta() != null && event.getDelta().findMember(file.getFullPath()) != null)
+            {
+                wasChanged[0] = true;
+            }
+        };
+        project.getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE);
+
         try (InputStream in = getClass().getResourceAsStream(pathToResource))
         {
-            IFile file = getProject().getWorkspaceProject().getFile(getModuleFileName());
-            file.setContents(in, true, true, new NullProgressMonitor());
+            if (file.exists())
+            {
+                file.setContents(in, true, true, new NullProgressMonitor());
+            }
+            else
+            {
+                file.create(in, true, new NullProgressMonitor());
+            }
+        }
+        for (int i = 0; !wasChanged[0] && i < 4; i++)
+        {
+            Thread.sleep(500);
         }
         testingWorkspace.waitForBuildCompletion();
+        project.getWorkspace().removeResourceChangeListener(listener);
         waitForDD(getProject());
     }
 
