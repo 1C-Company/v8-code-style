@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Test;
@@ -34,7 +33,6 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.bsl.check.ChangeAndValidateInsteadOfAroundCheck;
 
 /**
@@ -43,22 +41,22 @@ import com.e1c.v8codestyle.bsl.check.ChangeAndValidateInsteadOfAroundCheck;
  * @author Aleksandr Kapralov
  */
 public class ChangeAndValidateInsteadOfAroundCheckTest
-    extends CheckTestBase
+    extends AbstractSingleModuleTestBase
 {
 
-    private static final String PROJECT_NAME = "ChangeAndValidateInsteadOfAround";
     private static final String EXTENSION_NAME = "ChangeAndValidateInsteadOfAroundExtension";
 
-    private static final String CHECK_ID = "change-and-validate-instead-of-around"; //$NON-NLS-1$
+    public ChangeAndValidateInsteadOfAroundCheckTest()
+    {
+        super(ChangeAndValidateInsteadOfAroundCheck.class);
+    }
 
     @Test
     public void testChangeAndValidateInsteadOfAround() throws Exception
     {
-        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
-        IDtProject dtProject = dtProjectManager.getDtProject(project);
-        assertNotNull(dtProject);
+        updateModule(FOLDER_RESOURCE + "change-and-validate-instead-of-around.bsl");
 
-        dtProject = openProjectAndWaitForValidationFinish(EXTENSION_NAME);
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(EXTENSION_NAME);
         assertNotNull(dtProject);
 
         IBmObject mdObject = getTopObjectByFqn("CommonModule.CommonModule", dtProject);
@@ -101,7 +99,7 @@ public class ChangeAndValidateInsteadOfAroundCheckTest
         {
             String checkUid = getCheckIdFromMarker(marker, dtProject);
             assertNotNull(checkUid);
-            if (!CHECK_ID.equals(checkUid))
+            if (!getCheckId().equals(checkUid))
             {
                 continue;
             }
