@@ -30,6 +30,7 @@ import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
@@ -75,7 +76,7 @@ public class EventDataExchangeLoadCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, methods.get(0), dtProject);
         assertNotNull(marker);
-        assertEquals("2", marker.getExtraInfo().get("line"));
+        assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         Method method = methods.get(2);
         assertEquals(2, method.allStatements().size());
@@ -84,7 +85,7 @@ public class EventDataExchangeLoadCheckTest
 
         marker = getFirstMarker(CHECK_ID, ((IfStatement)statement).getIfPart(), dtProject);
         assertNotNull(marker);
-        assertEquals("24", marker.getExtraInfo().get("line"));
+        assertEquals("24", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -117,7 +118,7 @@ public class EventDataExchangeLoadCheckTest
         Method method = methods.get(2);
         Marker marker = getFirstMarker(CHECK_ID, method, dtProject);
         assertNotNull(marker);
-        assertEquals("18", marker.getExtraInfo().get("line"));
+        assertEquals("18", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         assertEquals(2, method.allStatements().size());
         Statement statement = method.allStatements().get(1);
