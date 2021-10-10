@@ -30,7 +30,7 @@ public class NstrStringLiteralFormatCheckTest
     extends AbstractSingleModuleTestBase
 {
 
-    private static final String FOLDER = "/resources/nstr-format/";
+    private static final String FOLDER = FOLDER_RESOURCE + "nstr-format/";
 
     public NstrStringLiteralFormatCheckTest()
     {
