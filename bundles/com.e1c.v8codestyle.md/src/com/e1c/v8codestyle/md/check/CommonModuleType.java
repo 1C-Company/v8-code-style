@@ -29,6 +29,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.metadata.mdclass.util.MdClassUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -111,8 +112,8 @@ public final class CommonModuleType
             }
         }
 
-        CommonModuleTypes type =
-            CommonModuleTypes.findClosestTypeByName(commonModule.getName(), project.getScriptVariant());
+        ScriptVariant scriptVariant = project == null ? ScriptVariant.ENGLISH : project.getScriptVariant();
+        CommonModuleTypes type = CommonModuleTypes.findClosestTypeByName(commonModule.getName(), scriptVariant);
 
         for (Entry<EStructuralFeature, Object> entry : type.getFeatureValues(mobileOnly).entrySet())
         {

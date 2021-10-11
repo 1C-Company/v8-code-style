@@ -247,7 +247,8 @@ public enum CommonModuleTypes
     /**
      * Gets the feature values for the type of common module.
      *
-     * @param mobileOnly the mobile use only, if true - returns without features not available in mobile application.
+     * @param mobileOnly the mobile use only, if true - returns values without features that are not available
+     * in mobile application.
      * @return the feature values, cannot return {@code null}.
      */
     public Map<EStructuralFeature, Object> getFeatureValues(boolean mobileOnly)
