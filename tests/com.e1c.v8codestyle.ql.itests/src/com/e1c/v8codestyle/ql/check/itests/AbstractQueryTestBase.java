@@ -248,7 +248,7 @@ public class AbstractQueryTestBase
             if ("com.e1c.g5.v8.dt.check".equals(bundle.getSymbolicName()))
             {
                 Class<?> clazz = bundle.loadClass(fullCalss);
-                Constructor<?> c = clazz.getConstructor(new Class[0]);
+                Constructor<?> c = clazz.getConstructor();
                 return (ICheckDefinition)c.newInstance();
             }
         }
