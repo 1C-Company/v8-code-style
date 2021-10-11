@@ -39,6 +39,7 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.md.CommonModuleTypes;
 
 /**
  * Check client common module name has "Client" suffix
@@ -94,13 +95,13 @@ public final class CommonModuleNameClient
             return;
         }
 
-        Map<EStructuralFeature, Boolean> values = new HashMap<>();
-        for (EStructuralFeature feature : CommonModuleType.TYPE_CLIENT.keySet())
+        Map<EStructuralFeature, Object> values = new HashMap<>();
+        for (EStructuralFeature feature : CommonModuleTypes.CLIENT.getFeatureValues(false).keySet())
         {
-            values.put(feature, (Boolean)commonModule.eGet(feature));
+            values.put(feature, commonModule.eGet(feature));
         }
 
-        if (values.equals(CommonModuleType.TYPE_CLIENT))
+        if (values.equals(CommonModuleTypes.CLIENT.getFeatureValues(false)))
         {
             String message = MessageFormat.format(Messages.CommonModuleNameClient_message,
                 parameters.getString(MdObjectNameWithoutSuffix.NAME_SUFFIX_PARAMETER_NAME));
