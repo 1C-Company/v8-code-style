@@ -306,6 +306,30 @@ public class BslDocCommentSelectionListener
                 return selected;
             }
         }
+        else if (object instanceof LinkContainsTypeDefinition)
+        {
+            LinkContainsTypeDefinition section = (LinkContainsTypeDefinition)object;
+            Object selected = getSelected(section.getLink(), line, offset);
+            if (selected != null)
+            {
+                return selected;
+            }
+            selected = getListSelected(section.getContainTypes(), line, offset);
+            if (selected != null)
+            {
+                return selected;
+            }
+            selected = getListSelected(section.getFieldDefinitionExtension(), line, offset);
+            if (selected != null)
+            {
+                return selected;
+            }
+            selected = getSelected(section.getLinkToExtensionFields(), line, offset);
+            if (selected != null)
+            {
+                return selected;
+            }
+        }
         else if (object instanceof TypeDefinition)
         {
             TypeDefinition section = (TypeDefinition)object;
@@ -431,30 +455,6 @@ public class BslDocCommentSelectionListener
                 return section;
             }
             Object selected = getSelected(section.getDescription(), line, offset);
-            if (selected != null)
-            {
-                return selected;
-            }
-        }
-        else if (object instanceof LinkContainsTypeDefinition)
-        {
-            LinkContainsTypeDefinition section = (LinkContainsTypeDefinition)object;
-            Object selected = getSelected(section.getLink(), line, offset);
-            if (selected != null)
-            {
-                return selected;
-            }
-            selected = getListSelected(section.getContainTypes(), line, offset);
-            if (selected != null)
-            {
-                return selected;
-            }
-            selected = getListSelected(section.getFieldDefinitionExtension(), line, offset);
-            if (selected != null)
-            {
-                return selected;
-            }
-            selected = getSelected(section.getLinkToExtensionFields(), line, offset);
             if (selected != null)
             {
                 return selected;

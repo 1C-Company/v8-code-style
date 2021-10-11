@@ -235,8 +235,15 @@ public class BslDocCommentView
             {
                 return UiPlugin.getDefault().getImage(SharedImages.IMG_OBJ16_DESCRIPTION);
             }
-            else if (obj instanceof ParametersSection || obj instanceof ReturnSection || obj instanceof Section
-                || obj instanceof TypeSection)
+            else if (obj instanceof TypeSection)
+            {
+                return UiPlugin.getDefault().getImage(SharedImages.IMG_OBJ16_TYPE_SECTION);
+            }
+            else if (obj instanceof ParametersSection)
+            {
+                return UiPlugin.getDefault().getImage(SharedImages.IMG_OBJ16_PARAMETERS_SECTION);
+            }
+            else if (obj instanceof ReturnSection || obj instanceof Section)
             {
                 imageKey = ISharedImages.IMG_OBJ_FOLDER;
             }
