@@ -210,8 +210,8 @@ public class FunctionCtorReturnSectionCheck
                                 .filter(t -> McoreUtil.getTypeName(t.getSecond()).equals(returnTypeName))
                                 .findAny();
 
-                            checkTypeProperties(method, statment, isRussianScript, returnType, declaredProperties.get(),
-                                typeProperties.get(), resultAceptor);
+                            checkTypeProperties(method, statment, isRussianScript, returnType,
+                                declaredProperties.orElse(null), typeProperties.orElse(null), resultAceptor);
                         }
                     }
                     else if (isWarningReturnNonDeclaredType(method, returnSection, returnType, computedReturnTypes))
