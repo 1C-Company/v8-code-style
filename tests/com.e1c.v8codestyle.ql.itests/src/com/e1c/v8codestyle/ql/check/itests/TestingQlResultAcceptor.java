@@ -10,9 +10,6 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.ql.check.itests;
 
 import java.util.ArrayList;
@@ -26,22 +23,20 @@ import org.eclipse.xtext.util.Tuples;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck.IQlResultAcceptor;
 
 /**
- * @author Dmitriy Marmyshev
+ * Testing result acceptor implementation for QL check tests.
  *
+ * @author Dmitriy Marmyshev
  */
 class TestingQlResultAcceptor
     implements IQlResultAcceptor
 {
 
-    final List<String> messages = new ArrayList<>();
-
     final List<Triple<String, EObject, EStructuralFeature>> featuredMessages = new ArrayList<>();
-
 
     @Override
     public void addIssue(String message)
     {
-        messages.add(message);
+        featuredMessages.add(Tuples.create(message, null, null));
     }
 
     @Override
@@ -59,13 +54,13 @@ class TestingQlResultAcceptor
     @Override
     public void addIssue(String message, int length)
     {
-        messages.add(message);
+        featuredMessages.add(Tuples.create(message, null, null));
     }
 
     @Override
     public void addIssue(String message, int lineNumber, int offset, int length)
     {
-        messages.add(message);
+        featuredMessages.add(Tuples.create(message, null, null));
     }
 
 }
