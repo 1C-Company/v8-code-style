@@ -27,6 +27,7 @@
     <module>com.e1c.v8codestyle.md.itests</module>
     <module>com.e1c.v8codestyle.form.itests</module>
     <module>com.e1c.v8codestyle.bsl.itests</module>
+    <module>com.e1c.v8codestyle.bsl.ui.itests</module>
     <module>com.e1c.v8codestyle.autosort.itests</module>
     <module>com.e1c.v8codestyle.ql.itests</module>
     <module>com.e1c.v8codestyle.right.itests</module>

@@ -25,7 +25,7 @@
     <view
           category="com.e1c.v8codestyle.bsl.ui"
           class="com.e1c.v8codestyle.internal.bsl.ui.views.BslDocCommentView"
-          icon="icons/sample.png"
+          icon="icons/BslDocComment.png"
           id="com.e1c.v8codestyle.bsl.ui.views.BslDocCommentView"
           inject="true"
           name="%views.BslDocCommentView.name">
