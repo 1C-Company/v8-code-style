@@ -16,7 +16,6 @@ package com.e1c.v8codestyle.md.check.itests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,6 +29,7 @@ import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.v8codestyle.md.CommonModuleTypes;
 import com.e1c.v8codestyle.md.check.CommonModuleType;
 
 /**
@@ -75,7 +75,7 @@ public class CommonModuleTypeTest
 
         String fqn = "CommonModule.Common";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER);
+        updateCommonModule(dtProject, fqn, CommonModuleTypes.SERVER);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
@@ -110,7 +110,7 @@ public class CommonModuleTypeTest
 
         String fqn = "CommonModule.CommonServerCall";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER_CALL);
+        updateCommonModule(dtProject, fqn, CommonModuleTypes.SERVER_CALL);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
@@ -145,7 +145,7 @@ public class CommonModuleTypeTest
 
         String fqn = "CommonModule.CommonClient";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT);
+        updateCommonModule(dtProject, fqn, CommonModuleTypes.CLIENT);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
@@ -180,7 +180,7 @@ public class CommonModuleTypeTest
 
         String fqn = "CommonModule.CommonServerClient";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_SERVER);
+        updateCommonModule(dtProject, fqn, CommonModuleTypes.CLIENT_SERVER);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
@@ -215,7 +215,7 @@ public class CommonModuleTypeTest
 
         String fqn = "CommonModule.CommonServerGlobal";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_SERVER_GLOBAL);
+        updateCommonModule(dtProject, fqn, CommonModuleTypes.SERVER_GLOBAL);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
@@ -250,13 +250,13 @@ public class CommonModuleTypeTest
 
         String fqn = "CommonModule.CommonClientGlobal";
 
-        updateCommonModule(dtProject, fqn, CommonModuleType.TYPE_CLIENT_GLOBAL);
+        updateCommonModule(dtProject, fqn, CommonModuleTypes.CLIENT_GLOBAL);
         long id = getTopObjectIdByFqn(fqn, dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 
-    private void updateCommonModule(IDtProject dtProject, String fqn, Map<EStructuralFeature, Boolean> types)
+    private void updateCommonModule(IDtProject dtProject, String fqn, CommonModuleTypes type)
     {
         IBmModel model = bmModelManager.getModel(dtProject);
         model.execute(new AbstractBmTask<Void>("change type")
@@ -265,7 +265,7 @@ public class CommonModuleTypeTest
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
             {
                 IBmObject object = transaction.getTopObjectByFqn(fqn);
-                for (Entry<EStructuralFeature, Boolean> entry : types.entrySet())
+                for (Entry<EStructuralFeature, Object> entry : type.getFeatureValues(false).entrySet())
                 {
                     object.eSet(entry.getKey(), entry.getValue());
                 }
