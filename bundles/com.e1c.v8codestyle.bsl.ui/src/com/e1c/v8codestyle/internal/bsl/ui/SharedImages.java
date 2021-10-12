@@ -15,6 +15,8 @@ package com.e1c.v8codestyle.internal.bsl.ui;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 
+import com._1c.g5.v8.dt.theming.ui.util.DtThemeUtil;
+
 /**
  * The common constants for plug-in images.
  *
@@ -28,6 +30,8 @@ public final class SharedImages
     public static final String IMG_OBJ16_LINK = UiPlugin.PLUGIN_ID + T_OBJ16 + "link.png"; //$NON-NLS-1$
     public static final String IMG_OBJ16_TEXT = UiPlugin.PLUGIN_ID + T_OBJ16 + "text.png"; //$NON-NLS-1$
     public static final String IMG_OBJ16_TYPE = UiPlugin.PLUGIN_ID + T_OBJ16 + "type.png"; //$NON-NLS-1$
+    public static final String IMG_OBJ16_TYPE_SECTION = UiPlugin.PLUGIN_ID + T_OBJ16 + "type_section.png"; //$NON-NLS-1$
+    public static final String IMG_OBJ16_PARAMETERS_SECTION = UiPlugin.PLUGIN_ID + T_OBJ16 + "parameters_section.png"; //$NON-NLS-1$
     public static final String IMG_OBJ16_DESCRIPTION = UiPlugin.PLUGIN_ID + T_OBJ16 + "description.png"; //$NON-NLS-1$
 
     private static final String ICONS_PATH = "/icons"; //$NON-NLS-1$
@@ -39,11 +43,14 @@ public final class SharedImages
      */
     /* package */ static void initializeImageRegistry(ImageRegistry reg)
     {
-        reg.put(IMG_OBJ16_FIELD, createImageDescriptorFromKey(IMG_OBJ16_FIELD));
-        reg.put(IMG_OBJ16_LINK, createImageDescriptorFromKey(IMG_OBJ16_LINK));
-        reg.put(IMG_OBJ16_TEXT, createImageDescriptorFromKey(IMG_OBJ16_TEXT));
-        reg.put(IMG_OBJ16_TYPE, createImageDescriptorFromKey(IMG_OBJ16_TYPE));
-        reg.put(IMG_OBJ16_DESCRIPTION, createImageDescriptorFromKey(IMG_OBJ16_DESCRIPTION));
+        reg.put(IMG_OBJ16_FIELD, createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_FIELD)));
+        reg.put(IMG_OBJ16_LINK, createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_LINK)));
+        reg.put(IMG_OBJ16_TEXT, createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_TEXT)));
+        reg.put(IMG_OBJ16_TYPE, createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_TYPE)));
+        reg.put(IMG_OBJ16_TYPE_SECTION, createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_TYPE_SECTION)));
+        reg.put(IMG_OBJ16_PARAMETERS_SECTION,
+            createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_PARAMETERS_SECTION)));
+        reg.put(IMG_OBJ16_DESCRIPTION, createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_DESCRIPTION)));
     }
 
     private static ImageDescriptor createImageDescriptorFromKey(String key)
