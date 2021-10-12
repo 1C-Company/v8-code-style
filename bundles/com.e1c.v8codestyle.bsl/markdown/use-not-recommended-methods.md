@@ -10,10 +10,10 @@ There are not recommended methods, instead of which either SSL methods or other 
 ## Compliant Solution
 	 
 	Message = New UserMessage();
-    Message.Text = ("Text");
-    Message.Message(); 
+	Message.Text = ("Text");
+	Message.Message(); 
 
-	date = CurrentSessionDate();
+	Date = CurrentSessionDate();
 
 ## See
 

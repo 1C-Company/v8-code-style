@@ -8,22 +8,17 @@
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     1C-Soft LLC - initial API and implementation
- *     Sergey Kozynskiy - issue #100
+ *     Sergey Kozynskiy - initial API and implementation
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check.itests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.bsl.check.UseNotRecommendedMethods;
 
 /**
@@ -33,10 +28,13 @@ import com.e1c.v8codestyle.bsl.check.UseNotRecommendedMethods;
  *
  */
 public class UseNotRecommendedMethodsTest
-    extends CheckTestBase
+    extends AbstractSingleModuleTestBase
 {
-    private static final String CHECK_ID = "use-not-recommended-methods"; //$NON-NLS-1$
-    private static final String PROJECT_NAME = "UseNotRecommendedMethods";
+
+    public UseNotRecommendedMethodsTest()
+    {
+        super(UseNotRecommendedMethods.class);
+    }
 
     /**
      * Test use not recommended methods.
@@ -46,24 +44,15 @@ public class UseNotRecommendedMethodsTest
     @Test
     public void testUseNotRecommendedMethods() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
+        updateModule(FOLDER_RESOURCE + "use-not-recommended-methods.bsl");
 
-        IBmObject mdObject = getTopObjectByFqn("CommonModule.TestModule", dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(2, markers.size());
 
-        String id = module.eResource().getURI().toPlatformString(true);
-        Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
-        assertNotNull(markers);
+        Marker marker = markers.get(0);
+        assertEquals("2", marker.getExtraInfo().get("line"));
 
-        String checkUid = getCheckIdFromMarker(markers[0], dtProject);
-        assertNotNull(checkUid);
-        assertTrue(CHECK_ID.equals(checkUid));
-
-        checkUid = getCheckIdFromMarker(markers[1], dtProject);
-        assertNotNull(checkUid);
-        assertTrue(CHECK_ID.equals(checkUid));
+        marker = markers.get(1);
+        assertEquals("3", marker.getExtraInfo().get("line"));
     }
 }
