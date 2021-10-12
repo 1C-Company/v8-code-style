@@ -97,9 +97,10 @@ public class AbstractSingleModuleTestBase
     }
 
     @Before
-    public void setUp() throws CoreException {
+    public void setUp() throws CoreException
+    {
 
-        IProject project = testingWorkspace.getProject(PROJECT_NAME);
+        IProject project = testingWorkspace.getProject(getTestConfigurationName());
 
         if (!project.exists() || !project.isAccessible())
         {

@@ -165,6 +165,5 @@ public class QueryInLoopCheckTest
         markers = getModuleMarkers();
         assertEquals(1, markers.size());
 
-
     }
 }

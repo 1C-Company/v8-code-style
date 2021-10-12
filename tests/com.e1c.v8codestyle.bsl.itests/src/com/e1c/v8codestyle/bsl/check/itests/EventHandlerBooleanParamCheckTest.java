@@ -32,6 +32,7 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
@@ -94,7 +95,7 @@ public class EventHandlerBooleanParamCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("5", marker.getExtraInfo().get("line"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         Method compliantMethod = methods.get(1);
         assertEquals(1, compliantMethod.allStatements().size());
@@ -142,7 +143,7 @@ public class EventHandlerBooleanParamCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("6", marker.getExtraInfo().get("line"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         Method compliantMethod = methods.get(1);
         assertEquals(1, compliantMethod.allStatements().size());
@@ -189,7 +190,7 @@ public class EventHandlerBooleanParamCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("6", marker.getExtraInfo().get("line"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         // Noncompliant but disabled in check's parameters
         Method compliantMethod = methods.get(1);
@@ -238,14 +239,14 @@ public class EventHandlerBooleanParamCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("6", marker.getExtraInfo().get("line"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         assertTrue(noncompliantMethod.allStatements().get(1) instanceof SimpleStatement);
         statement = (SimpleStatement)noncompliantMethod.allStatements().get(1);
 
         marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("7", marker.getExtraInfo().get("line"));
+        assertEquals("7", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         noncompliantMethod = methods.get(1);
         assertEquals(1, noncompliantMethod.allStatements().size());
@@ -254,7 +255,7 @@ public class EventHandlerBooleanParamCheckTest
 
         marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("15", marker.getExtraInfo().get("line"));
+        assertEquals("15", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         Method compliantMethod = methods.get(2);
         assertEquals(2, compliantMethod.allStatements().size());
@@ -309,7 +310,7 @@ public class EventHandlerBooleanParamCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("5", marker.getExtraInfo().get("line"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         Method compliantMethod = methods.get(1);
         assertEquals(1, compliantMethod.allStatements().size());
@@ -358,7 +359,7 @@ public class EventHandlerBooleanParamCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("6", marker.getExtraInfo().get("line"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         Method compliantMethod = methods.get(1);
         assertEquals(1, compliantMethod.allStatements().size());
@@ -407,7 +408,7 @@ public class EventHandlerBooleanParamCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("6", marker.getExtraInfo().get("line"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         // Noncompliant works only if enabled in check's parameters
         noncompliantMethod = methods.get(1);
@@ -417,7 +418,7 @@ public class EventHandlerBooleanParamCheckTest
 
         marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("12", marker.getExtraInfo().get("line"));
+        assertEquals("12", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         Method compliantMethod = methods.get(2);
         assertEquals(1, compliantMethod.allStatements().size());
@@ -458,14 +459,14 @@ public class EventHandlerBooleanParamCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("6", marker.getExtraInfo().get("line"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         assertTrue(noncompliantMethod.allStatements().get(1) instanceof SimpleStatement);
         statement = (SimpleStatement)noncompliantMethod.allStatements().get(1);
 
         marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("7", marker.getExtraInfo().get("line"));
+        assertEquals("7", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         noncompliantMethod = methods.get(1);
         assertEquals(1, noncompliantMethod.allStatements().size());
@@ -474,7 +475,7 @@ public class EventHandlerBooleanParamCheckTest
 
         marker = getFirstMarker(CHECK_ID, statement.getRight(), dtProject);
         assertNotNull(marker);
-        assertEquals("15", marker.getExtraInfo().get("line"));
+        assertEquals("15", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         Method compliantMethod = methods.get(2);
         assertEquals(2, compliantMethod.allStatements().size());
