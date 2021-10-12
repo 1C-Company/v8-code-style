@@ -132,7 +132,8 @@ public final class CommonModuleType
             .collect(Collectors.toList()));
         //@formatter:on
 
-        String message = MessageFormat.format(Messages.CommonModuleType_message, types);
+        String title = type.getTitle();
+        String message = MessageFormat.format(Messages.CommonModuleType_message, title, types);
 
         //@formatter:off
         EStructuralFeature feature = values.keySet()
