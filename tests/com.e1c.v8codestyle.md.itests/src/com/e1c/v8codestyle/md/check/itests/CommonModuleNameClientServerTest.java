@@ -16,7 +16,6 @@ package com.e1c.v8codestyle.md.check.itests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,8 +31,8 @@ import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.metadata.mdclass.ReturnValuesReuse;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.v8codestyle.md.CommonModuleTypes;
 import com.e1c.v8codestyle.md.check.CommonModuleNameClientServer;
-import com.e1c.v8codestyle.md.check.CommonModuleType;
 
 /**
  * Tests for {@link CommonModuleNameClientServer} check.
@@ -57,7 +56,7 @@ public class CommonModuleNameClientServerTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.CLIENT_SERVER,
             ReturnValuesReuse.DONT_USE, null);
 
         long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
@@ -73,7 +72,7 @@ public class CommonModuleNameClientServerTest
 
         String fqn = "CommonModule.CommonModuleClientServer";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.CLIENT_SERVER,
             ReturnValuesReuse.DONT_USE, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
@@ -89,7 +88,7 @@ public class CommonModuleNameClientServerTest
 
         String fqn = "CommonModule.CommonModuleClientServerPredefined";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.CLIENT_SERVER,
             ReturnValuesReuse.DONT_USE, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
@@ -105,7 +104,7 @@ public class CommonModuleNameClientServerTest
 
         String fqn = "CommonModule.ClientServerCommonModule";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.CLIENT_SERVER,
             ReturnValuesReuse.DONT_USE, fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
@@ -119,7 +118,7 @@ public class CommonModuleNameClientServerTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleType.TYPE_CLIENT_SERVER,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.CLIENT_SERVER,
             ReturnValuesReuse.DURING_SESSION, null);
 
         long id = getTopObjectIdByFqn(MODULE_DEFAULT_FQN, dtProject);
@@ -127,7 +126,7 @@ public class CommonModuleNameClientServerTest
         assertNull(marker);
     }
 
-    private void updateCommonModule(IDtProject dtProject, String fqn, Map<EStructuralFeature, Boolean> types,
+    private void updateCommonModule(IDtProject dtProject, String fqn, CommonModuleTypes type,
         ReturnValuesReuse returnValueReuse, String newFqn)
     {
         IBmModel model = bmModelManager.getModel(dtProject);
@@ -138,7 +137,7 @@ public class CommonModuleNameClientServerTest
             {
                 IBmObject object = transaction.getTopObjectByFqn(fqn);
 
-                for (Entry<EStructuralFeature, Boolean> entry : types.entrySet())
+                for (Entry<EStructuralFeature, Object> entry : type.getFeatureValues(false).entrySet())
                 {
                     object.eSet(entry.getKey(), entry.getValue());
                 }

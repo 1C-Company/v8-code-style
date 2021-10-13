@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.v8codestyle.bsl.check.NstrStringLiteralFormatCheck;
 
@@ -30,7 +31,7 @@ public class NstrStringLiteralFormatCheckTest
     extends AbstractSingleModuleTestBase
 {
 
-    private static final String FOLDER = "/resources/nstr-format/";
+    private static final String FOLDER = FOLDER_RESOURCE + "nstr-format/";
 
     public NstrStringLiteralFormatCheckTest()
     {
@@ -51,7 +52,6 @@ public class NstrStringLiteralFormatCheckTest
         assertNull(marker);
     }
 
-
     /**
      * Test that Nstr first parameter is string literal
      *
@@ -64,7 +64,7 @@ public class NstrStringLiteralFormatCheckTest
 
         Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
-        assertEquals("4", marker.getExtraInfo().get("line"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -80,7 +80,7 @@ public class NstrStringLiteralFormatCheckTest
 
         Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
-        assertEquals("4", marker.getExtraInfo().get("line"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -96,7 +96,7 @@ public class NstrStringLiteralFormatCheckTest
 
         Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
-        assertEquals("4", marker.getExtraInfo().get("line"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -112,7 +112,7 @@ public class NstrStringLiteralFormatCheckTest
 
         Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
-        assertEquals("4", marker.getExtraInfo().get("line"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -128,7 +128,7 @@ public class NstrStringLiteralFormatCheckTest
 
         Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
-        assertEquals("4", marker.getExtraInfo().get("line"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -144,7 +144,7 @@ public class NstrStringLiteralFormatCheckTest
 
         Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
-        assertEquals("4", marker.getExtraInfo().get("line"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -160,7 +160,7 @@ public class NstrStringLiteralFormatCheckTest
 
         Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
-        assertEquals("4", marker.getExtraInfo().get("line"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 

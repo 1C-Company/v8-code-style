@@ -6,7 +6,8 @@ Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: com.e1c.v8codestyle.internal.ql.CorePlugin
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.18.0,4.0.0)",
- org.eclipse.emf.ecore;bundle-version="[2.22.0,3.0.0)"
+ org.eclipse.emf.ecore;bundle-version="[2.22.0,3.0.0)",
+ org.eclipse.xtext;bundle-version="[2.24.0,3.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: com.e1c.v8codestyle.ql
 Bundle-ActivationPolicy: lazy
@@ -14,8 +15,11 @@ Bundle-Localization: plugin
 Import-Package: com._1c.g5.v8.bm.core;version="[7.0.0,8.0.0)",
  com._1c.g5.v8.dt.common;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.core.platform;version="[10.4.0,11.0.0)",
+ com._1c.g5.v8.dt.mcore;version="[6.0.0,7.0.0)",
+ com._1c.g5.v8.dt.metadata.dbview;version="4.0.0",
  com._1c.g5.v8.dt.metadata.mdclass;version="[8.0.0,9.0.0)",
  com._1c.g5.v8.dt.ql.model;version="[4.0.0,5.0.0)",
+ com._1c.g5.v8.dt.ql.typesystem;version="5.0.0",
  com._1c.g5.wiring;version="[2.2.0,3.0.0)",
  com._1c.g5.wiring.binder;version="[1.1.0,2.0.0)",
  com.e1c.g5.v8.dt.check;version="[1.0.0,2.0.0)",

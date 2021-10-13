@@ -14,9 +14,6 @@ package com.e1c.v8codestyle.md.ui;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map.Entry;
 
 import org.eclipse.core.databinding.UpdateValueStrategy;
@@ -47,6 +44,7 @@ import org.eclipse.swt.widgets.Text;
 import com._1c.g5.v8.dt.md.ui.shared.MdUiSharedImages;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+import com._1c.g5.v8.dt.metadata.mdclass.util.MdClassUtil;
 import com._1c.g5.v8.dt.ui.wizards.DtNewWizardPage;
 import com._1c.g5.v8.dt.ui.wizards.IDtNewWizardPage;
 import com.e1c.v8codestyle.md.CommonModuleTypes;
@@ -153,7 +151,7 @@ public class CommonModuleTypeDtNewWizardPage
         CommonModule model = getContext().getModel();
         String name = model.getName();
         ScriptVariant script = getContext().getV8project().getScriptVariant();
-        CommonModuleTypes type = getClosestTypeByName(name, script);
+        CommonModuleTypes type = CommonModuleTypes.findClosestTypeByName(name, script);
 
         currentSuffix = type.getNameSuffix(script);
         moduleTypeViewer.setSelection(new StructuredSelection(type), true);
@@ -183,8 +181,10 @@ public class CommonModuleTypeDtNewWizardPage
             return;
         }
 
+        boolean mobileOnly = MdClassUtil.isMobileApplicationUsePurposes(getContext().getV8project().getUsePurposes());
+
         CommonModule module = getContext().getModel();
-        for (Entry<EStructuralFeature, Object> entry : type.getFeatureValues().entrySet())
+        for (Entry<EStructuralFeature, Object> entry : type.getFeatureValues(mobileOnly).entrySet())
         {
             module.eSet(entry.getKey(), entry.getValue());
         }
@@ -219,29 +219,6 @@ public class CommonModuleTypeDtNewWizardPage
             return (CommonModuleTypes)((IStructuredSelection)selection).getFirstElement();
         }
         return null;
-    }
-
-    private CommonModuleTypes getClosestTypeByName(String name, ScriptVariant script)
-    {
-        List<CommonModuleTypes> result = new ArrayList<>();
-        for (int i = 0; i < CommonModuleTypes.values().length; i++)
-        {
-            CommonModuleTypes type = CommonModuleTypes.values()[i];
-            String suffix = type.getNameSuffix(script);
-            if (!suffix.isEmpty() && name.endsWith(suffix))
-            {
-                result.add(type);
-            }
-        }
-        if (result.isEmpty())
-        {
-            result.add(CommonModuleTypes.SERVER);
-        }
-        if (result.size() > 1)
-        {
-            Collections.sort(result, (o1, o2) -> o2.getNameSuffix(script).length() - o1.getNameSuffix(script).length());
-        }
-        return result.get(0);
     }
 
     private final class CommonModuleTypesLableProvider
