@@ -109,7 +109,6 @@ public class QueryInLoopCheck
         //@formatter:off
         builder.title(Messages.QueryInLoop_title)
             .description(Messages.QueryInLoop_description)
-            .disable()
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.PERFORMANCE)
