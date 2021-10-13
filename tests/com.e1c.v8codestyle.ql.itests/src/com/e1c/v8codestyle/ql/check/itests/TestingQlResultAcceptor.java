@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
@@ -85,18 +84,6 @@ class TestingQlResultAcceptor
 
         private final int index;
 
-        private QueryMarker()
-        {
-            this.message = null;
-            this.lineNumber = -1;
-            this.offset = -1;
-            this.length = -1;
-            this.target = null;
-            this.feature = null;
-            this.index = -1;
-
-        }
-
         private QueryMarker(String message)
         {
             this.message = message;
@@ -123,55 +110,12 @@ class TestingQlResultAcceptor
 
         private QueryMarker(String message, EObject target)
         {
-            this.message = message;
-            this.target = target;
-            this.feature = null;
-            this.index = -1;
-
-            ICompositeNode node = NodeModelUtils.findActualNodeFor(target);
-
-            if (node == null)
-            {
-                this.lineNumber = -1;
-                this.offset = -1;
-                this.length = -1;
-            }
-            else
-            {
-                this.lineNumber = NodeModelUtils.getLineAndColumn(node.getRootNode(), node.getOffset()).getLine();
-                this.offset = node.getOffset();
-                this.length = node.getLength();
-            }
-
+            this(message, target, null, -1);
         }
 
         private QueryMarker(String message, EObject target, EStructuralFeature feature)
         {
-            this.message = message;
-            this.target = target;
-            this.feature = feature;
-            this.index = -1;
-
-            List<INode> nodes = NodeModelUtils.findNodesForFeature(target, feature);
-            INode node = null;
-            if (!nodes.isEmpty())
-            {
-                node = nodes.get(0);
-            }
-
-            if (node == null)
-            {
-                this.lineNumber = -1;
-                this.offset = -1;
-                this.length = -1;
-            }
-            else
-            {
-                this.lineNumber = NodeModelUtils.getLineAndColumn(node.getRootNode(), node.getOffset()).getLine();
-                this.offset = node.getOffset();
-                this.length = node.getLength();
-            }
-
+            this(message, target, feature, -1);
         }
 
         private QueryMarker(String message, EObject target, EStructuralFeature manyFeature, int index)
@@ -181,15 +125,23 @@ class TestingQlResultAcceptor
             this.feature = manyFeature;
             this.index = index;
 
-            List<INode> nodes = NodeModelUtils.findNodesForFeature(target, manyFeature);
             INode node = null;
-            if (!nodes.isEmpty() || index > -1 && index < nodes.size())
+            if (feature == null)
             {
-                node = nodes.get(index);
+                node = NodeModelUtils.findActualNodeFor(target);
             }
-            else if (!nodes.isEmpty())
+            else
             {
-                node = nodes.get(0);
+                List<INode> nodes = NodeModelUtils.findNodesForFeature(target, manyFeature);
+
+                if (!nodes.isEmpty() || index > -1 && index < nodes.size())
+                {
+                    node = nodes.get(index);
+                }
+                else if (!nodes.isEmpty())
+                {
+                    node = nodes.get(0);
+                }
             }
 
             if (node == null)
