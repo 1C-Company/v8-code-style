@@ -92,13 +92,13 @@ public class TempTableHasIndexTest
 
         check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
-        assertTrue(qlResultAcceptor.featuredMessages.isEmpty());
+        assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
         check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
-        assertFalse(qlResultAcceptor.featuredMessages.isEmpty());
+        assertFalse(qlResultAcceptor.getMarkers().isEmpty());
 
     }
 
@@ -121,13 +121,13 @@ public class TempTableHasIndexTest
 
         check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
-        assertTrue(qlResultAcceptor.featuredMessages.isEmpty());
+        assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
         check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
-        assertFalse(qlResultAcceptor.featuredMessages.isEmpty());
+        assertFalse(qlResultAcceptor.getMarkers().isEmpty());
 
     }
 
@@ -149,13 +149,13 @@ public class TempTableHasIndexTest
 
         check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
-        assertTrue(qlResultAcceptor.featuredMessages.isEmpty());
+        assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
         check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
 
-        assertTrue(qlResultAcceptor.featuredMessages.isEmpty());
+        assertTrue(qlResultAcceptor.getMarkers().isEmpty());
     }
 
 }

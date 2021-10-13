@@ -18,14 +18,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
-import org.eclipse.xtext.util.Triple;
 import org.junit.Test;
 
 import com.e1c.v8codestyle.ql.check.VirtualTableFiltersCheck;
+import com.e1c.v8codestyle.ql.check.itests.TestingQlResultAcceptor.QueryMarker;
 
 /**
  * The test for {@link VirtualTableFiltersCheck} check
@@ -57,18 +53,16 @@ public class VirtualTableFiltersCheckTest
     public void testVirtualTableDimensionInFilters() throws Exception
     {
         loadQueryAndValidate(FOLDER_RESOURCE + "ql-virtual-table-filters.ql");
-        List<Triple<String, EObject, EStructuralFeature>> markers = getQueryMarkers();
+        List<QueryMarker> markers = getQueryMarkers();
         assertEquals(2, markers.size());
 
-        EObject object = markers.get(0).getSecond();
-        assertNotNull(object);
-        ICompositeNode node = NodeModelUtils.getNode(object);
-        assertEquals(10, NodeModelUtils.getLineAndColumn(node.getRootNode(), node.getOffset()).getLine());
+        QueryMarker marker = markers.get(0);
+        assertNotNull(marker.getTarget());
+        assertEquals(10, marker.getLineNumber());
 
-        object = markers.get(1).getSecond();
-        assertNotNull(object);
-        node = NodeModelUtils.getNode(object);
-        assertEquals(11, NodeModelUtils.getLineAndColumn(node.getRootNode(), node.getOffset()).getLine());
+        marker = markers.get(1);
+        assertNotNull(marker.getTarget());
+        assertEquals(11, marker.getLineNumber());
     }
 
     /**
@@ -80,7 +74,7 @@ public class VirtualTableFiltersCheckTest
     public void testVirtualTableDimensionInParameters() throws Exception
     {
         loadQueryAndValidate(FOLDER_RESOURCE + "ql-virtual-table-filters-compliant.ql");
-        List<Triple<String, EObject, EStructuralFeature>> markers = getQueryMarkers();
+        List<QueryMarker> markers = getQueryMarkers();
         assertTrue(markers.isEmpty());
     }
 }

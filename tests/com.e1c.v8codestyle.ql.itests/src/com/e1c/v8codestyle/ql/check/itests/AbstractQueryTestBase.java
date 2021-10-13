@@ -29,9 +29,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.xtext.util.Triple;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
@@ -49,6 +48,7 @@ import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck.QueryOwner;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.internal.ql.CorePlugin;
+import com.e1c.v8codestyle.ql.check.itests.TestingQlResultAcceptor.QueryMarker;
 
 /**
  * The abstract query schema test base.
@@ -56,6 +56,7 @@ import com.e1c.v8codestyle.internal.ql.CorePlugin;
  *
  * @author Dmitriy Marmyshev
  */
+@Ignore
 public class AbstractQueryTestBase
     extends CheckTestBase
 {
@@ -103,6 +104,11 @@ public class AbstractQueryTestBase
         return dtProject;
     }
 
+    /**
+     * Sets the up of the abstract check. It is forbidden for clients to override this method.
+     *
+     * @throws Exception the exception
+     */
     @Before
     public void setUp() throws Exception
     {
@@ -127,7 +133,7 @@ public class AbstractQueryTestBase
      *
      * @param enable the new check enable
      */
-    protected void setCheckEnable(boolean enable) throws Exception
+    private void setCheckEnable(boolean enable) throws Exception
     {
         IProject project = getProject().getWorkspaceProject();
         CheckUid cuid = new CheckUid(getCheckId(), CorePlugin.PLUGIN_ID);
@@ -155,7 +161,7 @@ public class AbstractQueryTestBase
      *
      * @return the check instance, cannot return {@code null}.
      */
-    protected ICheck getCheckInstance() throws Exception
+    private ICheck getCheckInstance() throws Exception
     {
         if (check == null)
         {
@@ -172,7 +178,7 @@ public class AbstractQueryTestBase
      *
      * @return the check id, cannot return {@code null}.
      */
-    protected String getCheckId() throws Exception
+    private String getCheckId() throws Exception
     {
         return getCheckInstance().getCheckId();
     }
@@ -204,7 +210,7 @@ public class AbstractQueryTestBase
      *
      * @see #getQueryMarkers() to get error markers
      */
-    protected void validateQuery(QuerySchema querySchema) throws Exception
+    private void validateQuery(QuerySchema querySchema) throws Exception
     {
         QlBasicDelegateCheck.setOwner(new QueryOwner(querySchema, null));
 
@@ -218,25 +224,25 @@ public class AbstractQueryTestBase
 
         IDelegateApplicabilityFilter filter = getDelegateFilter();
         assertNotNull(filter);
-        IProgressMonitor motinor = new NullProgressMonitor();
+        IProgressMonitor monitor = new NullProgressMonitor();
         for (TreeIterator<EObject> iterator = querySchema.eAllContents(); iterator.hasNext();)
         {
             EObject child = iterator.next();
             if (filter.isApplicable(child))
             {
-                validator.check(child, resultAcceptor, checkParametes, motinor);
+                validator.check(child, resultAcceptor, checkParametes, monitor);
             }
         }
     }
 
     /**
-     * Gets the query markers: error message, the QL object and it's feature.
+     * Gets the query markers: error message, the QL object, it's feature and position in text.
      *
      * @return the query markers, cannot return {@code null}.
      */
-    protected List<Triple<String, EObject, EStructuralFeature>> getQueryMarkers()
+    protected List<QueryMarker> getQueryMarkers()
     {
-        return qlResultAcceptor.featuredMessages;
+        return qlResultAcceptor.getMarkers();
     }
 
     private ICheckDefinition createCheckDefinition() throws Exception
@@ -293,11 +299,11 @@ public class AbstractQueryTestBase
         Map<String, Object> values = settings.getParameters()
             .entrySet()
             .stream()
-            .collect(Collectors.toMap(Entry::getKey, e -> getParamentes(e.getValue())));
+            .collect(Collectors.toMap(Entry::getKey, e -> getParameterObject(e.getValue())));
         return new TestingCheckParameters(values);
     }
 
-    private Object getParamentes(ICheckParameterSettings parameter)
+    private Object getParameterObject(ICheckParameterSettings parameter)
     {
         Class<?> type = parameter.getType();
         String value = parameter.getValue();

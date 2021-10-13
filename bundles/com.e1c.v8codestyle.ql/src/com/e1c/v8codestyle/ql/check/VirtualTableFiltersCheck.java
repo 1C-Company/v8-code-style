@@ -43,7 +43,7 @@ import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
 import com.e1c.v8codestyle.internal.ql.CorePlugin;
 
 /**
- * Checks that all dimension of virtual table placed in parameters instead of filter.
+ * Checks that all dimensions of virtual table placed in parameters instead of filter.
  *
  * @author Dmitriy Marmyshev
  */
@@ -135,7 +135,6 @@ public class VirtualTableFiltersCheck
             {
                 DbViewSelectDef virtualTable = (DbViewSelectDef)dbView;
                 return !virtualTable.getParams().isEmpty();
-
             }
         }
         catch (Exception e)
