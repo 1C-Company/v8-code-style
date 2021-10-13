@@ -134,7 +134,7 @@ class TestingQlResultAcceptor
             {
                 List<INode> nodes = NodeModelUtils.findNodesForFeature(target, manyFeature);
 
-                if (!nodes.isEmpty() || index > -1 && index < nodes.size())
+                if (!nodes.isEmpty() && index > -1 && index < nodes.size())
                 {
                     node = nodes.get(index);
                 }
