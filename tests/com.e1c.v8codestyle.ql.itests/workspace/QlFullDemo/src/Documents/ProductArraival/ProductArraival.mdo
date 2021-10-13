@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a1cfe5a0-f628-46c4-a212-d7d2a6f62ba2">
+  <producedTypes>
+    <objectType typeId="3e3316a3-2006-4c03-a873-9501b2385dbb" valueTypeId="aee558a7-41b3-48c1-b52f-f353149c13f1"/>
+    <refType typeId="d4172139-b581-4a0d-a889-73366398d436" valueTypeId="d86ec71e-cb85-4225-b7b1-cc79a89b607a"/>
+    <selectionType typeId="8ce955a5-c736-4d5c-9345-d924de166fd8" valueTypeId="aeb73a85-295c-4181-9234-d5eb649c59f7"/>
+    <listType typeId="882dff36-89b0-4369-baf0-43a10a05b413" valueTypeId="ea8ae1c3-58e1-47f2-9d55-21ea893220ab"/>
+    <managerType typeId="f1893a5b-ed61-4c81-8f95-a15537577d4f" valueTypeId="84632604-aa61-4ad4-b1ed-4dde8884c2b5"/>
+  </producedTypes>
+  <name>ProductArraival</name>
+  <synonym>
+    <key>en</key>
+    <value>Product arraival</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.ProductArraival.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <registerRecords>AccumulationRegister.Stocks</registerRecords>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+  <tabularSections uuid="b4de901a-e119-4944-aed6-dd5c27c25781">
+    <producedTypes>
+      <objectType typeId="485c4989-7ae0-40b7-8167-5c29107a310f" valueTypeId="8780ca2b-34f3-42ee-8d7f-b2684cf03623"/>
+      <rowType typeId="858adf4f-ac12-4fff-9d8a-9416bacfe35e" valueTypeId="a7d83e84-8842-4df5-b309-a197658e424b"/>
+    </producedTypes>
+    <name>PurchaseItems</name>
+    <synonym>
+      <key>en</key>
+      <value>Purchase items</value>
+    </synonym>
+    <attributes uuid="efa4e37d-51db-45bb-b94d-8fb9d34ee1b6">
+      <name>Product</name>
+      <synonym>
+        <key>en</key>
+        <value>Product</value>
+      </synonym>
+      <type>
+        <types>CatalogRef.Products</types>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="bf27a77b-52bf-4fae-a08c-62b8c6fcb978">
+      <name>Price</name>
+      <synonym>
+        <key>en</key>
+        <value>Price</value>
+      </synonym>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>10</precision>
+          <scale>2</scale>
+        </numberQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="2d62a560-11f4-40ec-9fe5-f64b20020554">
+      <name>Quantity</name>
+      <synonym>
+        <key>en</key>
+        <value>Quantity</value>
+      </synonym>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>10</precision>
+          <scale>3</scale>
+        </numberQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="e9987e06-4f56-4fad-b59d-46bdb27f8b73">
+      <name>Amount</name>
+      <synonym>
+        <key>en</key>
+        <value>Amount</value>
+      </synonym>
+      <type>
+        <types>Number</types>
+        <numberQualifiers>
+          <precision>10</precision>
+          <scale>2</scale>
+        </numberQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Document>
