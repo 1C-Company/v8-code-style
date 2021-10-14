@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.119.0,4.0.0)",
  org.eclipse.ui.forms;bundle-version="[3.11.100,4.0.0)",
  org.eclipse.emf.databinding;bundle-version="[1.5.0,2.0.0)",
  org.eclipse.xtext;bundle-version="[2.24.0,3.0.0)",
- org.eclipse.xtext.ui;bundle-version="[2.24.0,3.0.0)"
+ org.eclipse.xtext.ui;bundle-version="[2.24.0,3.0.0)",
+ org.eclipse.handly.xtext.ui;bundle-version="[1.5.0,2.0.0)"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: com.e1c.v8codestyle.bsl.ui
 Bundle-ActivationPolicy: lazy
@@ -21,6 +22,7 @@ Import-Package: com._1c.g5.v8.dt.bsl.comment;version="[3.0.0,4.0.0)",
  com._1c.g5.v8.dt.bsl.common;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.bsl.documentation.comment;version="[3.0.0,4.0.0)",
  com._1c.g5.v8.dt.bsl.model;version="[4.0.0,5.0.0)",
+ com._1c.g5.v8.dt.bsl.ui.editor;version="[8.0.0,9.0.0)",
  com._1c.g5.v8.dt.common;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.core.platform;version="[10.0.0,11.0.0)",
  com._1c.g5.v8.dt.mcore;version="[6.0.0,7.0.0)",
