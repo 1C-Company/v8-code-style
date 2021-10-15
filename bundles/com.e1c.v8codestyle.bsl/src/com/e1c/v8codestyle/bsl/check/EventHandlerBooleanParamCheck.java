@@ -18,9 +18,9 @@ import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
@@ -354,24 +354,25 @@ public class EventHandlerBooleanParamCheck
     private Map<CaseInsensitiveString, Event> getAllModuleEvents(Module module)
     {
 
+        Map<CaseInsensitiveString, Event> result = new HashMap<>();
         if (module.getModuleType() == ModuleType.FORM_MODULE)
         {
-            return bslEventsService.getAllModuleEvents(module)
-                .entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+            for (Entry<Event, CaseInsensitiveString> entry : bslEventsService.getAllModuleEvents(module).entrySet())
+            {
+                result.put(entry.getValue(), entry.getKey());
+            }
         }
         else
         {
             List<Event> moduleEvents = contextDefService.getModuleEvents(module);
-            Map<CaseInsensitiveString, Event> res = new HashMap<>();
+
             for (Event event : moduleEvents)
             {
-                res.put(new CaseInsensitiveString(event.getName()), event);
-                res.put(new CaseInsensitiveString(event.getNameRu()), event);
+                result.put(new CaseInsensitiveString(event.getName()), event);
+                result.put(new CaseInsensitiveString(event.getNameRu()), event);
             }
-            return res;
         }
+        return result;
     }
 
     private boolean isCorrectModule(Module module)

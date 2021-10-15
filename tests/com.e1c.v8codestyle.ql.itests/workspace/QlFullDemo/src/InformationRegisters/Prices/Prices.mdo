@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="91fb3029-a519-4f5a-a2cf-f31216df515b">
+  <producedTypes>
+    <selectionType typeId="d5d001c8-e9a8-471d-b398-3c621e6184b1" valueTypeId="5cdc62cb-e36d-4251-9a45-59f4956bb94a"/>
+    <listType typeId="97732e48-fdaf-4297-b41e-7559ab35deba" valueTypeId="1bb99cf0-7996-4c84-a42c-5a4726df9550"/>
+    <managerType typeId="06ba16ac-ccba-482c-b52f-de796c412efa" valueTypeId="5c552543-839f-46a6-9248-bda4ffd0b3c4"/>
+    <recordSetType typeId="284f6a3a-9225-40ce-bb57-ae4f8e26ce52" valueTypeId="9178e3a6-19c4-417f-97be-784c90fc3953"/>
+    <recordKeyType typeId="ecbe28c5-f8a1-444f-b625-b591fc5773ca" valueTypeId="8a3586f2-16ef-44be-a62f-1dc3926b1625"/>
+    <recordType typeId="abaccbbd-1fa0-4168-80e9-d1ba200d8c74" valueTypeId="28ea67a7-93e6-4b06-8723-09de10086f40"/>
+    <recordManagerType typeId="df18176a-2242-4588-9806-003bc9bf4280" valueTypeId="2dfb944b-135b-424b-87fe-c9554901f0f3"/>
+  </producedTypes>
+  <name>Prices</name>
+  <synonym>
+    <key>en</key>
+    <value>Prices</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <informationRegisterPeriodicity>Second</informationRegisterPeriodicity>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <resources uuid="cd8bbc13-c141-4ac8-bad5-c63d92475741">
+    <name>Price</name>
+    <synonym>
+      <key>en</key>
+      <value>Price</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+        <scale>2</scale>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </resources>
+  <attributes uuid="e4804451-9169-4b7e-9935-91ee2a111fc1">
+    <name>StartDate</name>
+    <synonym>
+      <key>en</key>
+      <value>Start date</value>
+    </synonym>
+    <type>
+      <types>Date</types>
+      <dateQualifiers>
+        <dateFractions>Date</dateFractions>
+      </dateQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+  </attributes>
+  <dimensions uuid="1f1b29bb-b985-4894-aca9-e94c7c845467">
+    <name>Product</name>
+    <synonym>
+      <key>en</key>
+      <value>Product</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.Products</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+</mdclass:InformationRegister>

@@ -131,7 +131,7 @@ public class CorePlugin
      *
      * @return Guice injector for this plugin, never <code>null</code>
      */
-    /* package */ Injector getInjector()
+    public Injector getInjector()
     {
         Injector localInstance = injector;
         if (localInstance == null)

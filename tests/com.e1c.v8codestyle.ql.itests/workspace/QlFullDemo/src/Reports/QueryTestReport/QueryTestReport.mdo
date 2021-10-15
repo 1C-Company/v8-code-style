@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="371328e1-5c83-488e-a08a-672cba84cf15">
+  <producedTypes>
+    <objectType typeId="2b2f04c8-02b9-43f9-b01f-9774dcae9a44" valueTypeId="46f4bdc1-b36d-4cdf-b008-e2dc88318699"/>
+    <managerType typeId="fa00c82b-23c4-4e17-bb98-712fe2e9a901" valueTypeId="18c251ce-dc01-47ee-a889-b558e5c66a76"/>
+  </producedTypes>
+  <name>QueryTestReport</name>
+  <synonym>
+    <key>en</key>
+    <value>Query test report</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <mainDataCompositionSchema>Report.QueryTestReport.Template.MainDataCompositionSchema</mainDataCompositionSchema>
+  <templates uuid="eb429149-cbcf-4016-93ed-c11c7919ecba">
+    <name>MainDataCompositionSchema</name>
+    <synonym>
+      <key>en</key>
+      <value>Main data composition schema</value>
+    </synonym>
+    <templateType>DataCompositionSchema</templateType>
+  </templates>
+</mdclass:Report>
