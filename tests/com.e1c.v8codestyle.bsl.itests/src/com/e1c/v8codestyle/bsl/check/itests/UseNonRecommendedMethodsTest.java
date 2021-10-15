@@ -18,41 +18,42 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.v8codestyle.bsl.check.UseNotRecommendedMethods;
+import com.e1c.v8codestyle.bsl.check.UseNonRecommendedMethodCheck;
 
 /**
- * The test for class {@link UseNotRecommendedMethods}.
+ * The test for class {@link UseNonRecommendedMethodCheck}.
  *
  * @author Sergey Kozynskiy
  *
  */
-public class UseNotRecommendedMethodsTest
+public class UseNonRecommendedMethodsTest
     extends AbstractSingleModuleTestBase
 {
 
-    public UseNotRecommendedMethodsTest()
+    public UseNonRecommendedMethodsTest()
     {
-        super(UseNotRecommendedMethods.class);
+        super(UseNonRecommendedMethodCheck.class);
     }
 
     /**
-     * Test use not recommended methods.
+     * Test use non-recommended methods.
      *
      * @throws Exception the exception
      */
     @Test
-    public void testUseNotRecommendedMethods() throws Exception
+    public void testUseNonRecommendedMethods() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "use-not-recommended-methods.bsl");
+        updateModule(FOLDER_RESOURCE + "use-non-recommended-methods.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("2", marker.getExtraInfo().get("line"));
+        assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         marker = markers.get(1);
-        assertEquals("3", marker.getExtraInfo().get("line"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 }

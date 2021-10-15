@@ -4,11 +4,15 @@ There are not recommended methods, instead of which either SSL methods or other 
 
 ## Noncompliant Code Example
 
+	```bsl
+
 	Message("Text");
-	date = CurrentDate();
+	Date = CurrentDate();
 
 ## Compliant Solution
 	 
+	 ```bsl
+
 	Message = New UserMessage();
 	Message.Text = ("Text");
 	Message.Message(); 

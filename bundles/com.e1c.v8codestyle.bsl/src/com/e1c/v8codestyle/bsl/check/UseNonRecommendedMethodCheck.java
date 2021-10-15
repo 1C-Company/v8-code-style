@@ -33,27 +33,27 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 
 /**
- * The check on use not recommended methods
+ * The check on use non-recommended method
  *
  * @author Sergey Kozynskiy
  *
  */
-public class UseNotRecommendedMethods
+public class UseNonRecommendedMethodCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "use-not-recommended-methods"; //$NON-NLS-1$
+    private static final String CHECK_ID = "use-non-recommended-method"; //$NON-NLS-1$
 
-    private static final String PARAM_METHODS_LIST = "notRecommendedMethods"; //$NON-NLS-1$
+    private static final String PARAM_METHODS_LIST = "non-recommendedMethods"; //$NON-NLS-1$
 
-    private static Set<String> NOT_RECOMENDED_METHODS_LIST = Set.of("CurrentDate", //$NON-NLS-1$
+    private static Set<String> NON_RECOMENDED_METHODS_LIST = Set.of("CurrentDate", //$NON-NLS-1$
         "ТекущаяДата", //$NON-NLS-1$
         "Message", //$NON-NLS-1$
         "Сообщить"); //$NON-NLS-1$
 
     private static final String DELIMITER = ","; //$NON-NLS-1$
 
-    private static final String DEFAULT_METHODS_LIST = String.join(DELIMITER, NOT_RECOMENDED_METHODS_LIST);
+    private static final String DEFAULT_METHODS_LIST = String.join(DELIMITER, NON_RECOMENDED_METHODS_LIST);
 
     @Override
     public String getCheckId()
@@ -64,14 +64,15 @@ public class UseNotRecommendedMethods
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.UseNotRecommendedMethods_title)
-            .description(Messages.UseNotRecommendedMethods_description)
+        builder.title(Messages.UseNonRecommendedMethods_title)
+            .description(Messages.UseNonRecommendedMethods_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.ERROR)
             .module()
             .checkedObjectType(INVOCATION);
-        builder.parameter(PARAM_METHODS_LIST, String.class, DEFAULT_METHODS_LIST, Messages.UseNotRecommendedMethods_parameter);
+        builder.parameter(PARAM_METHODS_LIST, String.class, DEFAULT_METHODS_LIST,
+            Messages.UseNonRecommendedMethods_parameter);
     }
 
     @Override
@@ -113,7 +114,7 @@ public class UseNotRecommendedMethods
 
         if (methods.contains(name) || methods.contains(ruName))
         {
-            resultAceptor.addIssue(Messages.UseNotRecommendedMethods_message, invocation);
+            resultAceptor.addIssue(Messages.UseNonRecommendedMethods_message, invocation);
         }
     }
 }
