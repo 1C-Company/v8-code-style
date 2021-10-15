@@ -44,7 +44,7 @@ public class UseNonRecommendedMethodCheck
 
     private static final String CHECK_ID = "use-non-recommended-method"; //$NON-NLS-1$
 
-    private static final String PARAM_METHODS_LIST = "non-recommendedMethods"; //$NON-NLS-1$
+    private static final String PARAM_METHODS_LIST = "nonRecommendedMethods"; //$NON-NLS-1$
 
     private static final Set<String> NON_RECOMENDED_METHODS_LIST = Set.of("CurrentDate", //$NON-NLS-1$
         "ТекущаяДата", //$NON-NLS-1$
