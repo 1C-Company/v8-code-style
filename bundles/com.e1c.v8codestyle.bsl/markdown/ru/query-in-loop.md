@@ -50,4 +50,5 @@
 ## См.
 
 https://its.1c.ru/db/v8std/content/436/hdoc
+
 https://its.1c.ru/db/pubqlang#content:150:hdoc

@@ -50,4 +50,5 @@ EndDo;
 ## See
 
 https://support.1ci.com/hc/en-us/articles/360011001620-Multiple-execution-of-the-similar-queries
+
 https://support.1ci.com/hc/en-us/articles/360011001540-Rounding-arithmetic-results-in-queries
