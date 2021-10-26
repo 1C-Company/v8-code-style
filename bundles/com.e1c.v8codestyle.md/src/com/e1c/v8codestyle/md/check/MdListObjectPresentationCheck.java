@@ -18,6 +18,7 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_DB
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.INFORMATION_REGISTER;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.INFORMATION_REGISTER__LIST_PRESENTATION;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.INFORMATION_REGISTER__RECORD_PRESENTATION;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.INFORMATION_REGISTER__WRITE_MODE;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -30,6 +31,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.InformationRegister;
 import com._1c.g5.v8.dt.metadata.mdclass.Language;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
+import com._1c.g5.v8.dt.metadata.mdclass.RegisterWriteMode;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -86,14 +88,15 @@ public class MdListObjectPresentationCheck
 
         builder.topObject(INFORMATION_REGISTER)
             .checkTop()
-            .features(INFORMATION_REGISTER__RECORD_PRESENTATION, INFORMATION_REGISTER__LIST_PRESENTATION);
+            .features(INFORMATION_REGISTER__RECORD_PRESENTATION, INFORMATION_REGISTER__LIST_PRESENTATION,
+                INFORMATION_REGISTER__WRITE_MODE);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof MdObject))
+        if (!(object instanceof MdObject))
         {
             return;
         }
@@ -102,6 +105,12 @@ public class MdListObjectPresentationCheck
         if (mdObject.getObjectBelonging() != ObjectBelonging.NATIVE)
         {
             // skip extended object in Extension project
+            return;
+        }
+
+        if (object instanceof InformationRegister
+            && ((InformationRegister)object).getWriteMode() == RegisterWriteMode.RECORDER_SUBORDINATE)
+        {
             return;
         }
 

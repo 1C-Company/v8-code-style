@@ -11,7 +11,7 @@ Function NonComplaint() Export
 EndFunction
 
 // Returns:
-//  Structure - Non complaint:
+//  Structure - complaint:
 // * Key1 - Number -
 // * Key2 - String -
 Function Complaint() Export

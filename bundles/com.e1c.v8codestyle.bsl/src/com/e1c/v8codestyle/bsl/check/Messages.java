@@ -42,6 +42,20 @@ final class Messages
     public static String EventDataExchangeLoadCheck_No_return_in__DataExchange_Load__checking;
     public static String EventDataExchangeLoadCheck_title;
 
+    public static String EventHandlerBooleanParamCheck_Check_only_in_event_handlers;
+
+    public static String EventHandlerBooleanParamCheck_description;
+
+    public static String EventHandlerBooleanParamCheck_Parameter_0_should_set_to_False;
+
+    public static String EventHandlerBooleanParamCheck_Parameter_0_should_set_to_True;
+
+    public static String EventHandlerBooleanParamCheck_Prams_to_set_to_False;
+
+    public static String EventHandlerBooleanParamCheck_Prams_to_set_to_True;
+
+    public static String EventHandlerBooleanParamCheck_title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
@@ -52,6 +66,33 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
+
+    public static String NstrStringLiteralFormatCheck_Check_empty_interface_for_each_language;
+
+    public static String NstrStringLiteralFormatCheck_description;
+
+    public static String NstrStringLiteralFormatCheck_NStr_contains_unknown_language_code__S;
+
+    public static String NstrStringLiteralFormatCheck_NStr_format_is_incorrect__E;
+
+    public static String NstrStringLiteralFormatCheck_NStr_message_for_code__S__ends_with_space;
+
+    public static String NstrStringLiteralFormatCheck_NStr_message_for_language_code__S__is_empty;
+
+    public static String NstrStringLiteralFormatCheck_NStr_message_is_empty;
+
+    public static String NstrStringLiteralFormatCheck_NStr_method_should_accept_string_as_first_param;
+
+    public static String NstrStringLiteralFormatCheck_title;
+
+    public static String UseNonRecommendedMethods_description;
+
+    public static String UseNonRecommendedMethods_message;
+
+    public static String UseNonRecommendedMethods_parameter;
+
+    public static String UseNonRecommendedMethods_title;
+
 
     static
     {

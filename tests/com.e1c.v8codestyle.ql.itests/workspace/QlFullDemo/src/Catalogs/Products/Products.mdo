@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b2fd044d-0eda-4dd8-87b1-5f5aa4021f80">
+  <producedTypes>
+    <objectType typeId="3d509ce2-91e7-4823-b288-387bac361060" valueTypeId="3f1031dd-bc5d-4b71-ac95-8441fe4b068d"/>
+    <refType typeId="0bc77064-20a1-4809-9163-0e941e59ccc5" valueTypeId="cd33e306-c24b-4890-883e-34d9c70a0300"/>
+    <selectionType typeId="88e82cdf-ac72-4241-b044-37a0e2e1c6c2" valueTypeId="04ebe965-49ee-4c06-949d-377fda54c361"/>
+    <listType typeId="a2a2fed0-ad90-42ed-af36-44e703c27e15" valueTypeId="1d63a0db-b1be-4839-af9b-ed56dccde130"/>
+    <managerType typeId="bb86848a-592f-4800-a6b5-e5941ab399a4" valueTypeId="80ff8d6a-94cf-466e-b313-0fd64f29b673"/>
+  </producedTypes>
+  <name>Products</name>
+  <synonym>
+    <key>en</key>
+    <value>Products</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Products.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Products.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="28d343c5-9385-4947-aabd-c9710318ecbb">
+    <name>SKU</name>
+    <synonym>
+      <key>en</key>
+      <value>SKU</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="87de5891-0663-4737-a964-858bd4178415">
+    <name>ProductType</name>
+    <synonym>
+      <key>en</key>
+      <value>Product type</value>
+    </synonym>
+    <type>
+      <types>EnumRef.ProductType</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

@@ -34,6 +34,8 @@
       <topic href="html/checks/ql.html" label="Проверки языка запросов">
          <anchor id="ql"/>
       </topic>
+      <topic href="html/checks/code_typification.html" label="Типизация кода">
+      </topic>
       <topic href="html/checks/acc_index.html" label="АПК ред.1 - Индекс соответствия">
       </topic>
    </topic>

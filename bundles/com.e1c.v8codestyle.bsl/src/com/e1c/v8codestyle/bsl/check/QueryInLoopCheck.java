@@ -226,7 +226,9 @@ public class QueryInLoopCheck
 
     private boolean isQueryExecution(DynamicFeatureAccess dfa, Set<String> queryExecutionMethods)
     {
-        return queryExecutionMethods.contains(dfa.getName()) && BslUtil.getInvocation(dfa) != null
+        String methodName = dfa.getName();
+
+        return methodName != null && queryExecutionMethods.contains(methodName) && BslUtil.getInvocation(dfa) != null
             && isQueryTypeSource(dfa.getSource());
     }
 

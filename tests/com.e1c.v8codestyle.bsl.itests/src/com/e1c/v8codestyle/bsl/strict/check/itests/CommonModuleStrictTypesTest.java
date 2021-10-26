@@ -40,6 +40,7 @@ import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.strict.check.DocCommentFieldTypeCheck;
@@ -100,13 +101,13 @@ public class CommonModuleStrictTypesTest
 
         Marker marker = markers.get(0);
 
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(1);
 
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -134,8 +135,8 @@ public class CommonModuleStrictTypesTest
 
         Marker marker = markers.get(0);
 
-        assertEquals("4", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -145,7 +146,6 @@ public class CommonModuleStrictTypesTest
      * @throws Exception the exception
      */
     @Test
-    @Ignore // FIXME check-system fails on issue add
     public void testDocCommentFieldTypeCheck() throws Exception
     {
 
@@ -164,8 +164,8 @@ public class CommonModuleStrictTypesTest
 
         Marker marker = markers.get(0);
 
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -193,12 +193,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(methods.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(1);
-        assertEquals("3", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -218,7 +218,6 @@ public class CommonModuleStrictTypesTest
         List<Method> methods = module.allMethods();
         assertEquals(2, methods.size());
 
-
         List<Marker> markers = getMarters(checkId, module);
 
         // FIXME check-system duplicates issues
@@ -227,12 +226,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(methods.get(0).getFormalParams().get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(1);
-        assertEquals("3", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -260,12 +259,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(dynamicMethods.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -293,12 +292,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(dynamicProperties.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -326,12 +325,40 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(statements.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+
+    }
+
+    /**
+     * Test of {@link SimpleStatementTypeCheck} that the statement change type of existing object type.
+     * Should respect in-line documentation comment with types
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testSimpleStatementTypeCheckWithDocComment() throws Exception
+    {
+
+        String checkId = "statement-type-change";
+        String resourceName = "statement-type-change-with-doc-comment";
+
+        Module module = updateAndGetModule(resourceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        // FIXME check-system duplicates issues
+        assertEquals(2, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+        marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -359,8 +386,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(finctions.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -388,8 +415,32 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(statements.get(2)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+
+    }
+
+    /**
+     * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
+     * with caller type, and skip checking if method has default value parameters.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvocationParamIntersectionCheckWithDefault() throws Exception
+    {
+
+        String checkId = "invocation-parameter-type-intersect";
+        String resouceName = "invocation-parameter-type-intersect-with-default";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(1, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
