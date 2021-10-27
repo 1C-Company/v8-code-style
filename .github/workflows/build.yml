@@ -15,13 +15,16 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      PR_NUMBER: "${{ github.event_name == 'pull_request_target' && format(' -Dsonar.pullrequest.key={0}', github.event.pull_request.number) || '' }}"
+      PR_REF: "${{ github.event_name == 'pull_request_target' && format('refs/pull/{0}/merge', github.event.pull_request.number) || '' }}"
 
     steps:
     - uses: actions/checkout@v2
       if: inputs.analyze
       with:
         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-        ref: ${{ github.event.pull_request.head.sha }}
+        ref: ${{ env.PR_REF }}
     - uses: actions/checkout@v2
       if: ${{ !inputs.analyze }}
 
@@ -58,8 +61,8 @@ jobs:
   
     - name: Build with Maven
       env:
-        # Do not start Sonar-scanning for forks without label
-        SONAR_PARAM: "${{ inputs.analyze && 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar' || '' }}"
+        # Do not start Sonar-scanning for forks without label, and pass fork PR number directly
+        SONAR_PARAM: "${{ inputs.analyze && format('{0}{1}', 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar', env.PR_NUMBER) || '' }}"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.sonar_token }}
       working-directory: ./
