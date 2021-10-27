@@ -31,6 +31,8 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 
@@ -57,10 +59,11 @@ public class ModuleStructureProvider
     public boolean canCreateStructure(IProject project)
     {
         ProjectScope scope = new ProjectScope(project);
-        IScopeContext[] contexts = new IScopeContext[] { scope, InstanceScope.INSTANCE };
+        IScopeContext[] contexts =
+            new IScopeContext[] { scope, InstanceScope.INSTANCE, ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
 
         return Platform.getPreferencesService()
-            .getBoolean(BslPlugin.PLUGIN_ID, PREF_KEY_CREATE_STRUCTURE, PREF_DEFAULT_CREATE_STRUCTURE, contexts);
+            .getBoolean(PREF_QUALIFIER, PREF_KEY_CREATE_STRUCTURE, PREF_DEFAULT_CREATE_STRUCTURE, contexts);
     }
 
     @Override

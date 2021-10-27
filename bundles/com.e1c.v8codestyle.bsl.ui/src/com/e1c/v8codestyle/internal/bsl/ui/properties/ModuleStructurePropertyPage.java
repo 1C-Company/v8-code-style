@@ -36,8 +36,7 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,6 +47,7 @@ import org.eclipse.ui.dialogs.PropertyPage;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
+import com._1c.g5.v8.dt.common.FileUtil;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -66,9 +66,6 @@ import com.google.inject.Inject;
 public class ModuleStructurePropertyPage
     extends PropertyPage
 {
-
-    private static final String NODE_ID = "com.e1c.v8codestyle.bsl"; //$NON-NLS-1$
-
     private static final IPath FOLDER_SETTINGS = new Path(".settings/templates"); //$NON-NLS-1$
 
     private final IModuleStructureProvider moduleStructureProvider;
@@ -147,7 +144,7 @@ public class ModuleStructurePropertyPage
     public boolean performOk()
     {
         ProjectScope scope = new ProjectScope(getProject());
-        IEclipsePreferences node = scope.getNode(NODE_ID);
+        IEclipsePreferences node = scope.getNode(IModuleStructureProvider.PREF_QUALIFIER);
         boolean value = createStructureButton.getSelection();
         node.putBoolean(IModuleStructureProvider.PREF_KEY_CREATE_STRUCTURE, value);
         try
@@ -159,6 +156,7 @@ public class ModuleStructurePropertyPage
             UiPlugin.logError(e);
             return false;
         }
+        currentCreateStructure = value;
         for (ModuleType type : ModuleType.VALUES)
         {
             if (checkBoxViewer.getChecked(type) && !existTemplates.contains(type))
@@ -192,6 +190,16 @@ public class ModuleStructurePropertyPage
         {
             return;
         }
+        try
+        {
+            FileUtil.createParentFolders(file);
+        }
+        catch (CoreException e)
+        {
+            UiPlugin.logError(e);
+            return;
+        }
+
         try (InputStream in = content.get())
         {
             file.create(in, true, new NullProgressMonitor());
@@ -227,8 +235,10 @@ public class ModuleStructurePropertyPage
         Label createStructureLabel = new Label(composite, SWT.NONE);
         createStructureLabel.setText(Messages.ModuleStructurePropertyPage_Automatically_create_module_structure);
 
+        currentCreateStructure = moduleStructureProvider.canCreateStructure(getProject());
+
         createStructureButton = new Button(composite, SWT.CHECK);
-        createStructureButton.setSelection(moduleStructureProvider.canCreateStructure(getProject()));
+        createStructureButton.setSelection(currentCreateStructure);
 
     }
 
@@ -272,19 +282,14 @@ public class ModuleStructurePropertyPage
         openButton.setText(Messages.ModuleStructurePropertyPage_Open_template);
         openButton.setToolTipText(Messages.ModuleStructurePropertyPage_Open_template_tooltip);
         openButton.setEnabled(false);
-        openButton.addSelectionListener(new SelectionAdapter()
-        {
-            @Override
-            public void widgetSelected(SelectionEvent e)
+        openButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+            IStructuredSelection selection = checkBoxViewer.getStructuredSelection();
+            if (!selection.isEmpty())
             {
-                IStructuredSelection selection = checkBoxViewer.getStructuredSelection();
-                if (!selection.isEmpty())
-                {
-                    ModuleType type = (ModuleType)selection.getFirstElement();
-                    saveSettingsAndOpenTemplateAndClose(type);
-                }
+                ModuleType type = (ModuleType)selection.getFirstElement();
+                saveSettingsAndOpenTemplateAndClose(type);
             }
-        });
+        }));
         checkBoxViewer.addPostSelectionChangedListener(e -> {
             boolean enable = !e.getStructuredSelection().isEmpty()
                 && checkBoxViewer.getChecked(e.getStructuredSelection().getFirstElement());

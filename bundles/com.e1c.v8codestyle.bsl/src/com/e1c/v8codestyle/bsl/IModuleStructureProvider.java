@@ -19,6 +19,7 @@ import org.eclipse.core.resources.IProject;
 
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * The provider of module structure template by module type.
@@ -30,11 +31,15 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 public interface IModuleStructureProvider
 {
 
+    /** The preference root qualifier. */
+    String PREF_QUALIFIER = BslPlugin.PLUGIN_ID;
+
     /** The key for preferences store the state of the creating module structure. */
     String PREF_KEY_CREATE_STRUCTURE = "createModuleStructure"; //$NON-NLS-1$
 
     /** The default value of creating module structure. */
     boolean PREF_DEFAULT_CREATE_STRUCTURE = true;
+
 
     /**
      * Can create module structure template for the project. This checks project or default settings.
