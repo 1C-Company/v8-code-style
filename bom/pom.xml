@@ -60,10 +60,19 @@
     <!-- JaCoCo code coverage, pass to SonarQube -->
     <sonar.coverage.jacoco.xmlReportPaths>../../**/target/site/jacoco*/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     
+    <sonar.issue.ignore.multicriteria>e1,e2,e3,e4</sonar.issue.ignore.multicriteria>
     <!-- Static non-final field names should comply with a naming convention -->
-    <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
     <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S3008</sonar.issue.ignore.multicriteria.e1.ruleKey>
     <sonar.issue.ignore.multicriteria.e1.resourceKey>**/Messages.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
+    <!-- Instance methods should not write to "static" fields -->
+    <sonar.issue.ignore.multicriteria.e2.ruleKey>java:S2696</sonar.issue.ignore.multicriteria.e2.ruleKey>
+    <sonar.issue.ignore.multicriteria.e2.resourceKey>**/*Plugin.java</sonar.issue.ignore.multicriteria.e2.resourceKey>
+    <!-- Generic exceptions should never be thrown -->
+    <sonar.issue.ignore.multicriteria.e3.ruleKey>java:S112</sonar.issue.ignore.multicriteria.e3.ruleKey>
+    <sonar.issue.ignore.multicriteria.e3.resourceKey>**/*Plugin.java</sonar.issue.ignore.multicriteria.e3.resourceKey>
+    <!-- Non-primitive fields should not be "volatile" -->
+    <sonar.issue.ignore.multicriteria.e4.ruleKey>java:S3077</sonar.issue.ignore.multicriteria.e4.ruleKey>
+    <sonar.issue.ignore.multicriteria.e4.resourceKey>**/*Plugin.java</sonar.issue.ignore.multicriteria.e4.resourceKey>
   </properties>
 
   <build>

@@ -69,6 +69,14 @@
   <properties>
     <tycho-surefire-plugin.vmargs>-Xms80m -Xmx2g -Dosgi.module.lock.timeout=24 --add-modules=ALL-SYSTEM</tycho-surefire-plugin.vmargs>
     <debug.vmargs></debug.vmargs>
+    
+    <sonar.issue.ignore.multicriteria>t1,t2,t3</sonar.issue.ignore.multicriteria>
+    <!-- Generic exceptions should never be thrown -->
+    <sonar.issue.ignore.multicriteria.t1.ruleKey>java:S112</sonar.issue.ignore.multicriteria.t1.ruleKey>
+    <!-- Null pointers should not be dereferenced -->
+    <sonar.issue.ignore.multicriteria.t2.ruleKey>java:S2259</sonar.issue.ignore.multicriteria.t2.ruleKey>
+    <!-- "throws" declarations should not be superfluous -->
+    <sonar.issue.ignore.multicriteria.t3.ruleKey>java:S1130</sonar.issue.ignore.multicriteria.t3.ruleKey>
   </properties>
 
   <build>
