@@ -182,14 +182,7 @@ public class ModuleStructureNewWizardRelatedModelsFactory
             }
             else
             {
-                try
-                {
-                    FileUtil.createParentFolders(bslFile);
-                }
-                catch (Exception e)
-                {
-                    // skip if cannot create parent folders in other threads
-                }
+                createParentFolders(bslFile);
                 bslFile.create(in, true, new NullProgressMonitor());
             }
         }
@@ -234,6 +227,18 @@ public class ModuleStructureNewWizardRelatedModelsFactory
         IPath path = qulifiedNameFilePathConverter.getFilePath(name, MODULE);
 
         return project.getFile(path);
+    }
+
+    private void createParentFolders(IFile bslFile)
+    {
+        try
+        {
+            FileUtil.createParentFolders(bslFile);
+        }
+        catch (Exception e)
+        {
+            // skip if cannot create parent folders in other threads
+        }
     }
 
 }

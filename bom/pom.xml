@@ -59,6 +59,11 @@
     <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
     <!-- JaCoCo code coverage, pass to SonarQube -->
     <sonar.coverage.jacoco.xmlReportPaths>../../**/target/site/jacoco*/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+    
+    <!-- Static non-final field names should comply with a naming convention -->
+    <sonar.issue.ignore.multicriteria>e1</sonar.issue.ignore.multicriteria>
+    <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S3008</sonar.issue.ignore.multicriteria.e1.ruleKey>
+    <sonar.issue.ignore.multicriteria.e1.resourceKey>**/Messages.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
   </properties>
 
   <build>
