@@ -33,7 +33,9 @@ public class ModuleStructurePreferencePage
     implements IWorkbenchPreferencePage
 {
 
-
+    /**
+     * Instantiates a new module structure preference page.
+     */
     public ModuleStructurePreferencePage()
     {
         super(GRID);

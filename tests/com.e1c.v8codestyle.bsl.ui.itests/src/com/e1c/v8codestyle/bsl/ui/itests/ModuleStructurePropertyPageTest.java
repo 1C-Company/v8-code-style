@@ -186,6 +186,7 @@ public class ModuleStructurePropertyPageTest
         assertNotNull(editor);
         assertEquals(EDTOR_TITLE, editor.getTitle());
 
+        // re-open properties to check selection
         dialog = PreferencesUtil.createPropertyDialogOn(shell, project, PROPERTY_PAGE_ID, null, null);
 
         dialog.setBlockOnOpen(false);
