@@ -60,7 +60,7 @@
     <!-- JaCoCo code coverage, pass to SonarQube -->
     <sonar.coverage.jacoco.xmlReportPaths>../../**/target/site/jacoco*/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     
-    <sonar.issue.ignore.multicriteria>e1,e2,e3,e4</sonar.issue.ignore.multicriteria>
+    <sonar.issue.ignore.multicriteria>e1,e2,e3,e4,t1,t2,t3,t4</sonar.issue.ignore.multicriteria>
     <!-- Static non-final field names should comply with a naming convention -->
     <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S3008</sonar.issue.ignore.multicriteria.e1.ruleKey>
     <sonar.issue.ignore.multicriteria.e1.resourceKey>**/Messages.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
@@ -73,6 +73,18 @@
     <!-- Non-primitive fields should not be "volatile" -->
     <sonar.issue.ignore.multicriteria.e4.ruleKey>java:S3077</sonar.issue.ignore.multicriteria.e4.ruleKey>
     <sonar.issue.ignore.multicriteria.e4.resourceKey>**/*Plugin.java</sonar.issue.ignore.multicriteria.e4.resourceKey>
+    <!-- Generic exceptions should never be thrown -->
+    <sonar.issue.ignore.multicriteria.t1.ruleKey>java:S112</sonar.issue.ignore.multicriteria.t1.ruleKey>
+    <sonar.issue.ignore.multicriteria.t1.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t1.resourceKey>
+    <!-- Null pointers should not be dereferenced -->
+    <sonar.issue.ignore.multicriteria.t2.ruleKey>java:S2259</sonar.issue.ignore.multicriteria.t2.ruleKey>
+    <sonar.issue.ignore.multicriteria.t2.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t2.resourceKey>
+    <!-- "throws" declarations should not be superfluous -->
+    <sonar.issue.ignore.multicriteria.t3.ruleKey>java:S1130</sonar.issue.ignore.multicriteria.t3.ruleKey>
+    <sonar.issue.ignore.multicriteria.t3.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t3.resourceKey>
+    <!-- Reflection should not be used to increase accessibility of classes, methods, or fields -->
+    <sonar.issue.ignore.multicriteria.t4.ruleKey>java:S3011</sonar.issue.ignore.multicriteria.t4.ruleKey>
+    <sonar.issue.ignore.multicriteria.t4.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t4.resourceKey>
   </properties>
 
   <build>
