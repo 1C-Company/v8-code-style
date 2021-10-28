@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="975db09f-e93e-4cbe-a54b-fe0fd2c970be">
+  <producedTypes>
+    <objectType typeId="8b6aa8f7-688b-44cf-84ee-b616b1add67f" valueTypeId="56ad87b5-213e-4827-9fce-deb763b3bbe1"/>
+    <refType typeId="2d8ec45f-b0e8-4ae8-868b-69a2791033d3" valueTypeId="772844a9-7c9a-4791-997c-60269bba8bf4"/>
+    <selectionType typeId="14a058fc-88b8-4e47-bc8a-ef950d598c04" valueTypeId="16c2472b-ca03-46d6-9846-c94f9cea4b13"/>
+    <listType typeId="7a47d9b4-cbba-4d1a-81c7-0acaa27d8930" valueTypeId="133bb7d4-582d-47cc-94b6-fc0d3aada032"/>
+    <managerType typeId="2568f78c-e7d7-437a-8b76-707e35f64164" valueTypeId="be2decb8-2ce9-4cf3-9e3e-6897cf66404c"/>
+  </producedTypes>
+  <name>NegativeTestWithComment</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative test with comment</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeTestWithComment.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeTestWithComment.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Owner</name>
+    <comment>Comment</comment>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Negative test</value>
+  </objectPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <owners>Catalog.MyOwner</owners>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

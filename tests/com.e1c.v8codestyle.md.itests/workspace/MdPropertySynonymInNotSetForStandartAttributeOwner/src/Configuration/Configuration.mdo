@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="421f1251-5e78-4a48-8cd9-5a0e45d75a8f">
+  <name>MdPropertySynonymInNotSetForStandartAttributeOwner</name>
+  <synonym>
+    <key>en</key>
+    <value>Md property synonym in not set for standart attribute owner</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="f25666b7-4548-4dc1-822f-26bb21ef44c5"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="6058e7a0-0cc2-4453-953a-29cbbccd40ae"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="c3626634-0484-4100-8c59-1ea9c6915461"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="96816197-b896-42a7-9b26-c31b24628fda"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="3b4745b0-7bfd-4d09-8321-f7b2def70a1b"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="2ef61fd5-8881-40a1-a4ab-1fc53b68a016"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="8061261a-2ca1-4a18-95c5-746bc46fc369"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="65c3dd05-6b95-40ac-9887-c14325594d93">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <catalogs>Catalog.MyOwner</catalogs>
+  <catalogs>Catalog.NegativeTestWithComment</catalogs>
+  <catalogs>Catalog.NegativeTestWithEmpty</catalogs>
+  <catalogs>Catalog.PositiveTest</catalogs>
+</mdclass:Configuration>
