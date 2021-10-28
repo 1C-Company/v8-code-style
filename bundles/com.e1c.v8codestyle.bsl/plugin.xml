@@ -114,5 +114,11 @@
       </check>
   
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.e1c.v8codestyle.internal.bsl.ModuleStructureProviderPreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>
