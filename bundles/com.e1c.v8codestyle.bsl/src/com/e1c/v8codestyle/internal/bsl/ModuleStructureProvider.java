@@ -14,11 +14,8 @@ package com.e1c.v8codestyle.internal.bsl;
 
 import static com.e1c.v8codestyle.bsl.strict.StrictTypeUtil.BSL_FILE_EXTENSION;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.Optional;
 import java.util.function.Supplier;
@@ -27,7 +24,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
@@ -110,7 +106,7 @@ public class ModuleStructureProvider
             };
         }
 
-        Optional<Path> template = getBundleEntry(path);
+        Optional<URL> template = getBundleEntry(path);
         if (template.isPresent())
         {
             return () -> getClass().getResourceAsStream(path);
@@ -123,22 +119,9 @@ public class ModuleStructureProvider
 
     }
 
-    private Optional<Path> getBundleEntry(String path)
+    private Optional<URL> getBundleEntry(String path)
     {
         URL url = getClass().getResource(path);
-        if (url == null)
-        {
-            return Optional.empty();
-        }
-        try
-        {
-            URL fileUrl = FileLocator.toFileURL(url);
-            return Optional.of(Paths.get(fileUrl.toURI()));
-        }
-        catch (IOException | java.net.URISyntaxException e)
-        {
-            BslPlugin.logError(e);
-        }
-        return Optional.empty();
+        return Optional.ofNullable(url);
     }
 }
