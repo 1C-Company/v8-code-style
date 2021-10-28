@@ -1,4 +1,6 @@
 
+#If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
+
 #Region Variables
 
 #EndRegion
@@ -30,3 +32,5 @@
 #Region Initialize
 
 #EndRegion
+
+#EndIf

@@ -19,6 +19,12 @@ createModuleStructure=false
 
 ```
 
+Для отключения создания структуры модуля в текущем воркспейсе откройте:
+
+Меню Window или 1C:EDT (в macOS): `Preferences -> V8 -> Built-in language -> Module structure -> Automatically create module structure`.
+
+Общие настройки могут быть заданы для всей инсталяции 1C:EDT или поствлятся через 1С:Стартер.
+
 ## Переопределение шаблонов
 
 Отрокройте свйства проекта: `Properties -> V8 -> Built-in language -> Module structure`. 

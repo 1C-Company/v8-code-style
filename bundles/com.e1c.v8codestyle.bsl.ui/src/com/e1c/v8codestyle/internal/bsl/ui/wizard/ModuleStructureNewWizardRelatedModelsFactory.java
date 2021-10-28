@@ -70,17 +70,22 @@ public class ModuleStructureNewWizardRelatedModelsFactory
 
     private static final String LINE_SEPARATOR_LINUX = "\n"; //$NON-NLS-1$
 
-    private final IQualifiedNameFilePathConverter qulifiedNameFilePathConverter;
+    private final IQualifiedNameFilePathConverter qualifiedNameFilePathConverter;
 
     private final IModuleStructureProvider moduleStructureProvider;
 
+    /**
+     * Instantiates a new module structure new wizard related models factory.
+     *
+     * @param qualifiedNameFilePathConverter the qualified name file path converter service, cannot be {@code null}.
+     * @param moduleStructureProvider the module structure provider service, cannot be {@code null}.
+     */
     @Inject
-    public ModuleStructureNewWizardRelatedModelsFactory(IQualifiedNameFilePathConverter qulifiedNameFilePathConverter,
+    public ModuleStructureNewWizardRelatedModelsFactory(IQualifiedNameFilePathConverter qualifiedNameFilePathConverter,
         IModuleStructureProvider moduleStructureProvider)
     {
-        this.qulifiedNameFilePathConverter = qulifiedNameFilePathConverter;
+        this.qualifiedNameFilePathConverter = qualifiedNameFilePathConverter;
         this.moduleStructureProvider = moduleStructureProvider;
-
     }
 
     @Override
@@ -106,7 +111,7 @@ public class ModuleStructureNewWizardRelatedModelsFactory
                 IFile bslFile = getModuleFile(module);
                 if (bslFile != null)
                 {
-                    ModuleType type = BslUtil.computeModuleType(module, qulifiedNameFilePathConverter);
+                    ModuleType type = BslUtil.computeModuleType(module, qualifiedNameFilePathConverter);
                     createOrUpdateModule(bslFile, type, context);
                 }
             }
@@ -224,7 +229,7 @@ public class ModuleStructureNewWizardRelatedModelsFactory
 
         QualifiedName name = QualifiedName.create(fqn).append(StringUtils.capitalize(ABSTRACT_FORM__MODULE.getName()));
 
-        IPath path = qulifiedNameFilePathConverter.getFilePath(name, MODULE);
+        IPath path = qualifiedNameFilePathConverter.getFilePath(name, MODULE);
 
         return project.getFile(path);
     }

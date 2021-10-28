@@ -21,6 +21,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -34,6 +35,7 @@ import java.util.function.Supplier;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferencePage;
@@ -139,7 +141,13 @@ public class ModuleStructurePropertyPageTest
 
         IModuleStructureProvider moduleStructureProvider = ServiceAccess.get(IModuleStructureProvider.class);
         Supplier<InputStream> templateProvider = moduleStructureProvider.getModuleStructureTemplate(project,
+            ModuleType.COMMON_MODULE, null);
+        assertNull(templateProvider);
+        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, null, ScriptVariant.ENGLISH);
+        assertNull(templateProvider);
+        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project,
             ModuleType.COMMON_MODULE, ScriptVariant.ENGLISH);
+        assertNotNull(templateProvider);
 
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn(shell, project, PROPERTY_PAGE_ID, null, null);
@@ -158,17 +166,26 @@ public class ModuleStructurePropertyPageTest
         applyButton.notifyListeners(SWT.Selection, new Event());
         waitEventSetnd(dialog);
 
-        viewer.setSelection(new StructuredSelection(ModuleType.COMMON_MODULE));
-        waitEventSetnd(dialog);
-
         Button buttonOpen = getButtonByName(page, "Open template");
         assertNotNull(buttonOpen);
+
+        viewer.setSelection(new StructuredSelection(ModuleType.FORM_MODULE));
+        waitEventSetnd(dialog);
+        assertFalse(buttonOpen.isEnabled());
+
+        viewer.setSelection(new StructuredSelection(ModuleType.COMMON_MODULE));
+        waitEventSetnd(dialog);
+        assertTrue(buttonOpen.isEnabled());
+
+
         buttonOpen.notifyListeners(SWT.Selection, new Event());
         assertNull(dialog.getShell());
         waitEventSetnd();
 
         // check editor content equals base template
         IFile file = project.getFile(SETTINGS_TEMPLATES_COMMON_MODULE_BSL);
+        assertTrue(file.exists());
+
         try (InputStream in = file.getContents();
             Reader fileReader = new InputStreamReader(in, StandardCharsets.UTF_8);
             InputStream template = templateProvider.get();
@@ -186,6 +203,26 @@ public class ModuleStructurePropertyPageTest
         assertNotNull(editor);
         assertEquals(EDTOR_TITLE, editor.getTitle());
 
+        String newContent = "New template";
+        try (InputStream in = new ByteArrayInputStream(newContent.getBytes(StandardCharsets.UTF_8));)
+        {
+            file.setContents(in, true, true, new NullProgressMonitor());
+        }
+
+        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE,
+            ScriptVariant.ENGLISH);
+
+        try (InputStream in = file.getContents();
+            Reader fileReader = new InputStreamReader(in, StandardCharsets.UTF_8);
+            InputStream template = templateProvider.get();
+            Reader templateReader = new InputStreamReader(template, StandardCharsets.UTF_8);)
+        {
+            String templateText = CharStreams.toString(templateReader);
+            assertNotNull(templateText);
+            String fileText = CharStreams.toString(fileReader);
+            assertEquals(templateText, fileText);
+        }
+
         // re-open properties to check selection
         dialog = PreferencesUtil.createPropertyDialogOn(shell, project, PROPERTY_PAGE_ID, null, null);
 
@@ -198,7 +235,15 @@ public class ModuleStructurePropertyPageTest
         viewer = getViewer(page);
         assertTrue(viewer.getChecked(ModuleType.COMMON_MODULE));
 
+        viewer.setChecked(ModuleType.COMMON_MODULE, false);
+
+        applyButton = getApplyButtonControl(page);
+        applyButton.notifyListeners(SWT.Selection, new Event());
+        waitEventSetnd(dialog);
+
         shell.getDisplay().syncExec(dialog::close);
+
+        assertFalse(file.exists());
 
     }
 
