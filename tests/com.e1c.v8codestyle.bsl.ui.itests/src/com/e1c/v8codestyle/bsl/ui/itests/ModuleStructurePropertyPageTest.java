@@ -212,15 +212,12 @@ public class ModuleStructurePropertyPageTest
         templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE,
             ScriptVariant.ENGLISH);
 
-        try (InputStream in = file.getContents();
-            Reader fileReader = new InputStreamReader(in, StandardCharsets.UTF_8);
-            InputStream template = templateProvider.get();
+        try (InputStream template = templateProvider.get();
             Reader templateReader = new InputStreamReader(template, StandardCharsets.UTF_8);)
         {
             String templateText = CharStreams.toString(templateReader);
             assertNotNull(templateText);
-            String fileText = CharStreams.toString(fileReader);
-            assertEquals(templateText, fileText);
+            assertEquals(newContent, templateText);
         }
 
         // re-open properties to check selection
