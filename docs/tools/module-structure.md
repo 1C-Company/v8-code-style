@@ -8,9 +8,9 @@
 
 Для проекта можно принудительно отключить или включить создание структуры модуля.
 
-Отрокройте свйства проекта: `Properties -> V8 -> Built-in language -> Module structure -> Automatically create module structure`.
+Откройте свойства проекта: `Properties -> V8 -> Built-in language -> Module structure -> Automatically create module structure`.
 
-Альтернативный способ: создать файл настроек `ProjectName/.settings/com.e1c.v8codestyle.bsl.prefs` с ключем управления созданием структуры модуля:
+Альтернативный способ: создать файл настроек `ProjectName/.settings/com.e1c.v8codestyle.bsl.prefs` с ключом управления созданием структуры модуля:
 
 ```
 
@@ -23,11 +23,11 @@ createModuleStructure=false
 
 Меню Window или 1C:EDT (в macOS): `Preferences -> V8 -> Built-in language -> Module structure -> Automatically create module structure`.
 
-Общие настройки могут быть заданы для всей инсталяции 1C:EDT или поствлятся через 1С:Стартер.
+Общие настройки могут быть заданы для всей инсталляции 1C:EDT или поставляется через 1С:Стартер.
 
 ## Переопределение шаблонов
 
-Отрокройте свйства проекта: `Properties -> V8 -> Built-in language -> Module structure`. 
+Откройте свойства проекта: `Properties -> V8 -> Built-in language -> Module structure`. 
 Установите флажок для тех типов модулей, для которых в текущем проекте следует изменить шаблон структуры модуля.
 
 При этом будет создан файл с типом модуля для которого необходимо переопределение. Например, для модуля менеджера: `ProjectName/.settings/templates/manager_module.bsl` 
