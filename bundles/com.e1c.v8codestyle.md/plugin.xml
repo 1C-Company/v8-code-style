@@ -56,7 +56,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdPropertySynonymInNotSetForStandartAttributeOwner">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdStandardAttributeSynonymEmpty">
       </check>
    </extension>
 

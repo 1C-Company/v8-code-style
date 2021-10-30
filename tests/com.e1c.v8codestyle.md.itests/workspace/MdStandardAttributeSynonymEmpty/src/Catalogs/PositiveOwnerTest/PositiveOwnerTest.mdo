@@ -7,14 +7,15 @@
     <listType typeId="9f89bf06-2ad3-4cb3-9fb1-d9c1e26d5036" valueTypeId="a565ecc8-60cf-41a2-8bfa-3991e0dd4458"/>
     <managerType typeId="a41a764d-6c34-402b-a5fe-092bf52bb42b" valueTypeId="5d690789-09e2-4ebd-97c1-a5c52219ba32"/>
   </producedTypes>
-  <name>PositiveTest</name>
+  <name>PositiveOwnerTest</name>
   <synonym>
     <key>en</key>
-    <value>Positive test</value>
+    <value>Positive owner test</value>
   </synonym>
+  <comment>Корректно заполнено свойство Владелец</comment>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.PositiveTest.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.PositiveTest.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.PositiveOwnerTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.PositiveOwnerTest.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <standardAttributes>
     <dataHistory>Use</dataHistory>
@@ -36,7 +37,7 @@
   </objectPresentation>
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>
-  <owners>Catalog.MyOwner</owners>
+  <owners>Catalog.PositiveParentTest</owners>
   <codeLength>9</codeLength>
   <descriptionLength>25</descriptionLength>
   <codeType>String</codeType>

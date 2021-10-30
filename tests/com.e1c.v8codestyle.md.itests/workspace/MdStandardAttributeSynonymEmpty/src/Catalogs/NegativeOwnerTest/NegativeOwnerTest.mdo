@@ -7,33 +7,41 @@
     <listType typeId="3a68875b-f061-4f3f-abea-51fb1792c0c6" valueTypeId="a05ba9a9-5cfa-4b24-9f1d-050ecc9c43a6"/>
     <managerType typeId="d3fcac36-af9a-46e1-89ff-b744c11416d2" valueTypeId="d909a819-a65f-4e07-8842-a9ead838e199"/>
   </producedTypes>
-  <name>NegativeTestWithEmpty</name>
+  <name>NegativeOwnerTest</name>
   <synonym>
     <key>en</key>
-    <value>Negative test with empty</value>
+    <value>Negative owner test</value>
   </synonym>
+  <comment>Есть владелец,  но нет синонима</comment>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.NegativeTestWithEmpty.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.NegativeTestWithEmpty.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.NegativeOwnerTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeOwnerTest.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <standardAttributes>
     <dataHistory>Use</dataHistory>
     <name>Owner</name>
-    <comment>Comment</comment>
+    <comment></comment>
     <fillFromFillingValue>true</fillFromFillingValue>
     <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Parent</name>
+    <synonym>
+      <key>en</key>
+      <value>This is parrent</value>
+    </synonym>
+    <comment></comment>
+    <fillFromFillingValue>true</fillFromFillingValue>
     <fullTextSearch>Use</fullTextSearch>
   </standardAttributes>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
   <fullTextSearch>Use</fullTextSearch>
-  <objectPresentation>
-    <key>en</key>
-    <value>Negative test</value>
-  </objectPresentation>
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>
-  <owners>Catalog.MyOwner</owners>
+  <owners>Catalog.PositiveParentTest</owners>
   <codeLength>9</codeLength>
   <descriptionLength>25</descriptionLength>
   <codeType>String</codeType>

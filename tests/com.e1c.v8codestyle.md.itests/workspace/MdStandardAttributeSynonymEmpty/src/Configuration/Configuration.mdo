@@ -38,8 +38,10 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <catalogs>Catalog.MyOwner</catalogs>
-  <catalogs>Catalog.NegativeTestWithComment</catalogs>
-  <catalogs>Catalog.NegativeTestWithEmpty</catalogs>
-  <catalogs>Catalog.PositiveTest</catalogs>
+  <catalogs>Catalog.NegativeOwnerTest</catalogs>
+  <catalogs>Catalog.NegativeOwnerTestWithComment</catalogs>
+  <catalogs>Catalog.NegativeParentTest</catalogs>
+  <catalogs>Catalog.NegativeParentTestWithComment</catalogs>
+  <catalogs>Catalog.PositiveOwnerTest</catalogs>
+  <catalogs>Catalog.PositiveParentTest</catalogs>
 </mdclass:Configuration>

@@ -7,15 +7,26 @@
     <listType typeId="4c5d2328-8c79-4e87-b8bf-bc078d405b35" valueTypeId="98ca7cff-2131-4e34-a9e1-85b812bf89e1"/>
     <managerType typeId="8e1a6219-c018-48ce-86a9-1b72ce13fd10" valueTypeId="fb8e91b7-ef5c-448b-ba8c-2ca77962103d"/>
   </producedTypes>
-  <name>MyOwner</name>
+  <name>PositiveParentTest</name>
   <synonym>
     <key>en</key>
-    <value>My owner</value>
+    <value>Positive parent test</value>
   </synonym>
+  <comment>Корректно заполнено свойство Родитель</comment>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.MyOwner.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.MyOwner.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.PositiveParentTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.PositiveParentTest.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Parent</name>
+    <synonym>
+      <key>en</key>
+      <value>Simple text</value>
+    </synonym>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
   <fullTextSearch>Use</fullTextSearch>
@@ -23,6 +34,7 @@
     <key>en</key>
     <value>My owner</value>
   </objectPresentation>
+  <hierarchical>true</hierarchical>
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>
   <codeLength>9</codeLength>
