@@ -90,7 +90,9 @@ public class MdStandardAttributeSynonymEmpty
     {
         // Не проверяем если справочник не иерархический
         if (!isHierarchical(object))
+        {
             return;
+        }
 
         String message = Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage;
         EStructuralFeature feature = BASIC_DB_OBJECT__STANDARD_ATTRIBUTES;
@@ -100,14 +102,18 @@ public class MdStandardAttributeSynonymEmpty
         // parentAttribute равно null если в стандартных атрибутах ничего не устанавливали владельцу
         // если не null, смотрим на синоним
         if (parentAttribute == null || StringUtils.isBlank(getSynonym(parentAttribute, languageCode)))
+        {
             resultAceptor.addIssue(message, feature);
+        }
     }
 
     private void checkOwner(Object object, ResultAcceptor resultAceptor, String languageCode)
     {
         // Если нет списка владельцев, то проверять нечего
         if (!hasOwner(object))
+        {
             return;
+        }
 
         String message = Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage;
         EStructuralFeature feature = BASIC_DB_OBJECT__STANDARD_ATTRIBUTES;
@@ -117,7 +123,9 @@ public class MdStandardAttributeSynonymEmpty
         // ownerAttribute равно null если в стандартных атрибутах ничего не устанавливали владельцу
         // если не null, смотрим на синоним
         if (ownerAttribute == null || StringUtils.isBlank(getSynonym(ownerAttribute, languageCode)))
+        {
             resultAceptor.addIssue(message, feature);
+        }
     }
 
     @Override
@@ -146,7 +154,9 @@ public class MdStandardAttributeSynonymEmpty
         IV8Project project = v8ProjectManager.getProject(mdObject);
         String languageCode = project.getDefaultLanguage().getLanguageCode();
         if (monitor.isCanceled())
+        {
             return;
+        }
 
         checkParent(object, resultAceptor, languageCode);
         checkOwner(object, resultAceptor, languageCode);
