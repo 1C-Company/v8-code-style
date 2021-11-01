@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d514ac30-f9e9-4f34-9a58-1ce7fe15c81f">
+  <producedTypes>
+    <objectType typeId="731d48a6-bd91-4732-8378-d3b180468bf1" valueTypeId="514ca0b8-1b19-40e7-8341-f97ca85ced74"/>
+    <refType typeId="145f9fd7-4384-4ef7-bade-2ff6f15d4a08" valueTypeId="a1321480-9fe2-4fb5-ad7b-28cb754802c6"/>
+    <selectionType typeId="cc4373fb-b5b2-43d2-a907-e282316bd07a" valueTypeId="c1dd4de6-d924-4e62-880f-aedeb909a3bd"/>
+    <listType typeId="3a68875b-f061-4f3f-abea-51fb1792c0c6" valueTypeId="a05ba9a9-5cfa-4b24-9f1d-050ecc9c43a6"/>
+    <managerType typeId="d3fcac36-af9a-46e1-89ff-b744c11416d2" valueTypeId="d909a819-a65f-4e07-8842-a9ead838e199"/>
+  </producedTypes>
+  <name>NegativeOwnerTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative owner test</value>
+  </synonym>
+  <comment>Есть владелец,  но нет синонима у стандартного реквизита Владелец</comment>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeOwnerTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeOwnerTest.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Owner</name>
+    <comment></comment>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fillChecking>ShowError</fillChecking>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Parent</name>
+    <synonym>
+      <key>en</key>
+      <value>This is parrent</value>
+    </synonym>
+    <comment></comment>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Negative owner test</value>
+  </objectPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <owners>Catalog.PositiveParentTest</owners>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>
