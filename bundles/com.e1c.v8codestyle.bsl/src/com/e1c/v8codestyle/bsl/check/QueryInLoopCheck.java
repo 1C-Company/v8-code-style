@@ -30,6 +30,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.jdt.annotation.NonNull;
+import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -81,10 +83,14 @@ public class QueryInLoopCheck
 
     private static final String DEFAULT_CHECK_QUERY_IN_INFINITE_LOOP = Boolean.toString(false);
 
+    @Nullable
     private final TypesComputer typesComputer;
 
     private final IRuntimeVersionSupport versionSupport;
 
+    /**
+     * @param versionSupport - Version support for 1C:Enterprise projects service, cannot be {@code null}
+     */
     @Inject
     public QueryInLoopCheck(IRuntimeVersionSupport versionSupport)
     {
@@ -124,7 +130,7 @@ public class QueryInLoopCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof Module))
+        if (!(object instanceof Module))
         {
             return;
         }
@@ -137,7 +143,7 @@ public class QueryInLoopCheck
             return;
         }
 
-        Map<String, String> methodsWithQuery = getMethodsWithQuery(module, queryExecutionMethods, monitor);
+        Map<String, @NonNull String> methodsWithQuery = getMethodsWithQuery(module, queryExecutionMethods, monitor);
         if (methodsWithQuery.isEmpty())
         {
             return;
@@ -159,7 +165,8 @@ public class QueryInLoopCheck
                 resultAceptor.addIssue(Messages.QueryInLoop_Loop_has_query, featureAccess, FEATURE_ACCESS__NAME);
             }
 
-            if (featureAccess instanceof StaticFeatureAccess)
+            else if (featureAccess instanceof StaticFeatureAccess
+                && methodsWithQuery.containsKey(featureAccess.getName()))
             {
                 String errorPath = methodsWithQuery.get(featureAccess.getName());
                 String errorMessage =
@@ -206,7 +213,13 @@ public class QueryInLoopCheck
 
     private boolean isQueryTypeSource(Expression source)
     {
+        @Nullable
         Environmental envs = EcoreUtil2.getContainerOfType(source, Environmental.class);
+        if (envs == null || typesComputer == null)
+        {
+            return false;
+        }
+
         List<TypeItem> sourceTypes = typesComputer.computeTypes(source, envs.environments());
         if (sourceTypes.isEmpty())
         {
@@ -255,7 +268,8 @@ public class QueryInLoopCheck
         return MessageFormat.format("'{'{0}'}' ", String.valueOf(node.getStartLine())); //$NON-NLS-1$
     }
 
-    private String getMethodPath(Method method, Map<String, String> result)
+    @Nullable
+    private String getMethodPath(Method method, Map<String, @NonNull String> result)
     {
         if (result.containsKey(method.getName()))
         {
@@ -278,10 +292,10 @@ public class QueryInLoopCheck
             getPositionForFeatureObject(calledMethod), calledMethodPath);
     }
 
-    private Map<String, String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
+    private Map<String, @NonNull String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
         IProgressMonitor monitor)
     {
-        Map<String, String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        Map<String, @NonNull String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
         for (DynamicFeatureAccess dfa : EcoreUtil2.eAllOfType(module, DynamicFeatureAccess.class))
         {
@@ -290,15 +304,24 @@ public class QueryInLoopCheck
                 return Collections.emptyMap();
             }
 
-            if (isQueryExecution(dfa, queryExecutionMethods))
+            if (!isQueryExecution(dfa, queryExecutionMethods))
             {
-                Method method = EcoreUtil2.getContainerOfType(dfa, Method.class);
-                String sourceName = getSourceName(dfa.getSource());
-
-                String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
-                    getPositionForFeatureObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
-                result.put(method.getName(), methodPath);
+                continue;
             }
+
+            @Nullable
+            Method method = EcoreUtil2.getContainerOfType(dfa, Method.class);
+            if (method == null)
+            {
+                continue;
+            }
+
+            String sourceName = getSourceName(dfa.getSource());
+
+            String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
+                getPositionForFeatureObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
+            result.put(method.getName(), methodPath);
+
         }
 
         EList<Method> methods = module.allMethods();
@@ -314,12 +337,10 @@ public class QueryInLoopCheck
                 }
 
                 String methodPath = getMethodPath(method, result);
-                if (methodPath == null)
+                if (methodPath != null)
                 {
-                    continue;
+                    result.put(method.getName(), methodPath);
                 }
-
-                result.put(method.getName(), methodPath);
             }
 
             methodsCount = result.size();
@@ -328,12 +349,13 @@ public class QueryInLoopCheck
         return result;
     }
 
-    private boolean isMethodWithQueryCalled(StaticFeatureAccess sfa, Map<String, String> methodsWithQuery)
+    private boolean isMethodWithQueryCalled(StaticFeatureAccess sfa, Map<String, @NonNull String> methodsWithQuery)
     {
         return methodsWithQuery.containsKey(sfa.getName()) && BslUtil.getInvocation(sfa) != null;
     }
 
-    private StaticFeatureAccess getMethodWithQuery(Method method, Map<String, String> methodsWithQuery)
+    @Nullable
+    private StaticFeatureAccess getMethodWithQuery(Method method, Map<String, @NonNull String> methodsWithQuery)
     {
         for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(method, StaticFeatureAccess.class))
         {
@@ -357,8 +379,9 @@ public class QueryInLoopCheck
         return predicate instanceof BooleanLiteral;
     }
 
-    private Collection<FeatureAccess> getQueryInLoopCallers(Module module, Map<String, String> methodsWithQuery,
-        Set<String> queryExecutionMethods, boolean checkQueryInInfiniteLoop, IProgressMonitor monitor)
+    private Collection<FeatureAccess> getQueryInLoopCallers(Module module,
+        Map<String, @NonNull String> methodsWithQuery, Set<String> queryExecutionMethods,
+        boolean checkQueryInInfiniteLoop, IProgressMonitor monitor)
     {
         Collection<FeatureAccess> result = new ArrayList<>();
 

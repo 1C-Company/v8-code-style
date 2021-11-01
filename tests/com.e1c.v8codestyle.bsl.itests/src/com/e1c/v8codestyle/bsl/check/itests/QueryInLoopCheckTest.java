@@ -26,6 +26,7 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Test;
 
@@ -50,11 +51,19 @@ public class QueryInLoopCheckTest
 
     private static final String PARAM_CHECK_QUERIY_IN_INFINITE_LOOP = "checkQueryInInfiniteLoop"; //$NON-NLS-1$
 
+    /**
+     * Constructor for {@link QueryInLoopCheck} check
+     */
     public QueryInLoopCheckTest()
     {
         super(QueryInLoopCheck.class);
     }
 
+    /**
+     * Default query in loop test
+     *
+     * @throws Exception
+     */
     @Test
     public void testQueryInLoop() throws Exception
     {
@@ -66,7 +75,7 @@ public class QueryInLoopCheckTest
 
         for (Method method : module.allMethods())
         {
-            List<FeatureAccess> featureAccessList = EcoreUtil2.eAllOfType(method, FeatureAccess.class);
+            List<@NonNull FeatureAccess> featureAccessList = EcoreUtil2.eAllOfType(method, FeatureAccess.class);
 
             switch (method.getName())
             {
@@ -147,6 +156,11 @@ public class QueryInLoopCheckTest
         return new CheckUid(checkId, BslPlugin.PLUGIN_ID);
     }
 
+    /**
+     * Infinite query in loop test
+     *
+     * @throws Exception
+     */
     @Test
     public void testInfiniteLoop() throws Exception
     {
