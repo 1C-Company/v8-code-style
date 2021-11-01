@@ -4,26 +4,23 @@ There are not recommended methods, instead of which either SSL methods or other 
 
 ## Noncompliant Code Example
 
-	```bsl
+```bsl
+Message("Text");
 
-	Message("Text");
-	Date = CurrentDate();
-
-	```
+Date = CurrentDate();
+```
 
 ## Compliant Solution
 	 
-	 ```bsl
+```bsl
+Message = New UserMessage();
+Message.Text = ("Text");
+Message.Message(); 
 
-	Message = New UserMessage();
-	Message.Text = ("Text");
-	Message.Message(); 
-
-	Date = CurrentSessionDate();
-
-	```
+Date = CurrentSessionDate();
+```
 	
 ## See
 
-[Restriction on the use of the Message method](https://its.1c.ru/db/v8std#content:418:hdoc)
-[Working in different time zones](https://its.1c.ru/db/v8std#content:643:hdoc:2.1)
+- [Restriction on the use of the Message method](https://its.1c.ru/db/v8std#content:418:hdoc)
+- [Working in different time zones](https://its.1c.ru/db/v8std#content:643:hdoc:2.1)
