@@ -282,6 +282,7 @@ public class QueryInLoopCheck
             return null;
         }
 
+        @Nullable
         String calledMethodPath = result.get(calledMethod.getName());
         if (calledMethodPath == null)
         {
