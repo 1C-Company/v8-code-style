@@ -32,13 +32,13 @@ public class MdStandardAttributeSynonymEmptyTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "md-owner-attribute-synonym-empty"; //$NON-NLS-1$
+    private static final String CHECK_ID = "md-standard-attribute-synonym-empty"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "MdStandardAttributeSynonymEmpty";
 
 
     /**
-     * Test MD-Object has synonym property for attribute parent and owner
+     * Test MD-Object has synonym property for attribute parent or owner
      *
      * @throws Exception the exception
      */
@@ -52,7 +52,6 @@ public class MdStandardAttributeSynonymEmptyTest
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
 
-        // Есть синоним у свойства владелец
         id = getTopObjectIdByFqn("Catalog.PositiveOwnerTest", dtProject);
         marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
@@ -66,12 +65,10 @@ public class MdStandardAttributeSynonymEmptyTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        // Нет синоним у свойства Родитель
         long id = getTopObjectIdByFqn("Catalog.NegativeOwnerTest", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
 
-        // Нет синоним у свойства родитель, но есть комментарий
         id = getTopObjectIdByFqn("Catalog.NegativeOwnerTestWithComment", dtProject);
         marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
@@ -84,12 +81,10 @@ public class MdStandardAttributeSynonymEmptyTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        // Нет синоним у свойства владелец
         long id = getTopObjectIdByFqn("Catalog.NegativeParentTest", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
 
-        // Нет синоним у свойства родитель, но есть комментарий
         id = getTopObjectIdByFqn("Catalog.NegativeParentTestWithComment", dtProject);
         marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);

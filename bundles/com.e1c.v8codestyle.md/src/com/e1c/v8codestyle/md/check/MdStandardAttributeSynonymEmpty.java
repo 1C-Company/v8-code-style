@@ -16,10 +16,9 @@ package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_DB_OBJECT__STANDARD_ATTRIBUTES;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.STANDARD_ATTRIBUTE__SYNONYM;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -31,14 +30,21 @@ import com._1c.g5.v8.dt.metadata.mdclass.StandardAttribute;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
+import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
+/**
+ * The check the {@link MdObject} has specified synonyms for owner and parent
+ * for default language of the project.
+ * @author Bombin Valentin
+ *
+ */
 public class MdStandardAttributeSynonymEmpty
     extends BasicCheck
 {
-    private static final String CHECK_ID = "md-owner-attribute-synonym-empty"; //$NON-NLS-1$
+    private static final String CHECK_ID = "md-standard-attribute-synonym-empty"; //$NON-NLS-1$
     private static final String OWNER_NAME = "Owner"; //$NON-NLS-1$
     private static final String PARENT_NAME = "Parent"; //$NON-NLS-1$
 
@@ -58,76 +64,6 @@ public class MdStandardAttributeSynonymEmpty
         return CHECK_ID;
     }
 
-    private boolean hasOwner(Object object)
-    {
-        return !((Catalog)object).getOwners().isEmpty();
-    }
-
-    private boolean isHierarchical(Object object)
-    {
-        return ((Catalog)object).isHierarchical();
-    }
-
-    private StandardAttribute getStandardAttributeByName(Object object, String attributeName)
-    {
-        EList<StandardAttribute> standardAttributes = ((Catalog)object).getStandardAttributes();
-        for (StandardAttribute standardAttribute : standardAttributes)
-        {
-            if (standardAttribute.getName().compareTo(attributeName) == 0)
-            {
-                return standardAttribute;
-            }
-        }
-        return null;
-    }
-
-    private String getSynonym(StandardAttribute ownerAttribute, String languageCode)
-    {
-        return ownerAttribute.getSynonym().get(languageCode);
-    }
-
-    private void checkParent(Object object, ResultAcceptor resultAceptor, String languageCode)
-    {
-        // Не проверяем если справочник не иерархический
-        if (!isHierarchical(object))
-        {
-            return;
-        }
-
-        String message = Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage;
-        EStructuralFeature feature = BASIC_DB_OBJECT__STANDARD_ATTRIBUTES;
-
-        StandardAttribute parentAttribute = getStandardAttributeByName(object, PARENT_NAME);
-
-        // parentAttribute равно null если в стандартных атрибутах ничего не устанавливали владельцу
-        // если не null, смотрим на синоним
-        if (parentAttribute == null || StringUtils.isBlank(getSynonym(parentAttribute, languageCode)))
-        {
-            resultAceptor.addIssue(message, feature);
-        }
-    }
-
-    private void checkOwner(Object object, ResultAcceptor resultAceptor, String languageCode)
-    {
-        // Если нет списка владельцев, то проверять нечего
-        if (!hasOwner(object))
-        {
-            return;
-        }
-
-        String message = Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage;
-        EStructuralFeature feature = BASIC_DB_OBJECT__STANDARD_ATTRIBUTES;
-
-        StandardAttribute ownerAttribute = getStandardAttributeByName(object, OWNER_NAME);
-
-        // ownerAttribute равно null если в стандартных атрибутах ничего не устанавливали владельцу
-        // если не null, смотрим на синоним
-        if (ownerAttribute == null || StringUtils.isBlank(getSynonym(ownerAttribute, languageCode)))
-        {
-            resultAceptor.addIssue(message, feature);
-        }
-    }
-
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
@@ -136,9 +72,10 @@ public class MdStandardAttributeSynonymEmpty
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
+            .extension(new TopObjectFilterExtension())
             .topObject(CATALOG)
             .checkTop()
-            .features(BASIC_DB_OBJECT__STANDARD_ATTRIBUTES);
+            .features(BASIC_DB_OBJECT__STANDARD_ATTRIBUTES, STANDARD_ATTRIBUTE__SYNONYM);
     }
 
     @Override
@@ -158,7 +95,66 @@ public class MdStandardAttributeSynonymEmpty
             return;
         }
 
-        checkParent(object, resultAceptor, languageCode);
-        checkOwner(object, resultAceptor, languageCode);
+        checkParent((Catalog)object, resultAceptor, languageCode);
+        checkOwner((Catalog)object, resultAceptor, languageCode);
+    }
+
+    private boolean hasAnyOwner(Catalog catalog)
+    {
+        return !catalog.getOwners().isEmpty();
+    }
+
+    private boolean hasParent(Catalog catalog)
+    {
+        return catalog.isHierarchical();
+    }
+
+    private StandardAttribute getStandardAttributeByName(Catalog catalog, String attributeName)
+    {
+        for (StandardAttribute attribute : catalog.getStandardAttributes())
+        {
+            if (attribute.getName().compareTo(attributeName) == 0)
+            {
+                return attribute;
+            }
+        }
+        return null;
+    }
+
+    private String getSynonym(StandardAttribute attribute, String languageCode)
+    {
+        return attribute.getSynonym().get(languageCode);
+    }
+
+    private void checkParent(Catalog catalog, ResultAcceptor resultAceptor, String languageCode)
+    {
+        if (!hasParent(catalog))
+        {
+            return;
+        }
+
+        StandardAttribute attribute = getStandardAttributeByName(catalog, PARENT_NAME);
+
+        if (attribute == null || StringUtils.isBlank(getSynonym(attribute, languageCode)))
+        {
+            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage,
+                BASIC_DB_OBJECT__STANDARD_ATTRIBUTES);
+        }
+    }
+
+    private void checkOwner(Catalog catalog, ResultAcceptor resultAceptor, String languageCode)
+    {
+        if (!hasAnyOwner(catalog))
+        {
+            return;
+        }
+
+        StandardAttribute attribute = getStandardAttributeByName(catalog, OWNER_NAME);
+
+        if (attribute == null || StringUtils.isBlank(getSynonym(attribute, languageCode)))
+        {
+            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage,
+                BASIC_DB_OBJECT__STANDARD_ATTRIBUTES);
+        }
     }
 }
