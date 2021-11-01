@@ -61,7 +61,6 @@ public class MdStandardAttributeSynonymEmpty
     @Override
     public String getCheckId()
     {
-
         return CHECK_ID;
     }
 
@@ -95,7 +94,6 @@ public class MdStandardAttributeSynonymEmpty
         {
             return;
         }
-
         checkParent((Catalog)object, resultAceptor, languageCode);
         checkOwner((Catalog)object, resultAceptor, languageCode);
     }
