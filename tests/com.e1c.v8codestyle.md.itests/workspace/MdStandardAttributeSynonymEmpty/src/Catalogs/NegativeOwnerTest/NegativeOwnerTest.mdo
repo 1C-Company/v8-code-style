@@ -12,7 +12,7 @@
     <key>en</key>
     <value>Negative owner test</value>
   </synonym>
-  <comment>Есть владелец,  но нет синонима</comment>
+  <comment>Есть владелец,  но нет синонима у стандартного реквизита Владелец</comment>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.NegativeOwnerTest.StandardAttribute.Code</inputByString>
   <inputByString>Catalog.NegativeOwnerTest.StandardAttribute.Description</inputByString>

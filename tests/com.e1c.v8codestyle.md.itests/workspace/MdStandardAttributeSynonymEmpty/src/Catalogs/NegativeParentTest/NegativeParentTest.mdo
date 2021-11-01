@@ -12,7 +12,7 @@
     <key>en</key>
     <value>Negative parent test</value>
   </synonym>
-  <comment>Есть Родитель, но нет синонима</comment>
+  <comment>Есть признак иерархии, но у свойства Родитель  нет синонима</comment>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.NegativeParentTest.StandardAttribute.Code</inputByString>
   <inputByString>Catalog.NegativeParentTest.StandardAttribute.Description</inputByString>
@@ -20,7 +20,7 @@
   <standardAttributes>
     <dataHistory>Use</dataHistory>
     <name>Parent</name>
-    <comment>simple comment</comment>
+    <comment>Простой комметарий</comment>
     <fillFromFillingValue>true</fillFromFillingValue>
     <fullTextSearch>Use</fullTextSearch>
   </standardAttributes>
