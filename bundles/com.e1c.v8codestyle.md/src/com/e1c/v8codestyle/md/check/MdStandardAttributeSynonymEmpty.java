@@ -38,6 +38,7 @@ import com.google.inject.Inject;
 /**
  * The check the {@link MdObject} has specified synonyms for owner and parent
  * for default language of the project.
+ *
  * @author Bombin Valentin
  *
  */
