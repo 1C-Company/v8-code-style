@@ -168,6 +168,7 @@ public class QueryInLoopCheck
             else if (featureAccess instanceof StaticFeatureAccess
                 && methodsWithQuery.containsKey(featureAccess.getName()))
             {
+                @NonNull
                 String errorPath = methodsWithQuery.get(featureAccess.getName());
                 String errorMessage =
                     MessageFormat.format(Messages.QueryInLoop_Loop_has_method_with_query__0, errorPath);
@@ -312,16 +313,14 @@ public class QueryInLoopCheck
 
             @Nullable
             Method method = EcoreUtil2.getContainerOfType(dfa, Method.class);
-            if (method == null)
+            if (method != null)
             {
-                continue;
+                String sourceName = getSourceName(dfa.getSource());
+
+                String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
+                    getPositionForFeatureObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
+                result.put(method.getName(), methodPath);
             }
-
-            String sourceName = getSourceName(dfa.getSource());
-
-            String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
-                getPositionForFeatureObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
-            result.put(method.getName(), methodPath);
 
         }
 
