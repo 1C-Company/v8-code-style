@@ -12,7 +12,7 @@
     <key>en</key>
     <value>Negative parent test with comment</value>
   </synonym>
-  <comment>Есть признак иерархии, у свойства Родитель есть комментарий, но нет синонима</comment>
+  <comment>Есть признак иерархии, у свойства &quot;Родитель&quot; есть комментарий, но нет синонима</comment>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.NegativeParentTestWithComment.StandardAttribute.Code</inputByString>
   <inputByString>Catalog.NegativeParentTestWithComment.StandardAttribute.Description</inputByString>
@@ -22,7 +22,7 @@
   <fullTextSearch>Use</fullTextSearch>
   <objectPresentation>
     <key>en</key>
-    <value>My owner</value>
+    <value>Negative parent test with comment</value>
   </objectPresentation>
   <hierarchical>true</hierarchical>
   <levelCount>2</levelCount>

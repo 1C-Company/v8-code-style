@@ -33,7 +33,7 @@
   <fullTextSearch>Use</fullTextSearch>
   <objectPresentation>
     <key>en</key>
-    <value>Positive test</value>
+    <value>Positive owner test</value>
   </objectPresentation>
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>

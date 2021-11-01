@@ -12,7 +12,7 @@
     <key>en</key>
     <value>Positive parent test</value>
   </synonym>
-  <comment>Корректно заполнено свойство Родитель</comment>
+  <comment>Корректно заполнено свойство &quot;Родитель&quot;</comment>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.PositiveParentTest.StandardAttribute.Code</inputByString>
   <inputByString>Catalog.PositiveParentTest.StandardAttribute.Description</inputByString>
@@ -32,7 +32,7 @@
   <fullTextSearch>Use</fullTextSearch>
   <objectPresentation>
     <key>en</key>
-    <value>My owner</value>
+    <value>Positive parent test</value>
   </objectPresentation>
   <hierarchical>true</hierarchical>
   <levelCount>2</levelCount>

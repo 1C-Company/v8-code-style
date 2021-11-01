@@ -12,7 +12,7 @@
     <key>en</key>
     <value>Negative owner test with comment</value>
   </synonym>
-  <comment>Есть владелец, есть комментарий у свойства владелец, но нет синонима</comment>
+  <comment>Есть владелец, есть комментарий у свойства &quot;Владелец&quot;, но нет синонима</comment>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.NegativeOwnerTestWithComment.StandardAttribute.Code</inputByString>
   <inputByString>Catalog.NegativeOwnerTestWithComment.StandardAttribute.Description</inputByString>
@@ -30,7 +30,7 @@
   <fullTextSearch>Use</fullTextSearch>
   <objectPresentation>
     <key>en</key>
-    <value>Negative test</value>
+    <value>Negative owner test with comment</value>
   </objectPresentation>
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>

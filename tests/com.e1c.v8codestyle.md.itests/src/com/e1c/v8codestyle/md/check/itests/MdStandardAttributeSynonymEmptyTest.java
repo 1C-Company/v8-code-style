@@ -33,9 +33,7 @@ public class MdStandardAttributeSynonymEmptyTest
 {
 
     private static final String CHECK_ID = "md-standard-attribute-synonym-empty"; //$NON-NLS-1$
-
     private static final String PROJECT_NAME = "MdStandardAttributeSynonymEmpty";
-
 
     /**
      * Test MD-Object has synonym property for attribute parent or owner
