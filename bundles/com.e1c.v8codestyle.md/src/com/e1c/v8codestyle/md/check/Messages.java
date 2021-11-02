@@ -27,6 +27,9 @@ final class Messages
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.md.check.messages"; //$NON-NLS-1$
     public static String CommonModuleNameClient_description;
     public static String CommonModuleNameClient_message;
+    public static String MdCyrillicYoLetterInProperty_Description;
+    public static String MdCyrillicYoLetterInProperty_Error;
+    public static String MdCyrillicYoLetterInProperty_Title;
     public static String MdObjectNameWithoutSuffix_Name_suffix_list_title;
     public static String CommonModuleNameClient_title;
     public static String CommonModuleNameClientServer_description;

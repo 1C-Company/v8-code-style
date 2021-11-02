@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0ce6ccd8-04ba-437c-bc6f-7fac9f308021">
+  <producedTypes>
+    <objectType typeId="4af0664c-4d83-4036-aabd-f4a274b7a6d7" valueTypeId="15cc6c0a-0887-485f-9515-5826c64e1cf4"/>
+    <refType typeId="320f8e63-69a0-4502-aec3-5edbda85dcc3" valueTypeId="541c4f36-ecb0-4c1a-83ee-88a3e51e27c8"/>
+    <selectionType typeId="60835f3a-9134-4cd0-86af-b53cd53bd708" valueTypeId="e0c04086-0280-4d8b-9e78-a05ef7b3f510"/>
+    <listType typeId="def1a629-1df5-4b01-b4ad-99de0f894313" valueTypeId="30ce3162-8669-4f8f-90f1-013ab7f1be7d"/>
+    <managerType typeId="fba0a2d4-0b74-4013-8757-5f1528863d94" valueTypeId="63bbffb7-0520-4eec-8365-6da3df4a2adc"/>
+  </producedTypes>
+  <name>НеверныйСиноним</name>
+  <synonym>
+    <key>en</key>
+    <value>see russian synonym</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Буква Ё в синониме (ru)</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.НеверныйСиноним.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.НеверныйСиноним.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Справочник с буквой Ё</value>
+  </objectPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

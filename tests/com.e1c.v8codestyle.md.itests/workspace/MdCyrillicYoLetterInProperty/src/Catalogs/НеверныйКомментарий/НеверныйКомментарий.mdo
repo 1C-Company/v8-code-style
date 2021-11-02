@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a0626257-348c-4d57-ba3f-eee7f3f17cfd">
+  <producedTypes>
+    <objectType typeId="b10dc074-c364-4085-9037-6ca411f7c521" valueTypeId="28649f55-0ef5-4577-8bad-2719e087459b"/>
+    <refType typeId="6a3a4619-e4dc-4f91-9387-e328453e0bcd" valueTypeId="d3ec349d-5a75-4fb4-8c4e-52266af3fd33"/>
+    <selectionType typeId="facc7a7a-0e7f-4b79-9a97-75858ff4b030" valueTypeId="9cb213a5-c931-4517-9477-fd8d1516499f"/>
+    <listType typeId="316ec9f5-9611-40d0-8a2e-ca5735248d6e" valueTypeId="2836375d-c3dc-4ccc-aae9-6aaa28663ab9"/>
+    <managerType typeId="b53d672c-8a6f-4d92-ad91-dfdf03f2de7e" valueTypeId="5b5cbc4b-fb52-42b1-8b12-47586c58b82d"/>
+  </producedTypes>
+  <name>НеверныйКомментарий</name>
+  <comment>Комментарий с буквой Ё</comment>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.НеверныйКомментарий.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.НеверныйКомментарий.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Справочник с буквой Ё</value>
+  </objectPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>
