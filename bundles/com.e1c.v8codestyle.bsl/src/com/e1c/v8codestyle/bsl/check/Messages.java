@@ -56,6 +56,12 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ModuleStructureTopRegionCheck_description;
+
+    public static String ModuleStructureTopRegionCheck_error_message;
+
+    public static String ModuleStructureTopRegionCheck_title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
@@ -85,6 +91,12 @@ final class Messages
 
     public static String NstrStringLiteralFormatCheck_title;
 
+    public static String RegionEmptyCheck_description;
+
+    public static String RegionEmptyCheck_Region_is_empty;
+
+    public static String RegionEmptyCheck_title;
+
     public static String UseNonRecommendedMethods_description;
 
     public static String UseNonRecommendedMethods_message;
@@ -92,7 +104,6 @@ final class Messages
     public static String UseNonRecommendedMethods_parameter;
 
     public static String UseNonRecommendedMethods_title;
-
 
     static
     {

@@ -18,7 +18,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.Optional;
+import java.util.SortedSet;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -35,6 +37,8 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.ModuleStructure;
+import com.google.common.collect.ImmutableSortedSet;
 
 /**
  * The default implementation of module structure provider.
@@ -123,5 +127,14 @@ public class ModuleStructureProvider
     {
         URL url = getClass().getResource(path);
         return Optional.ofNullable(url);
+    }
+
+    @Override
+    public SortedSet<String> getModuleStructureRegions(ModuleType moduleType, ScriptVariant scriptVariant)
+    {
+        return ImmutableSortedSet.copyOf(ModuleStructure.getStructureByType(moduleType)
+            .stream()
+            .map(s -> s.getName(scriptVariant))
+            .collect(Collectors.toList()));
     }
 }

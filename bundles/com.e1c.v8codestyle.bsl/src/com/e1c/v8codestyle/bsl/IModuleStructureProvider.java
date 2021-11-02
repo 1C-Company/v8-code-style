@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl;
 
 import java.io.InputStream;
+import java.util.SortedSet;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IProject;
@@ -40,7 +41,6 @@ public interface IModuleStructureProvider
     /** The default value of creating module structure. */
     boolean PREF_DEFAULT_CREATE_STRUCTURE = true;
 
-
     /**
      * Can create module structure template for the project. This checks project or default settings.
      *
@@ -60,5 +60,13 @@ public interface IModuleStructureProvider
      */
     Supplier<InputStream> getModuleStructureTemplate(IProject project, ModuleType moduleType, ScriptVariant script);
 
+    /**
+     * Gets the module structure top regions.
+     *
+     * @param moduleType the module type, cannot be {@code null}.
+     * @param scriptVariant the script variant, cannot be {@code null}.
+     * @return the module structure regions, cannot return {@code null}.
+     */
+    SortedSet<String> getModuleStructureRegions(ModuleType moduleType, ScriptVariant scriptVariant);
 
 }
