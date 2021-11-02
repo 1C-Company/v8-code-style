@@ -83,7 +83,6 @@ public class QueryInLoopCheck
 
     private static final String DEFAULT_CHECK_QUERY_IN_INFINITE_LOOP = Boolean.toString(false);
 
-    @Nullable
     private final TypesComputer typesComputer;
 
     private final IRuntimeVersionSupport versionSupport;
@@ -216,7 +215,7 @@ public class QueryInLoopCheck
     {
         @Nullable
         Environmental envs = EcoreUtil2.getContainerOfType(source, Environmental.class);
-        if (envs == null || typesComputer == null)
+        if (envs == null)
         {
             return false;
         }
@@ -294,7 +293,7 @@ public class QueryInLoopCheck
             getPositionForFeatureObject(calledMethod), calledMethodPath);
     }
 
-    private Map<String, @NonNull String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
+    private Map<String, @NonNull String> getQueryExecutionMethodsPath(Module module, Set<String> queryExecutionMethods,
         IProgressMonitor monitor)
     {
         Map<String, @NonNull String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -316,12 +315,25 @@ public class QueryInLoopCheck
             if (method != null)
             {
                 String sourceName = getSourceName(dfa.getSource());
+                String featurePosition = getPositionForFeatureObject(dfa);
 
                 String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
-                    getPositionForFeatureObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
+                    featurePosition, sourceName, dfa.getName(), "()"); //$NON-NLS-1$
                 result.put(method.getName(), methodPath);
             }
 
+        }
+
+        return result;
+    }
+
+    private Map<String, @NonNull String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
+        IProgressMonitor monitor)
+    {
+        Map<String, @NonNull String> result = getQueryExecutionMethodsPath(module, queryExecutionMethods, monitor);
+        if (result.isEmpty())
+        {
+            return Collections.emptyMap();
         }
 
         EList<Method> methods = module.allMethods();
