@@ -21,6 +21,7 @@
    - [Авто-сортировка метаданных](docs/tools/autosort.md)
    - [Создание общих модулей по типам](docs/tools/common-module-types.md)
    - [Панель "Bsl Документирующий комментарий"](docs/tools/bsl-doc-comment-view.md)
+   - [Автоматическое создание структуры модуля](docs/tools/module-structure.md)
 
 
 

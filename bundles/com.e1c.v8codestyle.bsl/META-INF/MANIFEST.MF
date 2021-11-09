@@ -39,4 +39,5 @@ Import-Package: com._1c.g5.v8.bm.core;version="[7.0.0,8.0.0)",
  com.e1c.g5.v8.dt.check;version="[2.0.0,3.0.0)",
  com.e1c.g5.v8.dt.check.components;version="[2.0.0,3.0.0)",
  com.e1c.g5.v8.dt.check.settings;version="[2.0.0,3.0.0)"
-Export-Package: com.e1c.v8codestyle.bsl.strict;version="0.1.0"
+Export-Package: com.e1c.v8codestyle.bsl;version="0.1.0",
+ com.e1c.v8codestyle.bsl.strict;version="0.1.0"
