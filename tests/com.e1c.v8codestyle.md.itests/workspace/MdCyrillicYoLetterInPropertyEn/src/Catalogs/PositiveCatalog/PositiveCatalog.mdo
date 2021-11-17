@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8378a6bf-85be-4ed3-9960-dd47ddc23bec">
+  <producedTypes>
+    <objectType typeId="fff8a87d-87d8-4a41-a495-b25e5649e9e9" valueTypeId="9dd4945d-2c93-4351-b071-d42a96e53d84"/>
+    <refType typeId="2f8d678f-34ec-41df-a81c-4d7d17761823" valueTypeId="592bbe4a-7cf3-4602-9ede-56fd9153d80e"/>
+    <selectionType typeId="049de09d-b75b-4c2d-aefa-76338b310d21" valueTypeId="9d282bc4-6624-445f-9406-f81ec12cd46f"/>
+    <listType typeId="b218f44c-d3f9-4330-a804-7008dda04a22" valueTypeId="07d8d618-97b1-4b60-821f-1d2eeb706c05"/>
+    <managerType typeId="1e5805a2-08ae-4bc1-88c4-4add7b26158b" valueTypeId="e0ab8dfe-697b-4a32-92e9-49da7cc269b1"/>
+  </producedTypes>
+  <name>PositiveCatalog</name>
+  <synonym>
+    <key>en</key>
+    <value>Positive catalog</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.PositiveCatalog.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.PositiveCatalog.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Positive test</value>
+  </objectPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <templates uuid="89eea0de-9825-4f82-abdd-83889f171115">
+    <name>Template_puml</name>
+    <synonym>
+      <key>en</key>
+      <value>Template puml</value>
+    </synonym>
+    <comment>PUML Diagram</comment>
+    <templateType>TextDocument</templateType>
+  </templates>
+</mdclass:Catalog>

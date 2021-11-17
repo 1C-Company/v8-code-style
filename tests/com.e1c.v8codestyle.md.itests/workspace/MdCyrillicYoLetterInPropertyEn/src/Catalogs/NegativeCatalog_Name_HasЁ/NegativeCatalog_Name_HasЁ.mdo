@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="826050ac-c1d5-4a4d-85d2-94d048b0e91f">
+  <producedTypes>
+    <objectType typeId="e4ef7bbc-dac7-4188-8d86-d7832c4d2520" valueTypeId="5509426d-e6a6-4d0f-bcb4-75367568ec24"/>
+    <refType typeId="956e2a0c-07bf-4224-9362-01e0e7ca6e48" valueTypeId="e3d68cfa-d92e-4d55-82bd-9c17a6346e1f"/>
+    <selectionType typeId="be1bb2fc-3618-4f9b-b6b3-339aea558bba" valueTypeId="d52c8b3e-2cf2-4d0e-89c1-033b3b2d0301"/>
+    <listType typeId="f2c3bf68-9a7d-4c5a-8366-ab3ab91faee9" valueTypeId="fd53c106-8cbc-48f7-9041-f354fe814e13"/>
+    <managerType typeId="eca99deb-32b2-447f-b4cd-cd679201a0fa" valueTypeId="b1d2544a-a198-44fc-a552-7f5e6f5339c8"/>
+  </producedTypes>
+  <name>NegativeCatalog_Name_HasЁ</name>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeCatalog_Name_HasЁ.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeCatalog_Name_HasЁ.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Справочник с буквой Ё</value>
+  </objectPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

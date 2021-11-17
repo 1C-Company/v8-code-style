@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="04ac016f-db77-44b9-a0b3-8d527889d63d">
+  <producedTypes>
+    <objectType typeId="6fcec6ec-dc6f-4bf9-ad6e-fca0e6de543d" valueTypeId="7a3f1282-5a20-481d-9646-eff37aecda64"/>
+    <refType typeId="fd86e48a-4e1f-474e-abe0-f782eba6c23c" valueTypeId="41bcbfe9-babb-49ca-be7d-a9572223bd3d"/>
+    <selectionType typeId="646bf50b-0fbd-41bd-8ef4-0a6bb8f46042" valueTypeId="c8e963ee-1c67-488f-ab5a-adf0d016b735"/>
+    <listType typeId="73d38bf0-e8be-45ff-a555-b481f1349165" valueTypeId="27206b12-26ef-4ac0-99e1-66f430f26b41"/>
+    <managerType typeId="c411a45a-01fb-4fbb-aeb9-3e631c0842c8" valueTypeId="07d69644-2641-4ecf-a1dd-2d61919439b1"/>
+  </producedTypes>
+  <name>NegativeDocument_Synonym</name>
+  <synonym>
+    <key>en</key>
+    <value>see russian synonym</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Синоним с буквой Ё</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.NegativeDocument_Synonym.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+</mdclass:Document>

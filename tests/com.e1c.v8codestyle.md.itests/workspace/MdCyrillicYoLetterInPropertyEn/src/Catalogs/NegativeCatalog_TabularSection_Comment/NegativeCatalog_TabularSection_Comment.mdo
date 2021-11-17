@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="848550b7-cf3b-4e56-a348-edb7a4b3a99f">
+  <producedTypes>
+    <objectType typeId="048e86a5-0873-4f21-a58b-3bedc197cff0" valueTypeId="6ee60c85-08eb-4df3-8818-4f1e772761f0"/>
+    <refType typeId="41a4294e-a5a6-4403-8254-8fc14e0cebf2" valueTypeId="ff110d00-1f53-497c-a2f8-003da37c5ede"/>
+    <selectionType typeId="b2d6db6e-ffd9-429d-b887-06aafc2bfacd" valueTypeId="144c795c-3d38-4846-b162-a2dad727c3af"/>
+    <listType typeId="eb220248-6453-4ccc-a529-5c0aeb493d4c" valueTypeId="e6f4133d-1827-449d-b12a-6b2194266e68"/>
+    <managerType typeId="e928985c-0fd8-4f8a-8617-829aa3c96e70" valueTypeId="ad3b2155-f7de-44b7-9ef7-d12f744a2598"/>
+  </producedTypes>
+  <name>NegativeCatalog_TabularSection_Comment</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative catalog tabular section comment</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeCatalog_TabularSection_Comment.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeCatalog_TabularSection_Comment.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <tabularSections uuid="685f4039-93d6-485f-8f82-c1dc69b38d96">
+    <producedTypes>
+      <objectType typeId="990f874b-0194-4feb-9daf-3fb8a9c04bc0" valueTypeId="68a4494e-8ebc-4d63-ab28-8299841d22d8"/>
+      <rowType typeId="69457ea0-a193-433d-a9e0-87847fa3730d" valueTypeId="027d2670-2e01-422b-a579-11e2c3a82b07"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+    <comment>Комментарий с буквой Ё</comment>
+    <attributes uuid="6e894ad7-7b7f-456c-adb0-f524a9779a7a">
+      <name>Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>

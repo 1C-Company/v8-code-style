@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="81610bab-8cc7-45e0-a851-65923d7a73fa">
+  <producedTypes>
+    <objectType typeId="7f14027f-a21f-46c0-99d8-57d226b72d50" valueTypeId="761b522e-f940-486e-bfa6-3b846f6cf309"/>
+    <refType typeId="43e9dc47-704e-4b76-b610-c8f9a4f55b4d" valueTypeId="feda9617-69aa-4878-a332-b0ce774cf8a1"/>
+    <selectionType typeId="9f9f6808-063e-45e4-8b8d-6845f8cfc631" valueTypeId="cbdda4cc-3148-4755-8211-60afac8b463e"/>
+    <listType typeId="0cf8bbe8-710d-4f1a-856d-61f7d1ab5119" valueTypeId="423f4c4a-8ef6-48ce-9caf-45cc14de0008"/>
+    <managerType typeId="2c40f7ac-5e88-4522-98c7-6f3ad655d5f2" valueTypeId="d5a5aa56-0f8d-42e4-b3e9-950a9b184e3f"/>
+  </producedTypes>
+  <name>PositiveCatalog_Attribute</name>
+  <synonym>
+    <key>en</key>
+    <value>Positive catalog attribute</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.PositiveCatalog_Attribute.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.PositiveCatalog_Attribute.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="205e9a28-f80c-476b-8843-bd49017e94d7">
+    <name>Attribute</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

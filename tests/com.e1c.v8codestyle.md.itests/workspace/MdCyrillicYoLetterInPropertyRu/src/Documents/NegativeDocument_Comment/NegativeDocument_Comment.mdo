@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="fae4bea5-9db6-4d5d-87b1-bb387f45e065">
+  <producedTypes>
+    <objectType typeId="aedd4d61-b7c0-4047-a008-42fef2ec17d7" valueTypeId="c62b355f-7dbf-4d0d-8437-b12cfe36cd59"/>
+    <refType typeId="52652035-6c22-4bea-bcee-e72eefee1e81" valueTypeId="4ea39c68-6064-433a-a0c8-10e1eb0e8996"/>
+    <selectionType typeId="5aa6de06-547f-442e-bfe9-628a55e1f460" valueTypeId="b072607a-9c2c-46d4-9ecf-c4c341859948"/>
+    <listType typeId="e4c7d50b-beab-44fa-8ffa-35ad73c00064" valueTypeId="d1dff237-b9e9-4a37-805b-a023467d47ab"/>
+    <managerType typeId="cdc52bd6-d0e2-4af2-85db-02392f3f8f0c" valueTypeId="6fa5bee3-f879-420d-99fd-c08384d790a1"/>
+  </producedTypes>
+  <name>NegativeDocument_Comment</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative document comment</value>
+  </synonym>
+  <comment>Комментарий с буквой Ё</comment>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.NegativeDocument_Comment.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+</mdclass:Document>

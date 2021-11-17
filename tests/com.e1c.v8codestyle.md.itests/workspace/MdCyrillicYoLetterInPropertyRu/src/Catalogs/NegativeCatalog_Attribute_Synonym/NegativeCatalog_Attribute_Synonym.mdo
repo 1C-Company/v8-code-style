@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="2ba4f80a-bdeb-44e5-aad5-4a57ce62471a">
+  <producedTypes>
+    <objectType typeId="232eb13b-1cfc-4f28-ae08-c1451e60cb4b" valueTypeId="e7a33ac2-6df7-490b-b062-2812dcb19916"/>
+    <refType typeId="2f1ef889-08c2-4473-918f-6d3da813539b" valueTypeId="976f9e8b-2b09-40c8-b47a-ed79eff76d53"/>
+    <selectionType typeId="62714925-16dc-4400-8812-308fbd50f955" valueTypeId="ff0cae9d-f816-4b3f-8649-065b5445bf69"/>
+    <listType typeId="dada001f-f08b-418e-9a09-527342308a44" valueTypeId="18417a7b-5e0f-449e-8b1d-9a78e8af6c51"/>
+    <managerType typeId="3ae7250f-8aa8-416d-b71e-af2e9f2303a7" valueTypeId="e4c80cc8-3ae9-46e5-af6d-e77f5a53c76b"/>
+  </producedTypes>
+  <name>NegativeCatalog_Attribute_Synonym</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative catalog attribute synonym</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeCatalog_Attribute_Synonym.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeCatalog_Attribute_Synonym.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="00845fdb-47b6-4a97-8631-a6ce361ea754">
+    <name>Attribute</name>
+    <synonym>
+      <key>en</key>
+      <value>see russian synonym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Синоним с буквой Ё</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

@@ -1,0 +1,21 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007fbac7999101, pid=170258, tid=170276
+#
+# JRE version: OpenJDK Runtime Environment (11.0.13+8) (build 11.0.13+8-LTS)
+# Java VM: OpenJDK 64-Bit Server VM (11.0.13+8-LTS, mixed mode, tiered, compressed oops, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libjimage.so+0x4101]  ImageStrings::find(Endian*, char const*, int*, unsigned int)+0x71
+#
+# Core dump will be written. Default location: Core dumps may be processed with "/lib/systemd/systemd-coredump %P %u %g %s %t 9223372036854775808 %h" (or dumping to /data/my500/src/1c/EdtSrc/code_style_git/v8-code-style/tests/com.e1c.v8codestyle.md.itests/core.170258)
+#
+# If you would like to submit a bug report, please visit:
+#   https://bell-sw.com/support
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:38725 -ea -Declipse.p2.data.area=@config.dir/p2 --add-modules=ALL-SYSTEM -Dfile.encoding=UTF-8 org.eclipse.equinox.launcher.Main -os linux -ws gtk -arch x86_64 -nl en_US -consoleLog -version 3 -port 34843 -testLoaderClass org.eclipse.jdt.internal.junit4.runner.JUnit4TestLoader -loaderpluginname org.eclipse.jdt.junit4.runtime -classNames com.e1c.v8codestyle.md.check.itests.MdCyrillicYoLetterInPropertyTest_en -application org.eclipse.pde.junit.runtime.uitestapplication -product org.eclipse.platform.ide -data /data/my500/src/1c/EdtSrc/code-style/../junit-workspace -configuration file:/data/my500/src/1c/EdtSrc/code-style/.metadata/.plugins/org.eclipse.pde.core/pde-junit/ -dev file:/data/my500/src/1c/EdtSrc/code-style/.metadata/.plugins/org.eclipse.pde.core/pde-junit/dev.properties -os linux -ws gtk -arch x86_64 -nl en_US -consoleLog -testpluginname com.e1c.v8codestyle.md
+
+Host: 

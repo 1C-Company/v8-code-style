@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="061cc1ae-20d3-4604-bab0-1c63b343717b">
+  <producedTypes>
+    <objectType typeId="8a9e9be9-f146-4439-90ae-e36cd45a9857" valueTypeId="0a186821-6a01-4380-a17c-320de70e8864"/>
+    <refType typeId="2366c3cd-7b0b-44a4-8c9d-8619b04b244f" valueTypeId="41c3b5f0-621a-4e00-b3cb-d6478a3b9f2c"/>
+    <selectionType typeId="ddc284ad-bd04-4d55-a8a6-7c548e36529e" valueTypeId="7bf903e5-d250-452a-9f4e-13762f8e185e"/>
+    <listType typeId="efd19a7d-07a1-4ae9-8f1b-2311c56aadd7" valueTypeId="a7d51562-9049-4c59-a7ad-9c6240ad0b03"/>
+    <managerType typeId="6d7f15b5-4109-4d53-9044-f5eeba3f8f3e" valueTypeId="5f88280b-3b3a-4b48-aae2-e57815971d86"/>
+  </producedTypes>
+  <name>PositiveCatalog_TabularSection</name>
+  <synonym>
+    <key>en</key>
+    <value>Positive catalog tabular section</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.PositiveCatalog_TabularSection.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.PositiveCatalog_TabularSection.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Positive test</value>
+  </objectPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <tabularSections uuid="555ff41e-f24c-420e-b4bc-750083e1d1ff">
+    <producedTypes>
+      <objectType typeId="64bd374a-f6c1-43f1-a95b-be4f0ea7bb0b" valueTypeId="096668b7-4966-4e19-9931-0fb58c0ad021"/>
+      <rowType typeId="b1f8e6b0-28fd-4245-b75c-fcb44c716d0d" valueTypeId="d6123ac5-7843-424b-9825-a5dedba8430a"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+    <attributes uuid="0668fa2d-fef6-4ae8-8a93-17ef61598957">
+      <name>Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+  <templates uuid="4ec18d28-aa5f-4b63-ae69-052863cc08fe">
+    <name>Template_puml</name>
+    <synonym>
+      <key>en</key>
+      <value>Template puml</value>
+    </synonym>
+    <comment>PUML Diagram</comment>
+    <templateType>TextDocument</templateType>
+  </templates>
+</mdclass:Catalog>

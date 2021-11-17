@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="826c9334-7f44-4cab-a86f-8b169fe56923">
+  <producedTypes>
+    <objectType typeId="6e106457-9b73-4393-a7fd-abcd18767508" valueTypeId="acf9c6d2-6d48-44fa-8d14-4fe0f42f4311"/>
+    <refType typeId="169d897e-f2ee-4533-86aa-1b72f2fdfb15" valueTypeId="e4827deb-ddf9-4645-9102-fba6695a35f5"/>
+    <selectionType typeId="bf790d71-bde5-4fc9-acd6-5b785c6da7e5" valueTypeId="c8ca9cc8-87a8-45e3-bbaf-ab39a526d565"/>
+    <listType typeId="197577e5-2508-4f75-a581-205cee980bf5" valueTypeId="3d080f36-6f4f-4f1e-b5c3-b00681e12bd6"/>
+    <managerType typeId="260fc0dd-280f-48b8-8498-192831dcade0" valueTypeId="297c1a32-66cc-4713-aec1-5f78d14365f8"/>
+  </producedTypes>
+  <name>NegativeCatalog_TabularSection_Name</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative catalog tabular section name</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeCatalog_TabularSection_Name.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeCatalog_TabularSection_Name.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <tabularSections uuid="415e2f33-aa59-46bb-894d-9de0f8989354">
+    <producedTypes>
+      <objectType typeId="a68313e3-b7ff-402e-b79d-575b5ca250e4" valueTypeId="5d85b2d2-4973-45a6-b6ce-29270eb6211d"/>
+      <rowType typeId="7ac0fc4d-3d1e-493f-8974-1981e3d892ca" valueTypeId="1e943ad2-045e-47b5-a78d-0bc38ef5f0c0"/>
+    </producedTypes>
+    <name>TabularSection_Ё</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+    <attributes uuid="bf1dbf65-9593-4de8-bd6a-6239d40b11c1">
+      <name>Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8aa39236-9068-44bb-bd9e-35f93525b2f1">
+  <producedTypes>
+    <objectType typeId="4d1bec7c-c2a2-4274-adbf-8b7291082076" valueTypeId="5507ea09-d627-489f-8b85-eff95cbf6fb3"/>
+    <refType typeId="2909b6d3-d2d5-4fdb-8db5-62d6bc8f664c" valueTypeId="27da41c0-9892-4098-9adf-34e9528bc120"/>
+    <selectionType typeId="47bfb15d-7bb0-4925-ba4a-d661344e8793" valueTypeId="ce8d87f8-dcec-4b82-9c11-3bcda15913bb"/>
+    <listType typeId="16bb9bc1-a86d-4f5e-bd44-aa7bdaf2f655" valueTypeId="cb361c8f-2403-45d5-a028-3a3bc0f49935"/>
+    <managerType typeId="28e31e93-5546-4b9e-b3b8-25c2c8e25009" valueTypeId="d8fbd380-035a-44b2-b188-460ca134ca8c"/>
+  </producedTypes>
+  <name>NegativeCatalog_Attribute_Name</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative catalog attribute name</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeCatalog_Attribute_Name.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeCatalog_Attribute_Name.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="d654db4d-1504-4a38-85a0-195d110d498b">
+    <name>Attribute_HasЁ</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute has letter</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

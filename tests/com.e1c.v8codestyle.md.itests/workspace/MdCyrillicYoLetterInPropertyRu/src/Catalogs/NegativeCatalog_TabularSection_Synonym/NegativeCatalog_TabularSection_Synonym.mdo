@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="dd5f0c77-2015-49c3-98eb-e99d4cd764da">
+  <producedTypes>
+    <objectType typeId="17afee14-b9fd-4c44-9a00-1995abede42e" valueTypeId="3bb9941a-fd52-4425-a503-ea6fbf7d44f1"/>
+    <refType typeId="871b225b-523d-4ed2-bbb3-8a3e4e1ad3b4" valueTypeId="78cbf400-0337-4e22-bf9b-c62f4c0d7f12"/>
+    <selectionType typeId="d5a7e131-9f2c-4c95-b881-27656a9ddd75" valueTypeId="a0036149-4e8e-48cc-b2bd-ebdd36ec1047"/>
+    <listType typeId="299b93ad-0f15-4966-9856-1f69caaee447" valueTypeId="8d7b513f-6bf9-4689-93c2-87bae20db133"/>
+    <managerType typeId="7cb3736b-a52b-47b9-a307-ae73b87e2f2a" valueTypeId="f84d251b-94e3-4a84-8a82-94848fdfd2fc"/>
+  </producedTypes>
+  <name>NegativeCatalog_TabularSection_Synonym</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative catalog tabular section synonym</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeCatalog_TabularSection_Synonym.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeCatalog_TabularSection_Synonym.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <tabularSections uuid="efc55d0c-37ba-4db7-a365-259d47d49755">
+    <producedTypes>
+      <objectType typeId="e58845b8-4e0f-4852-b4d1-75a7c4771374" valueTypeId="fc27c31a-7be7-471a-902a-31b5216ba715"/>
+      <rowType typeId="5ee03687-ac4d-453b-8bbb-5b7c530ded52" valueTypeId="99c67443-39e3-4101-92ee-520acd65dba8"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>see russian synonym</value>
+    </synonym>
+    <synonym>
+      <key>ru</key>
+      <value>Синоним с буквой Ё</value>
+    </synonym>
+    <attributes uuid="d7c53115-11b2-414b-af2a-aeabb23ca6fa">
+      <name>Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>

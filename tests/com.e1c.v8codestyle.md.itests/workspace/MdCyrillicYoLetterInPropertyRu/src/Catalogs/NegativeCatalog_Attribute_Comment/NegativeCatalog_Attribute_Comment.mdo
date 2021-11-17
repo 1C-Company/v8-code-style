@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e77e5b61-0bbf-41ff-93ec-67d17987c259">
+  <producedTypes>
+    <objectType typeId="ce0748c5-6502-48e0-985e-1bf00ffad3c4" valueTypeId="5be9d416-da84-488f-9bf5-949842b84891"/>
+    <refType typeId="ea6b59b8-0342-4197-b35e-0e24f498cad0" valueTypeId="d99639be-46f7-40e3-acee-26b87ec362aa"/>
+    <selectionType typeId="3151f928-f420-4773-ad2b-8691547e4b94" valueTypeId="5f0c3d79-32cb-45af-a300-1cec701ec223"/>
+    <listType typeId="ee6a03f0-e946-4e6e-833f-e56f3f5e970e" valueTypeId="89439c04-e2f3-4213-aaed-cdf7b3add175"/>
+    <managerType typeId="3e983d49-4567-4c16-a2ba-8da4f69699d6" valueTypeId="e460e93b-bef1-485f-b590-b5d012a73202"/>
+  </producedTypes>
+  <name>NegativeCatalog_Attribute_Comment</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative catalog attribute comment</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeCatalog_Attribute_Comment.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeCatalog_Attribute_Comment.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="58b381f4-2901-4633-93db-e30244c2a58d">
+    <name>Attribute</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute</value>
+    </synonym>
+    <comment>Комментарий с буквой Ё</comment>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

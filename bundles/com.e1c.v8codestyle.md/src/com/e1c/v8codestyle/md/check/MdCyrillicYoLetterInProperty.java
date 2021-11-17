@@ -14,6 +14,10 @@
 
 package com.e1c.v8codestyle.md.check;
 
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG_ATTRIBUTE;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT_ATTRIBUTE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__COMMENT;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
@@ -24,6 +28,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.metadata.mdclass.Language;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -44,7 +49,7 @@ import com.google.inject.Inject;
 public class MdCyrillicYoLetterInProperty
     extends BasicCheck
 {
-    private static final String CHECK_ID = "md-cyryllic-yo-letter"; //$NON-NLS-1$
+    private static final String CHECK_ID = "md-cyrillic-yo-letter"; //$NON-NLS-1$
 
     private static final String CYRILLIC_YO_LOWER = "ё"; //$NON-NLS-1$
 
@@ -70,6 +75,7 @@ public class MdCyrillicYoLetterInProperty
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
+
         builder.title(Messages.MdCyrillicYoLetterInProperty_Title)
             .description(Messages.MdCyrillicYoLetterInProperty_Description)
             .complexity(CheckComplexity.NORMAL)
@@ -78,7 +84,17 @@ public class MdCyrillicYoLetterInProperty
             .extension(new TopObjectFilterExtension())
             .topObject(MD_OBJECT)
             .checkTop()
-            .features(MD_OBJECT__NAME);
+            .features(MD_OBJECT__NAME, MD_OBJECT__SYNONYM, MD_OBJECT__COMMENT);
+
+        builder.topObject(CATALOG)
+            .checkTop()
+            .containment(CATALOG_ATTRIBUTE)
+            .features(MD_OBJECT__NAME, MD_OBJECT__SYNONYM, MD_OBJECT__COMMENT);
+
+        builder.topObject(DOCUMENT)
+            .checkTop()
+            .containment(DOCUMENT_ATTRIBUTE)
+            .features(MD_OBJECT__NAME, MD_OBJECT__SYNONYM, MD_OBJECT__COMMENT);
     }
 
     @Override
@@ -91,30 +107,42 @@ public class MdCyrillicYoLetterInProperty
         {
             return;
         }
+
         IV8Project project = v8ProjectManager.getProject(mdObject);
-        String languageCode = project.getDefaultLanguage().getLanguageCode();
-        if (monitor.isCanceled() || !languageCode.equals(LANG_RU))
+
+        Boolean hasRuLangSynonym = false;
+        for (Language lang : project.getLanguages())
+        {
+            hasRuLangSynonym = hasRuLangSynonym || lang.getLanguageCode().equals(LANG_RU);
+        }
+
+        Boolean hasRuLang = project.getDefaultLanguage().getLanguageCode().equals(LANG_RU);
+        if (monitor.isCanceled() || !(hasRuLang || hasRuLangSynonym))
         {
             return;
         }
 
-        if (isContainsYoLetter(mdObject.getName()))
+        if (Boolean.TRUE.equals(hasRuLang))
         {
-            resultAceptor.addIssue(Messages.MdCyrillicYoLetterInProperty_Error, MD_OBJECT__NAME);
+            if (isContainsYoLetter(mdObject.getName()))
+            {
+                resultAceptor.addIssue(Messages.MdCyrillicYoLetterInProperty_Error, MD_OBJECT__NAME);
 
+            }
+
+            if (isContainsYoLetter(mdObject.getComment()))
+            {
+                resultAceptor.addIssue(Messages.MdCyrillicYoLetterInProperty_Error, MD_OBJECT__COMMENT);
+            }
         }
 
-        if (isContainsYoLetter(mdObject.getComment()))
+        if (Boolean.TRUE.equals(hasRuLangSynonym))
         {
-            resultAceptor.addIssue(Messages.MdCyrillicYoLetterInProperty_Error, MD_OBJECT__COMMENT);
-
-        }
-
-        String ruSynonym = mdObject.getSynonym().get(languageCode);
-        if (ruSynonym != null && isContainsYoLetter(ruSynonym))
-        {
-            resultAceptor.addIssue(Messages.MdCyrillicYoLetterInProperty_Error, MD_OBJECT__SYNONYM);
-
+            String ruSynonym = mdObject.getSynonym().get(LANG_RU);
+            if (ruSynonym != null && isContainsYoLetter(ruSynonym))
+            {
+                resultAceptor.addIssue(Messages.MdCyrillicYoLetterInProperty_Error, MD_OBJECT__SYNONYM);
+            }
         }
     }
 
