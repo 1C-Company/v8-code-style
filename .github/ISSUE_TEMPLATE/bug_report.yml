@@ -64,7 +64,7 @@ body:
         Если файл лога не получается прикрепить, это касается файла `.log`, то переименуйте его в `log.txt` и прикрепите
 
   - type: input
-    id: edt-version
+    id: plugin-version
     attributes:
       label: Версия 1С:Code style V8
       description: "Скопируйте и вставте версию плагина из меню: Help -> About 1C:Enterprise Development Tools -> кликните на иконку плагина"
