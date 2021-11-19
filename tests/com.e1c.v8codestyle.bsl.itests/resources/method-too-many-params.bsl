@@ -25,7 +25,7 @@ Procedure Noncompliant2(Name,
 
 EndProcedure
 
-Procedure Noncompliant3(Name,
+Procedure Noncompliant3ButErrorYet(Name,
       Heading = Undefined,
       OnChangeHandler = "",
       OnBeginSelectionHandler = "",

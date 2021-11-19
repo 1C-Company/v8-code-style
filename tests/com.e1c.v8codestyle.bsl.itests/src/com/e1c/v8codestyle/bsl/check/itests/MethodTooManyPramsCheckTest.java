@@ -41,7 +41,7 @@ public class MethodTooManyPramsCheckTest
     }
 
     /**
-     * Test that Nstr first parameter is compliant
+     * Test method has too many parameters.
      *
      * @throws Exception the exception
      */
