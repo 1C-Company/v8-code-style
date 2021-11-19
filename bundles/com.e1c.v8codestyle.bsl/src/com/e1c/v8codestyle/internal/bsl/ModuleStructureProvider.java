@@ -17,8 +17,8 @@ import static com.e1c.v8codestyle.bsl.strict.StrictTypeUtil.BSL_FILE_EXTENSION;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Optional;
-import java.util.SortedSet;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -130,7 +130,7 @@ public class ModuleStructureProvider
     }
 
     @Override
-    public SortedSet<String> getModuleStructureRegions(ModuleType moduleType, ScriptVariant scriptVariant)
+    public Collection<String> getModuleStructureRegions(ModuleType moduleType, ScriptVariant scriptVariant)
     {
         return ImmutableSortedSet.copyOf(ModuleStructure.getStructureByType(moduleType)
             .stream()

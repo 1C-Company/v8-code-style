@@ -13,7 +13,7 @@
 package com.e1c.v8codestyle.bsl;
 
 import java.io.InputStream;
-import java.util.SortedSet;
+import java.util.Collection;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IProject;
@@ -61,12 +61,12 @@ public interface IModuleStructureProvider
     Supplier<InputStream> getModuleStructureTemplate(IProject project, ModuleType moduleType, ScriptVariant script);
 
     /**
-     * Gets the module structure top regions.
+     * Gets the module structure top regions in order of as they should be in module.
      *
      * @param moduleType the module type, cannot be {@code null}.
      * @param scriptVariant the script variant, cannot be {@code null}.
-     * @return the module structure regions, cannot return {@code null}.
+     * @return the module structure sorted and unique regions, cannot return {@code null}.
      */
-    SortedSet<String> getModuleStructureRegions(ModuleType moduleType, ScriptVariant scriptVariant);
+    Collection<String> getModuleStructureRegions(ModuleType moduleType, ScriptVariant scriptVariant);
 
 }

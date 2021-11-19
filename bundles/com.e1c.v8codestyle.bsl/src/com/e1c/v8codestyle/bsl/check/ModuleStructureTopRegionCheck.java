@@ -15,8 +15,8 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.REGION_PREPROCESSOR;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
+import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -88,7 +88,8 @@ public class ModuleStructureTopRegionCheck
         IV8Project project = v8ProjectManager.getProject(region);
 
         ModuleType moduleType = getModuleType(region);
-        Set<String> names = moduleStructureProvider.getModuleStructureRegions(moduleType, project.getScriptVariant());
+        Collection<String> names =
+            moduleStructureProvider.getModuleStructureRegions(moduleType, project.getScriptVariant());
         if (!names.contains(region.getName()))
         {
             return;

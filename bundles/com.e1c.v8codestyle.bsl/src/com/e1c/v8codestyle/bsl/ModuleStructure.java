@@ -12,6 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl;
 
+import java.util.Collection;
 import java.util.SortedSet;
 
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
@@ -58,7 +59,7 @@ public enum ModuleStructure
      * @param moduleType the module type, cannot be {@code null}.
      * @return the module structure regions, cannot return {@code null}.
      */
-    public static SortedSet<ModuleStructureSection> getStructureByType(ModuleType moduleType)
+    public static Collection<ModuleStructureSection> getStructureByType(ModuleType moduleType)
     {
         switch (moduleType)
         {
@@ -111,7 +112,7 @@ public enum ModuleStructure
      *
      * @return the sections, cannot return {@code null}.
      */
-    public SortedSet<ModuleStructureSection> getSections()
+    public Collection<ModuleStructureSection> getSections()
     {
         return sections;
     }
