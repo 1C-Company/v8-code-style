@@ -76,7 +76,7 @@ public class MethodTooManyPramsCheck
         int maxParams = parameters.getInt(PARAM_MAX_PARAMS);
         int maxDefaultValueParams = parameters.getInt(PARAM_MAX_DEFAULT_VALUE_PARAMS);
 
-        if (maxDefaultValueParams < 1 || maxParams < 1)
+        if (maxDefaultValueParams < 1 && maxParams < 1)
         {
             return;
         }
@@ -95,7 +95,7 @@ public class MethodTooManyPramsCheck
         for (int i = start; i < params.size(); i++)
         {
             FormalParam param = params.get(i);
-            if (maxParams > 0 && i > start)
+            if (maxParams > 0 && i > maxParams)
             {
                 String message = MessageFormat.format(Messages.MethodTooManyPramsCheck_Method_has_more_than__N__params,
                     String.valueOf(maxParams));

@@ -7,7 +7,44 @@ For example, you can easily make a mistake in the number of commas when passing 
 
 ## Noncompliant Code Example
 
+```bsl
+// Adds a new field to a form and initializes it with default values.
+Function AddFormField(Name,
+      Heading = Undefined,
+      OnChangeHandler = "",
+      OnBeginSelectionHandler = "",
+      MarginWidth,
+      Backcolor = Undefined,
+      TitleBackColor = Undefined,
+      Parent = Undefined,
+      HeaderPicture = Undefined,
+      DataPath = Undefined,
+      FieldReadOnly = False,
+      ChoiceParameterLinks = Undefined)
+…
+EndFunction
+­
+// calling the function
+NewField = AddFormField("OldPrice" + ColumnName, NStr("en='Price'"),,, 12, BackColor, TitleColor, NewFolder,,,True);
+NewField.TextColor = WebColors.Gray;
+```
 ## Compliant Solution
+
+```bsl
+// Adds a new field to a form and initializes it with default values.
+Function NewFormField(FieldName) 
+…
+EndFunction
+­
+// calling the function
+NewField = NewFormField("OldPrice" + ColumnName);
+NewField.Heading = NStr("en='Price'");
+NewField.BackColor = BackColor;
+NewField.TextColor = WebColors.Gray;
+NewField.… = …
+…
+```
 
 ## See
 
+- [Procedure and function parameters](https://1c-dn.com/library/procedure_and_function_parameters/)
