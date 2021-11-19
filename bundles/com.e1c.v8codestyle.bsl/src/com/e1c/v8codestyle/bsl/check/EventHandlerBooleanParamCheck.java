@@ -247,7 +247,7 @@ public class EventHandlerBooleanParamCheck
                 }
             }
         }
-        if (monitor.isCanceled() || event == null)
+        if (monitor.isCanceled() || event == null || event.getParamSet().isEmpty())
         {
             return null;
         }
