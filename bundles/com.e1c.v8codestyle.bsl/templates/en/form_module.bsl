@@ -7,7 +7,7 @@
 
 // Enter code here.
 
-%CURRENT_CODE%
+//%CURRENT_CODE%
 
 #EndRegion
 
@@ -17,7 +17,7 @@
 
 #EndRegion
 
-#Region FormTableItemsEventHandlers
+#Region FormTableItemsEventHandlers//<FromTableName>
 
 // Enter code here.
 
