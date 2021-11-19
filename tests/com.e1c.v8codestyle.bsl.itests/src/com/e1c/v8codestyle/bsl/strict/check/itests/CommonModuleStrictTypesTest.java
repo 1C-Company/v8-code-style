@@ -23,10 +23,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -39,19 +41,11 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.model.Variable;
+import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
-import com.e1c.v8codestyle.bsl.strict.check.DocCommentFieldTypeCheck;
-import com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessMethodNotFoundCheck;
-import com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessTypeCheck;
-import com.e1c.v8codestyle.bsl.strict.check.FunctionCtorReturnSectionCheck;
-import com.e1c.v8codestyle.bsl.strict.check.FunctionReturnTypeCheck;
-import com.e1c.v8codestyle.bsl.strict.check.InvocationParamIntersectionCheck;
-import com.e1c.v8codestyle.bsl.strict.check.MethodParamTypeCheck;
-import com.e1c.v8codestyle.bsl.strict.check.SimpleStatementTypeCheck;
-import com.e1c.v8codestyle.bsl.strict.check.StructureCtorValueTypeCheck;
-import com.e1c.v8codestyle.bsl.strict.check.VariableTypeCheck;
+import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 
 /**
  * Tests of strict types system in BSL module.
@@ -59,7 +53,7 @@ import com.e1c.v8codestyle.bsl.strict.check.VariableTypeCheck;
  * @author Dmitriy Marmyshev
  */
 public class CommonModuleStrictTypesTest
-    extends SingleProjectReadOnlyCheckTestBase
+    extends CheckTestBase
 {
 
     private static final String PROJECT_NAME = "CommonModule";
@@ -70,7 +64,28 @@ public class CommonModuleStrictTypesTest
 
     private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
 
+    private IDtProject dtProject;
+
+    @Before
+    public void setUp() throws CoreException
+    {
+
+        IProject project = testingWorkspace.getProject(getTestConfigurationName());
+
+        if (!project.exists() || !project.isAccessible())
+        {
+            testingWorkspace.cleanUpWorkspace();
+            dtProject = openProjectAndWaitForValidationFinish(getTestConfigurationName());
+        }
+        dtProject = dtProjectManager.getDtProject(project);
+    }
+
     @Override
+    protected boolean enableCleanUp()
+    {
+        return false;
+    }
+
     protected String getTestConfigurationName()
     {
         return PROJECT_NAME;
@@ -100,13 +115,13 @@ public class CommonModuleStrictTypesTest
 
         Marker marker = markers.get(0);
 
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(1);
 
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -134,8 +149,8 @@ public class CommonModuleStrictTypesTest
 
         Marker marker = markers.get(0);
 
-        assertEquals("4", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -163,8 +178,8 @@ public class CommonModuleStrictTypesTest
 
         Marker marker = markers.get(0);
 
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -192,12 +207,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(methods.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(1);
-        assertEquals("3", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -217,7 +232,6 @@ public class CommonModuleStrictTypesTest
         List<Method> methods = module.allMethods();
         assertEquals(2, methods.size());
 
-
         List<Marker> markers = getMarters(checkId, module);
 
         // FIXME check-system duplicates issues
@@ -226,12 +240,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(methods.get(0).getFormalParams().get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(1);
-        assertEquals("3", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -259,12 +273,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(dynamicMethods.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -292,12 +306,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(dynamicProperties.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -325,12 +339,12 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(statements.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
         marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -355,10 +369,10 @@ public class CommonModuleStrictTypesTest
         assertEquals(2, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get("line"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get("line"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -386,8 +400,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(finctions.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -415,8 +429,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(statements.get(2)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
     }
 
@@ -440,8 +454,13 @@ public class CommonModuleStrictTypesTest
         assertEquals(1, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get("line"));
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
+    }
+
+    private IDtProject getProject()
+    {
+        return dtProject;
     }
 
     private List<Marker> getMarters(String checkId, Module module)

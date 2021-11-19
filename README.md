@@ -1,4 +1,9 @@
 [![Build](https://github.com/1C-Company/v8-code-style/workflows/CI/badge.svg)](https://github.com/1C-Company/v8-code-style/actions)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=coverage)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=ncloc)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=bugs)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=code_smells)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=sqale_index)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
 
 # 1С:Стандарты разработки V8
 
@@ -16,6 +21,7 @@
    - [Авто-сортировка метаданных](docs/tools/autosort.md)
    - [Создание общих модулей по типам](docs/tools/common-module-types.md)
    - [Панель "Bsl Документирующий комментарий"](docs/tools/bsl-doc-comment-view.md)
+   - [Автоматическое создание структуры модуля](docs/tools/module-structure.md)
 
 
 

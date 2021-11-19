@@ -1,0 +1,17 @@
+name: CI Analyze in forks
+
+on: 
+  # This event allows to use Sonar analyzing PR from forks by adding label
+  pull_request_target:
+    types: [opened, synchronize, reopened, labeled]
+
+jobs:
+  build:
+    # This build with analyze will run only on forks PR with label "Analyze"
+    if: github.event.pull_request.head.repo.full_name != github.event.repository.full_name && contains(github.event.pull_request.labels.*.name, 'Analyze')
+    uses: 1C-company/v8-code-style/.github/workflows/build.yml@master
+    with:
+      analyze: true
+    secrets:
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
+

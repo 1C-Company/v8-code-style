@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f07f2e1b-8932-4c2e-9c76-bf37494ca068">
+  <producedTypes>
+    <objectType typeId="0ac55597-f870-4db9-b8bb-140ae87ba58c" valueTypeId="a98d91f3-5d17-4393-922e-31e8a0222bc0"/>
+    <refType typeId="5d3bc8d1-846c-44b1-9a1f-62aa57bc9489" valueTypeId="0cdb0eb5-7037-4053-acbd-ad4fb43e8df3"/>
+    <selectionType typeId="8fc220b6-c6a4-4e21-b4c4-f41d180cb9ab" valueTypeId="92c05ccb-4815-49da-a6ba-aa2711128559"/>
+    <listType typeId="190305b9-d579-47b4-97f9-ad8eea79714a" valueTypeId="fdfa31ba-1d4a-4b27-bdb4-55fd890fe21d"/>
+    <managerType typeId="228ab753-fe0a-4255-a1d4-c01e490b6b4d" valueTypeId="d612b9aa-b596-4c0b-a0de-4e9de2342d6b"/>
+  </producedTypes>
+  <name>NegativeParentTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative parent test</value>
+  </synonym>
+  <comment>Есть признак иерархии, но у свойства &quot;Родитель&quot;  нет синонима</comment>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeParentTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeParentTest.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Parent</name>
+    <comment>Простой комметарий</comment>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Negative parent test</value>
+  </objectPresentation>
+  <hierarchical>true</hierarchical>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

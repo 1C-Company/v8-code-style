@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d677f499-23ef-4e84-b637-0843eb4e9ae0">
+  <producedTypes>
+    <objectType typeId="358dc8ca-6fb0-4c32-b859-9d84a82350f8" valueTypeId="daa0cc50-d414-46e3-b7d3-7437048b5dd8"/>
+    <refType typeId="b8628a2a-fcfd-440b-99ec-78d14f373930" valueTypeId="eb613d86-bd2a-4133-b037-fe6f5d101539"/>
+    <selectionType typeId="0f5441ed-2191-49b5-8bc0-5c321be956eb" valueTypeId="1b35ac13-f90d-4b60-b2d8-19464d39082c"/>
+    <listType typeId="0f6eca1b-2b0e-42f8-b30d-834eb39f6a70" valueTypeId="42640379-7900-4363-96ad-0d138d713572"/>
+    <managerType typeId="3d53bab7-20fe-4a96-b48a-cee13f06719f" valueTypeId="e8d5b2a7-678b-4dc4-bb38-addc080f1397"/>
+  </producedTypes>
+  <name>NegativeParentTestWithComment</name>
+  <synonym>
+    <key>en</key>
+    <value>Negative parent test with comment</value>
+  </synonym>
+  <comment>Есть признак иерархии, у свойства &quot;Родитель&quot; есть комментарий, но нет синонима</comment>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.NegativeParentTestWithComment.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.NegativeParentTestWithComment.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Negative parent test with comment</value>
+  </objectPresentation>
+  <hierarchical>true</hierarchical>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

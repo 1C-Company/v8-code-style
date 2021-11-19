@@ -15,13 +15,6 @@ package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.common.Functions.featureToLabel;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__CLIENT_MANAGED_APPLICATION;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__CLIENT_ORDINARY_APPLICATION;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__EXTERNAL_CONNECTION;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__GLOBAL;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__PRIVILEGED;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER_CALL;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
 
 import java.text.MessageFormat;
@@ -33,13 +26,19 @@ import java.util.stream.Collectors;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import com._1c.g5.v8.dt.core.platform.IV8Project;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+import com._1c.g5.v8.dt.metadata.mdclass.util.MdClassUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.md.CommonModuleTypes;
+import com.google.inject.Inject;
 
 /**
  * Check correct type of common module environment
@@ -53,62 +52,19 @@ public final class CommonModuleType
 
     private static final String CHECK_ID = "common-module-type"; //$NON-NLS-1$
 
-    //@formatter:off
-    public static final Map<EStructuralFeature, Boolean> TYPE_SERVER = Map.of(
-        COMMON_MODULE__CLIENT_MANAGED_APPLICATION, false,
-        COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, true,
-        COMMON_MODULE__SERVER, true,
-        COMMON_MODULE__SERVER_CALL, false,
-        COMMON_MODULE__EXTERNAL_CONNECTION, true,
-        COMMON_MODULE__GLOBAL, false,
-        COMMON_MODULE__PRIVILEGED, false);
+    private final IV8ProjectManager v8ProjectManager;
 
-    public static final Map<EStructuralFeature, Boolean> TYPE_SERVER_CALL = Map.of(
-        COMMON_MODULE__CLIENT_MANAGED_APPLICATION, false,
-        COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, false,
-        COMMON_MODULE__SERVER, true,
-        COMMON_MODULE__SERVER_CALL, true,
-        COMMON_MODULE__EXTERNAL_CONNECTION, false,
-        COMMON_MODULE__GLOBAL, false,
-        COMMON_MODULE__PRIVILEGED, false);
-
-    public static final Map<EStructuralFeature, Boolean> TYPE_CLIENT = Map.of(
-        COMMON_MODULE__CLIENT_MANAGED_APPLICATION, true,
-        COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, true,
-        COMMON_MODULE__SERVER, false,
-        COMMON_MODULE__SERVER_CALL, false,
-        COMMON_MODULE__EXTERNAL_CONNECTION, false,
-        COMMON_MODULE__GLOBAL, false,
-        COMMON_MODULE__PRIVILEGED, false);
-
-    public static final Map<EStructuralFeature, Boolean> TYPE_CLIENT_SERVER = Map.of(
-        COMMON_MODULE__CLIENT_MANAGED_APPLICATION, true,
-        COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, true,
-        COMMON_MODULE__SERVER, true,
-        COMMON_MODULE__SERVER_CALL, false,
-        COMMON_MODULE__EXTERNAL_CONNECTION, true,
-        COMMON_MODULE__GLOBAL, false,
-        COMMON_MODULE__PRIVILEGED, false);
-
-    public static final Map<EStructuralFeature, Boolean> TYPE_SERVER_GLOBAL = Map.of(
-        COMMON_MODULE__CLIENT_MANAGED_APPLICATION, false,
-        COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, true,
-        COMMON_MODULE__SERVER, true,
-        COMMON_MODULE__SERVER_CALL, false,
-        COMMON_MODULE__EXTERNAL_CONNECTION, true,
-        COMMON_MODULE__GLOBAL, true,
-        COMMON_MODULE__PRIVILEGED, false);
-
-    public static final Map<EStructuralFeature, Boolean> TYPE_CLIENT_GLOBAL = Map.of(
-        COMMON_MODULE__CLIENT_MANAGED_APPLICATION, true,
-        COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, true,
-        COMMON_MODULE__SERVER, false,
-        COMMON_MODULE__SERVER_CALL, false,
-        COMMON_MODULE__EXTERNAL_CONNECTION, false,
-        COMMON_MODULE__GLOBAL, true,
-        COMMON_MODULE__PRIVILEGED, false);
-
-    //@formatter:on
+    /**
+     * Instantiates a new common module type.
+     *
+     * @param v8ProjectManager the v8 project manager service, cannot be {@code null}.
+     */
+    @Inject
+    public CommonModuleType(IV8ProjectManager v8ProjectManager)
+    {
+        super();
+        this.v8ProjectManager = v8ProjectManager;
+    }
 
     @Override
     public String getCheckId()
@@ -128,13 +84,7 @@ public final class CommonModuleType
             .extension(new TopObjectFilterExtension())
             .topObject(COMMON_MODULE)
             .checkTop()
-            .features(COMMON_MODULE__CLIENT_MANAGED_APPLICATION,
-                COMMON_MODULE__SERVER,
-                COMMON_MODULE__SERVER_CALL,
-                COMMON_MODULE__EXTERNAL_CONNECTION,
-                COMMON_MODULE__GLOBAL,
-                COMMON_MODULE__PRIVILEGED,
-                COMMON_MODULE__CLIENT_ORDINARY_APPLICATION);
+            .features(CommonModuleTypes.SERVER.getFeatureValues(false).keySet().toArray(new EStructuralFeature[0]));
         //@formatter:on
 
     }
@@ -145,35 +95,49 @@ public final class CommonModuleType
     {
         CommonModule commonModule = (CommonModule)object;
 
-        Map<EStructuralFeature, Boolean> values = new HashMap<>();
-        for (EStructuralFeature feature : TYPE_SERVER.keySet())
+        IV8Project project = v8ProjectManager.getProject(commonModule);
+        boolean mobileOnly = isMobileApplicationOnly(project);
+
+        Map<EStructuralFeature, Object> values = new HashMap<>();
+        for (EStructuralFeature feature : CommonModuleTypes.SERVER.getFeatureValues(mobileOnly).keySet())
         {
-            values.put(feature, (Boolean)commonModule.eGet(feature));
+            values.put(feature, commonModule.eGet(feature));
         }
 
-        if (values.equals(TYPE_SERVER) || values.equals(TYPE_SERVER_CALL) || values.equals(TYPE_CLIENT)
-            || values.equals(TYPE_CLIENT_SERVER) || values.equals(TYPE_SERVER_GLOBAL)
-            || values.equals(TYPE_CLIENT_GLOBAL))
+        for (CommonModuleTypes type : CommonModuleTypes.values())
         {
-            return;
+            if (values.equals(type.getFeatureValues(mobileOnly)))
+            {
+                return;
+            }
+        }
+
+        ScriptVariant scriptVariant = project == null ? ScriptVariant.ENGLISH : project.getScriptVariant();
+        CommonModuleTypes type = CommonModuleTypes.findClosestTypeByName(commonModule.getName(), scriptVariant);
+
+        for (Entry<EStructuralFeature, Object> entry : type.getFeatureValues(mobileOnly).entrySet())
+        {
+            Object value = values.get(entry.getKey());
+            if (entry.getValue().equals(value))
+            {
+                values.remove(entry.getKey());
+            }
         }
 
         //@formatter:off
         String types = String.join(", ",  //$NON-NLS-1$
-            values.entrySet()
+            values.keySet()
             .stream()
-            .filter(Entry::getValue)
-            .map(e -> featureToLabel().apply(e.getKey()))
+            .map(f -> featureToLabel().apply(f))
             .collect(Collectors.toList()));
         //@formatter:on
 
-        String message = MessageFormat.format(Messages.CommonModuleType_message, types);
+        String title = type.getTitle();
+        String message = MessageFormat.format(Messages.CommonModuleType_message, title, types);
 
         //@formatter:off
-        EStructuralFeature feature = values.entrySet()
+        EStructuralFeature feature = values.keySet()
             .stream()
-            .filter(Entry::getValue)
-            .map(Entry::getKey)
             .findFirst()
             .orElse(MD_OBJECT__NAME);
         //@formatter:on
@@ -181,4 +145,8 @@ public final class CommonModuleType
         resultAceptor.addIssue(message, feature);
     }
 
+    private boolean isMobileApplicationOnly(IV8Project project)
+    {
+        return project != null && MdClassUtil.isMobileApplicationUsePurposes(project.getUsePurposes());
+    }
 }

@@ -51,6 +51,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.LinkContainsTypeDe
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.ui.editor.BslXtextDocument;
 import com._1c.g5.v8.dt.common.Pair;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 
@@ -152,7 +153,7 @@ public class BslDocCommentSelectionListener
         }
 
         IXtextDocument xtextDoc = target.getDocument();
-        return xtextDoc.readOnly(new CancelableUnitOfWork<Pair<BslDocumentationComment, Object>, XtextResource>()
+        CancelableUnitOfWork<Pair<BslDocumentationComment, Object>, XtextResource> unit = new CancelableUnitOfWork<>()
         {
             @Override
             public Pair<BslDocumentationComment, Object> exec(XtextResource res, CancelIndicator monitor)
@@ -201,7 +202,13 @@ public class BslDocCommentSelectionListener
                 return null;
             }
 
-        });
+        };
+
+        if (xtextDoc instanceof BslXtextDocument)
+        {
+            return ((BslXtextDocument)xtextDoc).readOnlyDataModelWithoutSync(unit);
+        }
+        return xtextDoc.readOnly(unit);
     }
 
     private BslDocumentationComment getDocComment(Method method)
@@ -301,6 +308,30 @@ public class BslDocCommentSelectionListener
                 return selected;
             }
             selected = getListSelected(section.getTypeSections(), line, offset);
+            if (selected != null)
+            {
+                return selected;
+            }
+        }
+        else if (object instanceof LinkContainsTypeDefinition)
+        {
+            LinkContainsTypeDefinition section = (LinkContainsTypeDefinition)object;
+            Object selected = getSelected(section.getLink(), line, offset);
+            if (selected != null)
+            {
+                return selected;
+            }
+            selected = getListSelected(section.getContainTypes(), line, offset);
+            if (selected != null)
+            {
+                return selected;
+            }
+            selected = getListSelected(section.getFieldDefinitionExtension(), line, offset);
+            if (selected != null)
+            {
+                return selected;
+            }
+            selected = getSelected(section.getLinkToExtensionFields(), line, offset);
             if (selected != null)
             {
                 return selected;
@@ -431,30 +462,6 @@ public class BslDocCommentSelectionListener
                 return section;
             }
             Object selected = getSelected(section.getDescription(), line, offset);
-            if (selected != null)
-            {
-                return selected;
-            }
-        }
-        else if (object instanceof LinkContainsTypeDefinition)
-        {
-            LinkContainsTypeDefinition section = (LinkContainsTypeDefinition)object;
-            Object selected = getSelected(section.getLink(), line, offset);
-            if (selected != null)
-            {
-                return selected;
-            }
-            selected = getListSelected(section.getContainTypes(), line, offset);
-            if (selected != null)
-            {
-                return selected;
-            }
-            selected = getListSelected(section.getFieldDefinitionExtension(), line, offset);
-            if (selected != null)
-            {
-                return selected;
-            }
-            selected = getSelected(section.getLinkToExtensionFields(), line, offset);
             if (selected != null)
             {
                 return selected;
