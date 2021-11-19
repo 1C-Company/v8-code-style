@@ -105,6 +105,18 @@ final class Messages
 
     public static String UseNonRecommendedMethods_title;
 
+    public static String MethodTooManyPramsCheck_description;
+
+    public static String MethodTooManyPramsCheck_Max_parameters;
+
+    public static String MethodTooManyPramsCheck_Max_parameters_with_default_value;
+
+    public static String MethodTooManyPramsCheck_Method_has_more_than__N__params;
+
+    public static String MethodTooManyPramsCheck_Method_has_more_than__N__params_with_default_value;
+
+    public static String MethodTooManyPramsCheck_title;
+
     public static String FormModulePragmaCheck_description;
 
     public static String FormModulePragmaCheck_Form_module_compilation_pragma_used;
