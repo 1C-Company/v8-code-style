@@ -64,7 +64,7 @@ public class ModuleStructureNewWizardRelatedModelsFactory
     implements IDtNewWizardRelatedModelsFactory<EObject>
 {
 
-    private static final String CURRENT_CODE = "%CURRENT_CODE%"; //$NON-NLS-1$
+    private static final String CURRENT_CODE = "//%CURRENT_CODE%"; //$NON-NLS-1$
 
     private static final String LINE_SEPARATOR_WIN = "\r\n"; //$NON-NLS-1$
 
