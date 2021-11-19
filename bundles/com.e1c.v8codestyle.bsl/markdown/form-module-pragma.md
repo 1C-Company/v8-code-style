@@ -1,4 +1,4 @@
-# Use form module compilation prarma
+# Use form module compilation pragma
 
 
 Compilation directives (pragma)
