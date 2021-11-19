@@ -39,6 +39,7 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.md.CommonModuleTypes;
 
 /**
  * Check global common module name has "Global" suffix
@@ -94,20 +95,14 @@ public final class CommonModuleNameGlobal
             return;
         }
 
-        Map<EStructuralFeature, Boolean> valuesServer = new HashMap<>();
-        for (EStructuralFeature feature : CommonModuleType.TYPE_SERVER_GLOBAL.keySet())
+        Map<EStructuralFeature, Object> values = new HashMap<>();
+        for (EStructuralFeature feature : CommonModuleTypes.SERVER_GLOBAL.getFeatureValues(false).keySet())
         {
-            valuesServer.put(feature, (Boolean)commonModule.eGet(feature));
+            values.put(feature, commonModule.eGet(feature));
         }
 
-        Map<EStructuralFeature, Boolean> valuesClient = new HashMap<>();
-        for (EStructuralFeature feature : CommonModuleType.TYPE_CLIENT_GLOBAL.keySet())
-        {
-            valuesClient.put(feature, (Boolean)commonModule.eGet(feature));
-        }
-
-        if (!valuesServer.equals(CommonModuleType.TYPE_SERVER_GLOBAL)
-            && !valuesClient.equals(CommonModuleType.TYPE_CLIENT_GLOBAL))
+        if (!values.equals(CommonModuleTypes.SERVER_GLOBAL.getFeatureValues(false))
+            && !values.equals(CommonModuleTypes.CLIENT_GLOBAL.getFeatureValues(false)))
         {
             return;
         }

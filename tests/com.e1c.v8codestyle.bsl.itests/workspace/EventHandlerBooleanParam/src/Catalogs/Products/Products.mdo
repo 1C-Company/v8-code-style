@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="fe48460a-edec-45fc-9eee-c72d5ded8310">
+  <producedTypes>
+    <objectType typeId="c3d3b90f-86f8-4d65-99a8-db93f2b36f7b" valueTypeId="5d2f498d-1a5b-4542-8350-4a73f4b9a82e"/>
+    <refType typeId="45362f6a-f20b-44a2-a3b4-2c1ccc91454e" valueTypeId="b4129521-4bbd-493f-99ee-41dee31f9d47"/>
+    <selectionType typeId="d2e0f91a-4384-4690-a74b-66c1336d3708" valueTypeId="9414da35-94cc-424e-b6f1-6adbc7db6d08"/>
+    <listType typeId="1fdfafb3-1027-4ccd-8d77-1a14dd9db6d2" valueTypeId="0622cb0b-9e4a-4c92-8b93-7089664f3474"/>
+    <managerType typeId="e2f2d188-cda8-4ee6-a82e-39f1008300b7" valueTypeId="456db762-1ba1-4a21-95a2-558193e149e9"/>
+  </producedTypes>
+  <name>Products</name>
+  <synonym>
+    <key>en</key>
+    <value>Products</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Products.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Products.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.Products.Form.ItemForm</defaultObjectForm>
+  <forms uuid="5261d627-2191-45d5-ba83-67ebbb2e8e5d">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

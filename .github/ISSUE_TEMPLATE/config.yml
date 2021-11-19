@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Группа поддержки в Telegram 
+    url: https://t.me/e1c_edt_plugindev
+    about: Спросите любой вопрос по разработке плагинов для 1C:EDT
+  - name: Правила участия в проекте 1C:Стандарты разработки
+    url: https://github.com/1C-Company/v8-code-style/blob/master/CONTRIBUTING.md
+    about: Перед первым размещением тикета рекомендуем ознакомиться с правилами участия

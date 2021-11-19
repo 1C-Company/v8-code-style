@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Enum xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="59447593-edb5-4636-970b-c071e693fd31">
+  <producedTypes>
+    <refType typeId="ec4a2292-f74e-4c88-bf43-dd075d3c082a" valueTypeId="1a8528aa-a132-47b9-9c80-1bc6dce460d5"/>
+    <listType typeId="64f1e0a3-9ee5-47df-9e0e-74ea2f1ee60f" valueTypeId="69310944-293e-405e-a9a6-5804282d5a05"/>
+    <managerType typeId="8555b442-268a-49c0-9477-bb0d483a1db9" valueTypeId="11f94165-a5b9-4ab1-9862-f94f5f383b06"/>
+  </producedTypes>
+  <name>ProductType</name>
+  <synonym>
+    <key>en</key>
+    <value>Product type</value>
+  </synonym>
+  <quickChoice>true</quickChoice>
+  <choiceMode>BothWays</choiceMode>
+  <enumValues uuid="0532e585-e0de-42f3-b629-6ebcbfa12737">
+    <name>Product</name>
+    <synonym>
+      <key>en</key>
+      <value>Product</value>
+    </synonym>
+  </enumValues>
+  <enumValues uuid="d3cf5a53-853c-4dbb-b9d8-1b1882e44223">
+    <name>Service</name>
+    <synonym>
+      <key>en</key>
+      <value>Service</value>
+    </synonym>
+  </enumValues>
+</mdclass:Enum>

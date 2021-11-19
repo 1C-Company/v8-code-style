@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e11efc84-1bf1-474f-8243-094b1e7e9d73">
+  <producedTypes>
+    <objectType typeId="cb053a13-267b-4721-89d4-bf1c39f7dc68" valueTypeId="c20efe3f-bd85-48f3-a6e2-c92a9f2d3516"/>
+    <refType typeId="9501e1e8-3510-4131-a088-1826577b1ac8" valueTypeId="78dee52c-cb11-4024-8547-bacd9f16fbce"/>
+    <selectionType typeId="f7d4e1af-2bb5-42e6-b7e4-120eb00150d5" valueTypeId="35b41bd1-8b69-417d-a4e2-0c611c5ba20e"/>
+    <listType typeId="4c5d2328-8c79-4e87-b8bf-bc078d405b35" valueTypeId="98ca7cff-2131-4e34-a9e1-85b812bf89e1"/>
+    <managerType typeId="8e1a6219-c018-48ce-86a9-1b72ce13fd10" valueTypeId="fb8e91b7-ef5c-448b-ba8c-2ca77962103d"/>
+  </producedTypes>
+  <name>PositiveParentTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Positive parent test</value>
+  </synonym>
+  <comment>Корректно заполнено свойство &quot;Родитель&quot;</comment>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.PositiveParentTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.PositiveParentTest.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <standardAttributes>
+    <dataHistory>Use</dataHistory>
+    <name>Parent</name>
+    <synonym>
+      <key>en</key>
+      <value>Simple text</value>
+    </synonym>
+    <fillFromFillingValue>true</fillFromFillingValue>
+    <fullTextSearch>Use</fullTextSearch>
+  </standardAttributes>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>Positive parent test</value>
+  </objectPresentation>
+  <hierarchical>true</hierarchical>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

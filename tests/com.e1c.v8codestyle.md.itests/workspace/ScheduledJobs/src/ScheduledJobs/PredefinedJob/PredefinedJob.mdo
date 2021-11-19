@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1bfcb8ca-7a4c-4cf2-8ebb-a917aed0cfc5">
+  <name>PredefinedJob</name>
+  <synonym>
+    <key>en</key>
+    <value>Predefined job</value>
+  </synonym>
+  <methodName>CommonModule.Jobs.PredefinedJob</methodName>
+  <description>Description</description>
+  <use>true</use>
+  <predefined>true</predefined>
+  <restartCountOnFailure>3</restartCountOnFailure>
+  <restartIntervalOnFailure>10</restartIntervalOnFailure>
+</mdclass:ScheduledJob>

@@ -1,4 +1,9 @@
-![Build](https://github.com/1C-Company/v8-code-style/workflows/CI/badge.svg)
+[![Build](https://github.com/1C-Company/v8-code-style/workflows/CI/badge.svg)](https://github.com/1C-Company/v8-code-style/actions)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=coverage)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=ncloc)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=bugs)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=code_smells)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=1C-Company_v8-code-style&metric=sqale_index)](https://sonarcloud.io/dashboard?id=1C-Company_v8-code-style)
 
 # 1С:Стандарты разработки V8
 
@@ -6,8 +11,18 @@
 
 ## Основные возможности
 
-- Проверки кода и метаданных по [стандартам 1С](https://its.1c.ru/db/v8std)
+- [Проверки кода и метаданных](docs/checks/readme.md) по [стандартам 1С](https://its.1c.ru/db/v8std)
+   - [Проверки метаданных](docs/checks/md.md)
+   - [Проверки Форм](docs/checks/form.md)
+   - [Проверки прав ролей](docs/checks/right.md)
+   - [Проверки модулей](docs/checks/bsl.md)
+   - [Проверки языка запросов](docs/checks/ql.md)
 - Дополнительные инструменты, улучшающие и ускоряющие работу по стандартам 1С
+   - [Авто-сортировка метаданных](docs/tools/autosort.md)
+   - [Создание общих модулей по типам](docs/tools/common-module-types.md)
+   - [Панель "Bsl Документирующий комментарий"](docs/tools/bsl-doc-comment-view.md)
+   - [Автоматическое создание структуры модуля](docs/tools/module-structure.md)
+
 
 
 ## Установка
@@ -38,21 +53,12 @@
 
 ## Участие в проекте
 
-Добро пожаловать! [См. правила в соответствующем разделе](CONTRIBUTING.md)
+Добро пожаловать! [См. правила](CONTRIBUTING.md) в соответствующем разделе.
+- [Помочь с документацией](docs/contributing/documentation.md) см. [задачи](https://github.com/1C-Company/v8-code-style/labels/documentation)
+- [Добавить свою проверку](docs/contributing/readme.md) см. [задачи](https://github.com/1C-Company/v8-code-style/labels/good%20first%20issue)
+- Сообщить нам о [ложном срабатывании проверки](https://github.com/1C-Company/v8-code-style/issues/new?assignees=&labels=standards,bug&template=check_false.md&title=Ложное+срабатывание+проверки%3A+%3Cкод+проверки%3E) или о [не нахождении существующей ошибки](https://github.com/1C-Company/v8-code-style/issues/new?assignees=&labels=standards,bug&template=check_not_found.md&title=Проверка%3A+%3Cкод+проверки%3E+не+находит+ошибку).
+
 
 ## Лицензия
 
-Лицензирование расширений размещенных в данном проекте осуществляется на условиях свободной (открытой) лицензии Eclipse Public License - v 2.0 (полный текст лицензии - https://www.eclipse.org/legal/epl-2.0/)
-
-Это означает, что:
-- Вы можете  свободно и бесплатно заимствовать код  и помещать  его в свои проекты, учитывая  однако, что  такой  код не становится вашей интеллектуальной собственностью, Вы лишь  получаете  неисключительные права его использования с учетом рамок и ограничений,  описанных  в EPL 2.0 
-- Внося изменения в расширение, модифицируя и дорабатывая его, а также объединяя файлы расширения с иными материалами, не относящимися к расширению (далее по тексту как «результаты работ»), Вы также обязаны публиковать это  обновленный код на условиях EPL 2.0, т.е. автоматически предоставляете любым третьим лицам, включая ООО «1С-Софт» и иных контрибьюторов, безвозмездное право использования результатов Ваших работ на территории стран всего мира на условиях открытой лицензии EPL 2.0. 
-
-Публикуя свои разработки, доработки и исправления к программам  других авторов, Вы также подтверждаете, что:
-- являетесь единственным автором и обладателем имущественного права на результаты работ; в случае, если обладателем имущественного права на результаты работ является Ваш работодатель, Вы гарантируете наличие его согласия на публикацию кода на условиях открытой лицензии EPL 2.0;
-- Вы снабдили  результаты Ваших работ всеми необходимыми уведомлениями,  свидетельствующими о том, что они подчиняются открытой лицензии EPL 2.0;
-- Результаты Ваших работ доступны в виде исходного кода, или Вы обязуетесь сообщить, каким образом третьи лица без существенных затрат могут получить результаты Ваших работ в виде исходного кода; 
-- Все имеющиеся ранее уведомления других авторов (license notices) не были Вами удалены или изменены, а указанные Вами уведомления отражают достоверную информацию о Вас как правообладателе Вашего оригинального кода (включая ФИО или наименование организации-работодателя)
-
-
-Пояснения выше приведены исключительно для удобства восприятия основных положений лицензии EPL 2.0. и не заменяет содержание понятий, приведенных по тексту лицензионного соглашения. Для более детального понимания Ваших прав и обязанностей рекомендуем ознакомиться с полным текстом открытой лицензии EPL 2.0.
+[Лицензирование расширений размещенных в данном проекте осуществляется на условиях свободной (открытой) лицензии Eclipse Public License - v 2.0 (полный текст лицензии - https://www.eclipse.org/legal/epl-2.0/)](docs/contributing/licensing.md)

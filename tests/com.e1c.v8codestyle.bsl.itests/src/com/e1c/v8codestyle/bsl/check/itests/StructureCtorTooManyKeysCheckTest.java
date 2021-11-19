@@ -16,35 +16,28 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.StringLiteral;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.check.settings.CheckUid;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.v8codestyle.bsl.check.StructureCtorTooManyKeysCheck;
 
 /**
- * Tests for {@link ConfigurationDataLock} check.
+ * Tests for {@link StructureCtorTooManyKeysCheck} check.
  *
  * @author Dmitriy Marmyshev
  */
 public class StructureCtorTooManyKeysCheckTest
-    extends CheckTestBase
+    extends AbstractSingleModuleTestBase
 {
 
-    private static final String CHECK_ID = "structure-consructor-too-many-keys"; //$NON-NLS-1$
-
-    private static final String PROJECT_NAME = "StructureCtorTooManyKeys";
+    public StructureCtorTooManyKeysCheckTest()
+    {
+        super(StructureCtorTooManyKeysCheck.class);
+    }
 
     /**
      * Test the second string literal has error
@@ -54,32 +47,12 @@ public class StructureCtorTooManyKeysCheckTest
     @Test
     public void testStructureConstructorKeys() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
+        updateModule(FOLDER_RESOURCE + "structure-consructor-too-many-keys.bsl");
 
-        IBmObject mdObject = getTopObjectByFqn("CommonModule.CommonModule", dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
-
-        List<StringLiteral> literals = EcoreUtil2.eAllOfType(module, StringLiteral.class);
-        assertEquals(3, literals.size());
-
-        String id = module.eResource().getURI().toPlatformString(true);
-        Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
-        assertNotNull(markers);
-
-        // check incorrect string literal
-        assertEquals(1, markers.length);
-
-        Marker marker = markers[0];
-        assertEquals("11", marker.getExtraInfo().get("line"));
-        String uriToProblem = EcoreUtil2.getURI(literals.get(1)).toString();
-        assertEquals(uriToProblem, marker.getExtraInfo().get("uriToProblem"));
-        CheckUid checkUid =
-            this.checkRepository.getUidForShortUid(marker.getCheckId(), dtProject.getWorkspaceProject());
-        assertNotNull(checkUid);
-        assertTrue(CHECK_ID.equals(checkUid.getCheckId()));
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals("11", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 }
