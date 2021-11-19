@@ -105,6 +105,13 @@ final class Messages
 
     public static String UseNonRecommendedMethods_title;
 
+    public static String FormModulePragmaCheck_description;
+
+    public static String FormModulePragmaCheck_Form_module_compilation_pragma_used;
+
+    public static String FormModulePragmaCheck_title;
+
+
     static
     {
         // initialize resource bundle
