@@ -71,7 +71,7 @@ public class NotifyDescriptionToServerProcedureCheckTest
     }
 
     /**
-     * Test notify description to local server procedure.
+     * Test notify description to local server procedure in form module.
      *
      * @throws Exception the exception
      */

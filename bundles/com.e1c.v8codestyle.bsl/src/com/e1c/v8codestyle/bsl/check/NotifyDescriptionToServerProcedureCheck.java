@@ -58,6 +58,8 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 public class NotifyDescriptionToServerProcedureCheck
     extends BasicCheck
 {
+    private static final String CD_ROOT = "/0/@contextDef"; //$NON-NLS-1$
+
     private static final String CHECK_ID = "notify-description-to-server-procedure"; //$NON-NLS-1$
 
     private static final String BSLCD = "bslcd"; //$NON-NLS-1$
@@ -152,7 +154,6 @@ public class NotifyDescriptionToServerProcedureCheck
             resultAceptor.addIssue(
                 Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_to_Server_procedure, param,
                 STRING_LITERAL__LINES);
-
         }
 
     }
@@ -217,11 +218,7 @@ public class NotifyDescriptionToServerProcedureCheck
         {
             return null;
         }
-        return uri.trimFragment()
-            .trimFileExtension()
-            .appendFileExtension(BSLCD)
-            .appendFragment("/0/@contextDef")
-            .toString();
+        return uri.trimFragment().trimFileExtension().appendFileExtension(BSLCD).appendFragment(CD_ROOT).toString();
     }
 
     private URI getCommonModuleUri(DynamicFeatureAccess object)

@@ -125,8 +125,6 @@ final class Messages
 
     public static String NotifyDescriptionToServerProcedureCheck_description;
 
-    public static String NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_not_found;
-
     public static String NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_should_be_export;
 
     public static String NotifyDescriptionToServerProcedureCheck_Notify_description_to_Server_procedure;
