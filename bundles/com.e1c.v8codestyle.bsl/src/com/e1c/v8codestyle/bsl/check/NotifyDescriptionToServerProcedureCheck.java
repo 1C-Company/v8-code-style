@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.OPERATOR_STYLE_CREATOR;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STRING_LITERAL__LINES;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -37,6 +38,7 @@ import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
+import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.mcore.ContextDef;
 import com._1c.g5.v8.dt.mcore.DerivedProperty;
@@ -76,6 +78,11 @@ public class NotifyDescriptionToServerProcedureCheck
 
     private final DynamicFeatureAccessComputer dynamicFeatureAccessComputer;
 
+    private final ExportMethodProvider exportMethodProvider;
+
+    /**
+     * Instantiates a new notify description to server procedure check.
+     */
     public NotifyDescriptionToServerProcedureCheck()
     {
         super();
@@ -84,6 +91,7 @@ public class NotifyDescriptionToServerProcedureCheck
             IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
 
         this.dynamicFeatureAccessComputer = rsp.get(DynamicFeatureAccessComputer.class);
+        this.exportMethodProvider = rsp.get(ExportMethodProvider.class);
     }
 
     @Override
@@ -113,7 +121,9 @@ public class NotifyDescriptionToServerProcedureCheck
 
         if (!NOTIFICATION.equals(operatorName) || osc.getParams().isEmpty()
             || !(osc.getParams().get(0) instanceof StringLiteral))
+        {
             return;
+        }
 
         StringLiteral param = (StringLiteral)osc.getParams().get(0);
         final String methodName = getCalledProcedureName(param);
@@ -130,6 +140,32 @@ public class NotifyDescriptionToServerProcedureCheck
         }
 
         Set<String> listMethodNames = getAllMethodNames(bslContextDef);
+
+        String contextDefUri = null;
+
+        Collection<Method> methods = exportMethodProvider.getMockMethods(contextDefUri, methodName, osc);
+        if (methods.isEmpty())
+        {
+            resultAceptor.addIssue(
+                Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_should_be_export, param,
+                STRING_LITERAL__LINES);
+        }
+        else
+        {
+            for (Method method : methods)
+            {
+                Environments calleeEnv = method.environments();
+                if (calleeEnv.containsAny(Environments.MNG_CLIENTS))
+                {
+                    return;
+                }
+            }
+
+            resultAceptor.addIssue(
+                Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_to_Server_procedure, param,
+                STRING_LITERAL__LINES);
+
+        }
 
         if (listMethodNames.contains(methodName))
         {
@@ -173,7 +209,9 @@ public class NotifyDescriptionToServerProcedureCheck
         {
             StringLiteral literal = (StringLiteral)param;
             if (literal.getLines().size() == 1)
+            {
                 return literal.lines(true).get(0);
+            }
         }
         return null;
     }
@@ -254,7 +292,9 @@ public class NotifyDescriptionToServerProcedureCheck
     private URI constructBslCdUri(URI uri)
     {
         if (uri == null)
+        {
             return null;
+        }
         return uri.trimFileExtension().appendFileExtension(BSLCD);
     }
 
