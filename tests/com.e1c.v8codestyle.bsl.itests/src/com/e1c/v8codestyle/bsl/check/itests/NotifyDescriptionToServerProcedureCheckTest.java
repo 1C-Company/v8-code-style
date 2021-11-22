@@ -13,16 +13,12 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.v8codestyle.bsl.check.NotifyDescriptionToServerProcedureCheck;
@@ -37,8 +33,6 @@ public class NotifyDescriptionToServerProcedureCheckTest
 {
 
     private static final String PROJECT_NAME = "CommonForm";
-
-    private static final String FQN = "CommonForm.Form.Form";
 
     private static final String COMMON_FORM_FILE_NAME = "/src/CommonForms/Form/Module.bsl";
 
@@ -62,12 +56,8 @@ public class NotifyDescriptionToServerProcedureCheckTest
     @Override
     protected Module getModule()
     {
-        IBmObject mdObject = getTopObjectByFqn(FQN, getProject());
-        assertTrue(mdObject instanceof AbstractForm);
-        Module module = ((AbstractForm)mdObject).getModule();
-        assertNotNull(module);
-
-        return module;
+        // do not need this method
+        return null;
     }
 
     /**
