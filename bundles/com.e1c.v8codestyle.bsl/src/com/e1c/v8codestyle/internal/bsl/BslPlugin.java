@@ -20,6 +20,7 @@ import org.osgi.framework.BundleContext;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
 import com._1c.g5.wiring.ServiceInitialization;
+import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -131,6 +132,7 @@ public class BslPlugin
 
         ServiceInitialization.schedule(() -> {
             // register services from injector
+            registrator.service(IModuleStructureProvider.class).registerInjected();
         });
 
     }
@@ -158,7 +160,7 @@ public class BslPlugin
      *
      * @return Guice injector of the plugin, never <code>null</code> if plugin is started
      */
-    /* package */ Injector getInjector()
+    public Injector getInjector()
     {
         Injector localInstance = injector;
         if (localInstance == null)
@@ -180,7 +182,7 @@ public class BslPlugin
     {
         try
         {
-            return Guice.createInjector(new ExternalDependenciesModule(this));
+            return Guice.createInjector(new ServiceModule(), new ExternalDependenciesModule(this));
         }
         catch (Exception e)
         {

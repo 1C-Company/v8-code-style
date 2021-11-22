@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (C) 2021, 1C-Soft LLC and others.
+   
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        1C-Soft LLC - initial API and implementation
+ -->
+
+<plugin>
+
+
+ <extension
+       point="org.eclipse.ui.views">
+    <category
+          id="com.e1c.v8codestyle.bsl.ui"
+          name="%views.category.name">
+    </category>
+    <view
+          category="com.e1c.v8codestyle.bsl.ui"
+          class="com.e1c.v8codestyle.internal.bsl.ui.views.BslDocCommentView"
+          icon="icons/BslDocComment.png"
+          id="com.e1c.v8codestyle.bsl.ui.views.BslDocCommentView"
+          inject="true"
+          name="%views.BslDocCommentView.name">
+    </view>
+ </extension>
+ <extension
+       point="org.eclipse.ui.perspectiveExtensions">
+    <perspectiveExtension
+          targetID="com._1c.g5.v8.dt.ui2.perspective">
+       <view
+             id="com.e1c.v8codestyle.bsl.ui.views.BslDocCommentView"
+             ratio="0.5"
+             relationship="stack"
+             relative="org.eclipse.ui.views.PropertySheet"
+             visible="true">
+       </view>
+    </perspectiveExtension>
+ </extension>
+ <extension
+       point="com._1c.g5.v8.dt.ui.dtNewWizardRelatedModelsFactories">
+    <factory
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ui.wizard.ModuleStructureNewWizardRelatedModelsFactory"
+          order="120">
+       <triggers>
+          	 <modelClass eClass="Configuration" />
+             <modelClass eClass="CatalogForm" />
+             <modelClass eClass="DocumentForm" />
+             <modelClass eClass="EnumForm" />
+             <modelClass eClass="ChartOfCharacteristicTypesForm" />
+             <modelClass eClass="InformationRegisterForm" />
+             <modelClass eClass="DocumentJournalForm" />
+             <modelClass eClass="ExchangePlanForm" />
+             <modelClass eClass="DataProcessorForm" />
+             <modelClass eClass="AccumulationRegisterForm" />
+             <modelClass eClass="ReportForm" />
+             <modelClass eClass="CommonModule" />
+             <modelClass eClass="Bot" />
+             <modelClass eClass="IntegrationService" />
+             <modelClass eClass="ExchangePlan" />
+             <modelClass eClass="WebService" />
+             <modelClass eClass="HTTPService" />
+             <modelClass eClass="Constant" />
+             <modelClass eClass="Document" />
+             <modelClass eClass="Catalog" />
+             <modelClass eClass="Document" />
+             <modelClass eClass="Sequence" />
+             <modelClass eClass="DocumentJournal" />
+             <modelClass eClass="Report" />
+             <modelClass eClass="ExternalReport" />
+             <modelClass eClass="DataProcessor" />
+             <modelClass eClass="ExternalDataProcessor" />
+             <modelClass eClass="InformationRegister" />
+             <modelClass eClass="AccumulationRegister" />
+             <modelClass eClass="SettingsStorage" />
+             <modelClass eClass="Enum" />
+             <modelClass eClass="Task" />
+             <modelClass eClass="BusinessProcess" />
+             <modelClass eClass="Table" />
+             <modelClass eClass="Cube" />
+             <modelClass eClass="DimensionTable" />
+             <modelClass eClass="AccumulationRegisterCommand" />
+             <modelClass eClass="BusinessProcessCommand" />
+             <modelClass eClass="CatalogCommand" />
+             <modelClass eClass="ChartOfCharacteristicTypesCommand" />
+             <modelClass eClass="CommonCommand" />
+             <modelClass eClass="DataProcessorCommand" />
+             <modelClass eClass="DocumentCommand" />
+             <modelClass eClass="DocumentJournalCommand" />
+             <modelClass eClass="EnumCommand" />
+             <modelClass eClass="ExchangePlanCommand" />
+             <modelClass eClass="FilterCriterionCommand" />
+             <modelClass eClass="InformationRegisterCommand" />
+             <modelClass eClass="ReportCommand" />
+             <modelClass eClass="TaskCommand" />
+             <modelClass eClass="TableCommand" />
+             <modelClass eClass="CubeCommand" />
+             <modelClass eClass="DimensionTableCommand" />
+             <modelClass eClass="CommonForm" />
+             <modelClass eClass="CatalogForm" />
+             <modelClass eClass="DocumentForm" />
+             <modelClass eClass="EnumForm" />
+             <modelClass eClass="ChartOfAccountsForm" />
+             <modelClass eClass="ChartOfCalculationTypesForm" />
+             <modelClass eClass="ChartOfCharacteristicTypesForm" />
+             <modelClass eClass="InformationRegisterForm" />
+             <modelClass eClass="DocumentJournalForm" />
+             <modelClass eClass="ExchangePlanForm" />
+             <modelClass eClass="FilterCriterionForm" />
+             <modelClass eClass="DataProcessorForm" />
+             <modelClass eClass="AccountingRegisterForm" />
+             <modelClass eClass="AccumulationRegisterForm" />
+             <modelClass eClass="ReportForm" />
+             <modelClass eClass="BusinessProcessForm" />
+             <modelClass eClass="TaskForm" />
+             <modelClass eClass="SettingsStorageForm" />
+             <modelClass eClass="CalculationRegisterForm" />
+             <modelClass eClass="TableForm" />
+             <modelClass eClass="CubeForm" />
+             <modelClass eClass="DimensionTableForm" />
+       </triggers>
+    </factory>
+ </extension>
+ <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+          category="com._1c.g5.v8.dt.bsl.Bsl"
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ui.properties.ModuleStructurePropertyPage"
+          id="com.e1c.v8codestyle.bsl.ui.properties.moduleStructurePropertyPage"
+          name="%properties.modulestructure.name">
+       <enabledWhen>
+          <instanceof
+                value="org.eclipse.core.resources.IProject">
+          </instanceof>
+       </enabledWhen>
+    </page>
+ </extension>
+ <extension
+       point="org.eclipse.ui.preferencePages">
+    <page
+          category="com._1c.g5.v8.dt.bsl.Bsl"
+          class="com.e1c.v8codestyle.internal.bsl.ui.preferences.ModuleStructurePreferencePage"
+          id="com.e1c.v8codestyle.bsl.ui.preferences.ModuleStructurePreferencePage"
+          name="%preferences.modulestructure.name">
+    </page>
+ </extension>
+
+</plugin>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ac82a1aa-c235-4d82-981c-83db8b46b6f9">
+  <name>QlFullDemo</name>
+  <synonym>
+    <key>en</key>
+    <value>Ql full demo</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="b75ea52a-1270-4d00-8641-acb1dc8b1e18"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="9b9184ee-1561-44f6-986f-bbad7bc65ad8"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="19f7afda-bd9d-4b6f-9918-460f079fa1d4"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="067e5fcc-671f-486e-9d09-61e71adc3a3e"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="cff42135-668a-4e11-bb98-e38d991a9e07"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="1ac9fa8e-26eb-47e2-8777-f81f8195fa28"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="fb199fe5-11d5-4af6-9e9b-084365badb8c"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="7c2a7750-bb5c-4731-9bd9-b60909828556">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <catalogs>Catalog.Products</catalogs>
+  <documents>Document.ProductArraival</documents>
+  <enums>Enum.ProductType</enums>
+  <reports>Report.QueryTestReport</reports>
+  <informationRegisters>InformationRegister.Prices</informationRegisters>
+  <accumulationRegisters>AccumulationRegister.Stocks</accumulationRegisters>
+</mdclass:Configuration>

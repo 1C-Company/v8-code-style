@@ -1,0 +1,107 @@
+name: Reusable build with analyze
+
+on:
+  workflow_call:
+    inputs:
+      analyze:
+        default: false
+        required: false
+        type: boolean
+    secrets:
+      sonar_token:
+        required: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    env:
+      PR_NUMBER: "${{ github.event_name == 'pull_request_target' && format(' -Dsonar.pullrequest.key={0}', github.event.pull_request.number) || '' }}"
+      PR_REF: "${{ github.event_name == 'pull_request_target' && format('refs/pull/{0}/merge', github.event.pull_request.number) || '' }}"
+
+    steps:
+    - uses: actions/checkout@v2
+      if: inputs.analyze
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+        ref: ${{ env.PR_REF }}
+    - uses: actions/checkout@v2
+      if: ${{ !inputs.analyze }}
+
+    - name: Set up JDK 11
+      uses: actions/setup-java@v1
+      with:
+        java-version: 11
+        java-package: jdk+fx
+
+    - name: Free disk space
+      run: |
+        sudo swapoff -a
+        sudo rm -f /swapfile
+        sudo apt clean
+        docker rmi $(docker image ls -aq)
+        df -h
+
+    - name: Cache maven repo
+      uses: actions/cache@v2
+      if: github.event_name == 'push' || github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-latest-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('targets/default/default.target') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-latest-
+
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v2
+      if: inputs.analyze
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+  
+    - name: Build with Maven
+      env:
+        # Do not start Sonar-scanning for forks without label, and pass fork PR number directly
+        SONAR_PARAM: "${{ inputs.analyze && format('{0}{1}', 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar', env.PR_NUMBER) || '' }}"
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.sonar_token }}
+      working-directory: ./
+      run: |
+        Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &
+        export DISPLAY=:5
+        echo "Sonar param: \"${SONAR_PARAM}\""
+        mvn clean verify ${SONAR_PARAM} -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V -T 1C
+
+    - name: Publish Test Report
+      uses: scacap/action-surefire-report@v1
+      if: inputs.analyze
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Upload repo
+      uses: actions/upload-artifact@v2
+      with:
+        name: v8-code-style-repository
+        path: repositories/com.e1c.v8codestyle.repository/target/repository/
+        
+    - name: Upload SDK repo
+      uses: actions/upload-artifact@v2
+      with:
+        name: v8-code-style-repository-sdk
+        path: repositories/com.e1c.v8codestyle.repository.sdk/target/repository/
+    
+    - name: Upload JaCoCo exec data
+      uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: jacoco
+        path: |
+          ./**/target/jacoco.exec
+          ./**/target/site/jacoco*/
+    
+    - name: Upload test logs on failure
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: logs
+        path: ./**/.log

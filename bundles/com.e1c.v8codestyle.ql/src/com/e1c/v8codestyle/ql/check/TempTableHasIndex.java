@@ -17,6 +17,7 @@ import static com._1c.g5.v8.dt.ql.model.QlPackage.Literals.ABSTRACT_QUERY_SCHEMA
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 
+import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.ql.model.AbstractQuerySchemaTable;
 import com._1c.g5.v8.dt.ql.model.QuerySchemaSelectQuery;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -38,6 +39,10 @@ public class TempTableHasIndex
 
     private static final String CHECK_ID = "ql-temp-table-index"; //$NON-NLS-1$
 
+    private static final String PARAMETER_EXCLUDE_TABLE_NAME_PATTERN = "excludeObjectNamePattern"; //$NON-NLS-1$
+
+    private static final int MAX_TOP = 1000;
+
     @Override
     public String getCheckId()
     {
@@ -53,6 +58,8 @@ public class TempTableHasIndex
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
             .delegate(QuerySchemaSelectQuery.class);
+        builder.parameter(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, String.class, StringUtils.EMPTY,
+            Messages.TempTableHasIndex_Exclude_table_name_pattern);
     }
 
     @Override
@@ -60,7 +67,7 @@ public class TempTableHasIndex
         ICheckParameters parameters, IProgressMonitor monitor)
     {
         QuerySchemaSelectQuery selectQuery = (QuerySchemaSelectQuery)object;
-        if (selectQuery.getPlacementTable() == null)
+        if (selectQuery.getPlacementTable() == null || isTopLessThenThousand(selectQuery))
         {
             return;
         }
@@ -68,9 +75,33 @@ public class TempTableHasIndex
         if (selectQuery.getIndexes() == null || selectQuery.getIndexes().isEmpty())
         {
             AbstractQuerySchemaTable table = selectQuery.getPlacementTable();
+            String excludeTableNamePattern = parameters.getString(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN);
+            if (excludeTableNamePattern != null && !excludeTableNamePattern.isBlank()
+                && table.getFullTableName().matches(excludeTableNamePattern))
+            {
+                return;
+            }
             resultAceptor.addIssue(Messages.TempTableHasIndex_New_temporary_table_should_have_indexes, table,
                 ABSTRACT_QUERY_SCHEMA_TABLE__TABLE_NAME);
         }
+    }
+
+    private boolean isTopLessThenThousand(QuerySchemaSelectQuery selectQuery)
+    {
+        if (!selectQuery.getOperators().isEmpty() && selectQuery.getOperators().get(0).getGetRecordsCount() != null)
+        {
+            String count = selectQuery.getOperators().get(0).getGetRecordsCount();
+            try
+            {
+                int top = Integer.parseInt(count);
+                return top < MAX_TOP;
+            }
+            catch (NumberFormatException e)
+            {
+                // do nothing
+            }
+        }
+        return false;
     }
 
 }

@@ -18,9 +18,6 @@ jobs:
       with:
         java-version: 11
         java-package: jdk+fx
-        server-id: dt_repository
-        server-username: MAVEN_USERNAME
-        server-password: MAVEN_CENTRAL_TOKEN
 
     - name: Cache maven repo
       uses: actions/cache@v1
@@ -32,9 +29,6 @@ jobs:
           ${{ runner.os }}-maven-base-  
   
     - name: Build with Maven
-      env:
-        MAVEN_USERNAME: ${{ secrets.P2_USER }}
-        MAVEN_CENTRAL_TOKEN: ${{ secrets.P2_TOKEN }}
       working-directory: ./
       run: |
         Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &

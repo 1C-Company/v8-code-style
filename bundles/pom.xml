@@ -28,6 +28,7 @@
     <module>com.e1c.v8codestyle.md.ui</module>
     <module>com.e1c.v8codestyle.form</module>
     <module>com.e1c.v8codestyle.bsl</module>
+    <module>com.e1c.v8codestyle.bsl.ui</module>
     <module>com.e1c.v8codestyle.autosort</module>
     <module>com.e1c.v8codestyle.autosort.ui</module>
     <module>com.e1c.v8codestyle.ql</module>
