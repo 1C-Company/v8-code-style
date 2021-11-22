@@ -36,7 +36,6 @@ public class NotifyDescriptionToServerProcedureCheck2Test
         super(NotifyDescriptionToServerProcedureCheck.class);
     }
 
-
     /**
      * Test notify description to common module server procedure.
      *
