@@ -39,8 +39,14 @@ final class Messages
     public static String JoinToSubQuery_Query_join_to_sub_query_not_allowed;
     public static String JoinToSubQuery_title;
     public static String TempTableHasIndex_description;
+    public static String TempTableHasIndex_Exclude_table_name_pattern;
     public static String TempTableHasIndex_New_temporary_table_should_have_indexes;
     public static String TempTableHasIndex_title;
+    public static String UsingForUpdateCheck_description;
+    public static String UsingForUpdateCheck_title;
+    public static String VirtualTableFiltersCheck_description;
+    public static String VirtualTableFiltersCheck_Filter__0_for_virtual_table__1__should_be_in_parameters;
+    public static String VirtualTableFiltersCheck_title;
     static
     {
         // initialize resource bundle

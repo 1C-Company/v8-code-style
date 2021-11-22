@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccumulationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8f428475-637e-423b-ae04-52eedff7eb9a">
+  <producedTypes>
+    <selectionType typeId="7e13f4c8-f316-4376-864e-8a0a3d953769" valueTypeId="611ed5fd-2d14-4160-9682-fdf7d9471553"/>
+    <listType typeId="76d38f77-982d-40ee-81c1-69aed5bfa58f" valueTypeId="707d1294-2326-47b0-b858-e32e35dda216"/>
+    <managerType typeId="4bbaafc7-8bb6-4118-9fd5-a760c2f688a1" valueTypeId="ba11fe68-c788-4c86-a593-99ac793b7f56"/>
+    <recordSetType typeId="94f661ba-7e8c-4707-a41e-c3fca54bee00" valueTypeId="d803afa6-0d37-4208-8a01-a9bf2bafd28a"/>
+    <recordKeyType typeId="f8e59b4b-75b9-42db-9c0b-44bba3a979ef" valueTypeId="d593aa9e-f11f-4bb5-b888-05d131a8ba7c"/>
+    <recordType typeId="ca01113c-68f8-4321-8849-8d087d15bbac" valueTypeId="524150e9-af3e-4a1c-b566-aec26daf5320"/>
+  </producedTypes>
+  <name>Stocks</name>
+  <synonym>
+    <key>en</key>
+    <value>Stocks</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+  <resources uuid="c53b3494-a3cf-4686-8a7c-aa3aad6f1fef">
+    <name>Quntity</name>
+    <synonym>
+      <key>en</key>
+      <value>Quntity</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+  </resources>
+  <resources uuid="aadc477f-eea9-4396-aaf8-5c0158948c72">
+    <name>Amount</name>
+    <synonym>
+      <key>en</key>
+      <value>Amount</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+  </resources>
+  <dimensions uuid="bced3a0d-b507-45fd-92ab-4b110b5e7a32">
+    <name>Product</name>
+    <synonym>
+      <key>en</key>
+      <value>Product</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.Products</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+  <dimensions uuid="ad6c0d9f-9780-4e2d-991e-18a2e0300f68">
+    <name>Warehouse</name>
+    <synonym>
+      <key>en</key>
+      <value>Warehouse</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>25</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <useInTotals>true</useInTotals>
+  </dimensions>
+</mdclass:AccumulationRegister>

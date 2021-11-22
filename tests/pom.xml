@@ -27,6 +27,7 @@
     <module>com.e1c.v8codestyle.md.itests</module>
     <module>com.e1c.v8codestyle.form.itests</module>
     <module>com.e1c.v8codestyle.bsl.itests</module>
+    <module>com.e1c.v8codestyle.bsl.ui.itests</module>
     <module>com.e1c.v8codestyle.autosort.itests</module>
     <module>com.e1c.v8codestyle.ql.itests</module>
     <module>com.e1c.v8codestyle.right.itests</module>
@@ -117,6 +118,25 @@
             <phase>verify</phase>
             <goals>
               <goal>report-aggregate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>remove-aut</id>
+            <phase>post-integration-test</phase>
+            <configuration>
+              <target>
+                <!-- Delete aut from tests -->
+                <delete dir="${project.build.directory}/work" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
             </goals>
           </execution>
         </executions>

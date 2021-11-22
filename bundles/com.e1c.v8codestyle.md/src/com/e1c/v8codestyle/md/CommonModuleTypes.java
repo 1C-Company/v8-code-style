@@ -21,6 +21,10 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_M
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER_CALL;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -200,6 +204,8 @@ public enum CommonModuleTypes
 
     private final Map<EStructuralFeature, Object> featureValues;
 
+    private Map<EStructuralFeature, Object> featureValuesMobileOnly;
+
     CommonModuleTypes(String title, String[] nameSuffix, Map<EStructuralFeature, Object> featureValues)
     {
         this.title = title;
@@ -241,11 +247,57 @@ public enum CommonModuleTypes
     /**
      * Gets the feature values for the type of common module.
      *
+     * @param mobileOnly the mobile use only, if true - returns values without features that are not available
+     * in mobile application.
      * @return the feature values, cannot return {@code null}.
      */
-    public Map<EStructuralFeature, Object> getFeatureValues()
+    public Map<EStructuralFeature, Object> getFeatureValues(boolean mobileOnly)
     {
+        if (mobileOnly)
+        {
+            if (featureValuesMobileOnly == null)
+            {
+                Map<EStructuralFeature, Object> forMobile = new HashMap<>();
+                forMobile.putAll(featureValues);
+                forMobile.remove(COMMON_MODULE__EXTERNAL_CONNECTION);
+                forMobile.remove(COMMON_MODULE__PRIVILEGED);
+                featureValuesMobileOnly = Map.copyOf(forMobile);
+            }
+            return featureValuesMobileOnly;
+        }
         return featureValues;
+    }
+
+    /**
+     * Find type by common module name which is most closes with suffix.
+     * If non of suffixes matched then {@link CommonModuleTypes#SERVER} returns.
+     *
+     * @param name the name of common module, cannot be {@code null}.
+     * @param script the script variant, cannot be {@code null}.
+     * @return the common module type, cannot return {@code null}.
+     */
+    public static CommonModuleTypes findClosestTypeByName(String name, ScriptVariant script)
+    {
+        List<CommonModuleTypes> result = new ArrayList<>();
+        CommonModuleTypes[] values = values();
+        for (int i = 0; i < values.length; i++)
+        {
+            CommonModuleTypes type = values[i];
+            String suffix = type.getNameSuffix(script);
+            if (!suffix.isEmpty() && name.endsWith(suffix))
+            {
+                result.add(type);
+            }
+        }
+        if (result.isEmpty())
+        {
+            result.add(SERVER);
+        }
+        if (result.size() > 1)
+        {
+            Collections.sort(result, (o1, o2) -> o2.getNameSuffix(script).length() - o1.getNameSuffix(script).length());
+        }
+        return result.get(0);
     }
 
 }
