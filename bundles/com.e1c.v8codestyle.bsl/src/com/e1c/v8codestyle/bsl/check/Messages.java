@@ -123,7 +123,6 @@ final class Messages
 
     public static String FormModulePragmaCheck_title;
 
-
     public static String NotifyDescriptionToServerProcedureCheck_description;
 
     public static String NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_not_found;
@@ -134,6 +133,11 @@ final class Messages
 
     public static String NotifyDescriptionToServerProcedureCheck_title;
 
+    public static String FormModuleMissingPragmaCheck_description;
+
+    public static String FormModuleMissingPragmaCheck_Missing_compilation_directives;
+
+    public static String FormModuleMissingPragmaCheck_title;
 
     static
     {

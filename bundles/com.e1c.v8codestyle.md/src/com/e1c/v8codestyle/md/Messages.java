@@ -34,6 +34,7 @@ final class Messages
     public static String CommonModuleTypes_Server_global_module;
     public static String CommonModuleTypes_Server_Localization_module;
     public static String CommonModuleTypes_Server_module_for_call_form_client;
+    public static String CommonModuleTypes_Server_module_for_call_form_client_with_cached_response;
     public static String CommonModuleTypes_Server_Overridable_module;
     static
     {
