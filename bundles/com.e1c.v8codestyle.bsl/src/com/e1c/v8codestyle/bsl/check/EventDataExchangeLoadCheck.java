@@ -116,22 +116,21 @@ public class EventDataExchangeLoadCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof Procedure) || !((Procedure)object).isEvent()
-            || !isNecessaryMethod((Procedure)object))
+        Procedure procedure = (Procedure)object;
+
+        if (!isNecessaryEventHandler(procedure))
         {
             return;
         }
 
-        Procedure method = (Procedure)object;
-
-        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
+        Module module = EcoreUtil2.getContainerOfType(procedure, Module.class);
 
         if (!checkModuleType(module))
         {
             return;
         }
 
-        List<Statement> statements = method.allStatements();
+        List<Statement> statements = procedure.allStatements();
         if (statements.isEmpty())
         {
             return;
@@ -168,15 +167,20 @@ public class EventDataExchangeLoadCheck
 
         String message = MessageFormat.format(
             Messages.EventDataExchangeLoadCheck_Mandatory_checking_of_DataExchangeLoad_is_absent_in_event_handler_0,
-            method.getName());
+            procedure.getName());
 
         resultAceptor.addIssue(message, NAMED_ELEMENT__NAME);
 
     }
 
-    private boolean isNecessaryMethod(Procedure method)
+    private boolean isNecessaryEventHandler(Procedure procedure)
     {
-        for (Pragma pragma : method.getPragmas())
+        if (!procedure.isEvent())
+        {
+            return false;
+        }
+
+        for (Pragma pragma : procedure.getPragmas())
         {
             if (ANNOTATION_SYMBOLS.contains(new CaseInsensitiveString(pragma.getSymbol()))
                 && StringUtils.isNotEmpty(pragma.getValue())
@@ -185,7 +189,7 @@ public class EventDataExchangeLoadCheck
                 return true;
             }
         }
-        return DEFAULT_NAMES.contains(method.getName());
+        return DEFAULT_NAMES.contains(procedure.getName());
     }
 
     private boolean isDataExchangeLoadChecking(IfStatement statementMethod, Set<String> checkCalls)
