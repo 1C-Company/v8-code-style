@@ -12,6 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
+import static com._1c.g5.v8.dt.bsl.common.Symbols.ANNOTATION_SYMBOLS;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.CONDITIONAL__PREDICATE;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.PROCEDURE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
@@ -36,13 +37,15 @@ import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
+import com._1c.g5.v8.dt.bsl.model.Pragma;
 import com._1c.g5.v8.dt.bsl.model.Procedure;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -171,8 +174,17 @@ public class EventDataExchangeLoadCheck
 
     }
 
-    private boolean isNecessaryMethod(Method method)
+    private boolean isNecessaryMethod(Procedure method)
     {
+        for (Pragma pragma : method.getPragmas())
+        {
+            if (ANNOTATION_SYMBOLS.contains(new CaseInsensitiveString(pragma.getSymbol()))
+                && StringUtils.isNotEmpty(pragma.getValue())
+                && DEFAULT_NAMES.contains(pragma.getValue().replace("\"", ""))) //$NON-NLS-1$ //$NON-NLS-2$
+            {
+                return true;
+            }
+        }
         return DEFAULT_NAMES.contains(method.getName());
     }
 
