@@ -17,19 +17,14 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STRING_LITERAL__LIN
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcoreFactory;
-import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 
-import com._1c.g5.v8.dt.bsl.model.BslContextDef;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
@@ -40,7 +35,6 @@ import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.common.StringUtils;
-import com._1c.g5.v8.dt.mcore.ContextDef;
 import com._1c.g5.v8.dt.mcore.DerivedProperty;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.Method;
@@ -65,8 +59,6 @@ public class NotifyDescriptionToServerProcedureCheck
     extends BasicCheck
 {
     private static final String CHECK_ID = "notify-description-to-server-procedure"; //$NON-NLS-1$
-
-    private static final String COMMA = ","; //$NON-NLS-1$
 
     private static final String BSLCD = "bslcd"; //$NON-NLS-1$
 
@@ -132,16 +124,12 @@ public class NotifyDescriptionToServerProcedureCheck
             return;
         }
 
-        BslContextDef bslContextDef = getBslContexDef(osc);
+        String contextDefUri = getBslContexDefUri(osc);
 
-        if (monitor.isCanceled() || bslContextDef == null)
+        if (monitor.isCanceled() || contextDefUri == null)
         {
             return;
         }
-
-        Set<String> listMethodNames = getAllMethodNames(bslContextDef);
-
-        String contextDefUri = null;
 
         Collection<Method> methods = exportMethodProvider.getMockMethods(contextDefUri, methodName, osc);
         if (methods.isEmpty())
@@ -167,40 +155,6 @@ public class NotifyDescriptionToServerProcedureCheck
 
         }
 
-        if (listMethodNames.contains(methodName))
-        {
-            Method method = getExportMethod(bslContextDef, methodName);
-            if (method == null)
-            {
-                resultAceptor.addIssue(
-                    Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_should_be_export,
-                    param, STRING_LITERAL__LINES);
-            }
-            else
-            {
-                Environments calleeEnv = method.environments();
-                if (!calleeEnv.containsAny(Environments.MNG_CLIENTS))
-                {
-                    resultAceptor.addIssue(
-                        Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_to_Server_procedure, param,
-                        STRING_LITERAL__LINES);
-                }
-            }
-        }
-        else
-        {
-            resultAceptor.addIssue(
-                Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_not_found, param,
-                STRING_LITERAL__LINES);
-        }
-    }
-
-    private Set<String> getAllMethodNames(BslContextDef bslContextDef)
-    {
-        Set<String> result = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        String[] allMethodNames = bslContextDef.getAllMethodNames().split(COMMA);
-        result.addAll(List.of(allMethodNames));
-        return result;
     }
 
     private String getCalledProcedureName(Expression param)
@@ -216,20 +170,7 @@ public class NotifyDescriptionToServerProcedureCheck
         return null;
     }
 
-    private Method getExportMethod(BslContextDef bslContextDef, String methodName)
-    {
-        List<Method> methods = bslContextDef.allMethods();
-        for (Method method : methods)
-        {
-            if (methodName.equalsIgnoreCase(method.getName()))
-            {
-                return method;
-            }
-        }
-        return null;
-    }
-
-    private BslContextDef getBslContexDef(OperatorStyleCreator osc)
+    private String getBslContexDefUri(OperatorStyleCreator osc)
     {
         List<Expression> params = osc.getParams();
 
@@ -238,64 +179,49 @@ public class NotifyDescriptionToServerProcedureCheck
             Expression moduleParam = params.get(1);
             if (moduleParam instanceof StaticFeatureAccess)
             {
-                return getBslContexDef((StaticFeatureAccess)moduleParam);
+                return getBslContexDefUri((StaticFeatureAccess)moduleParam);
             }
             else if (moduleParam instanceof DynamicFeatureAccess)
             {
-                return getBslContexDef((DynamicFeatureAccess)moduleParam);
+                return getBslContexDefUri((DynamicFeatureAccess)moduleParam);
             }
         }
 
         return null;
     }
 
-    private BslContextDef getBslContexDef(StaticFeatureAccess object)
+    private String getBslContexDefUri(StaticFeatureAccess object)
     {
+        URI uri = null;
         if (object.getName().equals(THIS_OBJECT) || object.getName().equals(THIS_OBJECT_RU))
         {
-            ContextDef contextDef = EcoreUtil2.getContainerOfType(object, Module.class).getContextDef();
-            if (contextDef instanceof BslContextDef)
-            {
-                return (BslContextDef)contextDef;
-            }
+            uri = EcoreUtil.getURI(object);
         }
         else
         {
-            URI uri = getCommonModuleUri(object);
-            uri = constructBslCdUri(uri);
-            EObject contextDef = EcoreFactory.eINSTANCE.createEObject();
-            ((InternalEObject)contextDef).eSetProxyURI(uri);
-            contextDef = EcoreUtil.resolve(contextDef, object);
-            if (!contextDef.eIsProxy() && contextDef instanceof BslContextDef)
-            {
-                return (BslContextDef)contextDef;
-            }
+            uri = getCommonModuleUri(object);
         }
-        return null;
+        return constructBslCdUri(uri);
     }
 
-    private BslContextDef getBslContexDef(DynamicFeatureAccess object)
+    private String getBslContexDefUri(DynamicFeatureAccess object)
     {
-
         URI uri = getCommonModuleUri(object);
-        uri = constructBslCdUri(uri);
-        EObject contextDef = EcoreFactory.eINSTANCE.createEObject();
-        ((InternalEObject)contextDef).eSetProxyURI(uri);
-        contextDef = EcoreUtil.resolve(contextDef, object);
-        if (!contextDef.eIsProxy() && contextDef instanceof BslContextDef)
-        {
-            return (BslContextDef)contextDef;
-        }
-        return null;
+
+        return constructBslCdUri(uri);
     }
 
-    private URI constructBslCdUri(URI uri)
+    private String constructBslCdUri(URI uri)
     {
         if (uri == null)
         {
             return null;
         }
-        return uri.trimFileExtension().appendFileExtension(BSLCD);
+        return uri.trimFragment()
+            .trimFileExtension()
+            .appendFileExtension(BSLCD)
+            .appendFragment("/0/@contextDef")
+            .toString();
     }
 
     private URI getCommonModuleUri(DynamicFeatureAccess object)
