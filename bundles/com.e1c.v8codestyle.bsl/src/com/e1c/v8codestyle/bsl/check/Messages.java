@@ -123,13 +123,19 @@ final class Messages
 
     public static String FormModulePragmaCheck_title;
 
+    public static String NotifyDescriptionToServerProcedureCheck_description;
+
+    public static String NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_should_be_export;
+
+    public static String NotifyDescriptionToServerProcedureCheck_Notify_description_to_Server_procedure;
+
+    public static String NotifyDescriptionToServerProcedureCheck_title;
 
     public static String FormModuleMissingPragmaCheck_description;
 
     public static String FormModuleMissingPragmaCheck_Missing_compilation_directives;
 
     public static String FormModuleMissingPragmaCheck_title;
-
 
     static
     {
