@@ -79,12 +79,14 @@ public class AccessibilityAtClientInObjectModuleCheckTest
     public void testManagerModule() throws Exception
     {
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(3, markers.size());
 
         Marker marker = markers.get(0);
         assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         marker = markers.get(1);
-        assertEquals("20", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("8", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        marker = markers.get(2);
+        assertEquals("22", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
