@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:EventSubscription xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="7009b8c7-2bb1-402c-96d1-a55a83bd1cb5">
+  <name>ProductsOnWrite</name>
+  <synonym>
+    <key>en</key>
+    <value>Products on write</value>
+  </synonym>
+  <source>
+    <types>CatalogObject.Products</types>
+  </source>
+  <event>OnWrite</event>
+  <handler>CommonModule.Common.ProductsOnWriteOnWrite</handler>
+</mdclass:EventSubscription>

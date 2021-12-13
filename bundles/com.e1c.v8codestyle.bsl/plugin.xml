@@ -11,7 +11,7 @@
    
     Contributors:
         1C-Soft LLC - initial API and implementation
-        Aleksandr Kapralov - issue #17
+        Aleksandr Kapralov - issue #17, #449, #458
  -->
 
 <plugin>
@@ -20,9 +20,15 @@
 
       <category
             category="com.e1c.v8codestyle"
-            description="%category.bls.description"
+            description="%category.bsl.description"
             id="com.e1c.v8codestyle.bsl"
             title="%category.bsl.title">
+      </category>
+      <category
+            category="com.e1c.v8codestyle.bsl"
+            description="%category.bsl.strict.description"
+            id="com.e1c.v8codestyle.bsl.strict"
+            title="%category.bsl.strict.title">
       </category>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -34,7 +40,19 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormModuleMissingPragmaCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.QueryInLoopCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.MethodTooManyPramsCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.NotifyDescriptionToServerProcedureCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -44,7 +62,91 @@
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
       </check>
-
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.NstrStringLiteralFormatCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormModulePragmaCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CanonicalPragmaCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ChangeAndValidateInsteadOfAroundCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.MethodParamTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.VariableTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessMethodNotFoundCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.SimpleStatementTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.InvocationParamIntersectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionReturnTypeCheck">
+      </check>
+      <!-- Disabled untill release 2021.2.6+
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionCtorReturnSectionCheck">
+      </check> 
+      -->
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.DocCommentFieldTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.strict"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.StructureCtorValueTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.EventHandlerBooleanParamCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.DocCommentUseMinusCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UseNonRecommendedMethodCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.RegionEmptyCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ModuleStructureTopRegionCheck">
+      </check>
+  
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.e1c.v8codestyle.internal.bsl.ModuleStructureProviderPreferenceInitializer">
+      </initializer>
    </extension>
 
 </plugin>

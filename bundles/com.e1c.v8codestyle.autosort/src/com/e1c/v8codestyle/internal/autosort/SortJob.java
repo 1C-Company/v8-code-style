@@ -96,7 +96,6 @@ public class SortJob
             if (monitor.isCanceled())
             {
                 workspaceOrchestrator.cancelOperation(handler);
-                return Status.CANCEL_STATUS;
             }
             else
             {
@@ -104,6 +103,10 @@ public class SortJob
             }
         }
 
+        if (monitor.isCanceled())
+        {
+            return Status.CANCEL_STATUS;
+        }
         return Status.OK_STATUS;
     }
 
