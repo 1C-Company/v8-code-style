@@ -50,9 +50,9 @@ public class CollectionTypeDefinitionCheck
         IEObjectTypeNames.ARRAY, "Массив",  //$NON-NLS-1$
         IEObjectTypeNames.FIXED_ARRAY, "ФиксированныйМассив",  //$NON-NLS-1$
         IEObjectTypeNames.MAP, "Соответствие",  //$NON-NLS-1$
-        IEObjectTypeNames.FIXED_MAP,  "ФиксированноеСоответствие",  //$NON-NLS-1$
+        IEObjectTypeNames.FIXED_MAP, "ФиксированноеСоответствие",  //$NON-NLS-1$
         IEObjectTypeNames.VALUE_LIST, "СписокЗначений",  //$NON-NLS-1$
-        "FixedCollection",  "ФиксированнаяКоллекция")); //$NON-NLS-1$ //$NON-NLS-2$
+        "FixedCollection", "ФиксированнаяКоллекция")); //$NON-NLS-1$ //$NON-NLS-2$
     //@formatter:on
 
     @Override
@@ -80,7 +80,9 @@ public class CollectionTypeDefinitionCheck
     {
 
         if (object instanceof LinkContainsTypeDefinition)
+        {
             return;
+        }
 
         String parameterCollectionTypes = parameters.getString(PARAMETER_COLLECTION_TYPES);
         if (StringUtils.isBlank(parameterCollectionTypes))
@@ -93,7 +95,9 @@ public class CollectionTypeDefinitionCheck
         String typeName = typeDef.getTypeName();
 
         if (StringUtils.isEmpty(typeName))
+        {
             return;
+        }
 
         Set<String> types = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         String[] paramTypes = parameterCollectionTypes.split(TYPE_DELIMITER);

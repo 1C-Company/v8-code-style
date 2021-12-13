@@ -80,14 +80,18 @@ public class TypeDefinitionCheck
         DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
     {
         if (object instanceof LinkContainsTypeDefinition)
+        {
             return;
+        }
 
         TypeDefinition typeDef = (TypeDefinition)object;
 
         String typeName = typeDef.getTypeName();
 
         if (StringUtils.isEmpty(typeName))
+        {
             return;
+        }
 
         IScope typeScope = scopeProvider.getScope(root.getMethod(), McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
 

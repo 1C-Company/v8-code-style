@@ -144,7 +144,9 @@ public class FieldDefinitionTypeWithLinkRefCheck
         {
             TypeDefinition type = typeSection.getTypeDefinitions().get(0);
             if (!type.getContainTypes().isEmpty())
+            {
                 return false;
+            }
             String typeName = type.getTypeName();
             return types.contains(typeName);
         }
