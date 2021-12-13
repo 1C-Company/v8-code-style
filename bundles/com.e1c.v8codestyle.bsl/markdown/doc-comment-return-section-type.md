@@ -1,4 +1,4 @@
-# Documentation comment field has no type definition
+# Documentation comment return section contains valid types
 
 ## Noncompliant Code Example
 

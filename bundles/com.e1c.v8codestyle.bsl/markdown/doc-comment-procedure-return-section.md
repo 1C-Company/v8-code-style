@@ -1,4 +1,4 @@
-# Documentation comment field has no type definition
+# Documentation comment has return section for procedure
 
 ## Noncompliant Code Example
 

@@ -1,4 +1,4 @@
-# Documentation comment field has no type definition
+# Documentation comment multi-line description ends on dot
 
 ## Noncompliant Code Example
 

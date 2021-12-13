@@ -1,4 +1,4 @@
-# Documentation comment field has no type definition
+# Documentation comment return section for export function
 
 ## Noncompliant Code Example
 

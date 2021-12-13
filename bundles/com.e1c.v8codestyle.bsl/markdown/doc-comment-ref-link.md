@@ -1,4 +1,4 @@
-# Documentation comment field has no type definition
+# Documentation comment link referenced object exist
 
 ## Noncompliant Code Example
 

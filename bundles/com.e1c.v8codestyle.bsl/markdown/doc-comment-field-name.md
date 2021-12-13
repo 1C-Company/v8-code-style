@@ -1,4 +1,4 @@
-# Documentation comment field has no type definition
+# Documentation comment field is correct name
 
 ## Noncompliant Code Example
 
