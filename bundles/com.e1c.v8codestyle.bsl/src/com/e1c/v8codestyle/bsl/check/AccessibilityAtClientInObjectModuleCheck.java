@@ -30,6 +30,7 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.Preprocessor;
+import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -40,7 +41,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
- * Checks that method or declared variables accessible at Client in manager or object module.
+ * Checks that method or declared variables accessible &AtClient in manager or object module.
  *
  * @author Dmitriy Marmyshev
  * @author Victor Golubev
@@ -51,17 +52,17 @@ public class AccessibilityAtClientInObjectModuleCheck
     private static final String CHECK_ID = "module-accessibility-at-client"; //$NON-NLS-1$
 
     //@formatter:off
-    private static final Collection<String> MANAGER_EVENT_EXCEPTION_NAMES = Set.of(
-        "PresentationFieldsGetProcessin",  //$NON-NLS-1$
-        "ОбработкаПолученияПолейПредставления", //$NON-NLS-1$
-        "PresentationGetProcessing",  //$NON-NLS-1$
-        "ОбработкаПолученияПредставления",  //$NON-NLS-1$
-        "FormGetProcessing",  //$NON-NLS-1$
-        "ОбработкаПолученияФормы", //$NON-NLS-1$
-        "AfterWriteDataHistoryVersionsProcessing",  //$NON-NLS-1$
-        "ОбработкаПослеЗаписиВерсийИсторииДанных", //$NON-NLS-1$
-        "ChoiceDataGetProcessing",  //$NON-NLS-1$
-        "ОбработкаПолученияДанныхВыбора"); //$NON-NLS-1$
+    private static final Collection<CaseInsensitiveString> MANAGER_EVENT_EXCEPTION_NAMES = Set.of(
+        new CaseInsensitiveString("PresentationFieldsGetProcessing"),  //$NON-NLS-1$
+        new CaseInsensitiveString("ОбработкаПолученияПолейПредставления"), //$NON-NLS-1$
+        new CaseInsensitiveString("PresentationGetProcessing"),  //$NON-NLS-1$
+        new CaseInsensitiveString("ОбработкаПолученияПредставления"),  //$NON-NLS-1$
+        new CaseInsensitiveString("FormGetProcessing"),  //$NON-NLS-1$
+        new CaseInsensitiveString("ОбработкаПолученияФормы"), //$NON-NLS-1$
+        new CaseInsensitiveString("AfterWriteDataHistoryVersionsProcessing"),  //$NON-NLS-1$
+        new CaseInsensitiveString("ОбработкаПослеЗаписиВерсийИсторииДанных"), //$NON-NLS-1$
+        new CaseInsensitiveString("ChoiceDataGetProcessing"),  //$NON-NLS-1$
+        new CaseInsensitiveString("ОбработкаПолученияДанныхВыбора")); //$NON-NLS-1$
     //@formatter:on
 
     private final IBslPreferences bslPreferences;
@@ -118,31 +119,31 @@ public class AccessibilityAtClientInObjectModuleCheck
 
         Environmental environmental = EcoreUtil2.getContainerOfType(eObject, Environmental.class);
         Environments enivronmetsObject = environmental.environments();
-        Environments chechingEnvs = bslPreferences.getLoadEnvs(eObject).intersect(Environments.MNG_CLIENTS);
+        Environments checkingEnvs = bslPreferences.getLoadEnvs(eObject).intersect(Environments.MNG_CLIENTS);
 
-        boolean isClietnEvent = isClietnEvent(eObject, module);
-        boolean isAccessibleAtClient = enivronmetsObject.containsAny(chechingEnvs);
+        boolean isClientEvent = isClientEvent(eObject, module);
+        boolean isAccessibleAtClient = enivronmetsObject.containsAny(checkingEnvs);
 
-        if (isClietnEvent && !isAccessibleAtClient)
+        if (isClientEvent && !isAccessibleAtClient)
         {
             resultAceptor.addIssue(
-                Messages.AccessibilityAtClientInObjectModuleCheck_Event_handler_should_be_accessible_at_Client, eObject,
+                Messages.AccessibilityAtClientInObjectModuleCheck_Event_handler_should_be_accessible_AtClient, eObject,
                 NAMED_ELEMENT__NAME);
         }
-        else if (!isAccessibleAtClient || isClietnEvent || monitor.isCanceled())
+        else if (!isAccessibleAtClient || isClientEvent || monitor.isCanceled())
         {
             return;
         }
 
         if (eObject instanceof Method)
         {
-            resultAceptor.addIssue(Messages.AccessibilityAtClientInObjectModuleCheck_Method_accessible_at_Client,
+            resultAceptor.addIssue(Messages.AccessibilityAtClientInObjectModuleCheck_Method_accessible_AtClient,
                 eObject, NAMED_ELEMENT__NAME);
         }
         else if (eObject instanceof DeclareStatement)
         {
             resultAceptor.addIssue(
-                Messages.AccessibilityAtClientInObjectModuleCheck_Declared_variable_accessible_at_Client, eObject,
+                Messages.AccessibilityAtClientInObjectModuleCheck_Declared_variable_accessible_AtClient, eObject,
                 DECLARE_STATEMENT__VARIABLES);
         }
     }
@@ -154,12 +155,13 @@ public class AccessibilityAtClientInObjectModuleCheck
             || type == ModuleType.OBJECT_MODULE || type == ModuleType.RECORDSET_MODULE;
     }
 
-    private boolean isClietnEvent(EObject object, Module module)
+    private boolean isClientEvent(EObject object, Module module)
     {
         if (object instanceof Method && module.getModuleType() == ModuleType.MANAGER_MODULE)
         {
             Method method = (Method)object;
-            return MANAGER_EVENT_EXCEPTION_NAMES.contains(method.getName());
+            CaseInsensitiveString name = new CaseInsensitiveString(method.getName());
+            return MANAGER_EVENT_EXCEPTION_NAMES.contains(name);
         }
         return false;
     }
