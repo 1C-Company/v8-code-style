@@ -136,7 +136,7 @@ public class MdStandardAttributeSynonymEmpty
 
         if (attribute == null || StringUtils.isBlank(getSynonym(attribute, languageCode)))
         {
-            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage,
+            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_parent_ErrorMessage,
                 BASIC_DB_OBJECT__STANDARD_ATTRIBUTES);
         }
     }
@@ -152,7 +152,7 @@ public class MdStandardAttributeSynonymEmpty
 
         if (attribute == null || StringUtils.isBlank(getSynonym(attribute, languageCode)))
         {
-            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage,
+            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_owner_ErrorMessage,
                 BASIC_DB_OBJECT__STANDARD_ATTRIBUTES);
         }
     }
