@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="dbf807c7-3403-46ec-9438-762f95339f9a">
+  <name>AccessibilityAtClient</name>
+  <synonym>
+    <key>en</key>
+    <value>Accessibility at client</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="1e032eac-af6d-4142-b2db-503007b97787"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="18edc1eb-82c8-4108-b865-48d3eaf60ad5"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="4e1e2046-252a-4dc4-a7e3-9d81d74a8826"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="0d9f0854-b8ca-4f36-ac09-1492932cbe68"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="6d85c977-6f19-43ea-b8da-40abee52f24b"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="d40728f5-9b55-40dc-912f-25a2a1e8b48b"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="a22e504a-45dc-4a29-80a4-b3acca1c431b"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="5671d618-72ac-4af6-beea-0a1feb9a95c4">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <catalogs>Catalog.Products</catalogs>
+</mdclass:Configuration>
