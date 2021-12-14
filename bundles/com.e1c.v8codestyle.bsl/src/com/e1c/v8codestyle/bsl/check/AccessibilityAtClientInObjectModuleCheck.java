@@ -151,7 +151,6 @@ public class AccessibilityAtClientInObjectModuleCheck
         }
     }
 
-
     private boolean isValidModule(Module module)
     {
         ModuleType type = module.getModuleType();
@@ -165,6 +164,10 @@ public class AccessibilityAtClientInObjectModuleCheck
             && ((Method)object).isEvent())
         {
             String parameterMethodNames = parameters.getString(PARAMETER_ALLOW_MANAGER_EVENTS_AT_CLIENT);
+            if (StringUtils.isEmpty(parameterMethodNames))
+            {
+                return false;
+            }
 
             Method method = (Method)object;
             Set<String> methodNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
@@ -177,15 +180,18 @@ public class AccessibilityAtClientInObjectModuleCheck
 
     private boolean isMethodAtClient(EObject object, ICheckParameters parameters)
     {
-        String parameterMethodNames = null;
-        if (object instanceof Method
-            && !StringUtils.isEmpty((parameterMethodNames = parameters.getString(PARAMETER_METHODS_AT_CLIENT))))
+        if (!(object instanceof Method))
         {
-            Method method = (Method)object;
-            Set<String> methodNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-            methodNames.addAll(List.of(parameterMethodNames.split(",\\s*"))); //$NON-NLS-1$
-            return methodNames.contains(method.getName());
+            return false;
         }
-        return false;
+        String parameterMethodNames = parameters.getString(PARAMETER_METHODS_AT_CLIENT);
+        if (StringUtils.isEmpty(parameterMethodNames))
+        {
+            return false;
+        }
+        Method method = (Method)object;
+        Set<String> methodNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        methodNames.addAll(List.of(parameterMethodNames.split(",\\s*"))); //$NON-NLS-1$
+        return methodNames.contains(method.getName());
     }
 }
