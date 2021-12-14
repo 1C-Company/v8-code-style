@@ -151,8 +151,8 @@ public class AccessibilityAtClientInObjectModuleCheck
     private boolean isValidModule(Module module)
     {
         ModuleType type = module.getModuleType();
-        return type == ModuleType.SESSION_MODULE || type == ModuleType.MANAGER_MODULE
-            || type == ModuleType.OBJECT_MODULE || type == ModuleType.RECORDSET_MODULE;
+        return type == ModuleType.MANAGER_MODULE || type == ModuleType.OBJECT_MODULE
+            || type == ModuleType.RECORDSET_MODULE;
     }
 
     private boolean isClientEvent(EObject object, Module module)

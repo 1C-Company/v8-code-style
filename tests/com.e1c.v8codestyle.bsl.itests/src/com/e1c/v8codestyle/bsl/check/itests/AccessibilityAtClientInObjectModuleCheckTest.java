@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.Path;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
@@ -40,8 +39,6 @@ public class AccessibilityAtClientInObjectModuleCheckTest
     private static final String MANAGER_MODULE_FILE_NAME = "/src/Catalogs/Products/ManagerModule.bsl";
 
     private static final String OBJECT_MODULE_FILE_NAME = "/src/Catalogs/Products/ObjectModule.bsl";
-
-    private static final String SESSION_MODULE_FILE_NAME = "/src/Configuration/SessionModule.bsl";
 
     public AccessibilityAtClientInObjectModuleCheckTest()
     {
@@ -92,17 +89,6 @@ public class AccessibilityAtClientInObjectModuleCheckTest
         assertEquals("22", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
-    @Test
-    @Ignore // all module is server in EDT
-    public void testSessionModule() throws Exception
-    {
-        List<Marker> markers = getSessionModuleMarkers();
-        assertEquals(1, markers.size());
-
-        Marker marker = markers.get(0);
-        assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-    }
-
     private List<Marker> getObjectModuleMarkers()
     {
         String moduleId = Path.ROOT.append(getTestConfigurationName()).append(OBJECT_MODULE_FILE_NAME).toString();
@@ -116,16 +102,4 @@ public class AccessibilityAtClientInObjectModuleCheckTest
             .collect(Collectors.toList());
     }
 
-    private List<Marker> getSessionModuleMarkers()
-    {
-        String moduleId = Path.ROOT.append(getTestConfigurationName()).append(SESSION_MODULE_FILE_NAME).toString();
-        List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
-
-        String chekcId = getCheckId();
-        assertNotNull(chekcId);
-
-        return markers.stream()
-            .filter(m -> chekcId.equals(getCheckIdFromMarker(m, getProject())))
-            .collect(Collectors.toList());
-    }
 }
