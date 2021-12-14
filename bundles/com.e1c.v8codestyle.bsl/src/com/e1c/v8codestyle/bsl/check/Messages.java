@@ -30,7 +30,11 @@ final class Messages
 
     public static String AccessibilityAtClientInObjectModuleCheck_Event_handler_should_be_accessible_AtClient;
 
+    public static String AccessibilityAtClientInObjectModuleCheck_Manager_event_handlers_allows_to_be_AtClient;
+
     public static String AccessibilityAtClientInObjectModuleCheck_Method_accessible_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
 
     public static String AccessibilityAtClientInObjectModuleCheck_title;
     public static String CanonicalPragmaCheck_description;

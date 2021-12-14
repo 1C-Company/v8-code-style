@@ -6,7 +6,7 @@ EndProcedure
 #If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
 Procedure ChoiceDataGetProcessing(ChoiceData, Parameters, StandardProcessing)
-	// Non-complaint
+	// Complaint
 EndProcedure
 
 Procedure Compiant() Export
@@ -15,7 +15,7 @@ EndProcedure
 
 #EndIf
 
-Procedure FormGetProcessing(FormType, Parameters, SelectedForm, AdditionalInformation, StandardProcessing)
+Procedure PresentationFieldsGetProcessing(Fields, StandardProcessing)
 	// Complaint
 EndProcedure
 

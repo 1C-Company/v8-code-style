@@ -17,8 +17,9 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT__
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -30,7 +31,7 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.Preprocessor;
-import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
+import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -52,18 +53,16 @@ public class AccessibilityAtClientInObjectModuleCheck
     private static final String CHECK_ID = "module-accessibility-at-client"; //$NON-NLS-1$
 
     //@formatter:off
-    private static final Collection<CaseInsensitiveString> MANAGER_EVENT_EXCEPTION_NAMES = Set.of(
-        new CaseInsensitiveString("PresentationFieldsGetProcessing"),  //$NON-NLS-1$
-        new CaseInsensitiveString("ОбработкаПолученияПолейПредставления"), //$NON-NLS-1$
-        new CaseInsensitiveString("PresentationGetProcessing"),  //$NON-NLS-1$
-        new CaseInsensitiveString("ОбработкаПолученияПредставления"),  //$NON-NLS-1$
-        new CaseInsensitiveString("FormGetProcessing"),  //$NON-NLS-1$
-        new CaseInsensitiveString("ОбработкаПолученияФормы"), //$NON-NLS-1$
-        new CaseInsensitiveString("AfterWriteDataHistoryVersionsProcessing"),  //$NON-NLS-1$
-        new CaseInsensitiveString("ОбработкаПослеЗаписиВерсийИсторииДанных"), //$NON-NLS-1$
-        new CaseInsensitiveString("ChoiceDataGetProcessing"),  //$NON-NLS-1$
-        new CaseInsensitiveString("ОбработкаПолученияДанныхВыбора")); //$NON-NLS-1$
+    private static final String MANAGER_EVENT_EXCEPTION_NAMES = String.join(",", Set.of( //$NON-NLS-1$
+        "PresentationFieldsGetProcessing",  //$NON-NLS-1$
+        "ОбработкаПолученияПолейПредставления", //$NON-NLS-1$
+        "PresentationGetProcessing",  //$NON-NLS-1$
+        "ОбработкаПолученияПредставления")); //$NON-NLS-1$
     //@formatter:on
+
+    private static final String PARAMETER_ALLOW_MANAGER_EVENTS_AT_CLIENT = "allowManagerEventsAtClient"; //$NON-NLS-1$
+
+    private static final String PARAMETER_METHODS_AT_CLIENT = "methodsAtClient"; //$NON-NLS-1$
 
     private final IBslPreferences bslPreferences;
 
@@ -94,7 +93,11 @@ public class AccessibilityAtClientInObjectModuleCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PORTABILITY)
             .module()
-            .checkedObjectType(METHOD, DECLARE_STATEMENT);
+            .checkedObjectType(METHOD, DECLARE_STATEMENT)
+            .parameter(PARAMETER_ALLOW_MANAGER_EVENTS_AT_CLIENT, String.class, MANAGER_EVENT_EXCEPTION_NAMES,
+                Messages.AccessibilityAtClientInObjectModuleCheck_Manager_event_handlers_allows_to_be_AtClient)
+            .parameter(PARAMETER_METHODS_AT_CLIENT, String.class, StringUtils.EMPTY,
+                Messages.AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient);
     }
 
     @Override
@@ -121,16 +124,16 @@ public class AccessibilityAtClientInObjectModuleCheck
         Environments enivronmetsObject = environmental.environments();
         Environments checkingEnvs = bslPreferences.getLoadEnvs(eObject).intersect(Environments.MNG_CLIENTS);
 
-        boolean isClientEvent = isClientEvent(eObject, module);
         boolean isAccessibleAtClient = enivronmetsObject.containsAny(checkingEnvs);
 
-        if (isClientEvent && !isAccessibleAtClient)
+        if (!isAccessibleAtClient && isMethodAtClient(eObject, parameters))
         {
             resultAceptor.addIssue(
                 Messages.AccessibilityAtClientInObjectModuleCheck_Event_handler_should_be_accessible_AtClient, eObject,
                 NAMED_ELEMENT__NAME);
         }
-        else if (!isAccessibleAtClient || isClientEvent || monitor.isCanceled())
+
+        if (!isAccessibleAtClient || monitor.isCanceled() || allowManagerEventAtClient(eObject, module, parameters))
         {
             return;
         }
@@ -148,6 +151,7 @@ public class AccessibilityAtClientInObjectModuleCheck
         }
     }
 
+
     private boolean isValidModule(Module module)
     {
         ModuleType type = module.getModuleType();
@@ -155,15 +159,33 @@ public class AccessibilityAtClientInObjectModuleCheck
             || type == ModuleType.RECORDSET_MODULE;
     }
 
-    private boolean isClientEvent(EObject object, Module module)
+    private boolean allowManagerEventAtClient(EObject object, Module module, ICheckParameters parameters)
     {
-        if (object instanceof Method && module.getModuleType() == ModuleType.MANAGER_MODULE)
+        if (object instanceof Method && module.getModuleType() == ModuleType.MANAGER_MODULE
+            && ((Method)object).isEvent())
         {
+            String parameterMethodNames = parameters.getString(PARAMETER_ALLOW_MANAGER_EVENTS_AT_CLIENT);
+
             Method method = (Method)object;
-            CaseInsensitiveString name = new CaseInsensitiveString(method.getName());
-            return MANAGER_EVENT_EXCEPTION_NAMES.contains(name);
+            Set<String> methodNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+            methodNames.addAll(List.of(parameterMethodNames.split(",\\s*"))); //$NON-NLS-1$
+            return methodNames.contains(method.getName());
+
         }
         return false;
     }
 
+    private boolean isMethodAtClient(EObject object, ICheckParameters parameters)
+    {
+        String parameterMethodNames = null;
+        if (object instanceof Method
+            && !StringUtils.isEmpty((parameterMethodNames = parameters.getString(PARAMETER_METHODS_AT_CLIENT))))
+        {
+            Method method = (Method)object;
+            Set<String> methodNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+            methodNames.addAll(List.of(parameterMethodNames.split(",\\s*"))); //$NON-NLS-1$
+            return methodNames.contains(method.getName());
+        }
+        return false;
+    }
 }
