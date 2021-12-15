@@ -30,7 +30,7 @@
   <properties>
     <tycho.version>2.2.0</tycho.version>
     <tycho.extras.version>2.2.0</tycho.extras.version>
-    <markdown-page-generator.version>2.3.0</markdown-page-generator.version>
+    <markdown-page-generator.version>2.3.1</markdown-page-generator.version>
     <!-- Override this property in each project -->
     <markdown.page.generator.html.file.path>${project.basedir}</markdown.page.generator.html.file.path>
     

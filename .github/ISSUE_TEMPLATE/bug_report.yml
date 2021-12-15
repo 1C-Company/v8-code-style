@@ -1,0 +1,108 @@
+name: Сообщение об ошибке
+description: Сообщите об ошибке, чтобы помочь нам улучшить проект
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Благодарим Вас, за то что сообщаете об ошибке!
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Описание ошибки
+      description: Четкое и краткое описание того, в чем заключается ошибка?
+      placeholder: Расскажите нам что вы видите?
+      value: "Ошибка в том что..."
+    validations:
+      required: true
+  - type: textarea
+    id: bug-reproduce
+    attributes:
+      label: Как воспроизвести
+      description: Шаги для воспроизведения ошибки (здесь так же можно вставлять скриншоты - это очень помогает понять)
+      placeholder: Что необходимо выполнить по шагам для воспроизведения ошибки?
+      value: |
+        1. Перейдите в `...`
+        2. Кликните по `....`
+        3. Прокрутите вниз до `....`
+        4. Смотрите ошибку в `....`
+
+    validations:
+      required: true
+  - type: textarea
+    id: screenshoots
+    attributes:
+      label: Скриншоты
+      description: |
+        Если возможно, приложите скриншоты проблемы.
+
+        Совет: не старайтесь обрезать все лишнее (по вашему мнению) на скриншоте, лучше более полный скриншот со стрелочками на проблемное место. 
+      placeholder: Здесь можно вставить скриншот проблемы...
+    validations:
+      required: false
+  - type: textarea
+    id: expectation
+    attributes:
+      label: Ожидаемое поведение
+      description: Четкое и краткое описание того, что вы ожидали бы в правильном поведении?
+      placeholder: Какое, по вашему мнению, правильное поведение?
+    validations:
+      required: true
+  - type: textarea
+    id: ws-logs
+    attributes:
+      label: Лог рабочей области
+      description: Обязательно, приложите все файлы логов из рабочей области /path/to/workspace/.metadata/*.log и файл trace.log
+      placeholder: Вставьте файлы лог
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        [Инструкция по сбору журнала ошибок (лог ошибок)](https://its.1c.ru/db/edtdoc#content:153:hdoc:_top:лог)
+
+        Если файл лога не получается прикрепить, это касается файла `.log`, то переименуйте его в `log.txt` и прикрепите
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Версия 1С:Code style V8
+      description: "Скопируйте и вставте версию плагина из меню: Help -> About 1C:Enterprise Development Tools -> кликните на иконку плагина"
+      placeholder: например, 0.1.0.141
+    validations:
+      required: true
+  - type: input
+    id: edt-version
+    attributes:
+      label: Версия 1С:EDT
+      description: "Скопируйте и вставте версию 1C:EDT из меню: Help -> About 1C:Enterprise Development Tools"
+      placeholder: например, Ruby 2021.2.8.3
+    validations:
+      required: false
+  - type: dropdown
+    id: os
+    attributes:
+      label: Операционная система
+      description: Укажите, на каких операционных системах ошибка воспроизводится у вас?
+      multiple: true
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Дополнительная информация
+      description: |
+        - Добавьте здесь любую дополнительную информацию о проблеме
+        - Пример кода на котором воспроизводится ошибка, 
+        - Версию типовой конфигурации 1С + объект в котором воспроизводится проблема
+        - Ссылки на публичные проекты 1С в котором воспроизводится проблема
+        - Версия вашей OS если это важно?
+        - Версия платформы 1С [например] `8.3.18.1563`
+      placeholder: Что-нибудь еще важное и полезное по этой ошибке?
+    validations:
+      required: false

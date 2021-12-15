@@ -3,7 +3,7 @@
 
 // Enter code here.
 
-%CURRENT_CODE%
+//%CURRENT_CODE%
 
 #EndRegion
 

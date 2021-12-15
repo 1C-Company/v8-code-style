@@ -1,0 +1,35 @@
+name: Предложение функциональности
+description: Предложите вашу идею для проекта поддержки стандартов
+title: "Моя идея..."
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Благодарим вас за идею! Не забудьте поставить свой (:+1:) лайк, чтобы другие тоже присоединись!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Описание проблемы
+      description: Ясно и четко опишите в чем проблема, затруднения, что вам мешает?
+      placeholder: Расскажите нам о проблеме/неудобстве!
+      value: "Есть такая проблема..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Описание решения проблемы
+      description: Ясно и четко опишите желаемое решение проблемы.
+      placeholder: Какое вы представляете себе решиение данной проблемы?
+      value: "Предлагаю сделать так..."
+    validations:
+      required: true
+  - type: textarea
+    id: additional
+    attributes:
+      label: Дополнительная информация
+      description: Любой дополнительный контекст, ссылки, скриншоты очень помогают...
+      placeholder: Что-нибудь еще важное и полезное по этой теме?
+    validations:
+      required: false
