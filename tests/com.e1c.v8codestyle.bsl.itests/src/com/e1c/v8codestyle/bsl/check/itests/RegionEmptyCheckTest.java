@@ -48,13 +48,9 @@ public class RegionEmptyCheckTest
         updateModule(FOLDER_RESOURCE + "region-empty.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
         Marker marker = markers.get(0);
         assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        // FIXME remove after marker duplication fix
-        marker = markers.get(1);
-        assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
     }
 
     /**
@@ -68,13 +64,9 @@ public class RegionEmptyCheckTest
         updateModule(FOLDER_RESOURCE + "region-empty-after.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
         Marker marker = markers.get(0);
         assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        // FIXME remove after marker duplication fix
-        marker = markers.get(1);
-        assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
     }
 
     /**
@@ -88,13 +80,9 @@ public class RegionEmptyCheckTest
         updateModule(FOLDER_RESOURCE + "region-empty-before.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
         Marker marker = markers.get(0);
         assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        // FIXME remove after marker duplication fix
-        marker = markers.get(1);
-        assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
     }
 
     /**
@@ -108,13 +96,9 @@ public class RegionEmptyCheckTest
         updateModule(FOLDER_RESOURCE + "region-empty-sub-region.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
         Marker marker = markers.get(0);
         assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        // FIXME remove after marker duplication fix
-        marker = markers.get(1);
-        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
     }
 
     /**
