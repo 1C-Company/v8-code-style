@@ -17,7 +17,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
@@ -28,6 +35,7 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslCommentUtils;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IBslCommentToken;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * The utility class for strict-types system.
@@ -42,7 +50,32 @@ public final class StrictTypeUtil
 
     public static final String BSL_FILE_EXTENSION = "bsl"; //$NON-NLS-1$
 
+    /** The preference root qualifier. */
+    public static final String PREF_QUALIFIER = BslPlugin.PLUGIN_ID;
+
+    /** The key for preferences store the state of the creating module with {@code //@strict-types} annotation */
+    public static final String PREF_KEY_CREATE_STRICT_TYPES = "createStrictTypesModule"; //$NON-NLS-1$
+
+    /** The default value of creating module with strict types. */
+    public static final boolean PREF_DEFAULT_CREATE_STRICT_TYPES = true;
+
     private static final int COMMENT_LENGTH = IBslCommentToken.LINE_STARTER.length();
+
+    /**
+     * Can create strict-types module for project.
+     *
+     * @param project the project, cannot be {@code null}.
+     * @return true, if can create strict-types module for the project
+     */
+    public static boolean canCreateStrictTypesModule(IProject project)
+    {
+        ProjectScope scope = new ProjectScope(project);
+        IScopeContext[] contexts =
+            new IScopeContext[] { scope, InstanceScope.INSTANCE, ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
+
+        return Platform.getPreferencesService()
+            .getBoolean(PREF_QUALIFIER, PREF_KEY_CREATE_STRICT_TYPES, PREF_DEFAULT_CREATE_STRICT_TYPES, contexts);
+    }
 
     /**
      * Checks for {@code @strict-types} annotation in BSL module file.

@@ -18,8 +18,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -28,52 +28,39 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 
+import com._1c.g5.v8.dt.bsl.documentation.comment.IBslCommentToken;
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.ModuleType;
-import com._1c.g5.v8.dt.bsl.util.BslUtil;
 import com._1c.g5.v8.dt.common.PreferenceUtils;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
-import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.ui.wizards.IDtNewWizardContext;
-import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.strict.StrictTypeUtil;
 import com.e1c.v8codestyle.internal.bsl.ui.UiPlugin;
 import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
 
 /**
- * A factory for creating module structure when creating new object in wizard.
+ * A factory for creating strict-types module when creating new object in wizard.
  *
  * @author Dmitriy Marmyshev
  */
-public class ModuleStructureNewWizardRelatedModelsFactory
+public class ModuleStrictTypesNewWizardRelatedModelsFactory
     extends AbstractModuleNewWizardRelatedModelsFactory
 {
 
-    private static final String CURRENT_CODE = "//%CURRENT_CODE%"; //$NON-NLS-1$
-
-    private final IModuleStructureProvider moduleStructureProvider;
-
-    /**
-     * Instantiates a new module structure new wizard related models factory.
-     *
-     * @param qualifiedNameFilePathConverter the qualified name file path converter service, cannot be {@code null}.
-     * @param moduleStructureProvider the module structure provider service, cannot be {@code null}.
-     */
     @Inject
-    public ModuleStructureNewWizardRelatedModelsFactory(IQualifiedNameFilePathConverter qualifiedNameFilePathConverter,
-        IModuleStructureProvider moduleStructureProvider)
+    public ModuleStrictTypesNewWizardRelatedModelsFactory(
+        IQualifiedNameFilePathConverter qualifiedNameFilePathConverter)
     {
         super(qualifiedNameFilePathConverter);
-        this.moduleStructureProvider = moduleStructureProvider;
     }
 
     @Override
     public void createModels(IDtNewWizardContext<EObject> context, Set<EObject> createdModels)
     {
         IProject project = context.getV8project().getProject();
-        if (!moduleStructureProvider.canCreateStructure(project))
+        if (!StrictTypeUtil.canCreateStrictTypesModule(project))
         {
             return;
         }
@@ -92,8 +79,7 @@ public class ModuleStructureNewWizardRelatedModelsFactory
                 IFile bslFile = getModuleFile(module);
                 if (bslFile != null)
                 {
-                    ModuleType type = BslUtil.computeModuleType(module, qualifiedNameFilePathConverter);
-                    createOrUpdateModule(bslFile, type, context);
+                    createOrUpdateModule(bslFile, context);
                 }
             }
         }
@@ -103,22 +89,27 @@ public class ModuleStructureNewWizardRelatedModelsFactory
             IFile bslFile = getModuleFile(formToAddModule, project);
             if (bslFile != null)
             {
-                createOrUpdateModule(bslFile, ModuleType.FORM_MODULE, context);
+                createOrUpdateModule(bslFile, context);
 
                 EObject module = createBslProxyModule(bslFile);
                 createdModels.add(module);
             }
         }
+
     }
 
-    private void createOrUpdateModule(IFile bslFile, ModuleType type, IDtNewWizardContext<EObject> context)
+    private void createOrUpdateModule(IFile bslFile, IDtNewWizardContext<EObject> context)
     {
-        ScriptVariant script = context.getV8project().getScriptVariant();
-        Supplier<InputStream> content =
-            moduleStructureProvider.getModuleStructureTemplate(bslFile.getProject(), type, script);
-        if (content == null)
+        try
         {
-            return;
+            if (bslFile.exists() && StrictTypeUtil.hasStrictTypeAnnotation(bslFile))
+            {
+                return;
+            }
+        }
+        catch (CoreException | IOException e)
+        {
+            UiPlugin.logError(e);
         }
 
         String currentCode = StringUtils.EMPTY;
@@ -137,31 +128,25 @@ public class ModuleStructureNewWizardRelatedModelsFactory
         }
 
         IProject project = context.getV8project().getProject();
+        String preferedLineSeparator = PreferenceUtils.getLineSeparator(project);
+        StringBuilder sb = new StringBuilder();
 
-        try (InputStream template = content.get();
-            Reader reader = new InputStreamReader(template, StandardCharsets.UTF_8);)
+        int insertOffset = getInserOffset(currentCode);
+        if (insertOffset > 0)
         {
-            String text = CharStreams.toString(reader);
+            sb.append(currentCode.substring(0, insertOffset));
+            sb.append(preferedLineSeparator);
+        }
 
-            // Depends where plug-in is build (Windows or Linux) need to fix line-endings with
-            // project settings.
-            String actualLineSeparator = resolveLineSeparator(text);
-            String preferedLineSeparator = PreferenceUtils.getLineSeparator(project);
-            if (!actualLineSeparator.equals(preferedLineSeparator))
-            {
-                text = text.replace(actualLineSeparator, preferedLineSeparator);
-            }
+        sb.append(IBslCommentToken.LINE_STARTER);
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(StrictTypeUtil.STRICT_TYPE_ANNOTATION);
+        sb.append(preferedLineSeparator);
+        sb.append(preferedLineSeparator);
+        sb.append(currentCode.substring(insertOffset));
 
-            if (text.contains(CURRENT_CODE))
-            {
-                text = text.replace(CURRENT_CODE, currentCode);
-            }
-            else if (!currentCode.isEmpty())
-            {
-                text = text.concat(currentCode);
-            }
-
-            InputStream in = new ByteArrayInputStream(text.getBytes(StandardCharsets.UTF_8));
+        try (InputStream in = new ByteArrayInputStream(sb.toString().getBytes(StandardCharsets.UTF_8));)
+        {
             if (bslFile.exists())
             {
                 bslFile.setContents(in, true, true, new NullProgressMonitor());
@@ -177,6 +162,34 @@ public class ModuleStructureNewWizardRelatedModelsFactory
             IStatus status = UiPlugin.createErrorStatus("Can't create bsl file with name: " + bslFile.getName(), e); //$NON-NLS-1$
             UiPlugin.log(status);
         }
+    }
+
+    private int getInserOffset(String currentCode)
+    {
+        int separator = resolveLineSeparator(currentCode).length();
+
+        int offset = 0;
+        for (Iterator<String> iterator = currentCode.lines().iterator(); iterator.hasNext();)
+        {
+            if (offset > 0)
+            {
+                offset = offset + separator;
+            }
+
+            String line = iterator.next();
+            if (StringUtils.isBlank(line))
+            {
+                return offset;
+            }
+            else if (!line.stripLeading().startsWith(IBslCommentToken.LINE_STARTER))
+            {
+                return 0;
+            }
+
+            offset = offset + line.length();
+
+        }
+        return 0;
     }
 
 }

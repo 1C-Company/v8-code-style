@@ -127,6 +127,87 @@
              <modelClass eClass="DimensionTableForm" />
        </triggers>
     </factory>
+    <factory
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ui.wizard.ModuleStrictTypesNewWizardRelatedModelsFactory"
+          order="220">
+       <triggers>
+          	 <modelClass eClass="Configuration" />
+             <modelClass eClass="CatalogForm" />
+             <modelClass eClass="DocumentForm" />
+             <modelClass eClass="EnumForm" />
+             <modelClass eClass="ChartOfCharacteristicTypesForm" />
+             <modelClass eClass="InformationRegisterForm" />
+             <modelClass eClass="DocumentJournalForm" />
+             <modelClass eClass="ExchangePlanForm" />
+             <modelClass eClass="DataProcessorForm" />
+             <modelClass eClass="AccumulationRegisterForm" />
+             <modelClass eClass="ReportForm" />
+             <modelClass eClass="CommonModule" />
+             <modelClass eClass="Bot" />
+             <modelClass eClass="IntegrationService" />
+             <modelClass eClass="ExchangePlan" />
+             <modelClass eClass="WebService" />
+             <modelClass eClass="HTTPService" />
+             <modelClass eClass="Constant" />
+             <modelClass eClass="Document" />
+             <modelClass eClass="Catalog" />
+             <modelClass eClass="Document" />
+             <modelClass eClass="Sequence" />
+             <modelClass eClass="DocumentJournal" />
+             <modelClass eClass="Report" />
+             <modelClass eClass="ExternalReport" />
+             <modelClass eClass="DataProcessor" />
+             <modelClass eClass="ExternalDataProcessor" />
+             <modelClass eClass="InformationRegister" />
+             <modelClass eClass="AccumulationRegister" />
+             <modelClass eClass="SettingsStorage" />
+             <modelClass eClass="Enum" />
+             <modelClass eClass="Task" />
+             <modelClass eClass="BusinessProcess" />
+             <modelClass eClass="Table" />
+             <modelClass eClass="Cube" />
+             <modelClass eClass="DimensionTable" />
+             <modelClass eClass="AccumulationRegisterCommand" />
+             <modelClass eClass="BusinessProcessCommand" />
+             <modelClass eClass="CatalogCommand" />
+             <modelClass eClass="ChartOfCharacteristicTypesCommand" />
+             <modelClass eClass="CommonCommand" />
+             <modelClass eClass="DataProcessorCommand" />
+             <modelClass eClass="DocumentCommand" />
+             <modelClass eClass="DocumentJournalCommand" />
+             <modelClass eClass="EnumCommand" />
+             <modelClass eClass="ExchangePlanCommand" />
+             <modelClass eClass="FilterCriterionCommand" />
+             <modelClass eClass="InformationRegisterCommand" />
+             <modelClass eClass="ReportCommand" />
+             <modelClass eClass="TaskCommand" />
+             <modelClass eClass="TableCommand" />
+             <modelClass eClass="CubeCommand" />
+             <modelClass eClass="DimensionTableCommand" />
+             <modelClass eClass="CommonForm" />
+             <modelClass eClass="CatalogForm" />
+             <modelClass eClass="DocumentForm" />
+             <modelClass eClass="EnumForm" />
+             <modelClass eClass="ChartOfAccountsForm" />
+             <modelClass eClass="ChartOfCalculationTypesForm" />
+             <modelClass eClass="ChartOfCharacteristicTypesForm" />
+             <modelClass eClass="InformationRegisterForm" />
+             <modelClass eClass="DocumentJournalForm" />
+             <modelClass eClass="ExchangePlanForm" />
+             <modelClass eClass="FilterCriterionForm" />
+             <modelClass eClass="DataProcessorForm" />
+             <modelClass eClass="AccountingRegisterForm" />
+             <modelClass eClass="AccumulationRegisterForm" />
+             <modelClass eClass="ReportForm" />
+             <modelClass eClass="BusinessProcessForm" />
+             <modelClass eClass="TaskForm" />
+             <modelClass eClass="SettingsStorageForm" />
+             <modelClass eClass="CalculationRegisterForm" />
+             <modelClass eClass="TableForm" />
+             <modelClass eClass="CubeForm" />
+             <modelClass eClass="DimensionTableForm" />
+       </triggers>
+    </factory>
  </extension>
  <extension
        point="org.eclipse.ui.propertyPages">

@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.strict.StrictTypeUtil;
 
 /**
  * Initializer of default values for module structure service.
@@ -32,6 +33,9 @@ public class ModuleStructureProviderPreferenceInitializer
         DefaultScope.INSTANCE.getNode(IModuleStructureProvider.PREF_QUALIFIER)
             .putBoolean(IModuleStructureProvider.PREF_KEY_CREATE_STRUCTURE,
                 IModuleStructureProvider.PREF_DEFAULT_CREATE_STRUCTURE);
+
+        DefaultScope.INSTANCE.getNode(StrictTypeUtil.PREF_QUALIFIER)
+            .putBoolean(StrictTypeUtil.PREF_KEY_CREATE_STRICT_TYPES, StrictTypeUtil.PREF_DEFAULT_CREATE_STRICT_TYPES);
 
     }
 
