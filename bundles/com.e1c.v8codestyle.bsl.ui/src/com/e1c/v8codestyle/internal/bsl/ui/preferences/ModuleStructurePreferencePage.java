@@ -21,6 +21,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.strict.StrictTypeUtil;
 
 /**
  * The preference page of module structure settings.
@@ -47,9 +48,11 @@ public class ModuleStructurePreferencePage
     @Override
     public void createFieldEditors()
     {
+        addField(new BooleanFieldEditor(StrictTypeUtil.PREF_KEY_CREATE_STRICT_TYPES,
+            Messages.ModuleStructurePreferencePage_Automatically_create_strict_types_module, getFieldEditorParent()));
+
         addField(new BooleanFieldEditor(IModuleStructureProvider.PREF_KEY_CREATE_STRUCTURE,
             Messages.ModuleStructurePreferencePage_Automatically_create_module_structure, getFieldEditorParent()));
-
     }
 
     @Override

@@ -23,6 +23,7 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.internal.bsl.ui.properties.messages"; //$NON-NLS-1$
     public static String ModuleStructurePropertyPage_Automatically_create_module_structure;
+    public static String ModuleStructurePropertyPage_Automatically_create_strict_types_module;
     public static String ModuleStructurePropertyPage_Open_template;
     public static String ModuleStructurePropertyPage_Open_template_tooltip;
     public static String ModuleStructurePropertyPage_Save_custom_template_to_project_settings;
