@@ -60,7 +60,7 @@ public class ModuleStrictTypesNewWizardRelatedModelsFactory
     public void createModels(IDtNewWizardContext<EObject> context, Set<EObject> createdModels)
     {
         IProject project = context.getV8project().getProject();
-        if (!StrictTypeUtil.canCreateStrictTypesModule(project))
+        if (!StrictTypeUtil.canAddModuleStrictTypesAnnotation(project))
         {
             return;
         }
@@ -131,7 +131,7 @@ public class ModuleStrictTypesNewWizardRelatedModelsFactory
         String preferedLineSeparator = PreferenceUtils.getLineSeparator(project);
         StringBuilder sb = new StringBuilder();
 
-        int insertOffset = getInserOffset(currentCode);
+        int insertOffset = getInsertOffset(currentCode);
         if (insertOffset > 0)
         {
             sb.append(currentCode.substring(0, insertOffset));
@@ -164,7 +164,7 @@ public class ModuleStrictTypesNewWizardRelatedModelsFactory
         }
     }
 
-    private int getInserOffset(String currentCode)
+    private int getInsertOffset(String currentCode)
     {
         int separator = resolveLineSeparator(currentCode).length();
 

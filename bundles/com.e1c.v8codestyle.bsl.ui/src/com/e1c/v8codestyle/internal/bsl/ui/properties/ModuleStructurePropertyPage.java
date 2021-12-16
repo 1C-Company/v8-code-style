@@ -242,7 +242,7 @@ public class ModuleStructurePropertyPage
         Label createStrictTypesLabel = new Label(composite, SWT.NONE);
         createStrictTypesLabel.setText(Messages.ModuleStructurePropertyPage_Automatically_create_strict_types_module);
 
-        currentCreateStrictTypes = StrictTypeUtil.canCreateStrictTypesModule(getProject());
+        currentCreateStrictTypes = StrictTypeUtil.canAddModuleStrictTypesAnnotation(getProject());
 
         createStrictTypesButton = new Button(composite, SWT.CHECK);
         createStrictTypesButton.setSelection(currentCreateStrictTypes);

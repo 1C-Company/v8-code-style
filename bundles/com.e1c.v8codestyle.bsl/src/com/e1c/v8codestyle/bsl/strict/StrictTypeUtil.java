@@ -54,7 +54,7 @@ public final class StrictTypeUtil
     public static final String PREF_QUALIFIER = BslPlugin.PLUGIN_ID;
 
     /** The key for preferences store the state of the creating module with {@code //@strict-types} annotation */
-    public static final String PREF_KEY_CREATE_STRICT_TYPES = "createStrictTypesModule"; //$NON-NLS-1$
+    public static final String PREF_KEY_CREATE_STRICT_TYPES = "addModuleStrictTypesAnnotation"; //$NON-NLS-1$
 
     /** The default value of creating module with strict types. */
     public static final boolean PREF_DEFAULT_CREATE_STRICT_TYPES = true;
@@ -62,12 +62,12 @@ public final class StrictTypeUtil
     private static final int COMMENT_LENGTH = IBslCommentToken.LINE_STARTER.length();
 
     /**
-     * Can create strict-types module for project.
+     * Can add module strict-types annotation for project.
      *
      * @param project the project, cannot be {@code null}.
      * @return true, if can create strict-types module for the project
      */
-    public static boolean canCreateStrictTypesModule(IProject project)
+    public static boolean canAddModuleStrictTypesAnnotation(IProject project)
     {
         ProjectScope scope = new ProjectScope(project);
         IScopeContext[] contexts =
