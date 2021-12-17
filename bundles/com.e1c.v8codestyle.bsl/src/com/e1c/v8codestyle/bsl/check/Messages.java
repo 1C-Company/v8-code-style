@@ -166,6 +166,14 @@ final class Messages
 
     public static String FormModuleMissingPragmaCheck_title;
 
+    public static String IsInRoleCheck_Exception_Roles;
+
+    public static String IsInRoleCheck_Use_AccessRight;
+
+    public static String IsInRoleCheck_Use_AccessRight_instead_IsInRole;
+
+    public static String IsInRoleCheck_Using_IsInRole;
+
     static
     {
         // initialize resource bundle
