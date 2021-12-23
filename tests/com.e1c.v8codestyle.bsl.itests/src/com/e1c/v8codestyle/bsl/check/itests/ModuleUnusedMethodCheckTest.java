@@ -31,6 +31,9 @@ import com.e1c.v8codestyle.bsl.check.ModuleUnusedMethodCheck;
 public class ModuleUnusedMethodCheckTest
     extends AbstractSingleModuleTestBase
 {
+
+    private static final String CONFIG_MODULE_FILE_NAME = "/src/Configuration/ManagedApplicationModule.bsl";
+
     public ModuleUnusedMethodCheckTest()
     {
         super(ModuleUnusedMethodCheck.class);
@@ -43,10 +46,14 @@ public class ModuleUnusedMethodCheckTest
         updateModule(FOLDER_RESOURCE + "module-unused-method.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
         Marker marker = markers.get(0);
         assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        marker = markers.get(1);
-        assertEquals("1", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    @Override
+    protected String getModuleFileName()
+    {
+        return CONFIG_MODULE_FILE_NAME;
     }
 }
