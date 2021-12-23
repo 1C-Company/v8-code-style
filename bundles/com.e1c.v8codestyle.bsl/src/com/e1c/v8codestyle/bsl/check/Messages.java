@@ -24,6 +24,19 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.check.messages"; //$NON-NLS-1$
 
+    public static String AccessibilityAtClientInObjectModuleCheck_Declared_variable_accessible_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_description;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Event_handler_should_be_accessible_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Manager_event_handlers_allows_to_be_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Method_accessible_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_title;
     public static String CanonicalPragmaCheck_description;
     public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1;
     public static String CanonicalPragmaCheck_title;
@@ -56,6 +69,12 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ModuleStructureTopRegionCheck_description;
+
+    public static String ModuleStructureTopRegionCheck_error_message;
+
+    public static String ModuleStructureTopRegionCheck_title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
@@ -85,6 +104,12 @@ final class Messages
 
     public static String NstrStringLiteralFormatCheck_title;
 
+    public static String RegionEmptyCheck_description;
+
+    public static String RegionEmptyCheck_Region_is_empty;
+
+    public static String RegionEmptyCheck_title;
+
     public static String UseNonRecommendedMethods_description;
 
     public static String UseNonRecommendedMethods_message;
@@ -93,6 +118,37 @@ final class Messages
 
     public static String UseNonRecommendedMethods_title;
 
+    public static String MethodTooManyPramsCheck_description;
+
+    public static String MethodTooManyPramsCheck_Max_parameters;
+
+    public static String MethodTooManyPramsCheck_Max_parameters_with_default_value;
+
+    public static String MethodTooManyPramsCheck_Method_has_more_than__N__params;
+
+    public static String MethodTooManyPramsCheck_Method_has_more_than__N__params_with_default_value;
+
+    public static String MethodTooManyPramsCheck_title;
+
+    public static String FormModulePragmaCheck_description;
+
+    public static String FormModulePragmaCheck_Form_module_compilation_pragma_used;
+
+    public static String FormModulePragmaCheck_title;
+
+    public static String NotifyDescriptionToServerProcedureCheck_description;
+
+    public static String NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_should_be_export;
+
+    public static String NotifyDescriptionToServerProcedureCheck_Notify_description_to_Server_procedure;
+
+    public static String NotifyDescriptionToServerProcedureCheck_title;
+
+    public static String FormModuleMissingPragmaCheck_description;
+
+    public static String FormModuleMissingPragmaCheck_Missing_compilation_directives;
+
+    public static String FormModuleMissingPragmaCheck_title;
 
     static
     {

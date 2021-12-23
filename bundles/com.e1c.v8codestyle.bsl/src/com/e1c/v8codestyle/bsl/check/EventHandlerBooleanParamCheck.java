@@ -40,12 +40,14 @@ import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
+import com._1c.g5.v8.dt.form.model.FormExtInfo;
 import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
 import com._1c.g5.v8.dt.mcore.Event;
 import com._1c.g5.v8.dt.mcore.ParamSet;
 import com._1c.g5.v8.dt.mcore.Parameter;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -233,8 +235,13 @@ public class EventHandlerBooleanParamCheck
             {
                 if (index > 0)
                 {
-                    // shift because Form Item (or event subscription) Event doesn't contains first parameter "Item"
-                    --index;
+                    List<EObject> containers = bslEventsService.getEventHandlersContainer(module).get(methodName);
+                    if (containers == null
+                        || containers.stream().noneMatch(e -> e instanceof AbstractForm || e instanceof FormExtInfo))
+                    {
+                        // shift because Form Item (or event subscription) Event doesn't contains first parameter "Item"
+                        --index;
+                    }
                 }
 
                 for (EObject handler : enventHandlers)
@@ -247,7 +254,7 @@ public class EventHandlerBooleanParamCheck
                 }
             }
         }
-        if (monitor.isCanceled() || event == null)
+        if (monitor.isCanceled() || event == null || event.getParamSet().isEmpty())
         {
             return null;
         }

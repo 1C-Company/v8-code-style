@@ -149,7 +149,7 @@ public class AbstractSingleModuleTestBase
      */
     protected Module getModule()
     {
-        IBmObject mdObject = getTopObjectByFqn(FQN, dtProject);
+        IBmObject mdObject = getTopObjectByFqn(FQN, getProject());
         assertTrue(mdObject instanceof CommonModule);
         Module module = ((CommonModule)mdObject).getModule();
         assertNotNull(module);

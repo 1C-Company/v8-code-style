@@ -48,6 +48,10 @@ final class Messages
     public static String MdListObjectPresentationCheck_decription;
     public static String MdListObjectPresentationCheck_Neither_Object_presentation_nor_List_presentation_is_not_filled;
     public static String MdListObjectPresentationCheck_title;
+    public static String MdOwnerAttributeSynonymEmpty_Title;
+    public static String MdOwnerAttributeSynonymEmpty_Description;
+    public static String MdOwnerAttributeSynonymEmpty_owner_ErrorMessage;
+    public static String MdOwnerAttributeSynonymEmpty_parent_ErrorMessage;
     public static String MdScheduledJobDescriptionCheck_title;
     public static String MdScheduledJobDescriptionCheck_description;
     public static String MdScheduledJobDescriptionCheck_message;
