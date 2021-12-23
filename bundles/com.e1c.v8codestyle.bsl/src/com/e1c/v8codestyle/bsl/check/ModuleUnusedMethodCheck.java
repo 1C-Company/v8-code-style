@@ -104,8 +104,8 @@ public final class ModuleUnusedMethodCheck
         //@formatter:off
         //if (!((BslResource)module.eResource()).isOnlyMethodReparse())
         //{
-            Set<URI> usedMethods = getUsedMethods(progressMonitor, module.eResource());
-            predicate = predicate.and(method -> !usedMethods.contains(EcoreUtil.getURI((EObject)method)));
+        Set<URI> usedMethods = getUsedMethods(progressMonitor, module.eResource());
+        predicate = predicate.and(method -> !usedMethods.contains(EcoreUtil.getURI((EObject)method)));
         //}
         //@formatter:on
 

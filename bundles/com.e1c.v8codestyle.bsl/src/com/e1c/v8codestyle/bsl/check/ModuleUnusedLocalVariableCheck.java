@@ -67,8 +67,9 @@ public final class ModuleUnusedLocalVariableCheck
      */
     public ModuleUnusedLocalVariableCheck()
     {
+        super();
         IResourceServiceProvider serviceProvider =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl"));//$NON-NLS-1$
+            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
 
         dynamicComputer = serviceProvider.get(DynamicFeatureAccessComputer.class);
         ownerService = serviceProvider.get(IBslOwnerComputerService.class);
@@ -137,7 +138,7 @@ public final class ModuleUnusedLocalVariableCheck
                 }
                 if (actualVariableBlock == module)
                 {
-                    variablesChangeValueModule.computeIfAbsent(variable.getKey(), item -> Lists.<INode> newArrayList())
+                    variablesChangeValueModule.computeIfAbsent(variable.getKey(), item -> Lists.newArrayList())
                         .addAll(variable.getValue());
                 }
                 List<INode> readValueNodes = variablesForReadValue.get(variable.getKey());
@@ -176,7 +177,7 @@ public final class ModuleUnusedLocalVariableCheck
                 Block actualVariableBlock = EcoreUtil2.getContainerOfType(variable.getKey(), Block.class);
                 if (actualVariableBlock == module)
                 {
-                    variablesForReadValueModule.computeIfAbsent(variable.getKey(), item -> Lists.<INode> newArrayList())
+                    variablesForReadValueModule.computeIfAbsent(variable.getKey(), item -> Lists.newArrayList())
                         .addAll(variable.getValue());
                 }
             }
@@ -243,7 +244,7 @@ public final class ModuleUnusedLocalVariableCheck
         List<Method> processingObjects;
         if (!onlyMethodReparse(module))
         {
-            processingObjects = Lists.<Method> newArrayList(module.allMethods());
+            processingObjects = Lists.newArrayList(module.allMethods());
         }
         else
         {
