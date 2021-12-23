@@ -26,7 +26,6 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Test;
 
@@ -75,7 +74,7 @@ public class QueryInLoopCheckTest
 
         for (Method method : module.allMethods())
         {
-            List<@NonNull FeatureAccess> featureAccessList = EcoreUtil2.eAllOfType(method, FeatureAccess.class);
+            List<FeatureAccess> featureAccessList = EcoreUtil2.eAllOfType(method, FeatureAccess.class);
 
             switch (method.getName())
             {
