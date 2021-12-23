@@ -85,6 +85,9 @@ public class QueryInLoopCheck
 
     private final IRuntimeVersionSupport versionSupport;
 
+    /**
+     * @param versionSupport - Version support for 1C:Enterprise projects service, cannot be {@code null}
+     */
     @Inject
     public QueryInLoopCheck(IRuntimeVersionSupport versionSupport)
     {
@@ -124,7 +127,7 @@ public class QueryInLoopCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof Module))
+        if (!(object instanceof Module))
         {
             return;
         }
@@ -159,8 +162,10 @@ public class QueryInLoopCheck
                 resultAceptor.addIssue(Messages.QueryInLoop_Loop_has_query, featureAccess, FEATURE_ACCESS__NAME);
             }
 
-            if (featureAccess instanceof StaticFeatureAccess)
+            else if (featureAccess instanceof StaticFeatureAccess
+                && methodsWithQuery.containsKey(featureAccess.getName()))
             {
+
                 String errorPath = methodsWithQuery.get(featureAccess.getName());
                 String errorMessage =
                     MessageFormat.format(Messages.QueryInLoop_Loop_has_method_with_query__0, errorPath);
@@ -206,7 +211,13 @@ public class QueryInLoopCheck
 
     private boolean isQueryTypeSource(Expression source)
     {
+
         Environmental envs = EcoreUtil2.getContainerOfType(source, Environmental.class);
+        if (envs == null)
+        {
+            return false;
+        }
+
         List<TypeItem> sourceTypes = typesComputer.computeTypes(source, envs.environments());
         if (sourceTypes.isEmpty())
         {
@@ -278,7 +289,7 @@ public class QueryInLoopCheck
             getPositionForFeatureObject(calledMethod), calledMethodPath);
     }
 
-    private Map<String, String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
+    private Map<String, String> getQueryExecutionMethodsPath(Module module, Set<String> queryExecutionMethods,
         IProgressMonitor monitor)
     {
         Map<String, String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -290,15 +301,34 @@ public class QueryInLoopCheck
                 return Collections.emptyMap();
             }
 
-            if (isQueryExecution(dfa, queryExecutionMethods))
+            if (!isQueryExecution(dfa, queryExecutionMethods))
             {
-                Method method = EcoreUtil2.getContainerOfType(dfa, Method.class);
+                continue;
+            }
+
+            Method method = EcoreUtil2.getContainerOfType(dfa, Method.class);
+            if (method != null)
+            {
                 String sourceName = getSourceName(dfa.getSource());
+                String featurePosition = getPositionForFeatureObject(dfa);
 
                 String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
-                    getPositionForFeatureObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
+                    featurePosition, sourceName, dfa.getName(), "()"); //$NON-NLS-1$
                 result.put(method.getName(), methodPath);
             }
+
+        }
+
+        return result;
+    }
+
+    private Map<String, String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
+        IProgressMonitor monitor)
+    {
+        Map<String, String> result = getQueryExecutionMethodsPath(module, queryExecutionMethods, monitor);
+        if (result.isEmpty())
+        {
+            return Collections.emptyMap();
         }
 
         EList<Method> methods = module.allMethods();
@@ -314,12 +344,10 @@ public class QueryInLoopCheck
                 }
 
                 String methodPath = getMethodPath(method, result);
-                if (methodPath == null)
+                if (methodPath != null)
                 {
-                    continue;
+                    result.put(method.getName(), methodPath);
                 }
-
-                result.put(method.getName(), methodPath);
             }
 
             methodsCount = result.size();
