@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.internal.bsl;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.contextdef.IBslModuleContextDefService;
@@ -47,6 +48,7 @@ class ExternalDependenciesModule
         bind(IBslPreferences.class).toService();
         bind(IQualifiedNameConverter.class).toService();
         bind(IBslModuleContextDefService.class).toService();
+        bind(IQualifiedNameProvider.class).toService();
     }
 
 }

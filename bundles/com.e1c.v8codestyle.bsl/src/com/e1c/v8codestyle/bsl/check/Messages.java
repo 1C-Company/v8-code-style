@@ -75,6 +75,22 @@ final class Messages
 
     public static String ModuleStructureTopRegionCheck_title;
 
+    public static String ModuleUnusedMethodCheck_Title;
+    public static String ModuleUnusedMethodCheck_Description;
+    public static String ModuleUnusedMethodCheck_Exclude_method_name_pattern_title;
+    public static String ModuleUnusedMethodCheck_Unused_method__0;
+
+    public static String ModuleEmptyMethodCheck_Title;
+    public static String ModuleEmptyMethodCheck_Description;
+    public static String ModuleEmptyMethodCheck_Exclude_method_name_pattern_title;
+    public static String ModuleEmptyMethodCheck_Allow_method_comments_title;
+    public static String ModuleEmptyMethodCheck_Empty_method__0;
+
+    public static String ModuleUnusedLocalVariableCheck_Title;
+    public static String ModuleUnusedLocalVariableCheck_Description;
+    public static String ModuleUnusedLocalVariableCheck_Unused_local_variable__0;
+    public static String ModuleUnusedLocalVariableCheck_Probably_variable_not_initilized_yet__0;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
