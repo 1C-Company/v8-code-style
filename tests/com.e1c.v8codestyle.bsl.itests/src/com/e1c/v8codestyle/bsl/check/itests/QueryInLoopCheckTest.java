@@ -50,11 +50,19 @@ public class QueryInLoopCheckTest
 
     private static final String PARAM_CHECK_QUERIY_IN_INFINITE_LOOP = "checkQueryInInfiniteLoop"; //$NON-NLS-1$
 
+    /**
+     * Constructor for {@link QueryInLoopCheck} check
+     */
     public QueryInLoopCheckTest()
     {
         super(QueryInLoopCheck.class);
     }
 
+    /**
+     * Default query in loop test
+     *
+     * @throws Exception
+     */
     @Test
     public void testQueryInLoop() throws Exception
     {
@@ -147,6 +155,11 @@ public class QueryInLoopCheckTest
         return new CheckUid(checkId, BslPlugin.PLUGIN_ID);
     }
 
+    /**
+     * Infinite query in loop test
+     *
+     * @throws Exception
+     */
     @Test
     public void testInfiniteLoop() throws Exception
     {
