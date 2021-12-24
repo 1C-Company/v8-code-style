@@ -46,6 +46,16 @@ import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.v8codestyle.bsl.strict.check.DocCommentFieldTypeCheck;
+import com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessMethodNotFoundCheck;
+import com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessTypeCheck;
+import com.e1c.v8codestyle.bsl.strict.check.FunctionCtorReturnSectionCheck;
+import com.e1c.v8codestyle.bsl.strict.check.FunctionReturnTypeCheck;
+import com.e1c.v8codestyle.bsl.strict.check.InvocationParamIntersectionCheck;
+import com.e1c.v8codestyle.bsl.strict.check.MethodParamTypeCheck;
+import com.e1c.v8codestyle.bsl.strict.check.SimpleStatementTypeCheck;
+import com.e1c.v8codestyle.bsl.strict.check.StructureCtorValueTypeCheck;
+import com.e1c.v8codestyle.bsl.strict.check.VariableTypeCheck;
 
 /**
  * Tests of strict types system in BSL module.
@@ -200,17 +210,11 @@ public class CommonModuleStrictTypesTest
         assertEquals(3, methods.size());
 
         List<Marker> markers = getMarters(checkId, module);
-
-        // FIXME check-system duplicates issues
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
 
         String uriToProblem = EcoreUtil.getURI(methods.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
-
-        marker = markers.get(1);
         assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
@@ -233,20 +237,13 @@ public class CommonModuleStrictTypesTest
         assertEquals(2, methods.size());
 
         List<Marker> markers = getMarters(checkId, module);
-
-        // FIXME check-system duplicates issues
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
 
         String uriToProblem = EcoreUtil.getURI(methods.get(0).getFormalParams().get(0)).toString();
 
         Marker marker = markers.get(0);
         assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
-
-        marker = markers.get(1);
-        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
-
     }
 
     /**
@@ -266,17 +263,11 @@ public class CommonModuleStrictTypesTest
         assertEquals(2, dynamicMethods.size());
 
         List<Marker> markers = getMarters(checkId, module);
-
-        // FIXME check-system duplicates issues
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
 
         String uriToProblem = EcoreUtil.getURI(dynamicMethods.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
-
-        marker = markers.get(0);
         assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
@@ -299,20 +290,13 @@ public class CommonModuleStrictTypesTest
         assertEquals(2, dynamicProperties.size());
 
         List<Marker> markers = getMarters(checkId, module);
-
-        // FIXME check-system duplicates issues
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
 
         String uriToProblem = EcoreUtil.getURI(dynamicProperties.get(0)).toString();
 
         Marker marker = markers.get(0);
         assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
-
-        marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
-
     }
 
     /**
@@ -332,17 +316,11 @@ public class CommonModuleStrictTypesTest
         assertEquals(2, statements.size());
 
         List<Marker> markers = getMarters(checkId, module);
-
-        // FIXME check-system duplicates issues
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
 
         String uriToProblem = EcoreUtil.getURI(statements.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
-
-        marker = markers.get(0);
         assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
@@ -364,14 +342,9 @@ public class CommonModuleStrictTypesTest
         Module module = updateAndGetModule(resourceName);
 
         List<Marker> markers = getMarters(checkId, module);
-
-        // FIXME check-system duplicates issues
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
-        marker = markers.get(0);
         assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }

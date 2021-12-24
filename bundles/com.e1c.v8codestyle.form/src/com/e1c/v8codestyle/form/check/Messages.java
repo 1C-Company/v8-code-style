@@ -22,10 +22,6 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.form.check.messages"; //$NON-NLS-1$
-    public static String DataPathReferredObjectCheck_Data_path;
-    public static String DataPathReferredObjectCheck_description;
-    public static String DataPathReferredObjectCheck_message;
-    public static String DataPathReferredObjectCheck_title;
     public static String InputFieldListChoiceMode_description;
     public static String InputFieldListChoiceMode_Form_input_field_the_list_choice_mode_not_set_with_filled_choice_list;
     public static String InputFieldListChoiceMode_title;
