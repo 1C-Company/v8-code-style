@@ -27,6 +27,11 @@ import com.e1c.v8codestyle.IProjectOptionProvider;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 import com.e1c.v8codestyle.bsl.strict.StrictTypeUtil;
 
+/**
+ * The provider of project functional option allows to add strict-types annotation to module header.
+ *
+ * @author Dmitriy Marmyshev
+ */
 public class StrictTypesProjectOptionProvider
     implements IProjectOptionProvider
 {

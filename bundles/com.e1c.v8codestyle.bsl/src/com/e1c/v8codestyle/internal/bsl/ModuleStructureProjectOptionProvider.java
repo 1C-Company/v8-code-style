@@ -27,6 +27,11 @@ import com.e1c.v8codestyle.IProjectOptionProvider;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 import com.google.inject.Inject;
 
+/**
+ * The provider of project function option that allows to create module structure.
+ *
+ * @author Dmitriy Marmyshev
+ */
 public class ModuleStructureProjectOptionProvider
     implements IProjectOptionProvider
 {
