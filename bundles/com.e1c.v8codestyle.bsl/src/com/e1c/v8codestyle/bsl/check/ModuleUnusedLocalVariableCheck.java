@@ -46,6 +46,8 @@ import com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.common.collect.Lists;
 
 /**
@@ -87,6 +89,7 @@ public final class ModuleUnusedLocalVariableCheck
         builder.title(Messages.ModuleUnusedLocalVariableCheck_Title)
             .description(Messages.ModuleUnusedLocalVariableCheck_Description)
             .issueType(IssueType.WARNING)
+            .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(MODULE);
     }
