@@ -32,8 +32,10 @@ import com.e1c.v8codestyle.ProjectOption;
 import com.google.inject.Singleton;
 
 /**
- * @author Dmitriy Marmyshev
+ * Default implementation of {@link IProjectOptionManager} service, that loads {@link IProjectOptionProvider providers}
+ * form extension point.
  *
+ * @author Dmitriy Marmyshev
  */
 @Singleton
 public class ProjectOptionManager

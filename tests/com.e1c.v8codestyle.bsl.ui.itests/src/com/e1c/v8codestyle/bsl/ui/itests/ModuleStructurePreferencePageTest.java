@@ -25,6 +25,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.testing.TestingWorkspace;
+import com.e1c.v8codestyle.internal.bsl.ui.preferences.ModuleStructurePreferencePage;
 
 /**
  * Integration test of the {@link ModuleStructurePreferencePage}.

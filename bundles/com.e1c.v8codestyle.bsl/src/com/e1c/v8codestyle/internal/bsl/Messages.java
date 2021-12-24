@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.internal.autosort;
+package com.e1c.v8codestyle.internal.bsl;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -21,11 +21,11 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.internal.autosort.messages"; //$NON-NLS-1$
-    public static String AutoSortProjectOptionProvider_description;
-    public static String AutoSortProjectOptionProvider_presentation;
-    public static String SortJob_Sort_metadata_objects__0;
-    public static String SortService_Read_all_objects_to_sort;
+    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.internal.bsl.messages"; //$NON-NLS-1$
+    public static String ModuleStructureProjectOptionProvider_Description;
+    public static String ModuleStructureProjectOptionProvider_presentation;
+    public static String StrictTypesProjectOptionProvider_description;
+    public static String StrictTypesProjectOptionProvider_presentation;
     static
     {
         // initialize resource bundle

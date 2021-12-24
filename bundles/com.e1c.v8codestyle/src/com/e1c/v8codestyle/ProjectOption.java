@@ -94,19 +94,29 @@ public final class ProjectOption
     public boolean equals(Object obj)
     {
         if (this == obj)
+        {
             return true;
+        }
         if (obj == null)
+        {
             return false;
+        }
         if (getClass() != obj.getClass())
+        {
             return false;
+        }
         ProjectOption other = (ProjectOption)obj;
         if (optionId == null)
         {
             if (other.optionId != null)
+            {
                 return false;
+            }
         }
         else if (!optionId.equals(other.optionId))
+        {
             return false;
+        }
         return true;
     }
 

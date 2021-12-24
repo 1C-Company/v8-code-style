@@ -2,12 +2,22 @@ package com.e1c.v8codestyle.internal.autosort;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 
 import com.e1c.v8codestyle.IProjectOptionProvider;
 import com.e1c.v8codestyle.autosort.AutoSortPreferences;
 
+/**
+ * The provider of auto-sort top metadata project option.
+ *
+ * @author Dmitriy Marmyshev
+ */
 public class AutoSortProjectOptionProvider
     implements IProjectOptionProvider
 {
@@ -21,13 +31,13 @@ public class AutoSortProjectOptionProvider
     @Override
     public String getPresentation()
     {
-        return "Enable auto-sort configuration top metadata object";
+        return Messages.AutoSortProjectOptionProvider_presentation;
     }
 
     @Override
     public String getDescription()
     {
-        return "Allows automaticatlly to sort top metadata objects of configuration";
+        return Messages.AutoSortProjectOptionProvider_description;
     }
 
     @Override
@@ -45,7 +55,12 @@ public class AutoSortProjectOptionProvider
     @Override
     public boolean getDefault()
     {
-        return true;
+        IScopeContext[] contexts =
+            new IScopeContext[] { InstanceScope.INSTANCE, ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
+
+        return Platform.getPreferencesService()
+            .getBoolean(AutoSortPlugin.PLUGIN_ID, AutoSortPreferences.KEY_ALL_TOP, AutoSortPreferences.DEFAULT_SORT,
+                contexts);
     }
 
     @Override
