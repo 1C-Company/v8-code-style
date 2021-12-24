@@ -10,9 +10,6 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.bsl.ui.itests;
 
 import org.eclipse.core.resources.IProject;
@@ -28,7 +25,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.testing.TestingWorkspace;
-import com.e1c.v8codestyle.internal.bsl.ui.preferences.ModuleStructurePreferencePage;
 
 /**
  * Integration test of the {@link ModuleStructurePreferencePage}.

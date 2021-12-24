@@ -26,6 +26,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.ql.CorePlugin;
 
 /**
  * The check of query CAST to Number(31, N) because max allowed number is different in for supported SQL servers.
@@ -60,6 +62,7 @@ public class CastToMaxNumber
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.ERROR)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(CastingNumberType.class);
         builder
             .parameter(MAX_NUMBER_LENGTH, Integer.class, MAX_NUMBER_LENGTH_DEFAULT,

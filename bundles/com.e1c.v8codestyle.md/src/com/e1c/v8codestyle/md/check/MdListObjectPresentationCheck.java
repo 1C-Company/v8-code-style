@@ -38,6 +38,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 import com.google.inject.Inject;
 
 /**
@@ -80,7 +82,8 @@ public class MdListObjectPresentationCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
-            .issueType(IssueType.UI_STYLE);
+            .issueType(IssueType.UI_STYLE)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID));
 
         builder.topObject(BASIC_DB_OBJECT)
             .checkTop()

@@ -26,6 +26,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 
 
 /**
@@ -53,6 +55,7 @@ public class MdScheduledJobDescriptionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(SCHEDULED_JOB)
             .checkTop()
             .features(SCHEDULED_JOB__DESCRIPTION, SCHEDULED_JOB__PREDEFINED);

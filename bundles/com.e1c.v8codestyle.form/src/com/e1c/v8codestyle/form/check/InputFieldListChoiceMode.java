@@ -25,6 +25,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.form.CorePlugin;
 
 /**
  * Check input field has correct list choice mode if choice list is not empty.
@@ -51,6 +53,7 @@ public final class InputFieldListChoiceMode
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
             .containment(INPUT_FIELD_EXT_INFO)
             .features(INPUT_FIELD_EXT_INFO__LIST_CHOICE_MODE, INPUT_FIELD_EXT_INFO__CHOICE_LIST);

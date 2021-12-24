@@ -17,6 +17,9 @@ import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
 
+import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
+import com._1c.g5.wiring.ServiceInitialization;
+import com.e1c.v8codestyle.IProjectOptionManager;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -34,6 +37,8 @@ public class CorePlugin
     private static CorePlugin plugin;
 
     private Injector injector;
+
+    private InjectorAwareServiceRegistrator registrator;
 
     /**
      * Returns the shared instance
@@ -110,6 +115,18 @@ public class CorePlugin
         super.start(bundleContext);
 
         plugin = this;
+
+        registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
+        ServiceInitialization.schedule(() -> {
+            try
+            {
+                registrator.service(IProjectOptionManager.class).registerInjected();
+            }
+            catch (Exception e)
+            {
+                logError(e);
+            }
+        });
     }
 
     /*
@@ -119,6 +136,9 @@ public class CorePlugin
     @Override
     public void stop(BundleContext bundleContext) throws Exception
     {
+        registrator.deactivateManagedServices(this);
+        registrator.unregisterServices();
+
         plugin = null;
         injector = null;
 
@@ -130,7 +150,7 @@ public class CorePlugin
      *
      * @return Guice injector for this plugin, never <code>null</code>
      */
-    /* package */ Injector getInjector()
+    public Injector getInjector()
     {
         Injector localInstance = injector;
         if (localInstance == null)
@@ -152,7 +172,7 @@ public class CorePlugin
     {
         try
         {
-            return Guice.createInjector(new ExternalDependenciesModule(this));
+            return Guice.createInjector(new ServiceModule(), new ExternalDependenciesModule(this));
         }
         catch (Exception e)
         {

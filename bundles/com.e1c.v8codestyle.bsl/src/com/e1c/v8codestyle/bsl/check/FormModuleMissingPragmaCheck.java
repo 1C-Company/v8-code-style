@@ -30,6 +30,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Checks that form or command module each method or module declared variables has compilation directives (pragmas).
@@ -56,6 +58,7 @@ public class FormModuleMissingPragmaCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.ERROR)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD, DECLARE_STATEMENT);
     }

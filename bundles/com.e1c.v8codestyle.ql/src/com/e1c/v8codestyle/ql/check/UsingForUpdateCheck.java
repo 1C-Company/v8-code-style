@@ -26,11 +26,13 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.ql.CorePlugin;
 import com.google.inject.Inject;
 
 /**
  * The check of query using FOR UPDATE
- * 
+ *
  * @author Gukov Viktor
  */
 public class UsingForUpdateCheck
@@ -77,6 +79,7 @@ public class UsingForUpdateCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(QuerySchemaOperator.class);
 
     }

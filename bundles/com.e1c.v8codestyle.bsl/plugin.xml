@@ -160,5 +160,14 @@
             class="com.e1c.v8codestyle.internal.bsl.ModuleStructureProviderPreferenceInitializer">
       </initializer>
    </extension>
+   <extension
+         point="com.e1c.v8codestyle.projectOptions">
+      <provider
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ModuleStructureProjectOptionProvider">
+      </provider>
+      <provider
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.StrictTypesProjectOptionProvider">
+      </provider>
+   </extension>
 
 </plugin>

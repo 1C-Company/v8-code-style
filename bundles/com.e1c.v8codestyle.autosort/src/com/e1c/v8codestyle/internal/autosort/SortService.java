@@ -10,9 +10,6 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.internal.autosort;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGURATION;
@@ -54,7 +51,6 @@ import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.bm.integration.event.BmEventFilter;
 import com._1c.g5.v8.bm.integration.event.IBmAsyncEventListener;
 import com._1c.g5.v8.dt.core.lifecycle.ProjectContext;
-import com._1c.g5.v8.dt.core.lifecycle.ProjectStartType;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
@@ -120,13 +116,6 @@ public class SortService
 
         if (project != null)
         {
-            ProjectStartType startType = projectContext.getStartType();
-            if (startType.equals(ProjectStartType.NEW_PROJECT))
-            {
-                // setup project to sort top by default
-                AutoSortPreferences.setupProjectDefault(project);
-            }
-
             // register BM listener to track changes
             IBmModel model = modelManager.getModel(project);
             if (model != null)

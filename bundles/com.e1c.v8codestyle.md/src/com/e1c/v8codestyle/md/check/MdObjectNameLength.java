@@ -26,6 +26,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 
 /**
  * Check top Metadata object name lengh that should be less then 80.
@@ -57,6 +59,7 @@ public final class MdObjectNameLength
             .severity(IssueSeverity.CRITICAL)
             .extension(new TopObjectFilterExtension())
             .issueType(IssueType.PORTABILITY)
+            .extension(new CommonSenseCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(MD_OBJECT)
             .checkTop()
             .features(MD_OBJECT__NAME)

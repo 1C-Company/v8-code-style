@@ -46,7 +46,6 @@ import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.metadata.mdclass.util.MdClassUtil;
 import com._1c.g5.v8.dt.ui.wizards.DtNewWizardPage;
-import com._1c.g5.v8.dt.ui.wizards.IDtNewWizardPage;
 import com.e1c.v8codestyle.md.CommonModuleTypes;
 
 /**
@@ -59,7 +58,7 @@ import com.e1c.v8codestyle.md.CommonModuleTypes;
  */
 public class CommonModuleTypeDtNewWizardPage
     extends DtNewWizardPage<CommonModule>
-    implements IDtNewWizardPage<CommonModule>, IPageChangedListener
+    implements IPageChangedListener
 {
 
     private ListViewer moduleTypeViewer;
