@@ -16,7 +16,6 @@
     - `EclEmma Java Code Covarage` - Запуск тестов со снятием покрытия кода
     - `PDE Source Lookup` - Автоматическая подгрузка исходников для бандлов из целевой платформы из открытых источников
 
-
 ## Настройки JDT и проекта
 
 - Откройте 1C:EDT Start и добавьте новый проект, например v8-code-style (без использования Стартера, откройте JDT и укажите адрес к воркспейсу/проекту).
@@ -28,15 +27,14 @@
 ## Настройка дополнительных плагинов
 
 - JAutodoc
-    - Использование встроенного форматера Eclipse `Preferences -> Java -> JAutodoc -> Use Eclipse formatter`
-    - Использование комментария от поля для Getter/Setter `Preferences -> Java -> JAutodoc -> [G,S]etter from field comment`
+    - Использование встроенного форматера Eclipse `Window -> Preferences -> Java -> JAutodoc -> Use Eclipse formatter`
+    - Использование комментария от поля для Getter/Setter `Window -> Preferences -> Java -> JAutodoc -> [G,S]etter from field comment`
 - ResourceBundle Editor
-    - Кодировка `*.properties` файлов UTF-8 `Preferences -> General -> Content types -> Text -> Java properties File` измените `Default encoditng = UTF-8`
-    - Отключить конвертацию юникода в ХХХ `Preferences -> ResourceBundle Editor -> Formatting -> Convert unicode values to \uXXXX`
+    - Кодировка `*.properties` файлов UTF-8 `Window -> Preferences -> General -> Content types -> Text -> Java properties File` измените `Default encoditng = UTF-8`
+    - Отключить конвертацию юникода в ХХХ `Window -> Preferences -> ResourceBundle Editor -> Formatting -> Convert unicode values to \uXXXX`
 - Enhanced Class Decompiler
-    - Выбор алгоритма по умолчанию `Preferences -> Java -> Decompiler -> Default class decompiler` = JD-Core (например)
-    - Установка просмотрщика классов по умолчанию `Preferences -> Java -> Decompiler -> Set Class Decompiler viewer as default...`
-
+    - Выбор алгоритма по умолчанию `Window -> Preferences -> Java -> Decompiler -> Default class decompiler` = JD-Core (например)
+    - Установка просмотрщика классов по умолчанию `Window -> Preferences -> Java -> Decompiler -> Set Class Decompiler Viewer as the default...`
 
 ## (Опционально) Список плагинов JDT в поставке от 1С
 
