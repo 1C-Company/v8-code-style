@@ -156,6 +156,10 @@
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.IsInRoleCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.LockOutOfTryCheck">
+      </check>
   
    </extension>
    <extension
