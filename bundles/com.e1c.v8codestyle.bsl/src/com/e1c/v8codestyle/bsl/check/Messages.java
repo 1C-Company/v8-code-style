@@ -69,6 +69,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ExportMethodInCommandFormModuleCheck_Notify_description_methods;
+
+    public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_des;
+
+    public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result;
+
+    public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
+
     public static String ModuleStructureTopRegionCheck_description;
 
     public static String ModuleStructureTopRegionCheck_error_message;

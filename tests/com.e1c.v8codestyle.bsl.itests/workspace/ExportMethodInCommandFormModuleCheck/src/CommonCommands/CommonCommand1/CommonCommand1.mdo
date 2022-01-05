@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonCommand xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6ca44c61-ae92-4768-8cb9-153e925a8231">
+  <name>CommonCommand1</name>
+  <synonym>
+    <key>en</key>
+    <value>Common command1</value>
+  </synonym>
+  <group>ActionsPanelTools</group>
+  <representation>Auto</representation>
+</mdclass:CommonCommand>
