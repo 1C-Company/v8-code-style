@@ -102,6 +102,12 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
 
+    public static String NewColorCheck_Use_style_elements;
+
+    public static String NewColorCheck_Use_style_elements_not_specific_values;
+
+    public static String NewColorCheck_Using_new_color;
+
     public static String NstrStringLiteralFormatCheck_Check_empty_interface_for_each_language;
 
     public static String NstrStringLiteralFormatCheck_description;
