@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f821431e-49f7-49c5-80c1-bd02a8dafe94">
+  <name>ScheduledJobWithDetailedRepeatPeriodLessOneMinute</name>
+  <synonym>
+    <key>en</key>
+    <value>Scheduled job with detailed repeat period less one minute</value>
+  </synonym>
+  <use>true</use>
+  <restartCountOnFailure>3</restartCountOnFailure>
+  <restartIntervalOnFailure>10</restartIntervalOnFailure>
+</mdclass:ScheduledJob>
