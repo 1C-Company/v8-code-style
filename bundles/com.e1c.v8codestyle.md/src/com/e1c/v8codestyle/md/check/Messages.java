@@ -56,7 +56,7 @@ final class Messages
     public static String MdScheduledJobDescriptionCheck_description;
     public static String MdScheduledJobDescriptionCheck_message;
     public static String MdScheduledJobPeriodicityCheck_description;
-    public static String MdScheduledJobPeriodicityCheck_The_periodicity_of_execution_a_shceduled_job_is_less_than_one_minute;
+    public static String MdScheduledJobPeriodicityCheck_The_minimum_job_interval_is_1_minute;
     public static String MdScheduledJobPeriodicityCheck_title;
     static
     {

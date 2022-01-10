@@ -1,3 +1,17 @@
+/*******************************************************************************
+ * Copyright (C) 2022, 1C-Soft LLC and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *     Manaev Konstantin - issue #38
+ *******************************************************************************/
+
 package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.schedule.model.SchedulePackage.Literals.DAILY_SCHEDULE;
@@ -19,11 +33,12 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 
-/** Check mdo ScheduledJobs that a periodicity of execution a job is less than one minute
- * @author Manaev Konstantin
+/**
+ * Check mdo ScheduledJobs that a periodicity of execution a job is less than one minute
  *
+ * @author Manaev Konstantin
  */
-public class MdScheduledJobPeriodicityCheck
+public final class MdScheduledJobPeriodicityCheck
     extends BasicCheck
 {
 
@@ -63,25 +78,33 @@ public class MdScheduledJobPeriodicityCheck
             repeatPeriod = ((Schedule)object).getRepeatPeriodInDay();
             repeatPause = ((Schedule)object).getRepeatPause();
             if (repeatPeriod > 0 && repeatPeriod < MAX_REPEAT_SEC)
+            {
                 feature = SCHEDULE__REPEAT_PERIOD_IN_DAY;
+            }
             else
+            {
                 feature = SCHEDULE__REPEAT_PAUSE;
+            }
         }
         else if (object instanceof DailySchedule)
         {
             repeatPeriod = ((DailySchedule)object).getRepeatPeriodInDay();
             repeatPause = ((DailySchedule)object).getRepeatPause();
             if (repeatPeriod > 0 && repeatPeriod < MAX_REPEAT_SEC)
+            {
                 feature = DAILY_SCHEDULE__REPEAT_PERIOD_IN_DAY;
+            }
             else
+            {
                 feature = DAILY_SCHEDULE__REPEAT_PAUSE;
+            }
         }
 
         if (repeatPeriod > 0 && repeatPeriod < MAX_REPEAT_SEC || repeatPause > 0 && repeatPause < MAX_REPEAT_SEC)
         {
-            String message =
-                Messages.MdScheduledJobPeriodicityCheck_The_periodicity_of_execution_a_shceduled_job_is_less_than_one_minute;
-            resultAceptor.addIssue(message, feature);
+            resultAceptor.addIssue(
+                Messages.MdScheduledJobPeriodicityCheck_The_minimum_job_interval_is_1_minute,
+                feature);
         }
     }
 
