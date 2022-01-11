@@ -21,7 +21,7 @@
             id="com.e1c.v8codestyle.ui.projectOptions"
             wizardId="com._1c.g5.v8.dt.md.ui.newV8project">
          <before
-               beforePage="com._1c.g5.v8.dt.platform.services.ui.page.ConfigurationInfobaseWizardPage">
+               beforePage="com._1c.g5.v8.dt.platform.services.ui.page.ConfigurationApplicationsWizardPage">
          </before>
       </page>
       <page
