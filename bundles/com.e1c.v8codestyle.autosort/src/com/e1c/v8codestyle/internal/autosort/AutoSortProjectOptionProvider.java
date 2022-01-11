@@ -70,9 +70,9 @@ public class AutoSortProjectOptionProvider
         IScopeContext[] contexts =
             new IScopeContext[] { InstanceScope.INSTANCE, ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
 
+        // Default value is true to continue enable auto-sort for new projects
         return Platform.getPreferencesService()
-            .getBoolean(AutoSortPlugin.PLUGIN_ID, AutoSortPreferences.KEY_ALL_TOP, AutoSortPreferences.DEFAULT_SORT,
-                contexts);
+            .getBoolean(AutoSortPlugin.PLUGIN_ID, AutoSortPreferences.KEY_ALL_TOP, true, contexts);
     }
 
     @Override
