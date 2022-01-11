@@ -56,8 +56,9 @@ final class Messages
     public static String MdScheduledJobDescriptionCheck_description;
     public static String MdScheduledJobDescriptionCheck_message;
     public static String MdScheduledJobPeriodicityCheck_description;
-    public static String MdScheduledJobPeriodicityCheck_The_minimum_job_interval_is_1_minute;
+    public static String MdScheduledJobPeriodicityCheck_The_minimum_job_interval_is_less_then_minute;
     public static String MdScheduledJobPeriodicityCheck_title;
+    public static String MdScheduledJobPeriodicityCheck_Minimum_job_interval_description;
     static
     {
         // initialize resource bundle
