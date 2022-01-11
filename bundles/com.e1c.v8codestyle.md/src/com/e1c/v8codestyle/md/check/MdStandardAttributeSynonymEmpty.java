@@ -33,6 +33,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 import com.google.inject.Inject;
 
 /**
@@ -73,6 +75,7 @@ public class MdStandardAttributeSynonymEmpty
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new TopObjectFilterExtension())
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(CATALOG)
             .checkTop()
             .features(BASIC_DB_OBJECT__STANDARD_ATTRIBUTES, STANDARD_ATTRIBUTE__SYNONYM);

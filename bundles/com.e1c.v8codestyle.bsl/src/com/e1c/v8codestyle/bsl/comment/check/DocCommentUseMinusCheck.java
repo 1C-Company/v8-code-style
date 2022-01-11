@@ -27,6 +27,8 @@ import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * In Description of Documentation comment model should use only hyphen-minus symbol instead of usual hyphen
@@ -72,6 +74,7 @@ public class DocCommentUseMinusCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.ERROR)
+            .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(Description.class);
     }
 

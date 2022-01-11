@@ -51,6 +51,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Check event handlers OnWrite, BeforeWrite and BeforeDelete that has the checking of DataExchange.Load with return.
@@ -104,6 +106,7 @@ public class EventDataExchangeLoadCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PORTABILITY)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(PROCEDURE)
             .parameter(PARAM_CHECK_AT_BEGINNING, Boolean.class, DEFAULT_CHECK_AT_BEGINNING,

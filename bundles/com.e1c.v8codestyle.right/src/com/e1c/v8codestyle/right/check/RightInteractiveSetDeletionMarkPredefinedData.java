@@ -16,6 +16,8 @@ package com.e1c.v8codestyle.right.check;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.right.CorePlugin;
 import com.google.inject.Inject;
 
 /**
@@ -50,7 +52,8 @@ public class RightInteractiveSetDeletionMarkPredefinedData
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.title(Messages.RightInteractiveSetDeletionMarkPredefinedData_title)
+        builder.extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .title(Messages.RightInteractiveSetDeletionMarkPredefinedData_title)
             .description(Messages.RightInteractiveSetDeletionMarkPredefinedData_description);
     }
 

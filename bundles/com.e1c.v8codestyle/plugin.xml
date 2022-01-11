@@ -14,6 +14,7 @@
  -->
 
 <plugin>
+   <extension-point id="projectOptions" name="EDT Project functional options" schema="schema/projectOptions.exsd"/>
    <extension
          point="com.e1c.g5.v8.dt.check.checks">
       <category
@@ -21,6 +22,21 @@
             id="com.e1c.v8codestyle"
             title="%category.root.title">
       </category>
+   </extension>
+   <extension
+         point="com.e1c.v8codestyle.projectOptions">
+      <provider
+            class="com.e1c.v8codestyle.internal.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.StandardChecksProjectOptionProvider">
+      </provider>
+      <provider
+            class="com.e1c.v8codestyle.internal.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.CommonChecksProjectOptionProvider">
+      </provider>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="com.e1c.v8codestyle.internal.CheckPreferenceInitializer">
+      </initializer>
    </extension>
 
 </plugin>

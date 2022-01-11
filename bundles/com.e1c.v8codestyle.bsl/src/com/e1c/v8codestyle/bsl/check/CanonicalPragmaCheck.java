@@ -28,6 +28,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Checks the canonical spelling of method pragmas in extensions
@@ -86,6 +88,7 @@ public class CanonicalPragmaCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.BLOCKER)
             .issueType(IssueType.ERROR)
+            .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(PRAGMA);
     }

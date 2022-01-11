@@ -44,6 +44,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.right.CorePlugin;
 import com.google.inject.Inject;
 
 /**
@@ -84,6 +86,7 @@ public abstract class RoleRightSetCheck
             .issueType(IssueType.SECURITY)
             .extension(new ExcludeRoleByPatternExtension(bmModelManager))
             .extension(new RoleNameChangeExtension())
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(ROLE_DESCRIPTION)
             .containment(OBJECT_RIGHT)
             .features(OBJECT_RIGHT__RIGHT, OBJECT_RIGHT__VALUE);

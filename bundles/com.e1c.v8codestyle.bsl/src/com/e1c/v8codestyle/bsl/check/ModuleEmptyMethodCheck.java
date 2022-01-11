@@ -32,6 +32,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.common.collect.Lists;
 
 /**
@@ -60,6 +62,7 @@ public final class ModuleEmptyMethodCheck
         builder.title(Messages.ModuleEmptyMethodCheck_Title)
             .description(Messages.ModuleEmptyMethodCheck_Description)
             .extension(new ModuleTopObjectNameFilterExtension())
+            .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .parameter(EXCLUDE_METHOD_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
                 Messages.ModuleEmptyMethodCheck_Exclude_method_name_pattern_title)
             .parameter(ALLOW_METHOD_COMMENTS_PARAMETER_NAME, Boolean.class, Boolean.TRUE.toString(),

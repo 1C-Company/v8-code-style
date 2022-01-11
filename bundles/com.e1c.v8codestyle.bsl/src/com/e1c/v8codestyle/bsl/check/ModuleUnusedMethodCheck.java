@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.builder.MonitorBasedCancelIndicator;
-import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.resource.IResourceDescription;
 
 import com._1c.g5.v8.dt.bsl.common.IModuleExtensionService;
@@ -39,6 +38,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
@@ -81,6 +82,7 @@ public final class ModuleUnusedMethodCheck
         builder.title(Messages.ModuleUnusedMethodCheck_Title)
             .description(Messages.ModuleUnusedMethodCheck_Description)
             .extension(new ModuleTopObjectNameFilterExtension())
+            .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .parameter(EXCLUDE_METHOD_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
                 Messages.ModuleUnusedMethodCheck_Exclude_method_name_pattern_title)
             .issueType(IssueType.WARNING)
