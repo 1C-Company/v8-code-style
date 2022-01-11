@@ -1,2 +1,7 @@
 eclipse.preferences.version=1
+encoding//src/com/e1c/v8codestyle/bsl/check/messages_ru.properties=UTF-8
+encoding//src/com/e1c/v8codestyle/bsl/comment/check/messages_ru.properties=UTF-8
+encoding//src/com/e1c/v8codestyle/bsl/strict/check/messages_ru.properties=UTF-8
+encoding//src/com/e1c/v8codestyle/internal/bsl/messages_ru.properties=UTF-8
 encoding/<project>=UTF-8
+encoding/plugin_ru.properties=UTF-8
