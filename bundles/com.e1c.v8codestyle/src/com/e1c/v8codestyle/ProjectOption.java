@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle;
 
+import java.util.Objects;
+
 /**
  * The project functional option.
  *
@@ -48,29 +50,54 @@ public final class ProjectOption
         this.presentation = presentation;
         this.description = description;
         this.defaultValue = defaultValue;
-        this.hashCode = getHashCode();
+        this.hashCode = Objects.hash(optionId);
     }
 
+    /**
+     * Gets the option id.
+     *
+     * @return the option id, cannot return {@code null}.
+     */
     public String getOptionId()
     {
         return optionId;
     }
 
+    /**
+     * Gets the sort presentation of the option.
+     *
+     * @return the presentation, cannot return {@code null}.
+     */
     public String getPresentation()
     {
         return presentation;
     }
 
+    /**
+     * Gets the long description of the option.
+     *
+     * @return the description, may return {@code null}.
+     */
     public String getDescription()
     {
         return description;
     }
 
+    /**
+     * Gets the order of the option in the list.
+     *
+     * @return the order
+     */
     public int getOrder()
     {
         return order;
     }
 
+    /**
+     * Gets the default value of enable of the option.
+     *
+     * @return the default value of the option
+     */
     public boolean getDefaultValue()
     {
         return defaultValue;
@@ -80,14 +107,6 @@ public final class ProjectOption
     public int hashCode()
     {
         return hashCode;
-    }
-
-    private int getHashCode()
-    {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((optionId == null) ? 0 : optionId.hashCode());
-        return result;
     }
 
     @Override

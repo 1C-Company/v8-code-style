@@ -22,6 +22,8 @@ import com.google.inject.Injector;
 
 /**
  * The activator class controls the plug-in life cycle
+ *
+ * @author Dmitriy Marmyshev
  */
 public class UiPlugin
     extends AbstractUIPlugin

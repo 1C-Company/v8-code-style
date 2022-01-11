@@ -62,7 +62,7 @@ public interface IProjectOptionProvider
      * @param project the project, cannot be {@code null}.
      * @return true if the option is enabled for the project.
      */
-    boolean getOption(IProject project);
+    boolean isEnabled(IProject project);
 
     /**
      * Gets the default value of enable for new project.
@@ -75,8 +75,8 @@ public interface IProjectOptionProvider
      * Save function option for the project.
      *
      * @param project the project, cannot be {@code null}.
-     * @param value the value
+     * @param enable the value of the option
      * @param monitor the monitor, cannot be {@code null}.
      */
-    void saveOption(IProject project, boolean value, IProgressMonitor monitor);
+    void saveEnable(IProject project, boolean enable, IProgressMonitor monitor);
 }

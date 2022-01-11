@@ -31,6 +31,11 @@ public final class StandardCheckRegistry
 
     private final Set<CheckUid> checks = ConcurrentHashMap.newKeySet();
 
+    /**
+     * Gets the single shared instance of the registry.
+     *
+     * @return single instance of the registry, cannot return {@code null}.
+     */
     public static StandardCheckRegistry getInstance()
     {
         return CorePlugin.getDefault().getInjector().getInstance(StandardCheckRegistry.class);

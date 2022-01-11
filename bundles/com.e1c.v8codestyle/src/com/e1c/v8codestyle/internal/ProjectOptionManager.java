@@ -46,9 +46,9 @@ public class ProjectOptionManager
 
     private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-    private Map<String, IProjectOptionProvider> providers;
+    private volatile Map<String, IProjectOptionProvider> providers;
 
-    private List<ProjectOption> availableOptions;
+    private volatile List<ProjectOption> availableOptions;
 
     @Override
     public List<ProjectOption> getAvailableOptions()
@@ -69,23 +69,36 @@ public class ProjectOptionManager
     }
 
     @Override
-    public boolean getOption(IProject project, String optionId)
+    public ProjectOption getOption(String optionId)
+    {
+        if (optionId == null)
+        {
+            return null;
+        }
+        return getAvailableOptions().stream()
+            .filter(o -> optionId.equalsIgnoreCase(o.getOptionId()))
+            .findAny()
+            .orElse(null);
+    }
+
+    @Override
+    public boolean isOptionEnabled(IProject project, String optionId)
     {
         IProjectOptionProvider provider = getProviders().get(optionId);
         if (provider != null)
         {
-            return provider.getOption(project);
+            return provider.isEnabled(project);
         }
         return false;
     }
 
     @Override
-    public boolean getOption(IProject project, ProjectOption option)
+    public boolean isOptionEnabled(IProject project, ProjectOption option)
     {
         IProjectOptionProvider provider = getProviders().get(option.getOptionId());
         if (provider != null)
         {
-            return provider.getOption(project);
+            return provider.isEnabled(project);
         }
         return false;
     }
@@ -96,7 +109,7 @@ public class ProjectOptionManager
         IProjectOptionProvider provider = getProviders().get(option.getOptionId());
         if (provider != null)
         {
-            provider.saveOption(project, value, monitor);
+            provider.saveEnable(project, value, monitor);
         }
     }
 

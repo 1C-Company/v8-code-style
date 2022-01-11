@@ -72,7 +72,7 @@ public class ProjectOptionsPropertyPage
 
         for (ProjectOption option : projectOptionManager.getAvailableOptions())
         {
-            boolean value = projectOptionManager.getOption(project, option);
+            boolean value = projectOptionManager.isOptionEnabled(project, option);
             Button button = new Button(composite, SWT.CHECK);
             button.setSelection(value);
             button.setText(option.getPresentation());

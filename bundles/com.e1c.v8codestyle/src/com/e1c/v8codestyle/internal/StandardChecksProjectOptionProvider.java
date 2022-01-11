@@ -77,7 +77,7 @@ public class StandardChecksProjectOptionProvider
     }
 
     @Override
-    public boolean getOption(IProject project)
+    public boolean isEnabled(IProject project)
     {
         return CheckUtils.isStandardCheckEnable(project);
     }
@@ -89,7 +89,7 @@ public class StandardChecksProjectOptionProvider
     }
 
     @Override
-    public void saveOption(IProject project, boolean value, IProgressMonitor monitor)
+    public void saveEnable(IProject project, boolean value, IProgressMonitor monitor)
     {
         if (monitor.isCanceled())
         {

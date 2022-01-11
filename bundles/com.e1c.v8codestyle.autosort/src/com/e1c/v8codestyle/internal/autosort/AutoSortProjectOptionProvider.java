@@ -59,7 +59,7 @@ public class AutoSortProjectOptionProvider
     }
 
     @Override
-    public boolean getOption(IProject project)
+    public boolean isEnabled(IProject project)
     {
         return AutoSortPreferences.isSortAllTop(project);
     }
@@ -76,7 +76,7 @@ public class AutoSortProjectOptionProvider
     }
 
     @Override
-    public void saveOption(IProject project, boolean value, IProgressMonitor monitor)
+    public void saveEnable(IProject project, boolean value, IProgressMonitor monitor)
     {
         if (monitor.isCanceled())
         {

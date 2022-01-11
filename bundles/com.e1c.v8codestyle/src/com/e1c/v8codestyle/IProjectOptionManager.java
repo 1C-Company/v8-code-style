@@ -33,22 +33,30 @@ public interface IProjectOptionManager
     List<ProjectOption> getAvailableOptions();
 
     /**
+     * Gets the functional option definition.
+     *
+     * @param optionId the option id, cannot be {@code null}.
+     * @return the option definition, can return {@code null} if option is not found.
+     */
+    ProjectOption getOption(String optionId);
+
+    /**
      * Gets the option for the project.
      *
      * @param project the project, cannot return {@code null}.
      * @param optionId the option id, cannot return {@code null}.
-     * @return the option
+     * @return the option enable
      */
-    boolean getOption(IProject project, String optionId);
+    boolean isOptionEnabled(IProject project, String optionId);
 
     /**
      * Gets the option for the project.
      *
      * @param project the project, cannot return {@code null}.
      * @param option the option, cannot return {@code null}.
-     * @return the option
+     * @return the option enable
      */
-    boolean getOption(IProject project, ProjectOption option);
+    boolean isOptionEnabled(IProject project, ProjectOption option);
 
     /**
      * Save option enable for the project.

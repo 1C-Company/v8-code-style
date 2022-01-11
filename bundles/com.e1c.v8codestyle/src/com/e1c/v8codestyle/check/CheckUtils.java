@@ -25,8 +25,9 @@ import org.osgi.service.prefs.BackingStoreException;
 import com.e1c.v8codestyle.internal.CorePlugin;
 
 /**
- * @author Dmitriy Marmyshev
+ * The utility class for checks.
  *
+ * @author Dmitriy Marmyshev
  */
 public final class CheckUtils
 {

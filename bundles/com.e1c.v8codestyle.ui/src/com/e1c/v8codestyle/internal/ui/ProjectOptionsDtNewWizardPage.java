@@ -15,9 +15,11 @@ package com.e1c.v8codestyle.internal.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -98,15 +100,24 @@ public class ProjectOptionsDtNewWizardPage
     @Override
     public void finish(IProgressMonitor monitor)
     {
-        IProject project = getContext().getV8project().getProject();
-        for (Entry<ProjectOption, Button> entry : options.entrySet())
-        {
-            if (monitor.isCanceled())
+        final Map<ProjectOption, Boolean> values =
+            options.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> e.getValue().getSelection()));
+        final IProject project = getContext().getV8project().getProject();
+
+        // Run job to separate it from ws building lock
+        Job job = Job.create(Messages.ProjectOptionsDtNewWizardPage_save_job_title, m -> {
+
+            for (Entry<ProjectOption, Boolean> entry : values.entrySet())
             {
-                return;
+                if (m.isCanceled())
+                {
+                    return;
+                }
+                projectOptionManager.save(project, entry.getKey(), entry.getValue(), m);
             }
-            projectOptionManager.save(project, entry.getKey(), entry.getValue().getSelection(), monitor);
-        }
+        });
+        job.setRule(project);
+        job.schedule();
     }
 
 }

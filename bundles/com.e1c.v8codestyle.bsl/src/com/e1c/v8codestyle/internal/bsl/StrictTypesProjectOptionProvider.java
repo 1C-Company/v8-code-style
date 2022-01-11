@@ -61,7 +61,7 @@ public class StrictTypesProjectOptionProvider
     }
 
     @Override
-    public boolean getOption(IProject project)
+    public boolean isEnabled(IProject project)
     {
         return StrictTypeUtil.canAddModuleStrictTypesAnnotation(project);
     }
@@ -78,7 +78,7 @@ public class StrictTypesProjectOptionProvider
     }
 
     @Override
-    public void saveOption(IProject project, boolean value, IProgressMonitor monitor)
+    public void saveEnable(IProject project, boolean value, IProgressMonitor monitor)
     {
         if (monitor.isCanceled())
         {
