@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4b43789f-236f-4b7f-ba6b-85ec0d6218ab">
+  <name>MdScheduledJobPeriodicity</name>
+  <synonym>
+    <key>en</key>
+    <value>Md scheduled job periodicity</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="5d986340-f233-4b6b-893f-b8e1f2fd94ed"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="ff83617f-705a-4ee0-aa03-c1139edd784e"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="b712dc71-537e-40fb-a481-c0ae93e74cb2"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="3a3b194d-6f5a-47df-a276-ad8f222013d1"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="9fd2b563-4eb7-4a1b-b58e-e474114478ec"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="954491e6-4f23-49e1-825e-41ce2f3fd315"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="cfa483a7-95d6-478f-bf8f-6e9a928d8d2c"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="d9545c84-c0e1-4756-b4cb-d3639545a6ea">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <scheduledJobs>ScheduledJob.ScheduledJobWithDetailedRepeatPeriodLessOneMinute</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobWithDetailedRepeatPeriodMoreOneMinute</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobWithEmptySchedule</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobWithRepeatPauseLessOneMinute</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobWithRepeatPeriodLessOneMinute</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobWithRepeatPeriodMoreOneMinute</scheduledJobs>
+</mdclass:Configuration>
