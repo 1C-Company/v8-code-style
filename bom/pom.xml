@@ -60,7 +60,7 @@
     <!-- JaCoCo code coverage, pass to SonarQube -->
     <sonar.coverage.jacoco.xmlReportPaths>../../**/target/site/jacoco*/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     
-    <sonar.issue.ignore.multicriteria>e1,e2,e3,e4,t1,t2,t3,t4,t5</sonar.issue.ignore.multicriteria>
+    <sonar.issue.ignore.multicriteria>e1,e2,e3,e4,t1,t2,t3,t4</sonar.issue.ignore.multicriteria>
     <!-- Static non-final field names should comply with a naming convention -->
     <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S3008</sonar.issue.ignore.multicriteria.e1.ruleKey>
     <sonar.issue.ignore.multicriteria.e1.resourceKey>**/Messages.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
