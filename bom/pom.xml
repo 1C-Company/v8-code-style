@@ -60,7 +60,7 @@
     <!-- JaCoCo code coverage, pass to SonarQube -->
     <sonar.coverage.jacoco.xmlReportPaths>../../**/target/site/jacoco*/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
     
-    <sonar.issue.ignore.multicriteria>e1,e2,e3,e4,t1,t2,t3,t4</sonar.issue.ignore.multicriteria>
+    <sonar.issue.ignore.multicriteria>e1,e2,e3,e4,t1,t2,t3,t4,t5</sonar.issue.ignore.multicriteria>
     <!-- Static non-final field names should comply with a naming convention -->
     <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S3008</sonar.issue.ignore.multicriteria.e1.ruleKey>
     <sonar.issue.ignore.multicriteria.e1.resourceKey>**/Messages.java</sonar.issue.ignore.multicriteria.e1.resourceKey>
@@ -85,6 +85,8 @@
     <!-- Reflection should not be used to increase accessibility of classes, methods, or fields -->
     <sonar.issue.ignore.multicriteria.t4.ruleKey>java:S3011</sonar.issue.ignore.multicriteria.t4.ruleKey>
     <sonar.issue.ignore.multicriteria.t4.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t4.resourceKey>
+    <sonar.issue.ignore.multicriteria.t5.ruleKey>common-java:DuplicatedBlocks</sonar.issue.ignore.multicriteria.t5.ruleKey>
+    <sonar.issue.ignore.multicriteria.t5.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t5.resourceKey>
   </properties>
 
   <build>

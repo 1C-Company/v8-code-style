@@ -19,5 +19,11 @@
       <bundle
             symbolicName="com.e1c.v8codestyle.autosort"></bundle>
    </extension>
+   <extension
+         point="com.e1c.v8codestyle.projectOptions">
+      <provider
+            class="com.e1c.v8codestyle.internal.autosort.AutoSortProjectOptionProvider">
+      </provider>
+   </extension>
 
 </plugin>

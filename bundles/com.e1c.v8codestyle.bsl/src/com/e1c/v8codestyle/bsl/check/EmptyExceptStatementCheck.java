@@ -25,6 +25,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Checks try-except-endtry statements, for empty except statement.
@@ -69,6 +71,7 @@ public class EmptyExceptStatementCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(TRY_EXCEPT_STATEMENT);
     }

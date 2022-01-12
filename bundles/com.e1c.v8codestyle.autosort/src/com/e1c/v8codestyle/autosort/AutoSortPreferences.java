@@ -24,7 +24,12 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.WEB_SERV
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.ecore.EReference;
 import org.osgi.service.prefs.BackingStoreException;
 
@@ -90,8 +95,12 @@ public final class AutoSortPreferences
      */
     public static boolean isSortAllTop(IProject project)
     {
-        IEclipsePreferences rootNode = getPreferences(project);
-        return rootNode.getBoolean(KEY_ALL_TOP, DEFAULT_SORT);
+        ProjectScope projectScope = new ProjectScope(project);
+        IScopeContext[] contexts = new IScopeContext[] { projectScope, InstanceScope.INSTANCE,
+            ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
+
+        return Platform.getPreferencesService()
+            .getBoolean(AutoSortPlugin.PLUGIN_ID, KEY_ALL_TOP, DEFAULT_SORT, contexts);
     }
 
     /**

@@ -25,6 +25,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.ql.CorePlugin;
 
 /**
  * The check of QL query that selection put into new temporary table should have some indexes.
@@ -57,6 +59,7 @@ public class TempTableHasIndex
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(QuerySchemaSelectQuery.class);
         builder.parameter(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, String.class, StringUtils.EMPTY,
             Messages.TempTableHasIndex_Exclude_table_name_pattern);

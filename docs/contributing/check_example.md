@@ -46,6 +46,10 @@ public class FindTheProblemCheck
 
 Для проверки метаданны, форм, СКД, Табличный документ, Прав ролей, укажите верхнеуровневый объект (Top object) - тот объект который хранится в файле: Каталог, Форма, СхемаКомпоновкиДанных и т.д.
 
+Добавьте одно из обязательных расширения проверок:
+- `StandardCheckExtension` - для принадлежности проверки к функциональной опции включающей или отключающей проверки по 1С:Стандартам
+- `CommonSenseCheckExtension` - для принадлежности проверки ко всем прочим полезным проверкам исходя из здравого смысла, "лучших практи" и т.д. которые не регламентируются стандартами 1С.
+
 Укажите - необходимо ли проверять сам верхнеуровневый объект (`.checkTop()`) или необходимо найти его подчиненные объекты: реквизиты, элементы и т.д. (`.containment(CATALOG_ATTRIBUTE)`).
 
 Далее укажите, все свойства объекта от которых зависит код проверки (`.features(BASIC_DB_OBJECT__OBJECT_PRESENTATION, BASIC_DB_OBJECT__LIST_PRESENTATION)`). 
@@ -70,6 +74,7 @@ public class FindTheProblemCheck
             .description("Описание проверки")
             .severity(IssueSeverity.MINOR) // строгость/критичность проверки - старайтесь быть менее критичнми :)
             .issueType(IssueType.UI_STYLE); // Укажите тип проблемы
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID)) // Укажите расширение для проверки по стандартам 1С
             .topObject(CATALOG)
             .checkTop()
             .features(BASIC_DB_OBJECT__OBJECT_PRESENTATION, BASIC_DB_OBJECT__LIST_PRESENTATION);

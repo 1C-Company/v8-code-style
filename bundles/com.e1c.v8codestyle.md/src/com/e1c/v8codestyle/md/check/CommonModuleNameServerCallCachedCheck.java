@@ -27,6 +27,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 
 /**
  * Check the postfix for a module with the server call or cached attribute.
@@ -57,6 +59,7 @@ public final class CommonModuleNameServerCallCachedCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new TopObjectFilterExtension())
             .topObject(COMMON_MODULE)
             .checkTop()
