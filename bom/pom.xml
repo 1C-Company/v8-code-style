@@ -85,8 +85,8 @@
     <!-- Reflection should not be used to increase accessibility of classes, methods, or fields -->
     <sonar.issue.ignore.multicriteria.t4.ruleKey>java:S3011</sonar.issue.ignore.multicriteria.t4.ruleKey>
     <sonar.issue.ignore.multicriteria.t4.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t4.resourceKey>
-    <sonar.issue.ignore.multicriteria.t5.ruleKey>common-java:DuplicatedBlocks</sonar.issue.ignore.multicriteria.t5.ruleKey>
-    <sonar.issue.ignore.multicriteria.t5.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t5.resourceKey>
+    <!-- Source files should not have any duplicated blocks -->
+    <sonar.cpd.exclusions>**/*Plugin.java,/tests/**/*</sonar.cpd.exclusions>
   </properties>
 
   <build>
