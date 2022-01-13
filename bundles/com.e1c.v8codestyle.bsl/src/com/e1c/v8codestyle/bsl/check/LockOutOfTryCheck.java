@@ -15,23 +15,29 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
-import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
-import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
+import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
+import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
+import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.TypeItem;
+import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Checks for initialization of the data lock. If the creation of a lock is found, the call of the Lock() method is
@@ -44,20 +50,19 @@ public final class LockOutOfTryCheck
 {
 
     private static final String CHECK_ID = "lock-out-of-try"; //$NON-NLS-1$
-    private static final String NAME_COMMIT_TRANSACTION_RU = "ЗафиксироватьТранзакцию"; //$NON-NLS-1$
-    private static final String NAME_COMMIT_TRANSACTION = "CommitTransaction"; //$NON-NLS-1$
     private static final String NAME_DATA_LOCK = "DataLock"; //$NON-NLS-1$
-    private static final String NAME_DATA_LOCK_RU = "БлокировкаДанных"; //$NON-NLS-1$
     private static final String NAME_LOCK = "Lock"; //$NON-NLS-1$
     private static final String NAME_LOCK_RU = "Заблокировать"; //$NON-NLS-1$
-    private static final String NAME_BEGIN_TRANSACTION_RU = "НачатьТранзакцию"; //$NON-NLS-1$
-    private static final String NAME_BEGIN_TRANSACTION = "BeginTransaction"; //$NON-NLS-1$
-    private static final String NAME_ROLLBACK_TRANSACTION = "RollbackTransaction"; //$NON-NLS-1$
-    private static final String NAME_ROLLBACK_TRANSACTION_RU = "ОтменитьТранзакцию"; //$NON-NLS-1$
+    private final TypesComputer typesComputer;
 
+    @Inject
     public LockOutOfTryCheck()
     {
         super();
+
+        IResourceServiceProvider rsp =
+            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
+        this.typesComputer = rsp.get(TypesComputer.class);
     }
 
     @Override
@@ -74,6 +79,7 @@ public final class LockOutOfTryCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
     }
@@ -83,133 +89,28 @@ public final class LockOutOfTryCheck
         IProgressMonitor monitor)
     {
         DynamicFeatureAccess dynamicFeatureAccess = (DynamicFeatureAccess)object;
+
         String name = dynamicFeatureAccess.getName();
-        if (!(name.equalsIgnoreCase(NAME_LOCK_RU) || name.equalsIgnoreCase(NAME_LOCK)))
+        if (BslUtil.getInvocation(dynamicFeatureAccess) == null
+            || !NAME_LOCK.equalsIgnoreCase(name) && !NAME_LOCK_RU.equalsIgnoreCase(name))
         {
             return;
         }
 
         Expression source = dynamicFeatureAccess.getSource();
-        if (!(source instanceof StaticFeatureAccess))
+        Environmental env = EcoreUtil2.getContainerOfType(source, Environmental.class);
+        if (Objects.isNull(env))
         {
             return;
         }
 
-        String nameLeft = ((StaticFeatureAccess)source).getName();
-        if (!(nameLeft.equalsIgnoreCase(NAME_DATA_LOCK_RU) || nameLeft.equalsIgnoreCase(NAME_DATA_LOCK)))
+        List<TypeItem> types = typesComputer.computeTypes(source, env.environments());
+        for (TypeItem type : types)
         {
-            return;
-        }
-
-        TryExceptStatement statement = EcoreUtil2.getContainerOfType(source, TryExceptStatement.class);
-        if (statement == null)
-        {
-            resultAceptor.addIssue(Messages.LockOutOfTry_Method_lock_out_of_try, object);
-            return;
-        }
-
-        List<SimpleStatement> tryStatements = statement.getTryStatements()
-            .stream()
-            .filter(SimpleStatement.class::isInstance)
-            .map(SimpleStatement.class::cast)
-            .collect(Collectors.toList());
-
-        checkBeginTransaction(object, resultAceptor, tryStatements);
-
-        checkCommitTransaction(object, resultAceptor, tryStatements);
-
-        List<SimpleStatement> exceptStatements = statement.getExceptStatements()
-            .stream()
-            .filter(SimpleStatement.class::isInstance)
-            .map(SimpleStatement.class::cast)
-            .collect(Collectors.toList());
-
-        checkRollbackTransaction(object, resultAceptor, exceptStatements);
-    }
-
-    private void checkRollbackTransaction(Object object, ResultAcceptor resultAceptor,
-        List<SimpleStatement> simpleStatements)
-    {
-        if (simpleStatements.isEmpty())
-        {
-            resultAceptor.addIssue(Messages.LockOutOfTry_RollbackTransaction_method_called_first, object);
-        }
-        else
-        {
-            SimpleStatement first = simpleStatements.get(0);
-            Expression left = first.getLeft();
-            if (left instanceof Invocation)
+            if (NAME_DATA_LOCK.equals(McoreUtil.getTypeName(type))
+                && Objects.isNull(EcoreUtil2.getContainerOfType(source, TryExceptStatement.class)))
             {
-                FeatureAccess staticFeatureAccess = ((Invocation)left).getMethodAccess();
-                String nameFeature = staticFeatureAccess.getName();
-                if (!(staticFeatureAccess instanceof StaticFeatureAccess))
-                {
-                    resultAceptor.addIssue(Messages.LockOutOfTry_RollbackTransaction_method_called_first, object);
-                }
-                if (staticFeatureAccess instanceof StaticFeatureAccess
-                    && !(nameFeature.equalsIgnoreCase(NAME_ROLLBACK_TRANSACTION_RU)
-                        || nameFeature.equalsIgnoreCase(NAME_ROLLBACK_TRANSACTION)))
-                {
-                    resultAceptor.addIssue(Messages.LockOutOfTry_RollbackTransaction_method_called_first, object);
-                }
-            }
-            else
-            {
-                resultAceptor.addIssue(Messages.LockOutOfTry_RollbackTransaction_method_called_first, object);
-            }
-        }
-    }
-
-    private void checkCommitTransaction(Object object, ResultAcceptor resultAceptor,
-        List<SimpleStatement> simpleStatements)
-    {
-        if (simpleStatements.isEmpty())
-        {
-            resultAceptor.addIssue(Messages.LockOutOfTry_CommitTransaction_should_be_the_last, object);
-        }
-        else
-        {
-            SimpleStatement last = simpleStatements.get(simpleStatements.size() - 1);
-            Expression left = last.getLeft();
-            if (left instanceof Invocation)
-            {
-                FeatureAccess staticFeatureAccess = ((Invocation)left).getMethodAccess();
-                String nameFeature = staticFeatureAccess.getName();
-                if (!(staticFeatureAccess instanceof StaticFeatureAccess))
-                {
-                    resultAceptor.addIssue(Messages.LockOutOfTry_CommitTransaction_should_be_the_last, object);
-                }
-                if (staticFeatureAccess instanceof StaticFeatureAccess
-                    && !(nameFeature.equalsIgnoreCase(NAME_COMMIT_TRANSACTION_RU)
-                        || nameFeature.equalsIgnoreCase(NAME_COMMIT_TRANSACTION)))
-                {
-                    resultAceptor.addIssue(Messages.LockOutOfTry_CommitTransaction_should_be_the_last, object);
-                }
-            }
-            else
-            {
-                resultAceptor.addIssue(Messages.LockOutOfTry_CommitTransaction_should_be_the_last, object);
-            }
-        }
-    }
-
-    private void checkBeginTransaction(Object object, ResultAcceptor resultAceptor,
-        List<SimpleStatement> simpleStatements)
-    {
-        for (SimpleStatement simpleStatement : simpleStatements)
-        {
-            Expression left = simpleStatement.getLeft();
-            if (left instanceof Invocation)
-            {
-                FeatureAccess staticFeatureAccess = ((Invocation)left).getMethodAccess();
-                String nameFeature = staticFeatureAccess.getName();
-                if (staticFeatureAccess instanceof StaticFeatureAccess
-                    && nameFeature.equalsIgnoreCase(NAME_BEGIN_TRANSACTION_RU)
-                    || nameFeature.equalsIgnoreCase(NAME_BEGIN_TRANSACTION))
-                {
-                    resultAceptor.addIssue(Messages.LockOutOfTry_BeginTransaction_method_must_by_outside_try_block,
-                        object);
-                }
+                resultAceptor.addIssue(Messages.LockOutOfTry_Method_lock_out_of_try, object);
             }
         }
     }

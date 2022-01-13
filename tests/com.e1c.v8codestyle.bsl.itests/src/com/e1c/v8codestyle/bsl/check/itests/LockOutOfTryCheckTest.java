@@ -31,12 +31,6 @@ public class LockOutOfTryCheckTest
 {
 
     private static final String LOCK_OUT_OF_TRY = "Method Lock() out of try block";
-    private static final String LOCK_ROLLBACK_TRANSACTION =
-        "In the Exception block, you must first call the RollbackTransaction() method";
-    private static final String LOCK_COMMIT_TRANSACTION =
-        "CommitTransaction() method should be the last in the Try block before the Exception statement to ensure that no exception occurs after CommitTransaction()";
-    private static final String LOCK_BEGIN_TRANSACTION =
-        "BeginTransaction() method must be outside the Try-Exception block immediately before the Try statement";
 
     /**
      * Test {@link LockOutOfTryCheck}.
@@ -60,36 +54,13 @@ public class LockOutOfTryCheckTest
     }
 
     @Test
-    public void testBeginTransaction() throws Exception
+    public void testLockOutOfTry2() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "lock-begin-transaction.bsl");
+        updateModule(FOLDER_RESOURCE + "lock-out-of-try2.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals(LOCK_BEGIN_TRANSACTION, marker.getMessage());
+        assertEquals(LOCK_OUT_OF_TRY, marker.getMessage());
     }
-
-    @Test
-    public void testCommitTransaction() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "lock-commit-transaction.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
-        Marker marker = markers.get(0);
-        assertEquals(LOCK_COMMIT_TRANSACTION, marker.getMessage());
-    }
-
-    @Test
-    public void testRollbackTransaction() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "lock-rollback-transaction.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
-        Marker marker = markers.get(0);
-        assertEquals(LOCK_ROLLBACK_TRANSACTION, marker.getMessage());
-    }
-
 }
