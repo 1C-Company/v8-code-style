@@ -39,6 +39,7 @@ import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.ForEachStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
@@ -387,6 +388,30 @@ public class QueryInLoopCheck
         return predicate instanceof BooleanLiteral;
     }
 
+    private Collection<FeatureAccess> getQueryInLoopFeatures(LoopStatement loopStatement,
+        FeatureAccess featureForExclude, Map<String, String> methodsWithQuery, Set<String> queryExecutionMethods)
+    {
+        Collection<FeatureAccess> result = new ArrayList<>();
+
+        for (FeatureAccess featureAccess : EcoreUtil2.eAllOfType(loopStatement, FeatureAccess.class))
+        {
+            if (featureAccess.equals(featureForExclude))
+            {
+                continue;
+            }
+
+            if (featureAccess instanceof StaticFeatureAccess
+                && isMethodWithQueryCalled((StaticFeatureAccess)featureAccess, methodsWithQuery)
+                || featureAccess instanceof DynamicFeatureAccess
+                    && isQueryExecution((DynamicFeatureAccess)featureAccess, queryExecutionMethods))
+            {
+                result.add(featureAccess);
+            }
+        }
+
+        return result;
+    }
+
     private Collection<FeatureAccess> getQueryInLoopCallers(Module module, Map<String, String> methodsWithQuery,
         Set<String> queryExecutionMethods, boolean checkQueryInInfiniteLoop, IProgressMonitor monitor)
     {
@@ -404,16 +429,19 @@ public class QueryInLoopCheck
                 continue;
             }
 
-            for (FeatureAccess featureAccess : EcoreUtil2.eAllOfType(loopStatement, FeatureAccess.class))
+            FeatureAccess featureForExclude = null;
+            if (loopStatement instanceof ForEachStatement)
             {
-                if (featureAccess instanceof StaticFeatureAccess
-                    && isMethodWithQueryCalled((StaticFeatureAccess)featureAccess, methodsWithQuery)
-                    || featureAccess instanceof DynamicFeatureAccess
-                        && isQueryExecution((DynamicFeatureAccess)featureAccess, queryExecutionMethods))
+                Expression forEachCollection = ((ForEachStatement)loopStatement).getCollection();
+
+                if (forEachCollection instanceof Invocation)
                 {
-                    result.add(featureAccess);
+                    featureForExclude = ((Invocation)forEachCollection).getMethodAccess();
                 }
             }
+
+            result.addAll(
+                getQueryInLoopFeatures(loopStatement, featureForExclude, methodsWithQuery, queryExecutionMethods));
         }
 
         return result;

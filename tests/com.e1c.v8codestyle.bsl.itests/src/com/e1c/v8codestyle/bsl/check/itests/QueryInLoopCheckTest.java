@@ -80,6 +80,8 @@ public class QueryInLoopCheckTest
             case "MethodCallsQueryCorrect":
             case "MethodCallsIncorrectMethodCorrect":
             case "GetNewQuery":
+            case "QueryResultColumn":
+            case "ForEachParamQueryMethodCorrect":
                 {
                     // Those methods doesn't have errors
                     break;
