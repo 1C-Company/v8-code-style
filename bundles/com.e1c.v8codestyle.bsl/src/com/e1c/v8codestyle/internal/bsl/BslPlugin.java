@@ -13,16 +13,21 @@
 package com.e1c.v8codestyle.internal.bsl;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.xtext.ui.shared.SharedStateModule;
+import org.eclipse.xtext.util.Modules2;
 import org.osgi.framework.BundleContext;
 
+import com._1c.g5.v8.dt.bsl.BslRuntimeModule;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
+import com._1c.g5.v8.dt.bsl.ui.BslUiModule;
 import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
 import com._1c.g5.wiring.ServiceInitialization;
-import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.qfix.external.BslCheckFixBoostrap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
 
 /**
  * The bundle activator to support plug-in life-cycle
@@ -30,7 +35,7 @@ import com.google.inject.Injector;
  * @author Dmitriy Marmyshev
  */
 public class BslPlugin
-    extends Plugin
+    extends AbstractUIPlugin
 {
 
     public static final String PLUGIN_ID = "com.e1c.v8codestyle.bsl"; //$NON-NLS-1$
@@ -127,14 +132,11 @@ public class BslPlugin
         plugin = this;
 
         BslPackage.eINSTANCE.eClass();
-
         registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
-
         ServiceInitialization.schedule(() -> {
             // register services from injector
-            registrator.service(IModuleStructureProvider.class).registerInjected();
+            registrator.managedService(BslCheckFixBoostrap.class).activateBeforeRegistration().registerInjected();
         });
-
     }
 
     /*
@@ -182,7 +184,15 @@ public class BslPlugin
     {
         try
         {
-            return Guice.createInjector(new ServiceModule(), new ExternalDependenciesModule(this));
+            Module sharedStateModule = new SharedStateModule();
+            Module externalDepModule = new ExternalDependenciesModule(this);
+            Module bslRuntimeModule = new BslRuntimeModule();
+            Module bslUiModule = new BslUiModule(this);
+            Module bslExternalServicesModule = new com._1c.g5.v8.dt.bsl.ExternalServicesModule(this);
+
+            Module mergedModule = Modules2.mixin(sharedStateModule, bslRuntimeModule, bslExternalServicesModule,
+                bslUiModule, externalDepModule);
+            return Guice.createInjector(mergedModule);
         }
         catch (Exception e)
         {
