@@ -166,6 +166,12 @@ final class Messages
 
     public static String FormModuleMissingPragmaCheck_title;
 
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_description;
+
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_result;
+
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_title;
+
     public static String IsInRoleCheck_Exception_Roles;
 
     public static String IsInRoleCheck_Use_AccessRight;
