@@ -80,7 +80,6 @@
              <modelClass eClass="InformationRegister" />
              <modelClass eClass="AccumulationRegister" />
              <modelClass eClass="SettingsStorage" />
-             <modelClass eClass="Enum" />
              <modelClass eClass="Task" />
              <modelClass eClass="BusinessProcess" />
              <modelClass eClass="Table" />
@@ -161,7 +160,6 @@
              <modelClass eClass="InformationRegister" />
              <modelClass eClass="AccumulationRegister" />
              <modelClass eClass="SettingsStorage" />
-             <modelClass eClass="Enum" />
              <modelClass eClass="Task" />
              <modelClass eClass="BusinessProcess" />
              <modelClass eClass="Table" />
