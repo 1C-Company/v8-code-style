@@ -27,7 +27,8 @@ import org.eclipse.emf.edit.command.ChangeCommand;
 
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
-import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.dt.core.model.EditingMode;
+import com._1c.g5.v8.dt.core.model.IModelEditingSupport;
 import com.e1c.v8codestyle.autosort.SortItem;
 
 /**
@@ -44,6 +45,8 @@ public class SortBmTask
 
     private final Collection<SortItem> items;
 
+    private final IModelEditingSupport modelEditingSupport;
+
     /**
      * Instantiates a new sort BM task.
      *
@@ -52,10 +55,11 @@ public class SortBmTask
      *
      * @param items the unmodifiable collection of items to sort, cannot be {@code null}.
      */
-    public SortBmTask(final Collection<SortItem> items)
+    public SortBmTask(final Collection<SortItem> items, IModelEditingSupport modelEditingSupport)
     {
         super("Sort Md objects"); //$NON-NLS-1$
         this.items = new ArrayList<>(items);
+        this.modelEditingSupport = modelEditingSupport;
     }
 
     @Override
@@ -74,7 +78,7 @@ public class SortBmTask
             }
 
             EObject parent = transaction.getTopObjectByFqn(item.getFqn());
-            if (parent != null)
+            if (parent != null && modelEditingSupport.canEdit(parent, EditingMode.DIRECT))
             {
                 Object value = parent.eGet(item.getListRef());
                 if (!(value instanceof List))
