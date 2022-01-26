@@ -51,6 +51,7 @@ import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.bm.integration.event.BmEventFilter;
 import com._1c.g5.v8.bm.integration.event.IBmAsyncEventListener;
 import com._1c.g5.v8.dt.core.lifecycle.ProjectContext;
+import com._1c.g5.v8.dt.core.model.IModelEditingSupport;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
@@ -91,19 +92,32 @@ public class SortService
 
     private final IWorkspaceOrchestrator workspaceOrchestrator;
 
+    private final IModelEditingSupport modelEditingSupport;
+
     private final BmEventFilter filter = BmEventFilter.eClassChangeFilter(MdClassPackage.Literals.MD_OBJECT);
 
     private final Map<IProject, IBmAsyncEventListener> projectListeners = new ConcurrentHashMap<>();
     private final Map<IProject, SortJob> jobs = new ConcurrentHashMap<>();
 
+    /**
+     * Instantiates a new sort service.
+     *
+     * @param dtProjectManager the DT project manager service, cannot be {@code null}.
+     * @param modelManager the model manager service, cannot be {@code null}.
+     * @param configurationProvider the configuration provider service, cannot be {@code null}.
+     * @param workspaceOrchestrator the workspace orchestrator service, cannot be {@code null}.
+     * @param modelEditingSupport the model editing support service, cannot be {@code null}.
+     */
     @Inject
     public SortService(IDtProjectManager dtProjectManager, IBmModelManager modelManager,
-        IConfigurationProvider configurationProvider, IWorkspaceOrchestrator workspaceOrchestrator)
+        IConfigurationProvider configurationProvider, IWorkspaceOrchestrator workspaceOrchestrator,
+        IModelEditingSupport modelEditingSupport)
     {
         this.dtProjectManager = dtProjectManager;
         this.modelManager = modelManager;
         this.configurationProvider = configurationProvider;
         this.workspaceOrchestrator = workspaceOrchestrator;
+        this.modelEditingSupport = modelEditingSupport;
     }
 
     @LifecycleParticipant(phase = LifecyclePhase.RESOURCE_LOADING,
@@ -205,7 +219,7 @@ public class SortService
             return Status.OK_STATUS;
         }
 
-        model.getGlobalContext().execute(new SortBmTask(items));
+        model.getGlobalContext().execute(new SortBmTask(items, modelEditingSupport));
         return Status.OK_STATUS;
     }
 

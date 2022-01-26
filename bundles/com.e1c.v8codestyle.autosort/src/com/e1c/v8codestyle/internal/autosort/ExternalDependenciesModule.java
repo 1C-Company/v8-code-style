@@ -13,7 +13,7 @@
 package com.e1c.v8codestyle.internal.autosort;
 
 import org.eclipse.core.runtime.Plugin;
-
+import com._1c.g5.v8.dt.core.model.IModelEditingSupport;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
@@ -42,7 +42,7 @@ class ExternalDependenciesModule
         bind(IBmModelManager.class).toService();
         bind(IConfigurationProvider.class).toService();
         bind(IWorkspaceOrchestrator.class).toService();
-
+        bind(IModelEditingSupport.class).toService();
     }
 
 }
