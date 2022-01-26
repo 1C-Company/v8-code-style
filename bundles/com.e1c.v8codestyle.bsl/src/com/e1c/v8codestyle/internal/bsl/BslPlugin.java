@@ -137,6 +137,7 @@ public class BslPlugin
             // register services from injector
             registrator.service(IModuleStructureProvider.class).registerInjected();
             registrator.managedService(BslCheckFixBoostrap.class).activateBeforeRegistration().registerInjected();
+            registrator.managedService(MultiCheckFixRegistrator.class).activateBeforeRegistration().registerInjected();
         });
     }
 
