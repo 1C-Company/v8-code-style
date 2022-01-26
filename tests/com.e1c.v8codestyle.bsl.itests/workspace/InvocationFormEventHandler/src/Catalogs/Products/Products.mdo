@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="9e95ed99-231a-4a30-8e84-0241a6273f43">
+  <producedTypes>
+    <objectType typeId="c434b481-9f58-4bc6-9ddc-6f95bfa378bb" valueTypeId="7f85b039-9837-452e-9d8b-c7879ca72c17"/>
+    <refType typeId="422db950-15a7-4e50-8afd-f07ef45e0431" valueTypeId="612112c2-6c85-4e1a-9843-d00dc764edb0"/>
+    <selectionType typeId="e80a649f-08e9-4044-9648-d569d0bddcda" valueTypeId="42ad35a4-bb17-4f2f-8b9e-90f1b561eec5"/>
+    <listType typeId="003a6be5-488b-47ad-8437-9dc919f8e442" valueTypeId="9f6c5967-f261-40e5-b56a-48989f02fa56"/>
+    <managerType typeId="6a3d0e09-cc17-4ac1-bd70-e582f249a170" valueTypeId="641b96eb-0baf-4434-9d61-a6a8d7769e0c"/>
+  </producedTypes>
+  <name>Products</name>
+  <synonym>
+    <key>en</key>
+    <value>Products</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Products.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Products.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.Products.Form.ItemForm</defaultObjectForm>
+  <forms uuid="6f4eb19e-4731-42c3-ae3e-fe0264116c62">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="d76c6064-8623-4b6d-9f70-ccd0bcadc812">
+    <name>ItemForm1</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form1</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="28f110c0-09a0-4bc0-bc50-857fef941b3f">
+    <name>ItemForm2</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form2</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>
