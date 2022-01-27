@@ -43,6 +43,7 @@ import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.WhileStatement;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
@@ -387,6 +388,28 @@ public class QueryInLoopCheck
         return predicate instanceof BooleanLiteral;
     }
 
+    private Collection<FeatureAccess> getQueryInLoopFeatures(LoopStatement loopStatement,
+        Map<String, String> methodsWithQuery, Set<String> queryExecutionMethods)
+    {
+        Collection<FeatureAccess> result = new ArrayList<>();
+
+        for (Statement statement : loopStatement.getStatements())
+        {
+            for (FeatureAccess featureAccess : EcoreUtil2.eAllOfType(statement, FeatureAccess.class))
+            {
+                if (featureAccess instanceof StaticFeatureAccess
+                    && isMethodWithQueryCalled((StaticFeatureAccess)featureAccess, methodsWithQuery)
+                    || featureAccess instanceof DynamicFeatureAccess
+                        && isQueryExecution((DynamicFeatureAccess)featureAccess, queryExecutionMethods))
+                {
+                    result.add(featureAccess);
+                }
+            }
+        }
+
+        return result;
+    }
+
     private Collection<FeatureAccess> getQueryInLoopCallers(Module module, Map<String, String> methodsWithQuery,
         Set<String> queryExecutionMethods, boolean checkQueryInInfiniteLoop, IProgressMonitor monitor)
     {
@@ -404,16 +427,7 @@ public class QueryInLoopCheck
                 continue;
             }
 
-            for (FeatureAccess featureAccess : EcoreUtil2.eAllOfType(loopStatement, FeatureAccess.class))
-            {
-                if (featureAccess instanceof StaticFeatureAccess
-                    && isMethodWithQueryCalled((StaticFeatureAccess)featureAccess, methodsWithQuery)
-                    || featureAccess instanceof DynamicFeatureAccess
-                        && isQueryExecution((DynamicFeatureAccess)featureAccess, queryExecutionMethods))
-                {
-                    result.add(featureAccess);
-                }
-            }
+            result.addAll(getQueryInLoopFeatures(loopStatement, methodsWithQuery, queryExecutionMethods));
         }
 
         return result;
