@@ -39,11 +39,11 @@ import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.ForEachStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.WhileStatement;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
@@ -389,23 +389,21 @@ public class QueryInLoopCheck
     }
 
     private Collection<FeatureAccess> getQueryInLoopFeatures(LoopStatement loopStatement,
-        FeatureAccess featureForExclude, Map<String, String> methodsWithQuery, Set<String> queryExecutionMethods)
+        Map<String, String> methodsWithQuery, Set<String> queryExecutionMethods)
     {
         Collection<FeatureAccess> result = new ArrayList<>();
 
-        for (FeatureAccess featureAccess : EcoreUtil2.eAllOfType(loopStatement, FeatureAccess.class))
+        for (Statement statement : loopStatement.getStatements())
         {
-            if (featureAccess.equals(featureForExclude))
+            for (FeatureAccess featureAccess : EcoreUtil2.eAllOfType(statement, FeatureAccess.class))
             {
-                continue;
-            }
-
-            if (featureAccess instanceof StaticFeatureAccess
-                && isMethodWithQueryCalled((StaticFeatureAccess)featureAccess, methodsWithQuery)
-                || featureAccess instanceof DynamicFeatureAccess
-                    && isQueryExecution((DynamicFeatureAccess)featureAccess, queryExecutionMethods))
-            {
-                result.add(featureAccess);
+                if (featureAccess instanceof StaticFeatureAccess
+                    && isMethodWithQueryCalled((StaticFeatureAccess)featureAccess, methodsWithQuery)
+                    || featureAccess instanceof DynamicFeatureAccess
+                        && isQueryExecution((DynamicFeatureAccess)featureAccess, queryExecutionMethods))
+                {
+                    result.add(featureAccess);
+                }
             }
         }
 
@@ -429,19 +427,7 @@ public class QueryInLoopCheck
                 continue;
             }
 
-            FeatureAccess featureForExclude = null;
-            if (loopStatement instanceof ForEachStatement)
-            {
-                Expression forEachCollection = ((ForEachStatement)loopStatement).getCollection();
-
-                if (forEachCollection instanceof Invocation)
-                {
-                    featureForExclude = ((Invocation)forEachCollection).getMethodAccess();
-                }
-            }
-
-            result.addAll(
-                getQueryInLoopFeatures(loopStatement, featureForExclude, methodsWithQuery, queryExecutionMethods));
+            result.addAll(getQueryInLoopFeatures(loopStatement, methodsWithQuery, queryExecutionMethods));
         }
 
         return result;
