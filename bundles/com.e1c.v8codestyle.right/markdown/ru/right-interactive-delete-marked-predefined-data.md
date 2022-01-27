@@ -1,4 +1,4 @@
-# right-interactive-delete-marked-predefined-data
+# Установлено право "ИнтерактивноеУдалениеПомеченныхПредопределенныхДанных"
 
 
 

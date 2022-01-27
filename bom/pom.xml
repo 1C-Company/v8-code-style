@@ -267,9 +267,14 @@
             <headerHtmlFile>${markdown.page.generator.html.file.path}/html/header.html</headerHtmlFile>
             <footerHtmlFile>${markdown.page.generator.html.file.path}/html/footer.html</footerHtmlFile>
             <pegdownExtensions>TABLES,FENCED_CODE_BLOCKS,AUTOLINKS,SMARTS,TASKLISTITEMS,EXTANCHORLINKS,TOC</pegdownExtensions>
+            <attributes>
+              <attribute>TableBlock|class=table table-striped table-bordered</attribute>
+              <attribute>BlockQuote|class=red</attribute>
+            </attributes>
             <transformRelativeMarkdownLinks>true</transformRelativeMarkdownLinks>
             <inputEncoding>UTF-8</inputEncoding>
             <outputEncoding>UTF-8</outputEncoding>
+            <applyFiltering>true</applyFiltering>
           </configuration>
         </plugin>
         <plugin>

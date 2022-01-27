@@ -1,4 +1,4 @@
-# right-interactive-clear-deletion-mark-predefined-data
+# Установлено право "ИнтерактивноеСнятиеПометкиУдаленияПредопределенныхДанных"
 
 
 
