@@ -31,33 +31,32 @@ import com._1c.g5.v8.dt.metadata.mdclass.ReturnValuesReuse;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.CommonModuleTypes;
-import com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCachedCheck;
+import com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCheck;
 
 /**
- * Tests for {@link CommonModuleNameServerCallCachedCheck} check.
+ * Tests for {@link CommonModuleNameServerCallCheck} check.
  *
  * @author Artem Iliukhin
  */
-public final class CommonModuleNameServerCallCachedCheckTest
+public class CommonModuleNameServerCallCheckTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "common-module-name-server-call-cached";
+    private static final String CHECK_ID = "common-module-name-server-call";
 
     private static final String PROJECT_NAME = "CommonModuleName";
 
     private static final String MODULE_DEFAULT_FQN = "CommonModule.CommonModuleName";
 
     @Test
-    public void testCommonModuleNameCachedWithoutPostfix() throws Exception
+    public void testCommonModuleNameServerCallWithoutPostfixCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleServerCall";
+        String fqn = "CommonModule.CommonModuleServerNoCall";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER_CALL_CACHED,
-            ReturnValuesReuse.DURING_REQUEST,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER_CALL, ReturnValuesReuse.DONT_USE,
             fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
@@ -66,15 +65,14 @@ public final class CommonModuleNameServerCallCachedCheckTest
     }
 
     @Test
-    public void testCommonModuleNameCachedWithPostfix() throws Exception
+    public void testCommonModuleNameServerCallWithPostfixCorrect() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleServerCallCached";
+        String fqn = "CommonModule.CommonModuleServerCall";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER_CALL_CACHED,
-            ReturnValuesReuse.DURING_REQUEST,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER_CALL, ReturnValuesReuse.DONT_USE,
             fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);

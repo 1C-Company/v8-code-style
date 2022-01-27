@@ -13,9 +13,8 @@
 package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__RETURN_VALUES_REUSE;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__SERVER_CALL;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
-import static com.e1c.v8codestyle.md.CommonModuleTypes.SERVER_CALL_CACHED;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -41,20 +40,20 @@ import com.e1c.v8codestyle.md.CommonModuleTypes;
 import com.google.inject.Inject;
 
 /**
- * Check the postfix for a server call module with the cached attribute.
+ * Check the postfix for a module with the server call attribute.
  *
  * @author Artem Iliukhin
  */
-public final class CommonModuleNameServerCallCachedCheck
+public final class CommonModuleNameServerCallCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "common-module-name-server-call-cached"; //$NON-NLS-1$
+    private static final String CHECK_ID = "common-module-name-server-call"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
     @Inject
-    public CommonModuleNameServerCallCachedCheck(IV8ProjectManager v8ProjectManager)
+    public CommonModuleNameServerCallCheck(IV8ProjectManager v8ProjectManager)
     {
         super();
         this.v8ProjectManager = v8ProjectManager;
@@ -78,48 +77,37 @@ public final class CommonModuleNameServerCallCachedCheck
             .extension(new TopObjectFilterExtension())
             .topObject(COMMON_MODULE)
             .checkTop()
-            .features(MD_OBJECT__NAME, COMMON_MODULE__RETURN_VALUES_REUSE);
+            .features(MD_OBJECT__NAME, COMMON_MODULE__SERVER_CALL);
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor result, ICheckParameters parameters, IProgressMonitor monitor)
+    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
+        IProgressMonitor monitor)
     {
-        CommonModule module = (CommonModule)object;
-        if (module.getReturnValuesReuse() == ReturnValuesReuse.DONT_USE)
+        CommonModule commonModule = (CommonModule)object;
+        if (commonModule.getReturnValuesReuse() != ReturnValuesReuse.DONT_USE)
         {
             return;
         }
 
-        IV8Project project = v8ProjectManager.getProject(module);
-        ScriptVariant variant = project == null ? ScriptVariant.ENGLISH : project.getScriptVariant();
-
-        addResultAcceptor(SERVER_CALL_CACHED, variant, module, result);
-    }
-
-    private void addResultAcceptor(CommonModuleTypes types, ScriptVariant variant, CommonModule module,
-        ResultAcceptor result)
-    {
-        Map<EStructuralFeature, Object> featureValues = new HashMap<>(types.getFeatureValues(false));
-        featureValues.remove(COMMON_MODULE__RETURN_VALUES_REUSE);
-
-        String suffixe = types.getNameSuffix(variant);
+        Map<EStructuralFeature, Object> featureValues = CommonModuleTypes.SERVER_CALL.getFeatureValues(false);
 
         Map<EStructuralFeature, Object> values = new HashMap<>();
         for (EStructuralFeature feature : featureValues.keySet())
         {
-            if (feature != COMMON_MODULE__RETURN_VALUES_REUSE)
-            {
-                values.put(feature, module.eGet(feature));
-            }
+            values.put(feature, commonModule.eGet(feature));
         }
 
         if (values.equals(featureValues))
         {
-            String name = module.getName();
+            IV8Project project = v8ProjectManager.getProject(commonModule);
+            ScriptVariant scriptVariant = project == null ? ScriptVariant.ENGLISH : project.getScriptVariant();
+            String suffixe = CommonModuleTypes.SERVER_CALL.getNameSuffix(scriptVariant);
+            String name = commonModule.getName();
             if (!(name.endsWith(suffixe)))
             {
                 String message = MessageFormat.format(Messages.CommonModuleNameServerCallPostfixCheck_0, suffixe);
-                result.addIssue(message, MD_OBJECT__NAME);
+                resultAceptor.addIssue(message, MD_OBJECT__NAME);
             }
         }
     }

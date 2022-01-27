@@ -15,7 +15,7 @@ package com.e1c.v8codestyle.md.check;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.COMMON_MODULE__RETURN_VALUES_REUSE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
-import static com.e1c.v8codestyle.md.CommonModuleTypes.SERVER_CALL_CACHED;
+import static com.e1c.v8codestyle.md.CommonModuleTypes.SERVER_CACHED;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -41,20 +41,20 @@ import com.e1c.v8codestyle.md.CommonModuleTypes;
 import com.google.inject.Inject;
 
 /**
- * Check the postfix for a server call module with the cached attribute.
+ * Check the postfix for a module with the cached attribute.
  *
  * @author Artem Iliukhin
  */
-public final class CommonModuleNameServerCallCachedCheck
+public final class CommonModuleNameCachedCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "common-module-name-server-call-cached"; //$NON-NLS-1$
+    private static final String CHECK_ID = "common-module-name-cached"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
     @Inject
-    public CommonModuleNameServerCallCachedCheck(IV8ProjectManager v8ProjectManager)
+    public CommonModuleNameCachedCheck(IV8ProjectManager v8ProjectManager)
     {
         super();
         this.v8ProjectManager = v8ProjectManager;
@@ -93,7 +93,7 @@ public final class CommonModuleNameServerCallCachedCheck
         IV8Project project = v8ProjectManager.getProject(module);
         ScriptVariant variant = project == null ? ScriptVariant.ENGLISH : project.getScriptVariant();
 
-        addResultAcceptor(SERVER_CALL_CACHED, variant, module, result);
+        addResultAcceptor(SERVER_CACHED, variant, module, result);
     }
 
     private void addResultAcceptor(CommonModuleTypes types, ScriptVariant variant, CommonModule module,

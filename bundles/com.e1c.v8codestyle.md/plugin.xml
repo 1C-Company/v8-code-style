@@ -64,7 +64,19 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCachedCheck">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameCachedCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameClientCachedCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCachedCheck">
       </check>
    </extension>
 

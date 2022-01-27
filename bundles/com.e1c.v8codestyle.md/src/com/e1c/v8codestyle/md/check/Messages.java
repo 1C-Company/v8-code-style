@@ -38,9 +38,8 @@ final class Messages
     public static String ConfigurationDataLock_description;
     public static String ConfigurationDataLock_message;
     public static String ConfigurationDataLock_title;
-    public static String CommonModuleNameServerCallPostfixCheck_Postfix_cached;
+    public static String CommonModuleNameServerCallPostfixCheck_0;
     public static String CommonModuleNameServerCallPostfixCheck_Common_module_name_description;
-    public static String CommonModuleNameServerCallPostfixCheck_Postfix_ServerCall;
     public static String CommonModuleNameServerCallPostfixCheck_Common_module_postfix_title;
     public static String MdObjectNameLength_description;
     public static String MdObjectNameLength_Maximum_name_length_description;

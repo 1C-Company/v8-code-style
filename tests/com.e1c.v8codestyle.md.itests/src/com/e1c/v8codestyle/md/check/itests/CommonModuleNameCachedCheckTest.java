@@ -31,18 +31,18 @@ import com._1c.g5.v8.dt.metadata.mdclass.ReturnValuesReuse;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.CommonModuleTypes;
-import com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCachedCheck;
+import com.e1c.v8codestyle.md.check.CommonModuleNameCachedCheck;
 
 /**
- * Tests for {@link CommonModuleNameServerCallCachedCheck} check.
+ * Tests for {@link CommonModuleNameCachedCheck} check.
  *
  * @author Artem Iliukhin
  */
-public final class CommonModuleNameServerCallCachedCheckTest
+public final class CommonModuleNameCachedCheckTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "common-module-name-server-call-cached";
+    private static final String CHECK_ID = "common-module-name-cached";
 
     private static final String PROJECT_NAME = "CommonModuleName";
 
@@ -54,10 +54,9 @@ public final class CommonModuleNameServerCallCachedCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleServerCall";
+        String fqn = "CommonModule.CommonModuleServer";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER_CALL_CACHED,
-            ReturnValuesReuse.DURING_REQUEST,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER, ReturnValuesReuse.DURING_REQUEST,
             fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);
@@ -71,10 +70,9 @@ public final class CommonModuleNameServerCallCachedCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleServerCallCached";
+        String fqn = "CommonModule.CommonModuleServerCached";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER_CALL_CACHED,
-            ReturnValuesReuse.DURING_REQUEST,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER, ReturnValuesReuse.DURING_REQUEST,
             fqn);
 
         long id = getTopObjectIdByFqn(fqn, dtProject);

@@ -31,18 +31,18 @@ import com._1c.g5.v8.dt.metadata.mdclass.ReturnValuesReuse;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.CommonModuleTypes;
-import com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCachedCheck;
+import com.e1c.v8codestyle.md.check.CommonModuleNameClientCachedCheck;
 
 /**
- * Tests for {@link CommonModuleNameServerCallCachedCheck} check.
+ * Tests for {@link CommonModuleNameClientCachedCheck} check.
  *
  * @author Artem Iliukhin
  */
-public final class CommonModuleNameServerCallCachedCheckTest
+public final class CommonModuleNameClientCachedCheckTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "common-module-name-server-call-cached";
+    private static final String CHECK_ID = "common-module-name-client-cached";
 
     private static final String PROJECT_NAME = "CommonModuleName";
 
@@ -54,9 +54,9 @@ public final class CommonModuleNameServerCallCachedCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleServerCall";
+        String fqn = "CommonModule.CommonModuleClient";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER_CALL_CACHED,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.CLIENT_CACHED,
             ReturnValuesReuse.DURING_REQUEST,
             fqn);
 
@@ -71,9 +71,9 @@ public final class CommonModuleNameServerCallCachedCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        String fqn = "CommonModule.CommonModuleServerCallCached";
+        String fqn = "CommonModule.CommonModuleClientCached";
 
-        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.SERVER_CALL_CACHED,
+        updateCommonModule(dtProject, MODULE_DEFAULT_FQN, CommonModuleTypes.CLIENT_CACHED,
             ReturnValuesReuse.DURING_REQUEST,
             fqn);
 
