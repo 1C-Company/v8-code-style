@@ -39,6 +39,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 import com.e1c.v8codestyle.md.CommonModuleTypes;
 
 /**
@@ -72,6 +74,7 @@ public final class CommonModuleNameClientServer
             .issueType(IssueType.WARNING)
             .extension(new TopObjectFilterExtension())
             .extension(new MdObjectNameWithoutSuffix(NAME_SUFFIX_DEFAULT))
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(MD_OBJECT__NAME,

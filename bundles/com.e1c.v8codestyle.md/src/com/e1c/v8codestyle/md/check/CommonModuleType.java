@@ -37,6 +37,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 import com.e1c.v8codestyle.md.CommonModuleTypes;
 import com.google.inject.Inject;
 
@@ -82,6 +84,7 @@ public final class CommonModuleType
             .severity(IssueSeverity.BLOCKER)
             .issueType(IssueType.CODE_STYLE)
             .extension(new TopObjectFilterExtension())
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(CommonModuleTypes.SERVER.getFeatureValues(false).keySet().toArray(new EStructuralFeature[0]));

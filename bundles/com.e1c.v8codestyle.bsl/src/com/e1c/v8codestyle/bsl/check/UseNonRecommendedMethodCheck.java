@@ -31,6 +31,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * The check on use non-recommended method
@@ -68,7 +70,8 @@ public class UseNonRecommendedMethodCheck
             .description(Messages.UseNonRecommendedMethods_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
-            .issueType(IssueType.ERROR)
+            .issueType(IssueType.CODE_STYLE)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(INVOCATION);
         builder.parameter(PARAM_METHODS_LIST, String.class, DEFAULT_METHODS_LIST,

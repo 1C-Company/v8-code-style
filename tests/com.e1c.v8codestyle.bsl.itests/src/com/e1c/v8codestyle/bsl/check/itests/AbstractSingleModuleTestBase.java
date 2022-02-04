@@ -253,8 +253,11 @@ public class AbstractSingleModuleTestBase
         String chekcId = getCheckId();
         assertNotNull(chekcId);
 
+        CheckUid id = new CheckUid(chekcId, BslPlugin.PLUGIN_ID);
+
         return markers.stream()
-            .filter(m -> chekcId.equals(getCheckIdFromMarker(m, getProject())))
+            .filter(
+                m -> id.equals(checkRepository.getUidForShortUid(m.getCheckId(), getProject().getWorkspaceProject())))
             .collect(Collectors.toList());
     }
 

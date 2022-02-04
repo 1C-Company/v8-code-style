@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (C) 2021, 1C-Soft LLC and others.
+   
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+   
+    SPDX-License-Identifier: EPL-2.0
+   
+    Contributors:
+        1C-Soft LLC - initial API and implementation
+ -->
+
+<plugin>
+   <extension
+         point="com._1c.g5.v8.dt.ui.dtNewWizardExtensions">
+      <page
+            class="com.e1c.v8codestyle.internal.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.ui.ProjectOptionsDtNewWizardPage"
+            id="com.e1c.v8codestyle.ui.projectOptions"
+            wizardId="com._1c.g5.v8.dt.md.ui.newV8project">
+         <before
+               beforePage="com._1c.g5.v8.dt.platform.services.ui.page.ConfigurationApplicationsWizardPage">
+         </before>
+      </page>
+      <page
+            class="com.e1c.v8codestyle.internal.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.ui.ProjectOptionsDtNewWizardPage"
+            id="com.e1c.v8codestyle.ui.projectOptions"
+            wizardId="com._1c.g5.v8.dt.md.ui.newV8ExtensionProject">
+      </page>
+      <page
+            class="com.e1c.v8codestyle.internal.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.ui.ProjectOptionsDtNewWizardPage"
+            id="com.e1c.v8codestyle.ui.projectOptions"
+            wizardId="com._1c.g5.v8.dt.md.ui.newV8ExternalDataProcessorProject">
+      </page>
+      <page
+            class="com.e1c.v8codestyle.internal.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.ui.ProjectOptionsDtNewWizardPage"
+            id="com.e1c.v8codestyle.ui.projectOptions"
+            wizardId="com._1c.g5.v8.dt.md.ui.newV8ExternalReportProject">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            category="com._1c.g5.v8.dt.ui.V8Property"
+            class="com.e1c.v8codestyle.internal.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.ui.properties.ProjectOptionsPropertyPage"
+            id="com.e1c.v8codestyle.ui.projectOptions"
+            name="%properties.projectoptions.name">
+         <enabledWhen>
+            <instanceof
+                  value="org.eclipse.core.resources.IProject">
+            </instanceof>
+         </enabledWhen>
+      </page>
+   </extension>
+
+</plugin>

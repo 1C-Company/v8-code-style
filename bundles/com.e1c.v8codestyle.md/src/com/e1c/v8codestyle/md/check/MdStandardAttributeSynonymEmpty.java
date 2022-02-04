@@ -16,38 +16,57 @@ package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_DB_OBJECT__STANDARD_ATTRIBUTES;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG__HIERARCHICAL;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG__OWNERS;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.STANDARD_ATTRIBUTE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.STANDARD_ATTRIBUTE__SYNONYM;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
+
+import com._1c.g5.v8.bm.core.IBmObject;
+import com._1c.g5.v8.bm.core.event.BmSubEvent;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
-import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
 import com._1c.g5.v8.dt.metadata.mdclass.StandardAttribute;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
+import com.e1c.g5.v8.dt.check.ICheckDefinition;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
+import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
+import com.e1c.g5.v8.dt.check.context.CheckContextCollectingSession;
+import com.e1c.g5.v8.dt.check.context.OnModelFeatureChangeContextCollector;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 import com.google.inject.Inject;
 
 /**
- * The check the {@link MdObject} has specified synonyms for owner and parent
+ * The check the {@link Catalog} has specified synonyms for owner and parent
  * for default language of the project.
  *
  * @author Bombin Valentin
- *
+ * @author Dmitriy Marmyshev
  */
 public class MdStandardAttributeSynonymEmpty
     extends BasicCheck
 {
     private static final String CHECK_ID = "md-standard-attribute-synonym-empty"; //$NON-NLS-1$
+
     private static final String OWNER_NAME = "Owner"; //$NON-NLS-1$
+
     private static final String PARENT_NAME = "Parent"; //$NON-NLS-1$
+
+    private static final Set<EStructuralFeature> FEATURES =
+        Set.of(BASIC_DB_OBJECT__STANDARD_ATTRIBUTES, CATALOG__HIERARCHICAL, CATALOG__OWNERS);
 
     private final IV8ProjectManager v8ProjectManager;
 
@@ -73,9 +92,12 @@ public class MdStandardAttributeSynonymEmpty
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new TopObjectFilterExtension())
-            .topObject(CATALOG)
-            .checkTop()
-            .features(BASIC_DB_OBJECT__STANDARD_ATTRIBUTES, STANDARD_ATTRIBUTE__SYNONYM);
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new CatalogChangeExtension());
+
+        builder.topObject(CATALOG).containment(STANDARD_ATTRIBUTE).features(STANDARD_ATTRIBUTE__SYNONYM);
+        builder.topObject(CATALOG).checkTop().features(FEATURES.toArray(new EStructuralFeature[0]));
+
     }
 
     @Override
@@ -83,19 +105,53 @@ public class MdStandardAttributeSynonymEmpty
         IProgressMonitor monitor)
     {
 
-        MdObject mdObject = (MdObject)object;
-        if (mdObject.getObjectBelonging() != ObjectBelonging.NATIVE)
-        {
-            return;
-        }
-        IV8Project project = v8ProjectManager.getProject(mdObject);
+        EObject eObject = (EObject)object;
+        IV8Project project = v8ProjectManager.getProject(eObject);
         String languageCode = project.getDefaultLanguage().getLanguageCode();
         if (monitor.isCanceled())
         {
             return;
         }
-        checkParent((Catalog)object, resultAceptor, languageCode);
-        checkOwner((Catalog)object, resultAceptor, languageCode);
+
+        if (object instanceof StandardAttribute)
+        {
+            StandardAttribute attribute = (StandardAttribute)object;
+            EObject parent = attribute.eContainer();
+            if (!isValidCatalog(parent))
+            {
+                return;
+            }
+            Catalog catalog = (Catalog)parent;
+            if (PARENT_NAME.equalsIgnoreCase(attribute.getName()) && hasParent(catalog)
+                && isSynonymEmpty(attribute, languageCode))
+            {
+                resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_parent_ErrorMessage,
+                    STANDARD_ATTRIBUTE__SYNONYM);
+            }
+            else if (OWNER_NAME.equalsIgnoreCase(attribute.getName()) && hasAnyOwner(catalog)
+                && isSynonymEmpty(attribute, languageCode))
+            {
+                resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_owner_ErrorMessage,
+                    STANDARD_ATTRIBUTE__SYNONYM);
+            }
+        }
+        else if (isValidCatalog(object))
+        {
+            Catalog catalog = (Catalog)object;
+
+            checkParent(catalog, resultAceptor);
+            checkOwner(catalog, resultAceptor);
+        }
+    }
+
+    private boolean isValidCatalog(Object object)
+    {
+        if (object instanceof Catalog)
+        {
+            Catalog catalog = (Catalog)object;
+            return catalog.getObjectBelonging() == ObjectBelonging.NATIVE;
+        }
+        return false;
     }
 
     private boolean hasAnyOwner(Catalog catalog)
@@ -112,7 +168,7 @@ public class MdStandardAttributeSynonymEmpty
     {
         for (StandardAttribute attribute : catalog.getStandardAttributes())
         {
-            if (attribute.getName().compareTo(attributeName) == 0)
+            if (attributeName.equalsIgnoreCase(attribute.getName()))
             {
                 return attribute;
             }
@@ -120,12 +176,12 @@ public class MdStandardAttributeSynonymEmpty
         return null;
     }
 
-    private String getSynonym(StandardAttribute attribute, String languageCode)
+    private boolean isSynonymEmpty(StandardAttribute attribute, String languageCode)
     {
-        return attribute.getSynonym().get(languageCode);
+        return StringUtils.isBlank(attribute.getSynonym().get(languageCode));
     }
 
-    private void checkParent(Catalog catalog, ResultAcceptor resultAceptor, String languageCode)
+    private void checkParent(Catalog catalog, ResultAcceptor resultAceptor)
     {
         if (!hasParent(catalog))
         {
@@ -134,14 +190,14 @@ public class MdStandardAttributeSynonymEmpty
 
         StandardAttribute attribute = getStandardAttributeByName(catalog, PARENT_NAME);
 
-        if (attribute == null || StringUtils.isBlank(getSynonym(attribute, languageCode)))
+        if (attribute == null)
         {
-            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage,
+            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_parent_ErrorMessage,
                 BASIC_DB_OBJECT__STANDARD_ATTRIBUTES);
         }
     }
 
-    private void checkOwner(Catalog catalog, ResultAcceptor resultAceptor, String languageCode)
+    private void checkOwner(Catalog catalog, ResultAcceptor resultAceptor)
     {
         if (!hasAnyOwner(catalog))
         {
@@ -150,10 +206,30 @@ public class MdStandardAttributeSynonymEmpty
 
         StandardAttribute attribute = getStandardAttributeByName(catalog, OWNER_NAME);
 
-        if (attribute == null || StringUtils.isBlank(getSynonym(attribute, languageCode)))
+        if (attribute == null)
         {
-            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_ErrorMessage,
+            resultAceptor.addIssue(Messages.MdOwnerAttributeSynonymEmpty_owner_ErrorMessage,
                 BASIC_DB_OBJECT__STANDARD_ATTRIBUTES);
         }
+    }
+
+    private class CatalogChangeExtension
+        implements IBasicCheckExtension
+    {
+
+        @Override
+        public void configureContextCollector(final ICheckDefinition definition)
+        {
+            OnModelFeatureChangeContextCollector collector = (IBmObject bmObject, EStructuralFeature feature,
+                BmSubEvent bmEvent, CheckContextCollectingSession contextSession) -> {
+
+                if (bmObject instanceof Catalog && FEATURES.contains(feature))
+                {
+                    contextSession.addFullCheck(bmObject);
+                }
+            };
+            definition.addModelFeatureChangeContextCollector(collector, CATALOG);
+        }
+
     }
 }

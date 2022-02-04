@@ -17,25 +17,6 @@
   <inputByString>Catalog.NegativeOwnerTest.StandardAttribute.Code</inputByString>
   <inputByString>Catalog.NegativeOwnerTest.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Owner</name>
-    <comment></comment>
-    <fillFromFillingValue>true</fillFromFillingValue>
-    <fillChecking>ShowError</fillChecking>
-    <fullTextSearch>Use</fullTextSearch>
-  </standardAttributes>
-  <standardAttributes>
-    <dataHistory>Use</dataHistory>
-    <name>Parent</name>
-    <synonym>
-      <key>en</key>
-      <value>This is parrent</value>
-    </synonym>
-    <comment></comment>
-    <fillFromFillingValue>true</fillFromFillingValue>
-    <fullTextSearch>Use</fullTextSearch>
-  </standardAttributes>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
   <fullTextSearch>Use</fullTextSearch>

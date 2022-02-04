@@ -28,6 +28,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.ql.CorePlugin;
 
 /**
  * The check QL string literal contains only camel-case words and not contains any special symbols mixes with letters.
@@ -60,6 +62,7 @@ public class CamelCaseStringLiteral
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(StringLiteralExpression.class);
         builder.parameter(PARAMETER_SKIP_CONTENT_PATTERN, String.class, StringUtils.EMPTY,
             Messages.CamelCaseStringLiteral_Regular_expression_to_skip_literal_content);

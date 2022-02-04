@@ -14,7 +14,7 @@
 <feature
       id="com.e1c.v8codestyle.feature"
       label="%feature.name"
-      version="0.1.0.qualifier"
+      version="0.2.0.qualifier"
       provider-name="%feature.vendor"
       plugin="com.e1c.v8codestyle"
       license-feature="org.eclipse.license"
@@ -104,6 +104,13 @@
 
    <plugin
          id="com.e1c.v8codestyle.md.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.e1c.v8codestyle.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

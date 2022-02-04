@@ -17,6 +17,8 @@ import java.util.List;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.right.CorePlugin;
 import com.google.inject.Inject;
 
 /**
@@ -54,6 +56,7 @@ public class RightUpdateDatabaseConfiguration
     {
         super.configureCheck(builder);
         builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, bmModelManager))
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .title(Messages.RightUpdateDatabaseConfiguration_title)
             .description(Messages.RightUpdateDatabaseConfiguration_description);
     }

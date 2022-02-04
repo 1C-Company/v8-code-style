@@ -10,9 +10,6 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.md.check;
 
 import org.eclipse.osgi.util.NLS;
@@ -41,6 +38,9 @@ final class Messages
     public static String ConfigurationDataLock_description;
     public static String ConfigurationDataLock_message;
     public static String ConfigurationDataLock_title;
+    public static String CommonModuleNameServerCallPostfixCheck_0;
+    public static String CommonModuleNameServerCallPostfixCheck_Common_module_name_description;
+    public static String CommonModuleNameServerCallPostfixCheck_Common_module_postfix_title;
     public static String MdObjectNameLength_description;
     public static String MdObjectNameLength_Maximum_name_length_description;
     public static String MdObjectNameLength_message;
@@ -50,10 +50,15 @@ final class Messages
     public static String MdListObjectPresentationCheck_title;
     public static String MdOwnerAttributeSynonymEmpty_Title;
     public static String MdOwnerAttributeSynonymEmpty_Description;
-    public static String MdOwnerAttributeSynonymEmpty_ErrorMessage;
+    public static String MdOwnerAttributeSynonymEmpty_owner_ErrorMessage;
+    public static String MdOwnerAttributeSynonymEmpty_parent_ErrorMessage;
     public static String MdScheduledJobDescriptionCheck_title;
     public static String MdScheduledJobDescriptionCheck_description;
     public static String MdScheduledJobDescriptionCheck_message;
+    public static String MdScheduledJobPeriodicityCheck_description;
+    public static String MdScheduledJobPeriodicityCheck_The_minimum_job_interval_is_less_then_minute;
+    public static String MdScheduledJobPeriodicityCheck_title;
+    public static String MdScheduledJobPeriodicityCheck_Minimum_job_interval_description;
     static
     {
         // initialize resource bundle

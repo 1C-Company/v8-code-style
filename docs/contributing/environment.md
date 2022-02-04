@@ -16,31 +16,29 @@
     - `EclEmma Java Code Covarage` - Запуск тестов со снятием покрытия кода
     - `PDE Source Lookup` - Автоматическая подгрузка исходников для бандлов из целевой платформы из открытых источников
 
+## Настройки JDT и проекта
 
-## Настроки JDT и проекта
-
-- Откройте 1C:EDT Start и добавьте новый проект, например v8-code-style (без использования Стартера, откройте JDT и укажите адрес к вокрспейсу/проекту).
+- Откройте 1C:EDT Start и добавьте новый проект, например v8-code-style (без использования Стартера, откройте JDT и укажите адрес к воркспейсу/проекту).
 - ПКМ в навигаторе - Import или меню File - Import - выполните импорт "проектов из Git" указав адрес `https://github.com/1C-Company/v8-code-style.git` в визарде клонирования
 - Импортируйте все проекты в репозитории начинающиеся, проекты тестовых конфигураций можно будет потом закрыть или удалить из воркспейса
 - Откройте файл целевой платформы (Target platform): `com.e1c.v8codestyle.targets -> default -> default.target` скачайте всю целевую платформу и нажмите `Set active target platform` для активации.
-- Выполните активацию настроек в текущем вокрспейсе (при использовании 1C:EDT Start) в меню: `Help -> Perform setup tasks...` - Finish...
+- Выполните активацию настроек в текущем воркспейсе (при использовании 1C:EDT Start) в меню: `Help -> Perform setup tasks...` - Finish...
 
 ## Настройка дополнительных плагинов
 
 - JAutodoc
-    - Использование встроенного форматера Eclipse `Preferences -> Java -> JAutodoc -> Use Eclipse formatter`
-    - Использование комментария от поля для Getter/Setter `Preferences -> Java -> JAutodoc -> [G,S]etter from field comment`
+    - Использование встроенного форматера Eclipse `Window -> Preferences -> Java -> JAutodoc -> Use Eclipse formatter`
+    - Использование комментария от поля для Getter/Setter `Window -> Preferences -> Java -> JAutodoc -> [G,S]etter from field comment`
 - ResourceBundle Editor
-    - Кодировка `*.properties` файлов UTF-8 `Preferences -> General -> Content types -> Text -> Java properties File` измените `Default encoditng = UTF-8`
-    - Отключить конвертацию юникода в ХХХ `Preferences -> ResourceBundle Editor -> Formatting -> Convert unicode values to \uXXXX`
+    - Кодировка `*.properties` файлов UTF-8 `Window -> Preferences -> General -> Content types -> Text -> Java properties File` измените `Default encoditng = UTF-8`
+    - Отключить конвертацию юникода в ХХХ `Window -> Preferences -> ResourceBundle Editor -> Formatting -> Convert unicode values to \uXXXX`
 - Enhanced Class Decompiler
-    - Выбор алгоритма по умолчанию `Preferences -> Java -> Decompiler -> Default class decompiler` = JD-Core (например)
-    - Установка просмотрщика классов по умолчанию `Preferences -> Java -> Decompiler -> Set Class Decompiler viewer as default...`
-
+    - Выбор алгоритма по умолчанию `Window -> Preferences -> Java -> Decompiler -> Default class decompiler` = JD-Core (например)
+    - Установка просмотрщика классов по умолчанию `Window -> Preferences -> Java -> Decompiler -> Set Class Decompiler Viewer as the default...`
 
 ## (Опционально) Список плагинов JDT в поставке от 1С
 
-Здесь представлен список инструментов (фич и репозитории) устовленный в `Eclipse for 1C:EDT Plug-ins Developers`, т.о. можно доустановить отсутствующий инструментарий в свою сущесвующую JDT инсталяцию.
+Здесь представлен список инструментов (фич и репозитории) устовленный в `Eclipse for 1C:EDT Plug-ins Developers`, т.о. можно доустановить отсутствующий инструментарий в свою существующую JDT инсталяцию.
 
 Рекомендуем вам воспользоваться установкой JDT, описанной выше из 1C:EDT Start.
 

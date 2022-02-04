@@ -24,6 +24,19 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.check.messages"; //$NON-NLS-1$
 
+    public static String AccessibilityAtClientInObjectModuleCheck_Declared_variable_accessible_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_description;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Event_handler_should_be_accessible_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Manager_event_handlers_allows_to_be_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Method_accessible_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
+
+    public static String AccessibilityAtClientInObjectModuleCheck_title;
     public static String CanonicalPragmaCheck_description;
     public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1;
     public static String CanonicalPragmaCheck_title;
@@ -62,6 +75,22 @@ final class Messages
 
     public static String ModuleStructureTopRegionCheck_title;
 
+    public static String ModuleUnusedMethodCheck_Title;
+    public static String ModuleUnusedMethodCheck_Description;
+    public static String ModuleUnusedMethodCheck_Exclude_method_name_pattern_title;
+    public static String ModuleUnusedMethodCheck_Unused_method__0;
+
+    public static String ModuleEmptyMethodCheck_Title;
+    public static String ModuleEmptyMethodCheck_Description;
+    public static String ModuleEmptyMethodCheck_Exclude_method_name_pattern_title;
+    public static String ModuleEmptyMethodCheck_Allow_method_comments_title;
+    public static String ModuleEmptyMethodCheck_Empty_method__0;
+
+    public static String ModuleUnusedLocalVariableCheck_Title;
+    public static String ModuleUnusedLocalVariableCheck_Description;
+    public static String ModuleUnusedLocalVariableCheck_Unused_local_variable__0;
+    public static String ModuleUnusedLocalVariableCheck_Probably_variable_not_initilized_yet__0;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
@@ -72,6 +101,12 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
+
+    public static String NewColorCheck_Use_style_elements;
+
+    public static String NewColorCheck_Use_style_elements_not_specific_values;
+
+    public static String NewColorCheck_Using_new_color;
 
     public static String NstrStringLiteralFormatCheck_Check_empty_interface_for_each_language;
 
@@ -136,6 +171,20 @@ final class Messages
     public static String FormModuleMissingPragmaCheck_Missing_compilation_directives;
 
     public static String FormModuleMissingPragmaCheck_title;
+
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_description;
+
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_result;
+
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_title;
+
+    public static String IsInRoleCheck_Exception_Roles;
+
+    public static String IsInRoleCheck_Use_AccessRight;
+
+    public static String IsInRoleCheck_Use_AccessRight_instead_IsInRole;
+
+    public static String IsInRoleCheck_Using_IsInRole;
 
     static
     {

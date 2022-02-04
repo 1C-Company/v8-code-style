@@ -43,6 +43,7 @@ import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.WhileStatement;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
@@ -62,6 +63,8 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
@@ -85,6 +88,9 @@ public class QueryInLoopCheck
 
     private final IRuntimeVersionSupport versionSupport;
 
+    /**
+     * @param versionSupport - Version support for 1C:Enterprise projects service, cannot be {@code null}
+     */
     @Inject
     public QueryInLoopCheck(IRuntimeVersionSupport versionSupport)
     {
@@ -109,10 +115,10 @@ public class QueryInLoopCheck
         //@formatter:off
         builder.title(Messages.QueryInLoop_title)
             .description(Messages.QueryInLoop_description)
-            .disable()
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.PERFORMANCE)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(MODULE)
             .parameter(PARAM_CHECK_QUERIY_IN_INFINITE_LOOP, Boolean.class, DEFAULT_CHECK_QUERY_IN_INFINITE_LOOP,
@@ -124,7 +130,7 @@ public class QueryInLoopCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof Module))
+        if (!(object instanceof Module))
         {
             return;
         }
@@ -159,8 +165,10 @@ public class QueryInLoopCheck
                 resultAceptor.addIssue(Messages.QueryInLoop_Loop_has_query, featureAccess, FEATURE_ACCESS__NAME);
             }
 
-            if (featureAccess instanceof StaticFeatureAccess)
+            else if (featureAccess instanceof StaticFeatureAccess
+                && methodsWithQuery.containsKey(featureAccess.getName()))
             {
+
                 String errorPath = methodsWithQuery.get(featureAccess.getName());
                 String errorMessage =
                     MessageFormat.format(Messages.QueryInLoop_Loop_has_method_with_query__0, errorPath);
@@ -206,7 +214,13 @@ public class QueryInLoopCheck
 
     private boolean isQueryTypeSource(Expression source)
     {
+
         Environmental envs = EcoreUtil2.getContainerOfType(source, Environmental.class);
+        if (envs == null)
+        {
+            return false;
+        }
+
         List<TypeItem> sourceTypes = typesComputer.computeTypes(source, envs.environments());
         if (sourceTypes.isEmpty())
         {
@@ -278,7 +292,7 @@ public class QueryInLoopCheck
             getPositionForFeatureObject(calledMethod), calledMethodPath);
     }
 
-    private Map<String, String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
+    private Map<String, String> getQueryExecutionMethodsPath(Module module, Set<String> queryExecutionMethods,
         IProgressMonitor monitor)
     {
         Map<String, String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -290,15 +304,34 @@ public class QueryInLoopCheck
                 return Collections.emptyMap();
             }
 
-            if (isQueryExecution(dfa, queryExecutionMethods))
+            if (!isQueryExecution(dfa, queryExecutionMethods))
             {
-                Method method = EcoreUtil2.getContainerOfType(dfa, Method.class);
+                continue;
+            }
+
+            Method method = EcoreUtil2.getContainerOfType(dfa, Method.class);
+            if (method != null)
+            {
                 String sourceName = getSourceName(dfa.getSource());
+                String featurePosition = getPositionForFeatureObject(dfa);
 
                 String methodPath = String.join("", method.getName(), "() -> ", //$NON-NLS-1$ //$NON-NLS-2$
-                    getPositionForFeatureObject(dfa), sourceName, dfa.getName(), "()"); //$NON-NLS-1$
+                    featurePosition, sourceName, dfa.getName(), "()"); //$NON-NLS-1$
                 result.put(method.getName(), methodPath);
             }
+
+        }
+
+        return result;
+    }
+
+    private Map<String, String> getMethodsWithQuery(Module module, Set<String> queryExecutionMethods,
+        IProgressMonitor monitor)
+    {
+        Map<String, String> result = getQueryExecutionMethodsPath(module, queryExecutionMethods, monitor);
+        if (result.isEmpty())
+        {
+            return Collections.emptyMap();
         }
 
         EList<Method> methods = module.allMethods();
@@ -314,12 +347,10 @@ public class QueryInLoopCheck
                 }
 
                 String methodPath = getMethodPath(method, result);
-                if (methodPath == null)
+                if (methodPath != null)
                 {
-                    continue;
+                    result.put(method.getName(), methodPath);
                 }
-
-                result.put(method.getName(), methodPath);
             }
 
             methodsCount = result.size();
@@ -357,6 +388,28 @@ public class QueryInLoopCheck
         return predicate instanceof BooleanLiteral;
     }
 
+    private Collection<FeatureAccess> getQueryInLoopFeatures(LoopStatement loopStatement,
+        Map<String, String> methodsWithQuery, Set<String> queryExecutionMethods)
+    {
+        Collection<FeatureAccess> result = new ArrayList<>();
+
+        for (Statement statement : loopStatement.getStatements())
+        {
+            for (FeatureAccess featureAccess : EcoreUtil2.eAllOfType(statement, FeatureAccess.class))
+            {
+                if (featureAccess instanceof StaticFeatureAccess
+                    && isMethodWithQueryCalled((StaticFeatureAccess)featureAccess, methodsWithQuery)
+                    || featureAccess instanceof DynamicFeatureAccess
+                        && isQueryExecution((DynamicFeatureAccess)featureAccess, queryExecutionMethods))
+                {
+                    result.add(featureAccess);
+                }
+            }
+        }
+
+        return result;
+    }
+
     private Collection<FeatureAccess> getQueryInLoopCallers(Module module, Map<String, String> methodsWithQuery,
         Set<String> queryExecutionMethods, boolean checkQueryInInfiniteLoop, IProgressMonitor monitor)
     {
@@ -374,16 +427,7 @@ public class QueryInLoopCheck
                 continue;
             }
 
-            for (FeatureAccess featureAccess : EcoreUtil2.eAllOfType(loopStatement, FeatureAccess.class))
-            {
-                if (featureAccess instanceof StaticFeatureAccess
-                    && isMethodWithQueryCalled((StaticFeatureAccess)featureAccess, methodsWithQuery)
-                    || featureAccess instanceof DynamicFeatureAccess
-                        && isQueryExecution((DynamicFeatureAccess)featureAccess, queryExecutionMethods))
-                {
-                    result.add(featureAccess);
-                }
-            }
+            result.addAll(getQueryInLoopFeatures(loopStatement, methodsWithQuery, queryExecutionMethods));
         }
 
         return result;

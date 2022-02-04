@@ -10,9 +10,6 @@
  * Contributors:
  *     Aleksandr Kapralov - initial API and implementation
  *******************************************************************************/
-/**
- *
- */
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
@@ -50,11 +47,19 @@ public class QueryInLoopCheckTest
 
     private static final String PARAM_CHECK_QUERIY_IN_INFINITE_LOOP = "checkQueryInInfiniteLoop"; //$NON-NLS-1$
 
+    /**
+     * Constructor for {@link QueryInLoopCheck} check
+     */
     public QueryInLoopCheckTest()
     {
         super(QueryInLoopCheck.class);
     }
 
+    /**
+     * Default query in loop test
+     *
+     * @throws Exception
+     */
     @Test
     public void testQueryInLoop() throws Exception
     {
@@ -75,6 +80,8 @@ public class QueryInLoopCheckTest
             case "MethodCallsQueryCorrect":
             case "MethodCallsIncorrectMethodCorrect":
             case "GetNewQuery":
+            case "QueryResultColumn":
+            case "ForEachParamQueryMethodCorrect":
                 {
                     // Those methods doesn't have errors
                     break;
@@ -147,6 +154,11 @@ public class QueryInLoopCheckTest
         return new CheckUid(checkId, BslPlugin.PLUGIN_ID);
     }
 
+    /**
+     * Infinite query in loop test
+     *
+     * @throws Exception
+     */
     @Test
     public void testInfiniteLoop() throws Exception
     {

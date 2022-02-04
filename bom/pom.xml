@@ -18,7 +18,7 @@
 
   <groupId>com.e1c.v8codestyle</groupId>
   <artifactId>bom</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>BOM</name>
@@ -30,7 +30,7 @@
   <properties>
     <tycho.version>2.2.0</tycho.version>
     <tycho.extras.version>2.2.0</tycho.extras.version>
-    <markdown-page-generator.version>2.3.0</markdown-page-generator.version>
+    <markdown-page-generator.version>2.3.1</markdown-page-generator.version>
     <!-- Override this property in each project -->
     <markdown.page.generator.html.file.path>${project.basedir}</markdown.page.generator.html.file.path>
     
@@ -85,6 +85,8 @@
     <!-- Reflection should not be used to increase accessibility of classes, methods, or fields -->
     <sonar.issue.ignore.multicriteria.t4.ruleKey>java:S3011</sonar.issue.ignore.multicriteria.t4.ruleKey>
     <sonar.issue.ignore.multicriteria.t4.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t4.resourceKey>
+    <!-- Source files should not have any duplicated blocks -->
+    <sonar.cpd.exclusions>**/*Plugin.java,/tests/**/*</sonar.cpd.exclusions>
   </properties>
 
   <build>
@@ -102,7 +104,7 @@
               <artifact>
                 <groupId>com.e1c.v8codestyle</groupId>
                 <artifactId>default</artifactId>
-                <version>0.1.0-SNAPSHOT</version>
+                <version>0.2.0-SNAPSHOT</version>
               </artifact>
             </target>
             <environments>

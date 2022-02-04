@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -54,6 +53,7 @@ import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.ui.util.OpenHelper;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.strict.StrictTypeUtil;
 import com.e1c.v8codestyle.internal.bsl.ui.UiPlugin;
 import com.google.inject.Inject;
 
@@ -74,11 +74,15 @@ public class ModuleStructurePropertyPage
 
     private Button createStructureButton;
 
+    private Button createStrictTypesButton;
+
     private CheckboxTableViewer checkBoxViewer;
 
     private final Set<ModuleType> existTemplates = new HashSet<>();
 
     private boolean currentCreateStructure;
+
+    private boolean currentCreateStrictTypes;
 
     private final OpenHelper openHelper = new OpenHelper();
 
@@ -145,8 +149,10 @@ public class ModuleStructurePropertyPage
     {
         ProjectScope scope = new ProjectScope(getProject());
         IEclipsePreferences node = scope.getNode(IModuleStructureProvider.PREF_QUALIFIER);
-        boolean value = createStructureButton.getSelection();
-        node.putBoolean(IModuleStructureProvider.PREF_KEY_CREATE_STRUCTURE, value);
+        boolean value1 = createStructureButton.getSelection();
+        boolean value2 = createStrictTypesButton.getSelection();
+        node.putBoolean(IModuleStructureProvider.PREF_KEY_CREATE_STRUCTURE, value1);
+        node.putBoolean(StrictTypeUtil.PREF_KEY_CREATE_STRICT_TYPES, value2);
         try
         {
             node.flush();
@@ -156,7 +162,8 @@ public class ModuleStructurePropertyPage
             UiPlugin.logError(e);
             return false;
         }
-        currentCreateStructure = value;
+        currentCreateStructure = value1;
+        currentCreateStrictTypes = value2;
         for (ModuleType type : ModuleType.VALUES)
         {
             if (checkBoxViewer.getChecked(type) && !existTemplates.contains(type))
@@ -232,6 +239,14 @@ public class ModuleStructurePropertyPage
     {
         Composite composite = createDefaultComposite(parent);
 
+        Label createStrictTypesLabel = new Label(composite, SWT.NONE);
+        createStrictTypesLabel.setText(Messages.ModuleStructurePropertyPage_Automatically_create_strict_types_module);
+
+        currentCreateStrictTypes = StrictTypeUtil.canAddModuleStrictTypesAnnotation(getProject());
+
+        createStrictTypesButton = new Button(composite, SWT.CHECK);
+        createStrictTypesButton.setSelection(currentCreateStrictTypes);
+
         Label createStructureLabel = new Label(composite, SWT.NONE);
         createStructureLabel.setText(Messages.ModuleStructurePropertyPage_Automatically_create_module_structure);
 
@@ -239,7 +254,6 @@ public class ModuleStructurePropertyPage
 
         createStructureButton = new Button(composite, SWT.CHECK);
         createStructureButton.setSelection(currentCreateStructure);
-
     }
 
     private void addSeparator(Composite parent)
@@ -330,7 +344,8 @@ public class ModuleStructurePropertyPage
 
     private boolean isDirty()
     {
-        if (createStructureButton.getSelection() != currentCreateStructure)
+        if (createStructureButton.getSelection() != currentCreateStructure
+            || createStrictTypesButton.getSelection() != currentCreateStrictTypes)
         {
             return true;
         }

@@ -62,13 +62,9 @@ public class ModuleStructureTopRegionCheckTest
         updateModule(FOLDER_RESOURCE + "module-structure-sub-region.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(1, markers.size());
         Marker marker = markers.get(0);
         assertEquals("14", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        // FIXME remove after marker duplication fix
-        marker = markers.get(1);
-        assertEquals("14", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
     }
 
     /**
