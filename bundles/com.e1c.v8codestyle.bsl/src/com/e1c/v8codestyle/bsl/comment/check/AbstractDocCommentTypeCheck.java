@@ -147,7 +147,8 @@ public abstract class AbstractDocCommentTypeCheck
     {
         EObject object = null;
 
-        // get object of last segment of the link to method/parameter, without final brackets "(See ModuleName.MethodName.)".
+        // get object of last segment of the link to method/parameter,
+        // without final brackets "(See ModuleName.MethodName.)".
         if (linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$
             && linkPart.getPartsWithOffset().size() > 1
             && (linkPart.getPartsWithOffset().get(linkPart.getPartsWithOffset().size() - 1)).getFirst().isEmpty())
