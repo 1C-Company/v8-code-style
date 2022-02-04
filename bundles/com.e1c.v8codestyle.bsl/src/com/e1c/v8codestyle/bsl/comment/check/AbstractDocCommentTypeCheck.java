@@ -45,7 +45,7 @@ public abstract class AbstractDocCommentTypeCheck
 
     /**
      * Gets the link part from description only if the link is single element of the description.
-     * This methods skips empty text parts.
+     * This method skips empty text parts.
      *
      * @param description the description, cannot be {@link null}.
      * @return the single link part or returns {@code null} if no link or there are other parts in description.

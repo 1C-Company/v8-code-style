@@ -15,7 +15,7 @@ EndFunction
 
 // Returns:
 //  UnknownType - here unknown return type
-Function NonComplaint(Parameters) Export
+Function NonComplaint3(Parameters) Export
 	// empty
 EndFunction
 

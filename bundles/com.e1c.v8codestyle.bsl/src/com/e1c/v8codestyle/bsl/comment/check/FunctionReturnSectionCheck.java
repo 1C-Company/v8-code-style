@@ -40,7 +40,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
- *  Checks that documenting comment return section contains valid return types.
+ *  Checks that documentation comment return section contains valid return types.
  *
  * @author Dmitriy Marmyshev
  *
