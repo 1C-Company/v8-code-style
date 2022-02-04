@@ -173,7 +173,7 @@ public class CommonModuleStrictTypesTest
     public void testDocCommentFieldTypeCheck() throws Exception
     {
 
-        String checkId = "doc-comment-field-type";
+        String checkId = "doc-comment-field-type-strict";
 
         Module module = updateAndGetModule(checkId);
 

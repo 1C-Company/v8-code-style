@@ -59,9 +59,9 @@ public class FieldDefinitionTypeWithLinkRefCheck
         IEObjectTypeNames.ARRAY, "Массив", //$NON-NLS-1$
         IEObjectTypeNames.FIXED_ARRAY, "ФиксированныйМассив", //$NON-NLS-1$
         IEObjectTypeNames.VALUE_TREE, IEObjectTypeNames.VALUE_TREE_RU,
-        IEObjectTypeNames.VALUE_TREE_ROW_COLLECTION, "коллекциястрокдеревазначений", //$NON-NLS-1$
+        IEObjectTypeNames.VALUE_TREE_ROW_COLLECTION, "КоллекцияСтрокДереваЗначений", //$NON-NLS-1$
         IEObjectTypeNames.VALUE_TREE_ROW, "строкадеревазначений", //$NON-NLS-1$
-        IEObjectTypeNames.VALUE_TREE_COLUMN_COLLECTION, "коллекцияколонокдеревазначений", //$NON-NLS-1$
+        IEObjectTypeNames.VALUE_TREE_COLUMN_COLLECTION, "КоллекцияКолонокДереваЗначений", //$NON-NLS-1$
         IEObjectTypeNames.VALUE_TABLE, IEObjectTypeNames.VALUE_TABLE_RU,
         IEObjectTypeNames.VALUE_TABLE_ROW, "СтрокаТаблицыЗначений",  //$NON-NLS-1$
         IEObjectTypeNames.VALUE_TABLE_COLUMN_COLLECTION, "КоллекцияКолонокТаблицыЗначений",  //$NON-NLS-1$
@@ -119,7 +119,6 @@ public class FieldDefinitionTypeWithLinkRefCheck
         FieldDefinition fieldDef = (FieldDefinition)object;
         if (isFieldTypeWithLinkRef(fieldDef, types, root.getMethod()))
         {
-
             String message = MessageFormat.format(
                 Messages.FieldDefinitionTypeWithLinkRefCheck_Field__F__use_declaration_of_complex_type_instead_of_link,
                 fieldDef.getName());
@@ -128,7 +127,7 @@ public class FieldDefinitionTypeWithLinkRefCheck
         }
     }
 
-    protected boolean isFieldTypeWithLinkRef(FieldDefinition fieldDef, Set<String> types, EObject context)
+    private boolean isFieldTypeWithLinkRef(FieldDefinition fieldDef, Set<String> types, EObject context)
     {
         if (fieldDef.getTypeSections().size() == 1 && isComplexType(fieldDef.getTypeSections().get(0), types))
         {
@@ -153,7 +152,7 @@ public class FieldDefinitionTypeWithLinkRefCheck
         return false;
     }
 
-    protected LinkPart getSingleLinkPartForField(FieldDefinition fieldDef)
+    private LinkPart getSingleLinkPartForField(FieldDefinition fieldDef)
     {
         if (fieldDef.getTypeSections().size() != 1)
         {

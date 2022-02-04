@@ -78,7 +78,6 @@ public class CollectionTypeDefinitionCheck
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
         DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
     {
-
         if (object instanceof LinkContainsTypeDefinition)
         {
             return;

@@ -33,7 +33,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
  * <pre>
  * // * FieldName - ...
  * </pre>
- * where decroption line begins with one or more stars and then a name of field.
+ * where description line begins with one or more stars and then a name of field.
  *
  * @author Dmitriy Marmyshev
  *

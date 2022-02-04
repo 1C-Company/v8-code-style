@@ -116,6 +116,11 @@ public abstract class AbstractDocCommentTypeCheck
      */
     protected boolean isTypeEmptyAndNoLink(List<TypeSection> typeSections, Description description)
     {
+        if (typeSections.isEmpty())
+        {
+            return getSingleLinkPart(description) == null;
+        }
+
         for (TypeSection typeSection : typeSections)
         {
             for (TypeDefinition typeDef : typeSection.getTypeDefinitions())
@@ -125,11 +130,6 @@ public abstract class AbstractDocCommentTypeCheck
                     return false;
                 }
             }
-        }
-
-        if (typeSections.isEmpty())
-        {
-            return getSingleLinkPart(description) == null;
         }
 
         return true;
@@ -147,7 +147,8 @@ public abstract class AbstractDocCommentTypeCheck
     {
         EObject object = null;
 
-        if (!linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$
+        // get object of last segment of the link to method/parameter, without final brackets "(See ModuleName.MethodName.)".
+        if (linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$
             && linkPart.getPartsWithOffset().size() > 1
             && (linkPart.getPartsWithOffset().get(linkPart.getPartsWithOffset().size() - 1)).getFirst().isEmpty())
         {

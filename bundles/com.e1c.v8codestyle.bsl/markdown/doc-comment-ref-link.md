@@ -1,4 +1,4 @@
-# Documentation comment link referenced object exist
+# Documentation comment link referenced object exists
 
 ## Noncompliant Code Example
 
