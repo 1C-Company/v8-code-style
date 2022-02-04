@@ -1,11 +1,10 @@
-# Documentation comment field has no type definition
+# Documentation comment type definition
 
 ## Noncompliant Code Example
 
 ```bsl
 // Parameters:
-//  Parameters - Structure:
-//  * Key1 - has no type for key
+//  Parameters - Structure1 - incorrect type
 Procedure NonComplaint(Parameters) Export
 	// empty
 EndProcedure
@@ -15,11 +14,8 @@ EndProcedure
 ## Compliant Solution
 
 ```bsl
-
 // Parameters:
-//  Parameters - Structure:
-//  * Key1 - Number - has type for key
-//  * Key2 - See NonComplaint.Parameters
+//  Parameters - Structure - correct type
 Procedure Complaint(Parameters) Export
 	// empty
 EndProcedure

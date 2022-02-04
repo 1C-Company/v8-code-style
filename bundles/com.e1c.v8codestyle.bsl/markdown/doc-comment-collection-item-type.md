@@ -1,11 +1,10 @@
-# Documentation comment field has no type definition
+# Documentation comment collection type definition has contain item type
 
 ## Noncompliant Code Example
 
 ```bsl
 // Parameters:
-//  Parameters - Structure:
-//  * Key1 - has no type for key
+//  Parameters - Array - here array without item type
 Procedure NonComplaint(Parameters) Export
 	// empty
 EndProcedure
@@ -15,11 +14,8 @@ EndProcedure
 ## Compliant Solution
 
 ```bsl
-
 // Parameters:
-//  Parameters - Structure:
-//  * Key1 - Number - has type for key
-//  * Key2 - See NonComplaint.Parameters
+//  Parameters - Array of Number - has type of collection item
 Procedure Complaint(Parameters) Export
 	// empty
 EndProcedure
