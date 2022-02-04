@@ -13,13 +13,19 @@
 package com.e1c.v8codestyle.bsl.strict;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.DefaultScope;
@@ -35,7 +41,10 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslCommentUtils;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IBslCommentToken;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.common.PreferenceUtils;
+import com._1c.g5.v8.dt.common.StringUtils;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.common.io.CharStreams;
 
 /**
  * The utility class for strict-types system.
@@ -166,9 +175,95 @@ public final class StrictTypeUtil
         return false;
     }
 
+    /**
+     * Sets the {@code @strict-types} annotation in the file. If file is not exits this method will create empty file
+     * with annotation.
+     *
+     * @param bslFile the BSL file, cannot be {@code null}.
+     * @param monitor the monitor
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws CoreException the core exception
+     */
+    public static void setStrictTypeAnnotation(IFile bslFile, IProgressMonitor monitor)
+        throws IOException, CoreException
+    {
+        String currentCode = StringUtils.EMPTY;
+        if (bslFile.exists())
+        {
+            try (InputStream in = bslFile.getContents();
+                Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8);)
+            {
+                currentCode = CharStreams.toString(reader);
+            }
+        }
+
+        String preferedLineSeparator = PreferenceUtils.getLineSeparator(bslFile.getProject());
+        StringBuilder sb = new StringBuilder();
+
+        int insertOffset = getInsertOffset(currentCode, preferedLineSeparator);
+        if (insertOffset > 0)
+        {
+            sb.append(currentCode.substring(0, insertOffset));
+            sb.append(preferedLineSeparator);
+        }
+
+        sb.append(IBslCommentToken.LINE_STARTER);
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(StrictTypeUtil.STRICT_TYPE_ANNOTATION);
+        sb.append(preferedLineSeparator);
+        sb.append(preferedLineSeparator);
+        sb.append(currentCode.substring(insertOffset));
+
+        if (monitor.isCanceled())
+        {
+            return;
+        }
+
+        try (InputStream in = new ByteArrayInputStream(sb.toString().getBytes(StandardCharsets.UTF_8));)
+        {
+            if (bslFile.exists())
+            {
+                bslFile.setContents(in, true, true, monitor);
+            }
+            else
+            {
+                bslFile.create(in, true, monitor);
+            }
+        }
+    }
+
+    private static int getInsertOffset(String currentCode, String preferedLineSeparator)
+    {
+        int separator = preferedLineSeparator.length();
+
+        int offset = 0;
+        for (Iterator<String> iterator = currentCode.lines().iterator(); iterator.hasNext();)
+        {
+            if (offset > 0)
+            {
+                offset = offset + separator;
+            }
+
+            String line = iterator.next();
+            if (StringUtils.isBlank(line))
+            {
+                return offset;
+            }
+            else if (!line.stripLeading().startsWith(IBslCommentToken.LINE_STARTER))
+            {
+                return 0;
+            }
+
+            offset = offset + line.length();
+
+        }
+        return 0;
+    }
+
     private StrictTypeUtil()
     {
         throw new IllegalAccessError();
     }
+
 
 }
