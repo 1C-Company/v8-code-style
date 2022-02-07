@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f532a45c-68d3-41e0-832a-73db71131371">
-  <name>StandartRoles</name>
+  <name>StandardRoles</name>
   <synonym>
     <key>en</key>
-    <value>Standart roles</value>
+    <value>Standard roles</value>
   </synonym>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="c7763b45-1508-4b5f-9d6a-061205e96fbe"/>
   <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="a3871640-3587-4e79-b58f-328ad6f24b38"/>
@@ -32,5 +32,5 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <roles>Role.StandartRole</roles>
+  <roles>Role.StandardRole</roles>
 </mdclass:Configuration>

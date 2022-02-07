@@ -27,38 +27,38 @@ public class RightInteractiveOpenExternalReportsTest
     extends CheckRights
 {
 
-    private static final String PROJECT_NAME = "StandartRoles";
+    private static final String PROJECT_NAME = "StandardRoles";
 
-    private static final String ROLE_FQN = "Role.StandartRole.Rights";
+    private static final String ROLE_FQN = "Role.StandardRole.Rights";
     private static final String CONFIGURATION_FQN = "Configuration";
 
     private static final String CHECK_ID = "right-interactive-open-external-reports"; //$NON-NLS-1$
 
-    private static final RightName STANDART_ROLE = RightName.INTERACTIVE_OPEN_EXT_REPORTS;
+    private static final RightName STANDARD_ROLE = RightName.INTERACTIVE_OPEN_EXT_REPORTS;
 
     @Test
-    public void testStandartRoleCorrect() throws Exception
+    public void testStandardRoleCorrect() throws Exception
     {
-        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE,
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE,
             "InteractiveOpenExternalReportsAndDataProcessors");
     }
 
     @Test
     public void testCustomRoleIncorrect() throws Exception
     {
-        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, null);
+        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, null);
     }
 
     @Test
     public void testFullAccessRoleIncorrect() throws Exception
     {
-        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "FullAccess");
+        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, "FullAccess");
     }
 
     @Test
     public void testSystemAdministratorRoleIncorrect() throws Exception
     {
-        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "SystemAdministrator");
+        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, "SystemAdministrator");
     }
 
 }
