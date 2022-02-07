@@ -21,6 +21,26 @@
             file="toc.xml"
             primary="true">
       </toc>
+      <toc
+            file="html/checks/md.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="html/checks/form.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="html/checks/bsl.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="html/checks/ql.xml"
+            primary="false">
+      </toc>
+      <toc
+            file="html/checks/right.xml"
+            primary="false">
+      </toc>
    </extension>
 
 </plugin>
