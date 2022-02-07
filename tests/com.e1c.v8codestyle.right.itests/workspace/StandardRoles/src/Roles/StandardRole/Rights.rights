@@ -4,7 +4,7 @@
 	<setForAttributesByDefault>true</setForAttributesByDefault>
 	<independentRightsOfChildObjects>false</independentRightsOfChildObjects>
 	<object>
-		<name>Configuration.StandartRoles</name>
+		<name>Configuration.StandardRoles</name>
 		<right>
 			<name>Administration</name>
 			<value>true</value>

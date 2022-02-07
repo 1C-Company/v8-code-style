@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="421f1251-5e78-4a48-8cd9-5a0e45d75a8f">
-  <name>MdPropertySynonymInNotSetForStandartAttributeOwner</name>
+  <name>MdPropertySynonymInNotSetForStandardAttributeOwner</name>
   <synonym>
     <key>en</key>
-    <value>Md property synonym in not set for standart attribute owner</value>
+    <value>Md property synonym in not set for standard attribute owner</value>
   </synonym>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="f25666b7-4548-4dc1-822f-26bb21ef44c5"/>
   <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="6058e7a0-0cc2-4453-953a-29cbbccd40ae"/>
