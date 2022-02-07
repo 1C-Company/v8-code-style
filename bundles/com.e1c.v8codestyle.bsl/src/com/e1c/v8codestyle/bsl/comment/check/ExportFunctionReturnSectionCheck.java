@@ -33,11 +33,13 @@ import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
  * Validator of export function that has return section in documentation comment if function has anything
- * in documentation comment. If function has link to some other function this means documentation inherites and
+ * in documentation comment. If function has link to some other function this means documentation inherits and
  * validator checks documentation comment of linked function. Otherwise this function should have return section.
  *
  * @author Dmitriy Marmyshev
@@ -86,6 +88,7 @@ public class ExportFunctionReturnSectionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.CODE_STYLE)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(BslDocumentationComment.class);
     }
 

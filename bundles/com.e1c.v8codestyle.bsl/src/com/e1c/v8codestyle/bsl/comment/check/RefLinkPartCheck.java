@@ -26,6 +26,8 @@ import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Validates {@link LinkPart} of documentation comment that it referenced to an existing object.
@@ -77,6 +79,7 @@ public class RefLinkPartCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
+            .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(LinkPart.class);
         builder.parameter(PARAMETER_ALLOW_SEE_IN_DESCRIPTION, Boolean.class, Boolean.TRUE.toString(),
             Messages.RefLinkPartCheck_Allow_See_in_description);
