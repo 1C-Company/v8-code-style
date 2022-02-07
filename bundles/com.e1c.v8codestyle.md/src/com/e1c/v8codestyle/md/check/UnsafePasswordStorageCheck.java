@@ -12,26 +12,25 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_FEATURE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_FEATURE__PASSWORD_MODE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CHART_OF_CHARACTERISTIC_TYPES;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONSTANT;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONSTANT__PASSWORD_MODE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
-import com._1c.g5.v8.dt.metadata.mdclass.CatalogAttribute;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.metadata.mdclass.Constant;
-import com._1c.g5.v8.dt.metadata.mdclass.Document;
-import com._1c.g5.v8.dt.metadata.mdclass.DocumentAttribute;
-import com._1c.g5.v8.dt.metadata.mdclass.TabularSectionAttribute;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
-import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 
 /**
  * Check not secure password storage in the information database.
@@ -42,7 +41,7 @@ public final class UnsafePasswordStorageCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "unsafe-password-storage"; //$NON-NLS-1$
+    private static final String CHECK_ID = "unsafe-password-ib-storage"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -58,55 +57,29 @@ public final class UnsafePasswordStorageCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.SECURITY)
-            .extension(new TopObjectFilterExtension())
-            .topObject(CATALOG)
-            .topObject(DOCUMENT)
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(CONSTANT)
             .checkTop()
-            .features(BASIC_FEATURE__PASSWORD_MODE, CONSTANT__PASSWORD_MODE);
+            .features(CONSTANT__PASSWORD_MODE)
+            .topObject(CATALOG)
+            .containment(BASIC_FEATURE)
+            .features(BASIC_FEATURE__PASSWORD_MODE)
+            .topObject(DOCUMENT)
+            .containment(BASIC_FEATURE)
+            .features(BASIC_FEATURE__PASSWORD_MODE)
+            .topObject(CHART_OF_CHARACTERISTIC_TYPES)
+            .containment(BASIC_FEATURE)
+            .features(BASIC_FEATURE__PASSWORD_MODE); //TODO change to BASIC_DB_OBJECT, when will it work
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (object instanceof Catalog)
+        if (object instanceof BasicFeature && ((BasicFeature)object).isPasswordMode())
         {
-            Catalog catalog = (Catalog)object;
-            catalog.getAttributes()
-                .stream()
-                .filter(CatalogAttribute::isPasswordMode)
-                .forEach(attribute -> resultAceptor.addIssue(
-                    Messages.UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error, attribute,
-                    BASIC_FEATURE__PASSWORD_MODE));
-
-            catalog.getTabularSections()
-                .stream()
-                .forEach(tabular -> tabular.getAttributes()
-                    .stream()
-                    .filter(TabularSectionAttribute::isPasswordMode)
-                    .forEach(attribute -> resultAceptor.addIssue(
-                        Messages.UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error, attribute,
-                        BASIC_FEATURE__PASSWORD_MODE)));
-        }
-        else if (object instanceof Document)
-        {
-            Document document = (Document)object;
-            document.getAttributes()
-                .stream()
-                .filter(DocumentAttribute::isPasswordMode)
-                .forEach(attribute -> resultAceptor.addIssue(
-                    Messages.UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error, attribute,
-                    BASIC_FEATURE__PASSWORD_MODE));
-
-            document.getTabularSections()
-                .stream()
-                .forEach(tabular -> tabular.getAttributes()
-                    .stream()
-                    .filter(TabularSectionAttribute::isPasswordMode)
-                    .forEach(attribute -> resultAceptor.addIssue(
-                        Messages.UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error, attribute,
-                        BASIC_FEATURE__PASSWORD_MODE)));
+            resultAceptor.addIssue(Messages.UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error, object,
+                BASIC_FEATURE__PASSWORD_MODE);
         }
         else if (object instanceof Constant && ((Constant)object).isPasswordMode())
         {

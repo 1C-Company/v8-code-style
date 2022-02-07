@@ -30,7 +30,7 @@ public class UnsafePasswordStorageCheckTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "unsafe-password-storage"; //$NON-NLS-1$
+    private static final String CHECK_ID = "unsafe-password-ib-storage"; //$NON-NLS-1$
     private static final String PROJECT_NAME = "UnsafePasswordStorage";
 
     @Test
