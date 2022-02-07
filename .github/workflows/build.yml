@@ -70,7 +70,7 @@ jobs:
         Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &
         export DISPLAY=:5
         echo "Sonar param: \"${SONAR_PARAM}\""
-        mvn clean verify ${SONAR_PARAM} -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V -T 1C
+        mvn clean verify ${SONAR_PARAM} -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V
 
     - name: Publish Test Report
       uses: scacap/action-surefire-report@v1
