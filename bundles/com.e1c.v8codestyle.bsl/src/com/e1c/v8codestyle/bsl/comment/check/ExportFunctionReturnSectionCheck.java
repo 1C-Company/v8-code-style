@@ -113,7 +113,8 @@ public class ExportFunctionReturnSectionCheck
                 props.oldCommentFormat(), root.getMethod());
         }
 
-        if (docComment.getReturnSection() == null || docComment.getReturnSection().getReturnTypes().isEmpty())
+        if (docComment == null || docComment.getReturnSection() == null
+            || docComment.getReturnSection().getReturnTypes().isEmpty())
         {
             resultAceptor.addIssue(Messages.ExportFunctionReturnSectionCheck_Export_function_return_section_required,
                 root.getMethod(), NAMED_ELEMENT__NAME);
