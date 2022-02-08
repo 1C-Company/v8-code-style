@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a15168d1-d762-4d1f-8a95-e059744e6ece">
+  <producedTypes>
+    <objectType typeId="76c1a774-45f6-40ab-95e8-593e655651c4" valueTypeId="990181bc-4ca9-45b0-bdd5-a303c4be5fbd"/>
+    <refType typeId="f3051f0f-c874-46eb-8c89-da8029ec4f47" valueTypeId="3dba9d4d-758f-48c2-b86a-ddf9650c0154"/>
+    <selectionType typeId="afdba0a0-6eb6-4149-bae4-44aa586a897a" valueTypeId="e70aaa7b-2aa4-43cb-b310-3f5a60b6d16d"/>
+    <listType typeId="b3b6742c-4fdd-43dd-a448-bb12f64270fe" valueTypeId="79b51c5f-477f-4c5b-bd8d-dfb622aa6ad0"/>
+    <managerType typeId="363432e0-5204-43b8-8a7b-f9082b64f113" valueTypeId="df2dee50-545a-4e28-96b1-a4371fe77374"/>
+  </producedTypes>
+  <name>Products</name>
+  <synonym>
+    <key>en</key>
+    <value>Products</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Products.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Products.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.Products.Form.ItemForm</defaultObjectForm>
+  <forms uuid="eb791929-46d5-43d2-a848-66c1c341e340">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <commands uuid="2235596e-16e8-428e-a4ce-686a066ef341">
+    <name>TestCommand</name>
+    <synonym>
+      <key>en</key>
+      <value>Test command</value>
+    </synonym>
+    <group>ActionsPanelTools</group>
+    <representation>Auto</representation>
+  </commands>
+  <commands uuid="22d65d6c-92c8-47bc-8033-aa6e6456c12c">
+    <name>Command</name>
+    <synonym>
+      <key>en</key>
+      <value>Command</value>
+    </synonym>
+    <group>ActionsPanelTools</group>
+    <representation>Auto</representation>
+  </commands>
+</mdclass:Catalog>
