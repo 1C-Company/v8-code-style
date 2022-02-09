@@ -12,6 +12,7 @@ package com.e1c.v8codestyle.bsl.qfix.external;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -34,7 +35,6 @@ import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
-import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 
 /**
@@ -82,7 +82,7 @@ public class XtextBslModuleFixModel
             {
                 URI uri = EcoreUtil.getURI(module).trimFragment();
                 try (BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(URIConverter.INSTANCE.createInputStream(uri), Charsets.UTF_8)))
+                    new InputStreamReader(URIConverter.INSTANCE.createInputStream(uri), StandardCharsets.UTF_8)))
                 {
                     Stream<String> lines = reader.lines();
                     String content = lines.collect(Collectors.joining(System.lineSeparator()));
@@ -148,8 +148,11 @@ public class XtextBslModuleFixModel
 
     protected static ScriptVariant getScriptVariant(IV8Project v8project)
     {
-        return v8project != null ? v8project.getScriptVariant()
-            : (Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage())) ? ScriptVariant.RUSSIAN //$NON-NLS-1$
-                : ScriptVariant.ENGLISH;
+        if (v8project != null)
+        {
+            return v8project.getScriptVariant();
+        }
+        return Locale.getDefault().getLanguage().equals(new Locale("ru").getLanguage()) ? ScriptVariant.RUSSIAN //$NON-NLS-1$
+            : ScriptVariant.ENGLISH;
     }
 }

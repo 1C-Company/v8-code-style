@@ -72,7 +72,7 @@ public abstract class MultiVariantXtextBslModuleFix
     protected static class VariantBuilder
     {
         private final MultiVariantXtextBslModuleFix fix;
-        private IVariantXtextBslModuleFixChangeDelegate delegate;
+        private IMultiVariantXtextModuleFixChangeDelegate delegate;
         private String description;
         private String details;
         private boolean isInteractive;
@@ -104,7 +104,7 @@ public abstract class MultiVariantXtextBslModuleFix
          * @param delegate change delegate, cannot be {@code null}
          * @return the instance of the variant builder, never {@code null}
          */
-        public VariantBuilder change(IVariantXtextBslModuleFixChangeDelegate delegate)
+        public VariantBuilder change(IMultiVariantXtextModuleFixChangeDelegate delegate)
         {
             this.delegate = delegate;
             return this;
@@ -150,7 +150,7 @@ public abstract class MultiVariantXtextBslModuleFix
     private static class MultiVariantXtextBslModuleVariant<C extends SingleVariantXtextBslModuleFixContext>
         implements IFixVariant<C>
     {
-        private final IVariantXtextBslModuleFixChangeDelegate delegate;
+        private final IMultiVariantXtextModuleFixChangeDelegate delegate;
         private final String description;
         private final String details;
         private final boolean isInteractive;
@@ -163,14 +163,12 @@ public abstract class MultiVariantXtextBslModuleFix
          * @param details the fix variant detailed description, can be {@code null}
          * @param isInteractive {@code true} if quick fix supports interactive (UI) model, {@code false} otherwise
          */
-        MultiVariantXtextBslModuleVariant(IVariantXtextBslModuleFixChangeDelegate delegate, String description,
+        MultiVariantXtextBslModuleVariant(IMultiVariantXtextModuleFixChangeDelegate delegate, String description,
             String details, boolean isInteractive)
         {
             this.delegate = delegate;
             this.description = description;
             this.details = details;
-            // TODO: change the assignment to isInteractive once non-interactive (model) quick
-            // fixes are developed
             this.isInteractive = true;
         }
 
@@ -195,7 +193,7 @@ public abstract class MultiVariantXtextBslModuleFix
     private static final class VariantXtextBslModuleFixChange
         implements IFixChange
     {
-        private final IVariantXtextBslModuleFixChangeDelegate delegate;
+        private final IMultiVariantXtextModuleFixChangeDelegate delegate;
         private final boolean isInteractive;
 
         /**
@@ -204,7 +202,7 @@ public abstract class MultiVariantXtextBslModuleFix
          * @param delegate the delegate to be executed, cannot be {@code null}
          * @param isInteractive {@code true} if quick fix supports interactive (UI) model, {@code false} otherwise
          */
-        VariantXtextBslModuleFixChange(IVariantXtextBslModuleFixChangeDelegate delegate, boolean isInteractive)
+        VariantXtextBslModuleFixChange(IMultiVariantXtextModuleFixChangeDelegate delegate, boolean isInteractive)
         {
             this.delegate = delegate;
             this.isInteractive = isInteractive;

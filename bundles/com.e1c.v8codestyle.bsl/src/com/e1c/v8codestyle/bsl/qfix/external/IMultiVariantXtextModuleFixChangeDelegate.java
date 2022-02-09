@@ -14,12 +14,13 @@ import org.eclipse.xtext.resource.XtextResource;
 import com.e1c.g5.v8.dt.check.qfix.IFixSession;
 
 /**
- * Functional delegate that allows to specify the matching method as a change execution logic
+ * Functional delegate that allows to specify the matching method as a change execution logic for multi-variant
+ * quick fixes
  *
  * @author Vadim Geraskin
  */
 @FunctionalInterface
-public interface IVariantXtextBslModuleFixChangeDelegate
+public interface IMultiVariantXtextModuleFixChangeDelegate
 {
     /**
      * Performs the fix application

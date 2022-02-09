@@ -10,22 +10,21 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.qfix;
+package com.e1c.v8codestyle.bsl.ui.qfix;
 
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.xtext.resource.XtextResource;
 
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
 import com.e1c.v8codestyle.bsl.qfix.external.IXtextInteractiveBslModuleFixModel;
 import com.e1c.v8codestyle.bsl.qfix.external.MultiVariantXtextBslModuleFix;
-import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.e1c.v8codestyle.internal.bsl.ui.UiPlugin;
 
 /**
  * Quick fix for check com.e1c.v8codestyle.bsl.check:undefined-method
  *
  * @author Vadim Geraskin
  */
-@QuickFix(checkId = "undefined-method", supplierId = "com.e1c.v8codestyle.bsl")
+@QuickFix(checkId = "module-undefined-method", supplierId = "com.e1c.v8codestyle.bsl")
 public class UndefinedMethodFix
     extends MultiVariantXtextBslModuleFix
 {
@@ -36,40 +35,38 @@ public class UndefinedMethodFix
         VariantBuilder.create(this)
             .description(Messages.UndefinedMethodFix_func_title, Messages.UndefinedMethodFix_func_desc)
             .interactive(true)
-            .change(
-                (context, session, state, model) -> createFunction(state, (IXtextInteractiveBslModuleFixModel)model))
+            .change((context, session, state, model) -> createFunction((IXtextInteractiveBslModuleFixModel)model))
             .build();
 
         // 2-nd variant of issue qf: create procedure
         VariantBuilder.create(this)
             .description(Messages.UndefinedMethodFix_proc_title, Messages.UndefinedMethodFix_proc_desc)
             .interactive(true)
-            .change(
-                (context, session, state, model) -> createProcedure(state, (IXtextInteractiveBslModuleFixModel)model))
+            .change((context, session, state, model) -> createProcedure((IXtextInteractiveBslModuleFixModel)model))
             .build();
     }
 
-    private void createFunction(XtextResource state, IXtextInteractiveBslModuleFixModel model)
+    private void createFunction(IXtextInteractiveBslModuleFixModel model)
     {
         try
         {
-            QuickFixMethodsHelper.createMethod(state, model, true);
+            QuickFixMethodsHelper.createMethod(model, true);
         }
         catch (BadLocationException e)
         {
-            BslPlugin.createErrorStatus("Error occured when creating function", e); //$NON-NLS-1$
+            UiPlugin.log(UiPlugin.createErrorStatus("Error occured when creating function", e)); //$NON-NLS-1$
         }
     }
 
-    private void createProcedure(XtextResource state, IXtextInteractiveBslModuleFixModel model)
+    private void createProcedure(IXtextInteractiveBslModuleFixModel model)
     {
         try
         {
-            QuickFixMethodsHelper.createMethod(state, model, false);
+            QuickFixMethodsHelper.createMethod(model, false);
         }
         catch (BadLocationException e)
         {
-            BslPlugin.createErrorStatus("Error occured when creating procedure", e); //$NON-NLS-1$
+            UiPlugin.log(UiPlugin.createErrorStatus("Error occured when creating procedure", e)); //$NON-NLS-1$
         }
     }
 }

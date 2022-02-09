@@ -152,7 +152,6 @@ public class XtextInteractiveBslModuleFixModel
         selectAndRevealForLinkedModeModel(BslQuickFixUtil.getTextViewer(modificationContext), posStart, length);
     }
 
-    // TODO: reuse this method from BslQuickFixUtil
     private static StringBuilder computeFormatLine(IDocument doc, IRegion lineInformation) throws BadLocationException
     {
         String lineContent = doc.get(lineInformation.getOffset(), lineInformation.getLength());
@@ -171,7 +170,6 @@ public class XtextInteractiveBslModuleFixModel
         return builder;
     }
 
-    // TODO: reuse this method from BslQuickFixUtil
     private static void selectAndRevealForLinkedModeModel(ITextViewer viewer, int posStart, int length)
     {
         viewer.getSelectionProvider().addSelectionChangedListener(new ISelectionChangedListener()

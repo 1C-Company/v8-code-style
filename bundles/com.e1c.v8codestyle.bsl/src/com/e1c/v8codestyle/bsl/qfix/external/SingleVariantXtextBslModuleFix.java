@@ -28,6 +28,7 @@ import org.eclipse.xtext.validation.Issue.IssueImpl;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.common.Pair;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com.e1c.g5.v8.dt.bsl.check.qfix.ExternalQuickfixModification;
 import com.e1c.g5.v8.dt.check.qfix.FixDescriptor;
 import com.e1c.g5.v8.dt.check.qfix.FixVariantDescriptor;
 import com.e1c.g5.v8.dt.check.qfix.IFixChange;
@@ -56,7 +57,7 @@ public abstract class SingleVariantXtextBslModuleFix
             return Collections.emptyList();
         }
 
-        return prepareChanges(context, session, this::applyChanges);
+        return prepareChanges(this::applyChanges);
     }
 
     @Override
@@ -115,7 +116,7 @@ public abstract class SingleVariantXtextBslModuleFix
                 ((XtextInteractiveBslModuleFixModel)fixModel).getModificationContext();
 
             ExternalQuickfixModification<EObject> quickFixModification = new ExternalQuickfixModification<>(issue,
-                EObject.class, element -> fixIssue((IXtextInteractiveBslModuleFixModel)fixModel, context));
+                EObject.class, element -> fixIssue((IXtextInteractiveBslModuleFixModel)fixModel));
 
             try
             {
@@ -132,8 +133,7 @@ public abstract class SingleVariantXtextBslModuleFix
         }
     }
 
-    private TextEdit fixIssue(IXtextInteractiveBslModuleFixModel fixModel,
-        SingleVariantXtextBslModuleFixContext context)
+    private TextEdit fixIssue(IXtextInteractiveBslModuleFixModel fixModel)
     {
         Issue issue = fixModel.getIssue();
         if (issue.getOffset() == null)
@@ -155,11 +155,10 @@ public abstract class SingleVariantXtextBslModuleFix
                 }
             }
         });
-        return textEdits != null && !textEdits.isEmpty() ? textEdits.get(0) : null;
+        return !textEdits.isEmpty() ? textEdits.get(0) : null;
     }
 
-    private Collection<IFixChange> prepareChanges(SingleVariantXtextBslModuleFixContext context, IFixSession session,
-        IVariantXtextModuleFixChangeDelegate changeDelegate)
+    private Collection<IFixChange> prepareChanges(ISingleVariantXtextModuleFixChangeDelegate changeDelegate)
     {
         return Collections.singleton(new SingleVariantModuleFixChange(changeDelegate));
     }
@@ -175,8 +174,6 @@ public abstract class SingleVariantXtextBslModuleFix
             // Description isn't specified - adding the safety loopback
             this.descriptionSupplier = (context, session) -> Pair.newPair(StringUtils.EMPTY, StringUtils.EMPTY);
         }
-        // TODO: change the assignment to configurer.isInteractive once non-interactive (model) quick
-        // fixes are developed
         this.isInteractive = configurer.isInteractive;
     }
 
@@ -186,9 +183,9 @@ public abstract class SingleVariantXtextBslModuleFix
     private static final class SingleVariantModuleFixChange
         implements IFixChange
     {
-        private final IVariantXtextModuleFixChangeDelegate delegate;
+        private final ISingleVariantXtextModuleFixChangeDelegate delegate;
 
-        SingleVariantModuleFixChange(IVariantXtextModuleFixChangeDelegate delegate)
+        SingleVariantModuleFixChange(ISingleVariantXtextModuleFixChangeDelegate delegate)
         {
             this.delegate = delegate;
         }
@@ -229,7 +226,7 @@ public abstract class SingleVariantXtextBslModuleFix
     {
         private BiFunction<SingleVariantXtextBslModuleFixContext, IFixSession, Pair<String, String>>
             descriptionSupplier;
-        private boolean isInteractive;
+        private boolean isInteractive = true;
         private String description = StringUtils.EMPTY;
         private String details = StringUtils.EMPTY;
 

@@ -25,7 +25,6 @@ import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
 import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
-import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixProvider;
 import com.e1c.v8codestyle.bsl.qfix.external.XtextBslModuleFixProvider;
 
@@ -55,7 +54,6 @@ class ExternalDependenciesModule
         bind(IQualifiedNameProvider.class).toService();
 
         bind(ICheckRepository.class).toService();
-        bind(IModuleStructureProvider.class).to(ModuleStructureProvider.class);
         bind(IFixRepository.class).toService();
         bind(IXtextBslModuleFixProvider.class).to(XtextBslModuleFixProvider.class);
     }

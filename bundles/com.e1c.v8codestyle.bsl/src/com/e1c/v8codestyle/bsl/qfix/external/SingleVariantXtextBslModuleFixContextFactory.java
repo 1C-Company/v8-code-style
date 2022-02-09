@@ -41,11 +41,8 @@ public class SingleVariantXtextBslModuleFixContextFactory
             PlainEObjectMarker plainObjectMarker = (PlainEObjectMarker)marker.getMarker();
             URI uri = plainObjectMarker.getURI();
             IssueImpl issue = BslValidationUtil.createIssue(plainObjectMarker, CheckType.EXPENSIVE);
-            SingleVariantXtextBslModuleFixContext context =
-                new SingleVariantXtextBslModuleFixContext(uri, issue, provider, session.getDtProject());
-            return context;
+            return new SingleVariantXtextBslModuleFixContext(uri, issue, provider, session.getDtProject());
         }
-
         return null;
     }
 

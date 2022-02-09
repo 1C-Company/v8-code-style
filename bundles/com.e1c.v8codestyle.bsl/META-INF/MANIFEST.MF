@@ -62,4 +62,5 @@ Import-Package: com._1c.g5.ides.ui.texteditor.xtext.embedded;version="[5.0.0,6.0
  com.e1c.v8codestyle;version="[0.2.0,0.3.0)",
  com.e1c.v8codestyle.check;version="[0.2.0,0.3.0)"
 Export-Package: com.e1c.v8codestyle.bsl;version="0.2.0",
+ com.e1c.v8codestyle.bsl.qfix.external;version="0.2.0",
  com.e1c.v8codestyle.bsl.strict;version="0.2.0"

@@ -21,11 +21,13 @@
         <property name="ignorePattern" value="^ *\* *[^ ]+$|(\s+\/\/\$NON-NLS-\d+\$)+$"/>
     </module>
 
+    <module name="SuppressWithPlainTextCommentFilter">
+      <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)"/>
+      <property name="onCommentFormat" value="CHECKSTYLE.ON\: ([\w\|]+)"/>
+      <property name="checkFormat" value="$1"/>
+    </module>
+
     <module name="TreeWalker">
-        <module name="SuppressionCommentFilter">
-            <property name="offCommentFormat" value="checkstyle:off" />
-            <property name="onCommentFormat" value="checkstyle:on" />
-        </module>
         <module name="SuppressWarningsHolder" />
 
         <!-- imports -->

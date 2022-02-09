@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.qfix;
+package com.e1c.v8codestyle.bsl.ui.qfix;
 
 import java.util.Optional;
 
@@ -38,7 +38,7 @@ import com.e1c.v8codestyle.bsl.qfix.external.SingleVariantXtextBslModuleFix;
  *
  * @author Vadim Geraskin
  */
-@QuickFix(checkId = "undefined-variable", supplierId = "com.e1c.v8codestyle.bsl")
+@QuickFix(checkId = "module-undefined-variable", supplierId = "com.e1c.v8codestyle.bsl")
 public class UndefinedVariableFix
     extends SingleVariantXtextBslModuleFix
 {
@@ -64,29 +64,32 @@ public class UndefinedVariableFix
         if (method != null)
         {
             Optional<String> indent = interactiveModel.getFormatString(method);
-            int offset = QuickFixMethodsHelper.getMethodOffset(method);
+            if (indent.isPresent())
+            {
+                int offset = QuickFixMethodsHelper.getMethodOffset(method);
 
-            String variableName = ((StaticFeatureAccess)model.getElement()).getName();
-            IXtextDocument document = (IXtextDocument)interactiveModel.getDocument();
-            String lineSeparator = model.getLineSeparator();
+                String variableName = ((StaticFeatureAccess)model.getElement()).getName();
+                IXtextDocument document = (IXtextDocument)interactiveModel.getDocument();
+                String lineSeparator = model.getLineSeparator();
 
-            String variable = BslQuickFixUtil.createVariable(declarationKeyWord, variableName,
-                indent.get() + interactiveModel.getIndentProvider().getIndent(), lineSeparator);
+                String variable = BslQuickFixUtil.createVariable(declarationKeyWord, variableName,
+                    indent.get() + interactiveModel.getIndentProvider().getIndent(), lineSeparator);
 
-            //write var to module
-            BslQuickFixUtil.writeToDoc(document, offset, variable);
+                //write var to module
+                BslQuickFixUtil.writeToDoc(document, offset, variable);
 
-            //linked mode model
-            int posDec = offset + declarationKeyWord.length() + 1;
-            int posUse = model.getIssue().getOffset() + variable.length();
-            int length = variableName.length();
+                //linked mode model
+                int posDec = offset + declarationKeyWord.length() + 1;
+                int posUse = model.getIssue().getOffset() + variable.length();
+                int length = variableName.length();
 
-            createLinkedModeModel(interactiveModel, posDec, posUse, length);
+                createLinkedModeModel(interactiveModel, posDec, posUse, length);
+            }
         }
         return null;
     }
 
-    //CHECKSTYLE:OFF
+    //CHECKSTYLE.OFF: LineLength
     private static String getDeclarationKeyword(IXtextBslModuleFixModel model)
     {
         boolean isRussion = model.getScriptVariant() == ScriptVariant.RUSSIAN;
@@ -96,7 +99,7 @@ public class UndefinedVariableFix
             .getCyrillicCapitalLetterPeCyrillicSmallLetterIeCyrillicSmallLetterErCyrillicSmallLetterIeCyrillicSmallLetterEmKeyword_0_1()
             .getValue();
     }
-    //CHECKSTYLE:ON
+    //CHECKSTYLE.ON: LineLength
 
     private static void createLinkedModeModel(IXtextInteractiveBslModuleFixModel model, int posDec, int posUse,
         int length)

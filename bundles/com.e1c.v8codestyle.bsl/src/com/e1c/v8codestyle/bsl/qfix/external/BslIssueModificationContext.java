@@ -35,7 +35,6 @@ public class BslIssueModificationContext
 {
     private final AtomicReference<ITextViewer> viewerRef = new AtomicReference<>();
     private final Issue issue;
-    // TODO: Reuse editor opener from super (requires raise of version)
     private final IURIEditorOpener editorOpener;
 
     private IXtextDocument document;
@@ -66,18 +65,16 @@ public class BslIssueModificationContext
             return document;
         }
 
-        document = getXtextDocument(uri, editorOpener, editor -> viewerRef.set(extractTextViewer(editor)));
+        document = getXtextDocument(uri, editorOpener, editor -> viewerRef.set(extractLocalTextViewer(editor)));
         setTextViewer(viewerRef.get());
 
         return document;
     }
 
     /*
-     * Extract text viewer from editor. Can return null;
-     *
-     * TODO: Reuse method from super (requires raise of version)
+     * Extract text viewer from editor. Can return {@code null}
      */
-    private ITextViewer extractTextViewer(IEditorPart editor)
+    private static ITextViewer extractLocalTextViewer(IEditorPart editor)
     {
         ITextOperationTarget target = editor.getAdapter(ITextOperationTarget.class);
         if (target instanceof ITextViewer)

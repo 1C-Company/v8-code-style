@@ -236,17 +236,7 @@
             class="com.e1c.v8codestyle.bsl.check.ExportMethodInCommandFormModuleCheck">
       </check>
    </extension>
-   
-   <extension point="com.e1c.g5.v8.dt.check.fixes">
-      <fix class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.qfix.UndefinedMethodFix"/>
-   </extension>
-   <extension point="com.e1c.g5.v8.dt.check.fixes">
-      <fix class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.qfix.UndefinedFunctionFix"/>
-   </extension>
-   <extension point="com.e1c.g5.v8.dt.check.fixes">
-      <fix class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.qfix.UndefinedVariableFix"/>
-   </extension>
-   
+  
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer

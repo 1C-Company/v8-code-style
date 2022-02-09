@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.qfix;
+package com.e1c.v8codestyle.bsl.ui.qfix;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.TextEdit;
@@ -21,12 +21,13 @@ import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixModel;
 import com.e1c.v8codestyle.bsl.qfix.external.IXtextInteractiveBslModuleFixModel;
 import com.e1c.v8codestyle.bsl.qfix.external.SingleVariantXtextBslModuleFix;
 
+
 /**
  * Quick fix for check com.e1c.v8codestyle.bsl.check:undefined-function
  *
  * @author Vadim Geraskin
  */
-@QuickFix(checkId = "undefined-function", supplierId = "com.e1c.v8codestyle.bsl")
+@QuickFix(checkId = "module-undefined-function", supplierId = "com.e1c.v8codestyle.bsl")
 public class UndefinedFunctionFix
     extends SingleVariantXtextBslModuleFix
 {
@@ -39,7 +40,7 @@ public class UndefinedFunctionFix
     @Override
     protected TextEdit fixIssue(XtextResource state, IXtextBslModuleFixModel model) throws BadLocationException
     {
-        QuickFixMethodsHelper.createMethod(state, (IXtextInteractiveBslModuleFixModel)model, true);
+        QuickFixMethodsHelper.createMethod((IXtextInteractiveBslModuleFixModel)model, true);
         return null;
     }
 }

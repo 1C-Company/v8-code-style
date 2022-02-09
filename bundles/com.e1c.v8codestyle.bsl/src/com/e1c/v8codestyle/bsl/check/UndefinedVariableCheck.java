@@ -43,7 +43,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 public class UndefinedVariableCheck
     extends BasicCheck
 {
-    private static final String CHECK_ID = "undefined-variable"; //$NON-NLS-1$
+    private static final String CHECK_ID = "module-undefined-variable"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -60,54 +60,36 @@ public class UndefinedVariableCheck
             return;
         }
         StaticFeatureAccess fa = (StaticFeatureAccess)object;
-        if (fa.eContainer() instanceof Invocation)
+        if (fa.eContainer() instanceof Invocation || fa.getImplicitVariable() == null)
         {
             return;
         }
 
         String varName = fa.getName();
-        if (fa.getImplicitVariable() == null)
+        String msg = NLS.bind(Messages.ModuleUndefinedVariable_msg, varName);
+        if (!fa.getFeatureEntries().isEmpty())
         {
-            String msg = NLS.bind(Messages.ModuleUndefinedVariable_msg, varName);
-            if (!fa.getFeatureEntries().isEmpty())
+            if (allStatementsAreDeclare(fa, varName))
             {
-                Method method = EcoreUtil2.getContainerOfType(fa, Method.class);
-                if (method.allDeclareStatements()
-                    .stream()
-                    .flatMap(ds -> ds.getVariables().stream())
-                    .anyMatch(v -> v.getName().equals(varName)))
-                {
-                    return;
-                }
-
-                FeatureEntry entry = fa.getFeatureEntries().get(0);
-                Environments envs = new Environments(entry.getEnvironments().toArray());
-                if (entry.eContainer() instanceof StaticFeatureAccess && envs.contains(Environment.MNG_CLIENT)
-                    && !envs.contains(Environment.SERVER) && !BslPreferences.detectIsClientServer(entry))
-                {
-                    StaticFeatureAccess sfa = (StaticFeatureAccess)entry.eContainer();
-                    if (sfa.getFeatureEntries()
-                        .stream()
-                        .anyMatch(item -> item != entry && item.getEnvironments().contains(Environment.SERVER)))
-                    {
-                        envs = envs.remove(Environment.MNG_CLIENT);
-                    }
-                }
-                Invocation invocation = BslUtil.getInvocation(entry);
-                if (invocation == null && !BslUtil.isEventHandler(entry))
-                {
-                    msg += " [" + Arrays.stream(envs.toArray()) //$NON-NLS-1$
-                        .map(McoreUtil::getEnvironmentText)
-                        .collect(Collectors.joining(", ")) //$NON-NLS-1$
-                        + ']';
-                }
-                else
-                {
-                    return;
-                }
+                return;
             }
-            resultAcceptor.addIssue(msg, fa);
+            FeatureEntry entry = fa.getFeatureEntries().get(0);
+            Environments envs = getEnv(entry);
+
+            Invocation invocation = BslUtil.getInvocation(entry);
+            if (invocation == null && !BslUtil.isEventHandler(entry))
+            {
+                msg += " [" + Arrays.stream(envs.toArray()) //$NON-NLS-1$
+                    .map(McoreUtil::getEnvironmentText)
+                    .collect(Collectors.joining(", ")) //$NON-NLS-1$
+                    + ']';
+            }
+            else
+            {
+                return;
+            }
         }
+        resultAcceptor.addIssue(msg, fa);
     }
 
     @Override
@@ -120,5 +102,32 @@ public class UndefinedVariableCheck
             .issueType(IssueType.ERROR)
             .module()
             .checkedObjectType(BslPackage.Literals.STATIC_FEATURE_ACCESS);
+    }
+
+    private static boolean allStatementsAreDeclare(StaticFeatureAccess fa, String varName)
+    {
+        Method method = EcoreUtil2.getContainerOfType(fa, Method.class);
+        return method.allDeclareStatements()
+            .stream()
+            .flatMap(ds -> ds.getVariables().stream())
+            .anyMatch(v -> v.getName().equals(varName));
+    }
+
+    private static Environments getEnv(FeatureEntry entry)
+    {
+        Environments envs = new Environments(entry.getEnvironments().toArray());
+        if (entry.eContainer() instanceof StaticFeatureAccess && envs.contains(Environment.MNG_CLIENT)
+            && !envs.contains(Environment.SERVER) && !BslPreferences.detectIsClientServer(entry))
+        {
+            StaticFeatureAccess sfa = (StaticFeatureAccess)entry.eContainer();
+            if (sfa.getFeatureEntries()
+                .stream()
+                .anyMatch(item -> item != entry && item.getEnvironments().contains(Environment.SERVER)))
+            {
+                envs = envs.remove(Environment.MNG_CLIENT);
+            }
+        }
+
+        return envs;
     }
 }

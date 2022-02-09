@@ -9,9 +9,8 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
- *     Aleksandr Kapralov - issue #17, #449, #458
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.qfix;
+package com.e1c.v8codestyle.bsl.ui.qfix;
 
 import org.eclipse.osgi.util.NLS;
 
@@ -23,7 +22,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.qfix.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.ui.qfix.messages"; //$NON-NLS-1$
 
     public static String UndefinedMethodFix_func_title;
     public static String UndefinedMethodFix_func_desc;

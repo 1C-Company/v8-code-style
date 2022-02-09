@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.qfix;
+package com.e1c.v8codestyle.bsl.ui.qfix;
 
 import java.util.Optional;
 
@@ -21,7 +21,6 @@ import org.eclipse.jface.text.link.LinkedPosition;
 import org.eclipse.jface.text.link.LinkedPositionGroup;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
-import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
@@ -43,13 +42,11 @@ public final class QuickFixMethodsHelper
     /**
      * Creates method and writes it to module
      *
-     * @param state the xtext resource, cannot be {@code null}
      * @param model the xtext BSL quick fix model, cannot be {@code null}
      * @param isFunc indicates whether the method is function or procedure
      * @throws BadLocationException
      */
-    static void createMethod(XtextResource state, IXtextInteractiveBslModuleFixModel model, boolean isFunc)
-        throws BadLocationException
+    static void createMethod(IXtextInteractiveBslModuleFixModel model, boolean isFunc) throws BadLocationException
     {
         EObject element = model.getElement();
 
@@ -66,19 +63,18 @@ public final class QuickFixMethodsHelper
 
             //calculation offset
             int totalEndOffset = NodeModelUtils.getNode(method).getTotalEndOffset();
-
-            String lineSeparator = model.getLineSeparator();
-            String commentContent = Strings.repeat(lineSeparator, 2);
             Optional<String> indent = model.getFormatString(method);
 
-            String func = createMethod(commentContent, indent.get(), lineSeparator, directiveName, methodKeywordType,
-                methodName, methodEndKeywordType, indent.get() + model.getIndentProvider().getIndent()
-                    + model.getBslGeneratorMultiLangProposals().getImplementationPropStr());
+            if (indent.isPresent())
+            {
+                String func = createMethod(model, indent.get(), directiveName, methodName, methodKeywordType,
+                    methodEndKeywordType);
 
-            // Write method to module
-            IXtextDocument document = (IXtextDocument)model.getDocument();
-            BslQuickFixUtil.writeToDoc(document, totalEndOffset, func);
-            flushMethod(model, indent.get(), methodKeywordType, totalEndOffset, directiveName);
+                // Write method to module
+                IXtextDocument document = (IXtextDocument)model.getDocument();
+                BslQuickFixUtil.writeToDoc(document, totalEndOffset, func);
+                flushMethod(model, indent.get(), methodKeywordType, totalEndOffset, directiveName);
+            }
         }
     }
 
@@ -130,9 +126,14 @@ public final class QuickFixMethodsHelper
         return builder.toString();
     }
 
-    private static String createMethod(String commentContent, String indent, String lineSeparator, String directive,
-        String methodKeyword, String methodName, String methodEndKeyword, String todoComment)
+    private static String createMethod(IXtextInteractiveBslModuleFixModel model, String indent, String directive,
+        String methodName, String methodKeyword, String methodEndKeyword)
     {
+        String lineSeparator = model.getLineSeparator();
+        String commentContent = Strings.repeat(lineSeparator, 2);
+        String todoComment = indent + model.getIndentProvider().getIndent()
+            + model.getBslGeneratorMultiLangProposals().getImplementationPropStr();
+
         StringBuilder builder = new StringBuilder();
         //add comment above function
         builder.append(commentContent);
@@ -155,7 +156,7 @@ public final class QuickFixMethodsHelper
         String lineSeparator = model.getLineSeparator();
         String commentContent = Strings.repeat(lineSeparator, 2);
         //creating LinkedModeModel
-        LinkedPosition groupParams[] = calculateParamsGroupForMethod(commentContent, indent, lineSeparator,
+        LinkedPosition[] groupParams = calculateParamsGroupForMethod(commentContent, indent, lineSeparator,
             methodKeywordType, document, model.getIssueData(), totalEndOffset);
         int posDec = totalEndOffset + indent.length() + methodKeywordType.length() + 1 + commentContent.length();
         if (!Strings.isNullOrEmpty(directiveName))
@@ -173,8 +174,8 @@ public final class QuickFixMethodsHelper
     {
         if (data != null && data.length >= 2)
         {
-            int numParams = Integer.valueOf(data[2]);
-            LinkedPosition groupParams[] = new LinkedPosition[numParams];
+            int numParams = Integer.parseInt(data[2]);
+            LinkedPosition[] groupParams = new LinkedPosition[numParams];
             int startLen = data[1].length() + 2 + offset + commentContent.length() + indent.length()
                 + functionKeywordType.length();
             if (!Strings.isNullOrEmpty(data[0]))

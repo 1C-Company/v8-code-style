@@ -34,7 +34,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 public class UndefinedMethodCheck
     extends BasicCheck
 {
-    private static final String CHECK_ID = "undefined-method"; //$NON-NLS-1$
+    private static final String CHECK_ID = "module-undefined-method"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -56,13 +56,10 @@ public class UndefinedMethodCheck
         {
             String name = fa.getName();
             String msg;
-            if (((StaticFeatureAccess)fa).getImplicitVariable() == null && invocation != null)
+            if (((StaticFeatureAccess)fa).getImplicitVariable() == null && BslUtil.isProcedureInvocation(invocation))
             {
-                if (BslUtil.isProcedureInvocation(invocation))
-                {
-                    msg = NLS.bind(Messages.ModuleUndefinedMethod_msg, name);
-                    resultAcceptor.addIssue(msg, fa);
-                }
+                msg = NLS.bind(Messages.ModuleUndefinedMethod_msg, name);
+                resultAcceptor.addIssue(msg, fa);
             }
         }
     }
