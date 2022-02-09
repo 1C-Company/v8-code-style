@@ -40,8 +40,10 @@ public class ExternalQuickfixModification<E extends EObject>
     /**
      * Constructor
      * @param issue processing validation {@link Issue}, can't be <code>null</code>
-     * @param clazz {@link Class} of the Built-in object corresponding to validation {@link Issue}, can't be <code>null</code>
-     * @param function special {@link Function} that contains logic about creating {@link TextEdit} changes corresponding to quickfix, can't be <code>null</code>
+     * @param clazz {@link Class} of the Built-in object corresponding to validation {@link Issue},
+     * can't be <code>null</code>
+     * @param function special {@link Function} that contains logic about creating {@link TextEdit} changes
+     * corresponding to quickfix, can't be <code>null</code>
      */
     public ExternalQuickfixModification(Issue issue, Class<E> clazz, Function<E, TextEdit> function)
     {
@@ -74,10 +76,13 @@ public class ExternalQuickfixModification<E extends EObject>
 
     /**
      * Creates quickfix changes
-     * @param document actual {@link IXtextDocument}, creating text changes will be applied to it, can't be <code>null</code>
+     * @param document actual {@link IXtextDocument}, creating text changes will be applied to it, can't be
+     * <code>null</code>
      * @param issue processing validation {@link Issue}, can't be <code>null</code>
-     * @param clazz {@link Class} of the Built-in object corresponding to validation {@link Issue}, can't be <code>null</code>
-     * @param function special {@link Function} that contains logic about creating {@link TextEdit} changes corresponding to quickfix, can't be <code>null</code>
+     * @param clazz {@link Class} of the Built-in object corresponding to validation {@link Issue}, can't be
+     * <code>null</code>
+     * @param function special {@link Function} that contains logic about creating {@link TextEdit} changes
+     * corresponding to quickfix, can't be <code>null</code>
      * @return Created {@link TextEdit} quickfix changes, can be <code>null</code> in some cases:
      * <ul>
      * <li>object contained in {@link Issue} isn't instanceof <code>clazz</code></li>
@@ -94,9 +99,10 @@ public class ExternalQuickfixModification<E extends EObject>
             {
                 EObject element = state.getEObject(issue.getUriToProblem().fragment());
                 if (clazz.isInstance(element))
+                {
                     return function.apply(clazz.cast(element));
-                else
-                    return null;
+                }
+                return null;
             }
         });
     }

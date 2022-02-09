@@ -159,7 +159,7 @@ public abstract class SingleVariantXtextBslModuleFix
     }
 
     private Collection<IFixChange> prepareChanges(SingleVariantXtextBslModuleFixContext context, IFixSession session,
-        VariantXtextModuleFixChangeDelegate changeDelegate)
+        IVariantXtextModuleFixChangeDelegate changeDelegate)
     {
         return Collections.singleton(new SingleVariantModuleFixChange(changeDelegate));
     }
@@ -183,12 +183,12 @@ public abstract class SingleVariantXtextBslModuleFix
     /*
      * Single variant fix change unique for the SingleVariantModelBasicFix
      */
-    private final static class SingleVariantModuleFixChange
+    private static final class SingleVariantModuleFixChange
         implements IFixChange
     {
-        private final VariantXtextModuleFixChangeDelegate delegate;
+        private final IVariantXtextModuleFixChangeDelegate delegate;
 
-        public SingleVariantModuleFixChange(VariantXtextModuleFixChangeDelegate delegate)
+        SingleVariantModuleFixChange(IVariantXtextModuleFixChangeDelegate delegate)
         {
             this.delegate = delegate;
         }
@@ -202,7 +202,7 @@ public abstract class SingleVariantXtextBslModuleFix
     /*
      * Single variant fix change processor unique for the SingleVariantModelBasicFix
      */
-    private final static class SingleVariantModuleFixChangeProcessor
+    private static final class SingleVariantModuleFixChangeProcessor
         implements IFixChangeProcessor<SingleVariantModuleFixChange, SingleVariantXtextBslModuleFixContext>
     {
         @Override
@@ -220,14 +220,15 @@ public abstract class SingleVariantXtextBslModuleFix
     }
 
     /**
-     * Configuration container for the {@link SingleVariantXtextBslModuleFixContext} descendants allowing them to specify
-     * fix parameters via the pure Java API
+     * Configuration container for the {@link SingleVariantXtextBslModuleFixContext} descendants allowing them to
+     * specify fix parameters via the pure Java API
      *
      * @author Alexander Tretyakevich
      */
     protected static final class FixConfigurer
     {
-        private BiFunction<SingleVariantXtextBslModuleFixContext, IFixSession, Pair<String, String>> descriptionSupplier;
+        private BiFunction<SingleVariantXtextBslModuleFixContext, IFixSession, Pair<String, String>>
+            descriptionSupplier;
         private boolean isInteractive;
         private String description = StringUtils.EMPTY;
         private String details = StringUtils.EMPTY;

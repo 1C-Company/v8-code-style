@@ -80,7 +80,7 @@ public interface IXtextInteractiveBslModuleFixModel
      * Connects the ui mode for linked mode and starts UI on the first position
      * Should be called write after installation of linkedModeModel: {@code linkedModeModel.forceInstall()}
      */
-    void enterUIMode();
+    void enterUiMode();
 
     /**
      * Sets the selected range and reveals it

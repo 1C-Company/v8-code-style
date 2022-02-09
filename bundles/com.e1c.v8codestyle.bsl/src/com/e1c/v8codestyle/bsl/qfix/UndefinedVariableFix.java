@@ -86,6 +86,7 @@ public class UndefinedVariableFix
         return null;
     }
 
+    //CHECKSTYLE:OFF
     private static String getDeclarationKeyword(IXtextBslModuleFixModel model)
     {
         boolean isRussion = model.getScriptVariant() == ScriptVariant.RUSSIAN;
@@ -95,6 +96,7 @@ public class UndefinedVariableFix
             .getCyrillicCapitalLetterPeCyrillicSmallLetterIeCyrillicSmallLetterErCyrillicSmallLetterIeCyrillicSmallLetterEmKeyword_0_1()
             .getValue();
     }
+    //CHECKSTYLE:ON
 
     private static void createLinkedModeModel(IXtextInteractiveBslModuleFixModel model, int posDec, int posUse,
         int length)
@@ -112,7 +114,7 @@ public class UndefinedVariableFix
             LinkedModeModel.closeAllModels(document);
             linkedModeModel.forceInstall();
 
-            model.enterUIMode();
+            model.enterUiMode();
             model.selectAndRevealForLinkedModeModel(posUse, length);
         }
         catch (Exception e)

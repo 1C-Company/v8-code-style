@@ -19,7 +19,7 @@ import com.e1c.g5.v8.dt.check.qfix.IFixSession;
  * @author Vadim Geraskin
  */
 @FunctionalInterface
-public interface VariantXtextBslModuleFixChangeDelegate
+public interface IVariantXtextBslModuleFixChangeDelegate
 {
     /**
      * Performs the fix application

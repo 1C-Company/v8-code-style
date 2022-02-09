@@ -72,7 +72,7 @@ public abstract class MultiVariantXtextBslModuleFix
     protected static class VariantBuilder
     {
         private final MultiVariantXtextBslModuleFix fix;
-        private VariantXtextBslModuleFixChangeDelegate delegate;
+        private IVariantXtextBslModuleFixChangeDelegate delegate;
         private String description;
         private String details;
         private boolean isInteractive;
@@ -90,7 +90,7 @@ public abstract class MultiVariantXtextBslModuleFix
         /**
          * Static variant builder creator
          *
-         * @param @param fix the reference to the model fix, cannot be {@code null}
+         * @param fix the reference to the model fix, cannot be {@code null}
          * @return the instance of the variant builder, never {@code null}
          */
         public static VariantBuilder create(MultiVariantXtextBslModuleFix fix)
@@ -104,7 +104,7 @@ public abstract class MultiVariantXtextBslModuleFix
          * @param delegate change delegate, cannot be {@code null}
          * @return the instance of the variant builder, never {@code null}
          */
-        public VariantBuilder change(VariantXtextBslModuleFixChangeDelegate delegate)
+        public VariantBuilder change(IVariantXtextBslModuleFixChangeDelegate delegate)
         {
             this.delegate = delegate;
             return this;
@@ -150,7 +150,7 @@ public abstract class MultiVariantXtextBslModuleFix
     private static class MultiVariantXtextBslModuleVariant<C extends SingleVariantXtextBslModuleFixContext>
         implements IFixVariant<C>
     {
-        private final VariantXtextBslModuleFixChangeDelegate delegate;
+        private final IVariantXtextBslModuleFixChangeDelegate delegate;
         private final String description;
         private final String details;
         private final boolean isInteractive;
@@ -163,7 +163,7 @@ public abstract class MultiVariantXtextBslModuleFix
          * @param details the fix variant detailed description, can be {@code null}
          * @param isInteractive {@code true} if quick fix supports interactive (UI) model, {@code false} otherwise
          */
-        public MultiVariantXtextBslModuleVariant(VariantXtextBslModuleFixChangeDelegate delegate, String description,
+        MultiVariantXtextBslModuleVariant(IVariantXtextBslModuleFixChangeDelegate delegate, String description,
             String details, boolean isInteractive)
         {
             this.delegate = delegate;
@@ -192,10 +192,10 @@ public abstract class MultiVariantXtextBslModuleFix
         }
     }
 
-    private final static class VariantXtextBslModuleFixChange
+    private static final class VariantXtextBslModuleFixChange
         implements IFixChange
     {
-        private final VariantXtextBslModuleFixChangeDelegate delegate;
+        private final IVariantXtextBslModuleFixChangeDelegate delegate;
         private final boolean isInteractive;
 
         /**
@@ -204,7 +204,7 @@ public abstract class MultiVariantXtextBslModuleFix
          * @param delegate the delegate to be executed, cannot be {@code null}
          * @param isInteractive {@code true} if quick fix supports interactive (UI) model, {@code false} otherwise
          */
-        public VariantXtextBslModuleFixChange(VariantXtextBslModuleFixChangeDelegate delegate, boolean isInteractive)
+        VariantXtextBslModuleFixChange(IVariantXtextBslModuleFixChangeDelegate delegate, boolean isInteractive)
         {
             this.delegate = delegate;
             this.isInteractive = isInteractive;
@@ -240,7 +240,7 @@ public abstract class MultiVariantXtextBslModuleFix
     /*
      * Variant fix change processor
      */
-    private final static class VariantXtextBslModuleFixChangeProcessor
+    private static final class VariantXtextBslModuleFixChangeProcessor
         implements IFixChangeProcessor<VariantXtextBslModuleFixChange, SingleVariantXtextBslModuleFixContext>
     {
         @Override

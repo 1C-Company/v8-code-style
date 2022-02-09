@@ -140,7 +140,7 @@ public class XtextInteractiveBslModuleFixModel
     }
 
     @Override
-    public void enterUIMode()
+    public void enterUiMode()
     {
         LinkedModeUI ui = new LinkedModeUI(linkedModeModel, BslQuickFixUtil.getTextViewer(modificationContext));
         ui.enter();

@@ -99,7 +99,7 @@ public final class QuickFixMethodsHelper
      *
      * @param model {@link IXtextBslModuleFixModel}, cannot be {@code null}
      * @param isFunc defines what will be return
-     * @return 'Procedure' if <code>isFunc == false<code>, else return 'Function'
+     * @return 'Procedure' if <code>isFunc == false, else return 'Function'</code>
      */
     static String getTypeMethodName(IXtextBslModuleFixModel model, boolean isFunc)
     {
@@ -112,7 +112,7 @@ public final class QuickFixMethodsHelper
      *
      * @param model {@link IXtextBslModuleFixModel}, cannot be {@code null}
      * @param isFunc defines what will be return
-     * @return 'EndProcedure' if <code>isFunc == false<code>, else return 'EndFunction'
+     * @return 'EndProcedure' if <code>isFunc == false, else return 'EndFunction'</code>
      */
     static String getTypeEndMethodName(IXtextBslModuleFixModel model, boolean isFunc)
     {
@@ -215,12 +215,17 @@ public final class QuickFixMethodsHelper
             }
             LinkedModeModel.closeAllModels(document);
             linkedModeModel.forceInstall();
-            model.enterUIMode();
+            model.enterUiMode();
             model.selectAndRevealForLinkedModeModel(posDec, length);
         }
         catch (Exception e)
         {
             model.selectAndRevealForLinkedModeModel(posUse, length);
         }
+    }
+
+    private QuickFixMethodsHelper()
+    {
+        // Not to be instantiated
     }
 }
