@@ -27,37 +27,37 @@ public class RightActiveUsersTest
     extends CheckRights
 {
 
-    private static final String PROJECT_NAME = "StandartRoles";
+    private static final String PROJECT_NAME = "StandardRoles";
 
-    private static final String ROLE_FQN = "Role.StandartRole.Rights";
+    private static final String ROLE_FQN = "Role.StandardRole.Rights";
     private static final String CONFIGURATION_FQN = "Configuration";
 
     private static final String CHECK_ID = "right-active-users"; //$NON-NLS-1$
 
-    private static final RightName STANDART_ROLE = RightName.ACTIVE_USERS;
+    private static final RightName STANDARD_ROLE = RightName.ACTIVE_USERS;
 
     @Test
-    public void testStandartRoleCorrect() throws Exception
+    public void testStandardRoleCorrect() throws Exception
     {
-        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "Administration");
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, "Administration");
     }
 
     @Test
     public void testCustomRoleIncorrect() throws Exception
     {
-        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, null);
+        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, null);
     }
 
     @Test
     public void testFullAccessRoleCorrect() throws Exception
     {
-        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "FullAccess");
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, "FullAccess");
     }
 
     @Test
     public void testSystemAdministratorRoleCorrect() throws Exception
     {
-        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDART_ROLE, "SystemAdministrator");
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, "SystemAdministrator");
     }
 
 }

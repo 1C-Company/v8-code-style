@@ -1,3 +1,5 @@
+// @strict-types
+
 Procedure QueryCorrect(SomeParameter) Export
 
 	SimpleQuery = New Query;
@@ -26,6 +28,8 @@ Procedure MethodCallsQueryCorrect(SomeParameter) Export
 
 EndProcedure
 
+// Parameters:
+//  SomeArray - Array
 Procedure ForEachStatementIncorrect(SomeArray) Export
 
 	ForEachQuery = New Query;
@@ -42,6 +46,8 @@ Procedure ForEachStatementIncorrect(SomeArray) Export
 
 EndProcedure
 
+// Parameters:
+//  SomeArray - Array
 Procedure ForToStatementIncorrect(SomeArray) Export
 
 	ForToQuery = New Query;
@@ -58,6 +64,8 @@ Procedure ForToStatementIncorrect(SomeArray) Export
 
 EndProcedure
 
+// Parameters:
+//  SomeArray - Array
 Procedure WhileStatementIncorrect(SomeArray) Export
 
 	WhileQuery = New Query;
@@ -72,12 +80,16 @@ Procedure WhileStatementIncorrect(SomeArray) Export
 
 EndProcedure
 
+// Parameters:
+//  SomeArray - Array
 Procedure MethodCallsIncorrectMethodCorrect(SomeArray) Export
 
 	ForEachStatementIncorrect(SomeArray);
 
 EndProcedure
 
+// Parameters:
+//  SomeParameter - Number
 Procedure LoopCallsMethodIncorrect(SomeParameter) Export
 
 	LoopCallQuery = New Query;
@@ -93,6 +105,8 @@ Procedure LoopCallsMethodIncorrect(SomeParameter) Export
 
 EndProcedure
 
+// Parameters:
+//  SomeParameter - Number
 Procedure LoopCallsMethodWithOtherMethodIncorrect(SomeParameter) Export
 
 	MethodCallQuery = New Query;
@@ -107,6 +121,8 @@ Procedure LoopCallsMethodWithOtherMethodIncorrect(SomeParameter) Export
 
 EndProcedure
 
+// Parameters:
+//  SomeArray - Array
 Procedure LoopWithConditionsIncorrect(SomeArray) Export
 
 	While SomeArray.Count() = 0 Do
@@ -124,6 +140,11 @@ Procedure LoopWithConditionsIncorrect(SomeArray) Export
 
 EndProcedure
 
+// Parameters:
+//  ArrayElement - String
+// 
+// Returns:
+//  Query
 Function GetNewQuery(ArrayElement)
 	
 	FunctionQuery = New Query;
@@ -138,6 +159,8 @@ Function GetNewQuery(ArrayElement)
 	
 EndFunction
 
+// Parameters:
+//  SomeArray - Array
 Procedure QueryTypeFromFunctionIncorrect(SomeArray) Export
 	
 	For Each ArrayElement In SomeArray Do
@@ -145,4 +168,26 @@ Procedure QueryTypeFromFunctionIncorrect(SomeArray) Export
 		Selection.Next();
 	EndDo;
 	
+EndProcedure
+
+Function QueryResultColumn() Export
+	
+	FunctionQuery = New Query;
+
+	FunctionQuery.Text =
+	"SELECT
+	|	1";
+	
+	Return FunctionQuery.Execute().Unload().UnloadColumn(0);
+	
+EndFunction
+
+Procedure ForEachParamQueryMethodCorrect() Export
+
+	Result = 0;
+
+	For Each Num In QueryResultColumn() Do
+		Result = Result + Num;
+	EndDo;
+
 EndProcedure

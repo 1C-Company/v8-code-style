@@ -104,11 +104,11 @@ public enum CommonModuleTypes
     CLIENT_GLOBAL(Messages.CommonModuleTypes_Client_global_module,
         new String[] { "Global", "Глобальный" }, //$NON-NLS-1$ //$NON-NLS-2$
         Map.of(
-            COMMON_MODULE__CLIENT_MANAGED_APPLICATION, false,
+            COMMON_MODULE__CLIENT_MANAGED_APPLICATION, true,
             COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, true,
-            COMMON_MODULE__SERVER, true,
+            COMMON_MODULE__SERVER, false,
             COMMON_MODULE__SERVER_CALL, false,
-            COMMON_MODULE__EXTERNAL_CONNECTION, true,
+            COMMON_MODULE__EXTERNAL_CONNECTION, false,
             COMMON_MODULE__GLOBAL, true,
             COMMON_MODULE__PRIVILEGED, false,
             COMMON_MODULE__RETURN_VALUES_REUSE, ReturnValuesReuse.DONT_USE)),

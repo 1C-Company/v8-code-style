@@ -1,7 +1,8 @@
 # Проверки проектов 1С
 
 - [Проверки поставляемые 1C:Enterprise Development Tools](edt.md)
-- Проверки 1C:Code Style V8
+- Проверки 1C:Code Style V8 
+    - [Общий индекс](check_index.md)
     - [Проверки метаданных](md.md)
     - [Проверки Форм](form.md)
     - [Проверки прав ролей](right.md)

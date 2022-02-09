@@ -19,20 +19,23 @@ import static org.junit.Assert.assertNull;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
+import com._1c.g5.v8.dt.metadata.mdclass.StandardAttribute;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.md.check.MdStandardAttributeSynonymEmpty;
+import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 
 /**
  * The test for class {@link MdStandardAttributeSynonymEmpty}.
  *
  * @author Bombin Valentin
+ * @author Dmitriy Marmyshev
  */
 public class MdStandardAttributeSynonymEmptyTest
-    extends CheckTestBase
+    extends SingleProjectReadOnlyCheckTestBase
 {
 
     private static final String CHECK_ID = "md-standard-attribute-synonym-empty"; //$NON-NLS-1$
+
     private static final String PROJECT_NAME = "MdStandardAttributeSynonymEmpty";
 
     /**
@@ -43,8 +46,7 @@ public class MdStandardAttributeSynonymEmptyTest
     @Test
     public void testPositiveTest() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
+        IDtProject dtProject = getProject();
 
         long id = getTopObjectIdByFqn("Catalog.PositiveParentTest", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
@@ -57,36 +59,40 @@ public class MdStandardAttributeSynonymEmptyTest
     }
 
     @Test
-    public void testNegativeParent() throws Exception
+    public void testNegativeOwner() throws Exception
     {
+        IDtProject dtProject = getProject();
 
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        long id = getTopObjectIdByFqn("Catalog.NegativeOwnerTest", dtProject);
+        Long id = getTopObjectIdByFqn("Catalog.NegativeOwnerTest", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
 
-        id = getTopObjectIdByFqn("Catalog.NegativeOwnerTestWithComment", dtProject);
-        marker = getFirstMarker(CHECK_ID, id, dtProject);
+        Catalog catalog = (Catalog)getTopObjectByFqn("Catalog.NegativeOwnerTestWithComment", dtProject);
+        StandardAttribute attribute = catalog.getStandardAttributes().get(0);
+        marker = getFirstMarker(CHECK_ID, attribute, dtProject);
         assertNotNull(marker);
+
     }
 
     @Test
-    public void testNegativeOwner() throws Exception
+    public void testNegativeParent() throws Exception
     {
+        IDtProject dtProject = getProject();
 
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        long id = getTopObjectIdByFqn("Catalog.NegativeParentTest", dtProject);
+        Long id = getTopObjectIdByFqn("Catalog.NegativeParentTest", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
 
-        id = getTopObjectIdByFqn("Catalog.NegativeParentTestWithComment", dtProject);
-        marker = getFirstMarker(CHECK_ID, id, dtProject);
+        Catalog catalog = (Catalog)getTopObjectByFqn("Catalog.NegativeParentTestWithComment", dtProject);
+        StandardAttribute attribute = catalog.getStandardAttributes().get(0);
+        marker = getFirstMarker(CHECK_ID, attribute, dtProject);
         assertNotNull(marker);
+    }
 
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
     }
 
 }

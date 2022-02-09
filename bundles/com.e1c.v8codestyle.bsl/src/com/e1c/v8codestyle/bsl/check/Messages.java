@@ -70,6 +70,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ExportMethodInCommandFormModuleCheck_Notify_description_methods;
+
+    public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_des;
+
+    public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result;
+
+    public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
+
     public static String ModuleStructureTopRegionCheck_description;
 
     public static String ModuleStructureTopRegionCheck_error_message;
@@ -102,6 +110,12 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
+
+    public static String NewColorCheck_Use_style_elements;
+
+    public static String NewColorCheck_Use_style_elements_not_specific_values;
+
+    public static String NewColorCheck_Using_new_color;
 
     public static String NstrStringLiteralFormatCheck_Check_empty_interface_for_each_language;
 
@@ -166,6 +180,12 @@ final class Messages
     public static String FormModuleMissingPragmaCheck_Missing_compilation_directives;
 
     public static String FormModuleMissingPragmaCheck_title;
+
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_description;
+
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_result;
+
+    public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_title;
 
     public static String IsInRoleCheck_Exception_Roles;
 

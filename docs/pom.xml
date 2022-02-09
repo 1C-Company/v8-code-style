@@ -35,6 +35,27 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.codehaus.gmaven</groupId>
+				<artifactId>groovy-maven-plugin</artifactId>
+				<version>2.1.1</version>
+				<executions>
+					<execution>
+						<id>generate-check-lists</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<basePath>${project.basedir}</basePath>
+								<generateHelpContent>true</generateHelpContent>
+							</properties>
+							<source>${project.basedir}/src/CheckListGenerator.groovy</source>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>com.ruleoftech</groupId>
 				<artifactId>markdown-page-generator-plugin</artifactId>
 				<configuration>

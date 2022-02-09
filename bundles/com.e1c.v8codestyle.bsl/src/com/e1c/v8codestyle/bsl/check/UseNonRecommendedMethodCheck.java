@@ -70,7 +70,7 @@ public class UseNonRecommendedMethodCheck
             .description(Messages.UseNonRecommendedMethods_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
-            .issueType(IssueType.ERROR)
+            .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(INVOCATION);
