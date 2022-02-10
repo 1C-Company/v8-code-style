@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.strict.check;
 
+import static com.e1c.v8codestyle.bsl.strict.check.StrictTypeAnnotationCheckExtension.PARAM_CHECK_ANNOTATION_IN_MODULE_DESCRIPTION;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -137,6 +139,8 @@ public class FunctionCtorReturnSectionCheck
             .delegate(ReturnSection.class);
         builder.parameter(PARAM_CHECK_TYPES, String.class, String.join(",", DEFAULT_CHECK_TYPES), //$NON-NLS-1$
             Messages.FunctionCtorReturnSectionCheck_User_extandable_Data_type_list_comma_separated);
+        builder.parameter(PARAM_CHECK_ANNOTATION_IN_MODULE_DESCRIPTION, Boolean.class, Boolean.FALSE.toString(),
+            Messages.StrictTypeAnnotationCheckExtension_Check__strict_types_annotation_in_module_desctioption);
 
     }
 
@@ -145,7 +149,9 @@ public class FunctionCtorReturnSectionCheck
         DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
     {
         if (monitor.isCanceled()
-            || !(root.getMethod() instanceof Function) && !StrictTypeUtil.hasStrictTypeAnnotation(root.getModule()))
+            || !(root.getMethod() instanceof Function)
+            || parameters.getBoolean(PARAM_CHECK_ANNOTATION_IN_MODULE_DESCRIPTION)
+                && !StrictTypeUtil.hasStrictTypeAnnotation(root.getModule()))
         {
             return;
         }
