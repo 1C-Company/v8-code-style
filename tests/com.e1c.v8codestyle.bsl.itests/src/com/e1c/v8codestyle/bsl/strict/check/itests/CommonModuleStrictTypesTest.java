@@ -149,7 +149,7 @@ public class CommonModuleStrictTypesTest
         Module module = updateAndGetModule(checkId);
 
         List<Variable> variables = EcoreUtil2.eAllOfType(module, Variable.class);
-        assertEquals(2, variables.size());
+        assertEquals(4, variables.size());
 
         List<Marker> markers = getMarters(checkId, module);
 

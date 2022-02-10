@@ -101,7 +101,7 @@ public class VariableTypeCheck
         else if (object instanceof SimpleStatement && ((SimpleStatement)object).getLeft() instanceof StaticFeatureAccess
             && ((StaticFeatureAccess)((SimpleStatement)object).getLeft()).getImplicitVariable() != null)
         {
-            EObject checkType = ((SimpleStatement)object).getRight();
+            EObject checkType = ((SimpleStatement)object).getLeft();
             Variable variable = ((StaticFeatureAccess)((SimpleStatement)object).getLeft()).getImplicitVariable();
             checkVariable(variable, checkType, resultAceptor, monitor);
         }
@@ -110,16 +110,19 @@ public class VariableTypeCheck
             DeclareStatement declare = (DeclareStatement)object;
             for (Variable variable : declare.getVariables())
             {
+                if (monitor.isCanceled())
+                {
+                    return;
+                }
                 checkVariable(variable, variable, resultAceptor, monitor);
             }
         }
-
     }
 
     private void checkVariable(Variable variable, EObject checkObject, ResultAcceptor resultAceptor,
         IProgressMonitor monitor)
     {
-        if (!monitor.isCanceled() && checkObject != null && variable != null && isEmptyTypes(checkObject))
+        if (checkObject != null && variable != null && isEmptyTypes(checkObject) && !monitor.isCanceled())
         {
             String message =
                 MessageFormat.format(Messages.VariableTypeCheck_Variable_M_has_no_value_type, variable.getName());

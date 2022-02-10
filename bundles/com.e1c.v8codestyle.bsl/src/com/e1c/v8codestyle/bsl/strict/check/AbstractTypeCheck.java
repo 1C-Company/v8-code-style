@@ -26,17 +26,28 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
+import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.ForEachStatement;
+import com._1c.g5.v8.dt.bsl.model.ForToStatement;
+import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
+import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.Variable;
+import com._1c.g5.v8.dt.bsl.model.typesytem.TypeSystemMode;
+import com._1c.g5.v8.dt.bsl.model.typesytem.VariableTreeTypeState;
+import com._1c.g5.v8.dt.bsl.model.typesytem.VariableTreeTypeStateWithSubStates;
+import com._1c.g5.v8.dt.bsl.model.typesytem.VariableTypeState;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil;
@@ -142,7 +153,7 @@ public abstract class AbstractTypeCheck
     }
 
     /**
-     * Compute types with respect to system enumeration.
+     * Compute types with respect to system enumeration and variable type state.
      *
      * @param object the object, cannot be {@code null}.
      * @param envs the environments, cannot be {@code null}.
@@ -150,6 +161,15 @@ public abstract class AbstractTypeCheck
      */
     protected List<TypeItem> computeTypes(EObject object, Environments envs)
     {
+        if (object instanceof Variable && object.eContainer() instanceof FeatureAccess)
+        {
+            return getActualTypesForFeatureVariable((Variable)object, object.eContainer(), envs);
+        }
+        else if (object instanceof StaticFeatureAccess && ((StaticFeatureAccess)object).getImplicitVariable() != null)
+        {
+            return getActualTypesForFeatureVariable(((StaticFeatureAccess)object).getImplicitVariable(), object, envs);
+        }
+
         List<TypeItem> types = typeComputer.computeTypes(object, envs);
 
         if (types.isEmpty() && object instanceof DynamicFeatureAccess
@@ -178,7 +198,6 @@ public abstract class AbstractTypeCheck
         }
 
         return types;
-
     }
 
     /**
@@ -342,6 +361,73 @@ public abstract class AbstractTypeCheck
         default:
             return null;
         }
+    }
+
+    // TODO replace this with utility com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil after 2022.1
+    private List<TypeItem> getActualTypesForFeatureVariable(Variable variable, EObject featureObject, Environments envs)
+    {
+        SimpleStatement statement = EcoreUtil2.getContainerOfType(featureObject, SimpleStatement.class);
+        Invocation inv = EcoreUtil2.getContainerOfType(featureObject, Invocation.class);
+        List<TypeItem> allTypes = null;
+        int actualOffset = -1;
+        if (statement != null && statement.getRight() != null && statement.getLeft() == featureObject)
+        {
+            actualOffset = NodeModelUtils.findActualNodeFor(statement).getTotalEndOffset();
+        }
+        else if (inv != null && inv.getParams().contains(featureObject))
+        {
+            actualOffset = NodeModelUtils.findActualNodeFor(featureObject).getTotalEndOffset();
+        }
+        else if (inv == null && statement == null && variable instanceof FormalParam)
+        {
+            actualOffset = NodeModelUtils.findActualNodeFor(featureObject).getTotalEndOffset();
+        }
+        else if (featureObject.eContainingFeature() == BslPackage.Literals.FOR_STATEMENT__VARIABLE_ACCESS)
+        {
+            if (featureObject.eContainer() instanceof ForEachStatement
+                && ((ForEachStatement)featureObject.eContainer()).getCollection() != null)
+            {
+                actualOffset =
+                    NodeModelUtils.findActualNodeFor(((ForEachStatement)featureObject.eContainer()).getCollection())
+                        .getTotalEndOffset() + 1;
+            }
+            else if (featureObject.eContainer() instanceof ForToStatement
+                && ((ForToStatement)featureObject.eContainer()).getInitializer() != null)
+            {
+                actualOffset =
+                    NodeModelUtils.findActualNodeFor(((ForToStatement)featureObject.eContainer()).getInitializer())
+                        .getTotalEndOffset() + 1;
+            }
+        }
+        if (actualOffset != -1 && variable.getTypeStateProvider() != null)
+        {
+            allTypes = new ArrayList<>();
+            List<VariableTypeState> nearestStates =
+                variable.getTypeStateProvider().get(TypeSystemMode.NORMAL).getNearestByOffset(envs, actualOffset);
+            for (VariableTypeState nearestState : nearestStates)
+            {
+                if (nearestState != null)
+                {
+                    if (nearestState instanceof VariableTreeTypeStateWithSubStates)
+                    {
+                        for (VariableTreeTypeState subState : ((VariableTreeTypeStateWithSubStates)nearestState)
+                            .getSubStates(envs))
+                        {
+                            subState.getTypes().forEach(allTypes::add);
+                        }
+                    }
+                    else
+                    {
+                        nearestState.getTypes().forEach(allTypes::add);
+                    }
+                }
+            }
+        }
+        else
+        {
+            allTypes = typeComputer.computeTypes(featureObject, envs);
+        }
+        return allTypes;
     }
 
 }
