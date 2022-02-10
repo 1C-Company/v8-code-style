@@ -16,8 +16,9 @@ package com.e1c.v8codestyle.bsl.check;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * @author Dmitriy Marmyshev
+ * NLS messages
  *
+ * @author Dmitriy Marmyshev
  */
 final class Messages
     extends NLS
@@ -194,6 +195,16 @@ final class Messages
 
     public static String IsInRoleCheck_Using_IsInRole;
 
+    public static String ModuleUndefinedVariableCheck_Title;
+    public static String ModuleUndefinedVariableCheck_Description;
+    public static String ModuleUndefinedVariable_msg;
+    public static String ModuleUndefinedMethodCheck_Title;
+    public static String ModuleUndefinedMethodCheck_Description;
+    public static String ModuleUndefinedFunctionCheck_Title;
+    public static String ModuleUndefinedFunctionCheck_Description;
+    public static String ModuleUndefinedFunction_msg;
+    public static String ModuleUndefinedMethod_msg;
+
     static
     {
         // initialize resource bundle
@@ -202,5 +213,6 @@ final class Messages
 
     private Messages()
     {
+        // N/A
     }
 }

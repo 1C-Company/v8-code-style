@@ -23,12 +23,15 @@ import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
+import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
+import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
+import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixProvider;
+import com.e1c.v8codestyle.bsl.qfix.external.XtextBslModuleFixProvider;
 
 /**
  * The external dependencies for plugin
  *
  * @author Dmitriy Marmyshev
- *
  */
 class ExternalDependenciesModule
     extends AbstractServiceAwareModule
@@ -49,6 +52,9 @@ class ExternalDependenciesModule
         bind(IQualifiedNameConverter.class).toService();
         bind(IBslModuleContextDefService.class).toService();
         bind(IQualifiedNameProvider.class).toService();
-    }
 
+        bind(ICheckRepository.class).toService();
+        bind(IFixRepository.class).toService();
+        bind(IXtextBslModuleFixProvider.class).to(XtextBslModuleFixProvider.class);
+    }
 }

@@ -214,6 +214,15 @@
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.IsInRoleCheck">
       </check>
+      <check category="com.e1c.v8codestyle.bsl"
+         class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UndefinedMethodCheck">
+      </check>
+      <check category="com.e1c.v8codestyle.bsl"
+         class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UndefinedFunctionCheck">
+      </check>
+      <check category="com.e1c.v8codestyle.bsl"
+         class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UndefinedVariableCheck">
+      </check>
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.InvocationFormEventHandlerCheck">
@@ -226,8 +235,8 @@
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.ExportMethodInCommandFormModuleCheck">
       </check>
-  
    </extension>
+  
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
