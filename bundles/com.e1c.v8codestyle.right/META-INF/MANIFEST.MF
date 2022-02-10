@@ -29,6 +29,6 @@ Import-Package: com._1c.g5.v8.bm.core;version="[7.0.0,8.0.0)",
  com.e1c.g5.v8.dt.check.components;version="[2.0.0,3.0.0)",
  com.e1c.g5.v8.dt.check.context;version="[2.0.0,3.0.0)",
  com.e1c.g5.v8.dt.check.ext;version="[1.0.0,2.0.0)",
- com.e1c.g5.v8.dt.check.settings;version="[2.0.0,3.0.0)",
+ com.e1c.g5.v8.dt.check.settings;version="[3.0.0,4.0.0)",
  com.e1c.v8codestyle.check;version="[0.2.0,0.3.0)",
  com.google.inject;version="[1.3.0,2.0.0)"
