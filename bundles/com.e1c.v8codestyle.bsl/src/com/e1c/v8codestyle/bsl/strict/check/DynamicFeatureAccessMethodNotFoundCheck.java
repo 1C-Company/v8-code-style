@@ -12,29 +12,13 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.strict.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.FEATURE_ACCESS__NAME;
-
 import java.text.MessageFormat;
-import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
-import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
-import com._1c.g5.v8.dt.mcore.Environmental;
-import com._1c.g5.v8.dt.mcore.util.Environments;
-import com.e1c.g5.v8.dt.check.CheckComplexity;
-import com.e1c.g5.v8.dt.check.ICheckParameters;
-import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
-import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
-import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
@@ -43,7 +27,7 @@ import com.google.inject.Inject;
  * @author Dmitriy Marmyshev
  */
 public class DynamicFeatureAccessMethodNotFoundCheck
-    extends AbstractTypeCheck
+    extends AbstractDynamicFeatureAccessTypeCheck
 {
 
     private static final String CHECK_ID = "dynamic-access-method-not-found"; //$NON-NLS-1$
@@ -69,60 +53,28 @@ public class DynamicFeatureAccessMethodNotFoundCheck
     }
 
     @Override
-    protected void configureCheck(CheckConfigurer builder)
+    protected String getTitle()
     {
-        builder.title(Messages.DynamicFeatureAccessMethodNotFoundCheck_title)
-            .description(Messages.DynamicFeatureAccessMethodNotFoundCheck_description)
-            .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.CODE_STYLE)
-            .extension(new ModuleTopObjectNameFilterExtension())
-            .extension(new StrictTypeAnnotationCheckExtension())
-            .module()
-            .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
-
+        return Messages.DynamicFeatureAccessMethodNotFoundCheck_title;
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+    protected String getDescription()
     {
-        if (monitor.isCanceled() || !(object instanceof EObject))
-        {
-            return;
-        }
-
-        DynamicFeatureAccess fa = (DynamicFeatureAccess)object;
-        if (fa.getName() == null || fa.getName().isBlank())
-        {
-            return;
-        }
-
-        boolean isMethod = BslUtil.getInvocation(fa) != null;
-        if (isMethod && isEmptySource(fa))
-        {
-            String message = MessageFormat
-                .format(Messages.DynamicFeatureAccessTypeCheck_Method_M_not_found_in_accessed_object, fa.getName());
-
-            resultAceptor.addIssue(message, FEATURE_ACCESS__NAME);
-        }
-
+        return Messages.DynamicFeatureAccessMethodNotFoundCheck_description;
     }
 
-    private boolean isEmptySource(DynamicFeatureAccess object)
+    @Override
+    protected boolean isCheckDfaMethod()
     {
-        Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
-        if (envs == null)
-        {
-            return true;
-        }
-
-        Environments actualEnvs = bslPreferences.getLoadEnvs(object).intersect(envs.environments());
-        if (actualEnvs.isEmpty())
-        {
-            return true;
-        }
-        List<FeatureEntry> objects = dynamicFeatureAccessComputer.getLastObject(object, actualEnvs);
-        return objects.isEmpty();
+        return true;
     }
+
+    @Override
+    protected String getErrorMessage(DynamicFeatureAccess fa)
+    {
+        return MessageFormat.format(Messages.DynamicFeatureAccessTypeCheck_Method_M_not_found_in_accessed_object,
+            fa.getName());
+    }
+
 }
