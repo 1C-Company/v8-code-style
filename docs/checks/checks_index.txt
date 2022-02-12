@@ -30,6 +30,7 @@ doc-comment-use-minus
 dynamic-access-method-not-found
 empty-except-statement
 event-heandler-boolean-param
+export-method-in-command-form-module
 form-module-missing-pragma
 form-module-pragma
 function-return-value-type
@@ -37,6 +38,7 @@ input-field-list-choice-mode
 invocation-form-event-handler
 invocation-parameter-type-intersect
 isinrole-using
+lock-out-of-try
 md-list-object-presentation
 md-standard-attribure-synonym-empty
 mdo-name-length
@@ -46,6 +48,9 @@ method-too-many-params
 module-accessibility-at-client
 module-region-empty
 module-structure-top-region
+module-undefined-function
+module-undefined-method
+module-undefined-variable
 new-color
 notify-description-to-server-procedure
 property-return-type

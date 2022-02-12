@@ -1,7 +1,7 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 43
+Общее количество проверок: 48
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -28,17 +28,22 @@
 | [dynamic-access-method-not-found](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/dynamic-access-method-not-found.md) | Метод в объекте не найден |
 | [empty-except-statement](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/empty-except-statement.md) | Конструкция "Попытка...Исключение...КонецПопытки" не содержит кода в исключении |
 | [event-heandler-boolean-param](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/event-heandler-boolean-param.md) | Использование булевого параметра обработчика события |
+| [export-method-in-command-form-module](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/export-method-in-command-form-module.md) | Ограничения на использование экспортных процедур и функций в модуле команд и форм |
 | [form-module-missing-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-module-missing-pragma.md) | Всегда использовать директивы компиляции в модуле формы |
 | [form-module-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-module-pragma.md) | Использование директив компиляции модуля формы |
 | [function-return-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/function-return-value-type.md) | Функция возвращает типизированное значение |
 | [invocation-form-event-handler](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-form-event-handler.md) | Программный вызов обработчика события формы |
 | [invocation-parameter-type-intersect](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-parameter-type-intersect.md) | Вызываемый тип пересекается с типом параметра |
 | [isinrole-using](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/isinrole-using.md) | Использован метод "РольДоступна" |
+| [lock-out-of-try](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/lock-out-of-try.md) | Вызов "Заблокировать()" находится вне попытки |
 | [method-param-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-param-value-type.md) | Параметр метода имеет тип |
 | [method-too-many-params](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-too-many-params.md) | Метод содержит слишком много параметров |
 | [module-accessibility-at-client](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-accessibility-at-client.md) | Метод или переменная доступны НаКлиенте |
 | [module-region-empty](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-region-empty.md) | Область пустая |
 | [module-structure-top-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-top-region.md) | Стандартная область структуры модуля верхнеуровневая |
+| [module-undefined-function](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-function.md) | Функция не определена |
+| [module-undefined-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-method.md) | Метод не определен |
+| [module-undefined-variable](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-variable.md) | Переменная не определена |
 | [new-color](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/new-color.md) | Использование конструкции "Новый Цвет" |
 | [notify-description-to-server-procedure](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/notify-description-to-server-procedure.md) | Описание оповещения на серверную процедуру |
 | [property-return-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/property-return-type.md) | Свойство объекта имеет тип возвращаемого значения |
