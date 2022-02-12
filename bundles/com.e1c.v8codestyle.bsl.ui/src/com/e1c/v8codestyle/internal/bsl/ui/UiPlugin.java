@@ -22,6 +22,8 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
+import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
+import com._1c.g5.wiring.ServiceInitialization;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -42,6 +44,8 @@ public class UiPlugin
     private static UiPlugin plugin;
 
     private volatile Injector injector;
+
+    private InjectorAwareServiceRegistrator registrator;
 
     private static BundleContext context;
 
@@ -129,6 +133,11 @@ public class UiPlugin
         plugin = this;
 
         BslPackage.eINSTANCE.eClass();
+        registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
+        ServiceInitialization.schedule(() -> {
+            // register services from injector
+            registrator.managedService(MultiCheckFixRegistrator.class).activateBeforeRegistration().registerInjected();
+        });
 
     }
 

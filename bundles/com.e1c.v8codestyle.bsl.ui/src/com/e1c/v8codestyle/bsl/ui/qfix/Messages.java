@@ -24,6 +24,10 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.ui.qfix.messages"; //$NON-NLS-1$
 
+    public static String OpenBslDocCommentViewFix_Description;
+
+    public static String OpenBslDocCommentViewFix_Details;
+
     public static String UndefinedMethodFix_func_title;
     public static String UndefinedMethodFix_func_desc;
     public static String UndefinedMethodFix_proc_title;
