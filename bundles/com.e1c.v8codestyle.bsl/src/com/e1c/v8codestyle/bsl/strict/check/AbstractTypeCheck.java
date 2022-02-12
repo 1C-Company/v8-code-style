@@ -14,10 +14,10 @@ package com.e1c.v8codestyle.bsl.strict.check;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
@@ -35,6 +35,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentati
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
@@ -50,7 +51,6 @@ import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectDynamicTypeNames;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
-import com.google.common.collect.Sets;
 
 /**
  * Abstract check of types in module objects. Allows to compute types respecting system enums,
@@ -124,6 +124,12 @@ public abstract class AbstractTypeCheck
         {
             return true;
         }
+        if (object instanceof Invocation && !actualEnvs.containsAny(Environments.SERVER)
+            && ((Invocation)object).isIsServerCall())
+        {
+            actualEnvs = actualEnvs.add(Environments.SERVER);
+        }
+
         List<TypeItem> types = computeTypes(object, actualEnvs);
 
         if (types.isEmpty() && object instanceof ExplicitVariable)
@@ -209,7 +215,6 @@ public abstract class AbstractTypeCheck
         parentTypes.addAll(expectedTypes);
         Collection<String> expectedTypesNames = getTypeNames(parentTypes, context);
         expectedTypesNames.addAll(getCastingType(expectedTypesNames));
-        expectedTypesNames = Sets.newLinkedHashSet(expectedTypesNames);
         if (expectedTypesNames.contains(IEObjectTypeNames.ARBITRARY)
             || expectedTypesNames.contains(IEObjectTypeNames.UNDEFINED)
             || expectedTypesNames.contains(IEObjectTypeNames.REFERENCE_TO_OBJECT_OF_INFORMATION_BASE)
@@ -269,7 +274,7 @@ public abstract class AbstractTypeCheck
 
     private static Collection<String> getTypeNames(List<TypeItem> parentTypes, EObject context)
     {
-        Set<String> typeNames = new HashSet<>();
+        Set<String> typeNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         for (TypeItem type : parentTypes)
         {
             String typeName = McoreUtil.getTypeName(type);

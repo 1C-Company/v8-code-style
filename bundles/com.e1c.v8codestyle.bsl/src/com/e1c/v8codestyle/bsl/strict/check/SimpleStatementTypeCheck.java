@@ -30,6 +30,7 @@ import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.ImplicitVariable;
+import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
@@ -144,6 +145,11 @@ public class SimpleStatementTypeCheck
         boolean canResetToUndefined = allowImplicitVarResetToUndefined && isImplicitVariableSource(left, actualEnvs);
 
         Expression right = statment.getRight();
+        if (right instanceof Invocation && !actualEnvs.containsAny(Environments.SERVER)
+            && ((Invocation)right).isIsServerCall())
+        {
+            actualEnvs = actualEnvs.add(Environments.SERVER);
+        }
         List<TypeItem> newTypes = computeTypes(right, actualEnvs);
         if (monitor.isCanceled())
         {
