@@ -205,6 +205,14 @@ final class Messages
     public static String ModuleUndefinedFunction_msg;
     public static String ModuleUndefinedMethod_msg;
 
+    public static String LockOutOfTry_BeginTransaction_method_must_by_outside_try_block;
+
+    public static String LockOutOfTry_Checks_for_init_of_the_data_lock;
+
+    public static String LockOutOfTry_Lock_out_of_try;
+
+    public static String LockOutOfTry_Method_lock_out_of_try;
+
     static
     {
         // initialize resource bundle

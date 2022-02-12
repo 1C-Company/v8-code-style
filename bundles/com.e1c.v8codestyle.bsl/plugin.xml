@@ -235,8 +235,12 @@
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.ExportMethodInCommandFormModuleCheck">
       </check>
-   </extension>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.LockOutOfTryCheck">
+      </check>
   
+   </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
       <initializer
