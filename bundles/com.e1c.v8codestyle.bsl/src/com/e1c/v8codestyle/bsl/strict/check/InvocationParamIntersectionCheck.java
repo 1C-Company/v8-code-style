@@ -21,7 +21,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -36,11 +38,14 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.util.Triple;
+import org.eclipse.xtext.util.Tuples;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslCommentUtils;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
+import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.EmptyExpression;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
@@ -61,6 +66,8 @@ import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.NamedElement;
 import com._1c.g5.v8.dt.mcore.ParamSet;
 import com._1c.g5.v8.dt.mcore.Parameter;
+import com._1c.g5.v8.dt.mcore.Property;
+import com._1c.g5.v8.dt.mcore.Type;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
@@ -81,10 +88,42 @@ import com.google.inject.Inject;
 public class InvocationParamIntersectionCheck
     extends AbstractTypeCheck
 {
+    private static final String METHOD_INSERT = "Insert"; //$NON-NLS-1$
+
+    private static final String MAP_GET = "Get"; //$NON-NLS-1$
+
+    private static final String MAP_DELETE = "Delete"; //$NON-NLS-1$
+
+    private static final String MAP_KEY = "Key"; //$NON-NLS-1$
+
+    private static final String MAP_VALUE = "Value"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "invocation-parameter-type-intersect"; //$NON-NLS-1$
 
     private static final String PARAM_ALLOW_DYNAMIC_TYPES_CHECK = "allowDynamicTypesCheck"; //$NON-NLS-1$
+
+    //@formatter:off
+    private static final Map<String, Map<String, Collection<Integer>>> COLLECTION_ADD_METHODS = Map.of(
+        "Add", Map.of(IEObjectTypeNames.ARRAY, Set.of(0), //$NON-NLS-1$
+            IEObjectTypeNames.VALUE_LIST, Set.of(0)),
+        METHOD_INSERT, Map.of(
+            IEObjectTypeNames.ARRAY, Set.of(1),
+            IEObjectTypeNames.VALUE_LIST, Set.of(1),
+            IEObjectTypeNames.MAP, Set.of(0, 1)),
+        "Set", Map.of( //$NON-NLS-1$
+            IEObjectTypeNames.ARRAY, Set.of(1)),
+        MAP_GET, Map.of(IEObjectTypeNames.MAP, Set.of(0)),
+        MAP_DELETE, Map.of(IEObjectTypeNames.MAP, Set.of(0)),
+        "Find", Map.of(IEObjectTypeNames.ARRAY, Set.of(0)) //$NON-NLS-1$
+        );
+
+    private static final Map<String, Map<Integer, String>> MAP_KEY_VALUE_TYPES = Map.of(
+        METHOD_INSERT, Map.of(0, MAP_KEY, 1, MAP_VALUE),
+        MAP_GET, Map.of(0, MAP_KEY),
+        MAP_DELETE, Map.of(0, MAP_KEY)
+        );
+
+    //@formatter:on
 
     private final IV8ProjectManager v8ProjectManager;
 
@@ -184,6 +223,13 @@ public class InvocationParamIntersectionCheck
 
         Environments actualEnvs = getActualEnvironments(inv);
 
+        // This allows to check collection item type
+        Triple<Collection<TypeItem>, Collection<Integer>, Boolean> collectionItemContext =
+            getCollectionItemContext(inv, method, actualEnvs);
+        Collection<TypeItem> collectionItemTypes = collectionItemContext.getFirst();
+        Collection<Integer> parameterNumbers = collectionItemContext.getSecond();
+        boolean isMap = collectionItemContext.getThird();
+
         for (int i = 0; i < inv.getParams().size(); i++)
         {
             if (monitor.isCanceled())
@@ -196,10 +242,12 @@ public class InvocationParamIntersectionCheck
             boolean isUndefined = param == null || param instanceof UndefinedLiteral || param instanceof EmptyExpression
                 || isUndefinedType(sorceTypes);
 
-            Collection<TypeItem> targetTypes = Collections.emptyList();
-            boolean isIntersect = false;
+            Collection<TypeItem> targetTypes =
+                getDefaultTargetOrCollectionItemTypes(method, collectionItemTypes, parameterNumbers, isMap, i, inv);
+            boolean isIntersect = !targetTypes.isEmpty() && intersectTypeItem(targetTypes, sorceTypes, inv);
             Parameter parameter = null;
-            for (Iterator<ParamSet> iterator = paramSets.iterator(); iterator.hasNext();)
+            for (Iterator<ParamSet> iterator = paramSets.iterator(); !isIntersect && targetTypes.isEmpty()
+                && iterator.hasNext();)
             {
                 ParamSet paramSet = iterator.next();
 
@@ -252,10 +300,6 @@ public class InvocationParamIntersectionCheck
                 }
 
                 isIntersect = intersectTypeItem(targetTypes, sorceTypes, inv);
-                if (isIntersect)
-                {
-                    break;
-                }
             }
 
             if (!isIntersect && !targetTypes.isEmpty())
@@ -263,6 +307,79 @@ public class InvocationParamIntersectionCheck
                 markInvalidSourceTypeNoIntercection(param, i, parameter, resultAceptor, targetTypes);
             }
         }
+    }
+
+    private Triple<Collection<TypeItem>, Collection<Integer>, Boolean> getCollectionItemContext(Invocation inv,
+        com._1c.g5.v8.dt.mcore.Method method, Environments actualEnvs)
+    {
+        Collection<TypeItem> collectionItemTypes = new ArrayList<>();
+        Collection<Integer> parameterNumbers = Collections.emptyList();
+        boolean isMap = false;
+
+        if (!(method instanceof SourceObjectLinkProvider) && inv.getMethodAccess() instanceof DynamicFeatureAccess)
+        {
+            Map<String, Collection<Integer>> typesAndParams = COLLECTION_ADD_METHODS.get(method.getName());
+            if (typesAndParams != null)
+            {
+                TypeItem collectionType = EcoreUtil2.getContainerOfType(method, TypeItem.class);
+                String typeName = McoreUtil.getTypeName(collectionType);
+                if (typeName != null && typesAndParams.containsKey(typeName))
+                {
+                    List<TypeItem> types = typeComputer
+                        .computeTypes(((DynamicFeatureAccess)inv.getMethodAccess()).getSource(), actualEnvs);
+                    for (TypeItem type : types)
+                    {
+                        type = (TypeItem)EcoreUtil.resolve(type, inv);
+                        if (type instanceof Type && typeName.equals(McoreUtil.getTypeName(type)))
+                        {
+                            collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                            isMap = IEObjectTypeNames.MAP.equals(typeName);
+                            parameterNumbers = typesAndParams.get(typeName);
+                        }
+                    }
+                    // Remove Arbitrary type which do not need to check
+                    for (Iterator<TypeItem> iterator = collectionItemTypes.iterator(); iterator.hasNext();)
+                    {
+                        TypeItem typeItem = iterator.next();
+                        if (IEObjectTypeNames.ARBITRARY.equals(McoreUtil.getTypeName(typeItem)))
+                        {
+                            iterator.remove();
+                        }
+                    }
+                }
+            }
+        }
+        return Tuples.create(collectionItemTypes, parameterNumbers, isMap);
+    }
+
+    private Collection<TypeItem> getDefaultTargetOrCollectionItemTypes(com._1c.g5.v8.dt.mcore.Method method,
+        Collection<TypeItem> collectionItemTypes, Collection<Integer> parameterNumbers, boolean isMap,
+        int parameterNumber, EObject context)
+    {
+        Collection<TypeItem> targetTypes = Collections.emptyList();
+        if (!collectionItemTypes.isEmpty() && parameterNumbers.contains(parameterNumber))
+        {
+            // use collection item types
+            if (isMap)
+            {
+                String name = MAP_KEY_VALUE_TYPES.get(method.getName()).get(parameterNumber);
+                Optional<Property> property =
+                    dynamicFeatureAccessComputer.getAllProperties(collectionItemTypes, context.eResource())
+                        .stream()
+                        .flatMap(p -> p.getFirst().stream())
+                        .filter(p -> name.equals(p.getName()))
+                        .findFirst();
+                if (property.isPresent())
+                {
+                    targetTypes = property.get().getTypes();
+                }
+            }
+            else
+            {
+                targetTypes = collectionItemTypes;
+            }
+        }
+        return targetTypes;
     }
 
     private boolean isUndefinedType(List<TypeItem> types)
@@ -313,7 +430,7 @@ public class InvocationParamIntersectionCheck
 
             FormalParam formalParam = targetParams.get(i);
             String paramName = formalParam.getName();
-            Collection<TypeItem> targetTypes = Collections.emptyList();
+            Collection<TypeItem> targetTypes = null;
             if (docComment.isPresent() && docComment.get().getParametersSection().getParameterByName(paramName) != null)
             {
                 // if parameter declared in doc-comment then check only declared types
