@@ -80,19 +80,26 @@ public abstract class AbstractTypeCheck
             IEObjectDynamicTypeNames.BP_REF_TYPE_NAME, IEObjectDynamicTypeNames.BP_ROUTEPOINT_TYPE_NAME,
             IEObjectDynamicTypeNames.TASK_REF_TYPE_NAME, IEObjectDynamicTypeNames.EXCHANGE_PLAN_REF_TYPE_NAME);
 
+    /** The resource lookup service. */
     protected final IResourceLookup resourceLookup;
 
+    /** The BSL preferences service. */
     protected final IBslPreferences bslPreferences;
 
+    /** The type computer service. */
     protected final TypesComputer typeComputer;
 
+    /** The dynamic feature access computer service. */
     protected final DynamicFeatureAccessComputer dynamicFeatureAccessComputer;
 
-    private final IScopeProvider scopeProvider;
+    /** The scope provider service. */
+    protected final IScopeProvider scopeProvider;
 
-    private final IQualifiedNameConverter qualifiedNameConverter;
+    /** The qualified name converter service. */
+    protected final IQualifiedNameConverter qualifiedNameConverter;
 
-    private final BslMultiLineCommentDocumentationProvider commentProvider;
+    /** The comment provider service. */
+    protected final BslMultiLineCommentDocumentationProvider commentProvider;
 
     /**
      * Instantiates a new abstract type check.
@@ -224,13 +231,14 @@ public abstract class AbstractTypeCheck
      * @param context {@link EObject} for resolving proxy checking types, cannot be <code>null</code>
      * @return <code>true</code> if intersection was detected
      */
-    protected static boolean intersectTypeItem(List<TypeItem> expectedTypes, List<TypeItem> realTypes, EObject context)
+    protected static boolean intersectTypeItem(Collection<TypeItem> expectedTypes, Collection<TypeItem> realTypes,
+        EObject context)
     {
         if (expectedTypes.isEmpty())
         {
             return true;
         }
-        List<TypeItem> parentTypes = getParentTypes(expectedTypes);
+        Collection<TypeItem> parentTypes = getParentTypes(expectedTypes);
         parentTypes.addAll(expectedTypes);
         Collection<String> expectedTypesNames = getTypeNames(parentTypes, context);
         expectedTypesNames.addAll(getCastingType(expectedTypesNames));
@@ -274,7 +282,7 @@ public abstract class AbstractTypeCheck
         return castTypeNames;
     }
 
-    private static List<TypeItem> getParentTypes(List<TypeItem> theFirstCollectionTypes)
+    private static Collection<TypeItem> getParentTypes(Collection<TypeItem> theFirstCollectionTypes)
     {
         List<TypeItem> types = new ArrayList<>(theFirstCollectionTypes);
         List<TypeItem> parentTypes = new ArrayList<>();
@@ -291,7 +299,7 @@ public abstract class AbstractTypeCheck
         return parentTypes;
     }
 
-    private static Collection<String> getTypeNames(List<TypeItem> parentTypes, EObject context)
+    private static Collection<String> getTypeNames(Collection<TypeItem> parentTypes, EObject context)
     {
         Set<String> typeNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         for (TypeItem type : parentTypes)

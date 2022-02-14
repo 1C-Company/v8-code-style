@@ -42,6 +42,7 @@ final class Messages
     public static String FunctionReturnTypeCheck_description;
     public static String FunctionReturnTypeCheck_title;
     public static String FunctionReturnTypeCheck_Function_has_no_return_value_type;
+    public static String InvocationParamIntersectionCheck_Allow_dynamic_types_check_for_local_method_call;
     public static String InvocationParamIntersectionCheck_description;
     public static String InvocationParamIntersectionCheck_title;
     public static String MethodParamTypeCheck_description;
