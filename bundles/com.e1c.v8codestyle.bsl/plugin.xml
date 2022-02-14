@@ -214,6 +214,7 @@
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.IsInRoleCheck">
       </check>
+      <!-- Temporary disabling checks
       <check category="com.e1c.v8codestyle.bsl"
          class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UndefinedMethodCheck">
       </check>
@@ -223,6 +224,7 @@
       <check category="com.e1c.v8codestyle.bsl"
          class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UndefinedVariableCheck">
       </check>
+      -->
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.InvocationFormEventHandlerCheck">
