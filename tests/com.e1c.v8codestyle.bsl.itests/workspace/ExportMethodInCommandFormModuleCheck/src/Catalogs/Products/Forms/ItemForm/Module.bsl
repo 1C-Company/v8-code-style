@@ -1,5 +1,5 @@
 
-&AtClient
+&AtServer
 Procedure Test() Export
 	
 EndProcedure
