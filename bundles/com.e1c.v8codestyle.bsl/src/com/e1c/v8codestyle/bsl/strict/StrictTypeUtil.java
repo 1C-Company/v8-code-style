@@ -158,21 +158,33 @@ public final class StrictTypeUtil
      */
     public static boolean hasStrictTypeAnnotation(INode root)
     {
+        return getStrictTypeAnnotationNode(root) != null;
+    }
+
+    /**
+     *
+     * Gets the {@link ILeafNode} of the  {@code @strict-types} annotation in module description.
+     *
+     * @param root the root, cannot be {@code null}.
+     * @return leaf node, if module has annotation in header, or {@code null} if not found
+     */
+    public static ILeafNode getStrictTypeAnnotationNode(INode root)
+    {
         for (ILeafNode node : root.getLeafNodes())
         {
             if (!node.isHidden())
             {
-                return false;
+                return null;
             }
 
             if (BslCommentUtils.isCommentNode(node)
                 && node.getText().substring(COMMENT_LENGTH).trim().startsWith(STRICT_TYPE_ANNOTATION))
             {
-                return true;
+                return node;
             }
 
         }
-        return false;
+        return null;
     }
 
     /**
