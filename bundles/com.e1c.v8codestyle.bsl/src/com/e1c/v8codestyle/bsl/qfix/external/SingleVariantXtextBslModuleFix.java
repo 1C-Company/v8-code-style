@@ -9,10 +9,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.qfix.external;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.function.BiFunction;
 
 import org.eclipse.emf.ecore.EObject;
@@ -115,8 +113,18 @@ public abstract class SingleVariantXtextBslModuleFix
             IModificationContext modificationContext =
                 ((XtextInteractiveBslModuleFixModel)fixModel).getModificationContext();
 
+            IXtextDocument document = (IXtextDocument)fixModel.getDocument();
+            XtextResource xtextResource = document.readOnly(new IUnitOfWork<XtextResource, XtextResource>()
+            {
+                @Override
+                public XtextResource exec(XtextResource state) throws Exception
+                {
+                    return state;
+                }
+            });
+
             ExternalQuickfixModification<EObject> quickFixModification = new ExternalQuickfixModification<>(issue,
-                EObject.class, element -> fixIssue((IXtextInteractiveBslModuleFixModel)fixModel));
+                EObject.class, element -> fixIssue((IXtextInteractiveBslModuleFixModel)fixModel, xtextResource));
 
             try
             {
@@ -133,7 +141,7 @@ public abstract class SingleVariantXtextBslModuleFix
         }
     }
 
-    private TextEdit fixIssue(IXtextInteractiveBslModuleFixModel fixModel)
+    private TextEdit fixIssue(IXtextInteractiveBslModuleFixModel fixModel, XtextResource xtextResource)
     {
         Issue issue = fixModel.getIssue();
         if (issue.getOffset() == null)
@@ -141,21 +149,16 @@ public abstract class SingleVariantXtextBslModuleFix
             return null;
         }
 
-        List<TextEdit> textEdits = new ArrayList<>();
-        IXtextDocument document = (IXtextDocument)fixModel.getDocument();
-        document.readOnly(new IUnitOfWork.Void<XtextResource>()
+        try
         {
-            @Override
-            public void process(XtextResource state) throws Exception
-            {
-                TextEdit te = fixIssue(state, fixModel);
-                if (te != null)
-                {
-                    textEdits.add(te);
-                }
-            }
-        });
-        return !textEdits.isEmpty() ? textEdits.get(0) : null;
+            return fixIssue(xtextResource, fixModel);
+        }
+        catch (Exception e)
+        {
+            BslPlugin.log(BslPlugin.createErrorStatus("Error occured when applying quick fix", e)); //$NON-NLS-1$
+        }
+
+        return null;
     }
 
     private Collection<IFixChange> prepareChanges(ISingleVariantXtextModuleFixChangeDelegate changeDelegate)
@@ -224,8 +227,7 @@ public abstract class SingleVariantXtextBslModuleFix
      */
     protected static final class FixConfigurer
     {
-        private BiFunction<SingleVariantXtextBslModuleFixContext, IFixSession, Pair<String, String>>
-            descriptionSupplier;
+        private BiFunction<SingleVariantXtextBslModuleFixContext, IFixSession, Pair<String, String>> descriptionSupplier; //CHECKSTYLE.OFF: LineLength
         private boolean isInteractive = true;
         private String description = StringUtils.EMPTY;
         private String details = StringUtils.EMPTY;
