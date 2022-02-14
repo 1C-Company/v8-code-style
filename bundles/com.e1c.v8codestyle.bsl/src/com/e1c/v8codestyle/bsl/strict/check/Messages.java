@@ -22,6 +22,7 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.strict.check.messages"; //$NON-NLS-1$
+    public static String AbstractDynamicFeatureAccessTypeCheck_Skip_source_object_types;
     public static String DocCommentFieldTypeCheck_description;
     public static String DocCommentFieldTypeCheck_Field__N__has_no_type_definition;
     public static String DocCommentFieldTypeCheck_title;
