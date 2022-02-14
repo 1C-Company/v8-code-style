@@ -70,6 +70,12 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ExportMethodInCommandFormModuleCheck_CheckClientMethodForm;
+
+    public static String ExportMethodInCommandFormModuleCheck_CheckServerMethodForm;
+
+    public static String ExportMethodInCommandFormModuleCheck_ExludeMethodNamePattern;
+
     public static String ExportMethodInCommandFormModuleCheck_Notify_description_methods;
 
     public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_des;
