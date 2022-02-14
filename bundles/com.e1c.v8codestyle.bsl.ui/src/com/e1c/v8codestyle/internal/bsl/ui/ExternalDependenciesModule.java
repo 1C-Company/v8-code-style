@@ -20,6 +20,7 @@ import com._1c.g5.v8.dt.core.model.IModelEditingSupport;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
+import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 
 /**
@@ -46,6 +47,7 @@ class ExternalDependenciesModule
         bind(IQualifiedNameFilePathConverter.class).toService();
         bind(IV8ProjectManager.class).toService();
         bind(IModelEditingSupport.class).toService();
+        bind(IFixRepository.class).toService();
 
         // CodeStyle Services
         bind(IModuleStructureProvider.class).toService();
