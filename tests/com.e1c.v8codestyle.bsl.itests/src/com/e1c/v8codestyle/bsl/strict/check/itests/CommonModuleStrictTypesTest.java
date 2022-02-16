@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -426,13 +428,12 @@ public class CommonModuleStrictTypesTest
 
         assertEquals(3, markers.size());
 
-        Marker marker = markers.get(0);
-        assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        marker = markers.get(1);
-        assertEquals("13", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        marker = markers.get(2);
-        assertEquals("12", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
+        Set<String> lines = new HashSet<>();
+        for(Marker marker: markers)
+        {
+            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+        assertEquals(Set.of("10", "12", "13"), lines);
     }
 
     /**
