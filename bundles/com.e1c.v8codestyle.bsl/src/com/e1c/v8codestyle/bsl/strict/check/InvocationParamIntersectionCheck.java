@@ -322,7 +322,7 @@ public class InvocationParamIntersectionCheck
             if (typesAndParams != null)
             {
                 TypeItem collectionType = EcoreUtil2.getContainerOfType(method, TypeItem.class);
-                String typeName = McoreUtil.getTypeName(collectionType);
+                String typeName = collectionType == null ? null : McoreUtil.getTypeName(collectionType);
                 if (typeName != null && typesAndParams.containsKey(typeName))
                 {
                     List<TypeItem> types = typeComputer
