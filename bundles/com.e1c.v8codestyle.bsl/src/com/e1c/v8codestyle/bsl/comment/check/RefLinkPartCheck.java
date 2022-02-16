@@ -95,7 +95,7 @@ public class RefLinkPartCheck
             && object.getParent() instanceof Description && linkPart.getPartsWithOffset().size() == 1;
 
         if (!isWebLink(linkPart) && !isSingleWordInDescription
-            && !isLinkPartObjectExist(linkPart, scopeProvider, root.getMethod()))
+            && getLinkPartLastObject(linkPart, scopeProvider, root.getMethod()).isEmpty())
         {
             resultAceptor.addIssue(Messages.RefLinkPartCheck_Link_referenced_to_unexisting_object,
                 linkPart.getLineNumber(), linkPart.getLinkTextOffset(), linkPart.getLinkText().length());
