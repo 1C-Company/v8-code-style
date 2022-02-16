@@ -74,6 +74,7 @@ public class ParametersSectionCheck
 
         if (root.getMethod().getFormalParams().isEmpty())
         {
+            // TODO Extract to new check that parameter section is empty and useless
             resultAceptor.addIssue(Messages.ParametersSectionCheck_Remove_useless_parameter_section,
                 parameterSection.getHeaderKeywordLength());
             return;
@@ -87,7 +88,9 @@ public class ParametersSectionCheck
         Set<String> parameterNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         root.getMethod().getFormalParams().forEach(p -> {
             if (p != null && StringUtils.isNotBlank(p.getName()))
+            {
                 parameterNames.add(p.getName());
+            }
         });
 
         for (FieldDefinition parameterDefinition : parameterSection.getParameterDefinitions())
