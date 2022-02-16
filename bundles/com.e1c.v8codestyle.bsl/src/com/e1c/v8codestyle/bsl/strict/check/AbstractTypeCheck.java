@@ -12,9 +12,10 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.strict.check;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.Deque;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -238,9 +239,7 @@ public abstract class AbstractTypeCheck
         {
             return true;
         }
-        Collection<TypeItem> parentTypes = getParentTypes(expectedTypes);
-        parentTypes.addAll(expectedTypes);
-        Collection<String> expectedTypesNames = getTypeNames(parentTypes, context);
+        Collection<String> expectedTypesNames = getTypeNames(expectedTypes, context);
         expectedTypesNames.addAll(getCastingType(expectedTypesNames));
         if (expectedTypesNames.contains(IEObjectTypeNames.ARBITRARY)
             || expectedTypesNames.contains(IEObjectTypeNames.UNDEFINED)
@@ -254,9 +253,8 @@ public abstract class AbstractTypeCheck
         {
             return false;
         }
-        parentTypes = getParentTypes(realTypes);
-        parentTypes.addAll(realTypes);
-        Collection<String> realTypesNames = getTypeNames(parentTypes, context);
+        Collection<TypeItem> withParentTypes = getParentTypes(realTypes, context);
+        Collection<String> realTypesNames = getTypeNames(withParentTypes, context);
 
         if (!expectedTypesNames.isEmpty() && !realTypesNames.isEmpty())
         {
@@ -282,18 +280,22 @@ public abstract class AbstractTypeCheck
         return castTypeNames;
     }
 
-    private static Collection<TypeItem> getParentTypes(Collection<TypeItem> theFirstCollectionTypes)
+    private static Collection<TypeItem> getParentTypes(Collection<TypeItem> theFirstCollectionTypes, EObject context)
     {
-        List<TypeItem> types = new ArrayList<>(theFirstCollectionTypes);
+        Deque<TypeItem> types = new ArrayDeque<>(theFirstCollectionTypes);
         List<TypeItem> parentTypes = new ArrayList<>();
-        Iterator<TypeItem> iterator = types.iterator();
-        while (iterator.hasNext())
+        while (!types.isEmpty())
         {
-            TypeItem type = iterator.next();
-            while (type instanceof Type && ((Type)type).getParentType() != null)
+            TypeItem type = types.pollFirst();
+            type = (TypeItem)EcoreUtil.resolve(type, context);
+            parentTypes.add(type);
+            if (type instanceof TypeSet)
             {
-                parentTypes.add(((Type)type).getParentType());
-                type = ((Type)type).getParentType();
+                ((TypeSet)type).getTypes().forEach(types::add);
+            }
+            if (type instanceof Type && ((Type)type).getParentType() != null)
+            {
+                types.add(((Type)type).getParentType());
             }
         }
         return parentTypes;
@@ -304,28 +306,15 @@ public abstract class AbstractTypeCheck
         Set<String> typeNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         for (TypeItem type : parentTypes)
         {
+            type = (TypeItem)EcoreUtil.resolve(type, context);
             String typeName = McoreUtil.getTypeName(type);
-            String[] parts = typeName.split("\\."); //$NON-NLS-1$
-            if (parts.length == 2)
-            {
-                typeNames.add(parts[0]);
-                if (type.eIsProxy() && (IEObjectTypeNames.DEFINED_TYPE.equals(parts[0])
-                    || IEObjectTypeNames.CHARACTERISTIC.equals(parts[0])))
-                {
-                    type = (TypeItem)EcoreUtil.resolve(type, context);
-                }
-            }
             typeNames.add(typeName);
             if (type instanceof TypeSet)
             {
-                if (parts.length == 2)
-                {
-                    typeNames.addAll(((TypeSet)type).getTypes()
-                        .stream()
-                        .map(typeItem -> McoreUtil.getTypeName(typeItem))
-                        .collect(Collectors.toList()));
-                }
-                else if (IEObjectTypeNames.ANY_REF.equals(typeName))
+                typeNames.addAll(
+                    ((TypeSet)type).getTypes().stream().map(McoreUtil::getTypeName).collect(Collectors.toList()));
+
+                if (IEObjectTypeNames.ANY_REF.equals(typeName))
                 {
                     typeNames.addAll(ALL_REF_TYPE_SET_PARENT_TYPE_NAMES);
                 }
