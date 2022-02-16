@@ -31,7 +31,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -357,7 +356,6 @@ public class CommonModuleStrictTypesTest
      * @throws Exception the exception
      */
     @Test
-    @Ignore // FIXME check-system fails on issue add
     public void testFunctionCtorReturnSectionCheck() throws Exception
     {
 
@@ -370,13 +368,13 @@ public class CommonModuleStrictTypesTest
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(1, markers.size());
-
-        String uriToProblem = EcoreUtil.getURI(finctions.get(0)).toString();
+        assertEquals(2, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        // different key
+        marker = markers.get(1);
+        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
