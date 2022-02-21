@@ -22,6 +22,10 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.form.check.messages"; //$NON-NLS-1$
+    public static String FormItemsOneEventHandlerCheck_description;
+    public static String FormItemsOneEventHandlerCheck_itemName_dot_eventName;
+    public static String FormItemsOneEventHandlerCheck_the_handler_is_already_assigned_to_event;
+    public static String FormItemsOneEventHandlerCheck_title;
     public static String FormListRefUseAlwaysFlagDisabledCheck_description;
     public static String FormListRefUseAlwaysFlagDisabledCheck_title;
     public static String FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field;
