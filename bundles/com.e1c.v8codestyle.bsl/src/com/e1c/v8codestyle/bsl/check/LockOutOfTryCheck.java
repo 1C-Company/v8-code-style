@@ -19,15 +19,23 @@ import java.util.Objects;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 
+import com._1c.g5.v8.dt.bsl.contextdef.IBslModuleContextDefService;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
+import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
+import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
+import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
 import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.Event;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -49,20 +57,26 @@ public final class LockOutOfTryCheck
     extends BasicCheck
 {
 
+    private static final List<String> EXLUDED_EVENTS =
+        List.of("BeforeDelete", "BeforeWrite", "OnWrite", "BeforeDelete", "OnWriteAtServer", "Posting"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
     private static final String CHECK_ID = "lock-out-of-try"; //$NON-NLS-1$
     private static final String NAME_DATA_LOCK = "DataLock"; //$NON-NLS-1$
     private static final String NAME_LOCK = "Lock"; //$NON-NLS-1$
     private static final String NAME_LOCK_RU = "Заблокировать"; //$NON-NLS-1$
     private final TypesComputer typesComputer;
+    private BslEventsService bslEventsService;
+    private IBslModuleContextDefService contextDefService;
 
     @Inject
-    public LockOutOfTryCheck()
+    public LockOutOfTryCheck(IBslModuleContextDefService contextDefService)
     {
         super();
 
+        this.contextDefService = contextDefService;
         IResourceServiceProvider rsp =
             IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
         this.typesComputer = rsp.get(TypesComputer.class);
+        this.bslEventsService = rsp.get(BslEventsService.class);
     }
 
     @Override
@@ -104,6 +118,23 @@ public final class LockOutOfTryCheck
             return;
         }
 
+        Method method = EcoreUtil2.getContainerOfType(source, Method.class);
+        if (monitor.isCanceled() || method == null)
+        {
+            return;
+        }
+
+        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
+        if (monitor.isCanceled())
+        {
+            return;
+        }
+
+        if (isExcluded(module, method))
+        {
+            return;
+        }
+
         List<TypeItem> types = typesComputer.computeTypes(source, env.environments());
         for (TypeItem type : types)
         {
@@ -113,5 +144,41 @@ public final class LockOutOfTryCheck
                 resultAceptor.addIssue(Messages.LockOutOfTry_Method_lock_out_of_try, object);
             }
         }
+    }
+
+    private boolean isExcluded(Module module, Method method)
+    {
+        CaseInsensitiveString methodName = new CaseInsensitiveString(method.getName());
+        if (module.getModuleType() == ModuleType.FORM_MODULE)
+        {
+            List<EObject> eventHandlers = bslEventsService.getEventHandlers(module).get(methodName);
+            if (!Objects.isNull(eventHandlers) && !eventHandlers.isEmpty())
+            {
+                for (EObject handler : eventHandlers)
+                {
+                    if (handler instanceof Event && (EXLUDED_EVENTS.contains(((Event)handler).getName())))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        else if (module.getModuleType() == ModuleType.OBJECT_MODULE)
+        {
+            List<Event> moduleEvents = contextDefService.getModuleEvents(module);
+            for (Event event : moduleEvents)
+            {
+                if (EXLUDED_EVENTS.contains(event.getName()))
+                {
+                    CaseInsensitiveString name = new CaseInsensitiveString(event.getName());
+                    CaseInsensitiveString nameRu = new CaseInsensitiveString(event.getNameRu());
+                    if (name.equals(methodName) || nameRu.equals(methodName))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
