@@ -18,10 +18,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.contextdef.IBslModuleContextDefService;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
@@ -67,16 +65,22 @@ public final class LockOutOfTryCheck
     private BslEventsService bslEventsService;
     private IBslModuleContextDefService contextDefService;
 
+    /**
+     * Instantiates a new lock out of try check.
+     *
+     * @param contextDefService the context def service, cannot be {@code null}
+     * @param typesComputer the types computer service, cannot be {@code null}
+     * @param bslEventsService the BSL events service, cannot be {@code null}
+     */
     @Inject
-    public LockOutOfTryCheck(IBslModuleContextDefService contextDefService)
+    public LockOutOfTryCheck(IBslModuleContextDefService contextDefService, TypesComputer typesComputer,
+        BslEventsService bslEventsService)
     {
         super();
 
         this.contextDefService = contextDefService;
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.typesComputer = rsp.get(TypesComputer.class);
-        this.bslEventsService = rsp.get(BslEventsService.class);
+        this.bslEventsService = bslEventsService;
+        this.typesComputer = typesComputer;
     }
 
     @Override

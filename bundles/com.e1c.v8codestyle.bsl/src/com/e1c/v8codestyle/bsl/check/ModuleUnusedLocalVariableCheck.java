@@ -20,11 +20,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.INode;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.common.VariableProcessor;
 import com._1c.g5.v8.dt.bsl.model.Block;
@@ -49,6 +47,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.common.collect.Lists;
+import com.google.inject.Inject;
 
 /**
  * Unused module local variable check.
@@ -66,15 +65,18 @@ public final class ModuleUnusedLocalVariableCheck
 
     /**
      * Instantiates a new module unused local variable check.
+     *
+     * @param dynamicComputer the dynamic computer service, cannot be {@code null}
+     * @param ownerService the owner service service, cannot be {@code null}
      */
-    public ModuleUnusedLocalVariableCheck()
+    @Inject
+    public ModuleUnusedLocalVariableCheck(DynamicFeatureAccessComputer dynamicComputer,
+        IBslOwnerComputerService ownerService)
     {
         super();
-        IResourceServiceProvider serviceProvider =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
 
-        dynamicComputer = serviceProvider.get(DynamicFeatureAccessComputer.class);
-        ownerService = serviceProvider.get(IBslOwnerComputerService.class);
+        this.dynamicComputer = dynamicComputer;
+        this.ownerService = ownerService;
     }
 
     @Override

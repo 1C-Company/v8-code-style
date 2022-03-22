@@ -16,10 +16,8 @@ import java.util.Collection;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
@@ -65,16 +63,14 @@ public class FunctionReturnSectionCheck
 
     @Inject
     public FunctionReturnSectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter)
+        IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider,
+        BslMultiLineCommentDocumentationProvider commentProvider)
     {
         this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
         this.qualifiedNameConverter = qualifiedNameConverter;
-
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.scopeProvider = rsp.get(IScopeProvider.class);
-        this.commentProvider = rsp.get(BslMultiLineCommentDocumentationProvider.class);
+        this.scopeProvider = scopeProvider;
+        this.commentProvider = commentProvider;
     }
 
     @Override

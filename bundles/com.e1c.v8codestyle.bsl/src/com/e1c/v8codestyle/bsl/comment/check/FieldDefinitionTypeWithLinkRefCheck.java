@@ -18,9 +18,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
@@ -37,6 +35,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Check field that it has definition of complex type and also reference to constructor function instead of just only
@@ -77,12 +76,13 @@ public class FieldDefinitionTypeWithLinkRefCheck
 
     /**
      * Instantiates a new field definition type with link reference to constructor function check.
+     *
+     * @param scopeProvider the scope provider service, cannot be {@code null}.
      */
-    public FieldDefinitionTypeWithLinkRefCheck()
+    @Inject
+    public FieldDefinitionTypeWithLinkRefCheck(IScopeProvider scopeProvider)
     {
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.scopeProvider = rsp.get(IScopeProvider.class);
+        this.scopeProvider = scopeProvider;
     }
 
     @Override

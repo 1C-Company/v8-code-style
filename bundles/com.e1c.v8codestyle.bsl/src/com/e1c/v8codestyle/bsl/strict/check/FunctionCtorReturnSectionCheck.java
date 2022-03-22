@@ -25,10 +25,8 @@ import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.util.Pair;
@@ -103,23 +101,26 @@ public class FunctionCtorReturnSectionCheck
      * @param v8ProjectManager the v8 project manager service, cannot be {@code null}.
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
+     * @param typesComputer the types computer service, cannot be {@code null}.
+     * @param dynamicComputer the dynamic computer service, cannot be {@code null}.
+     * @param scopeProvider the scope provider service, cannot be {@code null}.
+     * @param commentProvider the comment provider service, cannot be {@code null}.
      */
     @Inject
     public FunctionCtorReturnSectionCheck(IResourceLookup resourceLookup, IV8ProjectManager v8ProjectManager,
-        IQualifiedNameConverter qualifiedNameConverter, IBslPreferences bslPreferences)
+        IQualifiedNameConverter qualifiedNameConverter, IBslPreferences bslPreferences, TypesComputer typesComputer,
+        DynamicFeatureAccessComputer dynamicComputer, IScopeProvider scopeProvider,
+        BslMultiLineCommentDocumentationProvider commentProvider)
     {
         super();
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.typesComputer = rsp.get(TypesComputer.class);
-        this.dynamicComputer = rsp.get(DynamicFeatureAccessComputer.class);
-        this.scopeProvider = rsp.get(IScopeProvider.class);
-        this.commentProvider = rsp.get(BslMultiLineCommentDocumentationProvider.class);
+        this.typesComputer = typesComputer;
+        this.dynamicComputer = dynamicComputer;
+        this.scopeProvider = scopeProvider;
+        this.commentProvider = commentProvider;
         this.qualifiedNameConverter = qualifiedNameConverter;
         this.resourceLookup = resourceLookup;
         this.v8ProjectManager = v8ProjectManager;
         this.bslPreferences = bslPreferences;
-
     }
 
     @Override

@@ -23,7 +23,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
@@ -50,6 +49,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Check that notify description procedure is exist and available at the client.
@@ -78,16 +78,17 @@ public class NotifyDescriptionToServerProcedureCheck
 
     /**
      * Instantiates a new notify description to server procedure check.
+     *
+     * @param dynamicFeatureAccessComputer the dynamic feature access computer service, cannot be {@code null}
+     * @param exportMethodProvider the export method provider service, cannot be {@code null}
      */
-    public NotifyDescriptionToServerProcedureCheck()
+    @Inject
+    public NotifyDescriptionToServerProcedureCheck(DynamicFeatureAccessComputer dynamicFeatureAccessComputer,
+        ExportMethodProvider exportMethodProvider)
     {
         super();
-
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-
-        this.dynamicFeatureAccessComputer = rsp.get(DynamicFeatureAccessComputer.class);
-        this.exportMethodProvider = rsp.get(ExportMethodProvider.class);
+        this.dynamicFeatureAccessComputer = dynamicFeatureAccessComputer;
+        this.exportMethodProvider = exportMethodProvider;
     }
 
     @Override

@@ -16,8 +16,6 @@ import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.comment.DocumentationCommentProperties;
@@ -62,16 +60,17 @@ public class ExportFunctionReturnSectionCheck
      *
      * @param resourceLookup the resource lookup service, cannot be {@code null}.
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
+     * @param commentProvider the comment provider service, cannot be {@code null}.
+     * @param scopeProvider the scope provider service, cannot be {@code null}.
      */
     @Inject
-    public ExportFunctionReturnSectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences)
+    public ExportFunctionReturnSectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
+        BslMultiLineCommentDocumentationProvider commentProvider, IScopeProvider scopeProvider)
     {
         this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.commentProvider = rsp.get(BslMultiLineCommentDocumentationProvider.class);
-        this.scopeProvider = rsp.get(IScopeProvider.class);
+        this.commentProvider = commentProvider;
+        this.scopeProvider = scopeProvider;
     }
 
     @Override
