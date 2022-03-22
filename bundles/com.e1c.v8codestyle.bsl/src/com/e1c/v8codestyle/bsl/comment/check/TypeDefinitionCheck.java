@@ -15,10 +15,8 @@ package com.e1c.v8codestyle.bsl.comment.check;
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.resource.IEObjectDescription;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
@@ -52,12 +50,10 @@ public class TypeDefinitionCheck
     private final IQualifiedNameConverter qualifiedNameConverter;
 
     @Inject
-    public TypeDefinitionCheck(IQualifiedNameConverter qualifiedNameConverter)
+    public TypeDefinitionCheck(IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider)
     {
         this.qualifiedNameConverter = qualifiedNameConverter;
-        IResourceServiceProvider resourceServiceProvider =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.scopeProvider = resourceServiceProvider.get(IScopeProvider.class);
+        this.scopeProvider = scopeProvider;
     }
 
     @Override

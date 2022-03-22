@@ -13,8 +13,6 @@
 package com.e1c.v8codestyle.bsl.comment.check;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
@@ -28,6 +26,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Validates {@link LinkPart} of documentation comment that it referenced to an existing object.
@@ -57,12 +56,13 @@ public class RefLinkPartCheck
 
     /**
      * Instantiates a new reference link part check.
+     *
+     * @param scopeProvider the scope provider service, cannot be {@code null}.
      */
-    public RefLinkPartCheck()
+    @Inject
+    public RefLinkPartCheck(IScopeProvider scopeProvider)
     {
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.scopeProvider = rsp.get(IScopeProvider.class);
+        this.scopeProvider = scopeProvider;
     }
 
     @Override
