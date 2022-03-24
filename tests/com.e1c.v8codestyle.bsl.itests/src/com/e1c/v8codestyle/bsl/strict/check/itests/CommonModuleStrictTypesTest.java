@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -29,7 +31,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -149,7 +150,7 @@ public class CommonModuleStrictTypesTest
         Module module = updateAndGetModule(checkId);
 
         List<Variable> variables = EcoreUtil2.eAllOfType(module, Variable.class);
-        assertEquals(2, variables.size());
+        assertEquals(4, variables.size());
 
         List<Marker> markers = getMarters(checkId, module);
 
@@ -173,7 +174,7 @@ public class CommonModuleStrictTypesTest
     public void testDocCommentFieldTypeCheck() throws Exception
     {
 
-        String checkId = "doc-comment-field-type";
+        String checkId = "doc-comment-field-type-strict";
 
         Module module = updateAndGetModule(checkId);
 
@@ -355,7 +356,6 @@ public class CommonModuleStrictTypesTest
      * @throws Exception the exception
      */
     @Test
-    @Ignore // FIXME check-system fails on issue add
     public void testFunctionCtorReturnSectionCheck() throws Exception
     {
 
@@ -368,13 +368,13 @@ public class CommonModuleStrictTypesTest
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(1, markers.size());
-
-        String uriToProblem = EcoreUtil.getURI(finctions.get(0)).toString();
+        assertEquals(2, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        // different key
+        marker = markers.get(1);
+        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -409,6 +409,33 @@ public class CommonModuleStrictTypesTest
 
     /**
      * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
+     * with caller type for collections with typed items.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvocationParamIntersectionCollectionItemCheck() throws Exception
+    {
+
+        String checkId = "invocation-parameter-type-intersect";
+        String resouceName = "invocation-parameter-type-intersect-collection-item";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(3, markers.size());
+
+        Set<String> lines = new HashSet<>();
+        for(Marker marker: markers)
+        {
+            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+        assertEquals(Set.of("10", "12", "13"), lines);
+    }
+
+    /**
+     * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
      * with caller type, and skip checking if method has default value parameters.
      *
      * @throws Exception the exception
@@ -419,6 +446,30 @@ public class CommonModuleStrictTypesTest
 
         String checkId = "invocation-parameter-type-intersect";
         String resouceName = "invocation-parameter-type-intersect-with-default";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(1, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+    }
+
+    /**
+     * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
+     * with caller type that is local method with documentation comment.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvocationParamIntersectionCheckLocalDocComment() throws Exception
+    {
+
+        String checkId = "invocation-parameter-type-intersect";
+        String resouceName = "invocation-parameter-type-intersect-local-doc-comment";
 
         Module module = updateAndGetModule(resouceName);
 
@@ -446,9 +497,9 @@ public class CommonModuleStrictTypesTest
         return markers;
     }
 
-    private Module updateAndGetModule(String checkId) throws CoreException, IOException
+    private Module updateAndGetModule(String resourceName) throws CoreException, IOException
     {
-        try (InputStream in = getClass().getResourceAsStream(FOLDER + checkId + ".bsl"))
+        try (InputStream in = getClass().getResourceAsStream(FOLDER + resourceName + ".bsl"))
         {
             IFile file = getProject().getWorkspaceProject().getFile(COMMON_MODULE_FILE_NAME);
             file.setContents(in, true, true, new NullProgressMonitor());

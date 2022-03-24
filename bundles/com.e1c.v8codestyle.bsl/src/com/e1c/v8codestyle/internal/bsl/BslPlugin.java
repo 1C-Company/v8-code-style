@@ -21,6 +21,7 @@ import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
 import com._1c.g5.wiring.ServiceInitialization;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.qfix.external.BslCheckFixBoostrap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -127,14 +128,13 @@ public class BslPlugin
         plugin = this;
 
         BslPackage.eINSTANCE.eClass();
-
         registrator = new InjectorAwareServiceRegistrator(bundleContext, this::getInjector);
-
         ServiceInitialization.schedule(() -> {
             // register services from injector
             registrator.service(IModuleStructureProvider.class).registerInjected();
+            registrator.managedService(BslCheckFixBoostrap.class).activateBeforeRegistration().registerInjected();
+            registrator.managedService(MultiCheckFixRegistrator.class).activateBeforeRegistration().registerInjected();
         });
-
     }
 
     /*

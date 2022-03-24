@@ -12,25 +12,13 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.strict.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.FEATURE_ACCESS__NAME;
-
 import java.text.MessageFormat;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
-import com.e1c.g5.v8.dt.check.CheckComplexity;
-import com.e1c.g5.v8.dt.check.ICheckParameters;
-import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
-import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
-import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.google.inject.Inject;
 
 /**
@@ -39,7 +27,7 @@ import com.google.inject.Inject;
  * @author Dmitriy Marmyshev
  */
 public class DynamicFeatureAccessTypeCheck
-    extends AbstractTypeCheck
+    extends AbstractDynamicFeatureAccessTypeCheck
 {
     private static final String CHECK_ID = "property-return-type"; //$NON-NLS-1$
 
@@ -64,41 +52,28 @@ public class DynamicFeatureAccessTypeCheck
     }
 
     @Override
-    protected void configureCheck(CheckConfigurer builder)
+    protected String getTitle()
     {
-        builder.title(Messages.DynamicFeatureAccessTypeCheck_title)
-            .description(Messages.DynamicFeatureAccessTypeCheck_description)
-            .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.CODE_STYLE)
-            .extension(new ModuleTopObjectNameFilterExtension())
-            .extension(new StrictTypeAnnotationCheckExtension())
-            .module()
-            .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
+        return Messages.DynamicFeatureAccessTypeCheck_title;
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+    protected String getDescription()
     {
-        if (monitor.isCanceled() || !(object instanceof EObject))
-        {
-            return;
-        }
+        return Messages.DynamicFeatureAccessTypeCheck_description;
+    }
 
-        FeatureAccess fa = (FeatureAccess)object;
-        if (fa.getName() == null || fa.getName().isBlank())
-        {
-            return;
-        }
+    @Override
+    protected boolean isCheckDfaMethod()
+    {
+        return false;
+    }
 
-        boolean isMethod = BslUtil.getInvocation(fa) != null;
-        if (!isMethod && isEmptyTypes((EObject)object))
-        {
-            String message = MessageFormat
-                .format(Messages.DynamicFeatureAccessTypeCheck_Feature_access_M_has_no_return_type, fa.getName());
-            resultAceptor.addIssue(message, FEATURE_ACCESS__NAME);
-        }
+    @Override
+    protected String getErrorMessage(DynamicFeatureAccess fa)
+    {
+        return MessageFormat.format(Messages.DynamicFeatureAccessTypeCheck_Feature_access_M_has_no_return_type,
+            fa.getName());
     }
 
 }

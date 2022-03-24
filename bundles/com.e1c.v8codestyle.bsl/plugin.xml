@@ -26,6 +26,12 @@
       </category>
       <category
             category="com.e1c.v8codestyle.bsl"
+            description="%category.bsl.comment.description"
+            id="com.e1c.v8codestyle.bsl.comment"
+            title="%category.bsl.comment.title">
+      </category>
+      <category
+            category="com.e1c.v8codestyle.bsl"
             description="%category.bsl.strict.description"
             id="com.e1c.v8codestyle.bsl.strict"
             title="%category.bsl.strict.title">
@@ -60,7 +66,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -106,12 +112,10 @@
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionReturnTypeCheck">
       </check>
-      <!-- Disabled untill release 2021.2.6+
       <check
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionCtorReturnSectionCheck">
       </check> 
-      -->
       <check
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.DocCommentFieldTypeCheck">
@@ -125,8 +129,60 @@
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.EventHandlerBooleanParamCheck">
       </check>
       <check
-            category="com.e1c.v8codestyle.bsl"
+            category="com.e1c.v8codestyle.bsl.comment"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.DocCommentUseMinusCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.CollectionTypeDefinitionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.ExportFunctionReturnSectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.FieldDefinitionNameCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.FieldDefinitionTypeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.FieldDefinitionTypeWithLinkRefCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.FunctionReturnSectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.MultilineDescriptionEndsOnDotCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.MultilineDescriptionFieldSuggestionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.MultilineDescriptionParameterSuggestionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.ParametersSectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.ProcedureReturnSectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.RefLinkPartCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.TypeDefinitionCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -154,15 +210,34 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.IsInRoleCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.IsInRoleCheck">
+      </check>
+      <!-- Temporary disabling checks
+      <check category="com.e1c.v8codestyle.bsl"
+         class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UndefinedMethodCheck">
+      </check>
+      <check category="com.e1c.v8codestyle.bsl"
+         class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UndefinedFunctionCheck">
+      </check>
+      <check category="com.e1c.v8codestyle.bsl"
+         class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UndefinedVariableCheck">
+      </check>
+      -->
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.InvocationFormEventHandlerCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.InvocationFormEventHandlerCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.NewColorCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.NewColorCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ExportMethodInCommandFormModuleCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.LockOutOfTryCheck">
       </check>
   
    </extension>
@@ -180,6 +255,12 @@
       <provider
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.StrictTypesProjectOptionProvider">
       </provider>
+   </extension>
+   <extension
+         point="com.e1c.g5.v8.dt.check.fixes">
+      <fix
+            class="com.e1c.v8codestyle.bsl.qfix.RemoveExportFix">
+      </fix>
    </extension>
 
 </plugin>

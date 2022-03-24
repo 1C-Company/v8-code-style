@@ -22,6 +22,7 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.strict.check.messages"; //$NON-NLS-1$
+    public static String AbstractDynamicFeatureAccessTypeCheck_Skip_source_object_types;
     public static String DocCommentFieldTypeCheck_description;
     public static String DocCommentFieldTypeCheck_Field__N__has_no_type_definition;
     public static String DocCommentFieldTypeCheck_title;
@@ -41,6 +42,7 @@ final class Messages
     public static String FunctionReturnTypeCheck_description;
     public static String FunctionReturnTypeCheck_title;
     public static String FunctionReturnTypeCheck_Function_has_no_return_value_type;
+    public static String InvocationParamIntersectionCheck_Allow_dynamic_types_check_for_local_method_call;
     public static String InvocationParamIntersectionCheck_description;
     public static String InvocationParamIntersectionCheck_title;
     public static String MethodParamTypeCheck_description;

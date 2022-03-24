@@ -26,8 +26,11 @@ import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
+import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Checking the use of the IsInRole method that is not recommended.
@@ -35,7 +38,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
  * @author Artem Iliukhin
  */
 public class IsInRoleCheck
-    extends AbstractModuleStructureCheck
+    extends BasicCheck
 {
 
     private static final String EXCEPTION_ROLES_PARAM = "exceptionRoles"; //$NON-NLS-1$
@@ -63,6 +66,7 @@ public class IsInRoleCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(STATIC_FEATURE_ACCESS)
             .parameter(EXCEPTION_ROLES_PARAM, String.class, DEFAULT_EXCEPTION_ROLES_PARAM,

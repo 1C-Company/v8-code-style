@@ -223,7 +223,7 @@ public class MdStandardAttributeSynonymEmpty
             OnModelFeatureChangeContextCollector collector = (IBmObject bmObject, EStructuralFeature feature,
                 BmSubEvent bmEvent, CheckContextCollectingSession contextSession) -> {
 
-                if (bmObject instanceof Catalog && FEATURES.contains(feature))
+                if (bmObject instanceof Catalog && feature != null && FEATURES.contains(feature))
                 {
                     contextSession.addFullCheck(bmObject);
                 }

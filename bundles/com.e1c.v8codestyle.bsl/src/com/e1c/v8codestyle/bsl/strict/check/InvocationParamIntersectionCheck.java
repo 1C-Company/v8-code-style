@@ -17,19 +17,33 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STATIC_FEATURE_ACCE
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EcoreFactory;
+import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.util.Triple;
+import org.eclipse.xtext.util.Tuples;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
+import com._1c.g5.v8.dt.bsl.documentation.comment.BslCommentUtils;
+import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
+import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.EmptyExpression;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
@@ -37,16 +51,25 @@ import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.SourceObjectLinkProvider;
 import com._1c.g5.v8.dt.bsl.model.UndefinedLiteral;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.mcore.DuallyNamedElement;
 import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.McorePackage;
+import com._1c.g5.v8.dt.mcore.NamedElement;
 import com._1c.g5.v8.dt.mcore.ParamSet;
 import com._1c.g5.v8.dt.mcore.Parameter;
+import com._1c.g5.v8.dt.mcore.Property;
+import com._1c.g5.v8.dt.mcore.Type;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -63,8 +86,44 @@ import com.google.inject.Inject;
 public class InvocationParamIntersectionCheck
     extends AbstractTypeCheck
 {
+    private static final String METHOD_INSERT = "Insert"; //$NON-NLS-1$
+
+    private static final String MAP_GET = "Get"; //$NON-NLS-1$
+
+    private static final String MAP_DELETE = "Delete"; //$NON-NLS-1$
+
+    private static final String MAP_KEY = "Key"; //$NON-NLS-1$
+
+    private static final String MAP_VALUE = "Value"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "invocation-parameter-type-intersect"; //$NON-NLS-1$
+
+    private static final String PARAM_ALLOW_DYNAMIC_TYPES_CHECK = "allowDynamicTypesCheck"; //$NON-NLS-1$
+
+    //@formatter:off
+    private static final Map<String, Map<String, Collection<Integer>>> COLLECTION_ADD_METHODS = Map.of(
+        "Add", Map.of(IEObjectTypeNames.ARRAY, Set.of(0), //$NON-NLS-1$
+            IEObjectTypeNames.VALUE_LIST, Set.of(0)),
+        METHOD_INSERT, Map.of(
+            IEObjectTypeNames.ARRAY, Set.of(1),
+            IEObjectTypeNames.VALUE_LIST, Set.of(1),
+            IEObjectTypeNames.MAP, Set.of(0, 1)),
+        "Set", Map.of( //$NON-NLS-1$
+            IEObjectTypeNames.ARRAY, Set.of(1)),
+        MAP_GET, Map.of(IEObjectTypeNames.MAP, Set.of(0)),
+        MAP_DELETE, Map.of(IEObjectTypeNames.MAP, Set.of(0)),
+        "Find", Map.of(IEObjectTypeNames.ARRAY, Set.of(0)) //$NON-NLS-1$
+        );
+
+    private static final Map<String, Map<Integer, String>> MAP_KEY_VALUE_TYPES = Map.of(
+        METHOD_INSERT, Map.of(0, MAP_KEY, 1, MAP_VALUE),
+        MAP_GET, Map.of(0, MAP_KEY),
+        MAP_DELETE, Map.of(0, MAP_KEY)
+        );
+
+    //@formatter:on
+
+    private final IV8ProjectManager v8ProjectManager;
 
     private final ExportMethodTypeProvider exportMethodTypeProvider;
 
@@ -74,17 +133,17 @@ public class InvocationParamIntersectionCheck
      * @param resourceLookup the resource lookup service, cannot be {@code null}.
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
+     * @param v8ProjectManager the v 8 project manager service, cannot be {@code null}.
+     * @param exportMethodTypeProvider the export method type provider service, cannot be {@code null}.
      */
     @Inject
     public InvocationParamIntersectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter)
+        IQualifiedNameConverter qualifiedNameConverter, IV8ProjectManager v8ProjectManager,
+        ExportMethodTypeProvider exportMethodTypeProvider)
     {
         super(resourceLookup, bslPreferences, qualifiedNameConverter);
-
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.exportMethodTypeProvider = rsp.get(ExportMethodTypeProvider.class);
-
+        this.exportMethodTypeProvider = exportMethodTypeProvider;
+        this.v8ProjectManager = v8ProjectManager;
     }
 
     @Override
@@ -104,7 +163,9 @@ public class InvocationParamIntersectionCheck
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StrictTypeAnnotationCheckExtension())
             .module()
-            .checkedObjectType(STATIC_FEATURE_ACCESS, DYNAMIC_FEATURE_ACCESS);
+            .checkedObjectType(STATIC_FEATURE_ACCESS, DYNAMIC_FEATURE_ACCESS)
+            .parameter(PARAM_ALLOW_DYNAMIC_TYPES_CHECK, Boolean.class, Boolean.FALSE.toString(),
+                Messages.InvocationParamIntersectionCheck_Allow_dynamic_types_check_for_local_method_call);
 
     }
 
@@ -128,7 +189,8 @@ public class InvocationParamIntersectionCheck
         EObject source = getSourceMethod(fa);
         if (source instanceof Method)
         {
-            checkParamTypesIntersect(inv, (Method)source, resultAceptor, monitor);
+            boolean allowDynamicTypesCheck = parameters.getBoolean(PARAM_ALLOW_DYNAMIC_TYPES_CHECK);
+            checkParamTypesIntersect(inv, (Method)source, allowDynamicTypesCheck, resultAceptor, monitor);
         }
         else if (source instanceof com._1c.g5.v8.dt.mcore.Method)
         {
@@ -150,7 +212,20 @@ public class InvocationParamIntersectionCheck
             return;
         }
 
+        boolean isBslContexMethod = method instanceof SourceObjectLinkProvider;
+
+        Optional<BslDocumentationComment> docComment = null;
+        boolean oldFormatComment = false;
+        IScope typeScope = null;
+
         Environments actualEnvs = getActualEnvironments(inv);
+
+        // This allows to check collection item type
+        Triple<Collection<TypeItem>, Collection<Integer>, Boolean> collectionItemContext =
+            getCollectionItemContext(inv, method, actualEnvs);
+        Collection<TypeItem> collectionItemTypes = collectionItemContext.getFirst();
+        Collection<Integer> parameterNumbers = collectionItemContext.getSecond();
+        boolean isMap = collectionItemContext.getThird();
 
         for (int i = 0; i < inv.getParams().size(); i++)
         {
@@ -164,9 +239,12 @@ public class InvocationParamIntersectionCheck
             boolean isUndefined = param == null || param instanceof UndefinedLiteral || param instanceof EmptyExpression
                 || isUndefinedType(sorceTypes);
 
-            List<TypeItem> targetTypes = Collections.emptyList();
-            boolean isIntersect = false;
-            for (Iterator<ParamSet> iterator = paramSets.iterator(); iterator.hasNext();)
+            Collection<TypeItem> targetTypes =
+                getDefaultTargetOrCollectionItemTypes(method, collectionItemTypes, parameterNumbers, isMap, i, inv);
+            boolean isIntersect = !targetTypes.isEmpty() && intersectTypeItem(targetTypes, sorceTypes, inv);
+            Parameter parameter = null;
+            for (Iterator<ParamSet> iterator = paramSets.iterator(); !isIntersect && targetTypes.isEmpty()
+                && iterator.hasNext();)
             {
                 ParamSet paramSet = iterator.next();
 
@@ -176,7 +254,7 @@ public class InvocationParamIntersectionCheck
                     iterator.remove();
                     continue;
                 }
-                Parameter parameter = targetParams.get(i);
+                parameter = targetParams.get(i);
                 boolean isDefaultValue = parameter.isDefaultValue();
 
                 if (isDefaultValue && isUndefined)
@@ -185,24 +263,120 @@ public class InvocationParamIntersectionCheck
                     break;
                 }
 
+                if (monitor.isCanceled())
+                {
+                    return;
+                }
+
                 targetTypes = exportMethodTypeProvider.getMethodParamType(method, paramSet, i);
+                if (targetTypes.isEmpty() && isBslContexMethod && docComment == null)
+                {
+                    // get types from doc-comment for export method
+                    IProject project = resourceLookup.getProject(method);
+                    oldFormatComment = bslPreferences.getDocumentCommentProperties(project).oldCommentFormat();
+                    typeScope = scopeProvider.getScope(method, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
+
+                    docComment = getDocComment((SourceObjectLinkProvider)method, oldFormatComment);
+                }
+
+                if (monitor.isCanceled())
+                {
+                    return;
+                }
+
+                if (docComment != null && docComment.isPresent())
+                {
+                    targetTypes = docComment.get()
+                        .computeParameterTypes(parameter.getName(), typeScope, scopeProvider, qualifiedNameConverter,
+                            commentProvider, oldFormatComment, method);
+                }
+
                 if (targetTypes.isEmpty())
                 {
                     continue;
                 }
 
                 isIntersect = intersectTypeItem(targetTypes, sorceTypes, inv);
-                if (isIntersect)
-                {
-                    break;
-                }
             }
 
             if (!isIntersect && !targetTypes.isEmpty())
             {
-                markInvalidSourceTypeNoIntercection(param, i, resultAceptor);
+                markInvalidSourceTypeNoIntercection(param, i, parameter, resultAceptor, targetTypes);
             }
         }
+    }
+
+    private Triple<Collection<TypeItem>, Collection<Integer>, Boolean> getCollectionItemContext(Invocation inv,
+        com._1c.g5.v8.dt.mcore.Method method, Environments actualEnvs)
+    {
+        Collection<TypeItem> collectionItemTypes = new ArrayList<>();
+        Collection<Integer> parameterNumbers = Collections.emptyList();
+        boolean isMap = false;
+
+        if (!(method instanceof SourceObjectLinkProvider) && inv.getMethodAccess() instanceof DynamicFeatureAccess)
+        {
+            Map<String, Collection<Integer>> typesAndParams = COLLECTION_ADD_METHODS.get(method.getName());
+            if (typesAndParams != null)
+            {
+                TypeItem collectionType = EcoreUtil2.getContainerOfType(method, TypeItem.class);
+                String typeName = collectionType == null ? null : McoreUtil.getTypeName(collectionType);
+                if (typeName != null && typesAndParams.containsKey(typeName))
+                {
+                    List<TypeItem> types = typeComputer
+                        .computeTypes(((DynamicFeatureAccess)inv.getMethodAccess()).getSource(), actualEnvs);
+                    for (TypeItem type : types)
+                    {
+                        type = (TypeItem)EcoreUtil.resolve(type, inv);
+                        if (type instanceof Type && typeName.equals(McoreUtil.getTypeName(type)))
+                        {
+                            collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                            isMap = IEObjectTypeNames.MAP.equals(typeName);
+                            parameterNumbers = typesAndParams.get(typeName);
+                        }
+                    }
+                    // Remove Arbitrary type which do not need to check
+                    for (Iterator<TypeItem> iterator = collectionItemTypes.iterator(); iterator.hasNext();)
+                    {
+                        TypeItem typeItem = iterator.next();
+                        if (IEObjectTypeNames.ARBITRARY.equals(McoreUtil.getTypeName(typeItem)))
+                        {
+                            iterator.remove();
+                        }
+                    }
+                }
+            }
+        }
+        return Tuples.create(collectionItemTypes, parameterNumbers, isMap);
+    }
+
+    private Collection<TypeItem> getDefaultTargetOrCollectionItemTypes(com._1c.g5.v8.dt.mcore.Method method,
+        Collection<TypeItem> collectionItemTypes, Collection<Integer> parameterNumbers, boolean isMap,
+        int parameterNumber, EObject context)
+    {
+        Collection<TypeItem> targetTypes = Collections.emptyList();
+        if (!collectionItemTypes.isEmpty() && parameterNumbers.contains(parameterNumber))
+        {
+            // use collection item types
+            if (isMap)
+            {
+                String name = MAP_KEY_VALUE_TYPES.get(method.getName()).get(parameterNumber);
+                Optional<Property> property =
+                    dynamicFeatureAccessComputer.getAllProperties(collectionItemTypes, context.eResource())
+                        .stream()
+                        .flatMap(p -> p.getFirst().stream())
+                        .filter(p -> name.equals(p.getName()))
+                        .findFirst();
+                if (property.isPresent())
+                {
+                    targetTypes = property.get().getTypes();
+                }
+            }
+            else
+            {
+                targetTypes = collectionItemTypes;
+            }
+        }
+        return targetTypes;
     }
 
     private boolean isUndefinedType(List<TypeItem> types)
@@ -214,11 +388,34 @@ public class InvocationParamIntersectionCheck
         return false;
     }
 
-    private void checkParamTypesIntersect(Invocation inv, Method method, ResultAcceptor resultAceptor,
-        IProgressMonitor monitor)
+    private void checkParamTypesIntersect(Invocation inv, Method method, boolean allowDynamicTypesCheck,
+        ResultAcceptor resultAceptor, IProgressMonitor monitor)
     {
-
         Environments actualEnvs = getActualEnvironments(inv);
+
+        Optional<BslDocumentationComment> docComment;
+        boolean oldFormatComment = false;
+        IScope typeScope = null;
+        if (allowDynamicTypesCheck)
+        {
+            docComment = Optional.empty();
+        }
+        else
+        {
+            // get types from doc-comment for export method
+            IProject project = resourceLookup.getProject(method);
+            oldFormatComment = bslPreferences.getDocumentCommentProperties(project).oldCommentFormat();
+            typeScope = scopeProvider.getScope(method, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
+
+            BslDocumentationComment docModel =
+                BslCommentUtils.parseTemplateComment(method, oldFormatComment, commentProvider);
+            if (docModel.getParametersSection() == null
+                || docModel.getParametersSection().getParameterDefinitions().isEmpty())
+            {
+                docModel = null;
+            }
+            docComment = Optional.ofNullable(docModel);
+        }
 
         List<FormalParam> targetParams = method.getFormalParams();
         for (int i = 0; i < inv.getParams().size(); i++)
@@ -228,7 +425,20 @@ public class InvocationParamIntersectionCheck
                 return;
             }
 
-            List<TypeItem> targetTypes = computeTypes(targetParams.get(i), actualEnvs);
+            FormalParam formalParam = targetParams.get(i);
+            String paramName = formalParam.getName();
+            Collection<TypeItem> targetTypes = null;
+            if (docComment.isPresent() && docComment.get().getParametersSection().getParameterByName(paramName) != null)
+            {
+                // if parameter declared in doc-comment then check only declared types
+                targetTypes = docComment.get()
+                    .computeParameterTypes(paramName, typeScope, scopeProvider, qualifiedNameConverter, commentProvider,
+                        oldFormatComment, method);
+            }
+            else
+            {
+                targetTypes = computeTypes(formalParam, actualEnvs);
+            }
 
             if (targetTypes.isEmpty())
             {
@@ -237,20 +447,32 @@ public class InvocationParamIntersectionCheck
 
             Expression param = inv.getParams().get(i);
 
-            List<TypeItem> sorceTypes = computeTypes(param, actualEnvs);
+            Collection<TypeItem> sorceTypes = computeTypes(param, actualEnvs);
 
             if (!intersectTypeItem(targetTypes, sorceTypes, inv))
             {
-                markInvalidSourceTypeNoIntercection(param, i, resultAceptor);
+                markInvalidSourceTypeNoIntercection(param, i, formalParam, resultAceptor, targetTypes);
             }
         }
-
     }
 
-    private void markInvalidSourceTypeNoIntercection(Expression param, int index, ResultAcceptor resultAceptor)
+    private void markInvalidSourceTypeNoIntercection(Expression param, int index, NamedElement parameter,
+        ResultAcceptor resultAceptor, Collection<TypeItem> targetTypes)
     {
+        IV8Project project = v8ProjectManager.getProject(param);
+        ScriptVariant variant = project.getScriptVariant();
+        Function<TypeItem, String> nameFunc =
+            variant == ScriptVariant.RUSSIAN ? McoreUtil::getTypeNameRu : McoreUtil::getTypeName;
+        List<String> typeNames = targetTypes.stream().map(nameFunc).collect(Collectors.toList());
+
+        String name = parameter == null ? String.valueOf(index + 1) : parameter.getName();
+        if (parameter instanceof DuallyNamedElement && variant == ScriptVariant.RUSSIAN)
+        {
+            name = ((DuallyNamedElement)parameter).getNameRu();
+        }
         String message = MessageFormat.format(
-            Messages.StrictModuleInvocationCheck_Type_of_N_parameter_not_intersect_with_invocation_type, index + 1);
+            Messages.StrictModuleInvocationCheck_Type_of_N_parameter_not_intersect_with_invocation_type, name,
+            String.join(", ", typeNames)); //$NON-NLS-1$
         resultAceptor.addIssue(message, param, BslPackage.Literals.EXPRESSION__TYPES);
     }
 
@@ -303,6 +525,20 @@ public class InvocationParamIntersectionCheck
         }
 
         return result;
+    }
+
+    // TODO remove this method when EDT will provide service for this,
+    // or ExportMethodTypeProvider will work properly with doc-comment types for export methods
+    private Optional<BslDocumentationComment> getDocComment(SourceObjectLinkProvider mcoreMethod,
+        boolean oldFormatComment)
+    {
+        EObject source = EcoreFactory.eINSTANCE.createEObject();
+        ((InternalEObject)source).eSetProxyURI(mcoreMethod.getSourceUri());
+        Method sourceMethod = (Method)EcoreUtil.resolve(source, mcoreMethod);
+
+        BslDocumentationComment docComment =
+            BslCommentUtils.parseTemplateComment(sourceMethod, oldFormatComment, commentProvider);
+        return Optional.ofNullable(docComment);
     }
 
 }

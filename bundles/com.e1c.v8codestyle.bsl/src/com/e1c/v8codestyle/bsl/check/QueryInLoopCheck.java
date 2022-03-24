@@ -27,13 +27,11 @@ import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
@@ -89,17 +87,17 @@ public class QueryInLoopCheck
     private final IRuntimeVersionSupport versionSupport;
 
     /**
+     * Instantiates a new query in loop check.
+     *
      * @param versionSupport - Version support for 1C:Enterprise projects service, cannot be {@code null}
+     * @param typesComputer the types computer service, cannot be {@code null}
      */
     @Inject
-    public QueryInLoopCheck(IRuntimeVersionSupport versionSupport)
+    public QueryInLoopCheck(IRuntimeVersionSupport versionSupport, TypesComputer typesComputer)
     {
         super();
 
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        typesComputer = rsp.get(TypesComputer.class);
-
+        this.typesComputer = typesComputer;
         this.versionSupport = versionSupport;
     }
 

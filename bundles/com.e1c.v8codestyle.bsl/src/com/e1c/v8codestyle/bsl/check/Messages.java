@@ -16,8 +16,9 @@ package com.e1c.v8codestyle.bsl.check;
 import org.eclipse.osgi.util.NLS;
 
 /**
- * @author Dmitriy Marmyshev
+ * NLS messages
  *
+ * @author Dmitriy Marmyshev
  */
 final class Messages
     extends NLS
@@ -68,6 +69,20 @@ final class Messages
     public static String EventHandlerBooleanParamCheck_Prams_to_set_to_True;
 
     public static String EventHandlerBooleanParamCheck_title;
+
+    public static String ExportMethodInCommandFormModuleCheck_CheckClientMethodForm;
+
+    public static String ExportMethodInCommandFormModuleCheck_CheckServerMethodForm;
+
+    public static String ExportMethodInCommandFormModuleCheck_ExludeMethodNamePattern;
+
+    public static String ExportMethodInCommandFormModuleCheck_Notify_description_methods;
+
+    public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_des;
+
+    public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result;
+
+    public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
 
     public static String ModuleStructureTopRegionCheck_description;
 
@@ -186,6 +201,22 @@ final class Messages
 
     public static String IsInRoleCheck_Using_IsInRole;
 
+    public static String ModuleUndefinedVariableCheck_Title;
+    public static String ModuleUndefinedVariableCheck_Description;
+    public static String ModuleUndefinedVariable_msg;
+    public static String ModuleUndefinedMethodCheck_Title;
+    public static String ModuleUndefinedMethodCheck_Description;
+    public static String ModuleUndefinedFunctionCheck_Title;
+    public static String ModuleUndefinedFunctionCheck_Description;
+    public static String ModuleUndefinedFunction_msg;
+    public static String ModuleUndefinedMethod_msg;
+
+    public static String LockOutOfTry_Checks_for_init_of_the_data_lock;
+
+    public static String LockOutOfTry_Lock_out_of_try;
+
+    public static String LockOutOfTry_Method_lock_out_of_try;
+
     static
     {
         // initialize resource bundle
@@ -194,5 +225,6 @@ final class Messages
 
     private Messages()
     {
+        // N/A
     }
 }

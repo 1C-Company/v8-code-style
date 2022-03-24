@@ -20,10 +20,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.metadata.dbview.DbViewElement;
 import com._1c.g5.v8.dt.metadata.dbview.DbViewSelectDef;
@@ -42,6 +40,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.ql.CorePlugin;
+import com.google.inject.Inject;
 
 /**
  * Checks that all dimensions of virtual table placed in parameters instead of filter.
@@ -55,13 +54,11 @@ public class VirtualTableFiltersCheck
 
     private final IDynamicDbViewFieldComputer dynamicDbViewFieldComputer;
 
-    public VirtualTableFiltersCheck()
+    @Inject
+    public VirtualTableFiltersCheck(IDynamicDbViewFieldComputer dynamicDbViewFieldComputer)
     {
         super();
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.qldcs")); //$NON-NLS-1$
-
-        this.dynamicDbViewFieldComputer = rsp.get(IDynamicDbViewFieldComputer.class);
+        this.dynamicDbViewFieldComputer = dynamicDbViewFieldComputer;
     }
 
     @Override

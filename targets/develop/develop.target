@@ -124,7 +124,7 @@
 <unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
 <!-- Plug-in Spy -->
 <unit id="org.eclipse.pde.runtime" version="0.0.0"/>
-<repository id="eclipse_repository" location="https://download.eclipse.org/releases/2020-06/"/>
+<repository id="eclipse_repository" location="https://download.eclipse.org/releases/2020-12/"/>
 </location>
 
 <!-- XText Tools: https://github.com/OLibutzki/xtext.tools -->
