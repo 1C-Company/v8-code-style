@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a57fe469-4e4f-459d-bec3-6874bc0fdfbd">
+  <name>TopShort</name>
+  <synonym>
+    <key>en</key>
+    <value>This text is less than 35 symbols</value>
+  </synonym>
+  <synonym>
+    <key>de</key>
+    <value>Text mit weniger als 35 Zeichen</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Этот текст менее 35 символов  </value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+</mdclass:Subsystem>
