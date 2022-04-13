@@ -18,6 +18,7 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTE
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTEM__INCLUDE_IN_COMMAND_INTERFACE;
 
 import java.text.MessageFormat;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EMap;
@@ -30,7 +31,6 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.google.inject.Inject;
 
 /**
  * Check top subsystem synonym length that should be less then 35 by default or value
@@ -51,15 +51,6 @@ public class SubsystemSynonymTooLongCheck
     public static final String SUBSYSTEM_SYNONYM_LANGS_FILTER = "subsystem-synonym-lang-filter"; //$NON-NLS-1$
 
     public static final String SUBSYSTEM_SYNONYM_LANGS_DEFAULT = ""; //$NON-NLS-1$
-
-    /**
-     * Instantiates a new top subsystem synonym length check.
-     */
-    @Inject
-    public SubsystemSynonymTooLongCheck()
-    {
-        super();
-    }
 
     @Override
     public String getCheckId()
@@ -95,24 +86,29 @@ public class SubsystemSynonymTooLongCheck
         }
 
         Subsystem subsystem = (Subsystem)object;
-        // Check subsystem is top-level
-        if (subsystem.getParentSubsystem() != null)
+        // Check subsystem is not top-level and included to command interface
+        if (subsystem.getParentSubsystem() != null || !subsystem.isIncludeInCommandInterface())
+        {
+            return;
+        }
+
+        int max = parameters.getInt(MAX_SUBSYSTEM_SYNONYM_LENGTH);
+        if (max <= 0)
         {
             return;
         }
 
         String excludeLang = parameters.getString(SUBSYSTEM_SYNONYM_LANGS_FILTER);
 
-        int max = parameters.getInt(MAX_SUBSYSTEM_SYNONYM_LENGTH);
-
         EMap<String, String> synonyms = subsystem.getSynonym();
 
-        for (String key : synonyms.keySet())
+        for (Map.Entry<String, String> entry : synonyms.entrySet())
         {
-            if (!excludeLang.toUpperCase().contains(key.toUpperCase()) && subsystem.isIncludeInCommandInterface())
+            String key = entry.getKey();
+            if (!excludeLang.contains(key))
             {
-                String name = synonyms.get(key);
-                if (name != null && name.length() > max && max > 0)
+                String name = entry.getValue();
+                if (name != null && name.length() > max)
                 {
                     resultAceptor.addIssue(MessageFormat.format(
                         Messages.SubsystemSynonymTooLongCheck_Length_of_section_name_more_than_symbols_for_language,

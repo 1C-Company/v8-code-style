@@ -3,7 +3,7 @@
   <name>SubsystemSynonymTooLong</name>
   <synonym>
     <key>en</key>
-    <value>Subsystem synonym too long</value>
+    <value>SubsystemSynonymTooLong</value>
   </synonym>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="cab95958-a6d0-4337-9779-7c517125d7cc"/>
   <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="35937ab6-0e39-4d97-93dd-a908aa102641"/>
@@ -55,7 +55,8 @@
     <languageCode>ru</languageCode>
   </languages>
   <subsystems>Subsystem.TopLongDeIncluded</subsystems>
-  <subsystems>Subsystem.TopLongIncluded</subsystems>
+  <subsystems>Subsystem.TopLongEnIncluded</subsystems>
   <subsystems>Subsystem.TopLongNotIncluded</subsystems>
-  <subsystems>Subsystem.TopShort</subsystems>
+  <subsystems>Subsystem.TopLongRuEnDeIncluded</subsystems>
+  <subsystems>Subsystem.TopShortEnRuDe</subsystems>
 </mdclass:Configuration>

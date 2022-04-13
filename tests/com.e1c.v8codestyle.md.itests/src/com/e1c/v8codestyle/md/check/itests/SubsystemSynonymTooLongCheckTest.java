@@ -13,21 +13,27 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check.itests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
+import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
+import com._1c.g5.v8.dt.validation.marker.IMarkerManager;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com.e1c.g5.v8.dt.check.settings.CheckUid;
+import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.check.SubsystemSynonymTooLongCheck;
+import com.google.inject.Inject;
 
 /**
  * Tests for {@link SubsystemSynonymTooLongCheck} class
  *
  * @author Denis Maslennikov
- *
  */
 public class SubsystemSynonymTooLongCheckTest
     extends CheckTestBase
@@ -37,46 +43,83 @@ public class SubsystemSynonymTooLongCheckTest
 
     private static final String PROJECT_NAME = "SubsystemSynonymTooLong";
 
+    @Inject
+    public IMarkerManager markerManager;
+
+    @Inject
+    public ICheckRepository checkRepository;
+
     /**
-     * Test that subsystem synonym length more than maximal length for top-level subsystems.
+     * Test that top-level subsystem has two markers when it included to command interface,
+     * synonym lengths for languages "ru", "en", "de" is more than maximal length.
+     * Note: "de" is set as excluded filter.
      *
      * @throws Exception the exception
      */
     @Test
-    public void testSubsystemSynonymTooLong() throws Exception
+    public void testSubsystemSynonymTooLongRuEnDe() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        long id = getTopObjectIdByFqn("Subsystem.TopLongIncluded", dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
-        assertNotNull(marker);
+        IBmObject object = getTopObjectByFqn("Subsystem.TopLongRuEnDeIncluded", dtProject);
+
+        if (object instanceof Subsystem)
+        {
+            int i = 0;
+            long id = object.bmGetId();
+            Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
+
+            for (Marker marker : markers)
+            {
+                CheckUid checkUid = checkRepository.getUidForShortUid(marker.getCheckId(), dtProject);
+                if (checkUid != null && CHECK_ID.equals(checkUid.getCheckId()))
+                {
+                    i++;
+                }
+            }
+            assertEquals(i, 2);
+        }
     }
 
     /**
-     * Test ignore if subsystem synonym length less than maximal length or not top-level subsystem.
+     * Test that top-level subsystem has one markers when it included to command interface,
+     * synonym length for language "en" is more than maximal length.
      *
      * @throws Exception the exception
      */
     @Test
-    public void testSubsystemSynonymTooLongIgnore() throws Exception
+    public void testSubsystemSynonymTooLongEn() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        long id = getTopObjectIdByFqn("Subsystem.TopShort", dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
-        assertNull(marker);
+        IBmObject object = getTopObjectByFqn("Subsystem.TopLongEnIncluded", dtProject);
 
-        id = getTopObjectIdByFqn("Subsystem.TopLongIncluded.Subsystem.SubLong", dtProject);
-        marker = getFirstMarker(CHECK_ID, id, dtProject);
-        assertNull(marker);
+        if (object instanceof Subsystem)
+        {
+            int i = 0;
+            long id = object.bmGetId();
+            Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
+
+            for (Marker marker : markers)
+            {
+                CheckUid checkUid = checkRepository.getUidForShortUid(marker.getCheckId(), dtProject);
+                if (checkUid != null && CHECK_ID.equals(checkUid.getCheckId()))
+                {
+                    i++;
+                }
+            }
+            assertEquals(i, 1);
+        }
     }
 
     /**
-     * Test ignore if subsystem synonym length more than maximal length for excluded languages.
+     * Test that the subsystem does not have marker, but it included to command interface,
+     * synonym length only for for language "de" is more than maximal length.
+     * Note: "de" is set as excluded filter.
      *
-     * @throws Exception the exceptionr
+     * @throws Exception the exception
      */
     @Test
     public void testSubsystemSynonymTooLongIgnoreDe() throws Exception
@@ -90,19 +133,29 @@ public class SubsystemSynonymTooLongCheckTest
     }
 
     /**
-     * Test ignore subsystem not included in command interface
+     * Test that the subsystem does not have marker in the following cases:
+     * - subsystem is top-level, synonym length for all languages is less than maximal length;
+     * - subsystem is not top-level, synonym length for "en" is more than maximal length;
+     * - subsystem in not included in command interface;
      *
-     * @throws Exception the exceptionr
+     * @throws Exception the exception
      */
     @Test
-    public void testSubsystemNonIncludedToInterfaceIgnore() throws Exception
+    public void testSubsystemSynonymTooLongIgnore() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        long id = getTopObjectIdByFqn("Subsystem.TopLongNotIncluded", dtProject);
+        long id = getTopObjectIdByFqn("Subsystem.TopShortEnRuDe", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
-    }
 
+        id = getTopObjectIdByFqn("Subsystem.TopLongEnIncluded.Subsystem.SubLong", dtProject);
+        marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+
+        id = getTopObjectIdByFqn("Subsystem.TopLongNotIncluded", dtProject);
+        marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
 }
