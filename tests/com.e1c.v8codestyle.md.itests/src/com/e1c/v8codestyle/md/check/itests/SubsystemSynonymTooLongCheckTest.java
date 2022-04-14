@@ -17,6 +17,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -40,6 +42,20 @@ public class SubsystemSynonymTooLongCheckTest
 
     private static final String PROJECT_NAME = "SubsystemSynonymTooLong";
 
+    private boolean cuid(String checkId, IDtProject dtProject)
+    {
+        CheckUid checkUid = checkRepository.getUidForShortUid(checkId, dtProject);
+        return checkUid != null && CHECK_ID.equals(checkUid.getCheckId());
+    }
+
+    private long countMarkers(IDtProject dtProject, IBmObject object)
+    {
+        return Arrays.asList(markerManager.getMarkers(dtProject.getWorkspaceProject(), object.bmGetId()))
+            .stream()
+            .filter(marker -> cuid(marker.getCheckId(), dtProject))
+            .count();
+    }
+
     /**
      * Test that top-level subsystem has two markers when it included to command interface,
      * synonym lengths for languages "ru", "en", "de" is more than maximal length.
@@ -57,19 +73,7 @@ public class SubsystemSynonymTooLongCheckTest
 
         if (object instanceof Subsystem)
         {
-            int i = 0;
-            long id = object.bmGetId();
-            Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
-
-            for (Marker marker : markers)
-            {
-                CheckUid checkUid = checkRepository.getUidForShortUid(marker.getCheckId(), dtProject);
-                if (checkUid != null && CHECK_ID.equals(checkUid.getCheckId()))
-                {
-                    i++;
-                }
-            }
-            assertEquals(i, 2);
+            assertEquals(countMarkers(dtProject, object), 2);
         }
     }
 
@@ -89,19 +93,7 @@ public class SubsystemSynonymTooLongCheckTest
 
         if (object instanceof Subsystem)
         {
-            int i = 0;
-            long id = object.bmGetId();
-            Marker[] markers = markerManager.getMarkers(dtProject.getWorkspaceProject(), id);
-
-            for (Marker marker : markers)
-            {
-                CheckUid checkUid = checkRepository.getUidForShortUid(marker.getCheckId(), dtProject);
-                if (checkUid != null && CHECK_ID.equals(checkUid.getCheckId()))
-                {
-                    i++;
-                }
-            }
-            assertEquals(i, 1);
+            assertEquals(countMarkers(dtProject, object), 1);
         }
     }
 
