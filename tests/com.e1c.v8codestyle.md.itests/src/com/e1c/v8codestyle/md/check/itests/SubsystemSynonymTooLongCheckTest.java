@@ -22,13 +22,10 @@ import org.junit.Test;
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.Subsystem;
-import com._1c.g5.v8.dt.validation.marker.IMarkerManager;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
-import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.check.SubsystemSynonymTooLongCheck;
-import com.google.inject.Inject;
 
 /**
  * Tests for {@link SubsystemSynonymTooLongCheck} class
@@ -42,12 +39,6 @@ public class SubsystemSynonymTooLongCheckTest
     private static final String CHECK_ID = "subsystem-synonym-too-long"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "SubsystemSynonymTooLong";
-
-    @Inject
-    public IMarkerManager markerManager;
-
-    @Inject
-    public ICheckRepository checkRepository;
 
     /**
      * Test that top-level subsystem has two markers when it included to command interface,
