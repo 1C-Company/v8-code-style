@@ -9,3 +9,5 @@ Section names must not exceed 35 characters including spaces. The names can take
 
 ## See
 
+- [1Ci Support - Sections panel, section 2.1](https://support.1ci.com/hc/en-us/articles/360011003580-Sections-panel#:~:text=2.1)
+- [Knowledge base - Sections panel](https://1c-dn.com/library/user_manual_taxi_interface_sections_panel/)

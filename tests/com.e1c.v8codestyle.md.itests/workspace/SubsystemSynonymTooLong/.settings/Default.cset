@@ -3,7 +3,7 @@
   "settings": {
     "subsystem-synonym-too-long": {
       "properties": {
-        "subsystem-synonym-lang-filter": "de"
+        "subsystemSynonymLangFilter": " de"
       }
     }
   }

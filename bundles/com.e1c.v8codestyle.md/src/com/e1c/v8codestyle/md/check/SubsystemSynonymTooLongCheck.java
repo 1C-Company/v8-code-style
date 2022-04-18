@@ -18,6 +18,8 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTE
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTEM__INCLUDE_IN_COMMAND_INTERFACE;
 
 import java.text.MessageFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -44,13 +46,15 @@ public class SubsystemSynonymTooLongCheck
 
     private static final String CHECK_ID = "subsystem-synonym-too-long"; //$NON-NLS-1$
 
-    public static final String MAX_SUBSYSTEM_SYNONYM_LENGTH = "max-subsystem-synonym-length"; //$NON-NLS-1$
+    public static final String MAX_SUBSYSTEM_SYNONYM_LENGTH = "maxSubsystemSynonymLength"; //$NON-NLS-1$
 
     public static final String MAX_SUBSYSTEM_SYNONYM_DEFAULT = "35"; //$NON-NLS-1$
 
-    public static final String SUBSYSTEM_SYNONYM_LANGS_FILTER = "subsystem-synonym-lang-filter"; //$NON-NLS-1$
+    public static final String SUBSYSTEM_SYNONYM_LANGS_FILTER = "subsystemSynonymLangFilter"; //$NON-NLS-1$
 
     public static final String SUBSYSTEM_SYNONYM_LANGS_DEFAULT = ""; //$NON-NLS-1$
+
+    private static final String LANG_DELIMITER = ","; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -98,14 +102,16 @@ public class SubsystemSynonymTooLongCheck
             return;
         }
 
-        String excludeLang = parameters.getString(SUBSYSTEM_SYNONYM_LANGS_FILTER);
+        List<String> excludeLangs =
+            Arrays.asList(parameters.getString(SUBSYSTEM_SYNONYM_LANGS_FILTER).split(LANG_DELIMITER));
+        excludeLangs.replaceAll(String::trim);
 
         EMap<String, String> synonyms = subsystem.getSynonym();
 
         for (Map.Entry<String, String> entry : synonyms.entrySet())
         {
             String key = entry.getKey();
-            if (!excludeLang.contains(key))
+            if (!excludeLangs.contains(key))
             {
                 String name = entry.getValue();
                 if (name != null && name.length() > max)
