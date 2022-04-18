@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="03a189e4-e6d2-4576-aa24-65e859017f80">
+  <name>SubLong</name>
+  <synonym>
+    <key>en</key>
+    <value>This text is more than 35 symbols long</value>
+  </synonym>
+  <synonym>
+    <key>de</key>
+    <value>Dieser Text ist mehr als 35 Symbole lang</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Этот текст содержит более 35 символов </value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+  <parentSubsystem>Subsystem.TopLongEnIncluded</parentSubsystem>
+</mdclass:Subsystem>
