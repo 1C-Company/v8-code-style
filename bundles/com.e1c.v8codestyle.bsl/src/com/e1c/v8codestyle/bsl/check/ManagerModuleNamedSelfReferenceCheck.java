@@ -47,15 +47,7 @@ public class ManagerModuleNamedSelfReferenceCheck
 {
     private static final String CHECK_ID = "manager-module-named-self-reference"; //$NON-NLS-1$
 
-    private final IQualifiedNameProvider bslQualifiedNameProvider;
-
-    public ManagerModuleNamedSelfReferenceCheck()
-    {
-        super();
-        IResourceServiceProvider resourceServiceProvider =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.bslQualifiedNameProvider = resourceServiceProvider.get(IQualifiedNameProvider.class);
-    }
+    private IQualifiedNameProvider bslQualifiedNameProvider;
 
     @Override
     public String getCheckId()
@@ -114,7 +106,18 @@ public class ManagerModuleNamedSelfReferenceCheck
 
     private boolean isReferenceExcessive(DynamicFeatureAccess source, Module module)
     {
-        return StringUtils.equals(bslQualifiedNameProvider.getFullyQualifiedName(module).getSegment(1),
+        return StringUtils.equals(getNameProvider().getFullyQualifiedName(module).getSegment(1),
             source.getName());
+    }
+
+    private IQualifiedNameProvider getNameProvider()
+    {
+        if (bslQualifiedNameProvider == null)
+        {
+            IResourceServiceProvider resourceServiceProvider =
+                IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
+            bslQualifiedNameProvider = resourceServiceProvider.get(IQualifiedNameProvider.class);
+        }
+        return bslQualifiedNameProvider;
     }
 }
