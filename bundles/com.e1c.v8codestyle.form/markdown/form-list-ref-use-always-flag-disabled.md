@@ -1,6 +1,6 @@
 # Check if Use Always flag is enabled for the Reference attribute in dynamic list
 
-In developing print commands (the Print subsystem of **Standard Subsystems Library**), the **Reference** attribute with the **Always Use** flag is required for these commands.
+In developing print commands (the Print subsystem of **Standard Subsystems Library**), the **Reference** attribute with the **Use Always** flag is required for these commands.
 
 ## Noncompliant Code Example
 

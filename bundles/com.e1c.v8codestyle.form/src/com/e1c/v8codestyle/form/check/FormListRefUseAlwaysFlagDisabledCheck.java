@@ -17,7 +17,6 @@ import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM_ATTRIBUTE;
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM_ATTRIBUTE__NOT_DEFAULT_USE_ALWAYS_ATTRIBUTES;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.form.model.DynamicListExtInfo;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
@@ -39,7 +38,7 @@ public class FormListRefUseAlwaysFlagDisabledCheck
 {
 
     private static final String CHECK_ID = "form-list-ref-use-always-flag-disabled"; //$NON-NLS-1$
-    private static final String REF_ABSTRACT_DATA_PATH = "List/Ref"; //$NON-NLS-1$
+    private static final String REF_ABSTRACT_DATA_PATH = "/List/Ref"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -66,18 +65,21 @@ public class FormListRefUseAlwaysFlagDisabledCheck
         IProgressMonitor monitor)
     {
 
-        FormAttribute formAttribute = (FormAttribute)object;
-
-        if (monitor.isCanceled() || !(object instanceof EObject))
+        if (monitor.isCanceled() || !(object instanceof FormAttribute))
         {
             return;
         }
 
-        if (formAttribute.getExtInfo() instanceof DynamicListExtInfo
-            && !formAttribute.getNotDefaultUseAlwaysAttributes().toString().trim().contains(REF_ABSTRACT_DATA_PATH))
+        FormAttribute formAttribute = (FormAttribute)object;
+        if (formAttribute.getExtInfo() instanceof DynamicListExtInfo && formAttribute.getNotDefaultUseAlwaysAttributes()
+            .stream()
+            .noneMatch(p -> p.toString().equals(REF_ABSTRACT_DATA_PATH)))
         {
-            resultAceptor.addIssue(Messages.FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field, formAttribute);
+            resultAceptor.addIssue(
+                Messages.FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field,
+                formAttribute);
         }
+
     }
 
 }
