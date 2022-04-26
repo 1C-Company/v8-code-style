@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "settings": {
+    "missing-temporary-file-deletion": {
+      "properties": {
+        "deleteFileMethods": "УдалитьФайлы|DeleteFiles|НачатьУдалениеФайлов|BeginDeletingFiles|ПереместитьФайл|MoveFile|МоеУдалениеФайла"
+      }
+    }
+  }
+}
