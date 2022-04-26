@@ -39,6 +39,8 @@ public class FormListRefUseAlwaysFlagDisabledCheck
 
     private static final String CHECK_ID = "form-list-ref-use-always-flag-disabled"; //$NON-NLS-1$
     private static final String REF_ABSTRACT_DATA_PATH = "/List/Ref"; //$NON-NLS-1$
+    private static final String REF_ABSTRACT_DATA_PATH_RU = "/List/Ссылка"; //$NON-NLS-1$
+    private static final String REF_ABSTRACT_DATA_PATH_RU_FULL = "/Список/Ссылка"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -73,7 +75,9 @@ public class FormListRefUseAlwaysFlagDisabledCheck
         FormAttribute formAttribute = (FormAttribute)object;
         if (formAttribute.getExtInfo() instanceof DynamicListExtInfo && formAttribute.getNotDefaultUseAlwaysAttributes()
             .stream()
-            .noneMatch(p -> p.toString().equals(REF_ABSTRACT_DATA_PATH)))
+            .noneMatch(
+                p -> p.toString().equals(REF_ABSTRACT_DATA_PATH) || p.toString().equals(REF_ABSTRACT_DATA_PATH_RU)
+                    || p.toString().equals(REF_ABSTRACT_DATA_PATH_RU_FULL)))
         {
             resultAceptor.addIssue(
                 Messages.FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field,

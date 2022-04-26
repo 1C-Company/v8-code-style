@@ -12,6 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.form.check.itests;
 
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGURATION;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -29,6 +30,8 @@ import com._1c.g5.v8.dt.form.model.DataPath;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.Table;
+import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.form.check.FormListRefUseAlwaysFlagDisabledCheck;
@@ -45,8 +48,9 @@ public class FormListRefUseAlwaysFlagDisabledCheckTest
     private static final String PROJECT_NAME = "FormListRefUseAlwaysFlagDisabled";
     private static final String FQN_FORM = "Catalog.TestCatalog.Form.TestListForm.Form";
 
+
     /**
-     * Test Use Always flag is disabled for the Reference attribute in dynamic list.
+     * Test Use Always flag is disabled for the Reference attribute in dynamic list (En Script variant).
      *
      * @throws Exception the exception
      */
@@ -64,7 +68,7 @@ public class FormListRefUseAlwaysFlagDisabledCheckTest
     }
 
     /**
-     * Test Use Always flag is enabled for the Reference attribute in dynamic list.
+     * Test Use Always flag is enabled for the Reference attribute in dynamic list (En Script variant).
      *
      * @throws Exception the exception
      */
@@ -95,5 +99,39 @@ public class FormListRefUseAlwaysFlagDisabledCheckTest
         assertTrue(object instanceof Form);
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNull(marker);
+    }
+
+    /**
+     * Test Use Always flag is disabled for the Reference attribute in dynamic list (Ru script variant).
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testUseAlwaysDisabledForRefRu() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmModel model = bmModelManager.getModel(dtProject);
+        model.execute(new AbstractBmTask<Void>("change mode")
+        {
+            @Override
+            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+            {
+                IBmObject object = transaction.getTopObjectByFqn(CONFIGURATION.getName());
+                assertTrue(object instanceof Configuration);
+                Configuration config = (Configuration)object;
+                config.setScriptVariant(ScriptVariant.RUSSIAN);
+                assertTrue(config.getScriptVariant() == ScriptVariant.RUSSIAN);
+                return null;
+            }
+        });
+        waitForDD(dtProject);
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM, dtProject);
+        assertTrue(object instanceof Form);
+
+        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+        assertNotNull(marker);
     }
 }
