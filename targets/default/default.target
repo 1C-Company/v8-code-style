@@ -127,8 +127,7 @@
 <unit id="org.apache.batik.transcoder" version="1.14.0.v20210324-0332"/>
 <unit id="javax.servlet" version="3.1.0.v201410161800"/>
 <unit id="javax.servlet.source" version="3.1.0.v201410161800"/>
-<repository location="http://boreas.dept07/artifactory/p2-releases/orbit/R20211213173813/"/>
-<!-- https://download.eclipse.org/tools/orbit/downloads/drops/R20201130205003/repository/ -->
+<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository/"/>
 </location>
 
 <!-- Eclipse -->
@@ -140,21 +139,6 @@
 <unit id="org.eclipse.epp.mpc.help.ui" version="0.0.0"/>
 <unit id="org.eclipse.equinox.ds" version="1.6.100.v20191001-1333"/>
 <repository id="eclipse_repository" location="https://download.eclipse.org/releases/2022-03/"/>
-</location>
-
-<!-- XTEXT -->
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.objectweb.asm" version="9.2.0.v20210813-1119"/>
-<unit id="org.objectweb.asm.tree" version="9.2.0.v20210813-1119"/>
-<repository id="artifactory" location="http://boreas.dept07/artifactory/p2-releases/eclipse/2022-03/"/>
-</location>
-
-<!-- Jetty -->
-<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<repository location="http://boreas.dept07/artifactory/p2-releases/artifactory/dt/jetty/update/10.0.6/"/>
-<unit id="org.eclipse.jetty.rewrite" version="10.0.6"/>
-<unit id="org.eclipse.jetty.client" version="10.0.6"/>
-<unit id="org.eclipse.jetty.alpn.client" version="10.0.6"/>
 </location>
 
 </locations>
