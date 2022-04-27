@@ -16,8 +16,13 @@ import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM;
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM_ATTRIBUTE;
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM_ATTRIBUTE__NOT_DEFAULT_USE_ALWAYS_ATTRIBUTES;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import java.util.List;
+import java.util.function.Predicate;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.EList;
+
+import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.DynamicListExtInfo;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -38,9 +43,8 @@ public class FormListRefUseAlwaysFlagDisabledCheck
 {
 
     private static final String CHECK_ID = "form-list-ref-use-always-flag-disabled"; //$NON-NLS-1$
-    private static final String REF_ABSTRACT_DATA_PATH = "/List/Ref"; //$NON-NLS-1$
-    private static final String REF_ABSTRACT_DATA_PATH_RU = "/List/Ссылка"; //$NON-NLS-1$
-    private static final String REF_ABSTRACT_DATA_PATH_RU_FULL = "/Список/Ссылка"; //$NON-NLS-1$
+    private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("List", "Ref"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final List<String> REF_ABSTRACT_DATA_PATH_RU = List.of("Список", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
 
     @Override
     public String getCheckId()
@@ -73,11 +77,8 @@ public class FormListRefUseAlwaysFlagDisabledCheck
         }
 
         FormAttribute formAttribute = (FormAttribute)object;
-        if (formAttribute.getExtInfo() instanceof DynamicListExtInfo && formAttribute.getNotDefaultUseAlwaysAttributes()
-            .stream()
-            .noneMatch(
-                p -> p.toString().equals(REF_ABSTRACT_DATA_PATH) || p.toString().equals(REF_ABSTRACT_DATA_PATH_RU)
-                    || p.toString().equals(REF_ABSTRACT_DATA_PATH_RU_FULL)))
+        if (formAttribute.getExtInfo() instanceof DynamicListExtInfo
+            && formAttribute.getNotDefaultUseAlwaysAttributes().stream().noneMatch(pathCheck))
         {
             resultAceptor.addIssue(
                 Messages.FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field,
@@ -85,5 +86,25 @@ public class FormListRefUseAlwaysFlagDisabledCheck
         }
 
     }
+
+    private Predicate<AbstractDataPath> pathCheck = path -> {
+        EList<String> segments = path.getSegments();
+        if (segments.size() != 2)
+        {
+            return false;
+        }
+
+        if (!segments.get(0).equals(REF_ABSTRACT_DATA_PATH.get(0))
+            && !segments.get(0).equals(REF_ABSTRACT_DATA_PATH_RU.get(0)))
+        {
+            return false;
+        }
+        if (!segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(1))
+            && !segments.get(1).equals(REF_ABSTRACT_DATA_PATH_RU.get(1)))
+        {
+            return false;
+        }
+        return true;
+    };
 
 }
