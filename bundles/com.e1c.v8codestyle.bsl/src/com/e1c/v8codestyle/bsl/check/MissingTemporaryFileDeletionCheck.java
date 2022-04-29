@@ -54,7 +54,7 @@ public class MissingTemporaryFileDeletionCheck
     private static final String DEFAULT_DELETE_FILE_METHODS_PARAM =
         "УдалитьФайлы|DeleteFiles|НачатьУдалениеФайлов|BeginDeletingFiles|ПереместитьФайл|MoveFile"; //$NON-NLS-1$
 
-    Map<String, StaticFeatureAccess> undeletedFiles = new HashMap<>();
+    private Map<String, StaticFeatureAccess> undeletedFiles = new HashMap<>();
 
     @Override
     public String getCheckId()
@@ -78,42 +78,40 @@ public class MissingTemporaryFileDeletionCheck
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
+    protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled())
+        if (monitor.isCanceled() || !(object instanceof Module))
         {
             return;
         }
 
         Module module = (Module)object;
-        if (module == null)
+        if (!addOpenedFiles(module, monitor))
         {
             return;
         }
 
-        addOpenedFiles(module, monitor);
-
         List<String> deleteFileMethods =
             Arrays.asList(parameters.getString(DELETE_FILE_METHODS_PARAM).split(METHOD_DELIMITER));
         deleteFileMethods.replaceAll(String::trim);
-
-        removeDeletedFiles(module, monitor, deleteFileMethods);
-
-        for (Map.Entry<String, StaticFeatureAccess> entry : undeletedFiles.entrySet())
+        if (!removeDeletedFiles(module, monitor, deleteFileMethods))
         {
-            resultAceptor.addIssue(Messages.MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion,
-                entry.getValue());
+            return;
         }
+
+        undeletedFiles.values()
+            .forEach(feature -> resultAcceptor
+                .addIssue(Messages.MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion, feature));
     }
 
-    private void addOpenedFiles(Module module, IProgressMonitor monitor)
+    private boolean addOpenedFiles(Module module, IProgressMonitor monitor)
     {
         for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(module, StaticFeatureAccess.class))
         {
             if (monitor.isCanceled())
             {
-                return;
+                return false;
             }
 
             String name = sfa.getName();
@@ -125,15 +123,16 @@ public class MissingTemporaryFileDeletionCheck
                 undeletedFiles.put(temporaryFileName, sfa);
             }
         }
+        return true;
     }
 
-    private void removeDeletedFiles(Module module, IProgressMonitor monitor, List<String> deleteFileMethods)
+    private boolean removeDeletedFiles(Module module, IProgressMonitor monitor, List<String> deleteFileMethods)
     {
         for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(module, StaticFeatureAccess.class))
         {
             if (monitor.isCanceled())
             {
-                return;
+                return false;
             }
             String name = sfa.getName();
             if (deleteFileMethods.contains(name))
@@ -151,5 +150,6 @@ public class MissingTemporaryFileDeletionCheck
                 }
             }
         }
+        return true;
     }
 }
