@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.md.check.itests;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -54,6 +55,21 @@ public final class DbObjectAnyRefNonRefTypeCheckTest
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
             Marker marker = getFirstMarker(CHECK_ID, att, dtProject);
             assertNotNull(marker);
+        }
+    }
+
+    @Test
+    public void testRef() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject object = getTopObjectByFqn("Catalog.Test4", dtProject);
+        if (object instanceof Catalog)
+        {
+            CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
+            Marker marker = getFirstMarker(CHECK_ID, att, dtProject);
+            assertNull(marker);
         }
     }
 

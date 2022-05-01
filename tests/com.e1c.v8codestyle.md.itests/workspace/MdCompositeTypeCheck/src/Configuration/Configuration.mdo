@@ -40,4 +40,6 @@
   </languages>
   <catalogs>Catalog.Test</catalogs>
   <catalogs>Catalog.Test2</catalogs>
+  <catalogs>Catalog.Test3</catalogs>
+  <catalogs>Catalog.Test4</catalogs>
 </mdclass:Configuration>

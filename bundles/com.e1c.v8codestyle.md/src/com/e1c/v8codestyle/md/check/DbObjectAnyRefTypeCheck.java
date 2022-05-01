@@ -12,10 +12,11 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.TYPE_DESCRIPTION;
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.TYPE_DESCRIPTION__TYPES;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_DB_OBJECT;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_FEATURE;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_FEATURE__TYPE;
 
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,7 +24,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
-import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -75,21 +75,20 @@ public final class DbObjectAnyRefTypeCheck
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(BASIC_DB_OBJECT)
-            .containment(BASIC_FEATURE)
-            .features(BASIC_FEATURE__TYPE);
+            .containment(TYPE_DESCRIPTION)
+            .features(TYPE_DESCRIPTION__TYPES);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        TypeDescription td = ((BasicFeature)object).getType();
-        for (TypeItem typeItem : td.getTypes())
+        for (TypeItem typeItem : ((TypeDescription)object).getTypes())
         {
             String typeItemName = McoreUtil.getTypeName(typeItem);
-            if (REF_TYPES.contains(typeItemName))
+            if (!Objects.isNull(typeItemName) && REF_TYPES.contains(typeItemName))
             {
-                resultAceptor.addIssue(Messages.DbObjectAnyRefCheck_AnyRef, BASIC_FEATURE__TYPE);
+                resultAceptor.addIssue(Messages.DbObjectAnyRefCheck_AnyRef, TYPE_DESCRIPTION__TYPES);
                 return;
             }
         }

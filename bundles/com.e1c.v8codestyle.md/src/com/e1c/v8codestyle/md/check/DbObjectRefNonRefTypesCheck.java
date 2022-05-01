@@ -12,10 +12,11 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.TYPE_DESCRIPTION;
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.TYPE_DESCRIPTION__TYPES;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_DB_OBJECT;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_FEATURE;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_FEATURE__TYPE;
 
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,7 +24,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
-import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -85,8 +85,8 @@ public final class DbObjectRefNonRefTypesCheck
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(BASIC_DB_OBJECT)
-            .containment(BASIC_FEATURE)
-            .features(BASIC_FEATURE__TYPE);
+            .containment(TYPE_DESCRIPTION)
+            .features(TYPE_DESCRIPTION__TYPES);
 
     }
 
@@ -94,28 +94,29 @@ public final class DbObjectRefNonRefTypesCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        BasicFeature basicFeature = (BasicFeature)object;
-        TypeDescription td = basicFeature.getType();
+        TypeDescription td = ((TypeDescription)object);
         boolean hasRef = false;
         boolean hasExl = false;
         for (TypeItem typeItem : td.getTypes())
         {
             String typeItemName = McoreUtil.getTypeName(typeItem);
-            String[] partsName = typeItemName.split("\\."); //$NON-NLS-1$
-            if (partsName.length > 1 && REF_TYPES.contains(partsName[0]))
+            if (!Objects.isNull(typeItemName))
             {
-                hasRef = true;
-            }
+                if (REF_TYPES.contains(McoreUtil.getTypeCategory(typeItem)))
+                {
+                    hasRef = true;
+                }
 
-            if (EXLUDED_TYPES.contains(typeItemName))
-            {
-                hasExl = true;
-            }
+                if (EXLUDED_TYPES.contains(typeItemName))
+                {
+                    hasExl = true;
+                }
 
-            if (hasRef && hasExl)
-            {
-                resultAceptor.addIssue(Messages.DbObjectRefNonRefTypesCheck_Ref_and_other, BASIC_FEATURE__TYPE);
-                return;
+                if (hasRef && hasExl)
+                {
+                    resultAceptor.addIssue(Messages.DbObjectRefNonRefTypesCheck_Ref_and_other, TYPE_DESCRIPTION__TYPES);
+                    return;
+                }
             }
         }
     }
