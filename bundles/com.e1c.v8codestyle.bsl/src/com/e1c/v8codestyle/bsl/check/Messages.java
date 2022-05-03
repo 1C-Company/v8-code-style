@@ -66,6 +66,12 @@ final class Messages
 
     public static String CommitTransactionCheck_Transactions_is_broken_des;
 
+    public static String CommonModuleNamedSelfReferenceCheck_description;
+
+    public static String CommonModuleNamedSelfReferenceCheck_issue;
+
+    public static String CommonModuleNamedSelfReferenceCheck_title;
+
     public static String EmptyExceptStatementCheck_description;
     public static String EmptyExceptStatementCheck_title;
 
@@ -104,6 +110,12 @@ final class Messages
 
     public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
 
+    public static String ManagerModuleNamedSelfReferenceCheck_description;
+
+    public static String ManagerModuleNamedSelfReferenceCheck_issue;
+
+    public static String ManagerModuleNamedSelfReferenceCheck_title;
+
     public static String ModuleStructureTopRegionCheck_description;
 
     public static String ModuleStructureTopRegionCheck_error_message;
@@ -131,6 +143,14 @@ final class Messages
     public static String QueryInLoop_Loop_has_method_with_query__0;
     public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_title;
+
+    public static String SelfReferenceCheck_check_only_existing_form_properties;
+
+    public static String SelfReferenceCheck_Description;
+
+    public static String SelfReferenceCheck_Title;
+
+    public static String SelfReferenceCheck_Issue;
 
     public static String StructureCtorTooManyKeysCheck_description;
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
@@ -213,6 +233,12 @@ final class Messages
 
     public static String FormModuleMissingPragmaCheck_title;
 
+    public static String FormSelfReferenceOutdatedCheck_Description;
+
+    public static String FormSelfReferenceOutdatedCheck_Issue;
+
+    public static String FormSelfReferenceOutdatedCheck_Title;
+
     public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_description;
 
     public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_result;
@@ -236,8 +262,6 @@ final class Messages
     public static String ModuleUndefinedFunctionCheck_Description;
     public static String ModuleUndefinedFunction_msg;
     public static String ModuleUndefinedMethod_msg;
-
-    public static String LockOutOfTry_BeginTransaction_method_must_by_outside_try_block;
 
     public static String LockOutOfTry_Checks_for_init_of_the_data_lock;
 

@@ -15,11 +15,8 @@ package com.e1c.v8codestyle.internal.bsl;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.xtext.ui.shared.SharedStateModule;
-import org.eclipse.xtext.util.Modules2;
 import org.osgi.framework.BundleContext;
 
-import com._1c.g5.v8.dt.bsl.BslRuntimeModule;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
 import com._1c.g5.wiring.ServiceInitialization;
@@ -27,7 +24,6 @@ import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 import com.e1c.v8codestyle.bsl.qfix.external.BslCheckFixBoostrap;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Module;
 
 /**
  * The bundle activator to support plug-in life-cycle
@@ -186,15 +182,7 @@ public class BslPlugin
     {
         try
         {
-            Module internalServiceModule = new ServiceModule();
-            Module bslExternalServicesModule = new com._1c.g5.v8.dt.bsl.ExternalServicesModule(this);
-            Module sharedStateModule = new SharedStateModule();
-            Module externalDepModule = new ExternalDependenciesModule(this);
-            Module bslRuntimeModule = new BslRuntimeModule();
-
-            Module mergedModule = Modules2.mixin(internalServiceModule, bslExternalServicesModule, sharedStateModule,
-                bslRuntimeModule, externalDepModule);
-            return Guice.createInjector(mergedModule);
+            return Guice.createInjector(new ServiceModule(), new ExternalDependenciesModule(this));
         }
         catch (Exception e)
         {

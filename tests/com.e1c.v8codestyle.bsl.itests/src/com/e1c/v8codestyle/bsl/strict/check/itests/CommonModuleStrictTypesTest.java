@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -29,7 +31,6 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -355,7 +356,6 @@ public class CommonModuleStrictTypesTest
      * @throws Exception the exception
      */
     @Test
-    @Ignore // FIXME check-system fails on issue add
     public void testFunctionCtorReturnSectionCheck() throws Exception
     {
 
@@ -368,13 +368,13 @@ public class CommonModuleStrictTypesTest
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(1, markers.size());
-
-        String uriToProblem = EcoreUtil.getURI(finctions.get(0)).toString();
+        assertEquals(2, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        // different key
+        marker = markers.get(1);
+        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -426,13 +426,12 @@ public class CommonModuleStrictTypesTest
 
         assertEquals(3, markers.size());
 
-        Marker marker = markers.get(0);
-        assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        marker = markers.get(1);
-        assertEquals("13", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        marker = markers.get(2);
-        assertEquals("12", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
+        Set<String> lines = new HashSet<>();
+        for(Marker marker: markers)
+        {
+            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+        assertEquals(Set.of("10", "12", "13"), lines);
     }
 
     /**

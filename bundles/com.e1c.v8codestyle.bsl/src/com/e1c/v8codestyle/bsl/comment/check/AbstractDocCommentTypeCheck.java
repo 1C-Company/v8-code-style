@@ -14,6 +14,7 @@ package com.e1c.v8codestyle.bsl.comment.check;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.scoping.IScopeProvider;
@@ -28,9 +29,11 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Function;
+import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.mcore.Method;
 import com._1c.g5.v8.dt.mcore.Parameter;
+import com._1c.g5.v8.dt.mcore.Property;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck;
 
@@ -136,7 +139,36 @@ public abstract class AbstractDocCommentTypeCheck
     }
 
     /**
-     * Checks if the link part referenced to the existing object.
+     * Gets the last referenced object of the link part.
+     *
+     * @param linkPart the link part, cannot be {@link null}.
+     * @param scopeProvider the scope provider, cannot be {@link null}.
+     * @param context the context, cannot be {@link null}.
+     * @return the last object of link part
+     */
+    protected Optional<EObject> getLinkPartLastObject(LinkPart linkPart, IScopeProvider scopeProvider, EObject context)
+    {
+        // get object of last segment of the link to method/parameter,
+        // without final brackets "(See ModuleName.MethodName.)".
+        if (linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$
+            && linkPart.getPartsWithOffset().size() > 1
+            && (linkPart.getPartsWithOffset().get(linkPart.getPartsWithOffset().size() - 1)).getFirst().isEmpty())
+        {
+            return Optional.ofNullable(
+                linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 2, scopeProvider, context));
+        }
+        else
+        {
+            return Optional.ofNullable(
+                linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 1, scopeProvider, context));
+        }
+    }
+
+    /**
+     * Checks if the link part referenced to the existing object with return types.
+     * Note that here may be not all the object with return types.
+     * Use {@link #getLinkPartLastObject(LinkPart, IScopeProvider, EObject)} instead to check link exit or
+     * compute parameter type via {@link TypesComputer} or methods of doc-comment model.
      *
      * @param linkPart the link part, cannot be {@link null}.
      * @param scopeProvider the scope provider, cannot be {@link null}.
@@ -145,22 +177,14 @@ public abstract class AbstractDocCommentTypeCheck
      */
     protected boolean isLinkPartObjectExist(LinkPart linkPart, IScopeProvider scopeProvider, EObject context)
     {
-        EObject object = null;
-
-        // get object of last segment of the link to method/parameter,
-        // without final brackets "(See ModuleName.MethodName.)".
-        if (linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$
-            && linkPart.getPartsWithOffset().size() > 1
-            && (linkPart.getPartsWithOffset().get(linkPart.getPartsWithOffset().size() - 1)).getFirst().isEmpty())
+        Optional<EObject> optional = getLinkPartLastObject(linkPart, scopeProvider, context);
+        if (optional.isPresent())
         {
-            object = linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 2, scopeProvider, context);
-        }
-        else
-        {
-            object = linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 1, scopeProvider, context);
-        }
+            EObject object = optional.get();
+            return object instanceof Method || object instanceof Function || object instanceof Parameter
+                || object instanceof FormalParam || object instanceof TypeItem || object instanceof Property;
 
-        return object instanceof Method || object instanceof Function || object instanceof Parameter
-            || object instanceof FormalParam || object instanceof TypeItem;
+        }
+        return false;
     }
 }

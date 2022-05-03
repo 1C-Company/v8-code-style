@@ -66,7 +66,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.EmptyExceptStatementCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -210,7 +210,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.IsInRoleCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.IsInRoleCheck">
       </check>
       <!-- Temporary disabling checks
       <check category="com.e1c.v8codestyle.bsl"
@@ -225,11 +225,11 @@
       -->
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.InvocationFormEventHandlerCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.InvocationFormEventHandlerCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.NewColorCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.NewColorCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -237,7 +237,23 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.bsl.check.LockOutOfTryCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.LockOutOfTryCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.SelfReferenceCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormSelfReferenceOutdatedCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CommonModuleNamedSelfReferenceCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ManagerModuleNamedSelfReferenceCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
