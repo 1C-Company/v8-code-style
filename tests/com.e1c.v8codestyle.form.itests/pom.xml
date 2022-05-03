@@ -19,9 +19,9 @@
   <parent>
     <groupId>com.e1c.v8codestyle</groupId>
     <artifactId>tests</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
   </parent>
   <artifactId>com.e1c.v8codestyle.form.itests</artifactId>
-  <version>0.2.0-SNAPSHOT</version>
+  <version>0.3.0-SNAPSHOT</version>
   <packaging>eclipse-test-plugin</packaging>
 </project>
