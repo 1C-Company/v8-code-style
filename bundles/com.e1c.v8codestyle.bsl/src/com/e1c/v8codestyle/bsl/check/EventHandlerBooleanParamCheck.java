@@ -23,10 +23,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.contextdef.IBslModuleContextDefService;
 import com._1c.g5.v8.dt.bsl.model.BinaryExpression;
@@ -83,24 +81,24 @@ public class EventHandlerBooleanParamCheck
 
     private static final Set<String> DEFAULT_PARAMS_TO_FALSE = Set.of("StandardProcessing", "Perform"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    private BslEventsService bslEventsService;
+    private final BslEventsService bslEventsService;
 
-    private IBslModuleContextDefService contextDefService;
+    private final IBslModuleContextDefService contextDefService;
 
     /**
      * Instantiates a new event handler boolean parameter check.
      *
      * @param contextDefService the context definition service, cannot be {@code null}.
+     * @param bslEventsService the BSL events service service, cannot be {@code null}.
      */
     @Inject
-    public EventHandlerBooleanParamCheck(IBslModuleContextDefService contextDefService)
+    public EventHandlerBooleanParamCheck(IBslModuleContextDefService contextDefService,
+        BslEventsService bslEventsService)
     {
         super();
 
         this.contextDefService = contextDefService;
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.bslEventsService = rsp.get(BslEventsService.class);
+        this.bslEventsService = bslEventsService;
     }
 
     @Override

@@ -29,14 +29,12 @@ import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.util.Triple;
 import org.eclipse.xtext.util.Tuples;
@@ -136,16 +134,15 @@ public class InvocationParamIntersectionCheck
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
      * @param v8ProjectManager the v 8 project manager service, cannot be {@code null}.
+     * @param exportMethodTypeProvider the export method type provider service, cannot be {@code null}.
      */
     @Inject
     public InvocationParamIntersectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, IV8ProjectManager v8ProjectManager)
+        IQualifiedNameConverter qualifiedNameConverter, IV8ProjectManager v8ProjectManager,
+        ExportMethodTypeProvider exportMethodTypeProvider)
     {
         super(resourceLookup, bslPreferences, qualifiedNameConverter);
-
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.exportMethodTypeProvider = rsp.get(ExportMethodTypeProvider.class);
+        this.exportMethodTypeProvider = exportMethodTypeProvider;
         this.v8ProjectManager = v8ProjectManager;
     }
 
@@ -322,7 +319,7 @@ public class InvocationParamIntersectionCheck
             if (typesAndParams != null)
             {
                 TypeItem collectionType = EcoreUtil2.getContainerOfType(method, TypeItem.class);
-                String typeName = McoreUtil.getTypeName(collectionType);
+                String typeName = collectionType == null ? null : McoreUtil.getTypeName(collectionType);
                 if (typeName != null && typesAndParams.containsKey(typeName))
                 {
                     List<TypeItem> types = typeComputer

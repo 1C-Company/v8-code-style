@@ -22,6 +22,9 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.form.check.messages"; //$NON-NLS-1$
+    public static String FormListRefUseAlwaysFlagDisabledCheck_description;
+    public static String FormListRefUseAlwaysFlagDisabledCheck_title;
+    public static String FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field;
     public static String InputFieldListChoiceMode_description;
     public static String InputFieldListChoiceMode_Form_input_field_the_list_choice_mode_not_set_with_filled_choice_list;
     public static String InputFieldListChoiceMode_title;

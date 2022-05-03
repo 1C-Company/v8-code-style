@@ -22,6 +22,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
+import com._1c.g5.v8.dt.common.StringUtils;
 import com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -73,6 +74,7 @@ public class ParametersSectionCheck
 
         if (root.getMethod().getFormalParams().isEmpty())
         {
+            // TODO Extract to new check that parameter section is empty and useless
             resultAceptor.addIssue(Messages.ParametersSectionCheck_Remove_useless_parameter_section,
                 parameterSection.getHeaderKeywordLength());
             return;
@@ -84,7 +86,12 @@ public class ParametersSectionCheck
         }
 
         Set<String> parameterNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        root.getMethod().getFormalParams().forEach(p -> parameterNames.add(p.getName()));
+        root.getMethod().getFormalParams().forEach(p -> {
+            if (p != null && StringUtils.isNotBlank(p.getName()))
+            {
+                parameterNames.add(p.getName());
+            }
+        });
 
         for (FieldDefinition parameterDefinition : parameterSection.getParameterDefinitions())
         {

@@ -65,8 +65,8 @@ public final class InvocationFormEventHandlerCheck
         builder.title(Messages.InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_title)
             .description(Messages.InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.WARNING)
+            .severity(IssueSeverity.TRIVIAL)
+            .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(INVOCATION);
