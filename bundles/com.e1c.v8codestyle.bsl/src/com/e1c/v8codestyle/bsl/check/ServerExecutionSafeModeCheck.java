@@ -44,6 +44,8 @@ import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
+ * Check if safe mode is enabled before Execute or Eval
+ *
  * @author Maxim Galios
  *
  */
