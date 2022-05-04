@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b9f455ca-d9f3-4535-9ad0-faa995552d29">
+  <name>ServerExecutionSafeModeCheck</name>
+  <synonym>
+    <key>en</key>
+    <value>Server execution safe mode check</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="08bbb3ce-d4b2-44e9-b22f-e2c40c2e07aa"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="48302ff5-8260-4a7d-a602-a8c21b2549cf"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="cb547ae1-e7bb-4346-9643-c4cf31627927"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="b13f6220-9268-4e2c-b2e4-3d85833475d1"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="d625183c-7a87-4f99-a97e-e7b912012e5f"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="3015f1e2-2b0f-49c6-892a-c4b152a91c80"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="583f7785-3e76-4ed2-8a37-1f016519817e"/>
+  <configurationExtensionCompatibilityMode>8.3.21</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.21</compatibilityMode>
+  <languages uuid="aec61191-2a87-4bff-b42a-6c57f9184a1a">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <commonModules>CommonModule.CommonModuleServerCall</commonModules>
+  <commonForms>CommonForm.Form</commonForms>
+</mdclass:Configuration>
