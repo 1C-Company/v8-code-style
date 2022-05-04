@@ -42,8 +42,8 @@ public class FormListRefUserVisibilityEnabledCheck
 {
 
     private static final String CHECK_ID = "form-list-ref-user-visibility-enabled"; //$NON-NLS-1$
-    private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("List", "Ref"); //$NON-NLS-1$ //$NON-NLS-2$
-    private static final List<String> REF_ABSTRACT_DATA_PATH_RU = List.of("Список", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final List<String> LIST_SEGMENT = List.of("List", "Список"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final List<String> REF_SEGMENT = List.of("Ref", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
 
     @Override
     public String getCheckId()
@@ -93,21 +93,6 @@ public class FormListRefUserVisibilityEnabledCheck
 
         EList<String> segments = ((AbstractDataPath)eContents.get(1)).getSegments();
 
-        if (segments.size() != 2)
-        {
-            return false;
-        }
-
-        if (!segments.get(0).equals(REF_ABSTRACT_DATA_PATH.get(0))
-            && !segments.get(0).equals(REF_ABSTRACT_DATA_PATH_RU.get(0)))
-        {
-            return false;
-        }
-        if (!segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(1))
-            && !segments.get(1).equals(REF_ABSTRACT_DATA_PATH_RU.get(1)))
-        {
-            return false;
-        }
-        return true;
+        return segments.size() == 2 && LIST_SEGMENT.contains(segments.get(0)) && REF_SEGMENT.contains(segments.get(1));
     }
 }
