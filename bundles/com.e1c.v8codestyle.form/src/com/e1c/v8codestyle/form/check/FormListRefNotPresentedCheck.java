@@ -89,5 +89,5 @@ public class FormListRefNotPresentedCheck
     }
 
     private Predicate<? super FormItem> nameCheck =
-        item -> (item.getName().contains(REF_NAMES.get(0)) || item.getName().contains(REF_NAMES.get(1)));
+        item -> item.getName().contains(REF_NAMES.get(0)) || item.getName().contains(REF_NAMES.get(1));
 }
