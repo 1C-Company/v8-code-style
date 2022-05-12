@@ -56,7 +56,7 @@ public class FormModuleMissingPragmaCheck
         builder.title(Messages.FormModuleMissingPragmaCheck_title)
             .description(Messages.FormModuleMissingPragmaCheck_description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
+            .severity(IssueSeverity.MINOR)
             .issueType(IssueType.ERROR)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()

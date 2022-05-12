@@ -72,7 +72,7 @@ public class DocCommentUseMinusCheck
         builder.title(Messages.DocCommentUseMinusCheck_title)
             .description(Messages.DocCommentUseMinusCheck_description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
+            .severity(IssueSeverity.MINOR)
             .issueType(IssueType.ERROR)
             .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(Description.class);
