@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0d44c827-3d42-4d85-b451-25af5f0a3b30">
+  <producedTypes>
+    <objectType typeId="81502f8e-8ada-47d0-9b11-7ca6228db032" valueTypeId="cf33033e-e4aa-43ff-b42e-959d274f6f3a"/>
+    <refType typeId="f5c4f311-3dd5-4a79-87e2-5a937b979927" valueTypeId="fb60283f-d06e-48c9-9818-702586cde2ad"/>
+    <selectionType typeId="cb11191a-034f-40bc-a328-8f9a04dee4a6" valueTypeId="f1db8199-3224-4c85-a6c5-83eca11cbedb"/>
+    <listType typeId="8f085bf8-28a0-4250-9b4a-ed5775a8f93f" valueTypeId="405c423e-4413-4101-a06f-f6fe41e4d64e"/>
+    <managerType typeId="5749e20a-1c41-4eff-b8f5-2d892b6d7117" valueTypeId="52975bae-2795-49f6-90ec-5e5d9f11c622"/>
+  </producedTypes>
+  <name>Catalog</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Catalog.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Catalog.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="f91b597f-74f0-4898-a6af-2a97eff91e5b">
+    <name>Attribute</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <passwordMode>true</passwordMode>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="f6cfdf36-af78-4ae0-959a-860f1b4bde7c">
+    <name>Attribute1</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute1</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="aa5087a9-6dbf-434b-8d4e-ea78c7606e57">
+    <producedTypes>
+      <objectType typeId="210c3388-f58f-462c-afde-1f06b25288b4" valueTypeId="8e18dbdb-54cf-43e1-9ca6-00321a0e7cf4"/>
+      <rowType typeId="cbf02324-dcb3-421a-94f0-092aad591f15" valueTypeId="ecd2feb4-a615-4bf1-8332-3b3ff9342587"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+    <attributes uuid="2ece4c6f-8539-4dfa-b554-74fb22c1ff26">
+      <name>Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <passwordMode>true</passwordMode>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="29172d4e-8d31-465a-83f1-ae0fe816dc80">
+      <name>Attribute1</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute1</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>
