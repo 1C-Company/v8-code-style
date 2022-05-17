@@ -38,6 +38,7 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
+  <commonModules>CommonModule.CommonModule</commonModules>
   <commonModules>CommonModule.CommonModuleServerCall</commonModules>
   <commonForms>CommonForm.Form</commonForms>
 </mdclass:Configuration>

@@ -15,26 +15,30 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.EXECUTE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 
+import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
+import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.ExecuteStatement;
 import com._1c.g5.v8.dt.bsl.model.Expression;
+import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.ModuleType;
-import com._1c.g5.v8.dt.bsl.model.Pragma;
+import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
-import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
+import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.util.Environment;
+import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -56,9 +60,6 @@ public class ServerExecutionSafeModeCheck
     private static final String CHECK_ID = "server-execution-safe-mode"; //$NON-NLS-1$
 
     private static final Collection<String> EVAL = Set.of("Eval", "Вычислить"); //$NON-NLS-1$ //$NON-NLS-2$
-    private static final Collection<String> SERVER_PRAGMAS = Set.of("НаСервере", "AtServer", //$NON-NLS-1$ //$NON-NLS-2$
-        "НаСервереБезКонтекста", "AtServerNoContext", //$NON-NLS-1$ //$NON-NLS-2$
-        "НаКлиентеНаСервереБезКонтекста", "AtClientAtServerNoContext"); //$NON-NLS-1$ //$NON-NLS-2$
     private static final Collection<String> SAFE_MODE_INVOCATIONS = Set.of("УстановитьБезопасныйРежим", "SetSafeMode"); //$NON-NLS-1$ //$NON-NLS-2$
 
     @Override
@@ -85,16 +86,13 @@ public class ServerExecutionSafeModeCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-
         EObject eObject = (EObject)object;
-        if (monitor.isCanceled() || (!isExecute(eObject) && !isEval(eObject)))
+        if (!isServerCall(eObject) || (!isExecute(eObject) && !isEval(eObject)))
         {
             return;
         }
 
-        Module module = EcoreUtil2.getContainerOfType(eObject, Module.class);
-        if (((module.getModuleType() == ModuleType.COMMON_MODULE && isServerCallModule(module, monitor))
-            || hasServerPragma(eObject, monitor)) && !isSafeModeEnabled(eObject))
+        if (!isSafeModeEnabledBeforeExecution(eObject))
         {
             if (isExecute(eObject))
             {
@@ -108,63 +106,201 @@ public class ServerExecutionSafeModeCheck
         }
     }
 
-    private boolean isServerCallModule(Module module, IProgressMonitor monitor)
+    private boolean isServerCall(EObject eObject)
     {
-        if (monitor.isCanceled())
-        {
-            return false;
-        }
-
-        CommonModule commonModule = (CommonModule)module.getOwner();
-        return !monitor.isCanceled() && commonModule.isServerCall() && commonModule.isServer();
+        Environmental environmental = EcoreUtil2.getContainerOfType(eObject, Environmental.class);
+        Environments environments = environmental.environments();
+        return environments.contains(Environment.SERVER);
     }
 
-    private boolean hasServerPragma(EObject eObject, IProgressMonitor monitor)
+    private boolean isSafeModeEnabledBeforeExecution(EObject eObject)
     {
-        Method surroundingMethod = EcoreUtil2.getContainerOfType(eObject, Method.class);
-        if (monitor.isCanceled() || surroundingMethod == null)
+        EObject container = eObject.eContainer();
+
+        while (container != null)
         {
-            return false;
+            Optional<Boolean> isSafeModeEnabledForContainer = isSafeModeEnabledForContainer(container, eObject);
+            if (isSafeModeEnabledForContainer.isPresent())
+            {
+                return isSafeModeEnabledForContainer.get();
+            }
+            container = container.eContainer();
         }
-        List<Pragma> pragmas = surroundingMethod.getPragmas();
-        if (monitor.isCanceled() || pragmas.isEmpty())
-        {
-            return false;
-        }
-        return pragmas.stream().anyMatch(pragma -> SERVER_PRAGMAS.contains(pragma.getSymbol()));
+        return false;
     }
 
-    private boolean isSafeModeEnabled(EObject eObject)
+    private Optional<Boolean> isSafeModeEnabledForContainer(EObject container, EObject eObject)
     {
-        Method surroundingMethod = EcoreUtil2.getContainerOfType(eObject, Method.class);
-        if (surroundingMethod == null)
+        if (container instanceof IfStatement)
         {
-            return false;
+            return isSafeModeEnabledForIfStatement((IfStatement)container, eObject);
         }
-        List<Statement> statements = surroundingMethod.allStatements();
-        List<Statement> safeModeStatements =
-            statements.stream().filter(this::isSafeModeMethod).collect(Collectors.toList());
-
-        if (safeModeStatements.isEmpty())
+        else if (container instanceof LoopStatement)
         {
-            return false;
+            return isSafeModeEnabledForLoopStatement((LoopStatement)container, eObject);
         }
-
-        List<Integer> safeModeStatementIndexes =
-            safeModeStatements.stream().map(statements::indexOf).collect(Collectors.toList());
-        int executeStatementIndex = findExecuteStatementIndex(statements, eObject);
-        if (executeStatementIndex == -1)
+        else if (container instanceof TryExceptStatement)
         {
-            return false;
+            return isSafeModeEnabledForTryExceptStatement((TryExceptStatement)container, eObject);
+        }
+        else if (container instanceof Block)
+        {
+            return isSafeModeEnabledForBlock((Block)container, eObject);
         }
 
-        int lastIndexBeforeExecute = findLastSafeModeStatement(safeModeStatementIndexes, executeStatementIndex);
-        if (lastIndexBeforeExecute == -1)
+        return Optional.empty();
+    }
+
+    private Optional<Boolean> isSafeModeEnabledForIfStatement(IfStatement ifStatement, EObject eObject)
+    {
+        List<Statement> ifStatements = ifStatement.getIfPart().getStatements();
+        Optional<Boolean> ifStatementSafeModeEnabled = isSafeModeEnabledInStatementList(ifStatements, eObject);
+
+        if (ifStatementSafeModeEnabled.isPresent())
         {
-            return false;
+            return ifStatementSafeModeEnabled;
         }
-        Statement lastSafeModeStatement = statements.get(lastIndexBeforeExecute);
-        return isSafeModeEnabledInLastStatement(lastSafeModeStatement);
+
+        List<Conditional> elseIfParts = ifStatement.getElsIfParts();
+        for (Conditional part : elseIfParts)
+        {
+            List<Statement> elseIfStatements = part.getStatements();
+            Optional<Boolean> elseIfStatementSafeModeEnabled =
+                isSafeModeEnabledInStatementList(elseIfStatements, eObject);
+
+            if (elseIfStatementSafeModeEnabled.isPresent())
+            {
+                return elseIfStatementSafeModeEnabled;
+            }
+        }
+
+        List<Statement> elseStatements = ifStatement.getElseStatements();
+        return isSafeModeEnabledInStatementList(elseStatements, eObject);
+    }
+
+    private Optional<Boolean> isSafeModeEnabledForLoopStatement(LoopStatement loopStatement, EObject eObject)
+    {
+        List<Statement> loopStatements = loopStatement.getStatements();
+        return isSafeModeEnabledInStatementList(loopStatements, eObject);
+    }
+
+    private Optional<Boolean> isSafeModeEnabledForTryExceptStatement(TryExceptStatement tryExceptStatement,
+        EObject eObject)
+    {
+        List<Statement> tryStatements = tryExceptStatement.getTryStatements();
+        Optional<Boolean> tryStatementSafeModeEnabled = isSafeModeEnabledInStatementList(tryStatements, eObject);
+
+        if (tryStatementSafeModeEnabled.isPresent())
+        {
+            return tryStatementSafeModeEnabled;
+        }
+
+        List<Statement> exceptStatements = tryExceptStatement.getExceptStatements();
+        return isSafeModeEnabledInStatementList(exceptStatements, eObject);
+    }
+
+    private Optional<Boolean> isSafeModeEnabledForBlock(Block block, EObject eObject)
+    {
+        List<Statement> statements = block.allStatements();
+        return isSafeModeEnabledInStatementList(statements, eObject);
+    }
+
+    private Optional<Boolean> isSafeModeEnabledInStatementList(List<Statement> statements, EObject eObject)
+    {
+        int executeIndex = findExecuteStatementIndex(statements, eObject);
+        if (executeIndex == -1)
+        {
+            return Optional.empty();
+        }
+
+        for (int i = executeIndex - 1; i >= 0; i--)
+        {
+            Statement statement = statements.get(i);
+            Optional<Boolean> safeModeEnabled = isSafeModeEnabled(statement);
+            if (safeModeEnabled.isPresent())
+            {
+                return safeModeEnabled;
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Boolean> isSafeModeEnabled(Statement statement)
+    {
+        if (statement instanceof SimpleStatement && isSafeModeMethod(statement))
+        {
+            return Optional.of(isSafeModeEnabledStatement(statement));
+        }
+        else if (statement instanceof IfStatement)
+        {
+            List<Optional<Boolean>> safeModeStatementResults = new ArrayList<>();
+            IfStatement ifStatement = (IfStatement)statement;
+
+            List<Statement> ifStatements = ifStatement.getIfPart().getStatements();
+            safeModeStatementResults.add(safeModeStatementResult(ifStatements));
+
+            List<Conditional> elseIfParts = ifStatement.getElsIfParts();
+            for (Conditional part : elseIfParts)
+            {
+                List<Statement> elseIfStatements = part.getStatements();
+                safeModeStatementResults.add(safeModeStatementResult(elseIfStatements));
+            }
+
+            List<Statement> elseStatements = ifStatement.getElseStatements();
+            safeModeStatementResults.add(safeModeStatementResult(elseStatements));
+
+            return validateSafeModeStatements(safeModeStatementResults);
+        }
+        else if (statement instanceof LoopStatement)
+        {
+            LoopStatement loopStatement = (LoopStatement)statement;
+            List<Statement> loopStatements = loopStatement.getStatements();
+            return safeModeStatementResult(loopStatements);
+        }
+        else if (statement instanceof TryExceptStatement)
+        {
+            List<Optional<Boolean>> safeModeStatementResults = new ArrayList<>();
+            TryExceptStatement tryExceptStatement = (TryExceptStatement)statement;
+            List<Statement> tryStatements = tryExceptStatement.getTryStatements();
+            safeModeStatementResults.add(safeModeStatementResult(tryStatements));
+
+            List<Statement> exceptStatements = tryExceptStatement.getExceptStatements();
+            safeModeStatementResults.add(safeModeStatementResult(exceptStatements));
+
+            return validateSafeModeStatements(safeModeStatementResults);
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Boolean> safeModeStatementResult(List<Statement> statements)
+    {
+        for (int i = statements.size() - 1; i >= 0; i--)
+        {
+            Statement statement = statements.get(i);
+            Optional<Boolean> res = isSafeModeEnabled(statement);
+            if (res.isPresent())
+            {
+                return res;
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<Boolean> validateSafeModeStatements(List<Optional<Boolean>> safeModeStatements)
+    {
+        if (safeModeStatements.stream().allMatch(Optional::isEmpty))
+        {
+            return Optional.empty();
+        }
+        if (safeModeStatements.stream().filter(Optional::isPresent).anyMatch(s -> !s.get()))
+        {
+            return Optional.of(false);
+        }
+        if (safeModeStatements.stream().allMatch(s -> s.isPresent() && s.get()))
+        {
+            return Optional.of(true);
+        }
+        return Optional.empty();
     }
 
     private boolean isSafeModeMethod(Statement statement)
@@ -190,27 +326,36 @@ public class ServerExecutionSafeModeCheck
 
     private int findExecuteStatementIndex(List<Statement> statements, EObject eObject)
     {
-        return eObject instanceof Invocation
-            ? statements.indexOf(EcoreUtil2.getContainerOfType(eObject, Statement.class)) : statements.indexOf(eObject);
-    }
-
-    private int findLastSafeModeStatement(List<Integer> safeStatementIndexes, int executeIndex)
-    {
-        int lastIndexBeforeExecute = -1;
-
-        for (int index : safeStatementIndexes)
+        if (eObject instanceof ExecuteStatement)
         {
-            if (index >= executeIndex)
+            int index = statements.indexOf(eObject);
+            if (index != -1)
             {
-                break;
+                return index;
             }
-            lastIndexBeforeExecute = index;
         }
-        return lastIndexBeforeExecute;
+
+        Statement statement = EcoreUtil2.getContainerOfType(eObject, Statement.class);
+
+        while (statement != null)
+        {
+            int statementIndex = statements.indexOf(statement);
+            if (statementIndex != -1)
+            {
+                return statementIndex;
+            }
+            statement = EcoreUtil2.getContainerOfType(statement.eContainer(), Statement.class);
+        }
+
+        return -1;
     }
 
-    private boolean isSafeModeEnabledInLastStatement(Statement statement)
+    private boolean isSafeModeEnabledStatement(Statement statement)
     {
+        if (statement == null)
+        {
+            return false;
+        }
         SimpleStatement simpleStatement = (SimpleStatement)statement;
         Invocation invocation = (Invocation)simpleStatement.getLeft();
 

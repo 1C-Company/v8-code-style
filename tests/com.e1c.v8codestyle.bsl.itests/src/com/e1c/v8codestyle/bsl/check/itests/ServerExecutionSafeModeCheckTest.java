@@ -37,7 +37,10 @@ public class ServerExecutionSafeModeCheckTest
 
     private static final String PROJECT_NAME = "ServerExecutionSafeModeCheck";
 
-    private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModuleServerCall/Module.bsl";
+    private static final String COMMON_MODULE_SERVER_CALL_FILE_NAME =
+        "/src/CommonModules/CommonModuleServerCall/Module.bsl";
+
+    private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
 
     private static final String FORM_MODULE_FILE_NAME = "/src/CommonForms/Form/Module.bsl";
 
@@ -53,7 +56,7 @@ public class ServerExecutionSafeModeCheckTest
     }
 
     /**
-     * Test safe mode is enabled before Execute/Выполнить and Eval/Вычислить in common module
+     * Test that warning is not shown without Server in Environment
      *
      * @throws Exception
      */
@@ -61,16 +64,30 @@ public class ServerExecutionSafeModeCheckTest
     public void testCommonModule() throws Exception
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
-        assertEquals(4, markers.size());
-
-        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("5", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("12", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("13", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(0, markers.size());
     }
 
     /**
-     * Test safe mode is enabled before Execute/Выполнить and Eval/Вычислить in form module with different pregmas
+     * Test safe mode is enabled before Execute/Выполнить and Eval/Вычислить in common module
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testCommonModuleServerCall() throws Exception
+    {
+        List<Marker> markers = getMarkers(COMMON_MODULE_SERVER_CALL_FILE_NAME);
+        assertEquals(6, markers.size());
+
+        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("5", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("11", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("26", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("29", markers.get(4).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("30", markers.get(5).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    /**
+     * Test safe mode is enabled before Execute/Выполнить and Eval/Вычислить in form module
      *
      * @throws Exception
      */
@@ -78,35 +95,12 @@ public class ServerExecutionSafeModeCheckTest
     public void testFormModule() throws Exception
     {
         List<Marker> markers = getMarkers(FORM_MODULE_FILE_NAME);
-        assertEquals(40, markers.size());
+        assertEquals(4, markers.size());
 
-        // Check with safe mode in diffrent states
-        assertEquals("5", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("6", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("13", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("14", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
-        // Check procedures and functions with НаСервере/AtServer and НаСервереБезКонтекста/AtServerNoContext pragmas
-        for (int i = 0; i < 7; i++)
-        {
-            assertEquals(Integer.toString(24 + i * 8),
-                markers.get(4 + i * 4).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-            assertEquals(Integer.toString(25 + i * 8),
-                markers.get(5 + i * 4).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-            assertEquals(Integer.toString(26 + i * 8),
-                markers.get(6 + i * 4).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-            assertEquals(Integer.toString(26 + i * 8),
-                markers.get(7 + i * 4).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        }
-
-        // Check procedures and functions with НаКлиентеНаСервереБезКонтекста/AtClientAtServerNoContext pragmas
-        for (int i = 0; i < 4; i++)
-        {
-            assertEquals(Integer.toString(80 + i * 6),
-                markers.get(32 + i * 2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-            assertEquals(Integer.toString(80 + i * 6),
-                markers.get(33 + i * 2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        }
+        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("5", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("14", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("15", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     private List<Marker> getMarkers(String moduleFileName)
@@ -114,11 +108,11 @@ public class ServerExecutionSafeModeCheckTest
         String moduleId = Path.ROOT.append(getTestConfigurationName()).append(moduleFileName).toString();
         List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
 
-        String chekcId = getCheckId();
+        String checkId = getCheckId();
 
-        assertNotNull(chekcId);
+        assertNotNull(checkId);
         return markers.stream()
-            .filter(marker -> chekcId.equals(getCheckIdFromMarker(marker, getProject())))
+            .filter(marker -> checkId.equals(getCheckIdFromMarker(marker, getProject())))
             .collect(Collectors.toList());
     }
 }
