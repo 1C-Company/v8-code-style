@@ -92,7 +92,7 @@ public class ServerExecutionSafeModeCheck
             return;
         }
 
-        if (!isSafeModeEnabledBeforeExecution(eObject))
+        if (!isSafeModeEnabledBeforeExecution(eObject, monitor))
         {
             if (isExecute(eObject))
             {
@@ -113,12 +113,16 @@ public class ServerExecutionSafeModeCheck
         return environments.contains(Environment.SERVER);
     }
 
-    private boolean isSafeModeEnabledBeforeExecution(EObject eObject)
+    private boolean isSafeModeEnabledBeforeExecution(EObject eObject, IProgressMonitor monitor)
     {
         EObject container = eObject.eContainer();
 
         while (container != null)
         {
+            if (monitor.isCanceled())
+            {
+                return true;
+            }
             Optional<Boolean> isSafeModeEnabledForContainer = isSafeModeEnabledForContainer(container, eObject);
             if (isSafeModeEnabledForContainer.isPresent())
             {
