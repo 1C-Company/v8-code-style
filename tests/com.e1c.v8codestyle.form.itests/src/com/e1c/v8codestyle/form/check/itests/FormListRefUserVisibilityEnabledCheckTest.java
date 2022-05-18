@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.form.check.itests;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGURATION;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -44,8 +45,9 @@ public class FormListRefUserVisibilityEnabledCheckTest
     extends CheckTestBase
 {
     private static final String CHECK_ID = "form-list-ref-user-visibility-enabled";
-    private static final String PROJECT_NAME = "FormListRefUseAlwaysFlagDisabled";
-    private static final String FQN_FORM = "Catalog.TestCatalog.Form.TestListForm.Form";
+    private static final String PROJECT_NAME = "FormListRefUserVisibilityEnabled";
+    private static final String FQN_FORM_EN = "Catalog.TestCatalog.Form.TestListForm.Form";
+    private static final String FQN_FORM_RU = "Catalog.TestCatalog.Form.TestListFormRu.Form";
 
     /**
      * Test User Visibility is enabled for the Ref field in dynamic list (En Script variant).
@@ -58,7 +60,7 @@ public class FormListRefUserVisibilityEnabledCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject object = getTopObjectByFqn(FQN_FORM, dtProject);
+        IBmObject object = getTopObjectByFqn(FQN_FORM_EN, dtProject);
         assertTrue(object instanceof Form);
 
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
@@ -82,19 +84,21 @@ public class FormListRefUserVisibilityEnabledCheckTest
             @Override
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
             {
-                Form form = (Form)transaction.getTopObjectByFqn(FQN_FORM);
+                Form form = (Form)transaction.getTopObjectByFqn(FQN_FORM_EN);
                 FormItem item = form.getItems().get(1);
                 assertTrue(item instanceof Table);
                 Table table = (Table)item;
-                FormField field = (FormField)table.getItems().get(0);
-                field.setUserVisible(null);
+                assertEquals("Ref", table.getItems().get(0).getName());
+                FormField fieldRef = (FormField)table.getItems().get(0);
+                fieldRef.getUserVisible().setCommon(false);
                 return null;
             }
         });
         waitForDD(dtProject);
 
-        IBmObject object = getTopObjectByFqn(FQN_FORM, dtProject);
+        IBmObject object = getTopObjectByFqn(FQN_FORM_EN, dtProject);
         assertTrue(object instanceof Form);
+
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNull(marker);
     }
@@ -126,10 +130,62 @@ public class FormListRefUserVisibilityEnabledCheckTest
         });
         waitForDD(dtProject);
 
-        IBmObject object = getTopObjectByFqn(FQN_FORM, dtProject);
+        IBmObject object = getTopObjectByFqn(FQN_FORM_RU, dtProject);
         assertTrue(object instanceof Form);
 
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNotNull(marker);
+    }
+
+    /**
+     * Test User Visibility is disabled for the Ref field in dynamic list (Ru Script variant).
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testUserVisibilityDisabledForRefRu() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmModel modelChangeLanguage = bmModelManager.getModel(dtProject);
+        modelChangeLanguage.execute(new AbstractBmTask<Void>("change mode")
+        {
+            @Override
+            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+            {
+                IBmObject object = transaction.getTopObjectByFqn(CONFIGURATION.getName());
+                assertTrue(object instanceof Configuration);
+                Configuration config = (Configuration)object;
+                config.setScriptVariant(ScriptVariant.RUSSIAN);
+                assertTrue(config.getScriptVariant() == ScriptVariant.RUSSIAN);
+                return null;
+            }
+        });
+        waitForDD(dtProject);
+
+        IBmModel model = bmModelManager.getModel(dtProject);
+        model.execute(new AbstractBmTask<Void>("change mode")
+        {
+            @Override
+            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+            {
+                Form form = (Form)transaction.getTopObjectByFqn(FQN_FORM_RU);
+                FormItem item = form.getItems().get(1);
+                assertTrue(item instanceof Table);
+                Table table = (Table)item;
+                assertEquals("Ссылка", table.getItems().get(0).getName());
+                FormField fieldRef = (FormField)table.getItems().get(0);
+                fieldRef.getUserVisible().setCommon(false);
+                return null;
+            }
+        });
+        waitForDD(dtProject);
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM_RU, dtProject);
+        assertTrue(object instanceof Form);
+
+        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+        assertNull(marker);
     }
 }

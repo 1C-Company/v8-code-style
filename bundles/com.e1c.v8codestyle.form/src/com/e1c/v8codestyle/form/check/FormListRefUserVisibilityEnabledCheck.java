@@ -13,8 +13,8 @@
 package com.e1c.v8codestyle.form.check;
 
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM;
-import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.VISIBLE;
-import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.VISIBLE__USER_VISIBLE;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.ADJUSTABLE_BOOLEAN;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.ADJUSTABLE_BOOLEAN__COMMON;
 
 import java.util.List;
 
@@ -23,7 +23,8 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
-import com._1c.g5.v8.dt.form.model.Visible;
+import com._1c.g5.v8.dt.form.model.FormField;
+import com._1c.g5.v8.dt.metadata.mdclass.AdjustableBoolean;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -42,6 +43,7 @@ public class FormListRefUserVisibilityEnabledCheck
 {
 
     private static final String CHECK_ID = "form-list-ref-user-visibility-enabled"; //$NON-NLS-1$
+    private static final String FEATURE_NAME = "userVisible"; //$NON-NLS-1$
     private static final List<String> LIST_SEGMENT = List.of("List", "Список"); //$NON-NLS-1$ //$NON-NLS-2$
     private static final List<String> REF_SEGMENT = List.of("Ref", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -61,27 +63,25 @@ public class FormListRefUserVisibilityEnabledCheck
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
-            .containment(VISIBLE)
-            .features(VISIBLE__USER_VISIBLE);
+            .containment(ADJUSTABLE_BOOLEAN)
+            .features(ADJUSTABLE_BOOLEAN__COMMON);
+
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof Visible))
-        {
-            return;
-        }
-
-        Visible visible = (Visible)object;
-
-        if (pathCheck(visible.eContents()) && visible.getUserVisible().isCommon())
+        AdjustableBoolean adjBoolean = (AdjustableBoolean)object;
+        if (adjBoolean.isCommon() && adjBoolean.eContainer() instanceof FormField
+            && adjBoolean.eContainmentFeature().getName().equals(FEATURE_NAME)
+            && pathCheck(adjBoolean.eContainer().eContents()))
         {
             resultAceptor.addIssue(
                 Messages.FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field,
-                visible);
+                ADJUSTABLE_BOOLEAN__COMMON);
         }
+
     }
 
     private boolean pathCheck(EList<EObject> eContents)
@@ -90,9 +90,7 @@ public class FormListRefUserVisibilityEnabledCheck
         {
             return false;
         }
-
         EList<String> segments = ((AbstractDataPath)eContents.get(1)).getSegments();
-
         return segments.size() == 2 && LIST_SEGMENT.contains(segments.get(0)) && REF_SEGMENT.contains(segments.get(1));
     }
 }

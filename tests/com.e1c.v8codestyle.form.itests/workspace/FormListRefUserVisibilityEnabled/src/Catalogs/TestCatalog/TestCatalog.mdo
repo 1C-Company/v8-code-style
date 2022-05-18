@@ -31,11 +31,20 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.TestCatalog.Form.TestListForm</defaultListForm>
-  <forms uuid="c481591b-88ad-4d35-bf36-f76c39af8c8f">
+  <forms uuid="062f3d00-5d12-48bc-90ca-dd71e88247ed">
     <name>TestListForm</name>
     <synonym>
       <key>en</key>
       <value>Test list form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="44347602-480a-4345-9bfd-31c6eda4ac64">
+    <name>TestListFormRu</name>
+    <synonym>
+      <key>en</key>
+      <value>Test list form ru</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
