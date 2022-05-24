@@ -40,4 +40,13 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
+  <forms uuid="ee259b37-9e6a-4fe0-81ae-01dbbeece6e2">
+    <name>TestListFormRu</name>
+    <synonym>
+      <key>en</key>
+      <value>Test list form ru</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>

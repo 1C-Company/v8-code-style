@@ -25,6 +25,8 @@ import org.eclipse.emf.common.util.EList;
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.DynamicListExtInfo;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
+import com._1c.g5.v8.dt.metadata.dbview.DbViewFieldDef;
+import com._1c.g5.v8.dt.metadata.dbview.DbViewTableDef;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -46,6 +48,27 @@ public class FormListRefUseAlwaysFlagDisabledCheck
     private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("List", "Ref"); //$NON-NLS-1$ //$NON-NLS-2$
     private static final List<String> REF_ABSTRACT_DATA_PATH_RU = List.of("Список", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
 
+    private static final Predicate<? super DbViewFieldDef> nameCheck =
+        name -> name.getName().equals(REF_ABSTRACT_DATA_PATH.get(1));
+
+    private static Predicate<AbstractDataPath> pathCheck = path -> {
+        EList<String> segments = path.getSegments();
+
+        if (segments.size() != 2)
+        {
+            return false;
+        }
+
+        if (!segments.get(0).equals(REF_ABSTRACT_DATA_PATH.get(0))
+            && !segments.get(0).equals(REF_ABSTRACT_DATA_PATH_RU.get(0)))
+        {
+            return false;
+        }
+
+        return segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(1))
+            || segments.get(1).equals(REF_ABSTRACT_DATA_PATH_RU.get(1));
+    };
+
     @Override
     public String getCheckId()
     {
@@ -58,7 +81,7 @@ public class FormListRefUseAlwaysFlagDisabledCheck
         builder.title(Messages.FormListRefUseAlwaysFlagDisabledCheck_title)
             .description(Messages.FormListRefUseAlwaysFlagDisabledCheck_description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
+            .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
@@ -70,41 +93,17 @@ public class FormListRefUseAlwaysFlagDisabledCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-
-        if (monitor.isCanceled() || !(object instanceof FormAttribute))
-        {
-            return;
-        }
-
         FormAttribute formAttribute = (FormAttribute)object;
-        if (formAttribute.getExtInfo() instanceof DynamicListExtInfo
-            && formAttribute.getNotDefaultUseAlwaysAttributes().stream().noneMatch(pathCheck))
+        if (formAttribute.getExtInfo() instanceof DynamicListExtInfo)
         {
-            resultAceptor.addIssue(
-                Messages.FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field,
-                formAttribute);
+            DbViewTableDef tableDef = (DbViewTableDef)((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
+            if (tableDef.getFields().stream().anyMatch(nameCheck)
+                && formAttribute.getNotDefaultUseAlwaysAttributes().stream().noneMatch(pathCheck))
+            {
+                resultAceptor.addIssue(
+                    Messages.FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field,
+                    FORM_ATTRIBUTE__NOT_DEFAULT_USE_ALWAYS_ATTRIBUTES);
+            }
         }
-
     }
-
-    private Predicate<AbstractDataPath> pathCheck = path -> {
-        EList<String> segments = path.getSegments();
-        if (segments.size() != 2)
-        {
-            return false;
-        }
-
-        if (!segments.get(0).equals(REF_ABSTRACT_DATA_PATH.get(0))
-            && !segments.get(0).equals(REF_ABSTRACT_DATA_PATH_RU.get(0)))
-        {
-            return false;
-        }
-        if (!segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(1))
-            && !segments.get(1).equals(REF_ABSTRACT_DATA_PATH_RU.get(1)))
-        {
-            return false;
-        }
-        return true;
-    };
-
 }
