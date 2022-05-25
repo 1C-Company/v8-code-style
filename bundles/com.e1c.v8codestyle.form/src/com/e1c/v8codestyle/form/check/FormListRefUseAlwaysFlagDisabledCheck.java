@@ -48,7 +48,7 @@ public class FormListRefUseAlwaysFlagDisabledCheck
     private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("List", "Ref"); //$NON-NLS-1$ //$NON-NLS-2$
     private static final List<String> REF_ABSTRACT_DATA_PATH_RU = List.of("Список", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
 
-    private static final Predicate<? super DbViewFieldDef> nameCheck =
+    private static final Predicate<? super DbViewFieldDef> NAME_CHECK =
         name -> name.getName().equals(REF_ABSTRACT_DATA_PATH.get(1));
 
     private static Predicate<AbstractDataPath> pathCheck = path -> {
@@ -97,7 +97,7 @@ public class FormListRefUseAlwaysFlagDisabledCheck
         if (formAttribute.getExtInfo() instanceof DynamicListExtInfo)
         {
             DbViewTableDef tableDef = (DbViewTableDef)((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
-            if (tableDef.getFields().stream().anyMatch(nameCheck)
+            if (tableDef.getFields().stream().anyMatch(NAME_CHECK)
                 && formAttribute.getNotDefaultUseAlwaysAttributes().stream().noneMatch(pathCheck))
             {
                 resultAceptor.addIssue(
