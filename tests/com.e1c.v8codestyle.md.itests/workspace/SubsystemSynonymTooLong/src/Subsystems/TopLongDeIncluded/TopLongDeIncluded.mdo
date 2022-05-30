@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="9b610df6-99ac-4c41-b752-4f2fe0370fbb">
+  <name>TopLongDeIncluded</name>
+  <synonym>
+    <key>en</key>
+    <value>This text is less than 35 symbols</value>
+  </synonym>
+  <synonym>
+    <key>de</key>
+    <value>Dieser Text ist mehr als 35 Symbole lang</value>
+  </synonym>
+  <synonym>
+    <key>ru</key>
+    <value>Этот текст менее 35 символов</value>
+  </synonym>
+  <includeHelpInContents>true</includeHelpInContents>
+  <includeInCommandInterface>true</includeInCommandInterface>
+</mdclass:Subsystem>

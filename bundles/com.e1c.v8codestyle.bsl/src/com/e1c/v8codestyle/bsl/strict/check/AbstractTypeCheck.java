@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -192,8 +193,9 @@ public abstract class AbstractTypeCheck
                 String typeName = fa.getName();
                 String propertyName = dfa.getName();
                 TypeItem type = sourceTypes.get(0);
-                if ((typeName.equalsIgnoreCase(McoreUtil.getTypeNameRu(type))
-                    || typeName.equalsIgnoreCase(McoreUtil.getTypeName(type)))
+                if (typeName != null
+                    && (typeName.equalsIgnoreCase(McoreUtil.getTypeNameRu(type))
+                        || typeName.equalsIgnoreCase(McoreUtil.getTypeName(type)))
                     && dynamicFeatureAccessComputer.getAllProperties(sourceTypes, object.eResource())
                         .stream()
                         .flatMap(e -> e.getFirst().stream())
@@ -308,11 +310,17 @@ public abstract class AbstractTypeCheck
         {
             type = (TypeItem)EcoreUtil.resolve(type, context);
             String typeName = McoreUtil.getTypeName(type);
-            typeNames.add(typeName);
-            if (type instanceof TypeSet)
+            if (typeName != null)
             {
-                typeNames.addAll(
-                    ((TypeSet)type).getTypes().stream().map(McoreUtil::getTypeName).collect(Collectors.toList()));
+                typeNames.add(typeName);
+            }
+            if (type instanceof TypeSet && typeName != null)
+            {
+                typeNames.addAll(((TypeSet)type).getTypes()
+                    .stream()
+                    .map(McoreUtil::getTypeName)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()));
 
                 if (IEObjectTypeNames.ANY_REF.equals(typeName))
                 {

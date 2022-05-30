@@ -18,6 +18,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -176,8 +177,10 @@ public class FunctionCtorReturnSectionCheck
 
         Set<String> checkTypes = getCheckTypes(parameters);
 
-        List<String> computedReturnTypeNames =
-            computedReturnTypes.stream().map(McoreUtil::getTypeName).collect(Collectors.toList());
+        List<String> computedReturnTypeNames = computedReturnTypes.stream()
+            .map(McoreUtil::getTypeName)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
         if (isUserDataTypes(computedReturnTypeNames, checkTypes))
         {
 
@@ -256,8 +259,11 @@ public class FunctionCtorReturnSectionCheck
         {
             String propertyName = useRussianScript ? declaredProperty.getNameRu() : declaredProperty.getName();
             declaredProertyNames.add(propertyName);
-            List<String> declaredType =
-                declaredProperty.getTypes().stream().map(McoreUtil::getTypeName).collect(Collectors.toList());
+            List<String> declaredType = declaredProperty.getTypes()
+                .stream()
+                .map(McoreUtil::getTypeName)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
             if (declaredType.isEmpty())
             {
                 continue;
@@ -271,7 +277,7 @@ public class FunctionCtorReturnSectionCheck
                 .collect(Collectors.toList());
 
             List<TypeItem> types2 = types.stream()
-                .filter(t -> !declaredType.contains(McoreUtil.getTypeName(t)))
+                .filter(t -> McoreUtil.getTypeName(t) != null && !declaredType.contains(McoreUtil.getTypeName(t)))
                 .collect(Collectors.toList());
             if (types.isEmpty())
             {
