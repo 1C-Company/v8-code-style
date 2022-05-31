@@ -41,7 +41,6 @@ import com.e1c.v8codestyle.internal.form.CorePlugin;
 public class FormListRefUseAlwaysFlagDisabledCheck
     extends BasicCheck
 {
-
     private static final String CHECK_ID = "form-list-ref-use-always-flag-disabled"; //$NON-NLS-1$
     private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("List", "Ref"); //$NON-NLS-1$ //$NON-NLS-2$
     private static final List<String> REF_ABSTRACT_DATA_PATH_RU = List.of("Список", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -55,7 +54,8 @@ public class FormListRefUseAlwaysFlagDisabledCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.FormListRefUseAlwaysFlagDisabledCheck_title)
+        builder.extension(new SkipBaseFormExtension())
+            .title(Messages.FormListRefUseAlwaysFlagDisabledCheck_title)
             .description(Messages.FormListRefUseAlwaysFlagDisabledCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
@@ -70,7 +70,6 @@ public class FormListRefUseAlwaysFlagDisabledCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-
         if (monitor.isCanceled() || !(object instanceof FormAttribute))
         {
             return;
