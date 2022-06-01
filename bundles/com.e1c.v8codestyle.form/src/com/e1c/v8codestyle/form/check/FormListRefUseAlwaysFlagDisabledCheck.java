@@ -97,7 +97,7 @@ public class FormListRefUseAlwaysFlagDisabledCheck
         if (formAttribute.getExtInfo() instanceof DynamicListExtInfo)
         {
             DbViewTableDef tableDef = (DbViewTableDef)((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
-            if (tableDef.getFields().stream().anyMatch(NAME_CHECK)
+            if (tableDef != null && tableDef.getFields().stream().anyMatch(NAME_CHECK)
                 && formAttribute.getNotDefaultUseAlwaysAttributes().stream().noneMatch(pathCheck))
             {
                 resultAceptor.addIssue(
