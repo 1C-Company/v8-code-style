@@ -30,9 +30,11 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.event.BmSubEvent;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IExtensionProject;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
+import com._1c.g5.v8.dt.metadata.mdclass.Language;
 import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
 import com._1c.g5.v8.dt.metadata.mdclass.StandardAttribute;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -97,21 +99,33 @@ public class MdStandardAttributeSynonymEmpty
 
         builder.topObject(CATALOG).containment(STANDARD_ATTRIBUTE).features(STANDARD_ATTRIBUTE__SYNONYM);
         builder.topObject(CATALOG).checkTop().features(FEATURES.toArray(new EStructuralFeature[0]));
-
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-
         EObject eObject = (EObject)object;
         IV8Project project = v8ProjectManager.getProject(eObject);
-        String languageCode = project.getDefaultLanguage().getLanguageCode();
-        if (monitor.isCanceled())
+        Language language = project.getDefaultLanguage();
+
+        if (language == null)
+        {
+            if (!project.getLanguages().isEmpty())
+            {
+                language = project.getLanguages().iterator().next();
+            }
+            else if (project instanceof IExtensionProject && ((IExtensionProject)project).getParent() != null)
+            {
+                language = ((IExtensionProject)project).getParent().getDefaultLanguage();
+            }
+        }
+
+        if (monitor.isCanceled() || language == null)
         {
             return;
         }
+        String languageCode = language.getLanguageCode();
 
         if (object instanceof StandardAttribute)
         {
