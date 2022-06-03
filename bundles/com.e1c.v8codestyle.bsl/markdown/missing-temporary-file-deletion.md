@@ -4,7 +4,32 @@ Once operations with temporary files or directories are completed, delete them. 
 
 ## Noncompliant Code Example
 
+```bsl
+
+IntermediateFileName= GetTempFileName("xml");
+Data.Write(IntermediateFileName);
+// No file deletion
+
+```
+
 ## Compliant Solution
+
+```bsl
+
+IntermediateFileName= GetTempFileName("xml");
+Data.Write(IntermediateFileName);
+
+// File operations
+...
+
+// Deleting a temporary file
+Try
+   DeleteFiles(IntermediateFileName);
+Exception
+   WriteLogEvent(NStr("en = "My engine.Action'"), EventLogLevel.Error, , , DetailErrorDescription(ErrorInfo()));
+EndTry;
+
+```
 
 ## See
 

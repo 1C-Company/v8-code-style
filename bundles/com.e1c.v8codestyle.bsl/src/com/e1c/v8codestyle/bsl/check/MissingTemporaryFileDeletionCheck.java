@@ -13,19 +13,19 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STATIC_FEATURE_ACCESS;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
+import com._1c.g5.v8.dt.bsl.model.Block;
+import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
+import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
@@ -46,15 +46,13 @@ public class MissingTemporaryFileDeletionCheck
     extends BasicCheck
 {
 
-    private static final String NAME = "GetTempFileName"; //$NON-NLS-1$
-    private static final String NAME_RU = "ПолучитьИмяВременногоФайла"; //$NON-NLS-1$
+    private static final String METHOD_NAME = "GetTempFileName"; //$NON-NLS-1$
+    private static final String METHOD_NAME_RU = "ПолучитьИмяВременногоФайла"; //$NON-NLS-1$
     private static final String CHECK_ID = "missing-temporary-file-deletion"; //$NON-NLS-1$
-    private static final String METHOD_DELIMITER = "\\|"; //$NON-NLS-1$
+    private static final String METHOD_DELIMITER = ","; //$NON-NLS-1$
     private static final String DELETE_FILE_METHODS_PARAM = "deleteFileMethods"; //$NON-NLS-1$
     private static final String DEFAULT_DELETE_FILE_METHODS_PARAM =
-        "УдалитьФайлы|DeleteFiles|НачатьУдалениеФайлов|BeginDeletingFiles|ПереместитьФайл|MoveFile"; //$NON-NLS-1$
-
-    private Map<String, StaticFeatureAccess> undeletedFiles = new HashMap<>();
+        "УдалитьФайлы,DeleteFiles,НачатьУдалениеФайлов,BeginDeletingFiles,ПереместитьФайл,MoveFile"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -72,7 +70,7 @@ public class MissingTemporaryFileDeletionCheck
             .issueType(IssueType.ERROR)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(MODULE)
+            .checkedObjectType(STATIC_FEATURE_ACCESS)
             .parameter(DELETE_FILE_METHODS_PARAM, String.class, DEFAULT_DELETE_FILE_METHODS_PARAM,
                 Messages.MissingTemporaryFileDeletionCheck_Delete_File_Methods);
     }
@@ -81,75 +79,76 @@ public class MissingTemporaryFileDeletionCheck
     protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof Module))
+        Invocation invocation = BslUtil.getInvocation((StaticFeatureAccess)object);
+        if (invocation == null || monitor.isCanceled())
         {
             return;
         }
 
-        Module module = (Module)object;
-        if (!addOpenedFiles(module, monitor))
+        StaticFeatureAccess sfa = (StaticFeatureAccess)object;
+        String methodName = sfa.getName();
+
+        if (methodName.equalsIgnoreCase(METHOD_NAME) || methodName.equalsIgnoreCase(METHOD_NAME_RU))
         {
-            return;
-        }
+            SimpleStatement statement = EcoreUtil2.getContainerOfType(invocation, SimpleStatement.class);
+            FeatureAccess tempFile = (FeatureAccess)statement.getLeft();
+            String tempFileName = getFullFeatureAccessName(tempFile);
 
-        List<String> deleteFileMethods =
-            Arrays.asList(parameters.getString(DELETE_FILE_METHODS_PARAM).split(METHOD_DELIMITER));
-        deleteFileMethods.replaceAll(String::trim);
-        if (!removeDeletedFiles(module, monitor, deleteFileMethods))
-        {
-            return;
-        }
+            List<String> deleteFileMethods =
+                Arrays.asList(parameters.getString(DELETE_FILE_METHODS_PARAM).split(METHOD_DELIMITER));
+            deleteFileMethods.replaceAll(String::trim);
 
-        undeletedFiles.values()
-            .forEach(feature -> resultAcceptor
-                .addIssue(Messages.MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion, feature));
-    }
-
-    private boolean addOpenedFiles(Module module, IProgressMonitor monitor)
-    {
-        for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(module, StaticFeatureAccess.class))
-        {
-            if (monitor.isCanceled())
+            Block block = EcoreUtil2.getContainerOfType(sfa, Block.class);
+            boolean isTempFileOpened = false;
+            for (FeatureAccess blockFa : EcoreUtil2.eAllOfType(block, FeatureAccess.class))
             {
-                return false;
-            }
-
-            String name = sfa.getName();
-            if (name.equalsIgnoreCase(NAME_RU) || name.equalsIgnoreCase(NAME))
-            {
-                Invocation invocation = BslUtil.getInvocation(sfa);
-                SimpleStatement statement = EcoreUtil2.getContainerOfType(invocation, SimpleStatement.class);
-                String temporaryFileName = ((StaticFeatureAccess)statement.getLeft()).getName();
-                undeletedFiles.put(temporaryFileName, sfa);
-            }
-        }
-        return true;
-    }
-
-    private boolean removeDeletedFiles(Module module, IProgressMonitor monitor, List<String> deleteFileMethods)
-    {
-        for (StaticFeatureAccess sfa : EcoreUtil2.eAllOfType(module, StaticFeatureAccess.class))
-        {
-            if (monitor.isCanceled())
-            {
-                return false;
-            }
-            String name = sfa.getName();
-            if (deleteFileMethods.contains(name))
-            {
-                Invocation invocation = BslUtil.getInvocation(sfa);
-                List<Expression> parameters = invocation.getParams();
-                for (Expression param : parameters)
+                String featureName = getFullFeatureAccessName(blockFa);
+                if (featureName.equalsIgnoreCase(METHOD_NAME) || featureName.equalsIgnoreCase(METHOD_NAME_RU)
+                    || isTempFileOpened)
                 {
-                    if (param instanceof StaticFeatureAccess)
+                    isTempFileOpened = true;
+                    if (deleteFileMethods.contains(featureName) && checkParameterInList(blockFa, tempFileName))
                     {
-                        String parameterName =
-                            ((StaticFeatureAccess)parameters.get(parameters.indexOf(param))).getName();
-                        undeletedFiles.keySet().removeIf(key -> key.equals(parameterName));
+                        return;
                     }
                 }
             }
+            resultAcceptor.addIssue(Messages.MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion, sfa);
         }
-        return true;
+    }
+
+    private boolean checkParameterInList(FeatureAccess featureAccess, String parameterName)
+    {
+        Invocation deleteInvocation = BslUtil.getInvocation(featureAccess);
+        List<Expression> deleteParameters = deleteInvocation.getParams();
+        for (Expression parameter : deleteParameters)
+        {
+            if (parameter instanceof FeatureAccess)
+            {
+                String faParameterName = getFullFeatureAccessName((FeatureAccess)parameter);
+                if (faParameterName.equals(parameterName))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private String getFullFeatureAccessName(FeatureAccess featureAccess)
+    {
+        FeatureAccess source = featureAccess;
+        String fullName = featureAccess.getName();
+        do
+        {
+            if (source instanceof DynamicFeatureAccess)
+            {
+                source = (FeatureAccess)((DynamicFeatureAccess)source).getSource();
+                fullName = source.getName().concat(".").concat(fullName); //$NON-NLS-1$
+            }
+        }
+        while (!(source instanceof StaticFeatureAccess));
+
+        return fullName;
     }
 }
