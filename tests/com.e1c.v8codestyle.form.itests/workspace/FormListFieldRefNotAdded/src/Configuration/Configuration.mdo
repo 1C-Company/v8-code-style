@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="c7186d5f-3f3c-45bb-a4f0-786503b96b35">
-  <name>FormListRefNotPresented</name>
+  <name>FormListFieldRefNotAdded</name>
   <synonym>
     <key>en</key>
-    <value>Form list ref not presented</value>
+    <value>Form list field ref not added</value>
   </synonym>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="5f47eb20-5af0-4668-bd4e-1c64ee6f67a9"/>
   <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="1b8113b8-5095-4e0e-a995-025107f00bb6"/>

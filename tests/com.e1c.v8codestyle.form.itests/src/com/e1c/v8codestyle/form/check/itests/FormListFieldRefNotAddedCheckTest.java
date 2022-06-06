@@ -32,18 +32,18 @@ import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.form.check.FormListRefNotPresentedCheck;
+import com.e1c.v8codestyle.form.check.FormListFieldRefNotAddedCheck;
 
 /**
- * Tests for {@link FormListRefNotPresentedCheck} check.
+ * Tests for {@link FormListFieldRefNotAddedCheck} check.
  *
  * @author Olga Bozhko
  */
-public class FormListRefNotPresentedCheckTest
+public class FormListFieldRefNotAddedCheckTest
     extends CheckTestBase
 {
-    private static final String CHECK_ID = "form-list-ref-not-presented-check";
-    private static final String PROJECT_NAME = "FormListRefNotPresented";
+    private static final String CHECK_ID = "form-list-field-ref-not-added";
+    private static final String PROJECT_NAME = "FormListFieldRefNotAdded";
     private static final String FQN_FORM = "Catalog.TestCatalog.Form.TestListForm.Form";
 
     /**

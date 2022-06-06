@@ -32,7 +32,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.form"
-            class="com.e1c.v8codestyle.form.check.FormListRefNotPresentedCheck">
+            class="com.e1c.v8codestyle.internal.form.ExecutableExtensionFactory:com.e1c.v8codestyle.form.check.FormListFieldRefNotAddedCheck">
       </check>
    </extension>
 
