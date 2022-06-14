@@ -45,11 +45,10 @@ public class FormListRefUseAlwaysFlagDisabledCheck
 {
 
     private static final String CHECK_ID = "form-list-ref-use-always-flag-disabled"; //$NON-NLS-1$
-    private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("List", "Ref"); //$NON-NLS-1$ //$NON-NLS-2$
-    private static final List<String> REF_ABSTRACT_DATA_PATH_RU = List.of("Список", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("Ref", "Список"); //$NON-NLS-1$ //$NON-NLS-2$
 
     private static final Predicate<? super DbViewFieldDef> NAME_CHECK =
-        name -> name.getName().equals(REF_ABSTRACT_DATA_PATH.get(1));
+        name -> name.getName().equals(REF_ABSTRACT_DATA_PATH.get(0));
 
     private static Predicate<AbstractDataPath> pathCheck = path -> {
         EList<String> segments = path.getSegments();
@@ -59,14 +58,8 @@ public class FormListRefUseAlwaysFlagDisabledCheck
             return false;
         }
 
-        if (!segments.get(0).equals(REF_ABSTRACT_DATA_PATH.get(0))
-            && !segments.get(0).equals(REF_ABSTRACT_DATA_PATH_RU.get(0)))
-        {
-            return false;
-        }
-
-        return segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(1))
-            || segments.get(1).equals(REF_ABSTRACT_DATA_PATH_RU.get(1));
+        return segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(0))
+            || segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(1));
     };
 
     @Override
