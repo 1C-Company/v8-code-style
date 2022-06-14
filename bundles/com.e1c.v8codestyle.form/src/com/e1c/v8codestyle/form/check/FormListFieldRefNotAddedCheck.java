@@ -97,7 +97,7 @@ public class FormListFieldRefNotAddedCheck
             if (attr != null)
             {
                 DbViewTableDef tableDef = (DbViewTableDef)((DynamicListExtInfo)attr.getExtInfo()).getMainTable();
-                if (tableDef.getFields() != null && tableDef.getFields().stream().anyMatch(FIELD_NAME_CHECK)
+                if (tableDef != null && tableDef.getFields().stream().anyMatch(FIELD_NAME_CHECK)
                     && !pathCheck(table.getItems()))
                 {
 
