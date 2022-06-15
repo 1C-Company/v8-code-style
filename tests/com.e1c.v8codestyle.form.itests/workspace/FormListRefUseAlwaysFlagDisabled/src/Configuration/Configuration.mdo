@@ -39,4 +39,5 @@
     <languageCode>en</languageCode>
   </languages>
   <catalogs>Catalog.TestCatalog</catalogs>
+  <informationRegisters>InformationRegister.TestInformationRegister</informationRegisters>
 </mdclass:Configuration>
