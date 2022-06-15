@@ -32,8 +32,8 @@ import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.Table;
+import com._1c.g5.v8.dt.metadata.dbview.DbViewDef;
 import com._1c.g5.v8.dt.metadata.dbview.DbViewFieldDef;
-import com._1c.g5.v8.dt.metadata.dbview.DbViewTableDef;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -52,7 +52,6 @@ public class FormListFieldRefNotAddedCheck
 {
 
     private static final String CHECK_ID = "form-list-field-ref-not-added"; //$NON-NLS-1$
-    private static final List<String> LIST_ABSTRACT_DATA_PATH = List.of("List", "Список"); //$NON-NLS-1$ //$NON-NLS-2$
     private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("Ref", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
 
     private static final Predicate<? super DbViewFieldDef> FIELD_NAME_CHECK =
@@ -88,16 +87,17 @@ public class FormListFieldRefNotAddedCheck
         {
             Table table = object instanceof Table ? (Table)object
                 : (Table)((Form)((FormGroup)object).bmGetTopObject()).getItems().get(1);
-            FormAttribute attr = (FormAttribute)table.bmGetTopObject()
+            FormAttribute formAttribute = (FormAttribute)table.bmGetTopObject()
                 .eContents()
                 .stream()
                 .filter(FormAttribute.class::isInstance)
                 .findAny()
                 .orElse(null);
-            if (attr != null)
+            if (formAttribute != null)
             {
-                DbViewTableDef tableDef = (DbViewTableDef)((DynamicListExtInfo)attr.getExtInfo()).getMainTable();
-                if (tableDef != null && tableDef.getFields().stream().anyMatch(FIELD_NAME_CHECK)
+                DbViewDef dbViewDef = ((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
+                if (dbViewDef != null && !dbViewDef.eIsProxy()
+                    && dbViewDef.getFields().stream().anyMatch(FIELD_NAME_CHECK)
                     && !pathCheck(table.getItems()))
                 {
 
@@ -141,7 +141,7 @@ public class FormListFieldRefNotAddedCheck
     {
         EList<String> segments = path.getSegments();
 
-        return segments.size() == 2 && LIST_ABSTRACT_DATA_PATH.contains(segments.get(0))
-            && REF_ABSTRACT_DATA_PATH.contains(segments.get(1));
+        return segments.size() == 2 && (segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(0))
+            || segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(1)));
     }
 }
