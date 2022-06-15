@@ -25,8 +25,8 @@ import org.eclipse.emf.common.util.EList;
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.DynamicListExtInfo;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
+import com._1c.g5.v8.dt.metadata.dbview.DbViewDef;
 import com._1c.g5.v8.dt.metadata.dbview.DbViewFieldDef;
-import com._1c.g5.v8.dt.metadata.dbview.DbViewTableDef;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -43,7 +43,6 @@ import com.e1c.v8codestyle.internal.form.CorePlugin;
 public class FormListRefUseAlwaysFlagDisabledCheck
     extends BasicCheck
 {
-
     private static final String CHECK_ID = "form-list-ref-use-always-flag-disabled"; //$NON-NLS-1$
     private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("Ref", "Список"); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -89,8 +88,8 @@ public class FormListRefUseAlwaysFlagDisabledCheck
         FormAttribute formAttribute = (FormAttribute)object;
         if (formAttribute.getExtInfo() instanceof DynamicListExtInfo)
         {
-            DbViewTableDef tableDef = (DbViewTableDef)((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
-            if (tableDef != null && tableDef.getFields().stream().anyMatch(NAME_CHECK)
+            DbViewDef dbViewDef = ((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
+            if (dbViewDef != null && !dbViewDef.eIsProxy() && dbViewDef.getFields().stream().anyMatch(NAME_CHECK)
                 && formAttribute.getNotDefaultUseAlwaysAttributes().stream().noneMatch(pathCheck))
             {
                 resultAceptor.addIssue(
