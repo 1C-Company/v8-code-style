@@ -44,7 +44,6 @@ public class FormListRefUserVisibilityEnabledCheck
 
     private static final String CHECK_ID = "form-list-ref-user-visibility-enabled"; //$NON-NLS-1$
     private static final String FEATURE_NAME = "userVisible"; //$NON-NLS-1$
-    private static final List<String> LIST_SEGMENT = List.of("List", "Список"); //$NON-NLS-1$ //$NON-NLS-2$
     private static final List<String> REF_SEGMENT = List.of("Ref", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
 
     @Override
@@ -91,6 +90,7 @@ public class FormListRefUserVisibilityEnabledCheck
             return false;
         }
         EList<String> segments = ((AbstractDataPath)eContents.get(1)).getSegments();
-        return segments.size() == 2 && LIST_SEGMENT.contains(segments.get(0)) && REF_SEGMENT.contains(segments.get(1));
+        return segments.size() == 2
+            && (segments.get(1).equals(REF_SEGMENT.get(0)) || segments.get(1).equals(REF_SEGMENT.get(1)));
     }
 }
