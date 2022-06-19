@@ -76,6 +76,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ExcessExportCheck_Escess_title;
+
+    public static String ExcessExportCheck_Excess_description;
+
+    public static String ExcessExportCheck_Exclude_title;
+
+    public static String ExcessExportCheck_Unused_export_method;
+
     public static String ExportMethodInCommandFormModuleCheck_CheckClientMethodForm;
 
     public static String ExportMethodInCommandFormModuleCheck_CheckServerMethodForm;

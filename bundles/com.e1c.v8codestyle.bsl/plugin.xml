@@ -255,6 +255,10 @@
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ManagerModuleNamedSelfReferenceCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ExcessExportCheck">
+      </check>
   
    </extension>
    <extension
@@ -276,6 +280,9 @@
          point="com.e1c.g5.v8.dt.check.fixes">
       <fix
             class="com.e1c.v8codestyle.bsl.qfix.RemoveExportFix">
+      </fix>
+      <fix
+            class="com.e1c.v8codestyle.bsl.qfix.RemoveExcessExportFix">
       </fix>
    </extension>
 

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e3f64cfd-3ed0-400b-b872-10c4dd037373">
+  <name>ExcessExportCheck</name>
+  <synonym>
+    <key>en</key>
+    <value>Excess export check</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="1344abdc-1c79-430e-bd71-b1ca7856c645"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="6e4af948-9734-4194-a8ff-6d9b5a7c1ebd"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="55655cdd-2059-4104-ac36-688dca09ca91"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="33345edd-921b-43d8-a27a-ec6fe7632050"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="a7ed6899-33b8-4bed-9b9a-50173190d404"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="5a9ab6e4-b3a2-4147-a7cd-92727d3df08a"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="a5de74a8-2a99-49c2-a9e5-f0e5d0824ea7"/>
+  <configurationExtensionCompatibilityMode>8.3.20</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.20</compatibilityMode>
+  <languages uuid="61ace17b-7bc3-4535-841b-6f9b888deedb">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <commonModules>CommonModule.CommonModule</commonModules>
+  <commonModules>CommonModule.CommonModule1</commonModules>
+  <commonModules>CommonModule.CommonModule2</commonModules>
+</mdclass:Configuration>
