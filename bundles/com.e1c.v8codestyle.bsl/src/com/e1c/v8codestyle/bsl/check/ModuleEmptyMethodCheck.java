@@ -106,15 +106,17 @@ public final class ModuleEmptyMethodCheck
 
     private boolean isMethodHasNoComment(Method method)
     {
+        List<INode> nameNodes = NodeModelUtils.findNodesForFeature(method, McorePackage.Literals.NAMED_ELEMENT__NAME);
         INode node = NodeModelUtils.findActualNodeFor(method);
-        if (node != null)
+        if (node != null && !nameNodes.isEmpty())
         {
+            INode nameNode = nameNodes.get(0);
             List<ILeafNode> allLeafNode = Lists.newArrayList(node.getLeafNodes());
             for (int i = allLeafNode.size() - 1; i >= 0; --i)
             {
                 ILeafNode leafNode = allLeafNode.get(i);
 
-                if (leafNode.getOffset() < node.getOffset())
+                if (leafNode.getOffset() < nameNode.getOffset())
                 {
                     break;
                 }
