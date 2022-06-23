@@ -182,8 +182,10 @@ public abstract class AbstractDynamicFeatureAccessTypeCheck
         }
 
         List<TypeItem> types = computeTypes(source, actualEnvs);
-        return !monitor.isCanceled() && !types.isEmpty()
-            && types.stream().anyMatch(t -> typeNames.contains(McoreUtil.getTypeName(t)));
+        return !monitor.isCanceled() && !types.isEmpty() && types.stream().anyMatch(t -> {
+            String typeName = McoreUtil.getTypeName(t);
+            return typeName != null && typeNames.contains(typeName);
+        });
     }
 
 }
