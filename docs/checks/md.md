@@ -1,7 +1,7 @@
 # Проверки метаданных 1С
 
 
-Общее количество проверок: 14
+Общее количество проверок: 16
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -19,3 +19,5 @@
 | [mdo-name-length](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-name-length.md) | Длина имени объекта метаданных |
 | [mdo-scheduled-job-description](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-scheduled-job-description.md) | Задано наименование предопределенного регламентного задания |
 | [scheduled-job-periodicity-too-short](../../bundles/com.e1c.v8codestyle.md/markdown/ru/scheduled-job-periodicity-too-short.md) | Периодичность выполнения регламентного задания меньше одной минуты. |
+| [subsystem-synonym-too-long](../../bundles/com.e1c.v8codestyle.md/markdown/ru/subsystem-synonym-too-long.md) | Длина названия раздела превышает 35 символов |
+| [unsafe-password-ib-storage](../../bundles/com.e1c.v8codestyle.md/markdown/ru/unsafe-password-ib-storage.md) | Небезопасное хранение паролей в информационной базе |

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:InformationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b6d3147a-b42b-494f-bd69-d0c7bf25672b">
+  <producedTypes>
+    <selectionType typeId="a66cf074-a98a-4d44-90c4-187728b0577d" valueTypeId="503268c9-bc47-4e08-b617-df8714e87595"/>
+    <listType typeId="5d3ea358-6964-48ed-a867-787ec81bba1d" valueTypeId="5b662395-7eff-41d8-a53a-f901be4cb876"/>
+    <managerType typeId="de0a564c-2563-4b14-9a62-3b0e39816c49" valueTypeId="613d1cee-d036-4405-9910-dd09a9863158"/>
+    <recordSetType typeId="02fc144b-a981-464b-be5f-a0c5db5bf91c" valueTypeId="c0c3882f-cb15-48b8-af37-761039233981"/>
+    <recordKeyType typeId="d1087cb4-abe1-4d86-b68d-ce3fd605e1cb" valueTypeId="be20bb8e-dd63-4032-9166-cdb8ea476be4"/>
+    <recordType typeId="646d33fc-9e98-41e5-9067-ba319d5c9ac8" valueTypeId="ec4fc2ac-0945-414d-af09-5dfedfba92c0"/>
+    <recordManagerType typeId="336a5b92-51b5-4835-a9d1-065343a66440" valueTypeId="150cf3cc-fa1e-40a6-8a8a-7383c301a12f"/>
+  </producedTypes>
+  <name>TestInformationRegister</name>
+  <synonym>
+    <key>en</key>
+    <value>Test information register</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <editType>InDialog</editType>
+  <defaultListForm>InformationRegister.TestInformationRegister.Form.TestListForm</defaultListForm>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <recordPresentation>
+    <key>en</key>
+    <value>presentation</value>
+  </recordPresentation>
+  <dimensions uuid="e3d88b37-69a7-42de-b84f-5ada3521ae16">
+    <name>TestDimension</name>
+    <synonym>
+      <key>en</key>
+      <value>Test dimension</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <mainFilter>true</mainFilter>
+  </dimensions>
+  <forms uuid="5408d3b1-8932-4128-a3c2-78ddaf032f4b">
+    <name>TestListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Test list form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:InformationRegister>

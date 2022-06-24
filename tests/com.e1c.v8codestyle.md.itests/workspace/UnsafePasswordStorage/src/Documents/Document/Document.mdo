@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="a6bdfa11-cb4e-4083-9497-ef0d792ce0a6">
+  <producedTypes>
+    <objectType typeId="9d09e9ad-5528-4943-b6e8-91c359973dc6" valueTypeId="8c619f20-8478-47ae-bc3a-69edd0e681c7"/>
+    <refType typeId="8e8ab5df-d3f6-4938-8971-124facf3882d" valueTypeId="83521e2a-7b55-4e43-9a77-e60c69961263"/>
+    <selectionType typeId="674e373f-937a-498d-8cc3-52d069e99d53" valueTypeId="e7e78ace-efd6-4306-a50e-b87a25e5c57d"/>
+    <listType typeId="bbfb7ce3-2ee9-4167-a697-372e802596c9" valueTypeId="66d6db43-58a9-4cd0-a9ba-888425bfabd6"/>
+    <managerType typeId="e04bfbf3-9968-42e9-8d68-5c2eb2e0fda2" valueTypeId="d0c83892-0b38-4177-8152-9c4db4d45f17"/>
+  </producedTypes>
+  <name>Document</name>
+  <synonym>
+    <key>en</key>
+    <value>Document</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.Document.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+  <attributes uuid="82867c72-f794-4dc9-a233-2b150ca5d02e">
+    <name>Attribute</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <passwordMode>true</passwordMode>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="b545253e-45da-48bb-9ae6-f41b516d65cf">
+    <name>Attribute1</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute1</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="276fa58f-641c-455b-b512-3afff3d65788">
+    <producedTypes>
+      <objectType typeId="95f8b3d2-054c-4ed8-bc94-84d5449ca506" valueTypeId="da64438c-99af-4dae-85f9-5809cf2f4595"/>
+      <rowType typeId="d894873c-eab3-4ef0-a23c-5db5abd68a81" valueTypeId="59180447-d44a-4b5f-acc2-14ff910d135a"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+    <attributes uuid="1424c847-95d8-4511-81c9-dce439f79d7e">
+      <name>Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <passwordMode>true</passwordMode>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+    <attributes uuid="115ba99a-0caf-46d2-9f99-2aaae14c11f6">
+      <name>Attribute1</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute1</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Document>

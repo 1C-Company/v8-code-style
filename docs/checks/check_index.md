@@ -1,11 +1,11 @@
 # Индекс проверок
 
 
-Общее количество проверок 1С:Стандарты разработки V8: 92
+Общее количество проверок 1С:Стандарты разработки V8: 99
 
-- form: 1
-- md: 14
-- bsl: 48
+- form: 2
+- md: 16
+- bsl: 52
 - ql: 6
 - right: 23
 
@@ -23,6 +23,7 @@
 | [common-module-name-global](../../bundles/com.e1c.v8codestyle.md/markdown/ru/common-module-name-global.md) | Глобальный общий модуль должен оканчиваться на суффикс Глобальный |
 | [common-module-name-server-call](../../bundles/com.e1c.v8codestyle.md/markdown/ru/common-module-name-server-call.md) | Общий модуль, для которого предусмотрен вызов сервера |
 | [common-module-name-server-call-cached](../../bundles/com.e1c.v8codestyle.md/markdown/ru/common-module-name-server-call-cached.md) | Общий модуль с повторно используемыми значениями |
+| [common-module-named-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/common-module-named-self-reference.md) | Избыточное обращение по собственному имени внутри общего модуля |
 | [common-module-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/common-module-type.md) | Общий модуль имеет некорректный тип |
 | [configuration-data-lock-mode](../../bundles/com.e1c.v8codestyle.md/markdown/ru/configuration-data-lock-mode.md) | Режим блокировки данных конфигурации |
 | [constructor-function-return-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/constructor-function-return-section.md) | Секция возвращаемого значения функции-конструктора данных |
@@ -46,14 +47,17 @@
 | [empty-except-statement](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/empty-except-statement.md) | Конструкция "Попытка...Исключение...КонецПопытки" не содержит кода в исключении |
 | [event-heandler-boolean-param](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/event-heandler-boolean-param.md) | Использование булевого параметра обработчика события |
 | [export-method-in-command-form-module](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/export-method-in-command-form-module.md) | Ограничения на использование экспортных процедур и функций в модуле команд и форм |
+| [form-list-ref-use-always-flag-disabled](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-list-ref-use-always-flag-disabled.md) | У реквизита "Ссылка" динамического списка выключен признак "Использовать всегда" |
 | [form-module-missing-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-module-missing-pragma.md) | Всегда использовать директивы компиляции в модуле формы |
 | [form-module-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-module-pragma.md) | Использование директив компиляции модуля формы |
+| [form-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-self-reference.md) | Использование устаревшего псевдонима |
 | [function-return-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/function-return-value-type.md) | Функция возвращает типизированное значение |
 | [input-field-list-choice-mode](../../bundles/com.e1c.v8codestyle.form/markdown/ru/input-field-list-choice-mode.md) | В полях форм со списками выбора следует всегда устанавливать свойство **РежимВыбораИзСписка** в значение Истина |
 | [invocation-form-event-handler](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-form-event-handler.md) | Программный вызов обработчика события формы |
 | [invocation-parameter-type-intersect](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-parameter-type-intersect.md) | Вызываемый тип пересекается с типом параметра |
 | [isinrole-using](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/isinrole-using.md) | Использован метод "РольДоступна" |
 | [lock-out-of-try](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/lock-out-of-try.md) | Вызов "Заблокировать()" находится вне попытки |
+| [manager-module-named-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/manager-module-named-self-reference.md) | Избыточное обращение по собственному имени внутри модуля менеджера |
 | [md-list-object-presentation](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-list-object-presentation.md) | Не заполнено ни представление объекта, ни представление списка |
 | [md-standard-attribure-synonym-empty](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-standard-attribure-synonym-empty.md) | Не задан синоним стандартного реквизита "Родитель" или "Владелец". |
 | [mdo-name-length](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-name-length.md) | Длина имени объекта метаданных |
@@ -62,6 +66,7 @@
 | [method-too-many-params](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-too-many-params.md) | Метод содержит слишком много параметров |
 | [module-accessibility-at-client](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-accessibility-at-client.md) | Метод или переменная доступны НаКлиенте |
 | [module-region-empty](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-region-empty.md) | Область пустая |
+| [module-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-self-reference.md) | Избыточное использование псевдонима "ЭтотОбъект" |
 | [module-structure-top-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-top-region.md) | Стандартная область структуры модуля верхнеуровневая |
 | [module-undefined-function](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-function.md) | Функция не определена |
 | [module-undefined-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-method.md) | Метод не определен |
@@ -103,5 +108,7 @@
 | [statement-type-change](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/statement-type-change.md) | Утверждение меняет тип |
 | [structure-consructor-too-many-keys](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-too-many-keys.md) | Конструктор структуры содержит слишком много ключей |
 | [structure-consructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-value-type.md) | Типизация значений в конструкторе структуры |
+| [subsystem-synonym-too-long](../../bundles/com.e1c.v8codestyle.md/markdown/ru/subsystem-synonym-too-long.md) | Длина названия раздела превышает 35 символов |
+| [unsafe-password-ib-storage](../../bundles/com.e1c.v8codestyle.md/markdown/ru/unsafe-password-ib-storage.md) | Небезопасное хранение паролей в информационной базе |
 | [use-non-recommended-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-non-recommended-method.md) | Использование не рекомендуемых методов |
 | [variable-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/variable-value-type.md) | Переменная имеет тип значения |
