@@ -100,6 +100,8 @@ final class Messages
 
     public static String ModuleStructureTopRegionCheck_error_message;
 
+    public static String ModuleStructureRegionCheck_error_message_0;
+
     public static String ModuleStructureTopRegionCheck_title;
 
     public static String ModuleUnusedMethodCheck_Title;
@@ -242,6 +244,10 @@ final class Messages
     public static String LockOutOfTry_Lock_out_of_try;
 
     public static String LockOutOfTry_Method_lock_out_of_try;
+
+    public static String ModuleStructureRegionCheck_title;
+
+    public static String ModuleStructureRegionCheck_description;
 
     static
     {
