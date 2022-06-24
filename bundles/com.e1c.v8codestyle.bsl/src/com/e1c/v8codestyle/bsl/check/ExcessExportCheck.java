@@ -209,7 +209,7 @@ public final class ExcessExportCheck
         private URI targetUri;
 
         @Inject
-        public BslFullTextSearchReferenceFinderSupplier(EObject sourceObject,
+        private BslFullTextSearchReferenceFinderSupplier(EObject sourceObject,
             IProjectFileSystemSupportProvider fileSystemSupportProvider, BslGrammarAccess bslGrammar,
             BslBmRefactoringResourceSetProvider resourceSetProvider,
             DynamicFeatureAccessComputer dynamicFeatureAccessComputer, IBmModelManager manager,
