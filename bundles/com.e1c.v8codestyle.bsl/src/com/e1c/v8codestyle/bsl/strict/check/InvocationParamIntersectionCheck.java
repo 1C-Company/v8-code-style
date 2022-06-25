@@ -335,7 +335,22 @@ public class InvocationParamIntersectionCheck
                         type = (TypeItem)EcoreUtil.resolve(type, inv);
                         if (type instanceof Type && typeName.equals(McoreUtil.getTypeName(type)))
                         {
-                            collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                            if (IEObjectTypeNames.VALUE_LIST.equals(typeName))
+                            {
+                                List<TypeItem> valueListItemTypes = ((Type)type).getCollectionElementTypes().allTypes();
+                                Set<TypeItem> collectionTypes =
+                                    dynamicFeatureAccessComputer.getAllProperties(valueListItemTypes, inv.eResource())
+                                        .stream()
+                                        .flatMap(e -> e.getFirst().stream())
+                                        .filter(p -> MAP_VALUE.equals(p.getName()))
+                                        .flatMap(p -> p.getTypes().stream())
+                                        .collect(Collectors.toSet());
+                                collectionItemTypes.addAll(collectionTypes);
+                            }
+                            else
+                            {
+                                collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                            }
                             isMap = IEObjectTypeNames.MAP.equals(typeName);
                             parameterNumbers = typesAndParams.get(typeName);
                         }
