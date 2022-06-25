@@ -241,9 +241,10 @@ public class InvocationParamIntersectionCheck
 
             Collection<TypeItem> targetTypes =
                 getDefaultTargetOrCollectionItemTypes(method, collectionItemTypes, parameterNumbers, isMap, i, inv);
-            boolean isIntersect = !targetTypes.isEmpty() && intersectTypeItem(targetTypes, sorceTypes, inv);
+            boolean isCollectionItemTypeEmpty = targetTypes.isEmpty();
+            boolean isIntersect = !isCollectionItemTypeEmpty && intersectTypeItem(targetTypes, sorceTypes, inv);
             Parameter parameter = null;
-            for (Iterator<ParamSet> iterator = paramSets.iterator(); !isIntersect && targetTypes.isEmpty()
+            for (Iterator<ParamSet> iterator = paramSets.iterator(); !isIntersect && isCollectionItemTypeEmpty
                 && iterator.hasNext();)
             {
                 ParamSet paramSet = iterator.next();
@@ -297,6 +298,11 @@ public class InvocationParamIntersectionCheck
                 }
 
                 isIntersect = intersectTypeItem(targetTypes, sorceTypes, inv);
+                if (!isIntersect && !targetTypes.isEmpty())
+                {
+                    // if we don't match this ParamSet so will not use for other parameters
+                    iterator.remove();
+                }
             }
 
             if (!isIntersect && !targetTypes.isEmpty())

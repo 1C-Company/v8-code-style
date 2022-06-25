@@ -25,6 +25,9 @@ final class Messages
     public static String FormListRefUseAlwaysFlagDisabledCheck_description;
     public static String FormListRefUseAlwaysFlagDisabledCheck_title;
     public static String FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field;
+    public static String FormListRefUserVisibilityEnabledCheck_description;
+    public static String FormListRefUserVisibilityEnabledCheck_title;
+    public static String FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field;
     public static String InputFieldListChoiceMode_description;
     public static String InputFieldListChoiceMode_Form_input_field_the_list_choice_mode_not_set_with_filled_choice_list;
     public static String InputFieldListChoiceMode_title;
