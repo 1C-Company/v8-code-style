@@ -436,6 +436,33 @@ public class CommonModuleStrictTypesTest
 
     /**
      * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
+     * with method that has several ParamSets and should select correct ones.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvocationParamIntersectionSelectParamSet() throws Exception
+    {
+
+        String checkId = "invocation-parameter-type-intersect";
+        String resouceName = "invocation-parameter-type-intersect-select-param-set";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(2, markers.size());
+
+        Set<String> lines = new HashSet<>();
+        for (Marker marker : markers)
+        {
+            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+        assertEquals(Set.of("9", "17"), lines);
+    }
+
+    /**
+     * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
      * with caller type, and skip checking if method has default value parameters.
      *
      * @throws Exception the exception
