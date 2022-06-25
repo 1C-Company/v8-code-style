@@ -28,17 +28,17 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
-import com.e1c.v8codestyle.bsl.check.ExcessExportCheck;
+import com.e1c.v8codestyle.bsl.check.ExcessExportMethodCheck;
 
 /**
- * Tests for {@link ExcessExportCheck} check.
+ * Tests for {@link ExcessExportMethodCheck} check.
  *
  * @author Artem Iliukhin
  */
-public class ExcessExportCheckTest
+public class ExcessExportMethodCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
-    private static final String CHECK_ID = "excess-export";
+    private static final String CHECK_ID = "excess-export-method";
     private static final String PROJECT_NAME = "ExcessExportCheck";
     private static final String FQN_MODULE = "CommonModule.CommonModule";
     private static final String FQN_MODULE_1 = "CommonModule.CommonModule1";

@@ -65,7 +65,7 @@ import com.google.inject.Inject;
  *
  * @author Artem Iliukhin
  */
-public final class ExcessExportCheck
+public final class ExcessExportMethodCheck
     extends BasicCheck
 {
 
@@ -74,7 +74,7 @@ public final class ExcessExportCheck
 
     private static final String PARAMETER_EXCLUDE_REGION_LIST = "excludeRegionName"; //$NON-NLS-1$
 
-    private static final String CHECK_ID = "excess-export"; //$NON-NLS-1$
+    private static final String CHECK_ID = "excess-export-method"; //$NON-NLS-1$
 
     private final IProjectFileSystemSupportProvider fileSystemSupportProvider;
     private final BslGrammarAccess bslGrammar;
@@ -86,7 +86,7 @@ public final class ExcessExportCheck
     private final BslBmRefactoringResourceSetProvider resourceSetProvider;
 
     @Inject
-    public ExcessExportCheck(IV8ProjectManager projectManager,
+    public ExcessExportMethodCheck(IV8ProjectManager projectManager,
         IProjectFileSystemSupportProvider fileSystemSupportProvider, IGlobalScopeProvider scopeProvider,
         DynamicFeatureAccessComputer dynamicFeatureAccessComputer, BslGrammarAccess bslGrammar,
         IExternalPropertyManagerRegistry propertyManagerRegistry, IBmModelManager manager,
