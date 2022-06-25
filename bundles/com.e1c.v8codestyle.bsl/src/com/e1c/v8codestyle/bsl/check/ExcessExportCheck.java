@@ -202,7 +202,7 @@ public final class ExcessExportCheck
         return true;
     }
 
-    private class BslFullTextSearchReferenceFinderSupplier
+    private final class BslFullTextSearchReferenceFinderSupplier
         extends BslFullTextSearchSupplier
         implements IFullTextSearchReferenceFinderSupplier
     {
