@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "settings": {
+    "excess-export": {
+      "enabled": true
+    }
+  }
+}
