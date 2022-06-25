@@ -15,6 +15,8 @@ package com.e1c.v8codestyle.bsl.comment.check.itests;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
@@ -31,10 +33,31 @@ import com.e1c.v8codestyle.bsl.comment.check.RefLinkPartCheck;
 public class RefLinkPartCheckTest
     extends AbstractSingleModuleTestBase
 {
+    private static final String PROJECT_NAME = "EventHandlerBooleanParam";
+
+    private static final String MODULE_FILE_NAME = "/src/Catalogs/Products/ManagerModule.bsl";
 
     public RefLinkPartCheckTest()
     {
         super(RefLinkPartCheck.class);
+    }
+
+    @Override
+    protected boolean enableCleanUp()
+    {
+        return true;
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
+    }
+
+    @Override
+    protected String getModuleFileName()
+    {
+        return MODULE_FILE_NAME;
     }
 
     /**
@@ -48,8 +71,12 @@ public class RefLinkPartCheckTest
         updateModule(FOLDER_RESOURCE + "doc-comment-ref-link.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
-        Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(2, markers.size());
+
+        Set<String> lines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY))
+            .collect(Collectors.toSet());
+
+        assertEquals(Set.of("5", "7"), lines);
     }
 }
