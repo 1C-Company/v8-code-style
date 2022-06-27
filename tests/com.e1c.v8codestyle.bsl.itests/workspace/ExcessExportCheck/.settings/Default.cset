@@ -1,7 +1,7 @@
 {
   "version": 1,
   "settings": {
-    "excess-export": {
+    "excess-export-method": {
       "enabled": true
     }
   }
