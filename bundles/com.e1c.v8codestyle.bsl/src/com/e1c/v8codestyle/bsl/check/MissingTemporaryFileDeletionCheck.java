@@ -49,6 +49,7 @@ public class MissingTemporaryFileDeletionCheck
     private static final String METHOD_NAME = "GetTempFileName"; //$NON-NLS-1$
     private static final String METHOD_NAME_RU = "ПолучитьИмяВременногоФайла"; //$NON-NLS-1$
     private static final String CHECK_ID = "missing-temporary-file-deletion"; //$NON-NLS-1$
+    private static final String DOT = "."; //$NON-NLS-1$
     private static final String METHOD_DELIMITER = ","; //$NON-NLS-1$
     private static final String DELETE_FILE_METHODS_PARAM = "deleteFileMethods"; //$NON-NLS-1$
     private static final String DEFAULT_DELETE_FILE_METHODS_PARAM =
@@ -88,11 +89,15 @@ public class MissingTemporaryFileDeletionCheck
         StaticFeatureAccess sfa = (StaticFeatureAccess)object;
         String methodName = sfa.getName();
 
-        if (methodName.equalsIgnoreCase(METHOD_NAME) || methodName.equalsIgnoreCase(METHOD_NAME_RU))
+        if (METHOD_NAME.equalsIgnoreCase(methodName) || METHOD_NAME_RU.equalsIgnoreCase(methodName))
         {
             SimpleStatement statement = EcoreUtil2.getContainerOfType(invocation, SimpleStatement.class);
             FeatureAccess tempFile = (FeatureAccess)statement.getLeft();
             String tempFileName = getFullFeatureAccessName(tempFile);
+            if (tempFileName == null || monitor.isCanceled())
+            {
+                return;
+            }
 
             List<String> deleteFileMethods =
                 Arrays.asList(parameters.getString(DELETE_FILE_METHODS_PARAM).split(METHOD_DELIMITER));
@@ -103,8 +108,9 @@ public class MissingTemporaryFileDeletionCheck
             for (FeatureAccess blockFa : EcoreUtil2.eAllOfType(block, FeatureAccess.class))
             {
                 String featureName = getFullFeatureAccessName(blockFa);
-                if (featureName.equalsIgnoreCase(METHOD_NAME) || featureName.equalsIgnoreCase(METHOD_NAME_RU)
-                    || isTempFileOpened)
+
+                if (featureName != null && (METHOD_NAME.equalsIgnoreCase(featureName)
+                    || METHOD_NAME_RU.equalsIgnoreCase(featureName) || isTempFileOpened))
                 {
                     isTempFileOpened = true;
                     if (deleteFileMethods.contains(featureName) && checkParameterInList(blockFa, tempFileName))
@@ -126,10 +132,7 @@ public class MissingTemporaryFileDeletionCheck
             if (parameter instanceof FeatureAccess)
             {
                 String faParameterName = getFullFeatureAccessName((FeatureAccess)parameter);
-                if (faParameterName.equals(parameterName))
-                {
-                    return true;
-                }
+                return faParameterName != null && faParameterName.equals(parameterName);
             }
         }
         return false;
@@ -137,18 +140,24 @@ public class MissingTemporaryFileDeletionCheck
 
     private String getFullFeatureAccessName(FeatureAccess featureAccess)
     {
-        FeatureAccess source = featureAccess;
-        String fullName = featureAccess.getName();
-        do
-        {
-            if (source instanceof DynamicFeatureAccess)
-            {
-                source = (FeatureAccess)((DynamicFeatureAccess)source).getSource();
-                fullName = source.getName().concat(".").concat(fullName); //$NON-NLS-1$
-            }
-        }
-        while (!(source instanceof StaticFeatureAccess));
+        StringBuilder builder = new StringBuilder();
+        Expression expression = featureAccess;
 
-        return fullName;
+        while (expression instanceof DynamicFeatureAccess)
+        {
+            DynamicFeatureAccess current = (DynamicFeatureAccess)expression;
+            builder.insert(0, current.getName());
+            builder.insert(0, DOT);
+            expression = current.getSource();
+        }
+        if (expression instanceof StaticFeatureAccess)
+        {
+            StaticFeatureAccess staticFeatureAccess = (StaticFeatureAccess)expression;
+            builder.insert(0, staticFeatureAccess.getName());
+            return builder.toString();
+        }
+        return null;
     }
+
+
 }
