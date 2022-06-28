@@ -89,38 +89,54 @@ public class MissingTemporaryFileDeletionCheck
         StaticFeatureAccess sfa = (StaticFeatureAccess)object;
         String methodName = sfa.getName();
 
-        if (METHOD_NAME.equalsIgnoreCase(methodName) || METHOD_NAME_RU.equalsIgnoreCase(methodName))
+        if (isTempFileMethod(methodName))
         {
             SimpleStatement statement = EcoreUtil2.getContainerOfType(invocation, SimpleStatement.class);
             FeatureAccess tempFile = (FeatureAccess)statement.getLeft();
             String tempFileName = getFullFeatureAccessName(tempFile);
-            if (tempFileName == null || monitor.isCanceled())
+
+            if (!monitor.isCanceled() && tempFileName != null && checkFileCloses(sfa, parameters, tempFileName))
             {
                 return;
             }
 
-            List<String> deleteFileMethods =
-                Arrays.asList(parameters.getString(DELETE_FILE_METHODS_PARAM).split(METHOD_DELIMITER));
-            deleteFileMethods.replaceAll(String::trim);
-
-            Block block = EcoreUtil2.getContainerOfType(sfa, Block.class);
-            boolean isTempFileOpened = false;
-            for (FeatureAccess blockFa : EcoreUtil2.eAllOfType(block, FeatureAccess.class))
-            {
-                String featureName = getFullFeatureAccessName(blockFa);
-
-                if (featureName != null && (METHOD_NAME.equalsIgnoreCase(featureName)
-                    || METHOD_NAME_RU.equalsIgnoreCase(featureName) || isTempFileOpened))
-                {
-                    isTempFileOpened = true;
-                    if (deleteFileMethods.contains(featureName) && checkParameterInList(blockFa, tempFileName))
-                    {
-                        return;
-                    }
-                }
-            }
             resultAcceptor.addIssue(Messages.MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion, sfa);
         }
+    }
+
+    private boolean checkFileCloses(StaticFeatureAccess sfa, ICheckParameters parameters, String tempFileName)
+    {
+        List<String> deleteFileMethods = getDeleteFileMethods(parameters);
+
+        Block block = EcoreUtil2.getContainerOfType(sfa, Block.class);
+        boolean isTempFileOpened = false;
+        for (FeatureAccess blockFa : EcoreUtil2.eAllOfType(block, FeatureAccess.class))
+        {
+            String featureName = getFullFeatureAccessName(blockFa);
+
+            if (featureName != null && (isTempFileMethod(featureName) || isTempFileOpened))
+            {
+                isTempFileOpened = true;
+                if (deleteFileMethods.contains(featureName) && checkParameterInList(blockFa, tempFileName))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private List<String> getDeleteFileMethods(ICheckParameters parameters)
+    {
+        List<String> deleteFileMethods =
+            Arrays.asList(parameters.getString(DELETE_FILE_METHODS_PARAM).split(METHOD_DELIMITER));
+        deleteFileMethods.replaceAll(String::trim);
+        return deleteFileMethods;
+    }
+
+    private boolean isTempFileMethod(String methodName)
+    {
+        return METHOD_NAME.equalsIgnoreCase(methodName) || METHOD_NAME_RU.equalsIgnoreCase(methodName);
     }
 
     private boolean checkParameterInList(FeatureAccess featureAccess, String parameterName)
@@ -145,10 +161,10 @@ public class MissingTemporaryFileDeletionCheck
 
         while (expression instanceof DynamicFeatureAccess)
         {
-            DynamicFeatureAccess current = (DynamicFeatureAccess)expression;
-            builder.insert(0, current.getName());
+            DynamicFeatureAccess dynamicFeatureAccess = (DynamicFeatureAccess)expression;
+            builder.insert(0, dynamicFeatureAccess.getName());
             builder.insert(0, DOT);
-            expression = current.getSource();
+            expression = dynamicFeatureAccess.getSource();
         }
         if (expression instanceof StaticFeatureAccess)
         {
