@@ -23,11 +23,14 @@ import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Statement;
+import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Commit transaction must be in a try-catch,
@@ -57,6 +60,7 @@ public final class CommitTransactionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
+            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(INVOCATION);
     }
@@ -67,56 +71,60 @@ public final class CommitTransactionCheck
     {
         Invocation inv = (Invocation)object;
         FeatureAccess featureAccess = inv.getMethodAccess();
-        String nameFeature = featureAccess.getName();
-        if (!(nameFeature.equalsIgnoreCase(COMMIT_TRANSACTION_RU) || nameFeature.equalsIgnoreCase(COMMIT_TRANSACTION)))
+        if (featureAccess instanceof StaticFeatureAccess)
         {
-            return;
-        }
-
-        TryExceptStatement tryExceptStatement = EcoreUtil2.getContainerOfType(inv, TryExceptStatement.class);
-        if (tryExceptStatement == null)
-        {
-            resultAceptor.addIssue(Messages.CommitTransactionCheck_Commit_transaction_must_be_in_try_catch, inv);
-        }
-
-        if (monitor.isCanceled())
-        {
-            return;
-        }
-
-        Method method = EcoreUtil2.getContainerOfType(inv, Method.class);
-        if (method == null)
-        {
-            return;
-        }
-
-        List<Invocation> invocations = EcoreUtil2.getAllContentsOfType(method, Invocation.class);
-        for (Invocation invocation : invocations)
-        {
-            String invocName = invocation.getMethodAccess().getName();
-            if (invocName.equals(BEGIN_TRANSACTION_RU) || invocName.equals(BEGIN_TRANSACTION))
+            String nameFeature = featureAccess.getName();
+            if (!(COMMIT_TRANSACTION_RU.equalsIgnoreCase(nameFeature)
+                || COMMIT_TRANSACTION.equalsIgnoreCase(nameFeature)))
             {
-                if (monitor.isCanceled())
-                {
-                    return;
-                }
-                Statement statement = getStatementFromInvoc(invocation);
-                Statement nextStatement = null;
-                if (statement != null)
-                {
-                    nextStatement = getNextStatement(statement);
-                }
-                if (nextStatement instanceof TryExceptStatement)
-                {
-                    anlyseTryExcept(invocation, (TryExceptStatement)nextStatement, resultAceptor);
-                }
-
-                break;
+                return;
             }
-            else if (invocName.equals(COMMIT_TRANSACTION_RU) || invocName.equals(COMMIT_TRANSACTION))
+
+            TryExceptStatement tryExceptStatement = EcoreUtil2.getContainerOfType(inv, TryExceptStatement.class);
+            if (tryExceptStatement == null)
             {
-                resultAceptor.addIssue(Messages.CommitTransactionCheck_No_begin_transaction_for_commit_transaction,
-                    invocation);
+                resultAceptor.addIssue(Messages.CommitTransactionCheck_Commit_transaction_must_be_in_try_catch, inv);
+            }
+
+            if (monitor.isCanceled())
+            {
+                return;
+            }
+
+            Method method = EcoreUtil2.getContainerOfType(inv, Method.class);
+            if (method == null)
+            {
+                return;
+            }
+
+            List<Invocation> invocations = EcoreUtil2.getAllContentsOfType(method, Invocation.class);
+            for (Invocation invocation : invocations)
+            {
+                String invocName = invocation.getMethodAccess().getName();
+                if (BEGIN_TRANSACTION_RU.equals(invocName) || BEGIN_TRANSACTION.equals(invocName))
+                {
+                    if (monitor.isCanceled())
+                    {
+                        return;
+                    }
+                    Statement statement = getStatementFromInvoc(invocation);
+                    Statement nextStatement = null;
+                    if (statement != null)
+                    {
+                        nextStatement = getNextStatement(statement);
+                    }
+                    if (nextStatement instanceof TryExceptStatement)
+                    {
+                        anlyseTryExcept(invocation, (TryExceptStatement)nextStatement, resultAceptor);
+                    }
+
+                    break;
+                }
+                else if (COMMIT_TRANSACTION_RU.equals(invocName) || COMMIT_TRANSACTION.equals(invocName))
+                {
+                    resultAceptor.addIssue(Messages.CommitTransactionCheck_No_begin_transaction_for_commit_transaction,
+                        invocation);
+                }
             }
         }
     }

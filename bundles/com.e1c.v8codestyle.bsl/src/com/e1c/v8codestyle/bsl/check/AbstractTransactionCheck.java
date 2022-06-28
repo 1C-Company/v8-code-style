@@ -58,12 +58,11 @@ abstract class AbstractTransactionCheck
      */
     protected final boolean isRollbackStatement(Statement statement)
     {
-        if (statement instanceof SimpleStatement && ((SimpleStatement)statement).getLeft() != null
-            && ((SimpleStatement)statement).getLeft() instanceof Invocation)
+        if (statement instanceof SimpleStatement && ((SimpleStatement)statement).getLeft() instanceof Invocation)
         {
             Invocation invocation = (Invocation)((SimpleStatement)statement).getLeft();
             String invocName = invocation.getMethodAccess().getName();
-            if (invocName.equals(ROLLBACK_TRANSACTION_RU) || invocName.equals(ROLLBACK_TRANSACTION))
+            if (ROLLBACK_TRANSACTION_RU.equals(invocName) || ROLLBACK_TRANSACTION.equals(invocName))
             {
                 return true;
             }
@@ -204,7 +203,7 @@ abstract class AbstractTransactionCheck
         {
             Invocation invocation = (Invocation)((SimpleStatement)statement).getLeft();
             String invocName = invocation.getMethodAccess().getName();
-            if (invocName.equals(COMMIT_TRANSACTION_RU) || invocName.equals(COMMIT_TRANSACTION))
+            if (COMMIT_TRANSACTION_RU.equals(invocName) || COMMIT_TRANSACTION.equals(invocName))
             {
                 return true;
             }
