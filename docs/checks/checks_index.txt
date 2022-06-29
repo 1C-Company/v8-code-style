@@ -8,6 +8,7 @@ common-module-name-client-server
 common-module-name-global
 common-module-name-server-call
 common-module-name-server-call-cached
+common-module-named-self-reference
 common-module-type
 configuration-data-lock-mode
 constructor-function-return-section
@@ -31,14 +32,17 @@ dynamic-access-method-not-found
 empty-except-statement
 event-heandler-boolean-param
 export-method-in-command-form-module
+form-list-ref-use-always-flag-disabled
 form-module-missing-pragma
 form-module-pragma
+form-self-reference
 function-return-value-type
 input-field-list-choice-mode
 invocation-form-event-handler
 invocation-parameter-type-intersect
 isinrole-using
 lock-out-of-try
+manager-module-named-self-reference
 md-list-object-presentation
 md-standard-attribure-synonym-empty
 mdo-name-length
@@ -47,6 +51,7 @@ method-param-value-type
 method-too-many-params
 module-accessibility-at-client
 module-region-empty
+module-self-reference
 module-structure-top-region
 module-undefined-function
 module-undefined-method
@@ -88,5 +93,7 @@ scheduled-job-periodicity-too-short
 statement-type-change
 structure-consructor-too-many-keys
 structure-consructor-value-type
+subsystem-synonym-too-long
+unsafe-password-ib-storage
 use-non-recommended-method
 variable-value-type

@@ -80,6 +80,10 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.check.UnsafePasswordStorageCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.SubsystemSynonymTooLongCheck">
       </check>
    </extension>

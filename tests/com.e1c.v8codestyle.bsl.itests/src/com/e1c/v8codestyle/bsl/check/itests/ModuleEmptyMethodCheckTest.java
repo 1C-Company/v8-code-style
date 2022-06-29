@@ -43,9 +43,11 @@ public class ModuleEmptyMethodCheckTest
         updateModule(FOLDER_RESOURCE + "module-empty-method.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
+        assertEquals(2, markers.size());
         Marker marker = markers.get(0);
         assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-    }
 
+        marker = markers.get(1);
+        assertEquals("12", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
 }

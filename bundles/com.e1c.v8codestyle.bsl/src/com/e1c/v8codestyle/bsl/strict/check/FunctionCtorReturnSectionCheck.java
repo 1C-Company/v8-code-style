@@ -177,10 +177,11 @@ public class FunctionCtorReturnSectionCheck
 
         Set<String> checkTypes = getCheckTypes(parameters);
 
-        List<String> computedReturnTypeNames = computedReturnTypes.stream()
+        Set<String> computedReturnTypeNames = computedReturnTypes.stream()
             .map(McoreUtil::getTypeName)
             .filter(Objects::nonNull)
-            .collect(Collectors.toList());
+            .collect(Collectors.toSet());
+
         if (isUserDataTypes(computedReturnTypeNames, checkTypes))
         {
 
@@ -208,16 +209,16 @@ public class FunctionCtorReturnSectionCheck
                 for (TypeItem returnType : returnTypes)
                 {
                     String returnTypeName = McoreUtil.getTypeName(returnType);
-                    if (computedReturnTypeNames.contains(returnTypeName))
+                    if (returnTypeName != null && computedReturnTypeNames.contains(returnTypeName))
                     {
                         if (isUserDataTypes(List.of(returnTypeName), checkTypes))
                         {
                             Optional<Pair<Collection<Property>, TypeItem>> declaredProperties =
                                 coputedProperties.stream()
-                                    .filter(t -> McoreUtil.getTypeName(t.getSecond()).equals(returnTypeName))
+                                    .filter(t -> returnTypeName.equals(McoreUtil.getTypeName(t.getSecond())))
                                     .findAny();
                             Optional<Pair<Collection<Property>, TypeItem>> typeProperties = properties.stream()
-                                .filter(t -> McoreUtil.getTypeName(t.getSecond()).equals(returnTypeName))
+                                .filter(t -> returnTypeName.equals(McoreUtil.getTypeName(t.getSecond())))
                                 .findAny();
 
                             checkTypeProperties(method, statment, isRussianScript, returnType,
@@ -321,7 +322,7 @@ public class FunctionCtorReturnSectionCheck
         return function.isExport();
     }
 
-    private boolean isUserDataTypes(List<String> computedReturnTypeNames, Set<String> checkTypes)
+    private boolean isUserDataTypes(Collection<String> computedReturnTypeNames, Set<String> checkTypes)
     {
         if (computedReturnTypeNames.isEmpty())
         {
