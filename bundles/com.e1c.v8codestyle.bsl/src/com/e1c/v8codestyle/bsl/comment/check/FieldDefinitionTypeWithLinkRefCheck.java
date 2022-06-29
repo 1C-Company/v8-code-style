@@ -150,7 +150,7 @@ public class FieldDefinitionTypeWithLinkRefCheck
                 return false;
             }
             String typeName = type.getTypeName();
-            return types.contains(typeName);
+            return typeName != null && types.contains(typeName);
         }
         return false;
     }
