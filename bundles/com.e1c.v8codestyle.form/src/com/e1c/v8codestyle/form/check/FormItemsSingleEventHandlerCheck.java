@@ -57,8 +57,7 @@ public class FormItemsSingleEventHandlerCheck
 
     @Inject
     public FormItemsSingleEventHandlerCheck(IV8ProjectManager v8ProjectManager,
-        FormItemInformationService formItemInformationService
-    )
+        FormItemInformationService formItemInformationService)
     {
         super();
         this.v8ProjectManager = v8ProjectManager;
@@ -82,6 +81,20 @@ public class FormItemsSingleEventHandlerCheck
             Map<String, String> handlers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             checkEObjectEventHandlers((EObject)object, handlers, variant, resultAceptor, parameters, monitor);
         }
+    }
+
+    @Override
+    protected void configureCheck(CheckConfigurer builder)
+    {
+        builder.title(Messages.FormItemsSingleEventHandlerCheck_title)
+            .description(Messages.FormItemsSingleEventHandlerCheck_description)
+            .complexity(CheckComplexity.NORMAL)
+            .severity(IssueSeverity.MAJOR)
+            .issueType(IssueType.WARNING)
+            .extension(new EventHandlerChangeExtension())
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .topObject(FormPackage.Literals.FORM)
+            .checkTop();
     }
 
     private void checkEObjectEventHandlers(EObject object, Map<String, String> handlers, ScriptVariant variant,
@@ -117,7 +130,7 @@ public class FormItemsSingleEventHandlerCheck
     private void checkHandlersList(EObject item, List<EventHandler> eventHandlers, Map<String, String> handlers,
         ScriptVariant variant, ResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
     {
-        String itemAsString = itemName(item);
+        String itemName = itemName(item);
         for (Iterator<EventHandler> eventIterator = eventHandlers.iterator(); eventIterator.hasNext();)
         {
             if (monitor.isCanceled())
@@ -136,8 +149,7 @@ public class FormItemsSingleEventHandlerCheck
             else
             {
                 handlers.put(event.getName(), MessageFormat
-                    .format(Messages.FormItemsSingleEventHandlerCheck_itemName_dot_eventName, itemAsString,
-                        handlerName));
+                    .format(Messages.FormItemsSingleEventHandlerCheck_itemName_dot_eventName, itemName, handlerName));
             }
         }
     }
@@ -152,24 +164,6 @@ public class FormItemsSingleEventHandlerCheck
         {
             return ((FormItem)object).getName();
         }
-        else
-        {
-            return "undefined"; //$NON-NLS-1$
-        }
+        return "undefined"; //$NON-NLS-1$
     }
-
-    @Override
-    protected void configureCheck(CheckConfigurer builder)
-    {
-        builder.title(Messages.FormItemsSingleEventHandlerCheck_title)
-            .description(Messages.FormItemsSingleEventHandlerCheck_description)
-            .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.WARNING)
-            .extension(new EventHandlerChangeExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
-            .topObject(FormPackage.Literals.FORM)
-            .checkTop();
-    }
-
 }

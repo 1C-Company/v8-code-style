@@ -40,33 +40,12 @@ import com.e1c.g5.v8.dt.check.context.OnModelFeatureChangeContextCollector;
 public class EventHandlerChangeExtension
     implements IBasicCheckExtension
 {
-    boolean handlerWasChange(EStructuralFeature feature, BmSubEvent bmEvent)
-    {
-        return feature == FormPackage.Literals.EVENT_HANDLER__NAME
-            || feature == FormPackage.Literals.EVENT_HANDLER_CONTAINER__HANDLERS;
-    }
-
-    boolean itemWasRemove(EStructuralFeature feature, BmSubEvent bmEvent)
-    {
-        if (feature == FormPackage.Literals.FORM_ITEM_CONTAINER__ITEMS)
-        {
-            for (Notification notification : ((BmChangeEvent)bmEvent).getNotifications(feature))
-            {
-                if (notification.getEventType() == Notification.REMOVE)
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     @Override
     public void configureContextCollector(final ICheckDefinition definition)
     {
         OnModelFeatureChangeContextCollector collector = (IBmObject bmObject, EStructuralFeature feature,
             BmSubEvent bmEvent, CheckContextCollectingSession contextSession) -> {
-            if (handlerWasChange(feature, bmEvent) || itemWasRemove(feature, bmEvent))
+            if (isHandlerChanged(feature, bmEvent) || isItemRemoved(feature, bmEvent))
             {
                 IBmObject top = bmObject.bmIsTop() ? bmObject : bmObject.bmGetTopObject();
                 if (top instanceof Form)
@@ -81,5 +60,26 @@ public class EventHandlerChangeExtension
         containdedObjects.add(FormPackage.Literals.EVENT_HANDLER);
         containdedObjects.add(FormPackage.Literals.EVENT_HANDLER_CONTAINER);
         definition.addCheckedModelObjects(FormPackage.Literals.FORM, true, containdedObjects);
+    }
+
+    private boolean isHandlerChanged(EStructuralFeature feature, BmSubEvent bmEvent)
+    {
+        return feature == FormPackage.Literals.EVENT_HANDLER__NAME
+            || feature == FormPackage.Literals.EVENT_HANDLER_CONTAINER__HANDLERS;
+    }
+
+    private boolean isItemRemoved(EStructuralFeature feature, BmSubEvent bmEvent)
+    {
+        if (feature == FormPackage.Literals.FORM_ITEM_CONTAINER__ITEMS)
+        {
+            for (Notification notification : ((BmChangeEvent)bmEvent).getNotifications(feature))
+            {
+                if (notification.getEventType() == Notification.REMOVE)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

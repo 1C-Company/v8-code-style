@@ -52,18 +52,8 @@ public class FormItemsSingleEventHandlerCheckTest
         URI.createURI("bm://FormItemsSingleEventHandler/CommonForm.TestForm.Form#/items:Attribute1");
     private static final URI URI_ATTRIBUTE2 =
         URI.createURI("bm://FormItemsSingleEventHandler/CommonForm.TestForm.Form#/items:Attribute2");
-    private static final URI URI_TABLE1_COLUMN =
-        URI.createURI(
-            "bm://FormItemsSingleEventHandler/CommonForm.TestForm.Form#/items:Table1/items:Table1Group1/items:Table1Column1");
-
-    private final EList<EventHandler> getHandlersByURI(IBmTransaction transaction, URI uriItem)
-    {
-        FormField item = (FormField)transaction.getObjectByUri(uriItem);
-        assertNotNull(item);
-        FieldExtInfo extInfo = item.getExtInfo();
-        assertNotNull(extInfo);
-        return extInfo.getHandlers();
-    }
+    private static final URI URI_TABLE1_COLUMN = URI.createURI(
+        "bm://FormItemsSingleEventHandler/CommonForm.TestForm.Form#/items:Table1/items:Table1Group1/items:Table1Column1");
 
     /**
      * Test the form items event handlers are single
@@ -212,5 +202,14 @@ public class FormItemsSingleEventHandlerCheckTest
         assertTrue(object instanceof Form);
         Marker marker = getFirstNestedMarker(CHECK_ID, object, dtProject);
         assertNotNull(marker);
+    }
+
+    private final EList<EventHandler> getHandlersByURI(IBmTransaction transaction, URI uriItem)
+    {
+        FormField item = (FormField)transaction.getObjectByUri(uriItem);
+        assertNotNull(item);
+        FieldExtInfo extInfo = item.getExtInfo();
+        assertNotNull(extInfo);
+        return extInfo.getHandlers();
     }
 }
