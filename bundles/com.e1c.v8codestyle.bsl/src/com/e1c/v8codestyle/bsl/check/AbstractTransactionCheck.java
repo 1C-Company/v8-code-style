@@ -25,9 +25,8 @@ import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
-import com._1c.g5.v8.dt.bsl.model.PreprocessorItemDeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItemStatements;
-import com._1c.g5.v8.dt.bsl.model.RegionPreprocessorStatement;
+import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
@@ -71,27 +70,27 @@ abstract class AbstractTransactionCheck
     }
 
     /**
-     * Gets the all statement.
+     * Gets the all statements.
      *
      * @param statements the statements
-     * @return the all statement
+     * @return the all statements, cannot return {@code null}.
      */
     protected final List<Statement> getAllStatement(List<Statement> statements)
     {
         List<Statement> res = Lists.newArrayList(statements);
 
         Statement lastStatement = getLastStatement(res);
-        while (lastStatement instanceof RegionPreprocessorStatement)
+        while (lastStatement instanceof RegionPreprocessor)
         {
-            RegionPreprocessorStatement regionPreprocessorStatement = (RegionPreprocessorStatement)lastStatement;
+            RegionPreprocessor regionPreprocessorStatement = (RegionPreprocessor)lastStatement;
             PreprocessorItem item = regionPreprocessorStatement.getItem();
-            if (item.hasStatements())
+            if (item instanceof PreprocessorItemStatements && item.hasStatements())
             {
                 PreprocessorItemStatements itemStatements = (PreprocessorItemStatements)item;
                 res.addAll(itemStatements.getStatements());
             }
             item = regionPreprocessorStatement.getItemAfter();
-            if (item.hasStatements())
+            if (item instanceof PreprocessorItemStatements && item.hasStatements())
             {
                 PreprocessorItemStatements itemStatements = (PreprocessorItemStatements)item;
                 res.addAll(itemStatements.getStatements());
@@ -136,27 +135,23 @@ abstract class AbstractTransactionCheck
             List<Statement> st = null;
             if (container instanceof LoopStatement)
             {
-                st = getStatementsFromContainer((LoopStatement)container);
+                st = ((LoopStatement)container).getStatements();
             }
             else if (container instanceof Conditional)
             {
-                st = getStatementsFromContainer((Conditional)container);
+                st = ((Conditional)container).getStatements();
             }
             else if (container instanceof IfStatement)
             {
-                st = getStatementsFromContainer((IfStatement)container);
+                st = ((IfStatement)container).getElseStatements();
             }
             else if (container instanceof TryExceptStatement)
             {
                 st = getStatementsFromContainer((TryExceptStatement)container);
             }
-            else if (container instanceof PreprocessorItemDeclareStatement)
-            {
-                st = getStatementsFromContainer((PreprocessorItemDeclareStatement)container);
-            }
             else if (container instanceof PreprocessorItemStatements)
             {
-                st = getStatementsFromContainer((PreprocessorItemStatements)container);
+                st = ((PreprocessorItemStatements)container).getStatements();
             }
             else
             {
@@ -211,56 +206,12 @@ abstract class AbstractTransactionCheck
         return false;
     }
 
-    @SuppressWarnings("unchecked")
-    private List<Statement> getStatementsFromContainer(LoopStatement container)
-    {
-        Object obj = container.eGet(BslPackage.Literals.LOOP_STATEMENT__STATEMENTS);
-        return obj instanceof List ? (List<Statement>)obj : null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<Statement> getStatementsFromContainer(Conditional container)
-    {
-        Object obj = container.eGet(BslPackage.Literals.CONDITIONAL__STATEMENTS);
-        return obj instanceof List ? (List<Statement>)obj : null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<Statement> getStatementsFromContainer(IfStatement container)
-    {
-        Object obj = container.eGet(BslPackage.Literals.IF_STATEMENT__ELSE_STATEMENTS);
-        return obj instanceof List ? (List<Statement>)obj : null;
-    }
-
-    @SuppressWarnings("unchecked")
     private List<Statement> getStatementsFromContainer(TryExceptStatement container)
     {
         List<Statement> res = Lists.newArrayList();
-        Object obj = container.eGet(BslPackage.Literals.TRY_EXCEPT_STATEMENT__TRY_STATEMENTS);
-        if (obj instanceof List)
-        {
-            res.addAll((List<Statement>)obj);
-        }
-        obj = container.eGet(BslPackage.Literals.TRY_EXCEPT_STATEMENT__EXCEPT_STATEMENTS);
-        if (obj instanceof List)
-        {
-            res.addAll((List<Statement>)obj);
-        }
+        res.addAll(container.getTryStatements());
+        res.addAll(container.getExceptStatements());
         return res;
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<Statement> getStatementsFromContainer(PreprocessorItemDeclareStatement container)
-    {
-        Object obj = container.eGet(BslPackage.Literals.PREPROCESSOR_ITEM_DECLARE_STATEMENT__DECLARE_STATEMENTS);
-        return obj instanceof List ? (List<Statement>)obj : null;
-    }
-
-    @SuppressWarnings("unchecked")
-    private List<Statement> getStatementsFromContainer(PreprocessorItemStatements container)
-    {
-        Object obj = container.eGet(BslPackage.Literals.PREPROCESSOR_ITEM_STATEMENTS__STATEMENTS);
-        return obj instanceof List ? (List<Statement>)obj : null;
     }
 
     @SuppressWarnings("unchecked")
