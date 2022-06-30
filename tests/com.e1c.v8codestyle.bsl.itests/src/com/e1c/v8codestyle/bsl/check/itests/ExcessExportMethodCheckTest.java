@@ -25,6 +25,8 @@ import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.form.model.Form;
+import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
@@ -43,6 +45,8 @@ public class ExcessExportMethodCheckTest
     private static final String FQN_MODULE = "CommonModule.CommonModule";
     private static final String FQN_MODULE_1 = "CommonModule.CommonModule1";
     private static final String FQN_MODULE_2 = "CommonModule.CommonModule2";
+    private static final String FQN_CATALOG = "Catalog.Catalog";
+    private static final String FQN_CATALOG_FORM = "Catalog.Catalog.Form.ItemForm.Form";
 
     @Override
     protected String getTestConfigurationName()
@@ -101,6 +105,44 @@ public class ExcessExportMethodCheckTest
 
         List<Method> methods = module.allMethods();
         assertEquals(1, methods.size());
+
+        Method noncompliantMethod = methods.get(0);
+        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testLocalCall() throws Exception
+    {
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG, dtProject);
+        assertTrue(mdObject instanceof Catalog);
+        Module module = ((Catalog)mdObject).getObjectModule();
+        assertNotNull(module);
+
+        List<Method> methods = module.allMethods();
+        assertEquals(2, methods.size());
+
+        Method noncompliantMethod = methods.get(0);
+        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
+        assertNotNull(marker);
+    }
+
+    @Test
+    public void testNotifyCall() throws Exception
+    {
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_FORM, dtProject);
+        assertTrue(mdObject instanceof Form);
+        Module module = ((Form)mdObject).getModule();
+        assertNotNull(module);
+
+        List<Method> methods = module.allMethods();
+        assertEquals(2, methods.size());
 
         Method noncompliantMethod = methods.get(0);
         Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);

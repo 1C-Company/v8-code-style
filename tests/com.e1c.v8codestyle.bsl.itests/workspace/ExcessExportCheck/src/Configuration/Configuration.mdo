@@ -41,4 +41,5 @@
   <commonModules>CommonModule.CommonModule</commonModules>
   <commonModules>CommonModule.CommonModule1</commonModules>
   <commonModules>CommonModule.CommonModule2</commonModules>
+  <catalogs>Catalog.Catalog</catalogs>
 </mdclass:Configuration>

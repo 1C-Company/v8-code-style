@@ -45,6 +45,9 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.md.IExternalPropertyManagerRegistry;
 import com._1c.g5.v8.dt.search.core.IDtMatchProvider;
+import com._1c.g5.v8.dt.search.core.SearchFor;
+import com._1c.g5.v8.dt.search.core.SearchIn;
+import com._1c.g5.v8.dt.search.core.SearchScope;
 import com._1c.g5.v8.dt.search.core.findref.FullTextSearchReferenceFinder;
 import com._1c.g5.v8.dt.search.core.findref.FullTextSearchReferenceFinder.IFullTextSearchReferenceFinderSupplier;
 import com._1c.g5.v8.dt.search.core.findref.FullTextSearchReferenceFinder.IFullTextSearchReferenceResult;
@@ -145,8 +148,13 @@ public final class ExcessExportMethodCheck
             FullTextSearchReferenceFinder referenceFinder = new FullTextSearchReferenceFinder(method.getName(), method,
                 referenceFinderSupplier, fileSystemSupportProvider);
 
-            Collection<IFullTextSearchReferenceResult> refs =
-                referenceFinder.findReferences(projectManager.getProject(method).getProject(), projectManager, monitor);
+            Collection<IFullTextSearchReferenceResult> refs = referenceFinder.findReferences(
+                Set.of(SearchFor.LANGUAGE_ELEMENTS), Set.of(SearchIn.MODULES),
+                Set.of(SearchScope.COMMON_MODULES, SearchScope.COMMON_FORMS, SearchScope.CONSTANTS,
+                    SearchScope.CATALOGS, SearchScope.DOCUMENTS, SearchScope.DOCUMENT_JOURNALS, SearchScope.REPORTS,
+                    SearchScope.INFORMATION_REGISTERS, SearchScope.ACCUMULATION_REGISTERS,
+                    SearchScope.CALCULATION_REGISTERS, SearchScope.BUSINESS_PROCESSES, SearchScope.TASKS),
+                Set.of(projectManager.getProject(method).getProject().getName()), monitor);
 
             if (refs.isEmpty())
             {
