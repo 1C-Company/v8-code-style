@@ -47,6 +47,7 @@ public class ExcessExportMethodCheckTest
     private static final String FQN_MODULE_2 = "CommonModule.CommonModule2";
     private static final String FQN_CATALOG = "Catalog.Catalog";
     private static final String FQN_CATALOG_FORM = "Catalog.Catalog.Form.ItemForm.Form";
+    private static final String FQN_CATALOG_LIST_FORM = "Catalog.Catalog.Form.ListForm.Form";
 
     @Override
     protected String getTestConfigurationName()
@@ -145,6 +146,25 @@ public class ExcessExportMethodCheckTest
         assertEquals(2, methods.size());
 
         Method noncompliantMethod = methods.get(0);
+        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testNotifyWithRegionCall() throws Exception
+    {
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_LIST_FORM, dtProject);
+        assertTrue(mdObject instanceof Form);
+        Module module = ((Form)mdObject).getModule();
+        assertNotNull(module);
+
+        List<Method> methods = module.allMethods();
+        assertEquals(2, methods.size());
+
+        Method noncompliantMethod = methods.get(1);
         Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
         assertNull(marker);
     }

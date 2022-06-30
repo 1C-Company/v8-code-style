@@ -35,11 +35,21 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultObjectForm>Catalog.Catalog.Form.ItemForm</defaultObjectForm>
+  <defaultListForm>Catalog.Catalog.Form.ListForm</defaultListForm>
   <forms uuid="c650a0a9-6eaf-41bc-a09d-d7c0e715413c">
     <name>ItemForm</name>
     <synonym>
       <key>en</key>
       <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="8ee590d7-1f00-405d-b5f7-68f1dc6ffe18">
+    <name>ListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>List form</value>
     </synonym>
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
