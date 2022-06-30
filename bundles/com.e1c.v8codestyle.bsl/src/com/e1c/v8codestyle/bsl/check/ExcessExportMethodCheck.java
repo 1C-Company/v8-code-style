@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
@@ -175,23 +174,23 @@ public final class ExcessExportMethodCheck
     private boolean isNotExclusion(ICheckParameters parameters, Method method)
     {
         RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
-        while (!Objects.isNull(region))
+        while (region != null)
         {
 
             PreprocessorItem preprocessorItem = region.getItemAfter();
-            if (Objects.isNull(preprocessorItem))
+            if (preprocessorItem == null)
             {
                 return true;
             }
 
             ICompositeNode node = NodeModelUtils.findActualNodeFor(preprocessorItem);
-            if (Objects.isNull(node))
+            if (node == null)
             {
                 return true;
             }
 
             ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
-            if (Objects.isNull(nodeMethod))
+            if (nodeMethod == null)
             {
                 return true;
             }
@@ -199,7 +198,7 @@ public final class ExcessExportMethodCheck
             if (nodeMethod.getTotalOffset() < node.getTotalOffset())
             {
                 String names = parameters.getString(PARAMETER_EXCLUDE_REGION_LIST);
-                if (!Objects.isNull(names))
+                if (names != null)
                 {
                     Set<String> set = Set.of(names.split(",")); //$NON-NLS-1$
                     for (String name : set)
@@ -250,6 +249,7 @@ public final class ExcessExportMethodCheck
                     references.add(new FullTextSearchReferenceResult(bslMatch.getSemanticObjectUri(), targetUri,
                         bslMatch.getTopObjectUri(), null, -1,
                         new TextSelection(result.getDtMatch().getOffset(), result.getDtMatch().getLength())));
+                    return references;
                 }
             }
             return references;
