@@ -9,12 +9,16 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
- *     Manaev Konstanitn - issue #855
+ *     Manaev Konstantin - issue #855
  *******************************************************************************/
 
 package com.e1c.v8codestyle.form.check;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -28,7 +32,8 @@ import com.e1c.g5.v8.dt.check.context.CheckContextCollectingSession;
 import com.e1c.g5.v8.dt.check.context.OnModelFeatureChangeContextCollector;
 
 /**
- * The extension that registers {@link Form} for model check if an event handler or an item contained in the form have been changed
+ * The extension that registers {@link Form} for model check if an event handler
+ * or an item contained in the form have been changed
  *
  * @author Manaev Konstantin
  */
@@ -72,5 +77,9 @@ public class EventHandlerChangeExtension
         };
         definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.EVENT_HANDLER_CONTAINER);
         definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.EVENT_HANDLER);
+        Set<EClass> containdedObjects = new HashSet<>();
+        containdedObjects.add(FormPackage.Literals.EVENT_HANDLER);
+        containdedObjects.add(FormPackage.Literals.EVENT_HANDLER_CONTAINER);
+        definition.addCheckedModelObjects(FormPackage.Literals.FORM, true, containdedObjects);
     }
 }

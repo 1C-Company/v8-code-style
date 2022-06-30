@@ -47,19 +47,22 @@ import com.google.inject.Inject;
  *
  * @author Manaev Konstantin
  */
-public class FormItemsOneEventHandlerCheck
+public class FormItemsSingleEventHandlerCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "form-items-one-event-handler"; //$NON-NLS-1$
-    private static final FormItemInformationService formItemInformationService = new FormItemInformationService();
+    private static final String CHECK_ID = "form-items-single-event-handler"; //$NON-NLS-1$
+    private final FormItemInformationService formItemInformationService;
     private final IV8ProjectManager v8ProjectManager;
 
     @Inject
-    public FormItemsOneEventHandlerCheck(IV8ProjectManager v8ProjectManager)
+    public FormItemsSingleEventHandlerCheck(IV8ProjectManager v8ProjectManager,
+        FormItemInformationService formItemInformationService
+    )
     {
         super();
         this.v8ProjectManager = v8ProjectManager;
+        this.formItemInformationService = formItemInformationService;
     }
 
     @Override
@@ -72,7 +75,7 @@ public class FormItemsOneEventHandlerCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (object instanceof Form && object instanceof EObject)
+        if (object instanceof Form)
         {
             IV8Project project = v8ProjectManager.getProject((EObject)object);
             ScriptVariant variant = project == null ? ScriptVariant.ENGLISH : project.getScriptVariant();
@@ -127,13 +130,14 @@ public class FormItemsOneEventHandlerCheck
             if (handlers.containsKey(event.getName()))
             {
                 resultAceptor.addIssue(MessageFormat.format(
-                    Messages.FormItemsOneEventHandlerCheck_the_handler_is_already_assigned_to_event, handlerName,
+                    Messages.FormItemsSingleEventHandlerCheck_the_handler_is_already_assigned_to_event, handlerName,
                     handlers.get(event.getName())), event, FormPackage.Literals.EVENT_HANDLER__NAME);
             }
             else
             {
                 handlers.put(event.getName(), MessageFormat
-                    .format(Messages.FormItemsOneEventHandlerCheck_itemName_dot_eventName, itemAsString, handlerName));
+                    .format(Messages.FormItemsSingleEventHandlerCheck_itemName_dot_eventName, itemAsString,
+                        handlerName));
             }
         }
     }
@@ -157,16 +161,15 @@ public class FormItemsOneEventHandlerCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.FormItemsOneEventHandlerCheck_title)
-            .description(Messages.FormItemsOneEventHandlerCheck_description)
+        builder.title(Messages.FormItemsSingleEventHandlerCheck_title)
+            .description(Messages.FormItemsSingleEventHandlerCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
             .extension(new EventHandlerChangeExtension())
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FormPackage.Literals.FORM)
-            .containment(FormPackage.Literals.EVENT_HANDLER_CONTAINER);
-        builder.topObject(FormPackage.Literals.FORM).containment(FormPackage.Literals.EVENT_HANDLER);
+            .checkTop();
     }
 
 }

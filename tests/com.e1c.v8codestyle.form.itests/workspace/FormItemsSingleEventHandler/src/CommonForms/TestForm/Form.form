@@ -11,10 +11,6 @@
     <dataPath xsi:type="form:DataPath">
       <segments>Attribute1</segments>
     </dataPath>
-    <handlers>
-      <event>OnChange</event>
-      <name>Attribute1OnChange</name>
-    </handlers>
     <extendedTooltip>
       <name>Attribute1ExtendedTooltip</name>
       <id>3</id>
@@ -52,7 +48,7 @@
       </handlers>
       <handlers>
         <event>Clearing</event>
-        <name>Attribute1StartListChoice</name>
+        <name>Attribute1Clearing</name>
       </handlers>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -73,10 +69,6 @@
     <dataPath xsi:type="form:DataPath">
       <segments>Attribute2</segments>
     </dataPath>
-    <handlers>
-      <event>OnChange</event>
-      <name>Attribute1OnChange</name>
-    </handlers>
     <extendedTooltip>
       <name>Attribute2ExtendedTooltip</name>
       <id>6</id>
@@ -110,11 +102,7 @@
     <extInfo xsi:type="form:InputFieldExtInfo">
       <handlers>
         <event>StartListChoice</event>
-        <name>Attribute1StartListChoice</name>
-      </handlers>
-      <handlers>
-        <event>Clearing</event>
-        <name>Attribute1StartListChoice</name>
+        <name>Attribute2StartListChoice</name>
       </handlers>
       <autoMaxWidth>true</autoMaxWidth>
       <autoMaxHeight>true</autoMaxHeight>
@@ -125,7 +113,7 @@
     </extInfo>
   </items>
   <items xsi:type="form:Table">
-    <name>Attribute3</name>
+    <name>Table1</name>
     <id>7</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -133,27 +121,78 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Attribute3</segments>
+      <segments>Table1</segments>
     </dataPath>
     <titleLocation>None</titleLocation>
-    <items xsi:type="form:FormField">
-      <name>Attribute3Attribute1</name>
-      <id>20</id>
+    <items xsi:type="form:FormGroup">
+      <name>Table1Group1</name>
+      <id>26</id>
+      <items xsi:type="form:FormField">
+        <name>Table1Column1</name>
+        <id>20</id>
+        <visible>true</visible>
+        <enabled>true</enabled>
+        <userVisible>
+          <common>true</common>
+        </userVisible>
+        <dataPath xsi:type="form:DataPath">
+          <segments>Table1.Column1</segments>
+        </dataPath>
+        <extendedTooltip>
+          <name>Table1Column1ExtendedTooltip</name>
+          <id>22</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <type>Label</type>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <extInfo xsi:type="form:LabelDecorationExtInfo">
+            <horizontalAlign>Left</horizontalAlign>
+          </extInfo>
+        </extendedTooltip>
+        <contextMenu>
+          <name>Table1Column1ContextMenu</name>
+          <id>21</id>
+          <visible>true</visible>
+          <enabled>true</enabled>
+          <userVisible>
+            <common>true</common>
+          </userVisible>
+          <autoFill>true</autoFill>
+        </contextMenu>
+        <type>InputField</type>
+        <editMode>Enter</editMode>
+        <showInHeader>true</showInHeader>
+        <headerHorizontalAlign>Left</headerHorizontalAlign>
+        <showInFooter>true</showInFooter>
+        <extInfo xsi:type="form:InputFieldExtInfo">
+          <handlers>
+            <event>StartListChoice</event>
+            <name>Table1Column1StartListChoice</name>
+          </handlers>
+          <autoMaxWidth>true</autoMaxWidth>
+          <autoMaxHeight>true</autoMaxHeight>
+          <wrap>true</wrap>
+          <chooseType>true</chooseType>
+          <typeDomainEnabled>true</typeDomainEnabled>
+          <textEdit>true</textEdit>
+        </extInfo>
+      </items>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
         <common>true</common>
       </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Attribute3.Attribute1</segments>
-      </dataPath>
-      <handlers>
-        <event>OnChange</event>
-        <name>Attribute1OnChange</name>
-      </handlers>
+      <title>
+        <key>en</key>
+        <value>Table1 group1</value>
+      </title>
       <extendedTooltip>
-        <name>Attribute3Attribute1ExtendedTooltip</name>
-        <id>22</id>
+        <name>Table1Group1ExtendedTooltip</name>
+        <id>27</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -166,98 +205,14 @@
           <horizontalAlign>Left</horizontalAlign>
         </extInfo>
       </extendedTooltip>
-      <contextMenu>
-        <name>Attribute3Attribute1ContextMenu</name>
-        <id>21</id>
-        <visible>true</visible>
-        <enabled>true</enabled>
-        <userVisible>
-          <common>true</common>
-        </userVisible>
-        <autoFill>true</autoFill>
-      </contextMenu>
-      <type>InputField</type>
-      <editMode>Enter</editMode>
-      <showInHeader>true</showInHeader>
-      <headerHorizontalAlign>Left</headerHorizontalAlign>
-      <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:InputFieldExtInfo">
-        <handlers>
-          <event>StartListChoice</event>
-          <name>Attribute1StartListChoice</name>
-        </handlers>
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <wrap>true</wrap>
-        <chooseType>true</chooseType>
-        <typeDomainEnabled>true</typeDomainEnabled>
-        <textEdit>true</textEdit>
-      </extInfo>
-    </items>
-    <items xsi:type="form:FormField">
-      <name>Attribute3Attribute2</name>
-      <id>23</id>
-      <visible>true</visible>
-      <enabled>true</enabled>
-      <userVisible>
-        <common>true</common>
-      </userVisible>
-      <dataPath xsi:type="form:DataPath">
-        <segments>Attribute3.Attribute2</segments>
-      </dataPath>
-      <handlers>
-        <event>OnChange</event>
-        <name>Attribute1OnChange</name>
-      </handlers>
-      <extendedTooltip>
-        <name>Attribute3Attribute2ExtendedTooltip</name>
-        <id>25</id>
-        <visible>true</visible>
-        <enabled>true</enabled>
-        <userVisible>
-          <common>true</common>
-        </userVisible>
-        <type>Label</type>
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <extInfo xsi:type="form:LabelDecorationExtInfo">
-          <horizontalAlign>Left</horizontalAlign>
-        </extInfo>
-      </extendedTooltip>
-      <contextMenu>
-        <name>Attribute3Attribute2ContextMenu</name>
-        <id>24</id>
-        <visible>true</visible>
-        <enabled>true</enabled>
-        <userVisible>
-          <common>true</common>
-        </userVisible>
-        <autoFill>true</autoFill>
-      </contextMenu>
-      <type>InputField</type>
-      <editMode>Enter</editMode>
-      <showInHeader>true</showInHeader>
-      <headerHorizontalAlign>Left</headerHorizontalAlign>
-      <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:InputFieldExtInfo">
-        <handlers>
-          <event>StartListChoice</event>
-          <name>Attribute1StartListChoice</name>
-        </handlers>
-        <handlers>
-          <event>Clearing</event>
-          <name>Attribute1StartListChoice</name>
-        </handlers>
-        <autoMaxWidth>true</autoMaxWidth>
-        <autoMaxHeight>true</autoMaxHeight>
-        <wrap>true</wrap>
-        <chooseType>true</chooseType>
-        <typeDomainEnabled>true</typeDomainEnabled>
-        <textEdit>true</textEdit>
+      <type>ColumnGroup</type>
+      <extInfo xsi:type="form:ColumnGroupExtInfo">
+        <group>Vertical</group>
+        <showTitle>true</showTitle>
       </extInfo>
     </items>
     <autoCommandBar>
-      <name>Attribute3CommandBar</name>
+      <name>Table1CommandBar</name>
       <id>8</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -273,10 +228,10 @@
       <userVisible>
         <common>true</common>
       </userVisible>
-      <name>Attribute3SearchString</name>
+      <name>Table1SearchString</name>
       <id>11</id>
       <extendedTooltip>
-        <name>Attribute3SearchStringExtendedTooltip</name>
+        <name>Table1SearchStringExtendedTooltip</name>
         <id>13</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -291,7 +246,7 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>Attribute3SearchStringContextMenu</name>
+        <name>Table1SearchStringContextMenu</name>
         <id>12</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -310,10 +265,10 @@
       <userVisible>
         <common>true</common>
       </userVisible>
-      <name>Attribute3ViewStatus</name>
+      <name>Table1ViewStatus</name>
       <id>17</id>
       <extendedTooltip>
-        <name>Attribute3ViewStatusExtendedTooltip</name>
+        <name>Table1ViewStatusExtendedTooltip</name>
         <id>19</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -328,7 +283,7 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>Attribute3ViewStatusContextMenu</name>
+        <name>Table1ViewStatusContextMenu</name>
         <id>18</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -348,10 +303,10 @@
       <userVisible>
         <common>true</common>
       </userVisible>
-      <name>Attribute3SearchControl</name>
+      <name>Table1SearchControl</name>
       <id>14</id>
       <extendedTooltip>
-        <name>Attribute3SearchControlExtendedTooltip</name>
+        <name>Table1SearchControlExtendedTooltip</name>
         <id>16</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -366,7 +321,7 @@
         </extInfo>
       </extendedTooltip>
       <contextMenu>
-        <name>Attribute3SearchControlContextMenu</name>
+        <name>Table1SearchControlContextMenu</name>
         <id>15</id>
         <visible>true</visible>
         <enabled>true</enabled>
@@ -381,7 +336,7 @@
       </extInfo>
     </searchControlAddition>
     <extendedTooltip>
-      <name>Attribute3ExtendedTooltip</name>
+      <name>Table1ExtendedTooltip</name>
       <id>10</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -396,7 +351,7 @@
       </extInfo>
     </extendedTooltip>
     <contextMenu>
-      <name>Attribute3ContextMenu</name>
+      <name>Table1ContextMenu</name>
       <id>9</id>
       <visible>true</visible>
       <enabled>true</enabled>
@@ -436,8 +391,8 @@
     <autoFill>true</autoFill>
   </autoCommandBar>
   <handlers>
-    <event>OnCreateAtServer</event>
-    <name>OnCreateAtServer</name>
+    <event>ActivationProcessing</event>
+    <name>ActivationProcessing</name>
   </handlers>
   <autoTitle>true</autoTitle>
   <autoUrl>true</autoUrl>
@@ -476,7 +431,11 @@
     </edit>
   </attributes>
   <attributes>
-    <name>Attribute3</name>
+    <name>Table1</name>
+    <title>
+      <key>en</key>
+      <value>Table1</value>
+    </title>
     <id>3</id>
     <valueType>
       <types>ValueTable</types>
@@ -488,7 +447,11 @@
       <common>true</common>
     </edit>
     <columns>
-      <name>Attribute1</name>
+      <name>Column1</name>
+      <title>
+        <key>en</key>
+        <value>Column1</value>
+      </title>
       <id>4</id>
       <valueType>
         <types>String</types>
@@ -501,34 +464,6 @@
         <common>true</common>
       </edit>
     </columns>
-    <columns>
-      <name>Attribute2</name>
-      <id>5</id>
-      <valueType>
-        <types>String</types>
-        <stringQualifiers/>
-      </valueType>
-      <view>
-        <common>true</common>
-      </view>
-      <edit>
-        <common>true</common>
-      </edit>
-    </columns>
-  </attributes>
-  <attributes>
-    <name>Attribute4</name>
-    <id>6</id>
-    <valueType>
-      <types>String</types>
-      <stringQualifiers/>
-    </valueType>
-    <view>
-      <common>true</common>
-    </view>
-    <edit>
-      <common>true</common>
-    </edit>
   </attributes>
   <commandInterface>
     <navigationPanel/>
