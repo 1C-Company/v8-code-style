@@ -35,6 +35,8 @@ import com._1c.g5.v8.dt.bsl.bm.ui.refactoring.BslDtMatchProvider;
 import com._1c.g5.v8.dt.bsl.bm.ui.refactoring.BslFullTextSearchSupplier;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
@@ -134,6 +136,12 @@ public final class ExcessExportMethodCheck
     {
         Method method = (Method)object;
         if (!method.isExport())
+        {
+            return;
+        }
+
+        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
+        if (ModuleType.FORM_MODULE == module.getModuleType())
         {
             return;
         }
