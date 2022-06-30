@@ -83,7 +83,7 @@ public class FormListFieldRefNotAddedCheck
     {
         if (object instanceof Table
             || (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo
-                && ((Form)((FormGroup)object).bmGetTopObject()).getItems().get(1) instanceof Table))
+                && checkIfTable(((Form)((FormGroup)object).bmGetTopObject()).getItems())))
         {
             Table table = object instanceof Table ? (Table)object
                 : (Table)((Form)((FormGroup)object).bmGetTopObject()).getItems().get(1);
@@ -109,6 +109,12 @@ public class FormListFieldRefNotAddedCheck
             }
         }
 
+    }
+
+    private static boolean checkIfTable(EList<FormItem> formItems)
+    {
+
+        return !formItems.stream().filter(Table.class::isInstance).collect(Collectors.toList()).isEmpty();
     }
 
     private static boolean pathCheck(EList<FormItem> items)
