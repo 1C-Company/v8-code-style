@@ -44,5 +44,6 @@
   <commonModules>CommonModule.CommonClientGlobal</commonModules>
   <commonModules>CommonModule.CommonServerCall</commonModules>
   <commonModules>CommonModule.CommonServerClient</commonModules>
+  <commonModules>CommonModule.CommonServerFullAccess</commonModules>
   <commonModules>CommonModule.CommonServerGlobal</commonModules>
 </mdclass:Configuration>
