@@ -47,13 +47,17 @@ public class FormItemsSingleEventHandlerCheckTest
 {
     private static final String CHECK_ID = "form-items-single-event-handler";
     private static final String PROJECT_NAME = "FormItemsSingleEventHandler";
-    private static final String FQN_FORM = "CommonForm.TestForm.Form";
+    private static final String FQN_FORM = "CommonForm.TestFormWithoutIssue.Form";
+    private static final String FQN_FORM_WITH_ISSUE = "CommonForm.TestFormWithIssue.Form";
+    private static final String TASK_NAME = "change event handler";
     private static final URI URI_ATTRIBUTE1 =
-        URI.createURI("bm://FormItemsSingleEventHandler/CommonForm.TestForm.Form#/items:Attribute1");
+        URI.createURI("bm://FormItemsSingleEventHandler/CommonForm.TestFormWithoutIssue.Form#/items:Attribute1");
     private static final URI URI_ATTRIBUTE2 =
-        URI.createURI("bm://FormItemsSingleEventHandler/CommonForm.TestForm.Form#/items:Attribute2");
+        URI.createURI("bm://FormItemsSingleEventHandler/CommonForm.TestFormWithoutIssue.Form#/items:Attribute2");
     private static final URI URI_TABLE1_COLUMN = URI.createURI(
-        "bm://FormItemsSingleEventHandler/CommonForm.TestForm.Form#/items:Table1/items:Table1Group1/items:Table1Column1");
+        "bm://FormItemsSingleEventHandler/CommonForm.TestFormWithoutIssue.Form#/items:Table1/items:Table1Group1/items:Table1Column1");
+    private static final URI URI_ATTRIBUTE_WITH_ISSUE =
+        URI.createURI("bm://FormItemsSingleEventHandler/CommonForm.TestFormWithIssue.Form#/items:Attribute2");
 
     /**
      * Test the form items event handlers are single
@@ -84,7 +88,7 @@ public class FormItemsSingleEventHandlerCheckTest
         assertNotNull(dtProject);
 
         IBmModel model = bmModelManager.getModel(dtProject);
-        model.execute(new AbstractBmTask<Void>("change event handler")
+        model.execute(new AbstractBmTask<Void>(TASK_NAME)
         {
             @Override
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
@@ -115,7 +119,7 @@ public class FormItemsSingleEventHandlerCheckTest
         assertNotNull(dtProject);
 
         IBmModel model = bmModelManager.getModel(dtProject);
-        model.execute(new AbstractBmTask<Void>("change event handler")
+        model.execute(new AbstractBmTask<Void>(TASK_NAME)
         {
             @Override
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
@@ -148,7 +152,7 @@ public class FormItemsSingleEventHandlerCheckTest
         assertNotNull(dtProject);
 
         IBmModel model = bmModelManager.getModel(dtProject);
-        model.execute(new AbstractBmTask<Void>("change event handler")
+        model.execute(new AbstractBmTask<Void>(TASK_NAME)
         {
             @Override
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
@@ -181,7 +185,7 @@ public class FormItemsSingleEventHandlerCheckTest
         assertNotNull(dtProject);
 
         IBmModel model = bmModelManager.getModel(dtProject);
-        model.execute(new AbstractBmTask<Void>("change event handler")
+        model.execute(new AbstractBmTask<Void>(TASK_NAME)
         {
             @Override
             public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
@@ -202,6 +206,39 @@ public class FormItemsSingleEventHandlerCheckTest
         assertTrue(object instanceof Form);
         Marker marker = getFirstNestedMarker(CHECK_ID, object, dtProject);
         assertNotNull(marker);
+    }
+
+    /**
+     * Test the form items event handler are single after remove other assigned item
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testFormItemsEventHandlerAreSingleAfterRemoveOtherItem() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmModel model = bmModelManager.getModel(dtProject);
+        model.execute(new AbstractBmTask<Void>(TASK_NAME)
+        {
+            @Override
+            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+            {
+                Form form = (Form)transaction.getTopObjectByFqn(FQN_FORM_WITH_ISSUE);
+                assertNotNull(form);
+                FormField attributeWithIssue = (FormField)transaction.getObjectByUri(URI_ATTRIBUTE_WITH_ISSUE);
+                assertNotNull(attributeWithIssue);
+                form.getItems().remove(attributeWithIssue);
+                return null;
+            }
+        });
+        waitForDD(dtProject);
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM_WITH_ISSUE, dtProject);
+        assertTrue(object instanceof Form);
+        Marker marker = getFirstNestedMarker(CHECK_ID, object, dtProject);
+        assertNull(marker);
     }
 
     private final EList<EventHandler> getHandlersByURI(IBmTransaction transaction, URI uriItem)

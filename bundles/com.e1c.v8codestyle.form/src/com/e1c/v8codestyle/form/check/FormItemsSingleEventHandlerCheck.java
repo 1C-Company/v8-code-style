@@ -79,7 +79,7 @@ public class FormItemsSingleEventHandlerCheck
             IV8Project project = v8ProjectManager.getProject((EObject)object);
             ScriptVariant variant = project == null ? ScriptVariant.ENGLISH : project.getScriptVariant();
             Map<String, String> handlers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-            checkEObjectEventHandlers((EObject)object, handlers, variant, resultAceptor, parameters, monitor);
+            checkEObjectEventHandlers((EObject)object, handlers, variant, resultAceptor, monitor);
         }
     }
 
@@ -98,7 +98,7 @@ public class FormItemsSingleEventHandlerCheck
     }
 
     private void checkEObjectEventHandlers(EObject object, Map<String, String> handlers, ScriptVariant variant,
-        ResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        ResultAcceptor resultAceptor, IProgressMonitor monitor)
     {
 
         if (monitor.isCanceled() || object == null)
@@ -107,13 +107,13 @@ public class FormItemsSingleEventHandlerCheck
         }
 
         checkHandlersList(object, formItemInformationService.getEventHandlers(object), handlers, variant, resultAceptor,
-            parameters, monitor);
+            monitor);
 
         ExtInfo extInfo = formItemInformationService.getExtensionInfo(object);
         if (extInfo != null)
         {
             checkHandlersList(object, formItemInformationService.getEventHandlers(extInfo), handlers, variant,
-                resultAceptor, parameters, monitor);
+                resultAceptor, monitor);
         }
 
         if (object instanceof FormItemContainer)
@@ -121,14 +121,14 @@ public class FormItemsSingleEventHandlerCheck
             for (Iterator<FormItem> itemIterator = ((FormItemContainer)object).getItems().iterator(); itemIterator
                 .hasNext();)
             {
-                checkEObjectEventHandlers(itemIterator.next(), handlers, variant, resultAceptor, parameters, monitor);
+                checkEObjectEventHandlers(itemIterator.next(), handlers, variant, resultAceptor, monitor);
             }
         }
 
     }
 
     private void checkHandlersList(EObject item, List<EventHandler> eventHandlers, Map<String, String> handlers,
-        ScriptVariant variant, ResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        ScriptVariant variant, ResultAcceptor resultAceptor, IProgressMonitor monitor)
     {
         String itemName = itemName(item);
         for (Iterator<EventHandler> eventIterator = eventHandlers.iterator(); eventIterator.hasNext();)

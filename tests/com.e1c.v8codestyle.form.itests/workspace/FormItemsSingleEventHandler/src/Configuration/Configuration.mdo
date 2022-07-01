@@ -38,5 +38,6 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <commonForms>CommonForm.TestForm</commonForms>
+  <commonForms>CommonForm.TestFormWithoutIssue</commonForms>
+  <commonForms>CommonForm.TestFormWithIssue</commonForms>
 </mdclass:Configuration>
