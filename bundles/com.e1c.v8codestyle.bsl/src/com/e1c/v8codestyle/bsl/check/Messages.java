@@ -187,6 +187,14 @@ final class Messages
 
     public static String MethodTooManyPramsCheck_title;
 
+    public static String MissingTemporaryFileDeletionCheck_Delete_File_Methods;
+
+    public static String MissingTemporaryFileDeletionCheck_description;
+
+    public static String MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion;
+
+    public static String MissingTemporaryFileDeletionCheck_title;
+
     public static String FormModulePragmaCheck_description;
 
     public static String FormModulePragmaCheck_Form_module_compilation_pragma_used;
