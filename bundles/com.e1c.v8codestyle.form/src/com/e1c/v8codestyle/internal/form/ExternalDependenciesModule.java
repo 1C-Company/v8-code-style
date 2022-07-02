@@ -43,7 +43,7 @@ public class ExternalDependenciesModule
     @Override
     protected void doConfigure()
     {
-        URI uri = URI.createURI("*.bsl"); //$NON-NLS-1$
+        URI uri = URI.createURI("*.form"); //$NON-NLS-1$
         final IResourceServiceProvider rsp = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(uri);
         bind(FormItemInformationService.class).toProvider(() -> rsp.get(FormItemInformationService.class));
         bind(IV8ProjectManager.class).toService();
