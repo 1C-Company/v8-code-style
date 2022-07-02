@@ -1,13 +1,14 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 48
+Общее количество проверок: 52
 
 | Код проверки | Наименование |
 |--------------|--------------|
 | [bsl-canonical-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/bsl-canonical-pragma.md) | Аннотация написана канонически |
 | [bsl-nstr-string-literal-format](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/bsl-nstr-string-literal-format.md) | НСтр формат строкового литерала |
 | [change-and-validate-instead-of-around](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/change-and-validate-instead-of-around.md) | Используется аннотация &ИзменениеИКонтроль вместо &Вместо |
+| [common-module-named-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/common-module-named-self-reference.md) | Избыточное обращение по собственному имени внутри общего модуля |
 | [constructor-function-return-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/constructor-function-return-section.md) | Секция возвращаемого значения функции-конструктора данных |
 | [data-exchange-load](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/data-exchange-load.md) | Проверка ОбменДанными.Загрузка в обработчике события |
 | [doc-comment-collection-item-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-collection-item-type.md) | Тип коллекций в документирующем комментарии содержит тип элемента коллекции |
@@ -31,15 +32,18 @@
 | [export-method-in-command-form-module](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/export-method-in-command-form-module.md) | Ограничения на использование экспортных процедур и функций в модуле команд и форм |
 | [form-module-missing-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-module-missing-pragma.md) | Всегда использовать директивы компиляции в модуле формы |
 | [form-module-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-module-pragma.md) | Использование директив компиляции модуля формы |
+| [form-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-self-reference.md) | Использование устаревшего псевдонима |
 | [function-return-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/function-return-value-type.md) | Функция возвращает типизированное значение |
 | [invocation-form-event-handler](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-form-event-handler.md) | Программный вызов обработчика события формы |
 | [invocation-parameter-type-intersect](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-parameter-type-intersect.md) | Вызываемый тип пересекается с типом параметра |
 | [isinrole-using](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/isinrole-using.md) | Использован метод "РольДоступна" |
 | [lock-out-of-try](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/lock-out-of-try.md) | Вызов "Заблокировать()" находится вне попытки |
+| [manager-module-named-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/manager-module-named-self-reference.md) | Избыточное обращение по собственному имени внутри модуля менеджера |
 | [method-param-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-param-value-type.md) | Параметр метода имеет тип |
 | [method-too-many-params](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-too-many-params.md) | Метод содержит слишком много параметров |
 | [module-accessibility-at-client](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-accessibility-at-client.md) | Метод или переменная доступны НаКлиенте |
 | [module-region-empty](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-region-empty.md) | Область пустая |
+| [module-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-self-reference.md) | Избыточное использование псевдонима "ЭтотОбъект" |
 | [module-structure-top-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-top-region.md) | Стандартная область структуры модуля верхнеуровневая |
 | [module-undefined-function](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-function.md) | Функция не определена |
 | [module-undefined-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-method.md) | Метод не определен |
