@@ -92,6 +92,10 @@ public class MissingTemporaryFileDeletionCheck
         if (isTempFileMethod(methodName))
         {
             SimpleStatement statement = EcoreUtil2.getContainerOfType(invocation, SimpleStatement.class);
+            if (statement == null)
+            {
+                return;
+            }
             FeatureAccess tempFile = (FeatureAccess)statement.getLeft();
             String tempFileName = getFullFeatureAccessName(tempFile);
 
@@ -109,17 +113,20 @@ public class MissingTemporaryFileDeletionCheck
         List<String> deleteFileMethods = getDeleteFileMethods(parameters);
 
         Block block = EcoreUtil2.getContainerOfType(sfa, Block.class);
-        boolean isTempFileOpened = false;
-        for (FeatureAccess blockFa : EcoreUtil2.eAllOfType(block, FeatureAccess.class))
+        if (block != null)
         {
-            String featureName = getFullFeatureAccessName(blockFa);
-
-            if (featureName != null && (isTempFileMethod(featureName) || isTempFileOpened))
+            boolean isTempFileOpened = false;
+            for (FeatureAccess blockFa : EcoreUtil2.eAllOfType(block, FeatureAccess.class))
             {
-                isTempFileOpened = true;
-                if (deleteFileMethods.contains(featureName) && checkParameterInList(blockFa, tempFileName))
+                String featureName = getFullFeatureAccessName(blockFa);
+
+                if (featureName != null && (isTempFileMethod(featureName) || isTempFileOpened))
                 {
-                    return true;
+                    isTempFileOpened = true;
+                    if (deleteFileMethods.contains(featureName) && checkParameterInList(blockFa, tempFileName))
+                    {
+                        return true;
+                    }
                 }
             }
         }
