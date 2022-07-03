@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Manaev Konstantin - issue #855
  *******************************************************************************/
 package com.e1c.v8codestyle.form.check;
 
@@ -22,6 +23,10 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.form.check.messages"; //$NON-NLS-1$
+    public static String FormItemsSingleEventHandlerCheck_description;
+    public static String FormItemsSingleEventHandlerCheck_itemName_dot_eventName;
+    public static String FormItemsSingleEventHandlerCheck_the_handler_is_already_assigned_to_event;
+    public static String FormItemsSingleEventHandlerCheck_title;
     public static String FormListRefUseAlwaysFlagDisabledCheck_description;
     public static String FormListRefUseAlwaysFlagDisabledCheck_title;
     public static String FormListRefUseAlwaysFlagDisabledCheck_UseAlways_flag_is_disabled_for_the_Ref_field;
