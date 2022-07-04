@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonForm xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e3ea2d54-5b00-4fd3-955a-534fe326f416">
+  <name>TestFormWithoutIssue</name>
+  <synonym>
+    <key>en</key>
+    <value>Test form without issue</value>
+  </synonym>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usePurposes>MobileDevice</usePurposes>
+</mdclass:CommonForm>
