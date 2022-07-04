@@ -12,17 +12,21 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.nodemodel.ICompositeNode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
@@ -30,6 +34,7 @@ import com._1c.g5.v8.dt.bsl.model.PreprocessorItemDeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.mcore.McorePackage;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -82,38 +87,86 @@ public class ModuleStructureRegionsCheck
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .disable()
             .module()
-            .checkedObjectType(MODULE);
+            .checkedObjectType(METHOD);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        Module module = (Module)object;
+        Method method = (Method)object;
+        IV8Project project = v8ProjectManager.getProject(method);
 
-        IV8Project project = v8ProjectManager.getProject(module);
+        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
+        if (module == null)
+        {
+            return;
+        }
 
         ModuleType moduleType = module.getModuleType();
         Collection<String> names =
             moduleStructureProvider.getModuleStructureRegions(moduleType, project.getScriptVariant());
 
-        Set<RegionPreprocessor> regions = module.getDeclareStatements()
-            .stream()
-            .filter(RegionPreprocessor.class::isInstance)
-            .map(RegionPreprocessor.class::cast)
-            .collect(Collectors.toSet());
-
-        List<String> allRegions = new ArrayList<>();
-        collectAllRegions(regions, allRegions);
-
-        for (String name : names)
+        RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
+        if (region == null)
         {
-            if (!allRegions.contains(name))
+            resultAceptor.addIssue(
+                MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, method.getName()),
+                McorePackage.Literals.NAMED_ELEMENT__NAME);
+        }
+
+        PreprocessorItem preprocessorItem = region.getItemAfter();
+        if (preprocessorItem != null)
+        {
+            ICompositeNode node = NodeModelUtils.findActualNodeFor(preprocessorItem);
+            if (node != null)
             {
-                resultAceptor.addIssue(MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, name),
-                    module);
+                ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
+                if (nodeMethod != null && nodeMethod.getTotalOffset() >= node.getTotalOffset())
+                {
+                    resultAceptor.addIssue(
+                        MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, method.getName()),
+                        McorePackage.Literals.NAMED_ELEMENT__NAME);
+                }
             }
         }
+
+        Optional<RegionPreprocessor> parent = getParentRegion(region);
+        if (parent.isPresent())
+        {
+            resultAceptor.addIssue(
+                MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, names.toString()), module);
+        }
+
+        if (method.isExport())
+        {
+
+        }
+
+
+
+
+//        ModuleType moduleType = module.getModuleType();
+//        Collection<String> names =
+//            moduleStructureProvider.getModuleStructureRegions(moduleType, project.getScriptVariant());
+//
+//        Set<RegionPreprocessor> regions = module.getDeclareStatements()
+//            .stream()
+//            .filter(RegionPreprocessor.class::isInstance)
+//            .map(RegionPreprocessor.class::cast)
+//            .collect(Collectors.toSet());
+//
+//        List<String> allRegions = new ArrayList<>();
+//        collectAllRegions(regions, allRegions);
+//
+//        for (String name : names)
+//        {
+//            if (!allRegions.contains(name))
+//            {
+//                resultAceptor.addIssue(MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, name),
+//                    module);
+//            }
+//        }
     }
 
     private void collectAllRegions(Set<RegionPreprocessor> regions, List<String> allRegions)
