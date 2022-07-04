@@ -16,6 +16,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -28,7 +29,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
@@ -81,6 +84,10 @@ public abstract class AbstractTypeCheck
             IEObjectDynamicTypeNames.COA_REF_TYPE_NAME, IEObjectDynamicTypeNames.CALCULATION_TYPE_REF_TYPE_NAME,
             IEObjectDynamicTypeNames.BP_REF_TYPE_NAME, IEObjectDynamicTypeNames.BP_ROUTEPOINT_TYPE_NAME,
             IEObjectDynamicTypeNames.TASK_REF_TYPE_NAME, IEObjectDynamicTypeNames.EXCHANGE_PLAN_REF_TYPE_NAME);
+
+    private static final String COMMON_MODULE = "CommonModule"; //$NON-NLS-1$
+
+    private static final QualifiedName QN_COMMON_MODULE = QualifiedName.create(COMMON_MODULE);
 
     /** The resource lookup service. */
     protected final IResourceLookup resourceLookup;
@@ -234,7 +241,7 @@ public abstract class AbstractTypeCheck
      * @param context {@link EObject} for resolving proxy checking types, cannot be <code>null</code>
      * @return <code>true</code> if intersection was detected
      */
-    protected static boolean intersectTypeItem(Collection<TypeItem> expectedTypes, Collection<TypeItem> realTypes,
+    protected boolean intersectTypeItem(Collection<TypeItem> expectedTypes, Collection<TypeItem> realTypes,
         EObject context)
     {
         if (expectedTypes.isEmpty())
@@ -255,7 +262,7 @@ public abstract class AbstractTypeCheck
         {
             return false;
         }
-        Collection<TypeItem> withParentTypes = getParentTypes(realTypes, context);
+        Collection<TypeItem> withParentTypes = getParentsOfRealTypes(realTypes, context);
         Collection<String> realTypesNames = getTypeNames(withParentTypes, context);
 
         if (!expectedTypesNames.isEmpty() && !realTypesNames.isEmpty())
@@ -282,10 +289,10 @@ public abstract class AbstractTypeCheck
         return castTypeNames;
     }
 
-    private static Collection<TypeItem> getParentTypes(Collection<TypeItem> theFirstCollectionTypes, EObject context)
+    private Collection<TypeItem> getParentsOfRealTypes(Collection<TypeItem> realTypes, EObject context)
     {
-        Deque<TypeItem> types = new ArrayDeque<>(theFirstCollectionTypes);
-        List<TypeItem> parentTypes = new ArrayList<>();
+        Deque<TypeItem> types = new ArrayDeque<>(realTypes);
+        List<TypeItem> parentTypes = new LinkedList<>();
         while (!types.isEmpty())
         {
             TypeItem type = types.pollFirst();
@@ -298,6 +305,20 @@ public abstract class AbstractTypeCheck
             if (type instanceof Type && ((Type)type).getParentType() != null)
             {
                 types.add(((Type)type).getParentType());
+            }
+            else if (type instanceof Type && COMMON_MODULE.equals(McoreUtil.getTypeCategory(type)))
+            {
+                // Here is bypass of wrong type hierarchy of types for common modules
+                IScope typeScope = scopeProvider.getScope(context, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
+                IEObjectDescription element = typeScope.getSingleElement(QN_COMMON_MODULE);
+                if (element != null)
+                {
+                    EObject parentCommonModuleType = element.getEObjectOrProxy();
+                    if (parentCommonModuleType instanceof TypeItem)
+                    {
+                        parentTypes.add((TypeItem)parentCommonModuleType);
+                    }
+                }
             }
         }
         return parentTypes;

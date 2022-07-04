@@ -241,9 +241,10 @@ public class InvocationParamIntersectionCheck
 
             Collection<TypeItem> targetTypes =
                 getDefaultTargetOrCollectionItemTypes(method, collectionItemTypes, parameterNumbers, isMap, i, inv);
-            boolean isIntersect = !targetTypes.isEmpty() && intersectTypeItem(targetTypes, sorceTypes, inv);
+            boolean isCollectionItemTypeEmpty = targetTypes.isEmpty();
+            boolean isIntersect = !isCollectionItemTypeEmpty && intersectTypeItem(targetTypes, sorceTypes, inv);
             Parameter parameter = null;
-            for (Iterator<ParamSet> iterator = paramSets.iterator(); !isIntersect && targetTypes.isEmpty()
+            for (Iterator<ParamSet> iterator = paramSets.iterator(); !isIntersect && isCollectionItemTypeEmpty
                 && iterator.hasNext();)
             {
                 ParamSet paramSet = iterator.next();
@@ -297,6 +298,11 @@ public class InvocationParamIntersectionCheck
                 }
 
                 isIntersect = intersectTypeItem(targetTypes, sorceTypes, inv);
+                if (!isIntersect && !targetTypes.isEmpty())
+                {
+                    // if we don't match this ParamSet so will not use for other parameters
+                    iterator.remove();
+                }
             }
 
             if (!isIntersect && !targetTypes.isEmpty())
@@ -329,7 +335,22 @@ public class InvocationParamIntersectionCheck
                         type = (TypeItem)EcoreUtil.resolve(type, inv);
                         if (type instanceof Type && typeName.equals(McoreUtil.getTypeName(type)))
                         {
-                            collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                            if (IEObjectTypeNames.VALUE_LIST.equals(typeName))
+                            {
+                                List<TypeItem> valueListItemTypes = ((Type)type).getCollectionElementTypes().allTypes();
+                                Set<TypeItem> collectionTypes =
+                                    dynamicFeatureAccessComputer.getAllProperties(valueListItemTypes, inv.eResource())
+                                        .stream()
+                                        .flatMap(e -> e.getFirst().stream())
+                                        .filter(p -> MAP_VALUE.equals(p.getName()))
+                                        .flatMap(p -> p.getTypes().stream())
+                                        .collect(Collectors.toSet());
+                                collectionItemTypes.addAll(collectionTypes);
+                            }
+                            else
+                            {
+                                collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                            }
                             isMap = IEObjectTypeNames.MAP.equals(typeName);
                             parameterNumbers = typesAndParams.get(typeName);
                         }

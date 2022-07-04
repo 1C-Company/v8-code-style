@@ -70,7 +70,8 @@ public class FormListRefUseAlwaysFlagDisabledCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.FormListRefUseAlwaysFlagDisabledCheck_title)
+        builder.extension(new SkipBaseFormExtension())
+            .title(Messages.FormListRefUseAlwaysFlagDisabledCheck_title)
             .description(Messages.FormListRefUseAlwaysFlagDisabledCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
