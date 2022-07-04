@@ -16,6 +16,7 @@ import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.TYPE_DESCRIPTION;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.TYPE_DESCRIPTION__TYPES;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_DB_OBJECT;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -97,7 +98,8 @@ public final class DbObjectRefNonRefTypesCheck
         TypeDescription td = ((TypeDescription)object);
         boolean hasRef = false;
         boolean hasExl = false;
-        for (TypeItem typeItem : td.getTypes())
+        List<TypeItem> types = td.getTypes();
+        for (TypeItem typeItem : types)
         {
             String typeItemName = McoreUtil.getTypeName(typeItem);
             if (!Objects.isNull(typeItemName))
@@ -114,7 +116,8 @@ public final class DbObjectRefNonRefTypesCheck
 
                 if (hasRef && hasExl)
                 {
-                    resultAceptor.addIssue(Messages.DbObjectRefNonRefTypesCheck_Ref_and_other, TYPE_DESCRIPTION__TYPES);
+                    resultAceptor.addIssue(Messages.DbObjectRefNonRefTypesCheck_Ref_and_other, TYPE_DESCRIPTION__TYPES,
+                        types.indexOf(typeItem));
                     return;
                 }
             }

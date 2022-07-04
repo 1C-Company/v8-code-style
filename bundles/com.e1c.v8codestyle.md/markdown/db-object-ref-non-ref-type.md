@@ -11,3 +11,4 @@ For example: String, Number, Date, UUID, Boolean, and ValueStorage.
 
 ## See
 
+[Restrictions on the use of composite type attributes](https://support.1ci.com/hc/en-us/articles/360011120479-Restrictions-on-the-use-of-composite-type-attributes)

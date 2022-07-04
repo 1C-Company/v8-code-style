@@ -38,8 +38,8 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <catalogs>Catalog.Test</catalogs>
-  <catalogs>Catalog.Test2</catalogs>
-  <catalogs>Catalog.Test3</catalogs>
-  <catalogs>Catalog.Test4</catalogs>
+  <catalogs>Catalog.AnyRefTest</catalogs>
+  <catalogs>Catalog.OnlyOneTypeTest</catalogs>
+  <catalogs>Catalog.RefAndOtherTest</catalogs>
+  <catalogs>Catalog.RefTest</catalogs>
 </mdclass:Configuration>

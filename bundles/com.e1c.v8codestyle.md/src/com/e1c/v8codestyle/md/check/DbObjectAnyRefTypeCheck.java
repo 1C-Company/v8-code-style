@@ -16,6 +16,7 @@ import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.TYPE_DESCRIPTION;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.TYPE_DESCRIPTION__TYPES;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_DB_OBJECT;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -83,12 +84,14 @@ public final class DbObjectAnyRefTypeCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        for (TypeItem typeItem : ((TypeDescription)object).getTypes())
+        List<TypeItem> types = ((TypeDescription)object).getTypes();
+        for (TypeItem typeItem : types)
         {
             String typeItemName = McoreUtil.getTypeName(typeItem);
             if (!Objects.isNull(typeItemName) && REF_TYPES.contains(typeItemName))
             {
-                resultAceptor.addIssue(Messages.DbObjectAnyRefCheck_AnyRef, TYPE_DESCRIPTION__TYPES);
+                resultAceptor.addIssue(Messages.DbObjectAnyRefCheck_AnyRef, TYPE_DESCRIPTION__TYPES,
+                    types.indexOf(typeItem));
                 return;
             }
         }

@@ -22,7 +22,7 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
 import com._1c.g5.v8.dt.metadata.mdclass.CatalogAttribute;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.md.check.DbObjectRefNonRefTypesCheck;
 
 /**
@@ -31,12 +31,18 @@ import com.e1c.v8codestyle.md.check.DbObjectRefNonRefTypesCheck;
  * @author Artem Iliukhin
  *
  */
-public final class DbObjectAnyRefNonRefTypeCheckTest
-    extends CheckTestBase
+public final class DbObjectRefNonRefTypeCheckTest
+    extends SingleProjectReadOnlyCheckTestBase
 {
     private static final String CHECK_ID = "db-object-anyref-type"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "MdCompositeTypeCheck";
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
+    }
 
     /**
      * Test that attribute has anyRef type.
@@ -46,10 +52,10 @@ public final class DbObjectAnyRefNonRefTypeCheckTest
     @Test
     public void testAnyRef() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject object = getTopObjectByFqn("Catalog.Test", dtProject);
+        IBmObject object = getTopObjectByFqn("Catalog.AnyRefTest", dtProject);
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
@@ -61,10 +67,10 @@ public final class DbObjectAnyRefNonRefTypeCheckTest
     @Test
     public void testRef() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject object = getTopObjectByFqn("Catalog.Test4", dtProject);
+        IBmObject object = getTopObjectByFqn("Catalog.RefTest", dtProject);
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);

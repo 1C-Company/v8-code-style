@@ -7,14 +7,14 @@
     <listType typeId="9e93afe8-10e7-4ea4-9c89-62b681886b32" valueTypeId="008eee1b-0058-46fd-8006-a6cfd22a167a"/>
     <managerType typeId="431dc5dc-9e8c-4c77-8165-a465ef85f99a" valueTypeId="6d521dba-341e-44fa-97fe-0614bcf4e01f"/>
   </producedTypes>
-  <name>Test3</name>
+  <name>OnlyOneTypeTest</name>
   <synonym>
     <key>en</key>
-    <value>Test3</value>
+    <value>Only one type test</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.Test3.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.Test3.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.OnlyOneTypeTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.OnlyOneTypeTest.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>

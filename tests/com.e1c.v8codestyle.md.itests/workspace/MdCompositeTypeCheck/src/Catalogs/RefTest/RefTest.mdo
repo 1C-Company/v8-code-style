@@ -7,14 +7,14 @@
     <listType typeId="a3171af9-4e3e-4b5b-8dff-33d24518b9a7" valueTypeId="230755ed-076c-44df-a241-759eeafd8ec8"/>
     <managerType typeId="14668c89-b6c3-4541-b30e-f786ac6647e0" valueTypeId="94ce3d3c-0f3a-4c4a-8ba3-b6cd878c8c93"/>
   </producedTypes>
-  <name>Test4</name>
+  <name>RefTest</name>
   <synonym>
     <key>en</key>
-    <value>Test4</value>
+    <value>Ref test</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.Test4.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.Test4.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.RefTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.RefTest.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
@@ -37,7 +37,7 @@
       <value>Attribute</value>
     </synonym>
     <type>
-      <types>CatalogRef.Test</types>
+      <types>CatalogRef.AnyRefTest</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

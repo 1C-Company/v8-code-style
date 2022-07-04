@@ -9,3 +9,4 @@ Content of standard objects must be set explicitly.
 
 ## See
 
+[Restrictions on the use of composite type attributes](https://support.1ci.com/hc/en-us/articles/360011120479-Restrictions-on-the-use-of-composite-type-attributes)

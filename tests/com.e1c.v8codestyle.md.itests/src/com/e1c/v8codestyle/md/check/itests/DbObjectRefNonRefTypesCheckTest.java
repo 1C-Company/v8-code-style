@@ -22,7 +22,7 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
 import com._1c.g5.v8.dt.metadata.mdclass.CatalogAttribute;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.md.check.DbObjectRefNonRefTypesCheck;
 
 /**
@@ -32,11 +32,17 @@ import com.e1c.v8codestyle.md.check.DbObjectRefNonRefTypesCheck;
  *
  */
 public final class DbObjectRefNonRefTypesCheckTest
-    extends CheckTestBase
+    extends SingleProjectReadOnlyCheckTestBase
 {
     private static final String CHECK_ID = "db-object-ref-non-ref-type"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "MdCompositeTypeCheck";
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
+    }
 
     /**
      * Test that attribute has ref and other type.
@@ -46,10 +52,10 @@ public final class DbObjectRefNonRefTypesCheckTest
     @Test
     public void testRefAndOther() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject object = getTopObjectByFqn("Catalog.Test2", dtProject);
+        IBmObject object = getTopObjectByFqn("Catalog.RefAndOtherTest", dtProject);
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
@@ -61,10 +67,10 @@ public final class DbObjectRefNonRefTypesCheckTest
     @Test
     public void testOnlyOneType() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject object = getTopObjectByFqn("Catalog.Test3", dtProject);
+        IBmObject object = getTopObjectByFqn("Catalog.OnlyOneTypeTest", dtProject);
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
@@ -72,4 +78,5 @@ public final class DbObjectRefNonRefTypesCheckTest
             assertNull(marker);
         }
     }
+
 }
