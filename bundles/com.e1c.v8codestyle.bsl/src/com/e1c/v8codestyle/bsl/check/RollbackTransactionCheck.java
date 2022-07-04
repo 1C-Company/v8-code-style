@@ -115,7 +115,7 @@ public final class RollbackTransactionCheck
                     }
                     if (nextStatement instanceof TryExceptStatement)
                     {
-                        anlyseTryExcept(invocation, (TryExceptStatement)nextStatement, resultAceptor);
+                        analyzeTryExcept(invocation, (TryExceptStatement)nextStatement, resultAceptor);
                     }
 
                     break;
@@ -129,23 +129,23 @@ public final class RollbackTransactionCheck
         }
     }
 
-    private void anlyseTryExcept(Invocation beginTrans, TryExceptStatement tryExceptStatement,
+    private void analyzeTryExcept(Invocation beginTrans, TryExceptStatement tryExceptStatement,
         ResultAcceptor resultAceptor)
     {
         List<Statement> tryStatements = getAllStatement(tryExceptStatement.getTryStatements());
         if (!tryStatements.isEmpty())
         {
-            analyseTryPart(beginTrans, tryStatements, resultAceptor);
+            analyzeTryPart(beginTrans, tryStatements, resultAceptor);
         }
 
         List<Statement> exceptStatement = getAllStatement(tryExceptStatement.getExceptStatements());
         if (!exceptStatement.isEmpty())
         {
-            analyseExceptPart(exceptStatement, resultAceptor);
+            analyzeExceptPart(exceptStatement, resultAceptor);
         }
     }
 
-    private void analyseTryPart(Invocation beginTrans, List<Statement> tryStatements, ResultAcceptor resultAceptor)
+    private void analyzeTryPart(Invocation beginTrans, List<Statement> tryStatements, ResultAcceptor resultAceptor)
     {
         boolean invocThereIs = false;
         for (Statement statement : tryStatements)
@@ -165,7 +165,7 @@ public final class RollbackTransactionCheck
         }
     }
 
-    private void analyseExceptPart(List<Statement> exceptStatement, ResultAcceptor resultAceptor)
+    private void analyzeExceptPart(List<Statement> exceptStatement, ResultAcceptor resultAceptor)
     {
         boolean invocThereIs = false;
         for (Statement statement : exceptStatement)

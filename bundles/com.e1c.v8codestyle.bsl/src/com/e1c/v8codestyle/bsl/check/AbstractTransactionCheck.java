@@ -101,10 +101,10 @@ abstract class AbstractTransactionCheck
     }
 
     /**
-     * Gets the last statement.
+     * Gets the last statement or {@code null} if not found.
      *
      * @param statements the statements
-     * @return the last statement
+     * @return the last statement, can return {@code null}.
      */
     protected final Statement getLastStatement(List<Statement> statements)
     {
@@ -121,10 +121,10 @@ abstract class AbstractTransactionCheck
     }
 
     /**
-     * Gets the next statement.
+     * Gets the next statement or {@code null} if not found.
      *
      * @param statement the statement
-     * @return the next statement
+     * @return the next statement, can return {@code null}
      */
     protected final Statement getNextStatement(Statement statement)
     {
@@ -170,10 +170,10 @@ abstract class AbstractTransactionCheck
     }
 
     /**
-     * Gets the statement from invoc.
+     * Gets the statement from invoc or {@code null} if not found.
      *
      * @param invocation the invocation
-     * @return the statement from invoc
+     * @return the statement from invoc, can return {@code null}
      */
     protected final Statement getStatementFromInvoc(Invocation invocation)
     {
@@ -193,8 +193,7 @@ abstract class AbstractTransactionCheck
      */
     protected final boolean isCommitStatement(Statement statement)
     {
-        if (statement instanceof SimpleStatement && ((SimpleStatement)statement).getLeft() != null
-            && ((SimpleStatement)statement).getLeft() instanceof Invocation)
+        if (statement instanceof SimpleStatement && ((SimpleStatement)statement).getLeft() instanceof Invocation)
         {
             Invocation invocation = (Invocation)((SimpleStatement)statement).getLeft();
             String invocName = invocation.getMethodAccess().getName();
