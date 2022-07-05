@@ -95,7 +95,7 @@ public final class DbObjectRefNonRefTypesCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        TypeDescription td = ((TypeDescription)object);
+        TypeDescription td = (TypeDescription)object;
         boolean hasRef = false;
         boolean hasExl = false;
         List<TypeItem> types = td.getTypes();
