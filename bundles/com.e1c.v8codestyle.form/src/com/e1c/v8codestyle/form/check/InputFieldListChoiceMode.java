@@ -36,7 +36,6 @@ import com.e1c.v8codestyle.internal.form.CorePlugin;
 public final class InputFieldListChoiceMode
     extends BasicCheck
 {
-
     private static final String CHECK_ID = "input-field-list-choice-mode"; //$NON-NLS-1$
 
     @Override
@@ -48,7 +47,8 @@ public final class InputFieldListChoiceMode
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.InputFieldListChoiceMode_title)
+        builder.extension(new SkipBaseFormExtension())
+            .title(Messages.InputFieldListChoiceMode_title)
             .description(Messages.InputFieldListChoiceMode_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
@@ -71,5 +71,4 @@ public final class InputFieldListChoiceMode
                 INPUT_FIELD_EXT_INFO__LIST_CHOICE_MODE);
         }
     }
-
 }

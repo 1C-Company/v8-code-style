@@ -149,10 +149,9 @@ public abstract class AbstractDocCommentTypeCheck
     protected Optional<EObject> getLinkPartLastObject(LinkPart linkPart, IScopeProvider scopeProvider, EObject context)
     {
         // get object of last segment of the link to method/parameter,
-        // without final brackets "(See ModuleName.MethodName.)".
-        if (linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$
-            && linkPart.getPartsWithOffset().size() > 1
-            && (linkPart.getPartsWithOffset().get(linkPart.getPartsWithOffset().size() - 1)).getFirst().isEmpty())
+        // without final brackets "(See ModuleName.MethodName.)", or witn ending dot "See ModuleName.MethodName."
+        if (linkPart.getPartsWithOffset().size() > 1 && (linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$
+            || (linkPart.getPartsWithOffset().get(linkPart.getPartsWithOffset().size() - 1)).getFirst().isEmpty()))
         {
             return Optional.ofNullable(
                 linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 2, scopeProvider, context));

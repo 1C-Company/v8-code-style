@@ -35,6 +35,7 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
@@ -42,6 +43,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Descri
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ReturnSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Section;
+import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TextPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
@@ -90,8 +92,13 @@ public class BslDocCommentView
 
         IResourceLookup resourceLookup = UiPlugin.getDefault().getInjector().getInstance(IResourceLookup.class);
         IBslPreferences bslPreferences = UiPlugin.getDefault().getInjector().getInstance(IBslPreferences.class);
+        BslMultiLineCommentDocumentationProvider commentProvider =
+            UiPlugin.getDefault().getInjector().getInstance(BslMultiLineCommentDocumentationProvider.class);
+        EObjectAtOffsetHelper bslObjectAtOffsetHelper =
+            UiPlugin.getDefault().getInjector().getInstance(EObjectAtOffsetHelper.class);
 
-        listener = new BslDocCommentSelectionListener(viewer, resourceLookup, bslPreferences);
+        listener = new BslDocCommentSelectionListener(viewer, resourceLookup, bslPreferences, bslObjectAtOffsetHelper,
+            commentProvider);
 
         getSite().getWorkbenchWindow().getSelectionService().addPostSelectionListener(listener);
     }

@@ -351,6 +351,29 @@ public class CommonModuleStrictTypesTest
     }
 
     /**
+     * Test of {@link SimpleStatementTypeCheck} that the statement change type of existing object type.
+     * Should correctly intersects with {@code CommonModule} type
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testSimpleStatementTypeCheckCommonModule() throws Exception
+    {
+
+        String checkId = "statement-type-change";
+        String resourceName = "statement-type-change-common-module";
+
+        Module module = updateAndGetModule(resourceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+        assertEquals(1, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+    }
+
+    /**
      * Test of {@link FunctionCtorReturnSectionCheck} that the statement change type of existing object type.
      *
      * @throws Exception the exception
@@ -507,6 +530,49 @@ public class CommonModuleStrictTypesTest
         Marker marker = markers.get(0);
         assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
+    }
+
+    /**
+     * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
+     * with value list item type.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvocationParamIntersectionCheckValueListItemType() throws Exception
+    {
+
+        String checkId = "invocation-parameter-type-intersect";
+        String resouceName = "invocation-parameter-type-valuelist-item-type";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(1, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    /**
+     * Test of {@link InvocationParamIntersectionCheck} that invokable method parameter type intersects
+     * with value list item that has default undefined type.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvocationParamIntersectionCheckValueListUndefinedItemType() throws Exception
+    {
+
+        String checkId = "invocation-parameter-type-intersect";
+        String resouceName = "invocation-parameter-type-valuelist-undefined-item-type";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertTrue(markers.isEmpty());
     }
 
     private IDtProject getProject()
