@@ -23,15 +23,15 @@ import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
 import com._1c.g5.v8.dt.metadata.mdclass.CatalogAttribute;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
-import com.e1c.v8codestyle.md.check.DbObjectRefNonRefTypesCheck;
+import com.e1c.v8codestyle.md.check.DbObjectAnyRefTypeCheck;
 
 /**
- * Tests for {@link DbObjectRefNonRefTypesCheck} check
+ * Tests for {@link DbObjectAnyRefTypeCheck} check
  *
  * @author Artem Iliukhin
  *
  */
-public final class DbObjectRefNonRefTypeCheckTest
+public final class DbObjectAnyRefTypeCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
     private static final String CHECK_ID = "db-object-anyref-type"; //$NON-NLS-1$
@@ -59,7 +59,7 @@ public final class DbObjectRefNonRefTypeCheckTest
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
-            Marker marker = getFirstMarker(CHECK_ID, att, dtProject);
+            Marker marker = getFirstMarker(CHECK_ID, att.getType(), dtProject);
             assertNotNull(marker);
         }
     }
@@ -74,7 +74,7 @@ public final class DbObjectRefNonRefTypeCheckTest
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
-            Marker marker = getFirstMarker(CHECK_ID, att, dtProject);
+            Marker marker = getFirstMarker(CHECK_ID, att.getType(), dtProject);
             assertNull(marker);
         }
     }

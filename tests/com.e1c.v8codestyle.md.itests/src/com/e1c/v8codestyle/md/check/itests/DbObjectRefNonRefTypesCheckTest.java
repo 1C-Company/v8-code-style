@@ -59,7 +59,7 @@ public final class DbObjectRefNonRefTypesCheckTest
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
-            Marker marker = getFirstMarker(CHECK_ID, att, dtProject);
+            Marker marker = getFirstMarker(CHECK_ID, att.getType(), dtProject);
             assertNotNull(marker);
         }
     }
@@ -74,7 +74,7 @@ public final class DbObjectRefNonRefTypesCheckTest
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
-            Marker marker = getFirstMarker(CHECK_ID, att, dtProject);
+            Marker marker = getFirstMarker(CHECK_ID, att.getType(), dtProject);
             assertNull(marker);
         }
     }
