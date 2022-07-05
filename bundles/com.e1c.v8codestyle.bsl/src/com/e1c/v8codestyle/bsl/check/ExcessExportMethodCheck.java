@@ -59,8 +59,6 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
-import com.e1c.v8codestyle.check.StandardCheckExtension;
-import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
@@ -121,7 +119,7 @@ public final class ExcessExportMethodCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
             .disable()
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            //.extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD)
             .parameter(PARAMETER_EXCLUDE_REGION_LIST, String.class, DEFAULT_EXCLUDE_REGION_NAME_LIST,
