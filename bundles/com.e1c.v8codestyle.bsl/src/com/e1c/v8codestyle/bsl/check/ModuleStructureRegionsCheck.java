@@ -16,10 +16,7 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
@@ -30,17 +27,18 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
-import com._1c.g5.v8.dt.bsl.model.PreprocessorItemDeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.McorePackage;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
@@ -96,6 +94,7 @@ public class ModuleStructureRegionsCheck
     {
         Method method = (Method)object;
         IV8Project project = v8ProjectManager.getProject(method);
+        ScriptVariant scriptVariant = project.getScriptVariant();
 
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
         if (module == null)
@@ -104,15 +103,24 @@ public class ModuleStructureRegionsCheck
         }
 
         ModuleType moduleType = module.getModuleType();
-        Collection<String> names =
-            moduleStructureProvider.getModuleStructureRegions(moduleType, project.getScriptVariant());
+        Collection<String> regionNames = moduleStructureProvider.getModuleStructureRegions(moduleType, scriptVariant);
+        String regions = String.join(",", regionNames); //$NON-NLS-1$
 
         RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
         if (region == null)
         {
             resultAceptor.addIssue(
-                MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, method.getName()),
+                MessageFormat.format(
+                    Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
+                    method.getName(), regions),
                 McorePackage.Literals.NAMED_ELEMENT__NAME);
+            return;
+        }
+
+        Optional<RegionPreprocessor> parent = getParentRegion(region);
+        if (parent.isPresent())
+        {
+            region = parent.get();
         }
 
         PreprocessorItem preprocessorItem = region.getItemAfter();
@@ -125,73 +133,24 @@ public class ModuleStructureRegionsCheck
                 if (nodeMethod != null && nodeMethod.getTotalOffset() >= node.getTotalOffset())
                 {
                     resultAceptor.addIssue(
-                        MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, method.getName()),
+                        MessageFormat.format(
+                            Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
+                            method.getName(), regions),
                         McorePackage.Literals.NAMED_ELEMENT__NAME);
+                    return;
                 }
             }
         }
 
-        Optional<RegionPreprocessor> parent = getParentRegion(region);
-        if (parent.isPresent())
+        String namePublic = ModuleStructureSection.PUBLIC.getName(scriptVariant);
+        String nameInternal = ModuleStructureSection.INTERNAL.getName(scriptVariant);
+        String name = region.getName();
+        if ((namePublic.equals(name) || nameInternal.equals(name)) && !method.isExport())
         {
             resultAceptor.addIssue(
-                MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, names.toString()), module);
-        }
-
-        if (method.isExport())
-        {
-
-        }
-
-
-
-
-//        ModuleType moduleType = module.getModuleType();
-//        Collection<String> names =
-//            moduleStructureProvider.getModuleStructureRegions(moduleType, project.getScriptVariant());
-//
-//        Set<RegionPreprocessor> regions = module.getDeclareStatements()
-//            .stream()
-//            .filter(RegionPreprocessor.class::isInstance)
-//            .map(RegionPreprocessor.class::cast)
-//            .collect(Collectors.toSet());
-//
-//        List<String> allRegions = new ArrayList<>();
-//        collectAllRegions(regions, allRegions);
-//
-//        for (String name : names)
-//        {
-//            if (!allRegions.contains(name))
-//            {
-//                resultAceptor.addIssue(MessageFormat.format(Messages.ModuleStructureRegionCheck_error_message_0, name),
-//                    module);
-//            }
-//        }
-    }
-
-    private void collectAllRegions(Set<RegionPreprocessor> regions, List<String> allRegions)
-    {
-        if (regions.isEmpty())
-        {
+                MessageFormat.format(Messages.ModuleStructureRegionsCheck_Only_export_methods__0, name),
+                McorePackage.Literals.NAMED_ELEMENT__NAME);
             return;
-        }
-
-        for (RegionPreprocessor region : regions)
-        {
-            allRegions.add(region.getName());
-
-            PreprocessorItem itemAfter = region.getItemAfter();
-            if (itemAfter != null && itemAfter.hasDeclareStatements()
-                && itemAfter instanceof PreprocessorItemDeclareStatement)
-            {
-                Set<RegionPreprocessor> regs = ((PreprocessorItemDeclareStatement)itemAfter).getDeclareStatements()
-                    .stream()
-                    .filter(RegionPreprocessor.class::isInstance)
-                    .map(RegionPreprocessor.class::cast)
-                    .collect(Collectors.toSet());
-                collectAllRegions(regs, allRegions);
-            }
-
         }
 
     }

@@ -100,7 +100,7 @@ final class Messages
 
     public static String ModuleStructureTopRegionCheck_error_message;
 
-    public static String ModuleStructureRegionCheck_error_message_0;
+    public static String ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1;
 
     public static String ModuleStructureTopRegionCheck_title;
 
@@ -256,6 +256,8 @@ final class Messages
     public static String ModuleStructureRegionCheck_title;
 
     public static String ModuleStructureRegionCheck_description;
+
+    public static String ModuleStructureRegionsCheck_Only_export_methods__0;
 
     static
     {
