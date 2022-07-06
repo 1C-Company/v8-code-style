@@ -45,7 +45,7 @@ public class EventHandlerChangeExtension
     {
         OnModelFeatureChangeContextCollector collector = (IBmObject bmObject, EStructuralFeature feature,
             BmSubEvent bmEvent, CheckContextCollectingSession contextSession) -> {
-            if (isHandlerChanged(feature) || isItemRemoved(feature, bmEvent))
+            if (isHandlerChanged(feature) || isItemChanged(feature, bmEvent))
             {
                 IBmObject top = bmObject.bmIsTop() ? bmObject : bmObject.bmGetTopObject();
                 if (top instanceof Form)
@@ -68,13 +68,14 @@ public class EventHandlerChangeExtension
             || feature == FormPackage.Literals.EVENT_HANDLER_CONTAINER__HANDLERS;
     }
 
-    private boolean isItemRemoved(EStructuralFeature feature, BmSubEvent bmEvent)
+    private boolean isItemChanged(EStructuralFeature feature, BmSubEvent bmEvent)
     {
         if (feature == FormPackage.Literals.FORM_ITEM_CONTAINER__ITEMS)
         {
             for (Notification notification : ((BmChangeEvent)bmEvent).getNotifications(feature))
             {
-                if (notification.getEventType() == Notification.REMOVE)
+                if (notification.getEventType() == Notification.ADD
+                    || notification.getEventType() == Notification.REMOVE)
                 {
                     return true;
                 }
