@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="59c9709e-e413-4d49-90ae-c940e679a9ad">
+  <producedTypes>
+    <objectType typeId="ba300924-d79e-48ef-9c9f-8d8e317f5a1e" valueTypeId="fed698e2-8edd-4ced-9e2c-8ed61e0d74fd"/>
+    <refType typeId="842562c1-8a7f-449d-9848-36fdee150ca6" valueTypeId="d4c07ddf-3288-4684-b570-8a12792ffa07"/>
+    <selectionType typeId="4cf5787f-2013-4c4c-812e-73389c089481" valueTypeId="14554465-671d-410d-9da1-a3f48b9ab6bc"/>
+    <listType typeId="81d2c0ac-1be9-4fbb-965e-6f00e55bccb4" valueTypeId="482255b1-4cbe-4a32-b013-ebce2c6452f7"/>
+    <managerType typeId="1de1df15-01c8-4b47-a35b-a37a0b4122ac" valueTypeId="bdc6a6f8-1f4e-4a57-ac12-45b00a4d56b3"/>
+  </producedTypes>
+  <name>RefAndOtherTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Ref and other test</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.RefAndOtherTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.RefAndOtherTest.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="c8631c76-341a-457e-a5c9-89ebee687e86">
+    <name>Attribute</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute</value>
+    </synonym>
+    <type>
+      <types>CatalogRef.AnyRefTest</types>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>
