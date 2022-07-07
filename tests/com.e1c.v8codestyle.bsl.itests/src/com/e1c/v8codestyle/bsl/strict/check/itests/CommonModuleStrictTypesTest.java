@@ -351,6 +351,29 @@ public class CommonModuleStrictTypesTest
     }
 
     /**
+     * Test of {@link SimpleStatementTypeCheck} that the statement change type of existing object type.
+     * Should correctly intersects with {@code CommonModule} type
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testSimpleStatementTypeCheckCommonModule() throws Exception
+    {
+
+        String checkId = "statement-type-change";
+        String resourceName = "statement-type-change-common-module";
+
+        Module module = updateAndGetModule(resourceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+        assertEquals(1, markers.size());
+
+        Marker marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+    }
+
+    /**
      * Test of {@link FunctionCtorReturnSectionCheck} that the statement change type of existing object type.
      *
      * @throws Exception the exception

@@ -62,7 +62,6 @@ class ExternalDependenciesModule
         bind(IBslPreferences.class).toService();
         bind(IQualifiedNameConverter.class).toService();
         bind(IBslModuleContextDefService.class).toService();
-        bind(IQualifiedNameProvider.class).toService();
 
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
@@ -80,6 +79,7 @@ class ExternalDependenciesModule
             .toProvider(() -> rsp.get(BslMultiLineCommentDocumentationProvider.class));
         bind(IBslOwnerComputerService.class).toProvider(() -> rsp.get(IBslOwnerComputerService.class));
         bind(IScopeProvider.class).toProvider(() -> rsp.get(IScopeProvider.class));
+        bind(IQualifiedNameProvider.class).toProvider(() -> rsp.get(IQualifiedNameProvider.class));
 
         // Remove this after 2021.1
         bind(BslGrammarAccess.class).toProvider(() -> rsp.get(BslGrammarAccess.class));
