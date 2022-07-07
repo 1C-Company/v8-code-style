@@ -142,10 +142,10 @@ public class ModuleStructureRegionsCheck
             }
         }
 
-        String namePublic = ModuleStructureSection.PUBLIC.getName(scriptVariant);
-        String nameInternal = ModuleStructureSection.INTERNAL.getName(scriptVariant);
+        String publicnName = ModuleStructureSection.PUBLIC.getName(scriptVariant);
+        String internalName = ModuleStructureSection.INTERNAL.getName(scriptVariant);
         String name = region.getName();
-        if ((namePublic.equals(name) || nameInternal.equals(name)) && !method.isExport())
+        if ((publicnName.equals(name) || internalName.equals(name)) && !method.isExport())
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureRegionsCheck_Only_export_methods__0, name),
@@ -153,6 +153,14 @@ public class ModuleStructureRegionsCheck
             return;
         }
 
+        String eventHandlersName = ModuleStructureSection.EVENT_HANDLERS.getName(scriptVariant);
+        if (eventHandlersName.equals(name) && !method.isEvent())
+        {
+            resultAceptor.addIssue(
+                MessageFormat.format(Messages.ModuleStructureRegionsCheck_Only_event_methods__0, name),
+                McorePackage.Literals.NAMED_ELEMENT__NAME);
+            return;
+        }
     }
 
 }

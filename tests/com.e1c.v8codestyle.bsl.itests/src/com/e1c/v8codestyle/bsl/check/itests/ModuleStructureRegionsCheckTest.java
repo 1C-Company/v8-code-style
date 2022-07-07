@@ -15,14 +15,19 @@ package com.e1c.v8codestyle.bsl.check.itests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Test;
 
+import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.ModuleStructureRegionsCheck;
 
 /**
@@ -31,22 +36,35 @@ import com.e1c.v8codestyle.bsl.check.ModuleStructureRegionsCheck;
  * @author Artem Iliukhin
  */
 public class ModuleStructureRegionsCheckTest
-    extends AbstractSingleModuleTestBase
+    extends SingleProjectReadOnlyCheckTestBase
 {
 
     private static final String CHECK_ID = "module-structure-regions"; //$NON-NLS-1$
+    private static final String PROJECT_NAME = "StructureModule";
 
-    public ModuleStructureRegionsCheckTest()
+    private static final String FQN_COMMON_MODULE_NO_REGION = "CommonModule.CommonModuleNoRegion";
+    private static final String FQN_COMMON_MODULE_AFTER_REGION = "CommonModule.CommonModuleAfterRegion";
+    private static final String FQN_COMMON_MODULE_IN_REGION = "CommonModule.CommonModuleInRegion";
+    private static final String FQN_COMMON_MODULE_EXPORT_IN_REGION = "CommonModule.CommonModuleExportInRegion";
+
+    @Override
+    protected String getTestConfigurationName()
     {
-        super(ModuleStructureRegionsCheck.class);
+        return PROJECT_NAME;
     }
 
     @Test
     public void testNoRegion() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "module-structure-no-region.bsl");
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
 
-        Module module = getModule();
+        IBmObject mdObject = getTopObjectByFqn(FQN_COMMON_MODULE_NO_REGION, dtProject);
+        assertTrue(mdObject instanceof CommonModule);
+
+        Module module = ((CommonModule)mdObject).getModule();
+        assertNotNull(module);
+
         List<Method> methods = module.allMethods();
         assertFalse(methods.isEmpty());
 
@@ -60,9 +78,15 @@ public class ModuleStructureRegionsCheckTest
     @Test
     public void testMethodAfterRegion() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "module-structure-method-after-region.bsl");
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
 
-        Module module = getModule();
+        IBmObject mdObject = getTopObjectByFqn(FQN_COMMON_MODULE_AFTER_REGION, dtProject);
+        assertTrue(mdObject instanceof CommonModule);
+
+        Module module = ((CommonModule)mdObject).getModule();
+        assertNotNull(module);
+
         List<Method> methods = module.allMethods();
         assertFalse(methods.isEmpty());
 
@@ -76,9 +100,15 @@ public class ModuleStructureRegionsCheckTest
     @Test
     public void testMethodInRegion() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "module-structure-method-in-region.bsl");
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
 
-        Module module = getModule();
+        IBmObject mdObject = getTopObjectByFqn(FQN_COMMON_MODULE_IN_REGION, dtProject);
+        assertTrue(mdObject instanceof CommonModule);
+
+        Module module = ((CommonModule)mdObject).getModule();
+        assertNotNull(module);
+
         List<Method> methods = module.allMethods();
         assertFalse(methods.isEmpty());
 
@@ -92,9 +122,15 @@ public class ModuleStructureRegionsCheckTest
     @Test
     public void testExportMethodInRegion() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "module-structure-export-method-in-region.bsl");
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
 
-        Module module = getModule();
+        IBmObject mdObject = getTopObjectByFqn(FQN_COMMON_MODULE_EXPORT_IN_REGION, dtProject);
+        assertTrue(mdObject instanceof CommonModule);
+
+        Module module = ((CommonModule)mdObject).getModule();
+        assertNotNull(module);
+
         List<Method> methods = module.allMethods();
         assertFalse(methods.isEmpty());
 
@@ -104,4 +140,5 @@ public class ModuleStructureRegionsCheckTest
         Marker marker = getFirstMarker(CHECK_ID, method, getProject());
         assertNull(marker);
     }
+
 }

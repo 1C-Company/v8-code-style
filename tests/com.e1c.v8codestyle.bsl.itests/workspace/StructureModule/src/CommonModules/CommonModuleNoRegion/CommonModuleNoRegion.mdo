@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="53ce0678-7770-4cc4-b995-b043254e7dfa">
+  <name>CommonModuleNoRegion</name>
+  <synonym>
+    <key>en</key>
+    <value>Common module no region</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

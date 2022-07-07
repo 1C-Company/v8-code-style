@@ -257,6 +257,8 @@ final class Messages
 
     public static String ModuleStructureRegionCheck_description;
 
+    public static String ModuleStructureRegionsCheck_Only_event_methods__0;
+
     public static String ModuleStructureRegionsCheck_Only_export_methods__0;
 
     static
