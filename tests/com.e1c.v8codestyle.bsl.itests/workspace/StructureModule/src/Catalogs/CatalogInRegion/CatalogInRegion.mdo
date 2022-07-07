@@ -7,14 +7,14 @@
     <listType typeId="ddb0ce02-6c0e-43be-9b04-30f12017a170" valueTypeId="5169b33b-0544-4cc0-bf5f-15195f7d05f3"/>
     <managerType typeId="724de0d2-b37c-4e8c-8a0d-8b3f612121bb" valueTypeId="7aba68d3-e10a-45eb-b433-f057018e1b20"/>
   </producedTypes>
-  <name>Catalog</name>
+  <name>CatalogInRegion</name>
   <synonym>
     <key>en</key>
-    <value>Catalog</value>
+    <value>Catalog in region</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.Catalog.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.Catalog.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.CatalogInRegion.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CatalogInRegion.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>

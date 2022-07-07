@@ -42,5 +42,6 @@
   <commonModules>CommonModule.CommonModuleExportInRegion</commonModules>
   <commonModules>CommonModule.CommonModuleInRegion</commonModules>
   <commonModules>CommonModule.CommonModuleNoRegion</commonModules>
-  <catalogs>Catalog.Catalog</catalogs>
+  <catalogs>Catalog.CatalogInRegion</catalogs>
+  <catalogs>Catalog.CatalogOutOfRegion</catalogs>
 </mdclass:Configuration>
