@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
-import java.util.Collection;
 import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -37,32 +36,28 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
- * Checks that standard regions are defined in the module.
+ * Checks the region of event handlers for methods related only to handlers.
  *
  * @author Artem Iliukhin
  *
  */
-public class ModuleStructureRegionsCheck
+public class ModuleStructureEventRegionsCheck
     extends AbstractModuleStructureCheck
 {
-    private static final String CHECK_ID = "module-structure-regions"; //$NON-NLS-1$
-
-    private final IModuleStructureProvider moduleStructureProvider;
+    private static final String CHECK_ID = "module-structure-event-regions"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
     @Inject
-    public ModuleStructureRegionsCheck(IModuleStructureProvider moduleStructureProvider,
-        IV8ProjectManager v8ProjectManager)
+    public ModuleStructureEventRegionsCheck(IV8ProjectManager v8ProjectManager)
     {
         super();
-        this.moduleStructureProvider = moduleStructureProvider;
         this.v8ProjectManager = v8ProjectManager;
     }
 
@@ -75,8 +70,8 @@ public class ModuleStructureRegionsCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.ModuleStructureRegionCheck_title)
-            .description(Messages.ModuleStructureRegionCheck_description)
+        builder.title(Messages.ModuleStructureEventRegionsCheck_Title)
+            .description(Messages.ModuleStructureEventRegionsCheck_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
@@ -91,7 +86,9 @@ public class ModuleStructureRegionsCheck
         IProgressMonitor monitor)
     {
         Method method = (Method)object;
+
         IV8Project project = v8ProjectManager.getProject(method);
+
         ScriptVariant scriptVariant = project.getScriptVariant();
 
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
@@ -101,17 +98,14 @@ public class ModuleStructureRegionsCheck
         }
 
         ModuleType moduleType = module.getModuleType();
-        Collection<String> regionNames = moduleStructureProvider.getModuleStructureRegions(moduleType, scriptVariant);
-        String regions = String.join(",", regionNames); //$NON-NLS-1$
+        if (ModuleType.FORM_MODULE.equals(moduleType))
+        {
+            return;
+        }
 
         RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
         if (region == null)
         {
-            resultAceptor.addIssue(
-                MessageFormat.format(
-                    Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
-                    method.getName(), regions),
-                McorePackage.Literals.NAMED_ELEMENT__NAME);
             return;
         }
 
@@ -130,15 +124,27 @@ public class ModuleStructureRegionsCheck
                 ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
                 if (nodeMethod != null && nodeMethod.getTotalOffset() >= node.getTotalOffset())
                 {
-                    resultAceptor.addIssue(
-                        MessageFormat.format(
-                            Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
-                            method.getName(), regions),
-                        McorePackage.Literals.NAMED_ELEMENT__NAME);
+                    return;
                 }
             }
         }
 
+        String name = region.getName();
+        String eventHandlersName = ModuleStructureSection.EVENT_HANDLERS.getName(scriptVariant);
+        if (eventHandlersName.equals(name) && !method.isEvent())
+        {
+            resultAceptor.addIssue(
+                MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Only_event_methods__0, name),
+                McorePackage.Literals.NAMED_ELEMENT__NAME);
+            return;
+        }
+
+        if (!eventHandlersName.equals(name) && method.isEvent())
+        {
+            resultAceptor.addIssue(
+                MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1,
+                method.getName(), eventHandlersName), McorePackage.Literals.NAMED_ELEMENT__NAME);
+        }
     }
 
 }

@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
-import java.util.Collection;
 import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,8 +23,6 @@ import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -37,32 +34,29 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
+import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
- * Checks that standard regions are defined in the module.
+ * Checks the standard interface regions for the existence of non-export methods
+ * and the location of export methods outside the regions provided by the standard for export methods.
  *
  * @author Artem Iliukhin
  *
  */
-public class ModuleStructureRegionsCheck
+public class ModuleStructureInterfaceRegionsCheck
     extends AbstractModuleStructureCheck
 {
-    private static final String CHECK_ID = "module-structure-regions"; //$NON-NLS-1$
-
-    private final IModuleStructureProvider moduleStructureProvider;
+    private static final String CHECK_ID = "module-structure-interface-regions"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
     @Inject
-    public ModuleStructureRegionsCheck(IModuleStructureProvider moduleStructureProvider,
-        IV8ProjectManager v8ProjectManager)
+    public ModuleStructureInterfaceRegionsCheck(IV8ProjectManager v8ProjectManager)
     {
         super();
-        this.moduleStructureProvider = moduleStructureProvider;
         this.v8ProjectManager = v8ProjectManager;
     }
 
@@ -75,8 +69,8 @@ public class ModuleStructureRegionsCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.ModuleStructureRegionCheck_title)
-            .description(Messages.ModuleStructureRegionCheck_description)
+        builder.title(Messages.ModuleStructureInterfaceRegionsCheck_Title)
+            .description(Messages.ModuleStructureInterfaceRegionsCheck_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
@@ -91,27 +85,12 @@ public class ModuleStructureRegionsCheck
         IProgressMonitor monitor)
     {
         Method method = (Method)object;
+
         IV8Project project = v8ProjectManager.getProject(method);
         ScriptVariant scriptVariant = project.getScriptVariant();
-
-        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
-        if (module == null)
-        {
-            return;
-        }
-
-        ModuleType moduleType = module.getModuleType();
-        Collection<String> regionNames = moduleStructureProvider.getModuleStructureRegions(moduleType, scriptVariant);
-        String regions = String.join(",", regionNames); //$NON-NLS-1$
-
         RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
         if (region == null)
         {
-            resultAceptor.addIssue(
-                MessageFormat.format(
-                    Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
-                    method.getName(), regions),
-                McorePackage.Literals.NAMED_ELEMENT__NAME);
             return;
         }
 
@@ -130,15 +109,29 @@ public class ModuleStructureRegionsCheck
                 ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
                 if (nodeMethod != null && nodeMethod.getTotalOffset() >= node.getTotalOffset())
                 {
-                    resultAceptor.addIssue(
-                        MessageFormat.format(
-                            Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
-                            method.getName(), regions),
-                        McorePackage.Literals.NAMED_ELEMENT__NAME);
+                    return;
                 }
             }
         }
 
-    }
+        String publicnName = ModuleStructureSection.PUBLIC.getName(scriptVariant);
+        String internalName = ModuleStructureSection.INTERNAL.getName(scriptVariant);
+        String privateName = ModuleStructureSection.PRIVATE.getName(scriptVariant);
+        String regionName = region.getName();
+        if ((publicnName.equals(regionName) || internalName.equals(regionName)) && !method.isExport())
+        {
+            resultAceptor.addIssue(
+                MessageFormat.format(Messages.ModuleStructureInterfaceRegionsCheck_Only_export_methods__0, regionName),
+                McorePackage.Literals.NAMED_ELEMENT__NAME);
+            return;
+        }
 
+        if (method.isExport() && !(publicnName.equals(regionName) || internalName.equals(regionName) || privateName.equals(regionName)))
+        {
+            resultAceptor.addIssue(
+                MessageFormat.format(Messages.ModuleStructureInterfaceRegionsCheck_Export_method__0__in_regions,
+                    method.getName()),
+                McorePackage.Literals.NAMED_ELEMENT__NAME);
+        }
+    }
 }

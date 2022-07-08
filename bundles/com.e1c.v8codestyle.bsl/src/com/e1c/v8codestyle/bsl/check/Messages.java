@@ -96,6 +96,12 @@ final class Messages
 
     public static String ManagerModuleNamedSelfReferenceCheck_title;
 
+    public static String ModuleStructureInterfaceRegionsCheck_Description;
+
+    public static String ModuleStructureInterfaceRegionsCheck_Export_method__0__in_regions;
+
+    public static String ModuleStructureInterfaceRegionsCheck_Title;
+
     public static String ModuleStructureTopRegionCheck_description;
 
     public static String ModuleStructureTopRegionCheck_error_message;
@@ -257,9 +263,15 @@ final class Messages
 
     public static String ModuleStructureRegionCheck_description;
 
-    public static String ModuleStructureRegionsCheck_Only_event_methods__0;
+    public static String ModuleStructureEventRegionsCheck_Description;
 
-    public static String ModuleStructureRegionsCheck_Only_export_methods__0;
+    public static String ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1;
+
+    public static String ModuleStructureEventRegionsCheck_Only_event_methods__0;
+
+    public static String ModuleStructureEventRegionsCheck_Title;
+
+    public static String ModuleStructureInterfaceRegionsCheck_Only_export_methods__0;
 
     static
     {
