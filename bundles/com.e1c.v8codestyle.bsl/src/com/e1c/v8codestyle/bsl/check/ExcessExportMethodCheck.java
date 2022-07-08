@@ -138,7 +138,10 @@ public final class ExcessExportMethodCheck
         }
 
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
-        if (ModuleType.FORM_MODULE == module.getModuleType())
+        ModuleType moduleType = module.getModuleType();
+        if (ModuleType.FORM_MODULE == moduleType || ModuleType.COMMAND_MODULE == moduleType
+            || ModuleType.HTTP_SERVICE_MODULE == moduleType || ModuleType.INTEGRATION_SERVICE_MODULE == moduleType
+            || ModuleType.WEB_SERVICE_MODULE == moduleType)
         {
             return;
         }
@@ -158,7 +161,8 @@ public final class ExcessExportMethodCheck
                 Set.of(SearchScope.COMMON_MODULES, SearchScope.COMMON_FORMS, SearchScope.CONSTANTS,
                     SearchScope.CATALOGS, SearchScope.DOCUMENTS, SearchScope.DOCUMENT_JOURNALS, SearchScope.REPORTS,
                     SearchScope.INFORMATION_REGISTERS, SearchScope.ACCUMULATION_REGISTERS,
-                    SearchScope.CALCULATION_REGISTERS, SearchScope.BUSINESS_PROCESSES, SearchScope.TASKS),
+                    SearchScope.CALCULATION_REGISTERS, SearchScope.BUSINESS_PROCESSES, SearchScope.TASKS,
+                    SearchScope.EXCHANGE_PLANS, SearchScope.SETTINGS_STORAGES, SearchScope.CONFIGURATIONS),
                 Set.of(projectManager.getProject(method).getProject().getName()), monitor);
 
             if (refs.isEmpty())
