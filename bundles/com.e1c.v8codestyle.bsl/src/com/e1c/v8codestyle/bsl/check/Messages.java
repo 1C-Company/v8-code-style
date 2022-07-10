@@ -263,6 +263,14 @@ final class Messages
 
     public static String ModuleStructureRegionCheck_description;
 
+    public static String ModuleStructureEventFormRegionsCheck_Description;
+
+    public static String ModuleStructureEventFormRegionsCheck_Event_method__0__can_not_be_placed_in_the_region__1;
+
+    public static String ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1;
+
+    public static String ModuleStructureEventFormRegionsCheck_Title;
+
     public static String ModuleStructureEventRegionsCheck_Description;
 
     public static String ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1;
