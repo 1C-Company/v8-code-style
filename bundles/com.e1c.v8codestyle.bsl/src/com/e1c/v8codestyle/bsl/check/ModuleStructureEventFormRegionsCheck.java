@@ -34,6 +34,7 @@ import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
+import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
@@ -86,6 +87,10 @@ public class ModuleStructureEventFormRegionsCheck
 
     private static final Set<String> COMMAND_FORM_EVENTS = Set.of("Action"); //$NON-NLS-1$
 
+    private static final String PARAMETER_EXCLUDE_METHOD_NAME_PATTERN = "excludeModuleMethodNamePattern"; //$NON-NLS-1$
+
+    private static final String PATTERN_EXCLUDE = "^(?U)(Подключаемый|Attachable)_.*$"; //$NON-NLS-1$
+
     private final IV8ProjectManager v8ProjectManager;
 
     private final BslEventsService bslEventsService;
@@ -115,7 +120,9 @@ public class ModuleStructureEventFormRegionsCheck
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(METHOD);
+            .checkedObjectType(METHOD)
+            .parameter(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN, String.class, PATTERN_EXCLUDE,
+                Messages.ExportMethodInCommandFormModuleCheck_ExludeMethodNamePattern);
     }
 
     @Override
@@ -123,6 +130,12 @@ public class ModuleStructureEventFormRegionsCheck
         IProgressMonitor monitor)
     {
         Method method = (Method)object;
+
+        String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
+        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(method.getName(), excludeNamePattern))
+        {
+            return;
+        }
 
         IV8Project project = v8ProjectManager.getProject(method);
 
@@ -203,6 +216,11 @@ public class ModuleStructureEventFormRegionsCheck
 
         check(result, name, event, regionName, ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS, COMMAND_FORM_EVENTS,
             scriptVariant);
+    }
+
+    private boolean isExcludeName(String name, String excludeNamePattern)
+    {
+        return StringUtils.isNotEmpty(excludeNamePattern) && name.matches(excludeNamePattern);
     }
 
     private boolean check(ResultAcceptor resultAceptor, String methodName, Event event, String regionName,
