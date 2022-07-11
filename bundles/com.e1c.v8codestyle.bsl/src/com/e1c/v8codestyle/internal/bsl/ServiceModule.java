@@ -13,8 +13,6 @@
 package com.e1c.v8codestyle.internal.bsl;
 
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixProvider;
-import com.e1c.v8codestyle.bsl.qfix.external.XtextBslModuleFixProvider;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
@@ -31,9 +29,6 @@ public class ServiceModule
     protected void configure()
     {
         bind(IModuleStructureProvider.class).to(ModuleStructureProvider.class).in(Singleton.class);
-
-        // Remove this after 2022.1
-        bind(IXtextBslModuleFixProvider.class).to(XtextBslModuleFixProvider.class).in(Singleton.class);
     }
 
 }
