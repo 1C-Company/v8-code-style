@@ -60,6 +60,8 @@ final class Messages
 
     public static String RollbackTransactionCheck_Should_be_no_executable_code_between_exception_and_rollback;
 
+    public static String CommitTransactionCheck_Executable_code_between_begin_transaction_and_try;
+
     public static String CommitTransactionCheck_Transaction_contains_empty_except;
 
     public static String CommitTransactionCheck_Transactions_is_broken;

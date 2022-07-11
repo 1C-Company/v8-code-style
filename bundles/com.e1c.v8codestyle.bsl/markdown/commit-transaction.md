@@ -2,6 +2,7 @@
 
 Commit transaction must be in a try-catch, 
 there should be no executable code between commit transaction and exception, 
+there should be no executable code between begin transaction and try,
 there is no begin transaction for commit transaction, 
 there is no rollback transaction for begin transaction.
 
