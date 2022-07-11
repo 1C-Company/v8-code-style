@@ -68,6 +68,8 @@ final class Messages
 
     public static String CommitTransactionCheck_Transactions_is_broken_des;
 
+    public static String CommitTransactionCheck_Try_was_not_found_after_calling_begin;
+
     public static String CommonModuleNamedSelfReferenceCheck_description;
 
     public static String CommonModuleNamedSelfReferenceCheck_issue;

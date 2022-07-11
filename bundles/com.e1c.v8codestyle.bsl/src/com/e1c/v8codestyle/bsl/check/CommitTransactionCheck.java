@@ -22,6 +22,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
@@ -35,6 +36,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
  * there should be no executable code between commit transaction and exception,
  * there should be no executable code between begin transaction and try,
  * there is no begin transaction for commit transaction,
+ * the try operator was not found after calling begin transaction,
  * there is no rollback transaction for begin transaction.
  *
  * @author Artem Iliukhin
@@ -119,6 +121,20 @@ public final class CommitTransactionCheck
                     }
                     else
                     {
+                        if (nextStatement instanceof SimpleStatement
+                            && ((SimpleStatement)nextStatement).getLeft() instanceof Invocation)
+                        {
+                            String name =
+                                ((Invocation)((SimpleStatement)nextStatement).getLeft()).getMethodAccess().getName();
+                            if (COMMIT_TRANSACTION_RU.equals(name) || COMMIT_TRANSACTION.equals(name))
+                            {
+                                resultAceptor.addIssue(
+                                    Messages.CommitTransactionCheck_Try_was_not_found_after_calling_begin,
+                                    nextStatement);
+                                return;
+                            }
+                        }
+
                         resultAceptor.addIssue(
                             Messages.CommitTransactionCheck_Executable_code_between_begin_transaction_and_try,
                             nextStatement);

@@ -93,4 +93,15 @@ public class CommitTransactionCheckTest
         Marker marker = markers.get(0);
         assertEquals("There should be no executable code between begin transaction and try", marker.getMessage());
     }
+
+    @Test
+    public void testNotFoundTryAfterBegin() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "not-found-try-after-begin.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(2, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals("The try operator was not found after calling begin transaction", marker.getMessage());
+    }
 }
