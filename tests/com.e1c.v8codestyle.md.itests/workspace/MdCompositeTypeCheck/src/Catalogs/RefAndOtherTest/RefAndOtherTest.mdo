@@ -37,7 +37,7 @@
       <value>Attribute</value>
     </synonym>
     <type>
-      <types>CatalogRef.AnyRefTest</types>
+      <types>CatalogRef.OnlyOneTypeTest</types>
       <types>String</types>
       <stringQualifiers>
         <length>10</length>

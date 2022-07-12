@@ -37,7 +37,7 @@
       <value>Attribute</value>
     </synonym>
     <type>
-      <types>CatalogRef.OnlyOneTypeTest</types>
+      <types>CatalogRef.AnyRefTest</types>
     </type>
     <minValue xsi:type="core:UndefinedValue"/>
     <maxValue xsi:type="core:UndefinedValue"/>

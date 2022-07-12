@@ -36,7 +36,7 @@ public final class DbObjectAnyRefTypeCheckTest
 {
     private static final String CHECK_ID = "db-object-anyref-type"; //$NON-NLS-1$
 
-    private static final String PROJECT_NAME = "MdCompositeTypeCheck";
+    private static final String PROJECT_NAME = "MdAnyRefType";
 
     @Override
     protected String getTestConfigurationName()
