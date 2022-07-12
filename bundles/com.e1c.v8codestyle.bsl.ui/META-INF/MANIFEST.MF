@@ -51,5 +51,4 @@ Import-Package: com._1c.g5.ides.ui.texteditor.xtext.embedded;version="[5.0.0,6.0
  com.e1c.g5.v8.dt.check.qfix.components;version="[1.0.0,2.0.0)",
  com.e1c.g5.v8.dt.check.settings;version="[3.0.0,4.0.0)",
  com.e1c.v8codestyle.bsl;version="[0.3.0,0.4.0)",
- com.e1c.v8codestyle.bsl.qfix.external;version="[0.3.0,0.4.0)",
  com.e1c.v8codestyle.bsl.strict;version="[0.3.0,0.4.0)"

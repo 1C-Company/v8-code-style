@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0c29af1c-4fa9-48fb-a46c-8688b4169c7a">
+  <name>MdCompositeTypeCheck</name>
+  <synonym>
+    <key>en</key>
+    <value>Md composite type check</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="d0b6458d-9d50-4f2a-bf90-66dab91011e5"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="c01b49fd-f0d1-441f-aa0e-ee0929436b81"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="d72e9da5-aa05-4550-b44f-0d8235dd793d"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="3790a1d8-7004-4c89-88aa-f8cdb3ba9b3d"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="193eb4eb-1ed2-4b93-a102-be4731f20736"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="643bd68e-7062-41a1-9bd9-7881770ac712"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="4b5541da-4095-4c9a-9e60-695af9888141"/>
+  <configurationExtensionCompatibilityMode>8.3.21</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.21</compatibilityMode>
+  <languages uuid="f144ba75-7899-4b85-a36f-8adf2f9e8666">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <catalogs>Catalog.AnyRefTest</catalogs>
+  <catalogs>Catalog.OnlyOneTypeTest</catalogs>
+  <catalogs>Catalog.RefAndOtherTest</catalogs>
+  <catalogs>Catalog.RefTest</catalogs>
+</mdclass:Configuration>

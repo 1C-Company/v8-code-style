@@ -21,7 +21,6 @@ import org.eclipse.xtext.resource.IResourceDescription;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IGlobalScopeProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
-import org.eclipse.xtext.ui.editor.IURIEditorOpener;
 
 import com._1c.g5.v8.dt.bsl.bm.ui.refactoring.BslBmRefactoringResourceSetProvider;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
@@ -32,8 +31,6 @@ import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
-import com._1c.g5.v8.dt.bsl.scoping.BslGlobalScopeProvider;
-import com._1c.g5.v8.dt.bsl.services.BslGrammarAccess;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
 import com._1c.g5.v8.dt.core.filesystem.IProjectFileSystemSupportProvider;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
@@ -86,10 +83,6 @@ class ExternalDependenciesModule
         bind(IBslOwnerComputerService.class).toProvider(() -> rsp.get(IBslOwnerComputerService.class));
         bind(IScopeProvider.class).toProvider(() -> rsp.get(IScopeProvider.class));
         bind(IQualifiedNameProvider.class).toProvider(() -> rsp.get(IQualifiedNameProvider.class));
-
-        // Remove this after 2021.1
-        bind(BslGrammarAccess.class).toProvider(() -> rsp.get(BslGrammarAccess.class));
-        bind(IURIEditorOpener.class).toProvider(() -> rsp.get(IURIEditorOpener.class));
 
         bind(IProjectFileSystemSupportProvider.class).toService();
         bind(IGlobalScopeProvider.class).toProvider(() -> rsp
