@@ -27,7 +27,8 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 
 /**
- * The try operator was not found after calling begin transaction.
+ * The try operator was not found after calling begin transaction,
+ * there should be no executable code between begin transaction and try,
  *
  * @author Artem Iliukhin
  */
@@ -77,20 +78,18 @@ public final class BeginTransactionCheck
             }
 
             Statement statement = getStatementFromInvoc(inv);
-            boolean tryWasFound = false;
-            while (statement != null)
+            if (statement != null)
             {
                 statement = getNextStatement(statement);
-                if (statement instanceof TryExceptStatement)
+                if (statement == null)
                 {
-                    tryWasFound = true;
-                    break;
+                    resultAceptor.addIssue(Messages.BeginTransactionCheck_Try_was_not_found_after_calling_begin, inv);
                 }
-            }
-
-            if (!tryWasFound)
-            {
-                resultAceptor.addIssue(Messages.BeginTransactionCheck_Try_was_not_found_after_calling_begin, inv);
+                else if (!(statement instanceof TryExceptStatement))
+                {
+                    resultAceptor.addIssue(
+                        Messages.CommitTransactionCheck_Executable_code_between_begin_transaction_and_try, inv);
+                }
             }
         }
     }

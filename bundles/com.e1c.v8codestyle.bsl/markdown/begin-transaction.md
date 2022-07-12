@@ -1,23 +1,13 @@
 # The scheme of working with transactions is broken
 
-Commit transaction must be in a try-catch, 
-there should be no executable code between commit transaction and exception, 
-there is no begin transaction for commit transaction, 
-there is no rollback transaction for begin transaction.
+There should be no executable code between begin transaction and try,
+the try operator was not found after calling begin transaction
 
 ## Noncompliant Code Example
 
 ```bsl
     BeginTransaction();
     CommitTransaction();
-    Try
-    // ...
-    Except
-    // ...
-    RollbackTransaction();
-    // ...
-    Raise;
-    EndTry;
 ```
 
 ## Compliant Solution

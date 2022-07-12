@@ -49,4 +49,15 @@ public class BeginTransactionCheckTest
         Marker marker = markers.get(0);
         assertEquals("The try operator was not found after calling begin transaction", marker.getMessage());
     }
+
+    @Test
+    public void testShouldBeNoExecutableCodebetweenBeginAndTry() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "should-be-no-executable-code-between-begin-and-try.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals("There should be no executable code between begin transaction and try", marker.getMessage());
+    }
 }

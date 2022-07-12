@@ -33,7 +33,6 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 /**
  * Commit transaction must be in a try-catch,
  * there should be no executable code between commit transaction and exception,
- * there should be no executable code between begin transaction and try,
  * there is no begin transaction for commit transaction,
  * there is no rollback transaction for begin transaction.
  *
@@ -116,12 +115,6 @@ public final class CommitTransactionCheck
                     if (nextStatement instanceof TryExceptStatement)
                     {
                         anlyseTryExcept(invocation, (TryExceptStatement)nextStatement, resultAceptor);
-                    }
-                    else
-                    {
-                        resultAceptor.addIssue(
-                            Messages.CommitTransactionCheck_Executable_code_between_begin_transaction_and_try,
-                            nextStatement);
                     }
 
                     break;
