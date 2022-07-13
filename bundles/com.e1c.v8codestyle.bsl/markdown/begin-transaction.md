@@ -1,4 +1,4 @@
-# The scheme of working with transactions is broken
+# There is no Try-Exception block after the start of the transaction
 
 There should be no executable code between begin transaction and try,
 the try operator was not found after calling begin transaction

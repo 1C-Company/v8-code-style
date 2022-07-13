@@ -88,7 +88,7 @@ public final class BeginTransactionCheck
                 else if (!(statement instanceof TryExceptStatement))
                 {
                     resultAceptor.addIssue(
-                        Messages.CommitTransactionCheck_Executable_code_between_begin_transaction_and_try, inv);
+                        Messages.BeginTransactionCheck_Executable_code_between_begin_transaction_and_try, inv);
                 }
             }
         }
