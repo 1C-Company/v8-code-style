@@ -82,4 +82,5 @@ public class CommitTransactionCheckTest
         assertEquals("There should be no executable code between commit transaction and exception",
             marker.getMessage());
     }
+
 }
