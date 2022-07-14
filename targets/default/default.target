@@ -47,7 +47,6 @@
 <unit id="com._1c.g5.v8.dt.xtext.runtime.feature.group" version="0.0.0"/>
 <unit id="com._1c.g5.v8.dt.xtext.ui.feature.group" version="0.0.0"/>
 <unit id="com._1c.g5.wiring.feature.feature.group" version="0.0.0"/>
-<unit id="com.e1c.g5.v8.dt.javadocs" version="0.0.0"/>
 <unit id="com.company1c.link.agent.core.feature.feature.group" version="0.0.0"/>
 <unit id="com.company1c.link.agent.dependencies.feature.feature.group" version="0.0.0"/>
 <unit id="com.company1c.link.ide.edt.feature.feature.group" version="0.0.0"/>
@@ -55,10 +54,6 @@
 <unit id="com.e1c.g5.v8.dt.mw.feature.feature.group" version="0.0.0"/>
 <unit id="com.make.chromium.cef.feature.feature.group" version="0.0.0"/>
 <unit id="de.itemis.xtext.antlr.feature.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.babel.nls_eclipse_ru.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.babel.nls_technology.egit_ru.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.babel.nls_technology.jgit_ru.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.babel.nls_webtools_ru.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.draw2d.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.e4.rcp.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.ecf.core.feature.feature.group" version="0.0.0"/>
@@ -122,6 +117,7 @@
 <!-- LIBS -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <unit id="org.mockito" version="0.0.0"/>
+<unit id="org.objenesis" version="0.0.0"/>
 <unit id="net.bytebuddy.byte-buddy" version="0.0.0"/>
 <unit id="net.bytebuddy.byte-buddy-agent" version="0.0.0"/>
 <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository/"/>

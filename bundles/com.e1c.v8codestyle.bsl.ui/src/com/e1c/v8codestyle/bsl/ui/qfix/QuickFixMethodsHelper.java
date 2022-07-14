@@ -28,8 +28,8 @@ import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.ui.contentassist.BslProposalProvider;
 import com._1c.g5.v8.dt.bsl.ui.quickfix.BslQuickFixUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixModel;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextInteractiveBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextInteractiveBslModuleFixModel;
 import com.google.common.base.Strings;
 
 /**
