@@ -1,7 +1,7 @@
 # Проверки метаданных 1С
 
 
-Общее количество проверок: 16
+Общее количество проверок: 18
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -14,8 +14,10 @@
 | [common-module-name-server-call-cached](../../bundles/com.e1c.v8codestyle.md/markdown/ru/common-module-name-server-call-cached.md) | Общий модуль с повторно используемыми значениями |
 | [common-module-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/common-module-type.md) | Общий модуль имеет некорректный тип |
 | [configuration-data-lock-mode](../../bundles/com.e1c.v8codestyle.md/markdown/ru/configuration-data-lock-mode.md) | Режим блокировки данных конфигурации |
+| [db-object-anyref-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/db-object-anyref-type.md) | Реквизиты составного типа, такие как ЛюбаяСсылка и аналогичные |
+| [db-object-ref-non-ref-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/db-object-ref-non-ref-type.md) | Реквизиты составного типа |
 | [md-list-object-presentation](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-list-object-presentation.md) | Не заполнено ни представление объекта, ни представление списка |
-| [md-standard-attribure-synonym-empty](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-standard-attribure-synonym-empty.md) | Не задан синоним стандартного реквизита "Родитель" или "Владелец". |
+| [md-standard-attribute-synonym-empty](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-standard-attribute-synonym-empty.md) | Не задан синоним стандартного реквизита "Родитель" или "Владелец". |
 | [mdo-name-length](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-name-length.md) | Длина имени объекта метаданных |
 | [mdo-scheduled-job-description](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-scheduled-job-description.md) | Задано наименование предопределенного регламентного задания |
 | [scheduled-job-periodicity-too-short](../../bundles/com.e1c.v8codestyle.md/markdown/ru/scheduled-job-periodicity-too-short.md) | Периодичность выполнения регламентного задания меньше одной минуты. |
