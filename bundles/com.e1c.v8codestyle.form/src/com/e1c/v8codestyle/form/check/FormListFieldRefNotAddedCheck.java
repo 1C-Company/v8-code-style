@@ -199,7 +199,7 @@ public class FormListFieldRefNotAddedCheck
         private static boolean checkIfTable(EList<FormItem> formItems)
         {
 
-            return !formItems.stream().filter(Table.class::isInstance).collect(Collectors.toList()).isEmpty();
+            return !formItems.stream().noneMatch(Table.class::isInstance);
         }
     }
 }
