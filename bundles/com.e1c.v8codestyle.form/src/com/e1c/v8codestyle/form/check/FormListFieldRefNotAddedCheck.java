@@ -93,49 +93,14 @@ public class FormListFieldRefNotAddedCheck
 
             Table table = (Table)object;
             if (checkTable(table) && !pathCheck(table.getItems()))
-                {
-                    EIssue issue = new EIssue(
-                        Messages.FormListFieldRefNotAddedCheck_The_Ref_field_is_not_added_to_dynamic_list, null);
-                    resultAcceptor.addIssue(table, issue);
-                }
+            {
+                EIssue issue =
+                    new EIssue(Messages.FormListFieldRefNotAddedCheck_The_Ref_field_is_not_added_to_dynamic_list, null);
+                resultAcceptor.addIssue(table, issue);
+            }
 
         }
 
-    }
-
-    private static final class ObjectCollectionFeatureChangeContextCollector
-        implements OnModelFeatureChangeContextCollector
-    {
-        @Override
-        public void collectContextOnFeatureChange(IBmObject object, EStructuralFeature feature, BmSubEvent bmEvent,
-            CheckContextCollectingSession contextSession)
-        {
-            Table table = null;
-            if (object instanceof Form)
-            {
-               table = (Table)object.eContents().stream().filter(Table.class::isInstance).findAny().orElse(null);
-            }
-            if (object instanceof Table)
-            {
-                table = (Table)object;
-            }
-            if (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo
-                && checkIfTable(((Form)((FormGroup)object).bmGetTopObject()).getItems()))
-            {
-                table = (Table)((Form)((FormGroup)object).bmGetTopObject()).getItems().stream().filter(Table.class::isInstance).collect(Collectors.toList()).get(0);
-            }
-
-            if (checkTable(table))
-            {
-                contextSession.addModelCheck(table);
-            }
-        }
-
-        private static boolean checkIfTable(EList<FormItem> formItems)
-        {
-
-            return !formItems.stream().filter(Table.class::isInstance).collect(Collectors.toList()).isEmpty();
-        }
     }
 
     private static boolean pathCheck(EList<FormItem> items)
@@ -173,7 +138,7 @@ public class FormListFieldRefNotAddedCheck
         }
 
         String lastSegment = segments.get(segments.size() - 1);
-        return (lastSegment.equals(REF_ABSTRACT_DATA_PATH.get(0)) || lastSegment.equals(REF_ABSTRACT_DATA_PATH.get(1)));
+        return lastSegment.equals(REF_ABSTRACT_DATA_PATH.get(0)) || lastSegment.equals(REF_ABSTRACT_DATA_PATH.get(1));
     }
 
     private static boolean checkTable(Table table)
@@ -197,5 +162,44 @@ public class FormListFieldRefNotAddedCheck
             }
         }
         return false;
+    }
+
+    private static final class ObjectCollectionFeatureChangeContextCollector
+        implements OnModelFeatureChangeContextCollector
+    {
+        @Override
+        public void collectContextOnFeatureChange(IBmObject object, EStructuralFeature feature, BmSubEvent bmEvent,
+            CheckContextCollectingSession contextSession)
+        {
+            Table table = null;
+            if (object instanceof Form)
+            {
+                table = (Table)object.eContents().stream().filter(Table.class::isInstance).findAny().orElse(null);
+            }
+            if (object instanceof Table)
+            {
+                table = (Table)object;
+            }
+            if (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo
+                && checkIfTable(((Form)((FormGroup)object).bmGetTopObject()).getItems()))
+            {
+                table = (Table)((Form)((FormGroup)object).bmGetTopObject()).getItems()
+                    .stream()
+                    .filter(Table.class::isInstance)
+                    .collect(Collectors.toList())
+                    .get(0);
+            }
+
+            if (checkTable(table))
+            {
+                contextSession.addModelCheck(table);
+            }
+        }
+
+        private static boolean checkIfTable(EList<FormItem> formItems)
+        {
+
+            return !formItems.stream().filter(Table.class::isInstance).collect(Collectors.toList()).isEmpty();
+        }
     }
 }
