@@ -40,7 +40,7 @@ public class ModuleStructureInterfaceRegionsCheckTest
 {
 
     private static final String CHECK_ID = "module-structure-interface-regions"; //$NON-NLS-1$
-    private static final String PROJECT_NAME = "StructureModule";
+    private static final String PROJECT_NAME = "ModuleStructureInterfaceRegionsCheck";
 
     private static final String FQN_COMMON_MODULE_IN_REGION = "CommonModule.CommonModuleInRegion";
     private static final String FQN_COMMON_MODULE_EXPORT_IN_REGION = "CommonModule.CommonModuleExportInRegion";

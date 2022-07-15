@@ -38,7 +38,7 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <catalogs>Catalog.CatalogInRegion</catalogs>
-  <catalogs>Catalog.CatalogInRegionWrongMethod</catalogs>
-  <catalogs>Catalog.CatalogInWrongRegion</catalogs>
+  <commonModules>CommonModule.CommonModuleExportInRegion</commonModules>
+  <commonModules>CommonModule.CommonModuleInNonInterfaceRegion</commonModules>
+  <commonModules>CommonModule.CommonModuleInRegion</commonModules>
 </mdclass:Configuration>
