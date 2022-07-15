@@ -15,12 +15,9 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -37,8 +34,14 @@ import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.form.model.DecorationExtInfo;
+import com._1c.g5.v8.dt.form.model.EventHandlerContainer;
+import com._1c.g5.v8.dt.form.model.Form;
+import com._1c.g5.v8.dt.form.model.FormCommandHandlerContainer;
+import com._1c.g5.v8.dt.form.model.FormField;
+import com._1c.g5.v8.dt.form.model.GroupExtInfo;
+import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
-import com._1c.g5.v8.dt.mcore.Event;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -60,32 +63,8 @@ import com.google.inject.Inject;
 public class ModuleStructureEventFormRegionsCheck
     extends AbstractModuleStructureCheck
 {
-    private static final String CHOICE_PROCESSING = "ChoiceProcessing"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "module-structure-form-event-regions"; //$NON-NLS-1$
-
-    private static final Set<String> COMMON_FORM_EVENTS =
-        Set.of("OnCreateAtServer", "OnOpen", "OnReopen", "BeforeClose", "OnClose", CHOICE_PROCESSING, //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
-            "ActivationProcessing", "NewWriteProcessing", "FillCheckProcessingAtServer", "OnSaveDataInSettingsAtServer", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-            "OnLoadDataFromSettingsAtServer", "ExternalEvent", "NotificationProcessing", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-            "BeforeLoadDataFromSettingsAtServer", "URLProcessing", "NavigationProcessing", "OnChangeDisplaySettings", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-            "CollaborationSystemUsersAutoComplete", "CollaborationSystemUsersChoiceFormGetProcessing", //$NON-NLS-1$//$NON-NLS-2$
-            "BeforeReopenFromOtherServer", //$NON-NLS-1$
-            "OnReopenFromOtherServer", "OnMainServerAvailabilityChange", "URLListGetProcessing", "URLGetProcessing", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
-            "AddInCrashEvent", "OnReadAtServer", "AfterWriteAtServer", "AfterWrite", "BeforeWriteAtServer", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
-            "OnWriteAtServer", "ValueChoice", "BeforeWrite"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-
-    private static final Set<String> HEADER_FORM_EVENTS =
-        Set.of("OnChange", "AutoComplete", CHOICE_PROCESSING, "Clearing", "Creating", "EditTextChange", "Opening", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-            "StartChoice", "StartListChoice", "TextEditEnd", "Tuning"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-
-    private static final Set<String> TABLE_ITEMS_FORM_EVENTS =
-        Set.of("AfterDeleteRow", "BeforeAddRow", "BeforeCollapse", "BeforeDeleteRow", "BeforeEditEnd", "BeforeExpand", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-            "BeforeRowChange", CHOICE_PROCESSING, "Drag", "DragCheck", "DragEnd", "DragStart", "NewWriteProcessing", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-            "OnActivateCell", "OnActivateField", "OnActivateRow", "OnChange", "OnCurrentParentChange", "OnEditEnd", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-            "OnStartEdit", "RefreshRequestProcessing", "Selection", "ValueChoice"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-
-    private static final Set<String> COMMAND_FORM_EVENTS = Set.of("Action"); //$NON-NLS-1$
 
     private static final String PARAMETER_EXCLUDE_METHOD_NAME_PATTERN = "excludeModuleMethodNamePattern"; //$NON-NLS-1$
 
@@ -122,7 +101,7 @@ public class ModuleStructureEventFormRegionsCheck
             .module()
             .checkedObjectType(METHOD)
             .parameter(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN, String.class, PATTERN_EXCLUDE,
-                Messages.ExportMethodInCommandFormModuleCheck_ExludeMethodNamePattern);
+                Messages.ModuleStructureEventFormRegionsCheck_Excluded_method_names);
     }
 
     @Override
@@ -130,12 +109,6 @@ public class ModuleStructureEventFormRegionsCheck
         IProgressMonitor monitor)
     {
         Method method = (Method)object;
-
-        String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
-        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(method.getName(), excludeNamePattern))
-        {
-            return;
-        }
 
         IV8Project project = v8ProjectManager.getProject(method);
 
@@ -179,92 +152,169 @@ public class ModuleStructureEventFormRegionsCheck
             }
         }
 
-        Map<CaseInsensitiveString, Event> eventHandlers = new HashMap<>();
-        for (Entry<CaseInsensitiveString, List<EObject>> entry : bslEventsService.getEventHandlers(module).entrySet())
+        Map<CaseInsensitiveString, List<EObject>> eventHandlers = bslEventsService.getEventHandlersContainer(module);
+
+        String regionName = region.getName();
+        String name = method.getName();
+        CaseInsensitiveString methodName = new CaseInsensitiveString(name);
+
+        List<EObject> containers = eventHandlers.get(methodName);
+
+        String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
+        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(method.getName(), excludeNamePattern))
         {
-            for (EObject event : entry.getValue())
+            return;
+        }
+
+        if (containers == null)
+        {
+            addIssueCanNotBeHear(result, name, regionName);
+            return;
+        }
+
+        for (EObject obj : containers)
+        {
+            if (obj instanceof FormCommandHandlerContainer)
             {
-                if (event instanceof Event)
+                //command
+                FormCommandHandlerContainer command =
+                    EcoreUtil2.getContainerOfType(obj, FormCommandHandlerContainer.class);
+                if (command != null)
                 {
-                    eventHandlers.put(entry.getKey(), (Event)event);
+                    if (isNotCommandRegion(regionName, scriptVariant))
+                    {
+                        addIssueCanNotBeHear(result, name, regionName);
+                        return;
+                    }
+
+                    String defaultRegionName =
+                        ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
+                    if (!defaultRegionName.equals(regionName))
+                    {
+                        addIssueShouldBeHear(result, name, defaultRegionName);
+                    }
+                    return;
+                }
+            }
+
+            if (!(obj instanceof EventHandlerContainer))
+            {
+                return;
+            }
+
+            EventHandlerContainer container = (EventHandlerContainer)obj;
+
+            //table
+            Table table = EcoreUtil2.getContainerOfType(container, Table.class);
+            if (table != null)
+            {
+                if (isNotTableRegion(scriptVariant, regionName))
+                {
+                    addIssueCanNotBeHear(result, name, regionName);
+                    return;
+                }
+
+                String tableItemsName = ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
+                String defaultRegionName = String.join("", List.of(tableItemsName, table.getName())); //$NON-NLS-1$
+                if (!defaultRegionName.equals(regionName))
+                {
+                    addIssueShouldBeHear(result, name, defaultRegionName);
+                }
+                return;
+            }
+
+            //form header
+            FormField field = EcoreUtil2.getContainerOfType(container, FormField.class);
+            DecorationExtInfo decoration = null;
+            if (field == null)
+            {
+                decoration = EcoreUtil2.getContainerOfType(container, DecorationExtInfo.class);
+            }
+
+            GroupExtInfo group = null;
+            if (decoration == null)
+            {
+                group = EcoreUtil2.getContainerOfType(container, GroupExtInfo.class);
+            }
+
+            if (field != null || decoration != null || group != null)
+            {
+                if (isNotFormHeaderRegion(regionName, scriptVariant))
+                {
+                    addIssueCanNotBeHear(result, name, regionName);
+                    return;
+                }
+
+                String defaultRegionName =
+                    ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
+                if (!defaultRegionName.equals(regionName))
+                {
+                    addIssueShouldBeHear(result, name, defaultRegionName);
+                }
+                return;
+            }
+
+            //form event
+            Form form = EcoreUtil2.getContainerOfType(container, Form.class);
+            if (form != null)
+            {
+                if (isNotFormRegion(regionName, scriptVariant))
+                {
+                    addIssueCanNotBeHear(result, name, regionName);
+                    return;
+                }
+
+                String defaultRegionName = ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant);
+                if (!defaultRegionName.equals(regionName))
+                {
+                    addIssueShouldBeHear(result, name, defaultRegionName);
                 }
             }
         }
+    }
 
-        String name = method.getName();
-        CaseInsensitiveString methodName = new CaseInsensitiveString(name);
-        Event event = eventHandlers.get(methodName);
-        String regionName = region.getName();
+    private void addIssueShouldBeHear(ResultAcceptor result, String methodName, String defaultRegionName)
+    {
+        result.addIssue(MessageFormat.format(
+            Messages.ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1,
+            methodName, defaultRegionName), McorePackage.Literals.NAMED_ELEMENT__NAME);
+    }
 
-        if (!check(result, name, event, regionName, ModuleStructureSection.FORM_EVENT_HANDLERS, COMMON_FORM_EVENTS,
-            scriptVariant))
-        {
-            return;
-        }
+    private void addIssueCanNotBeHear(ResultAcceptor result, String methodName, String regionName)
+    {
+        result.addIssue(MessageFormat.format(
+            Messages.ModuleStructureEventFormRegionsCheck_Event_method__0__can_not_be_placed_in_the_region__1,
+            methodName, regionName), McorePackage.Literals.NAMED_ELEMENT__NAME);
+    }
 
-        if (!check(result, name, event, regionName, ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS,
-            HEADER_FORM_EVENTS, scriptVariant))
-        {
-            return;
-        }
+    private boolean isNotCommandRegion(String regionName, ScriptVariant scriptVariant)
+    {
+        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+            || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+    }
 
-        if (!check(result, name, event, regionName, ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS,
-            TABLE_ITEMS_FORM_EVENTS, scriptVariant))
-        {
-            return;
-        }
+    private boolean isNotTableRegion(ScriptVariant scriptVariant, String regionName)
+    {
+        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+            || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+    }
 
-        check(result, name, event, regionName, ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS, COMMAND_FORM_EVENTS,
-            scriptVariant);
+    private boolean isNotFormHeaderRegion(String regionName, ScriptVariant scriptVariant)
+    {
+        return ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+    }
+
+    private boolean isNotFormRegion(String regionName, ScriptVariant scriptVariant)
+    {
+        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
     }
 
     private boolean isExcludeName(String name, String excludeNamePattern)
     {
         return StringUtils.isNotEmpty(excludeNamePattern) && name.matches(excludeNamePattern);
-    }
-
-    private boolean check(ResultAcceptor resultAceptor, String methodName, Event event, String regionName,
-        ModuleStructureSection section, Set<String> defaultEvents, ScriptVariant scriptVariant)
-    {
-
-        String defaultRegionName = section.getName(scriptVariant);
-        if (defaultRegionName.equals(regionName) && (event == null || !defaultEvents.contains(event.getName())))
-        {
-            resultAceptor.addIssue(
-                MessageFormat.format(Messages.ModuleStructureEventFormRegionsCheck_Event_method__0__can_not_be_placed_in_the_region__1, methodName,
-                    regionName), McorePackage.Literals.NAMED_ELEMENT__NAME);
-            return false;
-        }
-
-        if (!defaultRegionName.equals(regionName) && event != null && defaultEvents.contains(event.getName())
-            && isSameParam(event, defaultRegionName, scriptVariant))
-        {
-            resultAceptor.addIssue(
-                MessageFormat.format(Messages.ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1,
-                    methodName, defaultRegionName),
-                McorePackage.Literals.NAMED_ELEMENT__NAME);
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean isSameParam(Event event, String regionName, ScriptVariant scriptVariant)
-    {
-        String eventHandlersName = ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant);
-        String eventHeaderHandlersName = ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
-        if (CHOICE_PROCESSING.equals(event.getName()))
-        {
-            if (eventHandlersName.equals(regionName))
-            {
-                return event.getParamSet().size() == 2;
-            }
-            else if (eventHeaderHandlersName.equals(regionName))
-            {
-                return event.getParamSet().size() == 3;
-            }
-        }
-        return true;
     }
 
 }

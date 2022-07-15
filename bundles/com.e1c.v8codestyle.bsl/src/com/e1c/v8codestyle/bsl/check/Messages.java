@@ -269,6 +269,8 @@ final class Messages
 
     public static String ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1;
 
+    public static String ModuleStructureEventFormRegionsCheck_Excluded_method_names;
+
     public static String ModuleStructureEventFormRegionsCheck_Title;
 
     public static String ModuleStructureEventRegionsCheck_Description;
