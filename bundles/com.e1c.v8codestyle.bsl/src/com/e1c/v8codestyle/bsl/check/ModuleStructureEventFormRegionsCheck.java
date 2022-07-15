@@ -168,7 +168,10 @@ public class ModuleStructureEventFormRegionsCheck
 
         if (containers == null)
         {
-            addIssueCanNotBeHear(result, name, regionName);
+            if (isCurrentRegions(scriptVariant, regionName))
+            {
+                addIssueCanNotBeHear(result, name, regionName);
+            }
             return;
         }
 
@@ -310,6 +313,14 @@ public class ModuleStructureEventFormRegionsCheck
     {
         return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
             || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+    }
+
+    private boolean isCurrentRegions(ScriptVariant scriptVariant, String regionName)
+    {
+        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+            || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+            || ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant).indexOf(regionName) != -1;
     }
 
     private boolean isExcludeName(String name, String excludeNamePattern)
