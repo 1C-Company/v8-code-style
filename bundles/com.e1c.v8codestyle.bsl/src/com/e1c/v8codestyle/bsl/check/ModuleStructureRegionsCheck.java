@@ -130,11 +130,9 @@ public class ModuleStructureRegionsCheck
                 ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
                 if (nodeMethod != null && nodeMethod.getTotalOffset() >= node.getTotalOffset())
                 {
-                    resultAceptor.addIssue(
-                        MessageFormat.format(
-                            Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
-                            method.getName(), regions),
-                        McorePackage.Literals.NAMED_ELEMENT__NAME);
+                    resultAceptor.addIssue(MessageFormat.format(
+                        Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
+                        method.getName(), regions), McorePackage.Literals.NAMED_ELEMENT__NAME);
                 }
             }
         }

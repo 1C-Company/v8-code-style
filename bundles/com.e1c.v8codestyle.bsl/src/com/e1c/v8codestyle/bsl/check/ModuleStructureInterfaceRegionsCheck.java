@@ -126,7 +126,8 @@ public class ModuleStructureInterfaceRegionsCheck
             return;
         }
 
-        if (method.isExport() && !(publicnName.equals(regionName) || internalName.equals(regionName) || privateName.equals(regionName)))
+        if (method.isExport()
+            && !(publicnName.equals(regionName) || internalName.equals(regionName) || privateName.equals(regionName)))
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureInterfaceRegionsCheck_Export_method__0__in_regions,
