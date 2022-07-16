@@ -16,17 +16,13 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
 import java.util.Collection;
-import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
-import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -112,31 +108,6 @@ public class ModuleStructureRegionsCheck
                     Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
                     method.getName(), regions),
                 McorePackage.Literals.NAMED_ELEMENT__NAME);
-            return;
         }
-
-        Optional<RegionPreprocessor> parent = getParentRegion(region);
-        if (parent.isPresent())
-        {
-            region = parent.get();
-        }
-
-        PreprocessorItem preprocessorItem = region.getItemAfter();
-        if (preprocessorItem != null)
-        {
-            ICompositeNode node = NodeModelUtils.findActualNodeFor(preprocessorItem);
-            if (node != null)
-            {
-                ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
-                if (nodeMethod != null && nodeMethod.getTotalOffset() >= node.getTotalOffset())
-                {
-                    resultAceptor.addIssue(MessageFormat.format(
-                        Messages.ModuleStructureRegion_method__0__should_be_placed_in_one_of_the_upper_level_regions__1,
-                        method.getName(), regions), McorePackage.Literals.NAMED_ELEMENT__NAME);
-                }
-            }
-        }
-
     }
-
 }

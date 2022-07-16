@@ -22,13 +22,10 @@ import java.util.Optional;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
-import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
 import com._1c.g5.v8.dt.common.StringUtils;
@@ -126,35 +123,15 @@ public class ModuleStructureEventFormRegionsCheck
             return;
         }
 
-        RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
-        if (region == null)
+        Optional<RegionPreprocessor> region = getUpperRegion(method);
+        if (region.isEmpty())
         {
             return;
         }
 
-        Optional<RegionPreprocessor> parent = getParentRegion(region);
-        if (parent.isPresent())
-        {
-            region = parent.get();
-        }
-
-        PreprocessorItem preprocessorItem = region.getItemAfter();
-        if (preprocessorItem != null)
-        {
-            ICompositeNode node = NodeModelUtils.findActualNodeFor(preprocessorItem);
-            if (node != null)
-            {
-                ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
-                if (nodeMethod != null && nodeMethod.getTotalOffset() >= node.getTotalOffset())
-                {
-                    return;
-                }
-            }
-        }
-
         Map<CaseInsensitiveString, List<EObject>> eventHandlers = bslEventsService.getEventHandlersContainer(module);
 
-        String regionName = region.getName();
+        String regionName = region.get().getName();
         String name = method.getName();
         CaseInsensitiveString methodName = new CaseInsensitiveString(name);
 

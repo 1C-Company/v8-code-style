@@ -16,7 +16,10 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.nodemodel.ICompositeNode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
@@ -93,6 +96,43 @@ public abstract class AbstractModuleStructureCheck
             parent = parent.eContainer();
         }
         while (parent != null);
+
+        return Optional.empty();
+    }
+
+    /**
+     * Gets the upper region of method.
+     *
+     * @param method the method to find the region, cannot be {@code null}.
+     * @return the upper region, cannot return {@code null}.
+     */
+    protected Optional<RegionPreprocessor> getUpperRegion(Method method)
+    {
+        RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
+        if (region == null)
+        {
+            return Optional.empty();
+        }
+
+        Optional<RegionPreprocessor> parent = getParentRegion(region);
+        if (parent.isPresent())
+        {
+            region = parent.get();
+        }
+
+        PreprocessorItem preprocessorItem = region.getItemAfter();
+        if (preprocessorItem != null)
+        {
+            ICompositeNode node = NodeModelUtils.findActualNodeFor(preprocessorItem);
+            if (node != null)
+            {
+                ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
+                if (nodeMethod != null && nodeMethod.getTotalOffset() <= node.getTotalOffset())
+                {
+                    return Optional.ofNullable(region);
+                }
+            }
+        }
 
         return Optional.empty();
     }
