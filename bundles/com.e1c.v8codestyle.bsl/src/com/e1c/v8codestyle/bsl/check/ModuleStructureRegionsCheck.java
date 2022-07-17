@@ -16,6 +16,7 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
@@ -100,8 +101,8 @@ public class ModuleStructureRegionsCheck
         Collection<String> regionNames = moduleStructureProvider.getModuleStructureRegions(moduleType, scriptVariant);
         String regions = String.join(",", regionNames); //$NON-NLS-1$
 
-        RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
-        if (region == null)
+        Optional<RegionPreprocessor> region = getUpperRegion(method);
+        if (region.isEmpty())
         {
             resultAceptor.addIssue(
                 MessageFormat.format(

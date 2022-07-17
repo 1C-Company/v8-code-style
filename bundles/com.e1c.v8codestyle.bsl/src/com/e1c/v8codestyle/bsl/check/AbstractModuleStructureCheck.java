@@ -127,7 +127,7 @@ public abstract class AbstractModuleStructureCheck
             if (node != null)
             {
                 ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
-                if (nodeMethod != null && nodeMethod.getTotalOffset() <= node.getTotalOffset())
+                if (nodeMethod != null && nodeMethod.getTotalOffset() < node.getTotalOffset())
                 {
                     return Optional.ofNullable(region);
                 }
