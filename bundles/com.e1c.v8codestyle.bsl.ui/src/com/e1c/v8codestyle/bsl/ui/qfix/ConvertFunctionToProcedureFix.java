@@ -12,26 +12,30 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.ui.qfix;
 
-import java.util.List;
+import java.text.MessageFormat;
+import java.util.LinkedList;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
+import org.eclipse.xtext.Keyword;
 import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 
 import com._1c.g5.v8.dt.bsl.model.Function;
+import com._1c.g5.v8.dt.common.Pair;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixModel;
-import com.e1c.v8codestyle.bsl.qfix.external.SingleVariantXtextBslModuleFix;
-import com.google.common.collect.Lists;
 
 
 /**
  * Quick fix for check com.e1c.v8codestyle.bsl.strict.check:function-return-value-type
+ * Replaces Function and EndFunction keywords with Procedure and EndProcedure
  *
  * @author Timur Mukhamedishin
  *
@@ -44,8 +48,22 @@ public class ConvertFunctionToProcedureFix
     protected void configureFix(FixConfigurer configurer)
     {
         configurer.interactive(true)
-            .description(Messages.ConvertFunctionToProcedureFix_description)
-            .details(Messages.ConvertFunctionToProcedureFix_details);
+            .description((context, session) -> {
+                String name = ""; //$NON-NLS-1$
+
+                IXtextBslModuleFixModel model = context.getModel(session, false);
+                EObject element = model.getElement();
+
+                if (element instanceof Function)
+                {
+                    name = ((Function)element).getName();
+                }
+
+                String description = MessageFormat.format(Messages.ConvertFunctionToProcedureFix_description, name);
+                String details = MessageFormat.format(Messages.ConvertFunctionToProcedureFix_details, name);
+
+                return Pair.newPair(description, details);
+            });
     }
 
     @Override
@@ -58,37 +76,83 @@ public class ConvertFunctionToProcedureFix
             return null;
         }
 
+        boolean isRussian = model.getScriptVariant() == ScriptVariant.RUSSIAN;
+
+        Keyword functionKeyword = getFunctionKeyword(model, isRussian);
+        Keyword endFunctionKeyword = getEndFunctionKeyword(model, isRussian);
+        Keyword procedureKeyword = getProcedureKeyword(model, isRussian);
+        Keyword endProcedureKeyword = getEndProcedureKeyword(model, isRussian);
+
         INode node = NodeModelUtils.findActualNodeFor(element);
-        List<ILeafNode> allLeafNodes = Lists.newArrayList(node.getLeafNodes());
+
+        LinkedList<ILeafNode> allLeafNodes = new LinkedList<>();
+        node.getLeafNodes().forEach(allLeafNodes::add);
 
         MultiTextEdit result = new MultiTextEdit();
 
         for (int i = 0; i < allLeafNodes.size(); ++i)
         {
-            ILeafNode leafNode = allLeafNodes.get(i);
+            ILeafNode firstNode = allLeafNodes.pollFirst();
 
-            if (leafNode.getText().equals(QuickFixMethodsHelper.getTypeMethodName(model, true)))
+            if (firstNode.getGrammarElement().equals(functionKeyword))
             {
-                result.addChild(new ReplaceEdit(leafNode.getTotalOffset(), leafNode.getTotalLength(),
-                    QuickFixMethodsHelper.getTypeMethodName(model, false)));
-
+                result.addChild(new ReplaceEdit(firstNode.getOffset(), firstNode.getLength(),
+                    procedureKeyword.getValue()));
                 break;
             }
         }
 
-        for (int i = allLeafNodes.size() - 1; i >= 0; --i)
+        for (int i = 0; i < allLeafNodes.size(); ++i)
         {
-            ILeafNode leafNode = allLeafNodes.get(i);
+            ILeafNode lastNode = allLeafNodes.pollLast();
 
-            if (leafNode.getText().equals(QuickFixMethodsHelper.getTypeEndMethodName(model, true)))
+            if (lastNode.getGrammarElement().equals(endFunctionKeyword))
             {
-                result.addChild(new ReplaceEdit(leafNode.getTotalOffset(), leafNode.getTotalLength(),
-                    QuickFixMethodsHelper.getTypeEndMethodName(model, false)));
-
-                return result;
+                result.addChild(new ReplaceEdit(lastNode.getOffset(), lastNode.getLength(),
+                    endProcedureKeyword.getValue()));
+                break;
             }
+        }
+
+        if (result.getChildrenSize() == 2)
+        {
+            return result;
         }
 
         return null;
     }
+
+    //CHECKSTYLE.OFF: LineLength
+    private Keyword getFunctionKeyword(IXtextBslModuleFixModel model, boolean isRussian)
+    {
+        return !isRussian ? model.getBslGrammar().getFunctionAccess().getFunctionKeyword_2_0()
+            : model.getBslGrammar()
+                .getFunctionAccess()
+                .getCyrillicCapitalLetterEfCyrillicSmallLetterUCyrillicSmallLetterEnCyrillicSmallLetterKaCyrillicSmallLetterTseCyrillicSmallLetterICyrillicSmallLetterYaKeyword_2_1();
+    }
+
+    private Keyword getEndFunctionKeyword(IXtextBslModuleFixModel model, boolean isRussian)
+    {
+        return !isRussian ? model.getBslGrammar().getFunctionAccess().getEndFunctionKeyword_9_0() : model
+            .getBslGrammar()
+            .getFunctionAccess()
+            .getCyrillicCapitalLetterKaCyrillicSmallLetterOCyrillicSmallLetterEnCyrillicSmallLetterIeCyrillicSmallLetterTseCyrillicCapitalLetterEfCyrillicSmallLetterUCyrillicSmallLetterEnCyrillicSmallLetterKaCyrillicSmallLetterTseCyrillicSmallLetterICyrillicSmallLetterIKeyword_9_1();
+    }
+
+    private Keyword getProcedureKeyword(IXtextBslModuleFixModel model, boolean isRussian)
+    {
+        return !isRussian ? model.getBslGrammar().getProcedureAccess().getProcedureKeyword_2_0() : model
+            .getBslGrammar()
+            .getProcedureAccess()
+            .getCyrillicCapitalLetterPeCyrillicSmallLetterErCyrillicSmallLetterOCyrillicSmallLetterTseCyrillicSmallLetterIeCyrillicSmallLetterDeCyrillicSmallLetterUCyrillicSmallLetterErCyrillicSmallLetterAKeyword_2_1();
+    }
+
+    private Keyword getEndProcedureKeyword(IXtextBslModuleFixModel model, boolean isRussian)
+    {
+        return !isRussian ? model.getBslGrammar().getProcedureAccess().getEndProcedureKeyword_9_0() : model
+            .getBslGrammar()
+            .getProcedureAccess()
+            .getCyrillicCapitalLetterKaCyrillicSmallLetterOCyrillicSmallLetterEnCyrillicSmallLetterIeCyrillicSmallLetterTseCyrillicCapitalLetterPeCyrillicSmallLetterErCyrillicSmallLetterOCyrillicSmallLetterTseCyrillicSmallLetterIeCyrillicSmallLetterDeCyrillicSmallLetterUCyrillicSmallLetterErCyrillicSmallLetterYeruKeyword_9_1();
+    }
+    //CHECKSTYLE.ON: LineLength
 }
