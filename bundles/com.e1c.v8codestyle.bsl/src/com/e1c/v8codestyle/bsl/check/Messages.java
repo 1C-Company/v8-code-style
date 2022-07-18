@@ -60,11 +60,19 @@ final class Messages
 
     public static String RollbackTransactionCheck_Should_be_no_executable_code_between_exception_and_rollback;
 
+    public static String BeginTransactionCheck_Executable_code_between_begin_transaction_and_try;
+
     public static String CommitTransactionCheck_Transaction_contains_empty_except;
 
     public static String CommitTransactionCheck_Transactions_is_broken;
 
     public static String CommitTransactionCheck_Transactions_is_broken_des;
+
+    public static String BeginTransactionCheck_Begin_transaction_is_incorrect;
+
+    public static String BeginTransactionCheck_Try_must_be_after_begin;
+
+    public static String BeginTransactionCheck_Try_was_not_found_after_calling_begin;
 
     public static String CommonModuleNamedSelfReferenceCheck_description;
 

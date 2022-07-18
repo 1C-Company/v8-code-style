@@ -26,9 +26,9 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixModel;
-import com.e1c.v8codestyle.bsl.qfix.external.SingleVariantXtextBslModuleFix;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**

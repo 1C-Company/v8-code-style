@@ -96,7 +96,7 @@ public class MissingTemporaryFileDeletionCheck
             {
                 return;
             }
-            FeatureAccess tempFile = (FeatureAccess)statement.getLeft();
+            Expression tempFile = statement.getLeft();
             String tempFileName = getFullFeatureAccessName(tempFile);
 
             if (!monitor.isCanceled() && tempFileName != null && checkFileCloses(sfa, parameters, tempFileName))
@@ -154,17 +154,17 @@ public class MissingTemporaryFileDeletionCheck
         {
             if (parameter instanceof FeatureAccess)
             {
-                String faParameterName = getFullFeatureAccessName((FeatureAccess)parameter);
+                String faParameterName = getFullFeatureAccessName(parameter);
                 return faParameterName != null && faParameterName.equals(parameterName);
             }
         }
         return false;
     }
 
-    private String getFullFeatureAccessName(FeatureAccess featureAccess)
+    private String getFullFeatureAccessName(Expression tempFile)
     {
         StringBuilder builder = new StringBuilder();
-        Expression expression = featureAccess;
+        Expression expression = tempFile;
 
         while (expression instanceof DynamicFeatureAccess)
         {
