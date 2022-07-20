@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -84,9 +85,18 @@ public final class DbObjectAnyRefTypeCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        List<TypeItem> types = ((TypeDescription)object).getTypes();
+        TypeDescription typeDescription = (TypeDescription)object;
+        if (!(typeDescription.eContainer() instanceof BasicFeature))
+        {
+            return;
+        }
+        List<TypeItem> types = typeDescription.getTypes();
         for (TypeItem typeItem : types)
         {
+            if (monitor.isCanceled())
+            {
+                return;
+            }
             String typeItemName = McoreUtil.getTypeName(typeItem);
             if (!Objects.isNull(typeItemName) && REF_TYPES.contains(typeItemName))
             {
