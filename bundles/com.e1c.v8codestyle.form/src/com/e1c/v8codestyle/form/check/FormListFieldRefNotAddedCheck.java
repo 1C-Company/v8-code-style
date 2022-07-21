@@ -40,6 +40,7 @@ import com._1c.g5.v8.dt.form.model.FormPackage;
 import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.metadata.dbview.DbViewDef;
 import com._1c.g5.v8.dt.metadata.dbview.DbViewFieldDef;
+import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.EIssue;
 import com.e1c.g5.v8.dt.check.ICheck;
@@ -88,6 +89,12 @@ public class FormListFieldRefNotAddedCheck
     public void check(Object object, ICheckResultAcceptor resultAcceptor, ICheckParameters params,
         IProgressMonitor progressMonitor)
     {
+
+        if (object instanceof Form && isBaseForm((Form)object))
+        {
+            return;
+        }
+
         if (object instanceof Table && ((Table)object).getDataPath() != null)
         {
 
@@ -101,6 +108,13 @@ public class FormListFieldRefNotAddedCheck
 
         }
 
+    }
+
+    private static boolean isBaseForm(Form form)
+    {
+        return form != null && form.getMdForm().getObjectBelonging() == ObjectBelonging.ADOPTED
+            && form.getExtensionForm() != null && !form.getExtensionForm().eIsProxy()
+            && (form.getBaseForm() == null || form.getBaseForm().eIsProxy());
     }
 
     private static boolean pathCheck(EList<FormItem> items)
@@ -180,8 +194,7 @@ public class FormListFieldRefNotAddedCheck
             {
                 table = (Table)object;
             }
-            if (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo
-                && checkIfTable(((Form)((FormGroup)object).bmGetTopObject()).getItems()))
+            if (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo)
             {
                 table = (Table)((Form)((FormGroup)object).bmGetTopObject()).getItems()
                     .stream()
@@ -194,12 +207,6 @@ public class FormListFieldRefNotAddedCheck
             {
                 contextSession.addModelCheck(table);
             }
-        }
-
-        private static boolean checkIfTable(EList<FormItem> formItems)
-        {
-
-            return !formItems.stream().noneMatch(Table.class::isInstance);
         }
     }
 }
