@@ -65,12 +65,27 @@ public final class DbObjectRefNonRefTypesCheckTest
     }
 
     @Test
-    public void testOnlyOneType() throws Exception
+    public void testOnlyOneNonRefType() throws Exception
     {
         IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
         assertNotNull(dtProject);
 
         IBmObject object = getTopObjectByFqn("Catalog.OnlyOneTypeTest", dtProject);
+        if (object instanceof Catalog)
+        {
+            CatalogAttribute att = ((Catalog)object).getAttributes().get(0);
+            Marker marker = getFirstMarker(CHECK_ID, att.getType(), dtProject);
+            assertNull(marker);
+        }
+    }
+
+    @Test
+    public void testOnlyOneRefType() throws Exception
+    {
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject object = getTopObjectByFqn("Catalog.RefTest", dtProject);
         if (object instanceof Catalog)
         {
             CatalogAttribute att = ((Catalog)object).getAttributes().get(0);

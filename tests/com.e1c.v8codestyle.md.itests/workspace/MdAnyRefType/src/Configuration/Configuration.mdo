@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0c29af1c-4fa9-48fb-a46c-8688b4169c7a">
-  <name>MdCompositeTypeCheck</name>
+  <name>MdAnyRefType</name>
   <synonym>
     <key>en</key>
-    <value>Md composite type check</value>
+    <value>Md any ref type</value>
   </synonym>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="d0b6458d-9d50-4f2a-bf90-66dab91011e5"/>
   <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="c01b49fd-f0d1-441f-aa0e-ee0929436b81"/>
@@ -38,7 +38,6 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <catalogs>Catalog.OnlyOneTypeTest</catalogs>
-  <catalogs>Catalog.RefAndOtherTest</catalogs>
+  <catalogs>Catalog.AnyRefTest</catalogs>
   <catalogs>Catalog.RefTest</catalogs>
 </mdclass:Configuration>
