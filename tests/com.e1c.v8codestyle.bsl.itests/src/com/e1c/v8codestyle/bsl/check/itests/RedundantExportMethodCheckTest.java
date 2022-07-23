@@ -30,17 +30,17 @@ import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
-import com.e1c.v8codestyle.bsl.check.ExcessExportMethodCheck;
+import com.e1c.v8codestyle.bsl.check.RedundantExportMethodCheck;
 
 /**
- * Tests for {@link ExcessExportMethodCheck} check.
+ * Tests for {@link RedundantExportMethodCheck} check.
  *
  * @author Artem Iliukhin
  */
-public class ExcessExportMethodCheckTest
+public class RedundantExportMethodCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
-    private static final String CHECK_ID = "excess-export-method";
+    private static final String CHECK_ID = "redundant-export-method";
     private static final String PROJECT_NAME = "ExcessExportCheck";
     private static final String FQN_MODULE = "CommonModule.CommonModule";
     private static final String FQN_MODULE_1 = "CommonModule.CommonModule1";

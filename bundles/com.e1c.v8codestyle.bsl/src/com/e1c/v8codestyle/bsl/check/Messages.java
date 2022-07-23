@@ -96,13 +96,13 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
-    public static String ExcessExportCheck_Escess_title;
+    public static String RedundantExportCheck_Escess_title;
 
-    public static String ExcessExportCheck_Excess_description;
+    public static String RedundantExportCheck_Excess_description;
 
-    public static String ExcessExportCheck_Exclude_title;
+    public static String RedundantExportCheck_Exclude_title;
 
-    public static String ExcessExportCheck_Unused_export_method;
+    public static String RedundantExportCheck_Unused_export_method;
 
     public static String ExportMethodInCommandFormModuleCheck_CheckClientMethodForm;
 
