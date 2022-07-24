@@ -61,7 +61,7 @@ public final class RedundantExportMethodCheck
 {
 
     private static final Set<ModuleType> CHECKED_MODULES =
-        Set.of(ModuleType.MANAGER_MODULE, ModuleType.COMMAND_MODULE, ModuleType.OBJECT_MODULE);
+        Set.of(ModuleType.MANAGER_MODULE, ModuleType.COMMON_MODULE, ModuleType.OBJECT_MODULE);
 
     private static final String DEFAULT_EXCLUDE_REGION_NAME_LIST =
         String.join(",", ModuleStructureSection.PUBLIC.getNames()); //$NON-NLS-1$
