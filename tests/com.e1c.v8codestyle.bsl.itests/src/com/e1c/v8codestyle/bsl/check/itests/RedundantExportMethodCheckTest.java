@@ -44,7 +44,7 @@ public class RedundantExportMethodCheckTest
     private static final String PROJECT_NAME = "ExcessExportCheck";
     private static final String FQN_MODULE = "CommonModule.CommonModule";
     private static final String FQN_MODULE_1 = "CommonModule.CommonModule1";
-    private static final String FQN_MODULE_2 = "CommonModule.CommonModule2";
+    private static final String FQN_MODULE_2 = "CommonModule.CallNoPublic";
     private static final String FQN_CATALOG = "Catalog.Catalog";
     private static final String FQN_CATALOG_FORM = "Catalog.Catalog.Form.ItemForm.Form";
     private static final String FQN_CATALOG_LIST_FORM = "Catalog.Catalog.Form.ListForm.Form";

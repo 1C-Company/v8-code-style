@@ -158,8 +158,7 @@ public final class RedundantExportMethodCheck
             @Override
             public void accept(IReferenceDescription description)
             {
-                if (object.isExport()
-                    && !description.getSourceEObjectUri().path().equals(description.getTargetEObjectUri().path()))
+                if (!description.getSourceEObjectUri().path().equals(description.getTargetEObjectUri().path()))
                 {
                     monitor.setCanceled(true);
                 }
