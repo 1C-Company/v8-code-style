@@ -149,10 +149,10 @@ public final class RedundantExportMethodCheck
         {
 
             @Override
-            public void accept(EObject source, URI sourceURI, EReference eReference, int index, EObject targetOrProxy,
-                URI targetURI)
+            public void accept(EObject source, URI sourceUri, EReference eReference, int index, EObject targetOrProxy,
+                URI targetUri)
             {
-                accept(new DefaultReferenceDescription(source, targetOrProxy, eReference, index, sourceURI));
+                accept(new DefaultReferenceDescription(source, targetOrProxy, eReference, index, sourceUri));
             }
 
             @Override
@@ -160,18 +160,20 @@ public final class RedundantExportMethodCheck
             {
                 if (object.isExport()
                     && !description.getSourceEObjectUri().path().equals(description.getTargetEObjectUri().path()))
+                {
                     monitor.setCanceled(true);
+                }
             }
         };
 
-        TargetURIs targetURIs = new TargetURISet()
+        TargetURIs targetUris = new TargetURISet()
         {
             //
         };
 
-        targetURIs.addURI(EcoreUtil.getURI(object));
+        targetUris.addURI(EcoreUtil.getURI(object));
 
-        referenceFinder.findAllReferences(targetURIs, workSpaceResourceAccess, indexData, acceptor, monitor);
+        referenceFinder.findAllReferences(targetUris, workSpaceResourceAccess, indexData, acceptor, monitor);
 
         return monitor.isCanceled();
     }
