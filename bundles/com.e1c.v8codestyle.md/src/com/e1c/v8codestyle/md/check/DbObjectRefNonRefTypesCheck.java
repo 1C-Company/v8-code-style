@@ -86,6 +86,7 @@ public final class DbObjectRefNonRefTypesCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(BASIC_DB_OBJECT)
             .containment(TYPE_DESCRIPTION)
             .features(TYPE_DESCRIPTION__TYPES);
