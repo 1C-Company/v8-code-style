@@ -40,7 +40,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
- * Checks that standard regions are defined in the module.
+ * Checks that the method is outside the upper-level standard regions.
  *
  * @author Artem Iliukhin
  *

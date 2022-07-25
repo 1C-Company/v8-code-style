@@ -1,18 +1,14 @@
 # Module stucture
 
-Check that module structure regions is fitted
+Method is outside a standard region
 
 ## Noncompliant Code Example
 
 ```bsl
 
-#Region Internal
-// Enter code here.
-#EndRegion
-
-#Region Private
-// Enter code here.
-#EndRegion
+Procedure Test()
+//...
+EndProcedure
 
 ```bsl
 
@@ -20,16 +16,12 @@ Check that module structure regions is fitted
 
 ```bsl
 
-#Region Public
-// Enter code here.
-#EndRegion
-
-#Region Internal
-// Enter code here.
-#EndRegion
-
 #Region Private
-// Enter code here.
+
+Procedure Test()
+//...
+EndProcedure
+
 #EndRegion
 
 ```bsl
