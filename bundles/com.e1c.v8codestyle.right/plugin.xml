@@ -25,15 +25,15 @@
       </category>
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDelete">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveDelete">
       </check>
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDeletePredefinedData">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveDeletePredefinedData">
       </check>
       <check
             category="com.e1c.v8codestyle.right"
-            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteracitveDeleteMarkedPredefinedData">
+            class="com.e1c.v8codestyle.internal.right.ExecutableExtensionFactory:com.e1c.v8codestyle.right.check.RightInteractiveDeleteMarkedPredefinedData">
       </check>
       <check
             category="com.e1c.v8codestyle.right"
