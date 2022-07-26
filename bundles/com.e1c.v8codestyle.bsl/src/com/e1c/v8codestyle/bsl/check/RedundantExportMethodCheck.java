@@ -14,10 +14,12 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -36,13 +38,17 @@ import org.eclipse.xtext.resource.IResourceDescriptionsProvider;
 import org.eclipse.xtext.resource.impl.DefaultReferenceDescription;
 
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
+import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
+import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
+import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.resource.BslResource;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -69,6 +75,8 @@ public final class RedundantExportMethodCheck
     private static final String PARAMETER_EXCLUDE_REGION_LIST = "excludeRegionName"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "redundant-export-method"; //$NON-NLS-1$
+
+    private static final Object TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
 
     private final IReferenceFinder referenceFinder;
 
@@ -125,12 +133,36 @@ public final class RedundantExportMethodCheck
             return;
         }
 
-        if (isNotExclusion(parameters, method) && !haveCallerInOtherModule(method))
+        if (isNotExclusion(parameters, method) && !isNotifyDescription(module, method.getName())
+            && !haveCallerInOtherModule(method))
         {
             resultAceptor.addIssue(Messages.RedundantExportCheck_Unused_export_method, method,
                 BslPackage.Literals.METHOD__EXPORT);
         }
 
+    }
+
+    private boolean isNotifyDescription(Module module, String name)
+    {
+        for (TreeIterator<EObject> iterator = module.eAllContents(); iterator.hasNext();)
+        {
+            EObject containedObject = iterator.next();
+            if (containedObject instanceof OperatorStyleCreator
+                && TYPE_NAME.equals(McoreUtil.getTypeName(((OperatorStyleCreator)containedObject).getType())))
+            {
+                List<Expression> params = ((OperatorStyleCreator)containedObject).getParams();
+                if (!params.isEmpty() && params.get(0) instanceof StringLiteral)
+                {
+                    StringLiteral literal = (StringLiteral)params.get(0);
+                    List<String> lines = literal.lines(true);
+                    if (!lines.isEmpty() && lines.get(0).equals(name))
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     private boolean haveCallerInOtherModule(Method object)
