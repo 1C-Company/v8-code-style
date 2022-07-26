@@ -76,7 +76,7 @@ public class IncorrectLikeRightOperandCheck
         }
 
         String message =
-            Messages.IncorrectLikeRightOperandCheck_The_right_operand_of_the_LIKE_comparison_operation_is_query_field;
+            Messages.IncorrectLikeRightOperandCheck_The_right_operand_of_the_LIKE_operation_is_table_field;
         resultAceptor.addIssue(message, likeExpression, LIKE_EXPRESSION__LITERAL);
     }
 }
