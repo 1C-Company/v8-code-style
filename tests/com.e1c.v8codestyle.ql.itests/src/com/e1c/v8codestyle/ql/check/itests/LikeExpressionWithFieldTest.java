@@ -23,23 +23,23 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.e1c.v8codestyle.ql.check.IncorrectLikeRightOperandCheck;
+import com.e1c.v8codestyle.ql.check.LikeExpressionWithFieldCheck;
 import com.e1c.v8codestyle.ql.check.itests.TestingQlResultAcceptor.QueryMarker;
 
 /**
- * The test for class {@link IncorrectLikeRightOperandCheck}.
+ * The test for class {@link LikeExpressionWithFieldCheck}.
  *
  * @author Denis Maslennikov
  */
-public class IncorrectLikeRightOperandTest
+public class LikeExpressionWithFieldTest
     extends AbstractQueryTestBase
 {
     private static final String PROJECT_NAME = "QlFullDemo";
-    private static final String FOLDER = FOLDER_RESOURCE + "ql-incorrect-like-right-operand/";
+    private static final String FOLDER = FOLDER_RESOURCE + "ql-like-expression-with-field/";
 
-    public IncorrectLikeRightOperandTest()
+    public LikeExpressionWithFieldTest()
     {
-        super(IncorrectLikeRightOperandCheck.class);
+        super(LikeExpressionWithFieldCheck.class);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class IncorrectLikeRightOperandTest
      * @throws Exception the exception
      */
     @Test
-    public void testIncorrectLikeRightOperandCompliant() throws Exception
+    public void testLikeExpressionWithFieldCompliant() throws Exception
     {
         loadQueryAndValidate(FOLDER + "compliant.ql");
         List<QueryMarker> markers = getQueryMarkers();
@@ -67,7 +67,7 @@ public class IncorrectLikeRightOperandTest
      * @throws Exception the exception
      */
     @Test
-    public void testIncorrectLikeRightOperandNonCompliant() throws Exception
+    public void testikeExpressionWithFieldNonCompliant() throws Exception
     {
         loadQueryAndValidate(FOLDER + "non-compliant.ql");
         List<QueryMarker> markers = getQueryMarkers();
@@ -87,23 +87,22 @@ public class IncorrectLikeRightOperandTest
 
         marker = markers.get(3);
         assertNotNull(marker.getTarget());
-        assertEquals(30, marker.getLineNumber());
+        assertEquals(22, marker.getLineNumber());
 
         marker = markers.get(4);
         assertNotNull(marker.getTarget());
-        assertEquals(38, marker.getLineNumber());
+        assertEquals(30, marker.getLineNumber());
 
         marker = markers.get(5);
         assertNotNull(marker.getTarget());
-        assertEquals(46, marker.getLineNumber());
+        assertEquals(30, marker.getLineNumber());
 
         marker = markers.get(6);
         assertNotNull(marker.getTarget());
-        assertEquals(54, marker.getLineNumber());
+        assertEquals(38, marker.getLineNumber());
 
         marker = markers.get(7);
         assertNotNull(marker.getTarget());
-        assertEquals(62, marker.getLineNumber());
+        assertEquals(46, marker.getLineNumber());
     }
-
 }

@@ -48,7 +48,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.ql"
-            class="com.e1c.v8codestyle.ql.check.IncorrectLikeRightOperandCheck">
+            class="com.e1c.v8codestyle.ql.check.LikeExpressionWithFieldCheck">
       </check>
    </extension>
 

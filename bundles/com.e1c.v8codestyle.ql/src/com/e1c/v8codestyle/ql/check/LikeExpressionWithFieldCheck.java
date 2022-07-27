@@ -13,17 +13,19 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.ql.check;
 
-import static com._1c.g5.v8.dt.ql.model.QlPackage.Literals.LIKE_EXPRESSION__LITERAL;
+import static com._1c.g5.v8.dt.ql.model.QlPackage.Literals.COMMON_EXPRESSION__CONTENT;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.ql.model.AbstractExpression;
 import com._1c.g5.v8.dt.ql.model.CommonExpression;
 import com._1c.g5.v8.dt.ql.model.LikeExpression;
+import com._1c.g5.v8.dt.ql.model.MultiPartCommonExpression;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -37,11 +39,11 @@ import com.e1c.v8codestyle.internal.ql.CorePlugin;
  *
  * @author Denis Maslennikov
  */
-public class IncorrectLikeRightOperandCheck
+public class LikeExpressionWithFieldCheck
     extends QlBasicDelegateCheck
 {
 
-    private static final String CHECK_ID = "ql-incorrect-like-right-operand"; //$NON-NLS-1$
+    private static final String CHECK_ID = "ql-like-expression-with-field"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -56,7 +58,7 @@ public class IncorrectLikeRightOperandCheck
             .description(Messages.IncorrectLikeRightOperandCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
-            .issueType(IssueType.PERFORMANCE)
+            .issueType(IssueType.PORTABILITY)
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(LikeExpression.class);
     }
@@ -67,16 +69,29 @@ public class IncorrectLikeRightOperandCheck
     {
 
         LikeExpression likeExpression = (LikeExpression)object;
-        AbstractExpression literal = likeExpression.getLiteral();
-        List<CommonExpression> commonExpressions = EcoreUtil2.getAllContentsOfType(literal, CommonExpression.class);
+        List<CommonExpression> commonExpressions =
+            EcoreUtil2.getAllContentsOfType(likeExpression, CommonExpression.class);
 
         if (monitor.isCanceled() || commonExpressions.isEmpty())
         {
             return;
         }
 
-        String message =
-            Messages.IncorrectLikeRightOperandCheck_The_right_operand_of_the_LIKE_operation_is_table_field;
-        resultAceptor.addIssue(message, likeExpression, LIKE_EXPRESSION__LITERAL);
+        Set<CommonExpression> unique = new HashSet<>();
+        unique.addAll(commonExpressions);
+        for(CommonExpression common : commonExpressions)
+        {
+          if(common instanceof MultiPartCommonExpression)
+          {
+              unique.remove(((MultiPartCommonExpression)common).getSourceTable());
+          }
+        }
+
+        for (CommonExpression uniqueExpression : unique)
+        {
+            String message =
+                Messages.IncorrectLikeRightOperandCheck_The_right_operand_of_the_LIKE_operation_is_table_field;
+            resultAceptor.addIssue(message, uniqueExpression, COMMON_EXPRESSION__CONTENT);
+        }
     }
 }
