@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.metadata.mdclass.BasicFeature;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -96,11 +97,19 @@ public final class DbObjectRefNonRefTypesCheck
         IProgressMonitor monitor)
     {
         TypeDescription td = (TypeDescription)object;
+        if (!(td.eContainer() instanceof BasicFeature))
+        {
+            return;
+        }
         boolean hasRef = false;
         boolean hasExl = false;
         List<TypeItem> types = td.getTypes();
         for (TypeItem typeItem : types)
         {
+            if (monitor.isCanceled())
+            {
+                return;
+            }
             String typeItemName = McoreUtil.getTypeName(typeItem);
             if (!Objects.isNull(typeItemName))
             {

@@ -14,8 +14,13 @@ package com.e1c.v8codestyle.internal.right;
 
 import org.eclipse.core.runtime.Plugin;
 
+import com._1c.g5.v8.dt.bm.index.emf.IBmEmfIndexManager;
+import com._1c.g5.v8.dt.bm.index.rights.IBmRightsIndexManager;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 
 /**
@@ -40,7 +45,14 @@ public class ExternalDependenciesModule
     protected void doConfigure()
     {
         bind(IV8ProjectManager.class).toService();
+        bind(IResourceLookup.class).toService();
         bind(IBmModelManager.class).toService();
+        bind(IBmRightsIndexManager.class).toService();
+        bind(IBmEmfIndexManager.class).toService();
+        bind(IConfigurationProvider.class).toService();
+
+        // XXX remove this when the IRightInfosService become OSGi service
+        bind(IRuntimeVersionSupport.class).toService();
     }
 
 }
