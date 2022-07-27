@@ -248,6 +248,10 @@
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.SelfReferenceCheck">
       </check>
       <check
+           category="com.e1c.v8codestyle.bsl"
+           class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ModuleStructureEventFormRegionsCheck">
+     </check>
+      <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormSelfReferenceOutdatedCheck">
       </check>
