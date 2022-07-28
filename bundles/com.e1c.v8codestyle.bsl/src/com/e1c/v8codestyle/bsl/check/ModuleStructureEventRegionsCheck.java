@@ -18,10 +18,8 @@ import java.text.MessageFormat;
 import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -88,19 +86,13 @@ public class ModuleStructureEventRegionsCheck
 
         ScriptVariant scriptVariant = project.getScriptVariant();
 
-        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
-        if (module == null)
-        {
-            return;
-        }
-
-        ModuleType moduleType = module.getModuleType();
+        ModuleType moduleType = getModuleType(method);
         if (ModuleType.FORM_MODULE.equals(moduleType))
         {
             return;
         }
 
-        Optional<RegionPreprocessor> region = getUpperRegion(method);
+        Optional<RegionPreprocessor> region = getTopParentRegion(method);
         if (region.isEmpty())
         {
             return;
@@ -113,10 +105,8 @@ public class ModuleStructureEventRegionsCheck
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Only_event_methods__0, name),
                 McorePackage.Literals.NAMED_ELEMENT__NAME);
-            return;
         }
-
-        if (!eventHandlersName.equals(name) && method.isEvent())
+        else if (!eventHandlersName.equals(name) && method.isEvent())
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1,

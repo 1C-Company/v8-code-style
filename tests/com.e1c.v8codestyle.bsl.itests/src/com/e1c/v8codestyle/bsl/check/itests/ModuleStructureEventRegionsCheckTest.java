@@ -12,17 +12,13 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check.itests;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.List;
-
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
@@ -64,13 +60,7 @@ public class ModuleStructureEventRegionsCheckTest
         Module module = ((Catalog)mdObject).getManagerModule();
         assertNotNull(module);
 
-        List<Method> methods = module.allMethods();
-        assertFalse(methods.isEmpty());
-
-        Method method = methods.get(0);
-        assertNotNull(method);
-
-        Marker marker = getFirstMarker(CHECK_ID, method, getProject());
+        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
         assertNotNull(marker);
     }
 
@@ -86,13 +76,7 @@ public class ModuleStructureEventRegionsCheckTest
         Module module = ((Catalog)mdObject).getManagerModule();
         assertNotNull(module);
 
-        List<Method> methods = module.allMethods();
-        assertFalse(methods.isEmpty());
-
-        Method method = methods.get(0);
-        assertNotNull(method);
-
-        Marker marker = getFirstMarker(CHECK_ID, method, getProject());
+        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
         assertNull(marker);
     }
 
@@ -108,13 +92,7 @@ public class ModuleStructureEventRegionsCheckTest
         Module module = ((Catalog)mdObject).getManagerModule();
         assertNotNull(module);
 
-        List<Method> methods = module.allMethods();
-        assertFalse(methods.isEmpty());
-
-        Method method = methods.get(0);
-        assertNotNull(method);
-
-        Marker marker = getFirstMarker(CHECK_ID, method, getProject());
+        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
         assertNotNull(marker);
     }
 

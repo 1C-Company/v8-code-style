@@ -5,7 +5,7 @@
 
 #Region EventHandlers
 
-Procedure Test()
+Procedure WrongMethod()
 	//TODO: Insert the handler content
 EndProcedure
 
