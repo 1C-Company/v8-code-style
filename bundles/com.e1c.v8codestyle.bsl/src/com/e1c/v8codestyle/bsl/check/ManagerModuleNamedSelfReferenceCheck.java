@@ -15,10 +15,8 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
@@ -35,6 +33,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * CHeck self reference by name in manager modules.
@@ -47,7 +46,13 @@ public class ManagerModuleNamedSelfReferenceCheck
 {
     private static final String CHECK_ID = "manager-module-named-self-reference"; //$NON-NLS-1$
 
-    private IQualifiedNameProvider bslQualifiedNameProvider;
+    private final IQualifiedNameProvider bslQualifiedNameProvider;
+
+    @Inject
+    public ManagerModuleNamedSelfReferenceCheck(IQualifiedNameProvider bslQualifiedNameProvider)
+    {
+        this.bslQualifiedNameProvider = bslQualifiedNameProvider;
+    }
 
     @Override
     public String getCheckId()
@@ -106,18 +111,7 @@ public class ManagerModuleNamedSelfReferenceCheck
 
     private boolean isReferenceExcessive(DynamicFeatureAccess source, Module module)
     {
-        return StringUtils.equals(getNameProvider().getFullyQualifiedName(module).getSegment(1),
+        return StringUtils.equals(bslQualifiedNameProvider.getFullyQualifiedName(module).getSegment(1),
             source.getName());
-    }
-
-    private IQualifiedNameProvider getNameProvider()
-    {
-        if (bslQualifiedNameProvider == null)
-        {
-            IResourceServiceProvider resourceServiceProvider =
-                IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-            bslQualifiedNameProvider = resourceServiceProvider.get(IQualifiedNameProvider.class);
-        }
-        return bslQualifiedNameProvider;
     }
 }

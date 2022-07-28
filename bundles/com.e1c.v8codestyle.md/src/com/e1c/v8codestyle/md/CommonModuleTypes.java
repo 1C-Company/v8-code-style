@@ -153,10 +153,10 @@ public enum CommonModuleTypes
         new String[] { "FullAccess", "ПолныеПрава" }, //$NON-NLS-1$ //$NON-NLS-2$
         Map.of(
             COMMON_MODULE__CLIENT_MANAGED_APPLICATION, false,
-            COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, true,
+            COMMON_MODULE__CLIENT_ORDINARY_APPLICATION, false,
             COMMON_MODULE__SERVER, true,
             COMMON_MODULE__SERVER_CALL, false,
-            COMMON_MODULE__EXTERNAL_CONNECTION, true,
+            COMMON_MODULE__EXTERNAL_CONNECTION, false,
             COMMON_MODULE__GLOBAL, false,
             COMMON_MODULE__PRIVILEGED, true,
             COMMON_MODULE__RETURN_VALUES_REUSE, ReturnValuesReuse.DONT_USE)),

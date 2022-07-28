@@ -27,18 +27,21 @@
 
 ## Установка
 
-Плагин `1С:Стандарты разработки V8` поставляется в виде репозитория Eclipse. Установка расширения может выполняться следующими способами:
+> **Внимание!** Расширение включается в дистрибутив `1C:EDT 2021.3+` и не требует дополнительной установки.
+
+
+Плагин `1С:Стандарты разработки V8` поставляется в виде репозитория Eclipse (P2-репозиторий). Установка расширения может выполняться следующими способами:
 
 - непосредственно из p2-репозитория, опубликованного на серверах фирмы 1С.
 - из локальной копии p2-репозитория, распакованного в локальную папку из предварительно скачанного zip-архива.
 
 В строку выбора репозитория  для установки (`Work with`) вставьте адрес репозитория:
 
-| Версия | P2-репозиторий | ZIP-архив репозитория |
-|--------|----------------|-----------------------|
-| 0.3.0 для 1C:EDT 2022.1 | https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2022.1/0.3.0/repo/ | https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2022.1/0.3.0/repo.zip |
-| 0.2.0 для 1C:EDT 2021.3 | https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2021.3/0.2.0/repo/ | https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2021.3/0.2.0/repo.zip |
-| 0.1.0 для 1C:EDT 2021.2 | https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2021.2/0.1.0/repo/ | https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2021.2/0.1.0/repo.zip |
+| Версия | 1C:EDT | JDT для разработки | P2-репозиторий |
+|--------|--------|--------------------|----------------|
+| 0.3.0  | 2022.1 | 2022-03 | [p2-link](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2022.1/0.3.0/repo/), [p2-zip](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2022.1/0.3.0/repo.zip) |
+| 0.2.0  | 2021.3 | 2020-12 | [p2-link](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2021.3/0.2.0/repo/), [p2-zip](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2021.3/0.2.0/repo.zip) |
+| 0.1.0  | 2021.2 | 2020-12 | [p2-link](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2021.2/0.1.0/repo/), [p2-zip](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2021.2/0.1.0/repo.zip) |
 
 
 Далее для установки нужно выполнить следующие действия:

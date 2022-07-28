@@ -12,10 +12,12 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.form.check.itests;
 
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGURATION;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.Test;
@@ -30,8 +32,6 @@ import com._1c.g5.v8.dt.form.model.DataPath;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.Table;
-import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
-import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.form.check.FormListRefUseAlwaysFlagDisabledCheck;
@@ -46,11 +46,14 @@ public class FormListRefUseAlwaysFlagDisabledCheckTest
 {
     private static final String CHECK_ID = "form-list-ref-use-always-flag-disabled";
     private static final String PROJECT_NAME = "FormListRefUseAlwaysFlagDisabled";
-    private static final String FQN_FORM = "Catalog.TestCatalog.Form.TestListForm.Form";
-
+    private static final String FQN_FORM_EN = "Catalog.TestCatalog.Form.TestListForm.Form";
+    private static final String FQN_FORM_CUSTOM_EN = "Catalog.TestCatalog.Form.TestCustomListForm.Form";
+    private static final String FQN_FORM_RU = "Catalog.TestCatalog.Form.TestListFormRu.Form";
+    private static final String FQN_FORM_CUSTOM_RU = "Catalog.TestCatalog.Form.TestCustomListFormRu.Form";
+    private static final String FQN_NON_OBJECT = "InformationRegister.TestInformationRegister.Form.TestListForm.Form";
 
     /**
-     * Test Use Always flag is disabled for the Reference attribute in dynamic list (En Script variant).
+     * Test Use Always flag is disabled for the Reference attribute in dynamic list.
      *
      * @throws Exception the exception
      */
@@ -60,15 +63,20 @@ public class FormListRefUseAlwaysFlagDisabledCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject object = getTopObjectByFqn(FQN_FORM, dtProject);
-        assertTrue(object instanceof Form);
+        List.of(FQN_FORM_EN, FQN_FORM_CUSTOM_EN, FQN_FORM_RU, FQN_FORM_CUSTOM_RU).forEach(formFqn -> {
+            IBmObject object = getTopObjectByFqn(formFqn, dtProject);
+            assertTrue(object instanceof Form);
 
-        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
-        assertNotNull(marker);
+            Form form = (Form)object;
+            assertTrue(form.getAttributes().get(0).getNotDefaultUseAlwaysAttributes().isEmpty());
+
+            Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+            assertNotNull(marker);
+        });
     }
 
     /**
-     * Test Use Always flag is enabled for the Reference attribute in dynamic list (En Script variant).
+     * Test Use Always flag is enabled for the Reference attribute in dynamic list.
      *
      * @throws Exception the exception
      */
@@ -79,59 +87,92 @@ public class FormListRefUseAlwaysFlagDisabledCheckTest
         assertNotNull(dtProject);
 
         IBmModel model = bmModelManager.getModel(dtProject);
-        model.execute(new AbstractBmTask<Void>("change mode")
-        {
-            @Override
-            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
-            {
-                Form form = (Form)transaction.getTopObjectByFqn(FQN_FORM);
-                FormItem item = form.getItems().get(1);
-                assertTrue(item instanceof Table);
-                Table table = (Table)item;
-                AbstractDataPath path = (DataPath)table.getItems().get(0).eContents().get(1);
-                form.getAttributes().get(0).getNotDefaultUseAlwaysAttributes().add(path);
-                return null;
-            }
-        });
-        waitForDD(dtProject);
 
-        IBmObject object = getTopObjectByFqn(FQN_FORM, dtProject);
+        List.of(FQN_FORM_EN, FQN_FORM_CUSTOM_EN, FQN_FORM_RU, FQN_FORM_CUSTOM_RU).forEach(formFqn -> {
+            model.execute(new AbstractBmTask<Void>("change mode")
+            {
+                @Override
+                public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+                {
+                    Form form = (Form)transaction.getTopObjectByFqn(formFqn);
+                    FormItem item = form.getItems().get(1);
+                    assertTrue(item instanceof Table);
+                    Table table = (Table)item;
+                    AbstractDataPath path = (DataPath)table.getItems().get(0).eContents().get(1);
+                    form.getAttributes().get(0).getNotDefaultUseAlwaysAttributes().add(path);
+                    assertFalse(form.getAttributes().get(0).getNotDefaultUseAlwaysAttributes().isEmpty());
+                    return null;
+                }
+            });
+            waitForDD(dtProject);
+
+            IBmObject object = getTopObjectByFqn(formFqn, dtProject);
+            assertTrue(object instanceof Form);
+
+            Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+            assertNull(marker);
+        });
+    }
+
+    /**
+     * Test Use Always flag is disabled for an attribute in dynamic list of the non object table.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testUseAlwaysDisabledForAttributeOnNonObjectTable() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject object = getTopObjectByFqn(FQN_NON_OBJECT, dtProject);
         assertTrue(object instanceof Form);
+
+        Form form = (Form)object;
+        assertTrue(form.getAttributes().get(0).getNotDefaultUseAlwaysAttributes().isEmpty());
+
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNull(marker);
     }
 
     /**
-     * Test Use Always flag is disabled for the Reference attribute in dynamic list (Ru script variant).
+     * Test Use Always flag is enabled in the dynamic list for an attribute with a nonstandard data path.
      *
      * @throws Exception the exception
      */
     @Test
-    public void testUseAlwaysDisabledForRefRu() throws Exception
+    public void testUseAlwaysEnabledForAttributeWithNonStandardDataPath() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
         IBmModel model = bmModelManager.getModel(dtProject);
-        model.execute(new AbstractBmTask<Void>("change mode")
-        {
-            @Override
-            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+
+        List.of(FQN_FORM_RU, FQN_FORM_CUSTOM_RU).forEach(formFqn -> {
+            model.execute(new AbstractBmTask<Void>("change mode")
             {
-                IBmObject object = transaction.getTopObjectByFqn(CONFIGURATION.getName());
-                assertTrue(object instanceof Configuration);
-                Configuration config = (Configuration)object;
-                config.setScriptVariant(ScriptVariant.RUSSIAN);
-                assertTrue(config.getScriptVariant() == ScriptVariant.RUSSIAN);
-                return null;
-            }
+                @Override
+                public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+                {
+                    Form form = (Form)transaction.getTopObjectByFqn(formFqn);
+                    FormItem item = form.getItems().get(1);
+                    assertTrue(item instanceof Table);
+                    Table table = (Table)item;
+                    AbstractDataPath path = (DataPath)table.getItems().get(0).eContents().get(1);
+                    path.getSegments().add(0, "SomeExtraSegment");
+                    form.getAttributes().get(0).getNotDefaultUseAlwaysAttributes().add(path);
+                    String fqn = form.getAttributes().get(0).getNotDefaultUseAlwaysAttributes().get(0).toString();
+                    assertTrue(fqn.equals("/SomeExtraSegment/List/Ref") || fqn.equals("/SomeExtraSegment/Список/Ref"));
+                    return null;
+                }
+            });
+            waitForDD(dtProject);
+
+            IBmObject object = getTopObjectByFqn(formFqn, dtProject);
+            assertTrue(object instanceof Form);
+
+            Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+            assertNotNull(marker);
         });
-        waitForDD(dtProject);
-
-        IBmObject object = getTopObjectByFqn(FQN_FORM, dtProject);
-        assertTrue(object instanceof Form);
-
-        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
-        assertNotNull(marker);
     }
 }

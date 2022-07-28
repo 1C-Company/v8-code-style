@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.internal.bsl.ui.views;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.IMarkSelection;
 import org.eclipse.jface.text.ITextSelection;
@@ -27,7 +26,6 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
-import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.XtextEditor;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
@@ -86,18 +84,19 @@ public class BslDocCommentSelectionListener
      * @param viewer the viewer, cannot be {@code null}.
      * @param resourceLookup the resource lookup service, cannot be {@code null}.
      * @param bslPreferences the bsl preferences, cannot be {@code null}.
+     * @param bslObjectAtOffsetHelper the bsl object at offset helper, cannot be {@code null}.
+     * @param commentProvider the comment provider, cannot be {@code null}.
      */
     public BslDocCommentSelectionListener(TreeViewer viewer, IResourceLookup resourceLookup,
-        IBslPreferences bslPreferences)
+        IBslPreferences bslPreferences, EObjectAtOffsetHelper bslObjectAtOffsetHelper,
+        BslMultiLineCommentDocumentationProvider commentProvider)
     {
         this.viewer = viewer;
         this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
+        this.commentProvider = commentProvider;
+        this.bslObjectAtOffsetHelper = bslObjectAtOffsetHelper;
 
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
-        this.commentProvider = rsp.get(BslMultiLineCommentDocumentationProvider.class);
-        this.bslObjectAtOffsetHelper = rsp.get(EObjectAtOffsetHelper.class);
     }
 
     @Override

@@ -1,15 +1,29 @@
 
+// Non complaint.
+// 
 // Parameters:
-//  Parameters - See Complaint.UnknownParameter
-Procedure NonComplaint(Parameters) Export
-	// empty
-EndProcedure
+//  LinkToMethodParameter - See Complaint.UnknownParameter
+//  LinkToMethod - See NonComplaint()
+//  LinkToExtMethod - See Catalogs.Products.NonComplaint()
+// 
+// Returns:
+//  AnyRef - any ref
+Function NonComplaint(LinkToMethodParameter, LinkToMethod, LinkToExtMethod) Export
+    // empty
+EndFunction
 
 // See this description
 //
 // Parameters:
-//  Parameters - Here valid web-link See https://1c.ru
-//  LinkToMethod - See NonComplaint()
-Procedure Complaint(Parameters, LinkToMethod) Export
-	// empty
+//  WebLink - String - Here valid web-link See https://1c.ru
+//  LinkToMethod - See NonComplaint
+//  LinkToExtMethod - See Catalogs.Products.NonComplaint
+//  LinkToParameter - See NonComplaint.LinkToExtMethod
+Procedure Complaint(WebLink, LinkToMethod, LinkToExtMethod, LinkToParameter) Export
+    // empty
+EndProcedure
+
+// See Catalogs.Products.Complaint.
+Procedure Complaint2(WebLink, LinkToMethod, LinkToExtMethod)
+    // empty
 EndProcedure

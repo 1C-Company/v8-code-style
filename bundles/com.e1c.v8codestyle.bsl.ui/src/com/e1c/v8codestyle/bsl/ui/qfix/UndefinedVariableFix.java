@@ -28,10 +28,10 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.ui.quickfix.BslQuickFixUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextInteractiveBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixModel;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextInteractiveBslModuleFixModel;
-import com.e1c.v8codestyle.bsl.qfix.external.SingleVariantXtextBslModuleFix;
 
 /**
  * Quick fix for check com.e1c.v8codestyle.bsl.check:undefined-variable

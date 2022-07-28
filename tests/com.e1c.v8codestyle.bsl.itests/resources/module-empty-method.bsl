@@ -6,3 +6,9 @@ EndProcedure
 Procedure ModuleEmptyMethodCheck()
 	
 EndProcedure
+
+&AtClient
+//
+Procedure Command1(Command)
+
+EndProcedure

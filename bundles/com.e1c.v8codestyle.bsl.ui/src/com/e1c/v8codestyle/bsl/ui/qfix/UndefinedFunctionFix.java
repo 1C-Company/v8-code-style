@@ -16,10 +16,10 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.xtext.resource.XtextResource;
 
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextInteractiveBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixModel;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextInteractiveBslModuleFixModel;
-import com.e1c.v8codestyle.bsl.qfix.external.SingleVariantXtextBslModuleFix;
 
 
 /**

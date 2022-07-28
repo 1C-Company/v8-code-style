@@ -46,7 +46,7 @@ public final class MdScheduledJobPeriodicityCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "shceduled-job-periodicity-too-short"; //$NON-NLS-1$
+    private static final String CHECK_ID = "scheduled-job-periodicity-too-short"; //$NON-NLS-1$
     private static final String MINIMUM_JOB_INTERVAL = "minimum-job-interval"; //$NON-NLS-1$
     private static final String MINIMUM_JOB_INTERVAL_DEFAULT = "60"; //$NON-NLS-1$
 
@@ -124,6 +124,7 @@ public final class MdScheduledJobPeriodicityCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(SCHEDULE)
             .checkTop()
             .containment(DAILY_SCHEDULE)
