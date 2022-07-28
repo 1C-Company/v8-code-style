@@ -164,14 +164,15 @@ public class ModuleStructureEventFormRegionsCheck
                     if (isNotCommandRegion(regionName, scriptVariant))
                     {
                         addIssueCanNotBeHear(result, name, regionName);
-                        return;
                     }
-
-                    String defaultRegionName =
-                        ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
-                    if (!defaultRegionName.equals(regionName))
+                    else
                     {
-                        addIssueShouldBeHear(result, name, defaultRegionName);
+                        String defaultRegionName =
+                            ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
+                        if (!defaultRegionName.equals(regionName))
+                        {
+                            addIssueShouldBeHear(result, name, defaultRegionName);
+                        }
                     }
                     return;
                 }
@@ -191,14 +192,16 @@ public class ModuleStructureEventFormRegionsCheck
                 if (isNotTableRegion(scriptVariant, regionName))
                 {
                     addIssueCanNotBeHear(result, name, regionName);
-                    return;
                 }
-
-                String tableItemsName = ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
-                String defaultRegionName = String.join("", List.of(tableItemsName, table.getName())); //$NON-NLS-1$
-                if (!defaultRegionName.equals(regionName))
+                else
                 {
-                    addIssueShouldBeHear(result, name, defaultRegionName);
+                    String tableItemsName =
+                        ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
+                    String defaultRegionName = String.join("", List.of(tableItemsName, table.getName())); //$NON-NLS-1$
+                    if (!defaultRegionName.equals(regionName))
+                    {
+                        addIssueShouldBeHear(result, name, defaultRegionName);
+                    }
                 }
                 return;
             }
@@ -222,14 +225,15 @@ public class ModuleStructureEventFormRegionsCheck
                 if (isNotFormHeaderRegion(regionName, scriptVariant))
                 {
                     addIssueCanNotBeHear(result, name, regionName);
-                    return;
                 }
-
-                String defaultRegionName =
-                    ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
-                if (!defaultRegionName.equals(regionName))
+                else
                 {
-                    addIssueShouldBeHear(result, name, defaultRegionName);
+                    String defaultRegionName =
+                        ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
+                    if (!defaultRegionName.equals(regionName))
+                    {
+                        addIssueShouldBeHear(result, name, defaultRegionName);
+                    }
                 }
                 return;
             }
@@ -241,13 +245,14 @@ public class ModuleStructureEventFormRegionsCheck
                 if (isNotFormRegion(regionName, scriptVariant))
                 {
                     addIssueCanNotBeHear(result, name, regionName);
-                    return;
                 }
-
-                String defaultRegionName = ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant);
-                if (!defaultRegionName.equals(regionName))
+                else
                 {
-                    addIssueShouldBeHear(result, name, defaultRegionName);
+                    String defaultRegionName = ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant);
+                    if (!defaultRegionName.equals(regionName))
+                    {
+                        addIssueShouldBeHear(result, name, defaultRegionName);
+                    }
                 }
             }
         }

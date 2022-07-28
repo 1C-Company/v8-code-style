@@ -15,7 +15,7 @@ The Form command handlers section contains procedures that handle form commands
 
 #Region FormEventHandlers
 
-Procedure Test()
+Procedure WrongMethod()
     //TODO: Insert the handler content
 EndProcedure
 

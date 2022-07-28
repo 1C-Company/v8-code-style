@@ -72,7 +72,7 @@ public abstract class AbstractModuleStructureCheck
      * @param object the region to find the parent, cannot be {@code null}.
      * @return the parent region, cannot return {@code null}.
      */
-    protected Optional<RegionPreprocessor> getParentRegion(RegionPreprocessor object)
+    protected Optional<RegionPreprocessor> getFirstParentRegion(RegionPreprocessor object)
     {
         EObject parent = object.eContainer();
         PreprocessorItem lastItem = null;
@@ -114,10 +114,11 @@ public abstract class AbstractModuleStructureCheck
             return Optional.empty();
         }
 
-        Optional<RegionPreprocessor> parent = getParentRegion(region);
-        if (parent.isPresent())
+        Optional<RegionPreprocessor> parent = getFirstParentRegion(region);
+        while (parent.isPresent())
         {
             region = parent.get();
+            parent = getFirstParentRegion(region);
         }
 
         PreprocessorItem preprocessorItem = region.getItemAfter();

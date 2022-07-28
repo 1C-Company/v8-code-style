@@ -4,7 +4,7 @@
 
 #Region FormHeaderItemsEventHandlers
 
-Procedure Test()
+Procedure WrongMethod()
 
 EndProcedure
 

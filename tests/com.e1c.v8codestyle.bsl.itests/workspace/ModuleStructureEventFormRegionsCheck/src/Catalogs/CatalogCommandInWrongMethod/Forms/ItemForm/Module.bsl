@@ -12,7 +12,7 @@
 
 #Region FormCommandsEventHandlers
 
-Procedure Test()
+Procedure WrongMethod()
 
 EndProcedure
 

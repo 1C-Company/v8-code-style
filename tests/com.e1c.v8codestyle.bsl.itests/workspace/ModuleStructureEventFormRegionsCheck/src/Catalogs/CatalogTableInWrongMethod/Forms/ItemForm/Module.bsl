@@ -9,7 +9,7 @@
 #Region FormTableItemsEventHandlers
 // Enter code here.
 
-Procedure Test()
+Procedure WrongMethod()
 
 EndProcedure
 
