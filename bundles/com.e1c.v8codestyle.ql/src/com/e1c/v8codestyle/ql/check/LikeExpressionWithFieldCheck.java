@@ -79,12 +79,12 @@ public class LikeExpressionWithFieldCheck
 
         Set<CommonExpression> unique = new HashSet<>();
         unique.addAll(commonExpressions);
-        for(CommonExpression common : commonExpressions)
+        for (CommonExpression common : commonExpressions)
         {
-          if(common instanceof MultiPartCommonExpression)
-          {
-              unique.remove(((MultiPartCommonExpression)common).getSourceTable());
-          }
+            if (common instanceof MultiPartCommonExpression)
+            {
+                unique.remove(((MultiPartCommonExpression)common).getSourceTable());
+            }
         }
 
         for (CommonExpression uniqueExpression : unique)
