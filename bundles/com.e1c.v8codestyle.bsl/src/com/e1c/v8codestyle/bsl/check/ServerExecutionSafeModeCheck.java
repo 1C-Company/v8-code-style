@@ -325,7 +325,8 @@ public class ServerExecutionSafeModeCheck
         String name = invocation.getMethodAccess().getName();
         List<Expression> params = invocation.getParams();
 
-        return SAFE_MODE_INVOCATIONS.contains(name) && params.size() == 1 && params.get(0) instanceof BooleanLiteral;
+        return SAFE_MODE_INVOCATIONS.stream().anyMatch(st -> st.equalsIgnoreCase(name)) && params.size() == 1
+            && params.get(0) instanceof BooleanLiteral;
     }
 
     private int findExecuteStatementIndex(List<Statement> statements, EObject eObject)
@@ -374,6 +375,7 @@ public class ServerExecutionSafeModeCheck
 
     private boolean isEval(EObject eObject)
     {
-        return eObject instanceof Invocation && EVAL.contains(((Invocation)eObject).getMethodAccess().getName());
+        return eObject instanceof Invocation && EVAL.stream()
+            .anyMatch(statement -> statement.equalsIgnoreCase(((Invocation)eObject).getMethodAccess().getName()));
     }
 }
