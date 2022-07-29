@@ -16,10 +16,8 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.EXECUTE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -59,8 +57,11 @@ public class ServerExecutionSafeModeCheck
 
     private static final String CHECK_ID = "server-execution-safe-mode"; //$NON-NLS-1$
 
-    private static final Collection<String> EVAL = Set.of("Eval", "Вычислить"); //$NON-NLS-1$ //$NON-NLS-2$
-    private static final Collection<String> SAFE_MODE_INVOCATIONS = Set.of("УстановитьБезопасныйРежим", "SetSafeMode"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String EVAL = "Eval"; //$NON-NLS-1$
+    private static final String EVAL_RU = "Вычислить"; //$NON-NLS-1$
+
+    private static final String SAFE_MODE = "SetSafeMode"; //$NON-NLS-1$
+    private static final String SAFE_MODE_RU = "УстановитьБезопасныйРежим"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -87,7 +88,7 @@ public class ServerExecutionSafeModeCheck
         IProgressMonitor monitor)
     {
         EObject eObject = (EObject)object;
-        if (!isServerCall(eObject) || (!isExecute(eObject) && !isEval(eObject)))
+        if (!isServerEnv(eObject) || (!isExecute(eObject) && !isEval(eObject)))
         {
             return;
         }
@@ -106,7 +107,7 @@ public class ServerExecutionSafeModeCheck
         }
     }
 
-    private boolean isServerCall(EObject eObject)
+    private boolean isServerEnv(EObject eObject)
     {
         Environmental environmental = EcoreUtil2.getContainerOfType(eObject, Environmental.class);
         Environments environments = environmental.environments();
@@ -325,7 +326,7 @@ public class ServerExecutionSafeModeCheck
         String name = invocation.getMethodAccess().getName();
         List<Expression> params = invocation.getParams();
 
-        return SAFE_MODE_INVOCATIONS.stream().anyMatch(st -> st.equalsIgnoreCase(name)) && params.size() == 1
+        return (SAFE_MODE_RU.equalsIgnoreCase(name) || SAFE_MODE.equalsIgnoreCase(name)) && params.size() == 1
             && params.get(0) instanceof BooleanLiteral;
     }
 
@@ -375,7 +376,11 @@ public class ServerExecutionSafeModeCheck
 
     private boolean isEval(EObject eObject)
     {
-        return eObject instanceof Invocation && EVAL.stream()
-            .anyMatch(statement -> statement.equalsIgnoreCase(((Invocation)eObject).getMethodAccess().getName()));
+        if (eObject instanceof Invocation)
+        {
+            String name = ((Invocation)eObject).getMethodAccess().getName();
+            return EVAL_RU.equalsIgnoreCase(name) || EVAL.equalsIgnoreCase(name);
+        }
+        return false;
     }
 }
