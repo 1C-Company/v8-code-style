@@ -23,7 +23,6 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -59,6 +58,7 @@ public class FormModuleMissingPragmaCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.ERROR)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE, ModuleType.COMMAND_MODULE))
             .module()
             .checkedObjectType(METHOD, DECLARE_STATEMENT);
     }
@@ -67,15 +67,6 @@ public class FormModuleMissingPragmaCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-
-        Module module = EcoreUtil2.getContainerOfType((EObject)object, Module.class);
-        ModuleType type = module.getModuleType();
-
-        if (type != ModuleType.FORM_MODULE && type != ModuleType.COMMAND_MODULE)
-        {
-            return;
-        }
-
         if (object instanceof Method)
         {
             Method method = (Method)object;
