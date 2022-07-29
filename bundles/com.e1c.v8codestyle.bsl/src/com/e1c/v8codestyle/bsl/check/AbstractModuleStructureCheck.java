@@ -16,10 +16,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
-import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
@@ -101,41 +98,39 @@ public abstract class AbstractModuleStructureCheck
     }
 
     /**
-     * Gets the upper region of method.
+     * Gets the top parent region.
      *
-     * @param method the method to find the region, cannot be {@code null}.
-     * @return the upper region, cannot return {@code null}.
+     * @param object the object
+     * @return the top parent region
      */
-    protected Optional<RegionPreprocessor> getTopParentRegion(Method method)
+    protected Optional<RegionPreprocessor> getTopParentRegion(EObject object)
     {
-        RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
-        if (region == null)
+        EObject parent = object.eContainer();
+        PreprocessorItem lastItem = null;
+        RegionPreprocessor region = null;
+        do
         {
-            return Optional.empty();
-        }
-
-        Optional<RegionPreprocessor> parent = getFirstParentRegion(region);
-        while (parent.isPresent())
-        {
-            region = parent.get();
-            parent = getFirstParentRegion(region);
-        }
-
-        PreprocessorItem preprocessorItem = region.getItemAfter();
-        if (preprocessorItem != null)
-        {
-            ICompositeNode node = NodeModelUtils.findActualNodeFor(preprocessorItem);
-            if (node != null)
+            if (parent instanceof RegionPreprocessor)
             {
-                ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
-                if (nodeMethod != null && nodeMethod.getTotalOffset() < node.getTotalOffset())
+                RegionPreprocessor parentRegion = (RegionPreprocessor)parent;
+                if (parentRegion.getItem().equals(lastItem) || parentRegion.getItem().eContents().contains(object))
                 {
-                    return Optional.ofNullable(region);
+                    region = parentRegion;
                 }
             }
+            else if (parent instanceof PreprocessorItem)
+            {
+                lastItem = (PreprocessorItem)parent;
+            }
+            parent = parent.eContainer();
+        }
+        while (parent != null);
+
+        if (region != null)
+        {
+            return Optional.ofNullable(region);
         }
 
         return Optional.empty();
     }
-
 }
