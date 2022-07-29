@@ -60,6 +60,7 @@ public final class MdObjectNameLength
             .extension(new TopObjectFilterExtension())
             .issueType(IssueType.PORTABILITY)
             .extension(new CommonSenseCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(MD_OBJECT)
             .checkTop()
             .features(MD_OBJECT__NAME)
