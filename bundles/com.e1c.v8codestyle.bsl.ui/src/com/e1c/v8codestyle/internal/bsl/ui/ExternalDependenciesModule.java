@@ -13,8 +13,12 @@
 package com.e1c.v8codestyle.internal.bsl.ui;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
+import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
+import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.core.model.IModelEditingSupport;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
@@ -48,6 +52,13 @@ class ExternalDependenciesModule
         bind(IV8ProjectManager.class).toService();
         bind(IModelEditingSupport.class).toService();
         bind(IFixRepository.class).toService();
+
+        URI uri = URI.createURI("*.bsl"); //$NON-NLS-1$
+        final IResourceServiceProvider rsp = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(uri);
+
+        bind(BslMultiLineCommentDocumentationProvider.class)
+            .toProvider(() -> rsp.get(BslMultiLineCommentDocumentationProvider.class));
+        bind(EObjectAtOffsetHelper.class).toProvider(() -> rsp.get(EObjectAtOffsetHelper.class));
 
         // CodeStyle Services
         bind(IModuleStructureProvider.class).toService();

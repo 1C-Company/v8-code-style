@@ -21,9 +21,9 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
+import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
+import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
-import com.e1c.v8codestyle.bsl.qfix.external.IXtextBslModuleFixModel;
-import com.e1c.v8codestyle.bsl.qfix.external.SingleVariantXtextBslModuleFix;
 
 /**
  * Quick fix for check com.e1c.v8codestyle.bsl.check:common-module-named-self-reference

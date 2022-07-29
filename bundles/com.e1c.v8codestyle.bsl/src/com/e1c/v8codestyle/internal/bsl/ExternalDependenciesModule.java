@@ -20,7 +20,6 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.resource.IResourceDescription;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
-import org.eclipse.xtext.ui.editor.IURIEditorOpener;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.contextdef.IBslModuleContextDefService;
@@ -30,7 +29,6 @@ import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
-import com._1c.g5.v8.dt.bsl.services.BslGrammarAccess;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -62,7 +60,6 @@ class ExternalDependenciesModule
         bind(IBslPreferences.class).toService();
         bind(IQualifiedNameConverter.class).toService();
         bind(IBslModuleContextDefService.class).toService();
-        bind(IQualifiedNameProvider.class).toService();
 
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
@@ -80,10 +77,6 @@ class ExternalDependenciesModule
             .toProvider(() -> rsp.get(BslMultiLineCommentDocumentationProvider.class));
         bind(IBslOwnerComputerService.class).toProvider(() -> rsp.get(IBslOwnerComputerService.class));
         bind(IScopeProvider.class).toProvider(() -> rsp.get(IScopeProvider.class));
-
-        // Remove this after 2021.1
-        bind(BslGrammarAccess.class).toProvider(() -> rsp.get(BslGrammarAccess.class));
-        bind(IURIEditorOpener.class).toProvider(() -> rsp.get(IURIEditorOpener.class));
-
+        bind(IQualifiedNameProvider.class).toProvider(() -> rsp.get(IQualifiedNameProvider.class));
     }
 }

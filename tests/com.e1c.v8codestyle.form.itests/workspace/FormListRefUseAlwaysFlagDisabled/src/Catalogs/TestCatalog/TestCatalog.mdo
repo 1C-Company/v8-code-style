@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3b3d0c6e-f196-4bc7-b71f-feecb08a8f2e">
+  <producedTypes>
+    <objectType typeId="1fd042d4-a9ce-49ba-9b23-fada48480a0b" valueTypeId="3b3f93f0-f3c7-4fc8-b4ac-e9b78ef4ea5c"/>
+    <refType typeId="0a512eb4-e7c0-4521-8f59-3d45e57245bb" valueTypeId="7c013cdd-a3dc-447c-a326-4a1b1bcae746"/>
+    <selectionType typeId="55f78d6f-64d0-4a7e-8c2b-e1fb79ab1a17" valueTypeId="d49fe55b-4ddc-412a-88c2-2e3ad6e80ae6"/>
+    <listType typeId="9007f114-6c62-4688-a6a5-4e5e7104d36c" valueTypeId="632736d8-351d-479d-8f57-e1da262c590f"/>
+    <managerType typeId="68958c8e-a8c3-4aca-8570-a0d6d0d50930" valueTypeId="d6ebc301-769b-4209-befd-5fa4cb1b3fb7"/>
+  </producedTypes>
+  <name>TestCatalog</name>
+  <synonym>
+    <key>en</key>
+    <value>Test catalog</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.TestCatalog.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.TestCatalog.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultListForm>Catalog.TestCatalog.Form.TestListForm</defaultListForm>
+  <forms uuid="e0617f43-9e51-4063-9a81-d50a8b6c0efb">
+    <name>TestListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Test list form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="ee259b37-9e6a-4fe0-81ae-01dbbeece6e2">
+    <name>TestListFormRu</name>
+    <synonym>
+      <key>en</key>
+      <value>Test list form ru</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="65d00f31-d390-4e67-847f-846a349e8262">
+    <name>TestCustomListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Test custom list form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="4f8c8178-275e-4643-ae9f-35cf5973a23e">
+    <name>TestCustomListFormRu</name>
+    <synonym>
+      <key>en</key>
+      <value>Test custom list form ru</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

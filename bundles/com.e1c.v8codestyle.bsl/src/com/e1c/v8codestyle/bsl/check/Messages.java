@@ -46,6 +46,34 @@ final class Messages
     public static String ChangeAndValidateInsteadOfAroundCheck_Use_ChangeAndValidate_instead_of_Around;
     public static String ChangeAndValidateInsteadOfAroundCheck_title;
 
+    public static String CommitTransactionCheck_Commit_transaction_must_be_in_try_catch;
+
+    public static String CommitTransactionCheck_No_begin_transaction_for_commit_transaction;
+
+    public static String RollbackTransactionCheck_No_begin_transaction_for_rollback_transaction;
+
+    public static String RollbackTransactionCheck_No_commit_transaction_for_begin_transaction;
+
+    public static String CommitTransactionCheck_No_rollback_transaction_for_begin_transaction;
+
+    public static String CommitTransactionCheck_Should_be_no_executable_code_between_commit_and_exception;
+
+    public static String RollbackTransactionCheck_Should_be_no_executable_code_between_exception_and_rollback;
+
+    public static String BeginTransactionCheck_Executable_code_between_begin_transaction_and_try;
+
+    public static String CommitTransactionCheck_Transaction_contains_empty_except;
+
+    public static String CommitTransactionCheck_Transactions_is_broken;
+
+    public static String CommitTransactionCheck_Transactions_is_broken_des;
+
+    public static String BeginTransactionCheck_Begin_transaction_is_incorrect;
+
+    public static String BeginTransactionCheck_Try_must_be_after_begin;
+
+    public static String BeginTransactionCheck_Try_was_not_found_after_calling_begin;
+
     public static String CommonModuleNamedSelfReferenceCheck_description;
 
     public static String CommonModuleNamedSelfReferenceCheck_issue;
@@ -167,6 +195,12 @@ final class Messages
 
     public static String RegionEmptyCheck_title;
 
+    public static String RollbackTransactionCheck_Rollback_transaction_must_be_in_try_catch;
+
+    public static String RollbackTransactionCheck_Transactions_is_broken;
+
+    public static String RollbackTransactionCheck_Transactions_is_broken_des;
+
     public static String UseNonRecommendedMethods_description;
 
     public static String UseNonRecommendedMethods_message;
@@ -186,6 +220,14 @@ final class Messages
     public static String MethodTooManyPramsCheck_Method_has_more_than__N__params_with_default_value;
 
     public static String MethodTooManyPramsCheck_title;
+
+    public static String MissingTemporaryFileDeletionCheck_Delete_File_Methods;
+
+    public static String MissingTemporaryFileDeletionCheck_description;
+
+    public static String MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion;
+
+    public static String MissingTemporaryFileDeletionCheck_title;
 
     public static String FormModulePragmaCheck_description;
 

@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IExtensionProject;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.BasicDbObject;
@@ -83,7 +84,8 @@ public class MdListObjectPresentationCheck
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
             .issueType(IssueType.UI_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID));
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new SkipAdoptedInExtensionMdObjectExtension());
 
         builder.topObject(BASIC_DB_OBJECT)
             .checkTop()
@@ -119,6 +121,19 @@ public class MdListObjectPresentationCheck
 
         IV8Project project = v8ProjectManager.getProject(mdObject);
         Language language = project.getDefaultLanguage();
+
+        if (language == null)
+        {
+            if (!project.getLanguages().isEmpty())
+            {
+                language = project.getLanguages().iterator().next();
+            }
+            else if (project instanceof IExtensionProject && ((IExtensionProject)project).getParent() != null)
+            {
+                language = ((IExtensionProject)project).getParent().getDefaultLanguage();
+            }
+        }
+
         if (monitor.isCanceled() || language == null)
         {
             return;
@@ -148,7 +163,6 @@ public class MdListObjectPresentationCheck
                 Messages.MdListObjectPresentationCheck_Neither_Object_presentation_nor_List_presentation_is_not_filled;
             resultAceptor.addIssue(message, feature);
         }
-
     }
 
 }

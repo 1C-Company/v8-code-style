@@ -16,6 +16,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -28,28 +29,21 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
-import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.ForEachStatement;
-import com._1c.g5.v8.dt.bsl.model.ForToStatement;
-import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
-import com._1c.g5.v8.dt.bsl.model.typesytem.TypeSystemMode;
-import com._1c.g5.v8.dt.bsl.model.typesytem.VariableTreeTypeState;
-import com._1c.g5.v8.dt.bsl.model.typesytem.VariableTreeTypeStateWithSubStates;
-import com._1c.g5.v8.dt.bsl.model.typesytem.VariableTypeState;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil;
@@ -81,6 +75,10 @@ public abstract class AbstractTypeCheck
             IEObjectDynamicTypeNames.COA_REF_TYPE_NAME, IEObjectDynamicTypeNames.CALCULATION_TYPE_REF_TYPE_NAME,
             IEObjectDynamicTypeNames.BP_REF_TYPE_NAME, IEObjectDynamicTypeNames.BP_ROUTEPOINT_TYPE_NAME,
             IEObjectDynamicTypeNames.TASK_REF_TYPE_NAME, IEObjectDynamicTypeNames.EXCHANGE_PLAN_REF_TYPE_NAME);
+
+    private static final String COMMON_MODULE = "CommonModule"; //$NON-NLS-1$
+
+    private static final QualifiedName QN_COMMON_MODULE = QualifiedName.create(COMMON_MODULE);
 
     /** The resource lookup service. */
     protected final IResourceLookup resourceLookup;
@@ -172,11 +170,12 @@ public abstract class AbstractTypeCheck
     {
         if (object instanceof Variable && object.eContainer() instanceof FeatureAccess)
         {
-            return getActualTypesForFeatureVariable((Variable)object, object.eContainer(), envs);
+            return TypeSystemUtil.getVariableTypesAfterModelObject((Variable)object, object.eContainer());
         }
         else if (object instanceof StaticFeatureAccess && ((StaticFeatureAccess)object).getImplicitVariable() != null)
         {
-            return getActualTypesForFeatureVariable(((StaticFeatureAccess)object).getImplicitVariable(), object, envs);
+            return TypeSystemUtil.getVariableTypesAfterModelObject(((StaticFeatureAccess)object).getImplicitVariable(),
+                object);
         }
 
         List<TypeItem> types = typeComputer.computeTypes(object, envs);
@@ -234,7 +233,7 @@ public abstract class AbstractTypeCheck
      * @param context {@link EObject} for resolving proxy checking types, cannot be <code>null</code>
      * @return <code>true</code> if intersection was detected
      */
-    protected static boolean intersectTypeItem(Collection<TypeItem> expectedTypes, Collection<TypeItem> realTypes,
+    protected boolean intersectTypeItem(Collection<TypeItem> expectedTypes, Collection<TypeItem> realTypes,
         EObject context)
     {
         if (expectedTypes.isEmpty())
@@ -255,7 +254,7 @@ public abstract class AbstractTypeCheck
         {
             return false;
         }
-        Collection<TypeItem> withParentTypes = getParentTypes(realTypes, context);
+        Collection<TypeItem> withParentTypes = getParentsOfRealTypes(realTypes, context);
         Collection<String> realTypesNames = getTypeNames(withParentTypes, context);
 
         if (!expectedTypesNames.isEmpty() && !realTypesNames.isEmpty())
@@ -282,10 +281,10 @@ public abstract class AbstractTypeCheck
         return castTypeNames;
     }
 
-    private static Collection<TypeItem> getParentTypes(Collection<TypeItem> theFirstCollectionTypes, EObject context)
+    private Collection<TypeItem> getParentsOfRealTypes(Collection<TypeItem> realTypes, EObject context)
     {
-        Deque<TypeItem> types = new ArrayDeque<>(theFirstCollectionTypes);
-        List<TypeItem> parentTypes = new ArrayList<>();
+        Deque<TypeItem> types = new ArrayDeque<>(realTypes);
+        List<TypeItem> parentTypes = new LinkedList<>();
         while (!types.isEmpty())
         {
             TypeItem type = types.pollFirst();
@@ -298,6 +297,20 @@ public abstract class AbstractTypeCheck
             if (type instanceof Type && ((Type)type).getParentType() != null)
             {
                 types.add(((Type)type).getParentType());
+            }
+            else if (type instanceof Type && COMMON_MODULE.equals(McoreUtil.getTypeCategory(type)))
+            {
+                // Here is bypass of wrong type hierarchy of types for common modules
+                IScope typeScope = scopeProvider.getScope(context, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
+                IEObjectDescription element = typeScope.getSingleElement(QN_COMMON_MODULE);
+                if (element != null)
+                {
+                    EObject parentCommonModuleType = element.getEObjectOrProxy();
+                    if (parentCommonModuleType instanceof TypeItem)
+                    {
+                        parentTypes.add((TypeItem)parentCommonModuleType);
+                    }
+                }
             }
         }
         return parentTypes;
@@ -366,73 +379,6 @@ public abstract class AbstractTypeCheck
         default:
             return null;
         }
-    }
-
-    // TODO replace this with utility com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil after 2022.1
-    private List<TypeItem> getActualTypesForFeatureVariable(Variable variable, EObject featureObject, Environments envs)
-    {
-        SimpleStatement statement = EcoreUtil2.getContainerOfType(featureObject, SimpleStatement.class);
-        Invocation inv = EcoreUtil2.getContainerOfType(featureObject, Invocation.class);
-        List<TypeItem> allTypes = null;
-        int actualOffset = -1;
-        if (statement != null && statement.getRight() != null && statement.getLeft() == featureObject)
-        {
-            actualOffset = NodeModelUtils.findActualNodeFor(statement).getTotalEndOffset();
-        }
-        else if (inv != null && inv.getParams().contains(featureObject))
-        {
-            actualOffset = NodeModelUtils.findActualNodeFor(featureObject).getTotalEndOffset();
-        }
-        else if (inv == null && statement == null && variable instanceof FormalParam)
-        {
-            actualOffset = NodeModelUtils.findActualNodeFor(featureObject).getTotalEndOffset();
-        }
-        else if (featureObject.eContainingFeature() == BslPackage.Literals.FOR_STATEMENT__VARIABLE_ACCESS)
-        {
-            if (featureObject.eContainer() instanceof ForEachStatement
-                && ((ForEachStatement)featureObject.eContainer()).getCollection() != null)
-            {
-                actualOffset =
-                    NodeModelUtils.findActualNodeFor(((ForEachStatement)featureObject.eContainer()).getCollection())
-                        .getTotalEndOffset() + 1;
-            }
-            else if (featureObject.eContainer() instanceof ForToStatement
-                && ((ForToStatement)featureObject.eContainer()).getInitializer() != null)
-            {
-                actualOffset =
-                    NodeModelUtils.findActualNodeFor(((ForToStatement)featureObject.eContainer()).getInitializer())
-                        .getTotalEndOffset() + 1;
-            }
-        }
-        if (actualOffset != -1 && variable.getTypeStateProvider() != null)
-        {
-            allTypes = new ArrayList<>();
-            List<VariableTypeState> nearestStates =
-                variable.getTypeStateProvider().get(TypeSystemMode.NORMAL).getNearestByOffset(envs, actualOffset);
-            for (VariableTypeState nearestState : nearestStates)
-            {
-                if (nearestState != null)
-                {
-                    if (nearestState instanceof VariableTreeTypeStateWithSubStates)
-                    {
-                        for (VariableTreeTypeState subState : ((VariableTreeTypeStateWithSubStates)nearestState)
-                            .getSubStates(envs))
-                        {
-                            subState.getTypes().forEach(allTypes::add);
-                        }
-                    }
-                    else
-                    {
-                        nearestState.getTypes().forEach(allTypes::add);
-                    }
-                }
-            }
-        }
-        else
-        {
-            allTypes = typeComputer.computeTypes(featureObject, envs);
-        }
-        return allTypes;
     }
 
 }
