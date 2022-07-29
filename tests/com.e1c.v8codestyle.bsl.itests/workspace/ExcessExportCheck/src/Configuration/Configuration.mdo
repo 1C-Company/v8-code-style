@@ -39,7 +39,11 @@
     <languageCode>en</languageCode>
   </languages>
   <commonModules>CommonModule.CallNoPublic</commonModules>
-  <commonModules>CommonModule.CommonModule</commonModules>
-  <commonModules>CommonModule.CommonModule1</commonModules>
+  <commonModules>CommonModule.isEventSubscription</commonModules>
+  <commonModules>CommonModule.isScheduledJob</commonModules>
+  <commonModules>CommonModule.NoCallNoPublic</commonModules>
+  <commonModules>CommonModule.NoCallPublic</commonModules>
+  <eventSubscriptions>EventSubscription.EventSubscription</eventSubscriptions>
+  <scheduledJobs>ScheduledJob.ScheduledJob</scheduledJobs>
   <catalogs>Catalog.Catalog</catalogs>
 </mdclass:Configuration>

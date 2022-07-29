@@ -14,7 +14,10 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -30,6 +33,8 @@ import org.eclipse.xtext.findReferences.IReferenceFinder;
 import org.eclipse.xtext.findReferences.IReferenceFinder.IResourceAccess;
 import org.eclipse.xtext.findReferences.TargetURISet;
 import org.eclipse.xtext.findReferences.TargetURIs;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.IReferenceDescription;
@@ -48,7 +53,11 @@ import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.resource.BslResource;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
+import com._1c.g5.v8.dt.metadata.mdclass.EventSubscription;
+import com._1c.g5.v8.dt.metadata.mdclass.ScheduledJob;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -84,13 +93,20 @@ public final class RedundantExportMethodCheck
 
     private final IResourceDescriptionsProvider resourceDescriptionsProvider;
 
+    private final IConfigurationProvider configurationProvider;
+
+    private final IQualifiedNameProvider bslQualifiedNameProvider;
+
     @Inject
     public RedundantExportMethodCheck(IResourceAccess workSpaceResourceAccess, IReferenceFinder referenceFinder,
-        IResourceDescriptionsProvider resourceDescriptionsProvider)
+        IResourceDescriptionsProvider resourceDescriptionsProvider, IConfigurationProvider configurationProvider,
+        IQualifiedNameProvider bslQualifiedNameProvider)
     {
         this.workSpaceResourceAccess = workSpaceResourceAccess;
         this.referenceFinder = referenceFinder;
         this.resourceDescriptionsProvider = resourceDescriptionsProvider;
+        this.configurationProvider = configurationProvider;
+        this.bslQualifiedNameProvider = bslQualifiedNameProvider;
     }
 
     @Override
@@ -133,13 +149,60 @@ public final class RedundantExportMethodCheck
             return;
         }
 
-        if (isNotExclusion(parameters, method) && !isNotifyDescription(module, method.getName())
+        String name = method.getName();
+        if (isNotExclusion(parameters, method) && !isScheduledJobOrEventSubscription(module, name)
+            && !isNotifyDescription(module, name)
             && !haveCallerInOtherModule(method))
         {
             resultAceptor.addIssue(Messages.RedundantExportCheck_Unused_export_method, method,
                 BslPackage.Literals.METHOD__EXPORT);
         }
 
+    }
+
+    private boolean isScheduledJobOrEventSubscription(Module module, String methodName)
+    {
+        ModuleType moduleType = module.getModuleType();
+        if (!ModuleType.COMMON_MODULE.equals(moduleType))
+        {
+            return false;
+        }
+
+        Map<String, Set<String>> moduleMethod = new HashMap<>();
+        Configuration configuration = configurationProvider.getConfiguration(module);
+        List<ScheduledJob> jobs = configuration.getScheduledJobs();
+        for (ScheduledJob job : jobs)
+        {
+            String[] items = job.getMethodName().split("[.]"); //$NON-NLS-1$
+            if (items.length > 2)
+            {
+                moduleMethod.putIfAbsent(items[1], new HashSet<>());
+                moduleMethod.get(items[1]).add(items[2]);
+            }
+        }
+
+        List<EventSubscription> events = configuration.getEventSubscriptions();
+        for (EventSubscription event : events)
+        {
+            String[] items = event.getHandler().split("[.]"); //$NON-NLS-1$
+            if (items.length > 2)
+            {
+                moduleMethod.putIfAbsent(items[1], new HashSet<>());
+                moduleMethod.get(items[1]).add(items[2]);
+            }
+        }
+
+        QualifiedName fullyQualifiedName = bslQualifiedNameProvider.getFullyQualifiedName(module);
+        if (fullyQualifiedName != null)
+        {
+            String moduleName = fullyQualifiedName.getSegment(1);
+            Set<String> methodNames = moduleMethod.get(moduleName);
+            if (methodNames != null && methodNames.contains(methodName))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isNotifyDescription(Module module, String name)

@@ -42,12 +42,14 @@ public class RedundantExportMethodCheckTest
 {
     private static final String CHECK_ID = "redundant-export-method";
     private static final String PROJECT_NAME = "ExcessExportCheck";
-    private static final String FQN_MODULE = "CommonModule.CommonModule";
-    private static final String FQN_MODULE_1 = "CommonModule.CommonModule1";
-    private static final String FQN_MODULE_2 = "CommonModule.CallNoPublic";
+    private static final String FQN_MODULE = "CommonModule.NoCallNoPublic";
+    private static final String FQN_MODULE_NO_CALL_PUBLIC = "CommonModule.NoCallPublic";
+    private static final String FQN_MODULE_CALL_NO_PUBLIC = "CommonModule.CallNoPublic";
     private static final String FQN_CATALOG = "Catalog.Catalog";
     private static final String FQN_CATALOG_FORM = "Catalog.Catalog.Form.ItemForm.Form";
     private static final String FQN_CATALOG_LIST_FORM = "Catalog.Catalog.Form.ListForm.Form";
+    private static final String FQN_MODULE_IS_EVENT_SUBSCRIPTION = "CommonModule.isEventSubscription";
+    private static final String FQN_MODULE_IS_SCHEDULED_JOB = "CommonModule.isScheduledJob";
 
     @Override
     protected String getTestConfigurationName()
@@ -80,7 +82,7 @@ public class RedundantExportMethodCheckTest
         IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_1, dtProject);
+        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_NO_CALL_PUBLIC, dtProject);
         assertTrue(mdObject instanceof CommonModule);
         Module module = ((CommonModule)mdObject).getModule();
         assertNotNull(module);
@@ -99,7 +101,7 @@ public class RedundantExportMethodCheckTest
         IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_2, dtProject);
+        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_CALL_NO_PUBLIC, dtProject);
         assertTrue(mdObject instanceof CommonModule);
         Module module = ((CommonModule)mdObject).getModule();
         assertNotNull(module);
@@ -165,6 +167,44 @@ public class RedundantExportMethodCheckTest
         assertEquals(2, methods.size());
 
         Method noncompliantMethod = methods.get(1);
+        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testEventSubscription() throws Exception
+    {
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_IS_EVENT_SUBSCRIPTION, dtProject);
+        assertTrue(mdObject instanceof CommonModule);
+        Module module = ((CommonModule)mdObject).getModule();
+        assertNotNull(module);
+
+        List<Method> methods = module.allMethods();
+        assertEquals(1, methods.size());
+
+        Method noncompliantMethod = methods.get(0);
+        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testScheduledJob() throws Exception
+    {
+        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_IS_SCHEDULED_JOB, dtProject);
+        assertTrue(mdObject instanceof CommonModule);
+        Module module = ((CommonModule)mdObject).getModule();
+        assertNotNull(module);
+
+        List<Method> methods = module.allMethods();
+        assertEquals(1, methods.size());
+
+        Method noncompliantMethod = methods.get(0);
         Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
         assertNull(marker);
     }

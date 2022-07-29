@@ -1,4 +1,4 @@
 
-Procedure Test2() Export
+Procedure Compliant() Export
 	//
 EndProcedure

@@ -34,6 +34,7 @@ import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
+import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
@@ -87,5 +88,6 @@ class ExternalDependenciesModule
         bind(IResourceDescriptionsProvider.class).toProvider(() -> rsp.get(IResourceDescriptionsProvider.class));
         bind(IResourceAccess.class).toService();
         bind(ResourceDescriptionsProvider.class).toService();
+        bind(IConfigurationProvider.class).toService();
     }
 }
