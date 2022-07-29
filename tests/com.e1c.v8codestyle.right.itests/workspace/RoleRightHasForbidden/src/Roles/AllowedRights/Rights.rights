@@ -67,7 +67,7 @@
 		</right>
 		<right>
 			<name>Delete</name>
-			<value>true</value>
+			<value>false</value>
 		</right>
 		<right>
 			<name>ReadDataHistory</name>
