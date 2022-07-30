@@ -192,7 +192,7 @@ public class ModuleStructureEventFormRegionsCheck
                 {
                     String tableItemsName =
                         ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
-                    String defaultRegionName = String.join("", List.of(tableItemsName, table.getName())); //$NON-NLS-1$
+                    String defaultRegionName = tableItemsName + table.getName();
                     if (!defaultRegionName.equalsIgnoreCase(regionName))
                     {
                         addIssueShouldBeInRegion(result, name, defaultRegionName);
