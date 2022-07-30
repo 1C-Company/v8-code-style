@@ -123,7 +123,7 @@ public class ModuleStructureEventFormRegionsCheck
             return;
         }
 
-        Optional<RegionPreprocessor> region = getUpperRegion(method);
+        Optional<RegionPreprocessor> region = getTopParentRegion(method);
         if (region.isEmpty())
         {
             return;
