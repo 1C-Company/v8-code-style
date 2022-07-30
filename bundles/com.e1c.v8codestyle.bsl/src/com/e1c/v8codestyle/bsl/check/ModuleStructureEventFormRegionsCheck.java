@@ -123,6 +123,12 @@ public class ModuleStructureEventFormRegionsCheck
             return;
         }
 
+        String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
+        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(method.getName(), excludeNamePattern))
+        {
+            return;
+        }
+
         Optional<RegionPreprocessor> region = getTopParentRegion(method);
         if (region.isEmpty())
         {
@@ -137,17 +143,11 @@ public class ModuleStructureEventFormRegionsCheck
 
         List<EObject> containers = eventHandlers.get(methodName);
 
-        String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
-        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(method.getName(), excludeNamePattern))
-        {
-            return;
-        }
-
         if (containers == null)
         {
-            if (isCurrentRegions(scriptVariant, regionName))
+            if (isEventHandlerRegion(scriptVariant, regionName))
             {
-                addIssueCanNotBeHear(result, name, regionName);
+                addIssueShouldNotBeInRegion(result, name, regionName);
             }
             return;
         }
@@ -157,25 +157,20 @@ public class ModuleStructureEventFormRegionsCheck
             if (obj instanceof FormCommandHandlerContainer)
             {
                 //command
-                FormCommandHandlerContainer command =
-                    EcoreUtil2.getContainerOfType(obj, FormCommandHandlerContainer.class);
-                if (command != null)
+                if (!isCommandHanlderRegion(regionName, scriptVariant))
                 {
-                    if (isNotCommandRegion(regionName, scriptVariant))
-                    {
-                        addIssueCanNotBeHear(result, name, regionName);
-                    }
-                    else
-                    {
-                        String defaultRegionName =
-                            ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
-                        if (!defaultRegionName.equals(regionName))
-                        {
-                            addIssueShouldBeHear(result, name, defaultRegionName);
-                        }
-                    }
-                    return;
+                    addIssueShouldNotBeInRegion(result, name, regionName);
                 }
+                else
+                {
+                    String defaultRegionName =
+                        ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
+                    if (!defaultRegionName.equalsIgnoreCase(regionName))
+                    {
+                        addIssueShouldBeInRegion(result, name, defaultRegionName);
+                    }
+                }
+                return;
             }
 
             if (!(obj instanceof EventHandlerContainer))
@@ -189,18 +184,18 @@ public class ModuleStructureEventFormRegionsCheck
             Table table = EcoreUtil2.getContainerOfType(container, Table.class);
             if (table != null)
             {
-                if (isNotTableRegion(scriptVariant, regionName))
+                if (!isTableHanlderRegion(scriptVariant, regionName))
                 {
-                    addIssueCanNotBeHear(result, name, regionName);
+                    addIssueShouldNotBeInRegion(result, name, regionName);
                 }
                 else
                 {
                     String tableItemsName =
                         ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
                     String defaultRegionName = String.join("", List.of(tableItemsName, table.getName())); //$NON-NLS-1$
-                    if (!defaultRegionName.equals(regionName))
+                    if (!defaultRegionName.equalsIgnoreCase(regionName))
                     {
-                        addIssueShouldBeHear(result, name, defaultRegionName);
+                        addIssueShouldBeInRegion(result, name, defaultRegionName);
                     }
                 }
                 return;
@@ -222,17 +217,17 @@ public class ModuleStructureEventFormRegionsCheck
 
             if (field != null || decoration != null || group != null)
             {
-                if (isNotFormHeaderRegion(regionName, scriptVariant))
+                if (!isFormHeaderHanlderRegion(regionName, scriptVariant))
                 {
-                    addIssueCanNotBeHear(result, name, regionName);
+                    addIssueShouldNotBeInRegion(result, name, regionName);
                 }
                 else
                 {
                     String defaultRegionName =
                         ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
-                    if (!defaultRegionName.equals(regionName))
+                    if (!defaultRegionName.equalsIgnoreCase(regionName))
                     {
-                        addIssueShouldBeHear(result, name, defaultRegionName);
+                        addIssueShouldBeInRegion(result, name, defaultRegionName);
                     }
                 }
                 return;
@@ -242,62 +237,57 @@ public class ModuleStructureEventFormRegionsCheck
             Form form = EcoreUtil2.getContainerOfType(container, Form.class);
             if (form != null)
             {
-                if (isNotFormRegion(regionName, scriptVariant))
+                if (!isFormHanlderRegion(regionName, scriptVariant))
                 {
-                    addIssueCanNotBeHear(result, name, regionName);
+                    addIssueShouldNotBeInRegion(result, name, regionName);
                 }
                 else
                 {
                     String defaultRegionName = ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant);
-                    if (!defaultRegionName.equals(regionName))
+                    if (!defaultRegionName.equalsIgnoreCase(regionName))
                     {
-                        addIssueShouldBeHear(result, name, defaultRegionName);
+                        addIssueShouldBeInRegion(result, name, defaultRegionName);
                     }
                 }
             }
         }
     }
 
-    private void addIssueShouldBeHear(ResultAcceptor result, String methodName, String defaultRegionName)
+    private void addIssueShouldBeInRegion(ResultAcceptor result, String methodName, String defaultRegionName)
     {
         result.addIssue(MessageFormat.format(
             Messages.ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1,
             methodName, defaultRegionName), McorePackage.Literals.NAMED_ELEMENT__NAME);
     }
 
-    private void addIssueCanNotBeHear(ResultAcceptor result, String methodName, String regionName)
+    private void addIssueShouldNotBeInRegion(ResultAcceptor result, String methodName, String regionName)
     {
         result.addIssue(MessageFormat.format(
             Messages.ModuleStructureEventFormRegionsCheck_Event_method__0__can_not_be_placed_in_the_region__1,
             methodName, regionName), McorePackage.Literals.NAMED_ELEMENT__NAME);
     }
 
-    private boolean isNotCommandRegion(String regionName, ScriptVariant scriptVariant)
+    private boolean isCommandHanlderRegion(String regionName, ScriptVariant scriptVariant)
     {
-        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
-            || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+        return ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
     }
 
-    private boolean isNotTableRegion(ScriptVariant scriptVariant, String regionName)
+    private boolean isTableHanlderRegion(ScriptVariant scriptVariant, String regionName)
     {
-        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
-            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
-            || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+        return ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
     }
 
-    private boolean isNotFormHeaderRegion(String regionName, ScriptVariant scriptVariant)
+    private boolean isFormHeaderHanlderRegion(String regionName, ScriptVariant scriptVariant)
     {
-        return ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
-            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
     }
 
-    private boolean isNotFormRegion(String regionName, ScriptVariant scriptVariant)
+    private boolean isFormHanlderRegion(String regionName, ScriptVariant scriptVariant)
     {
-        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
-            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+        return ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
     }
 
-    private boolean isCurrentRegions(ScriptVariant scriptVariant, String regionName)
+    private boolean isEventHandlerRegion(ScriptVariant scriptVariant, String regionName)
     {
         return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
             || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
