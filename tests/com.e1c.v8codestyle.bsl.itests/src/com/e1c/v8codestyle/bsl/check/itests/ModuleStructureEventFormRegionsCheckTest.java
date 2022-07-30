@@ -4,19 +4,14 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
-import com._1c.g5.v8.dt.metadata.mdclass.CatalogForm;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.ModuleStructureEventFormRegionsCheck;
@@ -33,21 +28,29 @@ public class ModuleStructureEventFormRegionsCheckTest
     private static final String CHECK_ID = "module-structure-form-event-regions"; //$NON-NLS-1$
     private static final String PROJECT_NAME = "ModuleStructureEventFormRegionsCheck";
 
-    private static final String FQN_CATALOG = "Catalog.Catalog";
-    private static final String FQN_CATALOG_WRONG_REGION = "Catalog.CatalogInWrongRegion";
-    private static final String FQN_CATALOG_WRONG_METHOD = "Catalog.CatalogInWrongMethod";
+    private static final String CATALOG_WRONG_REGION_FILE_NAME =
+        "/src/Catalogs/CatalogInWrongRegion/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_WRONG_METHOD_FILE_NAME =
+        "/src/Catalogs/CatalogInWrongMethod/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_FILE_NAME = "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
 
-    private static final String FQN_CATALOG_FIELD = "Catalog.CatalogField";
-    private static final String FQN_CATALOG_FIELD_WRONG_REGION = "Catalog.CatalogFieldInWrongRegion";
-    private static final String FQN_CATALOG_FIELD_WRONG_METHOD = "Catalog.CatalogFieldInWrongMethod";
+    private static final String CATALOG_FIELD_FILE_NAME = "/src/Catalogs/CatalogField/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_FIELD_WRONG_REGION_FILE_NAME =
+        "/src/Catalogs/CatalogFieldInWrongRegion/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_FIELD_WRONG_METHOD_FILE_NAME =
+        "/src/Catalogs/CatalogFieldInWrongMethod/Forms/ItemForm/Module.bsl";
 
-    private static final String FQN_CATALOG_COMMAND = "Catalog.CatalogCommand";
-    private static final String FQN_CATALOG_COMMAND_WRONG_REGION = "Catalog.CatalogCommandInWrongRegion";
-    private static final String FQN_CATALOG_COMMAND_WRONG_METHOD = "Catalog.CatalogCommandInWrongMethod";
+    private static final String CATALOG_COMMAND_FILE_NAME = "/src/Catalogs/CatalogCommand/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_COMMAND_WRONG_REGION_FILE_NAME =
+        "/src/Catalogs/CatalogCommandInWrongRegion/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_COMMAND_WRONG_METHOD_FILE_NAME =
+        "/src/Catalogs/CatalogCommandInWrongMethod/Forms/ItemForm/Module.bsl";
 
-    private static final String FQN_CATALOG_TABLE = "Catalog.CatalogTable";
-    private static final String FQN_CATALOG_TABLE_WRONG_REGION = "Catalog.CatalogTableInWrongRegion";
-    private static final String FQN_CATALOG_TABLE_WRONG_METHOD = "Catalog.CatalogTableInWrongMethod";
+    private static final String CATALOG_TABLE_FILE_NAME = "/src/Catalogs/CatalogTable/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_TABLE_WRONG_REGION_FILE_NAME =
+        "/src/Catalogs/CatalogTableInWrongRegion/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_TABLE_WRONG_METHOD_FILE_NAME =
+        "/src/Catalogs/CatalogTableInWrongMethod/Forms/ItemForm/Module.bsl";
 
     @Override
     protected String getTestConfigurationName()
@@ -58,265 +61,111 @@ public class ModuleStructureEventFormRegionsCheckTest
     @Test
     public void testFormEventInRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNull(marker);
+        List<Marker> markers = getMarkers(CATALOG_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testFormEventInWrongRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_WRONG_REGION_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_WRONG_REGION, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        assertEquals("20", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testFormEventInWrongMethod() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_WRONG_METHOD_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_WRONG_METHOD, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testFormFieldEventInRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_FIELD, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNull(marker);
+        List<Marker> markers = getMarkers(CATALOG_FIELD_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testFormFieldEventInWrongRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_FIELD_WRONG_REGION_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_FIELD_WRONG_REGION, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        assertEquals("13", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testFormFieldEventInWrongMethod() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_FIELD_WRONG_METHOD_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_FIELD_WRONG_METHOD, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        assertEquals("7", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testFormCommandEventInRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_COMMAND, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNull(marker);
+        List<Marker> markers = getMarkers(CATALOG_COMMAND_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testFormCommandEventInWrongRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_COMMAND_WRONG_REGION_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_COMMAND_WRONG_REGION, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        assertEquals("5", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testFormFieldCommandInWrongMethod() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_COMMAND_WRONG_METHOD_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_COMMAND_WRONG_METHOD, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        assertEquals("15", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testFormTableEventInRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_TABLE, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNull(marker);
+        List<Marker> markers = getMarkers(CATALOG_TABLE_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testFormTableEventInWrongRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_TABLE_WRONG_REGION_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_TABLE_WRONG_REGION, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
-
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        assertEquals("9", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testFormTableCommandInWrongMethod() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_TABLE_WRONG_METHOD_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_TABLE_WRONG_METHOD, dtProject);
-        assertTrue(mdObject instanceof Catalog);
+        assertEquals("12", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
 
-        List<CatalogForm> forms = ((Catalog)mdObject).getForms();
-        assertEquals(forms.isEmpty(), false);
+    private List<Marker> getMarkers(String moduleFileName)
+    {
+        String moduleId = Path.ROOT.append(getTestConfigurationName()).append(moduleFileName).toString();
+        List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
 
-        CatalogForm form = forms.get(0);
-        assertNotNull(form);
-
-        Module module = form.getForm().getModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        return markers.stream()
+            .filter(marker -> CHECK_ID.equals(getCheckIdFromMarker(marker, getProject())))
+            .collect(Collectors.toList());
     }
 
 }

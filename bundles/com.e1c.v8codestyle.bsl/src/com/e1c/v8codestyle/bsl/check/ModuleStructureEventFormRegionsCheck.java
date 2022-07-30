@@ -184,7 +184,7 @@ public class ModuleStructureEventFormRegionsCheck
             Table table = EcoreUtil2.getContainerOfType(container, Table.class);
             if (table != null)
             {
-                if (!isTableHanlderRegion(scriptVariant, regionName))
+                if (!isTableHanlderRegion(scriptVariant, regionName, table.getName()))
                 {
                     addIssueShouldNotBeInRegion(result, name, regionName);
                 }
@@ -272,9 +272,10 @@ public class ModuleStructureEventFormRegionsCheck
         return ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
     }
 
-    private boolean isTableHanlderRegion(ScriptVariant scriptVariant, String regionName)
+    private boolean isTableHanlderRegion(ScriptVariant scriptVariant, String regionName, String tableName)
     {
-        return ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+        return (ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant) + tableName)
+            .equals(regionName);
     }
 
     private boolean isFormHeaderHanlderRegion(String regionName, ScriptVariant scriptVariant)
