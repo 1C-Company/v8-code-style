@@ -75,6 +75,7 @@ public final class CommonModuleNameServerCallCheck
             .issueType(IssueType.WARNING)
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new TopObjectFilterExtension())
+            .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(MD_OBJECT__NAME, COMMON_MODULE__SERVER_CALL);

@@ -10,4 +10,5 @@
 Процедура Тест()
 	ЭтаФорма.МойРеквизит = ЭтотОбъект.МояФункция();
 	ThisForm.МойРеквизит = ThisObject.МояФункция();	
+	Notification = New NotifyDescription("ShowQueryEnding", ThisForm);
 КонецПроцедуры
