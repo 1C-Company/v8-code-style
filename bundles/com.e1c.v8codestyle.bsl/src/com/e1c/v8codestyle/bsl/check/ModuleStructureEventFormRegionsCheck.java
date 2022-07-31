@@ -105,12 +105,14 @@ public class ModuleStructureEventFormRegionsCheck
     protected void check(Object object, ResultAcceptor result, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
+        if (monitor.isCanceled())
+        {
+            return;
+        }
+
         Method method = (Method)object;
-
         IV8Project project = v8ProjectManager.getProject(method);
-
         ScriptVariant scriptVariant = project.getScriptVariant();
-
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
         if (module == null)
         {
@@ -135,121 +137,131 @@ public class ModuleStructureEventFormRegionsCheck
             return;
         }
 
-        Map<CaseInsensitiveString, List<EObject>> eventHandlers = bslEventsService.getEventHandlersContainer(module);
-
         String regionName = region.get().getName();
-        String name = method.getName();
-        CaseInsensitiveString methodName = new CaseInsensitiveString(name);
-
-        List<EObject> containers = eventHandlers.get(methodName);
-
+        String methodName = method.getName();
+        Map<CaseInsensitiveString, List<EObject>> eventHandlers = bslEventsService.getEventHandlersContainer(module);
+        List<EObject> containers = eventHandlers.get(new CaseInsensitiveString(methodName));
         if (containers == null)
         {
             if (isEventHandlerRegion(scriptVariant, regionName))
             {
-                addIssueShouldNotBeInRegion(result, name, regionName);
+                addIssueShouldNotBeInRegion(result, methodName, regionName);
             }
             return;
         }
 
+        check(result, containers, regionName, methodName, scriptVariant, monitor);
+    }
+
+    private void check(ResultAcceptor result, List<EObject> containers, String regionName, String methodName,
+        ScriptVariant scriptVariant, IProgressMonitor monitor)
+    {
         for (EObject obj : containers)
         {
+            if (monitor.isCanceled())
+            {
+                return;
+            }
+
             if (obj instanceof FormCommandHandlerContainer)
             {
-                //command
-                if (!isCommandHanlderRegion(regionName, scriptVariant))
-                {
-                    addIssueShouldNotBeInRegion(result, name, regionName);
-                }
-                else
-                {
-                    String defaultRegionName =
-                        ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
-                    if (!defaultRegionName.equalsIgnoreCase(regionName))
-                    {
-                        addIssueShouldBeInRegion(result, name, defaultRegionName);
-                    }
-                }
-                return;
+                addIssueCommand(result, regionName, methodName, scriptVariant);
             }
-
-            if (!(obj instanceof EventHandlerContainer))
+            else if (!(obj instanceof EventHandlerContainer))
             {
                 return;
             }
-
-            EventHandlerContainer container = (EventHandlerContainer)obj;
-
-            //table
-            Table table = EcoreUtil2.getContainerOfType(container, Table.class);
-            if (table != null)
+            else
             {
-                if (!isTableHanlderRegion(scriptVariant, regionName, table.getName()))
-                {
-                    addIssueShouldNotBeInRegion(result, name, regionName);
-                }
-                else
-                {
-                    String tableItemsName =
-                        ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
-                    String defaultRegionName = tableItemsName + table.getName();
-                    if (!defaultRegionName.equalsIgnoreCase(regionName))
-                    {
-                        addIssueShouldBeInRegion(result, name, defaultRegionName);
-                    }
-                }
-                return;
+                EventHandlerContainer container = (EventHandlerContainer)obj;
+                check(result, container, regionName, methodName, scriptVariant);
             }
+        }
+    }
 
-            //form header
-            FormField field = EcoreUtil2.getContainerOfType(container, FormField.class);
-            DecorationExtInfo decoration = null;
-            if (field == null)
+    private void check(ResultAcceptor result, EventHandlerContainer container, String regionName, String methodName,
+        ScriptVariant scriptVariant)
+    {
+        Table table = null;
+        FormField field = null;
+        DecorationExtInfo decoration = null;
+        GroupExtInfo group = null;
+        Form form = null;
+        for (EObject e = container; e != null; e = e.eContainer())
+        {
+            if (e instanceof Table)
             {
-                decoration = EcoreUtil2.getContainerOfType(container, DecorationExtInfo.class);
+                table = (Table)e;
             }
+            else if (e instanceof FormField)
+            {
+                field = (FormField)e;
+            }
+            else if (e instanceof DecorationExtInfo)
+            {
+                decoration = (DecorationExtInfo)e;
+            }
+            else if (e instanceof GroupExtInfo)
+            {
+                group = (GroupExtInfo)e;
+            }
+            else if (e instanceof Form)
+            {
+                form = (Form)e;
+                break;
+            }
+        }
 
-            GroupExtInfo group = null;
-            if (decoration == null)
-            {
-                group = EcoreUtil2.getContainerOfType(container, GroupExtInfo.class);
-            }
+        if (table != null)
+        {
+            addIssueTable(result, table.getName(), regionName, methodName, scriptVariant);
+        }
+        else if (field != null || decoration != null || group != null)
+        {
+            addIssueItem(result, regionName, methodName, scriptVariant);
+        }
+        else if (form != null)
+        {
+            addIssueForm(result, regionName, methodName, scriptVariant);
+        }
+    }
 
-            if (field != null || decoration != null || group != null)
-            {
-                if (!isFormHeaderHanlderRegion(regionName, scriptVariant))
-                {
-                    addIssueShouldNotBeInRegion(result, name, regionName);
-                }
-                else
-                {
-                    String defaultRegionName =
-                        ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
-                    if (!defaultRegionName.equalsIgnoreCase(regionName))
-                    {
-                        addIssueShouldBeInRegion(result, name, defaultRegionName);
-                    }
-                }
-                return;
-            }
+    private void addIssueCommand(ResultAcceptor result, String regionName, String methodName,
+        ScriptVariant scriptVariant)
+    {
+        if (!isCommandHanlderRegion(regionName, scriptVariant))
+        {
+            String defRegionName = ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
+            addIssueShouldBeInRegion(result, methodName, defRegionName);
+        }
+    }
 
-            //form event
-            Form form = EcoreUtil2.getContainerOfType(container, Form.class);
-            if (form != null)
-            {
-                if (!isFormHanlderRegion(regionName, scriptVariant))
-                {
-                    addIssueShouldNotBeInRegion(result, name, regionName);
-                }
-                else
-                {
-                    String defaultRegionName = ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant);
-                    if (!defaultRegionName.equalsIgnoreCase(regionName))
-                    {
-                        addIssueShouldBeInRegion(result, name, defaultRegionName);
-                    }
-                }
-            }
+    private void addIssueTable(ResultAcceptor result, String tableName, String regionName, String methodName,
+        ScriptVariant scriptVariant)
+    {
+        if (!isTableHanlderRegion(scriptVariant, regionName, tableName))
+        {
+            String defRegionName =
+                ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant) + tableName;
+            addIssueShouldBeInRegion(result, methodName, defRegionName);
+        }
+    }
+
+    private void addIssueForm(ResultAcceptor result, String regionName, String methodName, ScriptVariant scriptVariant)
+    {
+        if (!isFormHanlderRegion(regionName, scriptVariant))
+        {
+            addIssueShouldBeInRegion(result, methodName,
+                ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant));
+        }
+    }
+
+    private void addIssueItem(ResultAcceptor result, String regionName, String methodName, ScriptVariant scriptVariant)
+    {
+        if (!isFormHeaderHanlderRegion(regionName, scriptVariant))
+        {
+            addIssueShouldBeInRegion(result, methodName,
+                ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant));
         }
     }
 
