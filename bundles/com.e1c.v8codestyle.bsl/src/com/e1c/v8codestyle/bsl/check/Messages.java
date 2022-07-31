@@ -154,6 +154,8 @@ final class Messages
 
     public static String ModuleStructureEventFormRegionsCheck_Excluded_method_names;
 
+    public static String ModuleStructureEventFormRegionsCheck_Multilevel_embedding_of_regions;
+
     public static String ModuleStructureEventFormRegionsCheck_Title;
 
     public static String QueryInLoop_check_query_in_infinite_loop;

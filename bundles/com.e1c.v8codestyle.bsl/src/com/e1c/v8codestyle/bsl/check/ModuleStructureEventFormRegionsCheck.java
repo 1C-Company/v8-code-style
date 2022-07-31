@@ -65,6 +65,10 @@ public class ModuleStructureEventFormRegionsCheck
 
     private static final String PARAMETER_EXCLUDE_METHOD_NAME_PATTERN = "excludeModuleMethodNamePattern"; //$NON-NLS-1$
 
+    private static final String DEFAULT_CHECK_EMBEDDING_OF_REGIONS = Boolean.toString(Boolean.TRUE);
+
+    private static final String MULTILEVEL_EMBEDDING_OF_REGIONS = "multilevelEmbeddingOfRegions"; //$NON-NLS-1$
+
     private static final String PATTERN_EXCLUDE = "^(?U)(Подключаемый|Attachable)_.*$"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
@@ -98,7 +102,9 @@ public class ModuleStructureEventFormRegionsCheck
             .module()
             .checkedObjectType(METHOD)
             .parameter(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN, String.class, PATTERN_EXCLUDE,
-                Messages.ModuleStructureEventFormRegionsCheck_Excluded_method_names);
+                Messages.ModuleStructureEventFormRegionsCheck_Excluded_method_names)
+            .parameter(MULTILEVEL_EMBEDDING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_EMBEDDING_OF_REGIONS,
+                Messages.ModuleStructureEventFormRegionsCheck_Multilevel_embedding_of_regions);
     }
 
     @Override
@@ -131,7 +137,9 @@ public class ModuleStructureEventFormRegionsCheck
             return;
         }
 
-        Optional<RegionPreprocessor> region = getTopParentRegion(method);
+        boolean multilevel = parameters.getBoolean(MULTILEVEL_EMBEDDING_OF_REGIONS);
+
+        Optional<RegionPreprocessor> region = multilevel ? getTopParentRegion(method) : getFirstParentRegion(method);
         if (region.isEmpty())
         {
             return;
