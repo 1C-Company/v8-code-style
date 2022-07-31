@@ -14,12 +14,8 @@ package com.e1c.v8codestyle.form.check;
 
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM_ITEM_CONTAINER;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
@@ -61,10 +57,11 @@ public class FormListFieldRefNotAddedCheck
     implements ICheck
 {
     private static final String CHECK_ID = "form-list-field-ref-not-added"; //$NON-NLS-1$
-    private static final Set<EClass> TARGET_CONTAINMENT = new HashSet<>(Arrays.asList(FORM_ITEM_CONTAINER));
-    private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("Ref", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final Set<EClass> TARGET_CONTAINMENT = Set.of(FORM_ITEM_CONTAINER);
+    private static final String REF_ABSTRACT_DATA_PATH = "Ref"; //$NON-NLS-1$
+    private static final String REF_ABSTRACT_DATA_PATH_RU = "Ссылка";//$NON-NLS-1$
     private static final Predicate<? super DbViewFieldDef> FIELD_NAME_CHECK =
-        name -> (name.getName() != null) && name.getName().equals(REF_ABSTRACT_DATA_PATH.get(0));
+        name -> (name.getName() != null) && name.getName().equals(REF_ABSTRACT_DATA_PATH);
 
     @Override
     public String getCheckId()
@@ -89,25 +86,24 @@ public class FormListFieldRefNotAddedCheck
     public void check(Object object, ICheckResultAcceptor resultAcceptor, ICheckParameters params,
         IProgressMonitor progressMonitor)
     {
-
-        if (object instanceof Form && isBaseForm((Form)object))
+        if (!(object instanceof Table))
         {
             return;
         }
 
-        if (object instanceof Table && ((Table)object).getDataPath() != null)
+        if (((IBmObject)object).bmGetTopObject() instanceof Form
+            && isBaseForm((Form)((IBmObject)object).bmGetTopObject()))
         {
-
-            Table table = (Table)object;
-            if (checkTable(table) && !pathCheck(table.getItems()))
-            {
-                EIssue issue =
-                    new EIssue(Messages.FormListFieldRefNotAddedCheck_The_Ref_field_is_not_added_to_dynamic_list, null);
-                resultAcceptor.addIssue(table, issue);
-            }
-
+            return;
         }
 
+        Table table = (Table)object;
+        if (table.getDataPath() != null && checkTable(table) && !pathCheck(table.getItems()))
+        {
+            EIssue issue =
+                new EIssue(Messages.FormListFieldRefNotAddedCheck_The_Ref_field_is_not_added_to_dynamic_list, null);
+            resultAcceptor.addIssue(table, issue);
+        }
     }
 
     private static boolean isBaseForm(Form form)
@@ -123,17 +119,15 @@ public class FormListFieldRefNotAddedCheck
         {
             for (int i = 0; i < items.size(); i++)
             {
-                if (items.get(i) instanceof FormField && !items.get(i)
-                    .eContents()
-                    .stream()
-                    .filter(AbstractDataPath.class::isInstance)
-                    .filter(item -> itemPathCheck((AbstractDataPath)item))
-                    .collect(Collectors.toList())
-                    .isEmpty())
+                FormItem formItem = items.get(i);
+                if (formItem instanceof FormField && ((FormField)formItem).getDataPath() != null
+                    && itemPathCheck(((FormField)formItem).getDataPath()))
                 {
+
                     return true;
                 }
-                if (items.get(i) instanceof FormGroup && pathCheck(((FormGroup)items.get(i)).getItems()))
+
+                if (formItem instanceof FormGroup && pathCheck(((FormGroup)formItem).getItems()))
                 {
                     return true;
 
@@ -146,33 +140,26 @@ public class FormListFieldRefNotAddedCheck
     private static boolean itemPathCheck(AbstractDataPath path)
     {
         EList<String> segments = path.getSegments();
-        if (segments.isEmpty())
+        // checking size here as DataPath of Ref attribute in dynamic list always consist of 2 segemts
+        if (segments.isEmpty() && segments.size() != 2)
         {
             return false;
         }
 
         String lastSegment = segments.get(segments.size() - 1);
-        return lastSegment.equals(REF_ABSTRACT_DATA_PATH.get(0)) || lastSegment.equals(REF_ABSTRACT_DATA_PATH.get(1));
+        return lastSegment.equals(REF_ABSTRACT_DATA_PATH) || lastSegment.equals(REF_ABSTRACT_DATA_PATH_RU);
     }
 
     private static boolean checkTable(Table table)
     {
-        if (table != null && table.getDataPath() != null)
+        if (table != null && table.getDataPath() != null && !table.getDataPath().getObjects().isEmpty()
+            && table.getDataPath().getObjects().get(0).getObject() instanceof FormAttribute)
         {
-            FormAttribute formAttribute = (FormAttribute)table.bmGetTopObject()
-                .eContents()
-                .stream()
-                .filter(FormAttribute.class::isInstance)
-                .findAny()
-                .orElse(null);
-            if (formAttribute != null)
+            FormAttribute formAttribute = (FormAttribute)table.getDataPath().getObjects().get(0).getObject();
+            DbViewDef dbViewDef = ((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
+            if (dbViewDef != null && !dbViewDef.eIsProxy() && dbViewDef.getFields().stream().anyMatch(FIELD_NAME_CHECK))
             {
-                DbViewDef dbViewDef = ((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
-                if (dbViewDef != null && !dbViewDef.eIsProxy()
-                    && dbViewDef.getFields().stream().anyMatch(FIELD_NAME_CHECK))
-                {
-                    return true;
-                }
+                return true;
             }
         }
         return false;
@@ -194,16 +181,14 @@ public class FormListFieldRefNotAddedCheck
             {
                 table = (Table)object;
             }
-            if (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo)
+
+            if (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo
+                && object.eContainer() instanceof Table)
             {
-                table = (Table)((Form)((FormGroup)object).bmGetTopObject()).getItems()
-                    .stream()
-                    .filter(Table.class::isInstance)
-                    .collect(Collectors.toList())
-                    .get(0);
+                table = (Table)object.eContainer();
             }
 
-            if (checkTable(table))
+            if (table != null)
             {
                 contextSession.addModelCheck(table);
             }
