@@ -59,7 +59,7 @@ public class FormListFieldRefNotAddedCheck
     private static final String CHECK_ID = "form-list-field-ref-not-added"; //$NON-NLS-1$
     private static final Set<EClass> TARGET_CONTAINMENT = Set.of(FORM_ITEM_CONTAINER);
     private static final String REF_ABSTRACT_DATA_PATH = "Ref"; //$NON-NLS-1$
-    private static final String REF_ABSTRACT_DATA_PATH_RU = "Ссылка";//$NON-NLS-1$
+    private static final String REF_ABSTRACT_DATA_PATH_RU = "Ссылка"; //$NON-NLS-1$
     private static final Predicate<? super DbViewFieldDef> FIELD_NAME_CHECK =
         name -> (name.getName() != null) && name.getName().equals(REF_ABSTRACT_DATA_PATH);
 
