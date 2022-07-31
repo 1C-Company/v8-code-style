@@ -49,4 +49,22 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
+  <forms uuid="65d00f31-d390-4e67-847f-846a349e8262">
+    <name>TestCustomListForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Test custom list form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="4f8c8178-275e-4643-ae9f-35cf5973a23e">
+    <name>TestCustomListFormRu</name>
+    <synonym>
+      <key>en</key>
+      <value>Test custom list form ru</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>
