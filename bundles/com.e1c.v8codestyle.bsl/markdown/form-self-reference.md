@@ -1,6 +1,6 @@
 # Outdated alias used
 
-Usage of outdated self reference `ThisForm` (when referencing method, property or attribute)
+You should use the alias `ThisObject` instead of the obsolete `ThisForm` in the form module
 
 ## Noncompliant Code Example
 
@@ -14,6 +14,13 @@ EndFunction
 ThisForm.myParam = ThisForm.test();
 ```
 
+## Noncompliant Code Example
+
+```bsl
+	Notification = New NotifyDescription("ShowQueryEnding", ThisForm);
+	ShowQuery(Notification, QuestionText, ...);
+```
+
 ## Compliant Solution
 
 ```bsl
@@ -24,6 +31,13 @@ Function test() Export
 EndFunction
 
 ThisObject.myParam = ThisObject.test();
+```
+
+## Compliant Solution
+
+```bsl
+	Notification = New NotifyDescription("ShowQueryEnding", ThisObject);
+	ShowQuery(Notification, QuestionText, ...);
 ```
 
 ## See

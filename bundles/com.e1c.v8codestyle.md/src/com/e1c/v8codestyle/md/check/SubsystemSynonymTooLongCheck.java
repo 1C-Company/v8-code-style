@@ -33,6 +33,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 
 /**
  * Check top subsystem synonym length that should be less then 35 by default or value
@@ -70,6 +72,8 @@ public class SubsystemSynonymTooLongCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
+            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .issueType(IssueType.UI_STYLE)
             .topObject(SUBSYSTEM)
             .checkTop()

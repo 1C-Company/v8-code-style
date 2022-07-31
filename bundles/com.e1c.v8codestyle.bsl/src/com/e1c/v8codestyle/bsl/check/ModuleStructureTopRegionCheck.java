@@ -98,7 +98,7 @@ public class ModuleStructureTopRegionCheck
             return;
         }
 
-        Optional<RegionPreprocessor> parent = getParentRegion(region);
+        Optional<RegionPreprocessor> parent = getFirstParentRegion(region);
         if (parent.isPresent())
         {
             resultAceptor.addIssue(Messages.ModuleStructureTopRegionCheck_error_message, NAMED_ELEMENT__NAME);
