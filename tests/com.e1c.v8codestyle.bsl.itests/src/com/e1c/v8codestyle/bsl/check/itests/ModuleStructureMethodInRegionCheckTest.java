@@ -35,7 +35,7 @@ public class ModuleStructureMethodInRegionCheckTest
 {
 
     private static final String CHECK_ID = "module-structure-method-in-regions"; //$NON-NLS-1$
-    private static final String PROJECT_NAME = "ModuleStructureRegionsCheck";
+    private static final String PROJECT_NAME = "ModuleStructureMethodInRegionCheck";
 
     private static final String COMMON_MODULE_NO_REGION_FILE_NAME =
         "/src/CommonModules/CommonModuleNoRegion/Module.bsl";
@@ -50,6 +50,10 @@ public class ModuleStructureMethodInRegionCheckTest
         "/src/CommonModules/CommonModuleExportInRegion/Module.bsl";
     private static final String COMMON_MODULE_EXPORT_IN_NON_INTERFACE_REGION_FILE_NAME =
         "/src/CommonModules/CommonModuleInNonInterfaceRegion/Module.bsl";
+    private static final String COMMAND_MODULE_OUT_OF_REGION_FILE_NAME =
+        "/src/CommonCommands/CommonCommand/CommandModule.bsl";
+    private static final String FORM_MODULE_OUT_OF_REGION_FILE_NAME =
+        "/src/Catalogs/CatalogOutOfRegion/Forms/ItemForm/Module.bsl";
 
     @Override
     protected String getTestConfigurationName()
@@ -107,6 +111,24 @@ public class ModuleStructureMethodInRegionCheckTest
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_EXPORT_IN_REGION_FILE_NAME);
         assertEquals(0, markers.size());
+    }
+
+    @Test
+    public void testMethodOutOfRegionInForm() throws Exception
+    {
+        List<Marker> markers = getMarkers(FORM_MODULE_OUT_OF_REGION_FILE_NAME);
+        assertEquals(1, markers.size());
+
+        assertEquals("2", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    @Test
+    public void testMethodOutOfRegionInCommand() throws Exception
+    {
+        List<Marker> markers = getMarkers(COMMAND_MODULE_OUT_OF_REGION_FILE_NAME);
+        assertEquals(1, markers.size());
+
+        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     private List<Marker> getMarkers(String moduleFileName)

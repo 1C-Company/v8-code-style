@@ -158,7 +158,7 @@ final class Messages
 
     public static String ModuleStructureMethodInRegionCheck_Method_should_be_placed_in_one_of_the_standard_regions;
 
-    public static String ModuleStructureMethodInRegionCheck_Multilevel_embedding_of_regions;
+    public static String ModuleStructureMethodInRegionCheck_Multilevel_nesting_of_regions;
 
     public static String ModuleStructureMethodInRegionCheck_Only_export;
 

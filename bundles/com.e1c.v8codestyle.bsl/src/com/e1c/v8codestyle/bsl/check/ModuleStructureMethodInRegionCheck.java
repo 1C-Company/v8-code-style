@@ -88,7 +88,7 @@ public class ModuleStructureMethodInRegionCheck
             .module()
             .checkedObjectType(METHOD)
             .parameter(MULTILEVEL_EMBEDDING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_EMBEDDING_OF_REGIONS,
-                Messages.ModuleStructureMethodInRegionCheck_Multilevel_embedding_of_regions);
+                Messages.ModuleStructureMethodInRegionCheck_Multilevel_nesting_of_regions);
     }
 
     @Override
@@ -107,15 +107,16 @@ public class ModuleStructureMethodInRegionCheck
 
         ModuleType moduleType = getModuleType(method);
         Collection<String> regionNames = moduleStructureProvider.getModuleStructureRegions(moduleType, scriptVariant);
-        String regions = String.join(",", regionNames); //$NON-NLS-1$
 
         boolean multilevel = parameters.getBoolean(MULTILEVEL_EMBEDDING_OF_REGIONS);
 
         Optional<RegionPreprocessor> region = multilevel ? getTopParentRegion(method) : getFirstParentRegion(method);
 
+        // An export method located out of region in a form and command module is checked
+        // by {@link ExportMethodInCommandFormModuleCheck}
         if (region.isEmpty())
         {
-            addIssue(resultAceptor, method, regions);
+            addIssue(resultAceptor, method, String.join(", ", regionNames)); //$NON-NLS-1$
         }
         else if (moduleType != ModuleType.FORM_MODULE && moduleType != ModuleType.COMMAND_MODULE)
         {
@@ -123,7 +124,7 @@ public class ModuleStructureMethodInRegionCheck
             String internalName = ModuleStructureSection.INTERNAL.getName(scriptVariant);
             String privateName = ModuleStructureSection.PRIVATE.getName(scriptVariant);
             String regionName = region.get().getName();
-            if ((publicName.equals(regionName) || internalName.equals(regionName)) && !method.isExport())
+            if (!method.isExport() && (publicName.equals(regionName) || internalName.equals(regionName)))
             {
                 resultAceptor.addIssue(
                     MessageFormat.format(Messages.ModuleStructureMethodInRegionCheck_Only_export, regionName),
@@ -132,7 +133,7 @@ public class ModuleStructureMethodInRegionCheck
             else if (method.isExport() && !(publicName.equals(regionName) || internalName.equals(regionName)
                 || privateName.equals(regionName)))
             {
-                addIssue(resultAceptor, method, String.join(",", publicName, internalName, privateName)); //$NON-NLS-1$
+                addIssue(resultAceptor, method, String.join(", ", publicName, internalName, privateName)); //$NON-NLS-1$
             }
         }
     }

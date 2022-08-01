@@ -43,5 +43,6 @@
   <commonModules>CommonModule.CommonModuleInNonInterfaceRegion</commonModules>
   <commonModules>CommonModule.CommonModuleInRegion</commonModules>
   <commonModules>CommonModule.CommonModuleNoRegion</commonModules>
+  <commonCommands>CommonCommand.CommonCommand</commonCommands>
   <catalogs>Catalog.CatalogOutOfRegion</catalogs>
 </mdclass:Configuration>
