@@ -1,7 +1,7 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 59
+Общее количество проверок: 60
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -58,6 +58,7 @@
 | [property-return-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/property-return-type.md) | Свойство объекта имеет тип возвращаемого значения |
 | [query-in-loop](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/query-in-loop.md) | Запрос в цикле |
 | [rollback-transaction](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/rollback-transaction.md) | Проверка нарушения схемы работы с транзакциями |
+| [server-execution-safe-mode](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/server-execution-safe-mode.md) | Отсутствует включение безопасного режима перед вызовом метода "Выполнить" или "Вычислить" |
 | [statement-type-change](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/statement-type-change.md) | Утверждение меняет тип |
 | [structure-consructor-too-many-keys](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-too-many-keys.md) | Конструктор структуры содержит слишком много ключей |
 | [structure-consructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-value-type.md) | Типизация значений в конструкторе структуры |
