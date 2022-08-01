@@ -16,7 +16,6 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACC
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -192,14 +191,7 @@ public class TypedValueAddingToUntypedCollectionCheck
             }
         }
         // Remove Arbitrary type which do not need to check
-        for (Iterator<TypeItem> iterator = collectionItemTypes.iterator(); iterator.hasNext();)
-        {
-            TypeItem typeItem = iterator.next();
-            if (McoreUtil.getTypeName(typeItem).equals(IEObjectTypeNames.ARBITRARY))
-            {
-                iterator.remove();
-            }
-        }
+        collectionItemTypes.removeIf(p -> McoreUtil.getTypeName(p).equals(IEObjectTypeNames.ARBITRARY));
 
         return collectionItemTypes;
     }
