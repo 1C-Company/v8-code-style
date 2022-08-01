@@ -40,7 +40,9 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentati
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
@@ -266,6 +268,47 @@ public abstract class AbstractTypeCheck
         {
             return true;
         }
+    }
+
+    /**
+     * Returns a method source for given feature access
+     * @param object {@link FeatureAccess}, cannot be <code>null</code>
+     * @return the source, can return {@code null}
+     */
+    protected EObject getSourceMethod(FeatureAccess object)
+    {
+        Environments actualEnvs = getActualEnvironments(object);
+        if (actualEnvs.isEmpty())
+        {
+            return null;
+        }
+        List<FeatureEntry> objects = dynamicFeatureAccessComputer.resolveObject(object, actualEnvs);
+        for (FeatureEntry entry : objects)
+        {
+            EObject source = entry.getFeature();
+            if (source instanceof Method || (source instanceof com._1c.g5.v8.dt.mcore.Method))
+            {
+                return source;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns an actual environments for given object
+     * @param object {@link EObject}, cannot be <code>null</code>
+     * @return the environments, can return {@code Environments.EMPTY} value
+     */
+    protected Environments getActualEnvironments(EObject object)
+    {
+        Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
+        if (envs == null)
+        {
+            return Environments.EMPTY;
+        }
+
+        return bslPreferences.getLoadEnvs(object).intersect(envs.environments());
     }
 
     private static Collection<? extends String> getCastingType(Collection<String> expectedTypesNames)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021, 1C-Soft LLC and others.
+ * Copyright (C) 2022, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -32,12 +32,10 @@ import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.SourceObjectLinkProvider;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
-import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.Method;
 import com._1c.g5.v8.dt.mcore.Type;
 import com._1c.g5.v8.dt.mcore.TypeItem;
@@ -120,7 +118,7 @@ public class TypedValueAddingToUntypedCollectionCheck
             return;
         }
 
-        Method method = getSourceMethod(fa);
+        Method method = (Method)getSourceMethod(fa);
 
         if (method == null || method.getParamSet().isEmpty())
         {
@@ -130,43 +128,11 @@ public class TypedValueAddingToUntypedCollectionCheck
         Collection<TypeItem> collectionItemTypes =
             getCollectionItemTypes(inv, method);
 
-        if (collectionItemTypes.size() == 0)
+        if (collectionItemTypes.isEmpty())
         {
             resultAceptor.addIssue(Messages.TypedValueAddingToUntypedCollectionCheck_title,
                 BslPackage.Literals.EXPRESSION__TYPES);
         }
-    }
-
-    private Method getSourceMethod(FeatureAccess object)
-    {
-        Environments actualEnvs = getActualEnvironments(object);
-        if (actualEnvs.isEmpty())
-        {
-            return null;
-        }
-        List<FeatureEntry> objects = dynamicFeatureAccessComputer.resolveObject(object, actualEnvs);
-        for (FeatureEntry entry : objects)
-        {
-            EObject source = entry.getFeature();
-
-            if (source instanceof Method)
-            {
-                return (Method)source;
-            }
-        }
-
-        return null;
-    }
-
-    private Environments getActualEnvironments(EObject object)
-    {
-        Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
-        if (envs == null)
-        {
-            return Environments.EMPTY;
-        }
-
-        return bslPreferences.getLoadEnvs(object).intersect(envs.environments());
     }
 
     private Collection<TypeItem> getCollectionItemTypes(Invocation inv,
@@ -175,56 +141,66 @@ public class TypedValueAddingToUntypedCollectionCheck
         Collection<TypeItem> collectionItemTypes = new ArrayList<>();
         Environments actualEnvs = getActualEnvironments(inv);
 
-        if (!(method instanceof SourceObjectLinkProvider) && inv.getMethodAccess() instanceof DynamicFeatureAccess)
+        if(method instanceof SourceObjectLinkProvider || !(inv.getMethodAccess() instanceof DynamicFeatureAccess))
         {
-            Map<String, Collection<Integer>> typesAndParams = COLLECTION_ADD_METHODS.get(method.getName());
-            if (typesAndParams != null)
+            return collectionItemTypes;
+        }
+
+        Map<String, Collection<Integer>> typesAndParams = COLLECTION_ADD_METHODS.get(method.getName());
+
+        if (typesAndParams == null)
+        {
+            return collectionItemTypes;
+        }
+
+        TypeItem collectionType = EcoreUtil2.getContainerOfType(method, TypeItem.class);
+        String typeName = collectionType == null ? null : McoreUtil.getTypeName(collectionType);
+
+        if (typeName == null || !typesAndParams.containsKey(typeName))
+        {
+            return collectionItemTypes;
+        }
+
+        List<TypeItem> types = typeComputer
+            .computeTypes(((DynamicFeatureAccess)inv.getMethodAccess()).getSource(), actualEnvs);
+
+        for (TypeItem type : types)
+        {
+            type = (TypeItem)EcoreUtil.resolve(type, inv);
+
+            if (!(type instanceof Type) || !typeName.equals(McoreUtil.getTypeName(type)))
             {
-                TypeItem collectionType = EcoreUtil2.getContainerOfType(method, TypeItem.class);
-                String typeName = collectionType == null ? null : McoreUtil.getTypeName(collectionType);
+                continue;
+            }
 
-                if (typeName != null && typesAndParams.containsKey(typeName))
-                {
-                    List<TypeItem> types = typeComputer
-                        .computeTypes(((DynamicFeatureAccess)inv.getMethodAccess()).getSource(), actualEnvs);
+            if (typeName.equals(IEObjectTypeNames.VALUE_LIST))
+            {
+                List<TypeItem> valueListItemTypes = ((Type)type).getCollectionElementTypes().allTypes();
 
-                    for (TypeItem type : types)
-                    {
-                        type = (TypeItem)EcoreUtil.resolve(type, inv);
-
-                        if (type instanceof Type && typeName.equals(McoreUtil.getTypeName(type)))
-                        {
-                            if (typeName.equals(IEObjectTypeNames.VALUE_LIST))
-                            {
-                                List<TypeItem> valueListItemTypes = ((Type)type).getCollectionElementTypes().allTypes();
-
-                                Set<TypeItem> collectionTypes =
-                                    dynamicFeatureAccessComputer.getAllProperties(valueListItemTypes, inv.eResource())
-                                        .stream()
-                                        .flatMap(e -> e.getFirst().stream())
-                                        .filter(p -> p.getName().equals(MAP_VALUE))
-                                        .flatMap(p -> p.getTypes().stream())
-                                        .collect(Collectors.toSet());
-                                collectionItemTypes.addAll(collectionTypes);
-                            }
-                            else
-                            {
-                                collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
-                            }
-                        }
-                    }
-                    // Remove Arbitrary type which do not need to check
-                    for (Iterator<TypeItem> iterator = collectionItemTypes.iterator(); iterator.hasNext();)
-                    {
-                        TypeItem typeItem = iterator.next();
-                        if (McoreUtil.getTypeName(typeItem).equals(IEObjectTypeNames.ARBITRARY))
-                        {
-                            iterator.remove();
-                        }
-                    }
-                }
+                Set<TypeItem> collectionTypes =
+                    dynamicFeatureAccessComputer.getAllProperties(valueListItemTypes, inv.eResource())
+                        .stream()
+                        .flatMap(e -> e.getFirst().stream())
+                        .filter(p -> p.getName().equals(MAP_VALUE))
+                        .flatMap(p -> p.getTypes().stream())
+                        .collect(Collectors.toSet());
+                collectionItemTypes.addAll(collectionTypes);
+            }
+            else
+            {
+                collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
             }
         }
+        // Remove Arbitrary type which do not need to check
+        for (Iterator<TypeItem> iterator = collectionItemTypes.iterator(); iterator.hasNext();)
+        {
+            TypeItem typeItem = iterator.next();
+            if (McoreUtil.getTypeName(typeItem).equals(IEObjectTypeNames.ARBITRARY))
+            {
+                iterator.remove();
+            }
+        }
+
         return collectionItemTypes;
     }
 }
