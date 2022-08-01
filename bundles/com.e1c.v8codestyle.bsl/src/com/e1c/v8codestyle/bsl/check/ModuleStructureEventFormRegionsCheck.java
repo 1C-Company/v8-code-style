@@ -175,11 +175,7 @@ public class ModuleStructureEventFormRegionsCheck
             {
                 addIssueCommand(result, regionName, methodName, scriptVariant);
             }
-            else if (!(obj instanceof EventHandlerContainer))
-            {
-                return;
-            }
-            else
+            else if (obj instanceof EventHandlerContainer)
             {
                 EventHandlerContainer container = (EventHandlerContainer)obj;
                 check(result, container, regionName, methodName, scriptVariant);
@@ -190,48 +186,51 @@ public class ModuleStructureEventFormRegionsCheck
     private void check(ResultAcceptor result, EventHandlerContainer container, String regionName, String methodName,
         ScriptVariant scriptVariant)
     {
-        Table table = null;
-        FormField field = null;
-        DecorationExtInfo decoration = null;
-        GroupExtInfo group = null;
-        Form form = null;
-        for (EObject e = container; e != null; e = e.eContainer())
-        {
-            if (e instanceof Table)
-            {
-                table = (Table)e;
-            }
-            else if (e instanceof FormField)
-            {
-                field = (FormField)e;
-            }
-            else if (e instanceof DecorationExtInfo)
-            {
-                decoration = (DecorationExtInfo)e;
-            }
-            else if (e instanceof GroupExtInfo)
-            {
-                group = (GroupExtInfo)e;
-            }
-            else if (e instanceof Form)
-            {
-                form = (Form)e;
-                break;
-            }
-        }
 
-        if (table != null)
+        EventHandlerContainer object = getContainer(container);
+
+        if (object instanceof Table)
         {
-            addIssueTable(result, table.getName(), regionName, methodName, scriptVariant);
+            addIssueTable(result, ((Table)object).getName(), regionName, methodName, scriptVariant);
         }
-        else if (field != null || decoration != null || group != null)
+        else if (object instanceof FormField || object instanceof DecorationExtInfo || object instanceof GroupExtInfo)
         {
             addIssueItem(result, regionName, methodName, scriptVariant);
         }
-        else if (form != null)
+        else if (object instanceof Form)
         {
             addIssueForm(result, regionName, methodName, scriptVariant);
         }
+    }
+
+    private EventHandlerContainer getContainer(EventHandlerContainer container)
+    {
+        EventHandlerContainer object = null;
+        for (EObject e = container; e != null; e = e.eContainer())
+        {
+            if (e instanceof FormField)
+            {
+                object = (FormField)e;
+            }
+            else if (e instanceof DecorationExtInfo)
+            {
+                object = (DecorationExtInfo)e;
+            }
+            else if (e instanceof GroupExtInfo)
+            {
+                object = (GroupExtInfo)e;
+            }
+            else if (e instanceof Table)
+            {
+                return (Table)e;
+            }
+            else if (e instanceof Form && object == null)
+            {
+                return (Form)e;
+            }
+
+        }
+        return object;
     }
 
     private void addIssueCommand(ResultAcceptor result, String regionName, String methodName,

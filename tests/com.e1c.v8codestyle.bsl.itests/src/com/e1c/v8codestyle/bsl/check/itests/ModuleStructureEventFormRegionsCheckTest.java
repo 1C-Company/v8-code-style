@@ -72,6 +72,8 @@ public class ModuleStructureEventFormRegionsCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("20", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("The event method \"OnOpen\" should be placed in the \"FormEventHandlers\" region",
+            markers.get(0).getMessage());
     }
 
     @Test
@@ -81,6 +83,8 @@ public class ModuleStructureEventFormRegionsCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("Method \"WrongMethod\" can not be placed in the \"FormEventHandlers\" region",
+            markers.get(0).getMessage());
     }
 
     @Test
@@ -97,6 +101,8 @@ public class ModuleStructureEventFormRegionsCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("13", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("The event method \"DescriptionOnChange\" should be placed "
+            + "in the \"FormHeaderItemsEventHandlers\" region", markers.get(0).getMessage());
     }
 
     @Test
@@ -106,6 +112,8 @@ public class ModuleStructureEventFormRegionsCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("7", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("Method \"WrongMethod\" can not be placed in the \"FormHeaderItemsEventHandlers\" region",
+            markers.get(0).getMessage());
     }
 
     @Test
@@ -122,6 +130,8 @@ public class ModuleStructureEventFormRegionsCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("5", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("The event method \"Command1\" should be placed in the \"FormCommandsEventHandlers\" region",
+            markers.get(0).getMessage());
     }
 
     @Test
@@ -131,6 +141,8 @@ public class ModuleStructureEventFormRegionsCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("15", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("Method \"WrongMethod\" can not be placed in the \"FormCommandsEventHandlers\" region",
+            markers.get(0).getMessage());
     }
 
     @Test
@@ -147,6 +159,10 @@ public class ModuleStructureEventFormRegionsCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("9", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(
+            "The event method \"TableAttribute1OnChange\" should be placed "
+                + "in the \"FormTableItemsEventHandlersTable\" region",
+            markers.get(0).getMessage());
     }
 
     @Test
@@ -156,6 +172,8 @@ public class ModuleStructureEventFormRegionsCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("12", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("Method \"WrongMethod\" can not be placed in the \"FormTableItemsEventHandlers\" region",
+            markers.get(0).getMessage());
     }
 
     private List<Marker> getMarkers(String moduleFileName)
