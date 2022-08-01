@@ -13,21 +13,14 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.form.model.Form;
-import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
-import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.RedundantExportMethodCheck;
@@ -42,14 +35,15 @@ public class RedundantExportMethodCheckTest
 {
     private static final String CHECK_ID = "redundant-export-method";
     private static final String PROJECT_NAME = "ExcessExportCheck";
-    private static final String FQN_MODULE = "CommonModule.NoCallNoPublic";
-    private static final String FQN_MODULE_NO_CALL_PUBLIC = "CommonModule.NoCallPublic";
-    private static final String FQN_MODULE_CALL_NO_PUBLIC = "CommonModule.CallNoPublic";
-    private static final String FQN_CATALOG = "Catalog.Catalog";
-    private static final String FQN_CATALOG_FORM = "Catalog.Catalog.Form.ItemForm.Form";
-    private static final String FQN_CATALOG_LIST_FORM = "Catalog.Catalog.Form.ListForm.Form";
-    private static final String FQN_MODULE_IS_EVENT_SUBSCRIPTION = "CommonModule.isEventSubscription";
-    private static final String FQN_MODULE_IS_SCHEDULED_JOB = "CommonModule.isScheduledJob";
+    private static final String MODULE_FILE_NAME = "/src/CommonModules/NoCallNoPublic/Module.bsl";
+    private static final String MODULE_NO_CALL_PUBLIC_FILE_NAME = "/src/CommonModules/NoCallPublic/Module.bsl";
+    private static final String MODULE_CALL_NO_PUBLIC_FILE_NAME = "/src/CommonModules/CallNoPublic/Module.bsl";
+    private static final String CATALOG_FILE_NAME = "/src/Catalogs/Catalog/ObjectModule.bsl";
+    private static final String CATALOG_FORM_FILE_NAME = "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_LIST_FORM_FILE_NAME = "/src/Catalogs/Catalog/Forms/ListForm/Module.bsl";
+    private static final String MODULE_IS_EVENT_SUBSCRIPTION_FILE_NAME =
+        "/src/CommonModules/isEventSubscription/Module.bsl";
+    private static final String MODULE_IS_SCHEDULED_JOB_FILE_NAME = "/src/CommonModules/isScheduledJob/Module.bsl";
 
     @Override
     protected String getTestConfigurationName()
@@ -60,152 +54,70 @@ public class RedundantExportMethodCheckTest
     @Test
     public void testNoCallNoPublic() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(MODULE_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE, dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
-
-        List<Method> methods = module.allMethods();
-        assertEquals(1, methods.size());
-
-        Method noncompliantMethod = methods.get(0);
-        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
-        assertNotNull(marker);
+        assertEquals("1", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testNoCallPublic() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_NO_CALL_PUBLIC, dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
-
-        List<Method> methods = module.allMethods();
-        assertEquals(1, methods.size());
-
-        Method noncompliantMethod = methods.get(0);
-        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
-        assertNull(marker);
+        List<Marker> markers = getMarkers(MODULE_NO_CALL_PUBLIC_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testCallNoPublic() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_CALL_NO_PUBLIC, dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
-
-        List<Method> methods = module.allMethods();
-        assertEquals(1, methods.size());
-
-        Method noncompliantMethod = methods.get(0);
-        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
-        assertNull(marker);
+        List<Marker> markers = getMarkers(MODULE_CALL_NO_PUBLIC_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testLocalCall() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-        Module module = ((Catalog)mdObject).getObjectModule();
-        assertNotNull(module);
-
-        List<Method> methods = module.allMethods();
-        assertEquals(2, methods.size());
-
-        Method noncompliantMethod = methods.get(0);
-        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
-        assertNotNull(marker);
+        assertEquals("2", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testNotifyCall() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_FORM, dtProject);
-        assertTrue(mdObject instanceof Form);
-        Module module = ((Form)mdObject).getModule();
-        assertNotNull(module);
-
-        List<Method> methods = module.allMethods();
-        assertEquals(2, methods.size());
-
-        Method noncompliantMethod = methods.get(0);
-        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
-        assertNull(marker);
+        List<Marker> markers = getMarkers(CATALOG_FORM_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testNotifyWithRegionCall() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_LIST_FORM, dtProject);
-        assertTrue(mdObject instanceof Form);
-        Module module = ((Form)mdObject).getModule();
-        assertNotNull(module);
-
-        List<Method> methods = module.allMethods();
-        assertEquals(2, methods.size());
-
-        Method noncompliantMethod = methods.get(1);
-        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
-        assertNull(marker);
+        List<Marker> markers = getMarkers(CATALOG_LIST_FORM_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testEventSubscription() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_IS_EVENT_SUBSCRIPTION, dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
-
-        List<Method> methods = module.allMethods();
-        assertEquals(1, methods.size());
-
-        Method noncompliantMethod = methods.get(0);
-        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
-        assertNull(marker);
+        List<Marker> markers = getMarkers(MODULE_IS_EVENT_SUBSCRIPTION_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testScheduledJob() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(MODULE_IS_SCHEDULED_JOB_FILE_NAME);
+        assertEquals(0, markers.size());
+    }
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_MODULE_IS_SCHEDULED_JOB, dtProject);
-        assertTrue(mdObject instanceof CommonModule);
-        Module module = ((CommonModule)mdObject).getModule();
-        assertNotNull(module);
+    private List<Marker> getMarkers(String moduleFileName)
+    {
+        String moduleId = Path.ROOT.append(getTestConfigurationName()).append(moduleFileName).toString();
+        List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
 
-        List<Method> methods = module.allMethods();
-        assertEquals(1, methods.size());
-
-        Method noncompliantMethod = methods.get(0);
-        Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
-        assertNull(marker);
+        return markers.stream()
+            .filter(marker -> CHECK_ID.equals(getCheckIdFromMarker(marker, getProject())))
+            .collect(Collectors.toList());
     }
 }

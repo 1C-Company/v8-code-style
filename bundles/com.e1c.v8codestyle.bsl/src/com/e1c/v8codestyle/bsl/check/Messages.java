@@ -110,7 +110,7 @@ final class Messages
 
     public static String RedundantExportCheck_Exclude_title;
 
-    public static String RedundantExportCheck_Unused_export_method;
+    public static String RedundantExportCheck_Unused_export_method__0;
 
     public static String ExportMethodInCommandFormModuleCheck_CheckClientMethodForm;
 

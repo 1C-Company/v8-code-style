@@ -14,10 +14,12 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
+import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -35,8 +37,6 @@ import org.eclipse.xtext.findReferences.TargetURISet;
 import org.eclipse.xtext.findReferences.TargetURIs;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.IReferenceDescription;
 import org.eclipse.xtext.resource.IResourceDescriptions;
 import org.eclipse.xtext.resource.IResourceDescriptionsProvider;
@@ -154,7 +154,8 @@ public final class RedundantExportMethodCheck
             && !isNotifyDescription(module, name)
             && !haveCallerInOtherModule(method))
         {
-            resultAceptor.addIssue(Messages.RedundantExportCheck_Unused_export_method, method,
+            resultAceptor.addIssue(MessageFormat.format(Messages.RedundantExportCheck_Unused_export_method__0, name),
+                method,
                 BslPackage.Literals.METHOD__EXPORT);
         }
 
@@ -274,46 +275,52 @@ public final class RedundantExportMethodCheck
 
     private boolean isNotExclusion(ICheckParameters parameters, Method method)
     {
-        RegionPreprocessor region = EcoreUtil2.getContainerOfType(method, RegionPreprocessor.class);
-        while (region != null)
+        Optional<RegionPreprocessor> region = getTopParentRegion(method);
+        if (region.isPresent())
         {
-
-            PreprocessorItem preprocessorItem = region.getItemAfter();
-            if (preprocessorItem == null)
+            String names = parameters.getString(PARAMETER_EXCLUDE_REGION_LIST);
+            if (names != null)
             {
-                return true;
-            }
-
-            ICompositeNode node = NodeModelUtils.findActualNodeFor(preprocessorItem);
-            if (node == null)
-            {
-                return true;
-            }
-
-            ICompositeNode nodeMethod = NodeModelUtils.findActualNodeFor(method);
-            if (nodeMethod == null)
-            {
-                return true;
-            }
-
-            if (nodeMethod.getTotalOffset() < node.getTotalOffset())
-            {
-                String names = parameters.getString(PARAMETER_EXCLUDE_REGION_LIST);
-                if (names != null)
+                Set<String> set = Set.of(names.split(",")); //$NON-NLS-1$
+                for (String name : set)
                 {
-                    Set<String> set = Set.of(names.split(",")); //$NON-NLS-1$
-                    for (String name : set)
+                    if (StringUtils.equals(name, region.get().getName()))
                     {
-                        if (StringUtils.equals(name, region.getName()))
-                        {
-                            return false;
-                        }
+                        return false;
                     }
                 }
             }
-
-            region = EcoreUtil2.getContainerOfType(region.eContainer(), RegionPreprocessor.class);
         }
         return true;
+    }
+
+    private Optional<RegionPreprocessor> getTopParentRegion(EObject object)
+    {
+        EObject parent = object.eContainer();
+        PreprocessorItem lastItem = null;
+        RegionPreprocessor region = null;
+        do
+        {
+            if (parent instanceof RegionPreprocessor)
+            {
+                RegionPreprocessor parentRegion = (RegionPreprocessor)parent;
+                if (lastItem != null && parentRegion.getItem().equals(lastItem))
+                {
+                    region = parentRegion;
+                }
+                else
+                {
+                    lastItem = null;
+                }
+            }
+            else if (parent instanceof PreprocessorItem)
+            {
+                lastItem = (PreprocessorItem)parent;
+            }
+            parent = parent.eContainer();
+        }
+        while (parent != null);
+
+        return Optional.ofNullable(region);
     }
 }
