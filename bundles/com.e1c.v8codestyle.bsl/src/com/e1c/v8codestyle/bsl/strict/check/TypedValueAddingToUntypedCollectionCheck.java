@@ -141,7 +141,7 @@ public class TypedValueAddingToUntypedCollectionCheck
         Collection<TypeItem> collectionItemTypes = new ArrayList<>();
         Environments actualEnvs = getActualEnvironments(inv);
 
-        if(method instanceof SourceObjectLinkProvider || !(inv.getMethodAccess() instanceof DynamicFeatureAccess))
+        if (method instanceof SourceObjectLinkProvider || !(inv.getMethodAccess() instanceof DynamicFeatureAccess))
         {
             return collectionItemTypes;
         }
