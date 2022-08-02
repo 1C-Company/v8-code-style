@@ -34,6 +34,8 @@ final class Messages
     public static String RightConfigurationExtensionsAdministration_title;
     public static String RightDataAdministration_description;
     public static String RightDataAdministration_title;
+    public static String RightDelete_description;
+    public static String RightDelete_title;
     public static String RightExclusiveMode_description;
     public static String RightExclusiveMode_title;
     public static String RightInteracitveDelete_description;
