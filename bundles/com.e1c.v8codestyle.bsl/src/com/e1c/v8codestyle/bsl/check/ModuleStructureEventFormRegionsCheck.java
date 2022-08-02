@@ -65,7 +65,7 @@ public class ModuleStructureEventFormRegionsCheck
 
     private static final String PARAMETER_EXCLUDE_METHOD_NAME_PATTERN = "excludeModuleMethodNamePattern"; //$NON-NLS-1$
 
-    private static final String DEFAULT_CHECK_EMBEDDING_OF_REGIONS = Boolean.toString(Boolean.TRUE);
+    private static final String DEFAULT_CHECK_NESTING_OF_REGIONS = Boolean.toString(Boolean.TRUE);
 
     private static final String MULTILEVEL_NESTING_OF_REGIONS = "multilevelNestingOfRegions"; //$NON-NLS-1$
 
@@ -103,7 +103,7 @@ public class ModuleStructureEventFormRegionsCheck
             .checkedObjectType(METHOD)
             .parameter(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN, String.class, PATTERN_EXCLUDE,
                 Messages.ModuleStructureEventFormRegionsCheck_Excluded_method_names)
-            .parameter(MULTILEVEL_NESTING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_EMBEDDING_OF_REGIONS,
+            .parameter(MULTILEVEL_NESTING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_NESTING_OF_REGIONS,
                 Messages.ModuleStructureEventFormRegionsCheck_Multilevel_nesting_of_regions);
     }
 
