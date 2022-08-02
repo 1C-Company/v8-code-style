@@ -67,7 +67,7 @@ public class ModuleStructureEventFormRegionsCheck
 
     private static final String DEFAULT_CHECK_EMBEDDING_OF_REGIONS = Boolean.toString(Boolean.TRUE);
 
-    private static final String MULTILEVEL_EMBEDDING_OF_REGIONS = "multilevelEmbeddingOfRegions"; //$NON-NLS-1$
+    private static final String MULTILEVEL_NESTING_OF_REGIONS = "multilevelNestingOfRegions"; //$NON-NLS-1$
 
     private static final String PATTERN_EXCLUDE = "^(?U)(Подключаемый|Attachable)_.*$"; //$NON-NLS-1$
 
@@ -103,8 +103,8 @@ public class ModuleStructureEventFormRegionsCheck
             .checkedObjectType(METHOD)
             .parameter(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN, String.class, PATTERN_EXCLUDE,
                 Messages.ModuleStructureEventFormRegionsCheck_Excluded_method_names)
-            .parameter(MULTILEVEL_EMBEDDING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_EMBEDDING_OF_REGIONS,
-                Messages.ModuleStructureEventFormRegionsCheck_Multilevel_embedding_of_regions);
+            .parameter(MULTILEVEL_NESTING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_EMBEDDING_OF_REGIONS,
+                Messages.ModuleStructureEventFormRegionsCheck_Multilevel_nesting_of_regions);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class ModuleStructureEventFormRegionsCheck
             return;
         }
 
-        boolean multilevel = parameters.getBoolean(MULTILEVEL_EMBEDDING_OF_REGIONS);
+        boolean multilevel = parameters.getBoolean(MULTILEVEL_NESTING_OF_REGIONS);
 
         Optional<RegionPreprocessor> region = multilevel ? getTopParentRegion(method) : getFirstParentRegion(method);
         if (region.isEmpty())

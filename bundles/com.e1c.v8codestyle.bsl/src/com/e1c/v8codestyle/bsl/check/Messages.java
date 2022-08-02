@@ -154,7 +154,7 @@ final class Messages
 
     public static String ModuleStructureEventFormRegionsCheck_Excluded_method_names;
 
-    public static String ModuleStructureEventFormRegionsCheck_Multilevel_embedding_of_regions;
+    public static String ModuleStructureEventFormRegionsCheck_Multilevel_nesting_of_regions;
 
     public static String ModuleStructureEventFormRegionsCheck_Title;
 
