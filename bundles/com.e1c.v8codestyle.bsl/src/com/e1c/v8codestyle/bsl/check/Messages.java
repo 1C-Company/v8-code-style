@@ -166,6 +166,16 @@ final class Messages
 
     public static String ModuleStructureEventRegionsCheck_Title;
 
+    public static String ModuleStructureMethodInRegionCheck_Description;
+
+    public static String ModuleStructureMethodInRegionCheck_Method_should_be_placed_in_one_of_the_standard_regions;
+
+    public static String ModuleStructureMethodInRegionCheck_Multilevel_nesting_of_regions;
+
+    public static String ModuleStructureMethodInRegionCheck_Only_export;
+
+    public static String ModuleStructureMethodInRegionCheck_Title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
