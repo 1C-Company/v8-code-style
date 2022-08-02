@@ -15,10 +15,7 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -37,10 +34,13 @@ import org.eclipse.xtext.findReferences.TargetURISet;
 import org.eclipse.xtext.findReferences.TargetURIs;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.resource.IReferenceDescription;
 import org.eclipse.xtext.resource.IResourceDescriptions;
 import org.eclipse.xtext.resource.IResourceDescriptionsProvider;
 import org.eclipse.xtext.resource.impl.DefaultReferenceDescription;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Expression;
@@ -55,9 +55,7 @@ import com._1c.g5.v8.dt.bsl.resource.BslResource;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
-import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
-import com._1c.g5.v8.dt.metadata.mdclass.EventSubscription;
-import com._1c.g5.v8.dt.metadata.mdclass.ScheduledJob;
+import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -74,6 +72,8 @@ import com.google.inject.Inject;
 public final class RedundantExportMethodCheck
     extends BasicCheck
 {
+
+    private static final String USER_DATA = "methodName"; //$NON-NLS-1$
 
     private static final Set<ModuleType> CHECKED_MODULES =
         Set.of(ModuleType.MANAGER_MODULE, ModuleType.COMMON_MODULE, ModuleType.OBJECT_MODULE);
@@ -97,16 +97,19 @@ public final class RedundantExportMethodCheck
 
     private final IQualifiedNameProvider bslQualifiedNameProvider;
 
+    private final IScopeProvider scopeProvider;
+
     @Inject
     public RedundantExportMethodCheck(IResourceAccess workSpaceResourceAccess, IReferenceFinder referenceFinder,
         IResourceDescriptionsProvider resourceDescriptionsProvider, IConfigurationProvider configurationProvider,
-        IQualifiedNameProvider bslQualifiedNameProvider)
+        IQualifiedNameProvider bslQualifiedNameProvider, IScopeProvider scopeProvider)
     {
         this.workSpaceResourceAccess = workSpaceResourceAccess;
         this.referenceFinder = referenceFinder;
         this.resourceDescriptionsProvider = resourceDescriptionsProvider;
         this.configurationProvider = configurationProvider;
         this.bslQualifiedNameProvider = bslQualifiedNameProvider;
+        this.scopeProvider = scopeProvider;
     }
 
     @Override
@@ -136,6 +139,11 @@ public final class RedundantExportMethodCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
+        if (monitor.isCanceled())
+        {
+            return;
+        }
+
         Method method = (Method)object;
         if (!method.isExport())
         {
@@ -143,6 +151,7 @@ public final class RedundantExportMethodCheck
         }
 
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
+        //TODO #1091 move to common filter by module type
         ModuleType moduleType = module.getModuleType();
         if (!CHECKED_MODULES.contains(moduleType))
         {
@@ -150,66 +159,69 @@ public final class RedundantExportMethodCheck
         }
 
         String name = method.getName();
-        if (isNotExclusion(parameters, method) && !isScheduledJobOrEventSubscription(module, name)
-            && !isNotifyDescription(module, name)
-            && !haveCallerInOtherModule(method))
+        if (isNotExclusion(parameters, method, monitor) && !isScheduledJobOrEventSubscription(module, name, monitor)
+            && !existLocalNotifyDescription(module, name, monitor) && !haveCallerInOtherModule(method))
         {
-            resultAceptor.addIssue(MessageFormat.format(Messages.RedundantExportCheck_Unused_export_method__0, name),
-                method,
-                BslPackage.Literals.METHOD__EXPORT);
-        }
+            if (monitor.isCanceled())
+            {
+                return;
+            }
 
+            resultAceptor.addIssue(MessageFormat.format(Messages.RedundantExportCheck_Unused_export_method__0, name),
+                method, BslPackage.Literals.METHOD__EXPORT);
+        }
     }
 
-    private boolean isScheduledJobOrEventSubscription(Module module, String methodName)
+    private boolean isScheduledJobOrEventSubscription(Module module, String methodName, IProgressMonitor monitor)
     {
+        if (monitor.isCanceled())
+        {
+            return true;
+        }
+
         ModuleType moduleType = module.getModuleType();
         if (!ModuleType.COMMON_MODULE.equals(moduleType))
         {
             return false;
         }
 
-        Map<String, Set<String>> moduleMethod = new HashMap<>();
-        Configuration configuration = configurationProvider.getConfiguration(module);
-        List<ScheduledJob> jobs = configuration.getScheduledJobs();
-        for (ScheduledJob job : jobs)
-        {
-            String[] items = job.getMethodName().split("[.]"); //$NON-NLS-1$
-            if (items.length > 2)
-            {
-                moduleMethod.putIfAbsent(items[1], new HashSet<>());
-                moduleMethod.get(items[1]).add(items[2]);
-            }
-        }
-
-        List<EventSubscription> events = configuration.getEventSubscriptions();
-        for (EventSubscription event : events)
-        {
-            String[] items = event.getHandler().split("[.]"); //$NON-NLS-1$
-            if (items.length > 2)
-            {
-                moduleMethod.putIfAbsent(items[1], new HashSet<>());
-                moduleMethod.get(items[1]).add(items[2]);
-            }
-        }
-
         QualifiedName fullyQualifiedName = bslQualifiedNameProvider.getFullyQualifiedName(module);
         if (fullyQualifiedName != null)
         {
-            String moduleName = fullyQualifiedName.getSegment(1);
-            Set<String> methodNames = moduleMethod.get(moduleName);
-            if (methodNames != null && methodNames.contains(methodName))
+            String moduleName = fullyQualifiedName.skipLast(1).toString();
+            String moduleMethodName = String.join(".", moduleName, methodName); //$NON-NLS-1$
+
+            IScope jobs = scopeProvider.getScope(module, MdClassPackage.Literals.CONFIGURATION__SCHEDULED_JOBS);
+            for (IEObjectDescription item : jobs.getAllElements())
             {
-                return true;
+                if (moduleMethodName.equalsIgnoreCase(item.getUserData(USER_DATA)))
+                {
+                    return true;
+                }
+            }
+
+            IScope events = scopeProvider.getScope(module, MdClassPackage.Literals.CONFIGURATION__EVENT_SUBSCRIPTIONS);
+            for (IEObjectDescription item : events.getAllElements())
+            {
+                if (moduleMethodName.equalsIgnoreCase(item.getUserData(USER_DATA)))
+                {
+                    return true;
+                }
             }
         }
+
         return false;
     }
 
-    private boolean isNotifyDescription(Module module, String name)
+    private boolean existLocalNotifyDescription(Module module, String name, IProgressMonitor monitor)
     {
         for (TreeIterator<EObject> iterator = module.eAllContents(); iterator.hasNext();)
         {
+            if (monitor.isCanceled())
+            {
+                return true;
+            }
+
             EObject containedObject = iterator.next();
             if (containedObject instanceof OperatorStyleCreator
                 && TYPE_NAME.equals(McoreUtil.getTypeName(((OperatorStyleCreator)containedObject).getType())))
@@ -226,6 +238,7 @@ public final class RedundantExportMethodCheck
                 }
             }
         }
+
         return false;
     }
 
@@ -273,8 +286,13 @@ public final class RedundantExportMethodCheck
         return monitor.isCanceled();
     }
 
-    private boolean isNotExclusion(ICheckParameters parameters, Method method)
+    private boolean isNotExclusion(ICheckParameters parameters, Method method, IProgressMonitor monitor)
     {
+        if (monitor.isCanceled())
+        {
+            return false;
+        }
+
         Optional<RegionPreprocessor> region = getTopParentRegion(method);
         if (region.isPresent())
         {
