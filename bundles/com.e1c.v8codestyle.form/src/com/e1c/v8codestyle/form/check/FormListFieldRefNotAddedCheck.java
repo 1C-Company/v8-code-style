@@ -19,8 +19,8 @@ import java.util.function.Predicate;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.event.BmSubEvent;
@@ -57,7 +57,6 @@ public class FormListFieldRefNotAddedCheck
     implements ICheck
 {
     private static final String CHECK_ID = "form-list-field-ref-not-added"; //$NON-NLS-1$
-    private static final Set<EClass> TARGET_CONTAINMENT = Set.of(FORM_ITEM_CONTAINER);
     private static final String REF_ABSTRACT_DATA_PATH = "Ref"; //$NON-NLS-1$
     private static final String REF_ABSTRACT_DATA_PATH_RU = "Ссылка"; //$NON-NLS-1$
     private static final Predicate<? super DbViewFieldDef> FIELD_NAME_CHECK =
@@ -72,7 +71,7 @@ public class FormListFieldRefNotAddedCheck
     @Override
     public void configureContextCollector(ICheckDefinition definition)
     {
-        definition.addCheckedModelObjects(FormPackage.Literals.FORM, false, TARGET_CONTAINMENT);
+        definition.addCheckedModelObjects(FormPackage.Literals.FORM, false, Set.of(FORM_ITEM_CONTAINER));
         definition.addModelFeatureChangeContextCollector(new ObjectCollectionFeatureChangeContextCollector(),
             FORM_ITEM_CONTAINER);
         definition.setTitle(Messages.FormListFieldRefNotAddedCheck_title);
@@ -91,14 +90,14 @@ public class FormListFieldRefNotAddedCheck
             return;
         }
 
-        if (((IBmObject)object).bmGetTopObject() instanceof Form
-            && isBaseForm((Form)((IBmObject)object).bmGetTopObject()))
+        IBmObject top = ((IBmObject)object).bmGetTopObject();
+        if (top instanceof Form && isBaseForm((Form)top))
         {
             return;
         }
 
         Table table = (Table)object;
-        if (table.getDataPath() != null && checkTable(table) && !pathCheck(table.getItems()))
+        if (table.getDataPath() != null && isDynamicListWithRef(table) && !refItemExists(table.getItems()))
         {
             EIssue issue =
                 new EIssue(Messages.FormListFieldRefNotAddedCheck_The_Ref_field_is_not_added_to_dynamic_list, null);
@@ -113,21 +112,18 @@ public class FormListFieldRefNotAddedCheck
             && (form.getBaseForm() == null || form.getBaseForm().eIsProxy());
     }
 
-    private static boolean pathCheck(EList<FormItem> items)
+    private static boolean refItemExists(EList<FormItem> items)
     {
         if (!items.isEmpty())
         {
             for (int i = 0; i < items.size(); i++)
             {
                 FormItem formItem = items.get(i);
-                if (formItem instanceof FormField && ((FormField)formItem).getDataPath() != null
-                    && itemPathCheck(((FormField)formItem).getDataPath()))
+                if (formItem instanceof FormField && isRefItem(((FormField)formItem)))
                 {
-
                     return true;
                 }
-
-                if (formItem instanceof FormGroup && pathCheck(((FormGroup)formItem).getItems()))
+                else if (formItem instanceof FormGroup && refItemExists(((FormGroup)formItem).getItems()))
                 {
                     return true;
 
@@ -137,10 +133,15 @@ public class FormListFieldRefNotAddedCheck
         return false;
     }
 
-    private static boolean itemPathCheck(AbstractDataPath path)
+    private static boolean isRefItem(FormField formItem)
     {
+        AbstractDataPath path = formItem.getDataPath();
+        if (path == null)
+        {
+            return false;
+        }
         EList<String> segments = path.getSegments();
-        // checking size here as DataPath of Ref attribute in dynamic list always consist of 2 segemts
+        // checking size here as DataPath of Ref attribute in dynamic list always consist of 2 segments
         if (segments.isEmpty() && segments.size() != 2)
         {
             return false;
@@ -150,7 +151,7 @@ public class FormListFieldRefNotAddedCheck
         return lastSegment.equals(REF_ABSTRACT_DATA_PATH) || lastSegment.equals(REF_ABSTRACT_DATA_PATH_RU);
     }
 
-    private static boolean checkTable(Table table)
+    private static boolean isDynamicListWithRef(Table table)
     {
         if (table != null && table.getDataPath() != null && !table.getDataPath().getObjects().isEmpty()
             && table.getDataPath().getObjects().get(0).getObject() instanceof FormAttribute)
@@ -177,15 +178,13 @@ public class FormListFieldRefNotAddedCheck
             {
                 table = (Table)object.eContents().stream().filter(Table.class::isInstance).findAny().orElse(null);
             }
-            if (object instanceof Table)
+            else if (object instanceof Table)
             {
                 table = (Table)object;
             }
-
-            if (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo
-                && object.eContainer() instanceof Table)
+            else if (object instanceof FormGroup && ((FormGroup)object).getExtInfo() instanceof ColumnGroupExtInfo)
             {
-                table = (Table)object.eContainer();
+                table = EcoreUtil2.getContainerOfType(object, Table.class);
             }
 
             if (table != null)
