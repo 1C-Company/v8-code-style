@@ -28,6 +28,10 @@
       </check>
       <check
             category="com.e1c.v8codestyle.form"
+            class="com.e1c.v8codestyle.internal.form.ExecutableExtensionFactory:com.e1c.v8codestyle.form.check.DynamicListItemTitleCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.form"
             class="com.e1c.v8codestyle.internal.form.ExecutableExtensionFactory:com.e1c.v8codestyle.form.check.FormListRefUseAlwaysFlagDisabledCheck">
       </check>
       <check
@@ -38,6 +42,15 @@
             category="com.e1c.v8codestyle.form"
             class="com.e1c.v8codestyle.internal.form.ExecutableExtensionFactory:com.e1c.v8codestyle.form.check.FormItemsSingleEventHandlerCheck">
       </check>
+   </extension>
+   <extension
+         point="com.e1c.g5.v8.dt.check.fixes">
+      <fix
+            class="com.e1c.v8codestyle.internal.form.ExecutableExtensionFactory:com.e1c.v8codestyle.form.fix.DynamicListItemTitleGenerateFix">
+      </fix>
+      <fix
+            class="com.e1c.v8codestyle.internal.form.ExecutableExtensionFactory:com.e1c.v8codestyle.form.fix.DynamicListFieldTitleGenerateFix">
+      </fix>
    </extension>
 
 </plugin>
