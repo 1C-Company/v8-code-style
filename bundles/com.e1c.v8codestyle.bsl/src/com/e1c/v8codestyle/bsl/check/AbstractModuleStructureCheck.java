@@ -83,8 +83,10 @@ public abstract class AbstractModuleStructureCheck
                 {
                     return Optional.ofNullable(parentRegion);
                 }
-
-                return Optional.empty();
+                else
+                {
+                    lastItem = null;
+                }
             }
             else if (parent instanceof PreprocessorItem)
             {

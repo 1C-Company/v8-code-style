@@ -51,9 +51,9 @@ public class ModuleStructureMethodInRegionCheck
 {
     private static final String CHECK_ID = "module-structure-method-in-regions"; //$NON-NLS-1$
 
-    private static final String DEFAULT_CHECK_EMBEDDING_OF_REGIONS = Boolean.toString(Boolean.TRUE);
+    private static final String DEFAULT_CHECK_NESTING_OF_REGIONS = Boolean.toString(Boolean.TRUE);
 
-    private static final String MULTILEVEL_EMBEDDING_OF_REGIONS = "multilevelEmbeddingOfRegions"; //$NON-NLS-1$
+    private static final String MULTILEVEL_NESTING_OF_REGIONS = "multilevelNestingOfRegions"; //$NON-NLS-1$
 
     private final IModuleStructureProvider moduleStructureProvider;
 
@@ -87,7 +87,7 @@ public class ModuleStructureMethodInRegionCheck
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD)
-            .parameter(MULTILEVEL_EMBEDDING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_EMBEDDING_OF_REGIONS,
+            .parameter(MULTILEVEL_NESTING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_NESTING_OF_REGIONS,
                 Messages.ModuleStructureMethodInRegionCheck_Multilevel_nesting_of_regions);
     }
 
@@ -108,7 +108,7 @@ public class ModuleStructureMethodInRegionCheck
         ModuleType moduleType = getModuleType(method);
         Collection<String> regionNames = moduleStructureProvider.getModuleStructureRegions(moduleType, scriptVariant);
 
-        boolean multilevel = parameters.getBoolean(MULTILEVEL_EMBEDDING_OF_REGIONS);
+        boolean multilevel = parameters.getBoolean(MULTILEVEL_NESTING_OF_REGIONS);
 
         Optional<RegionPreprocessor> region = multilevel ? getTopParentRegion(method) : getFirstParentRegion(method);
 
