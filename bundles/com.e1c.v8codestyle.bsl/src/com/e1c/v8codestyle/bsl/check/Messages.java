@@ -146,6 +146,14 @@ final class Messages
     public static String ModuleUnusedLocalVariableCheck_Unused_local_variable__0;
     public static String ModuleUnusedLocalVariableCheck_Probably_variable_not_initilized_yet__0;
 
+    public static String ModuleStructureEventRegionsCheck_Description;
+
+    public static String ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1;
+
+    public static String ModuleStructureEventRegionsCheck_Only_event_methods__0;
+
+    public static String ModuleStructureEventRegionsCheck_Title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
@@ -159,6 +167,14 @@ final class Messages
     public static String SelfReferenceCheck_Title;
 
     public static String SelfReferenceCheck_Issue;
+
+    public static String ServerExecutionSafeModeCheck_description;
+
+    public static String ServerExecutionSafeModeCheck_eval_issue;
+
+    public static String ServerExecutionSafeModeCheck_execute_issue;
+
+    public static String ServerExecutionSafeModeCheck_title;
 
     public static String StructureCtorTooManyKeysCheck_description;
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;

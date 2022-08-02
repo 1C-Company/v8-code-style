@@ -13,9 +13,13 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.right.check;
 
+import com._1c.g5.v8.dt.bm.index.emf.IBmEmfIndexManager;
+import com._1c.g5.v8.dt.bm.index.rights.IBmRightsIndexManager;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
+import com.e1c.v8codestyle.internal.right.InternalRightInfosService;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.right.CorePlugin;
 import com.google.inject.Inject;
@@ -26,7 +30,7 @@ import com.google.inject.Inject;
  * @author Dmitriy Marmyshev
  *
  */
-public class RightInteracitveDeletePredefinedData
+public class RightInteractiveDeletePredefinedData
     extends RoleRightSetCheck
 {
 
@@ -36,9 +40,12 @@ public class RightInteracitveDeletePredefinedData
      * {@inheritDoc}
      */
     @Inject
-    public RightInteracitveDeletePredefinedData(IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager)
+    public RightInteractiveDeletePredefinedData(IResourceLookup resourceLookup, IV8ProjectManager v8ProjectManager,
+        IBmModelManager bmModelManager, IBmRightsIndexManager bmRightsIndexManager,
+        IBmEmfIndexManager bmEmfIndexManager, InternalRightInfosService rightInfosService)
     {
-        super(v8ProjectManager, bmModelManager);
+        super(resourceLookup, v8ProjectManager, bmModelManager, bmRightsIndexManager, bmEmfIndexManager,
+            rightInfosService);
     }
 
     @Override

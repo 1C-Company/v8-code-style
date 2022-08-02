@@ -1,12 +1,12 @@
 # Индекс проверок
 
 
-Общее количество проверок 1С:Стандарты разработки V8: 110
+Общее количество проверок 1С:Стандарты разработки V8: 112
 
 - form: 4
 - md: 18
-- bsl: 59
-- ql: 6
+- bsl: 60
+- ql: 7
 - right: 23
 
 
@@ -86,6 +86,7 @@
 | [ql-camel-case-string-literal](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-camel-case-string-literal.md) | Строковый литерал в запросе содержит не КемелКейс контент |
 | [ql-cast-to-max-number](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-cast-to-max-number.md) | Выражение к максимальному числу в запросе |
 | [ql-join-to-sub-query](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-join-to-sub-query.md) | Соединение запроса с подзапросом |
+| [ql-like-expression-with-field](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-like-expression-with-field.md) | В качестве правого операнда операции сравнения "ПОДОБНО" указано поле таблицы. |
 | [ql-temp-table-index](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-temp-table-index.md) | Временная таблица должна содержать индексы |
 | [ql-using-for-update](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-using-for-update.md) | Запрос содержит конструкцию "ДЛЯ ИЗМЕНЕНИЯ" |
 | [ql-virtual-table-filters](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-virtual-table-filters.md) | Отбор виртуальной таблицы должен быть в параметрах |
@@ -115,6 +116,7 @@
 | [role-right-has-rls](../../bundles/com.e1c.v8codestyle.right/markdown/ru/role-right-has-rls.md) | Право роли содержит текст ограничения доступа (RLS) |
 | [rollback-transaction](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/rollback-transaction.md) | Проверка нарушения схемы работы с транзакциями |
 | [scheduled-job-periodicity-too-short](../../bundles/com.e1c.v8codestyle.md/markdown/ru/scheduled-job-periodicity-too-short.md) | Периодичность выполнения регламентного задания меньше одной минуты. |
+| [server-execution-safe-mode](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/server-execution-safe-mode.md) | Отсутствует включение безопасного режима перед вызовом метода "Выполнить" или "Вычислить" |
 | [statement-type-change](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/statement-type-change.md) | Утверждение меняет тип |
 | [structure-consructor-too-many-keys](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-too-many-keys.md) | Конструктор структуры содержит слишком много ключей |
 | [structure-consructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-value-type.md) | Типизация значений в конструкторе структуры |

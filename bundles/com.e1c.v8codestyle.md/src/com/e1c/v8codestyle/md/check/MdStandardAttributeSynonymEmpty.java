@@ -95,6 +95,7 @@ public class MdStandardAttributeSynonymEmpty
             .issueType(IssueType.UI_STYLE)
             .extension(new TopObjectFilterExtension())
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .extension(new CatalogChangeExtension());
 
         builder.topObject(CATALOG).containment(STANDARD_ATTRIBUTE).features(STANDARD_ATTRIBUTE__SYNONYM);

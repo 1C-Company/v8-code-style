@@ -30,17 +30,19 @@ import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.right.check.RightInteracitveDelete;
-import com.e1c.v8codestyle.right.check.RightInteracitveDeleteMarkedPredefinedData;
-import com.e1c.v8codestyle.right.check.RightInteracitveDeletePredefinedData;
+import com.e1c.v8codestyle.right.check.RightDelete;
 import com.e1c.v8codestyle.right.check.RightInteractiveClearDeletionMarkPredefinedData;
+import com.e1c.v8codestyle.right.check.RightInteractiveDelete;
+import com.e1c.v8codestyle.right.check.RightInteractiveDeleteMarkedPredefinedData;
+import com.e1c.v8codestyle.right.check.RightInteractiveDeletePredefinedData;
 import com.e1c.v8codestyle.right.check.RightInteractiveSetDeletionMarkPredefinedData;
 
 /**
  * Tests for all forbidden rights checks:
- *  {@link RightInteracitveDelete},
- *  {@link RightInteracitveDeleteMarkedPredefinedData},
- *  {@link RightInteracitveDeletePredefinedData},
+ *  {@link RightDelete},
+ *  {@link RightInteractiveDelete},
+ *  {@link RightInteractiveDeleteMarkedPredefinedData},
+ *  {@link RightInteractiveDeletePredefinedData},
  *  {@link RightInteractiveClearDeletionMarkPredefinedData},
  *  {@link RightInteractiveSetDeletionMarkPredefinedData}.
  *
@@ -60,9 +62,13 @@ public class RoleRightHasForbiddenTest
 
     private static final String CHECK_ID_5 = "right-interactive-set-deletion-mark-predefined-data";
 
+    private static final String CHECK_ID_6 = "right-delete";
+
     private static final String PROJECT_NAME = "RoleRightHasForbidden";
 
     private static final String FQN_FORBIDDEN_RIGHTS = "Role.ForbiddenRights.Rights";
+
+    private static final String FQN_FORBIDDEN_RIGHTS2 = "Role.FullAccess.Rights";
 
     private static final String FQN_ALLOWED_RIGHTS = "Role.AllowedRights.Rights";
 
@@ -93,12 +99,12 @@ public class RoleRightHasForbiddenTest
     }
 
     /**
-     * Test role has forbidden right, check {@link RightInteracitveDelete}
+     * Test role has forbidden right, check {@link RightInteractiveDelete}
      *
      * @throws Exception the exception
      */
     @Test
-    public void testRoleHasRightInteracitveDelete() throws Exception
+    public void testRoleHasRightInteractiveDelete() throws Exception
     {
         IBmObject top = getTopObjectByFqn(FQN_FORBIDDEN_RIGHTS, dtProject);
         assertTrue(top instanceof RoleDescription);
@@ -114,12 +120,28 @@ public class RoleRightHasForbiddenTest
     }
 
     /**
-     * Test role has forbidden right, check {@link RightInteracitveDeleteMarkedPredefinedData}
+     * Test role has forbidden right in FullAccess role, check {@link RightInteractiveDelete}
      *
      * @throws Exception the exception
      */
     @Test
-    public void testRoleHasRightInteracitveDeleteMarkedPredefinedData() throws Exception
+    public void testRoleHasRightInteractiveDelete2() throws Exception
+    {
+        IBmObject top = getTopObjectByFqn(FQN_FORBIDDEN_RIGHTS2, dtProject);
+        assertTrue(top instanceof RoleDescription);
+
+        Marker marker = getFirstMarker(CHECK_ID_1, top, dtProject);
+        assertNotNull(marker);
+
+    }
+
+    /**
+     * Test role has forbidden right, check {@link RightInteractiveDeleteMarkedPredefinedData}
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testRoleHasRightInteractiveDeleteMarkedPredefinedData() throws Exception
     {
         IBmObject top = getTopObjectByFqn(FQN_FORBIDDEN_RIGHTS, dtProject);
         assertTrue(top instanceof RoleDescription);
@@ -135,12 +157,12 @@ public class RoleRightHasForbiddenTest
     }
 
     /**
-     * Test role has forbidden right, check {@link RightInteracitveDeletePredefinedData}
+     * Test role has forbidden right, check {@link RightInteractiveDeletePredefinedData}
      *
      * @throws Exception the exception
      */
     @Test
-    public void testRoleHasRightInteracitveDeletePredefinedData() throws Exception
+    public void testRoleHasRightInteractiveDeletePredefinedData() throws Exception
     {
         IBmObject top = getTopObjectByFqn(FQN_FORBIDDEN_RIGHTS, dtProject);
         assertTrue(top instanceof RoleDescription);
@@ -198,12 +220,32 @@ public class RoleRightHasForbiddenTest
     }
 
     /**
-     * Test role has no forbidden right, check {@link RightInteracitveDelete}
+     * Test role has forbidden right, check {@link RightDelete}
      *
      * @throws Exception the exception
      */
     @Test
-    public void testRoleHasNoRightInteracitveDelete() throws Exception
+    public void testRoleHasRightDelete() throws Exception
+    {
+        IBmObject top = getTopObjectByFqn(FQN_FORBIDDEN_RIGHTS, dtProject);
+        assertTrue(top instanceof RoleDescription);
+        RoleDescription description = (RoleDescription)top;
+        assertEquals(1, description.getRights().size());
+        ObjectRights rights = description.getRights().get(0);
+        ObjectRight right = getObjectRight(rights, RightName.DELETE);
+        assertNotNull(right);
+
+        Marker marker = getFirstMarker(CHECK_ID_6, right, dtProject);
+        assertNotNull(marker);
+    }
+
+    /**
+     * Test role has no forbidden right, check {@link RightInteractiveDelete}
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testRoleHasNoRightInteractiveDelete() throws Exception
     {
         IBmObject top = getTopObjectByFqn(FQN_ALLOWED_RIGHTS, dtProject);
         assertTrue(top instanceof RoleDescription);
@@ -220,12 +262,12 @@ public class RoleRightHasForbiddenTest
     }
 
     /**
-     * Test role has no forbidden right, check {@link RightInteracitveDeleteMarkedPredefinedData}
+     * Test role has no forbidden right, check {@link RightInteractiveDeleteMarkedPredefinedData}
      *
      * @throws Exception the exception
      */
     @Test
-    public void testRoleHasNoRightInteracitveDeleteMarkedPredefinedData() throws Exception
+    public void testRoleHasNoRightInteractiveDeleteMarkedPredefinedData() throws Exception
     {
         IBmObject top = getTopObjectByFqn(FQN_ALLOWED_RIGHTS, dtProject);
         assertTrue(top instanceof RoleDescription);
@@ -242,12 +284,12 @@ public class RoleRightHasForbiddenTest
     }
 
     /**
-     * Test role has no forbidden right, check {@link RightInteracitveDeletePredefinedData}
+     * Test role has no forbidden right, check {@link RightInteractiveDeletePredefinedData}
      *
      * @throws Exception the exception
      */
     @Test
-    public void testRoleHasNoRightInteracitveDeletePredefinedData() throws Exception
+    public void testRoleHasNoRightInteractiveDeletePredefinedData() throws Exception
     {
         IBmObject top = getTopObjectByFqn(FQN_ALLOWED_RIGHTS, dtProject);
         assertTrue(top instanceof RoleDescription);
@@ -303,6 +345,28 @@ public class RoleRightHasForbiddenTest
 
         Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
         Marker marker = getAnyFirstMarker(CHECK_ID_5, markers);
+        assertNull(marker);
+
+    }
+
+    /**
+     * Test role has no forbidden right, check {@link RightDelete}
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testRoleHasNoRightDelete() throws Exception
+    {
+        IBmObject top = getTopObjectByFqn(FQN_ALLOWED_RIGHTS, dtProject);
+        assertTrue(top instanceof RoleDescription);
+        RoleDescription description = (RoleDescription)top;
+        assertEquals(1, description.getRights().size());
+        ObjectRights rights = description.getRights().get(0);
+        ObjectRight right = getObjectRight(rights, RightName.DELETE);
+        assertNotNull(right);
+
+        Marker[] markers = markerManager.getNestedMarkers(dtProject.getWorkspaceProject(), top.bmGetId());
+        Marker marker = getAnyFirstMarker(CHECK_ID_6, markers);
         assertNull(marker);
 
     }

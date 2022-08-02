@@ -364,6 +364,9 @@
     <fix
           class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.ConvertFunctionToProcedureFix">
     </fix>
+    <fix
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.ServerExecutionSafeModeFix">
+    </fix>
  </extension>
 
 </plugin>
