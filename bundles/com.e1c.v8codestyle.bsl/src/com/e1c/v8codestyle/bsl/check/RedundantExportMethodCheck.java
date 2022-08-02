@@ -48,7 +48,6 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
-import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.resource.BslResource;
@@ -58,7 +57,6 @@ import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
-import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
@@ -70,7 +68,7 @@ import com.google.inject.Inject;
  * @author Artem Iliukhin
  */
 public final class RedundantExportMethodCheck
-    extends BasicCheck
+    extends AbstractModuleStructureCheck
 {
 
     private static final String USER_DATA = "methodName"; //$NON-NLS-1$
@@ -312,33 +310,4 @@ public final class RedundantExportMethodCheck
         return true;
     }
 
-    private Optional<RegionPreprocessor> getTopParentRegion(EObject object)
-    {
-        EObject parent = object.eContainer();
-        PreprocessorItem lastItem = null;
-        RegionPreprocessor region = null;
-        do
-        {
-            if (parent instanceof RegionPreprocessor)
-            {
-                RegionPreprocessor parentRegion = (RegionPreprocessor)parent;
-                if (lastItem != null && parentRegion.getItem().equals(lastItem))
-                {
-                    region = parentRegion;
-                }
-                else
-                {
-                    lastItem = null;
-                }
-            }
-            else if (parent instanceof PreprocessorItem)
-            {
-                lastItem = (PreprocessorItem)parent;
-            }
-            parent = parent.eContainer();
-        }
-        while (parent != null);
-
-        return Optional.ofNullable(region);
-    }
 }
