@@ -23,6 +23,9 @@ final class Messages
     extends NLS
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.form.check.messages"; //$NON-NLS-1$
+    public static String DynamicListItemTitleCheck_Description;
+    public static String DynamicListItemTitleCheck_message;
+    public static String DynamicListItemTitleCheck_title;
     public static String FormItemsSingleEventHandlerCheck_description;
     public static String FormItemsSingleEventHandlerCheck_itemName_dot_eventName;
     public static String FormItemsSingleEventHandlerCheck_the_handler_is_already_assigned_to_event;
