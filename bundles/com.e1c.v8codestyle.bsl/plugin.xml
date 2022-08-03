@@ -277,6 +277,10 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.RedundantExportMethodCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.bsl.check.CommitTransactionCheck">
       </check>
       <check
@@ -302,12 +306,6 @@
       <provider
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.StrictTypesProjectOptionProvider">
       </provider>
-   </extension>
-   <extension
-         point="com.e1c.g5.v8.dt.check.fixes">
-      <fix
-            class="com.e1c.v8codestyle.bsl.qfix.RemoveExportFix">
-      </fix>
    </extension>
 
 </plugin>

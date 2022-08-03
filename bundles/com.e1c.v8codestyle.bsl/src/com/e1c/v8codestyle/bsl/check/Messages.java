@@ -104,6 +104,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String RedundantExportCheck_Escess_title;
+
+    public static String RedundantExportCheck_Excess_description;
+
+    public static String RedundantExportCheck_Exclude_title;
+
+    public static String RedundantExportCheck_Unused_export_method__0;
+
     public static String ExportMethodInCommandFormModuleCheck_CheckClientMethodForm;
 
     public static String ExportMethodInCommandFormModuleCheck_CheckServerMethodForm;

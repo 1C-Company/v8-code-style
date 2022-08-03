@@ -14,7 +14,9 @@ package com.e1c.v8codestyle.bsl.qfix;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD__EXPORT;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -28,7 +30,7 @@ import org.eclipse.xtext.resource.XtextResource;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
 import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
-import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
+import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
@@ -36,10 +38,32 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  *
  * @author Dmitriy Marmyshev
  */
-@QuickFix(checkId = "export-method-in-command-form-module", supplierId = BslPlugin.PLUGIN_ID)
 public class RemoveExportFix
     extends SingleVariantXtextBslModuleFix
 {
+    private final CheckUid checkUid;
+
+    @SuppressWarnings("nls")
+    public static Collection<String> getCheckIds()
+    {
+        return Set.of("export-method-in-command-form-module", "redundant-export-method");
+    }
+
+    /**
+     * Instantiates a new removes the export keyword.
+     *
+     * @param checkId the check id, cannot be {@code null}.
+     */
+    public RemoveExportFix(CheckUid checkId)
+    {
+        this.checkUid = checkId;
+    }
+
+    @Override
+    public CheckUid getCheckId()
+    {
+        return checkUid;
+    }
 
     @Override
     protected void configureFix(FixConfigurer configurer)
