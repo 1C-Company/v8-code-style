@@ -50,7 +50,6 @@ import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.common.StringUtils;
-import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -89,21 +88,18 @@ public final class RedundantExportMethodCheck
 
     private final IResourceDescriptionsProvider resourceDescriptionsProvider;
 
-    private final IConfigurationProvider configurationProvider;
-
     private final IQualifiedNameProvider bslQualifiedNameProvider;
 
     private final IScopeProvider scopeProvider;
 
     @Inject
     public RedundantExportMethodCheck(IResourceAccess workSpaceResourceAccess, IReferenceFinder referenceFinder,
-        IResourceDescriptionsProvider resourceDescriptionsProvider, IConfigurationProvider configurationProvider,
-        IQualifiedNameProvider bslQualifiedNameProvider, IScopeProvider scopeProvider)
+        IResourceDescriptionsProvider resourceDescriptionsProvider, IQualifiedNameProvider bslQualifiedNameProvider,
+        IScopeProvider scopeProvider)
     {
         this.workSpaceResourceAccess = workSpaceResourceAccess;
         this.referenceFinder = referenceFinder;
         this.resourceDescriptionsProvider = resourceDescriptionsProvider;
-        this.configurationProvider = configurationProvider;
         this.bslQualifiedNameProvider = bslQualifiedNameProvider;
         this.scopeProvider = scopeProvider;
     }
@@ -185,11 +181,7 @@ public final class RedundantExportMethodCheck
             IScope jobs = scopeProvider.getScope(module, MdClassPackage.Literals.CONFIGURATION__SCHEDULED_JOBS);
             for (IEObjectDescription item : jobs.getAllElements())
             {
-                if (monitor.isCanceled())
-                {
-                    return true;
-                }
-                if (moduleMethodName.equalsIgnoreCase(item.getUserData(USER_DATA)))
+                if (monitor.isCanceled() || moduleMethodName.equalsIgnoreCase(item.getUserData(USER_DATA)))
                 {
                     return true;
                 }
@@ -198,11 +190,7 @@ public final class RedundantExportMethodCheck
             IScope events = scopeProvider.getScope(module, MdClassPackage.Literals.CONFIGURATION__EVENT_SUBSCRIPTIONS);
             for (IEObjectDescription item : events.getAllElements())
             {
-                if (monitor.isCanceled())
-                {
-                    return true;
-                }
-                if (moduleMethodName.equalsIgnoreCase(item.getUserData(USER_DATA)))
+                if (monitor.isCanceled() || moduleMethodName.equalsIgnoreCase(item.getUserData(USER_DATA)))
                 {
                     return true;
                 }
