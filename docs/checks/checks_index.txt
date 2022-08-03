@@ -71,6 +71,7 @@ property-return-type
 ql-camel-case-string-literal
 ql-cast-to-max-number
 ql-join-to-sub-query
+ql-like-expression-with-field
 ql-temp-table-index
 ql-using-for-update
 ql-virtual-table-filters
@@ -100,6 +101,7 @@ right-view-event-log
 role-right-has-rls
 rollback-transaction
 scheduled-job-periodicity-too-short
+server-execution-safe-mode
 statement-type-change
 structure-consructor-too-many-keys
 structure-consructor-value-type

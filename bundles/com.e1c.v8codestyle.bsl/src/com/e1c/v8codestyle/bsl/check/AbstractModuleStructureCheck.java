@@ -64,12 +64,12 @@ public abstract class AbstractModuleStructureCheck
     }
 
     /**
-     * Gets the parent region of given region.
+     * Gets the parent region of this object located inside the region.
      *
-     * @param object the region to find the parent, cannot be {@code null}.
+     * @param object the object to find the first parent region, cannot be {@code null}.
      * @return the parent region, cannot return {@code null}.
      */
-    protected Optional<RegionPreprocessor> getParentRegion(RegionPreprocessor object)
+    protected Optional<RegionPreprocessor> getFirstParentRegion(EObject object)
     {
         EObject parent = object.eContainer();
         PreprocessorItem lastItem = null;
@@ -83,8 +83,10 @@ public abstract class AbstractModuleStructureCheck
                 {
                     return Optional.ofNullable(parentRegion);
                 }
-
-                return Optional.empty();
+                else
+                {
+                    lastItem = null;
+                }
             }
             else if (parent instanceof PreprocessorItem)
             {

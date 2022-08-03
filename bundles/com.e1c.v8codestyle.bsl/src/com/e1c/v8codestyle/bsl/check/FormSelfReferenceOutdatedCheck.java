@@ -12,16 +12,12 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
-
-import java.util.Collection;
-import java.util.Set;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.FEATURE_ACCESS__NAME;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STATIC_FEATURE_ACCESS;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
@@ -44,7 +40,8 @@ public class FormSelfReferenceOutdatedCheck
 {
     private static final String CHECK_ID = "form-self-reference"; //$NON-NLS-1$
 
-    private static final Collection<String> OUTDATED_ALIASES = Set.of("ЭтаФорма", "ThisForm"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String THIS_FORM = "ThisForm"; //$NON-NLS-1$
+    private static final String THIS_FORM_RU = "ЭтаФорма"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -62,30 +59,30 @@ public class FormSelfReferenceOutdatedCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
+            .checkedObjectType(STATIC_FEATURE_ACCESS);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        Expression featureAccessSource = ((DynamicFeatureAccess)object).getSource();
-        if (monitor.isCanceled() || !(featureAccessSource instanceof StaticFeatureAccess))
-        {
-            return;
-        }
-
-        StaticFeatureAccess source = (StaticFeatureAccess)featureAccessSource;
+        StaticFeatureAccess source = (StaticFeatureAccess)object;
 
         if (isAliasOutdated(source))
         {
-            resultAceptor.addIssue(Messages.FormSelfReferenceOutdatedCheck_Issue, source);
+            resultAceptor.addIssue(Messages.FormSelfReferenceOutdatedCheck_Issue, source, FEATURE_ACCESS__NAME);
         }
     }
 
-    private boolean isAliasOutdated(StaticFeatureAccess source)
+    private boolean isAliasOutdated(StaticFeatureAccess object)
     {
-        Module module = EcoreUtil2.getContainerOfType(source, Module.class);
-        return module.getModuleType() == ModuleType.FORM_MODULE && OUTDATED_ALIASES.contains(source.getName());
+        String name = object.getName();
+        if (THIS_FORM_RU.equalsIgnoreCase(name) || THIS_FORM.equalsIgnoreCase(name))
+        {
+            Module module = EcoreUtil2.getContainerOfType(object, Module.class);
+            return module.getModuleType() == ModuleType.FORM_MODULE;
+        }
+
+        return false;
     }
 }
