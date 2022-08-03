@@ -29,6 +29,7 @@ import com._1c.g5.v8.dt.form.model.ColumnGroupExtInfo;
 import com._1c.g5.v8.dt.form.model.DynamicListExtInfo;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
+import com._1c.g5.v8.dt.form.model.FormAttributeExtInfo;
 import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.FormGroup;
 import com._1c.g5.v8.dt.form.model.FormItem;
@@ -123,10 +124,10 @@ public class FormListFieldRefNotAddedCheck
                 {
                     return true;
                 }
-                else if (formItem instanceof FormGroup && refItemExists(((FormGroup)formItem).getItems()))
+
+                if (formItem instanceof FormGroup && refItemExists(((FormGroup)formItem).getItems()))
                 {
                     return true;
-
                 }
             }
         }
@@ -157,10 +158,15 @@ public class FormListFieldRefNotAddedCheck
             && table.getDataPath().getObjects().get(0).getObject() instanceof FormAttribute)
         {
             FormAttribute formAttribute = (FormAttribute)table.getDataPath().getObjects().get(0).getObject();
-            DbViewDef dbViewDef = ((DynamicListExtInfo)formAttribute.getExtInfo()).getMainTable();
-            if (dbViewDef != null && !dbViewDef.eIsProxy() && dbViewDef.getFields().stream().anyMatch(FIELD_NAME_CHECK))
+            FormAttributeExtInfo extInfo = formAttribute.getExtInfo();
+            if (extInfo instanceof DynamicListExtInfo)
             {
-                return true;
+                DbViewDef dbViewDef = ((DynamicListExtInfo)extInfo).getMainTable();
+                if (dbViewDef != null && !dbViewDef.eIsProxy()
+                    && dbViewDef.getFields().stream().anyMatch(FIELD_NAME_CHECK))
+                {
+                    return true;
+                }
             }
         }
         return false;
