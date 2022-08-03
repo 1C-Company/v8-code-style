@@ -119,7 +119,7 @@ public class FormListFieldRefNotAddedCheck
             for (int i = 0; i < items.size(); i++)
             {
                 FormItem formItem = items.get(i);
-                if (formItem instanceof FormField && isRefItem(((FormField)formItem)))
+                if (formItem instanceof FormField && isRefItem((FormField)formItem))
                 {
                     return true;
                 }
