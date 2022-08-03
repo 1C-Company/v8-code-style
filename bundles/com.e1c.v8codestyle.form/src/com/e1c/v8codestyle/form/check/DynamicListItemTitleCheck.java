@@ -40,11 +40,13 @@ import com._1c.g5.v8.dt.form.model.DataPathReferredObject;
 import com._1c.g5.v8.dt.form.model.DynamicListExtInfo;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
+import com._1c.g5.v8.dt.form.model.FormElementTitleLocation;
 import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.FormItemContainer;
 import com._1c.g5.v8.dt.form.model.PropertyInfo;
 import com._1c.g5.v8.dt.form.service.datasourceinfo.IDataSourceInfoAssociationService;
+import com._1c.g5.v8.dt.mcore.DuallyNamedElement;
 import com._1c.g5.v8.dt.mcore.NamedElement;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckDefinition;
@@ -113,7 +115,8 @@ public class DynamicListItemTitleCheck
     {
         FormField field = (FormField)object;
         AbstractDataPath dataPath = field.getDataPath();
-        if (dataPath == null || dataPath.getSegments().size() != 2 || dataPath.getObjects().size() != 2)
+        if (field.getTitleLocation() == FormElementTitleLocation.NONE || dataPath == null
+            || dataPath.getSegments().size() != 2 || dataPath.getObjects().size() != 2)
         {
             return;
         }
@@ -178,7 +181,9 @@ public class DynamicListItemTitleCheck
     private boolean isSourceUnknownOrSegmentNotEquals(String segment, EObject source)
     {
         return source == null
-            || source instanceof NamedElement && !segment.equalsIgnoreCase(((NamedElement)source).getName());
+            || !(source instanceof NamedElement && segment.equalsIgnoreCase(((NamedElement)source).getName())
+                || source instanceof DuallyNamedElement
+                    && segment.equalsIgnoreCase(((DuallyNamedElement)source).getNameRu()));
     }
 
     private boolean isDcsFieldTitleIsEmpty(DynamicListExtInfo custormQuery, String segment, String languageCode)

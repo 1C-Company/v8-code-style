@@ -730,7 +730,7 @@
        Products.DeletionMark, 
        &quot;&quot; AS Code, 
        Products.SKU, 
-       Products.Description, 
+       Products.Description AS Description, 
        Products.Description + &quot;&quot; + Products.SKU AS SkuDescription,
        Products.Predefined  AS MyPredefined, 
        Products.PredefinedDataName AS MyPredefined2
