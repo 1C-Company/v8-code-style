@@ -146,6 +146,18 @@ final class Messages
     public static String ModuleUnusedLocalVariableCheck_Unused_local_variable__0;
     public static String ModuleUnusedLocalVariableCheck_Probably_variable_not_initilized_yet__0;
 
+    public static String ModuleStructureEventFormRegionsCheck_Description;
+
+    public static String ModuleStructureEventFormRegionsCheck_Event_method__0__can_not_be_placed_in_the_region__1;
+
+    public static String ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1;
+
+    public static String ModuleStructureEventFormRegionsCheck_Excluded_method_names;
+
+    public static String ModuleStructureEventFormRegionsCheck_Multilevel_nesting_of_regions;
+
+    public static String ModuleStructureEventFormRegionsCheck_Title;
+
     public static String ModuleStructureEventRegionsCheck_Description;
 
     public static String ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1;
