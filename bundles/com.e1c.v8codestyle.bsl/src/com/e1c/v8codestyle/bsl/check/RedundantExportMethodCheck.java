@@ -38,7 +38,6 @@ import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.resource.IReferenceDescription;
 import org.eclipse.xtext.resource.IResourceDescriptions;
 import org.eclipse.xtext.resource.IResourceDescriptionsProvider;
-import org.eclipse.xtext.resource.impl.DefaultReferenceDescription;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
@@ -50,7 +49,6 @@ import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
-import com._1c.g5.v8.dt.bsl.resource.BslResource;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
@@ -83,7 +81,7 @@ public final class RedundantExportMethodCheck
 
     private static final String CHECK_ID = "redundant-export-method"; //$NON-NLS-1$
 
-    private static final Object TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
 
     private final IReferenceFinder referenceFinder;
 
@@ -158,7 +156,7 @@ public final class RedundantExportMethodCheck
 
         String name = method.getName();
         if (isNotExclusion(parameters, method, monitor) && !isScheduledJobOrEventSubscription(module, name, monitor)
-            && !existLocalNotifyDescription(module, name, monitor) && !haveCallerInOtherModule(method))
+            && !existLocalNotifyDescription(module, name, monitor) && !haveCallerInOtherModule(method, monitor))
         {
             if (monitor.isCanceled())
             {
@@ -172,11 +170,6 @@ public final class RedundantExportMethodCheck
 
     private boolean isScheduledJobOrEventSubscription(Module module, String methodName, IProgressMonitor monitor)
     {
-        if (monitor.isCanceled())
-        {
-            return true;
-        }
-
         ModuleType moduleType = module.getModuleType();
         if (!ModuleType.COMMON_MODULE.equals(moduleType))
         {
@@ -192,6 +185,10 @@ public final class RedundantExportMethodCheck
             IScope jobs = scopeProvider.getScope(module, MdClassPackage.Literals.CONFIGURATION__SCHEDULED_JOBS);
             for (IEObjectDescription item : jobs.getAllElements())
             {
+                if (monitor.isCanceled())
+                {
+                    return true;
+                }
                 if (moduleMethodName.equalsIgnoreCase(item.getUserData(USER_DATA)))
                 {
                     return true;
@@ -201,6 +198,10 @@ public final class RedundantExportMethodCheck
             IScope events = scopeProvider.getScope(module, MdClassPackage.Literals.CONFIGURATION__EVENT_SUBSCRIPTIONS);
             for (IEObjectDescription item : events.getAllElements())
             {
+                if (monitor.isCanceled())
+                {
+                    return true;
+                }
                 if (moduleMethodName.equalsIgnoreCase(item.getUserData(USER_DATA)))
                 {
                     return true;
@@ -240,14 +241,18 @@ public final class RedundantExportMethodCheck
         return false;
     }
 
-    private boolean haveCallerInOtherModule(Method object)
+    private boolean haveCallerInOtherModule(Method object, IProgressMonitor monitor)
     {
-        IProgressMonitor monitor = new NullProgressMonitor();
-        Resource resource = object.eResource();
-        if (resource instanceof BslResource)
+        IProgressMonitor subMonitor = new NullProgressMonitor()
         {
-            ((BslResource)resource).setDeepAnalysis(true);
-        }
+            @Override
+            public boolean isCanceled()
+            {
+                return super.isCanceled() || monitor.isCanceled();
+            }
+        };
+
+        Resource resource = object.eResource();
 
         IResourceDescriptions indexData =
             resourceDescriptionsProvider.getResourceDescriptions(resource.getResourceSet());
@@ -259,15 +264,28 @@ public final class RedundantExportMethodCheck
             public void accept(EObject source, URI sourceUri, EReference eReference, int index, EObject targetOrProxy,
                 URI targetUri)
             {
-                accept(new DefaultReferenceDescription(source, targetOrProxy, eReference, index, sourceUri));
+                if (subMonitor.isCanceled())
+                {
+                    return;
+                }
+
+                if (!sourceUri.path().equals(targetUri.path()))
+                {
+                    subMonitor.setCanceled(true);
+                }
             }
 
             @Override
             public void accept(IReferenceDescription description)
             {
+                if (subMonitor.isCanceled())
+                {
+                    return;
+                }
+
                 if (!description.getSourceEObjectUri().path().equals(description.getTargetEObjectUri().path()))
                 {
-                    monitor.setCanceled(true);
+                    subMonitor.setCanceled(true);
                 }
             }
         };
@@ -279,18 +297,13 @@ public final class RedundantExportMethodCheck
 
         targetUris.addURI(EcoreUtil.getURI(object));
 
-        referenceFinder.findAllReferences(targetUris, workSpaceResourceAccess, indexData, acceptor, monitor);
+        referenceFinder.findAllReferences(targetUris, workSpaceResourceAccess, indexData, acceptor, subMonitor);
 
-        return monitor.isCanceled();
+        return subMonitor.isCanceled();
     }
 
     private boolean isNotExclusion(ICheckParameters parameters, Method method, IProgressMonitor monitor)
     {
-        if (monitor.isCanceled())
-        {
-            return false;
-        }
-
         Optional<RegionPreprocessor> region = getTopParentRegion(method);
         if (region.isPresent())
         {
@@ -300,6 +313,10 @@ public final class RedundantExportMethodCheck
                 Set<String> set = Set.of(names.split(",")); //$NON-NLS-1$
                 for (String name : set)
                 {
+                    if (monitor.isCanceled())
+                    {
+                        return false;
+                    }
                     if (StringUtils.equals(name, region.get().getName()))
                     {
                         return false;
