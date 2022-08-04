@@ -52,7 +52,8 @@ public class ExternalDependenciesModule
         bind(IDataSourceInfoAssociationService.class).toService();
 
         URI qlUri = URI.createURI("*.qldcs"); //$NON-NLS-1$
-        final IResourceServiceProvider qlRsp = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(qlUri);
+        final IResourceServiceProvider qlRsp =
+            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(qlUri);
         bind(QlMapper.class).toProvider(() -> qlRsp.get(QlMapper.class));
         bind(IDynamicDbViewFieldComputer.class).toProvider(() -> qlRsp.get(IDynamicDbViewFieldComputer.class));
     }
