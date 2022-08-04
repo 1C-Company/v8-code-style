@@ -41,10 +41,53 @@ public class DynamicListItemTitleCheckTest
 
     private static final String FQN_FORM = "Catalog.Products.Form.ListForm.Form";
 
+    private static final String FQN_FORM2 = "Catalog.Products.Form.ListFormSelectAll.Form";
+
+    private static final String FQN_FORM3 = "Catalog.Products.Form.ListFormPackage.Form";
+
     @Override
     protected String getTestConfigurationName()
     {
         return PROJECT_NAME;
+    }
+
+    /**
+     *
+     * Test the List.Ref is custom query field "Ref" and has title, that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testFormListRefIsCorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "Ref");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     * Test the List.DeletionMark is custom query field and has no title, that is incorrect
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testFormListDeletionMarkIsIncorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "DeletionMark");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNotNull(marker);
     }
 
     /**
@@ -108,7 +151,7 @@ public class DynamicListItemTitleCheckTest
 
     /**
      *
-     * Test the List.Description is standard field "Description" and has no title, that is correct
+     * Test the List.Description is standard field "Description" with same alias and has no title, that is correct
      *
      * @throws Exception the exception
      */
@@ -216,7 +259,7 @@ public class DynamicListItemTitleCheckTest
      * @throws Exception the exception
      */
     @Test
-    public void testFormListCorrectFieldIsIncorrect() throws Exception
+    public void testFormListSkuDescriptionIsIncorrect() throws Exception
     {
 
         IBmObject object = getTopObjectByFqn(FQN_FORM, getProject());
@@ -227,6 +270,174 @@ public class DynamicListItemTitleCheckTest
         assertNotNull(item);
         Marker marker = getFirstMarker(CHECK_ID, item, getProject());
         assertNotNull(marker);
+    }
+
+    /**
+     *
+     * Test the List.Code is standard field "Code" and has no visible item title,
+     * that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testListFormSelectAllCodeIsCorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM2, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "Code");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     *
+     * Test the List.Description is standard field "Description" and has no item title,
+     * that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testListFormSelectAllDescriptionIsCorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM2, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "Description");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     *
+     * Test the List.DeletionMark is standard field "DeletionMark" and has no item title,
+     * that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testListFormSelectAllDeletionMarkIsCorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM2, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "DeletionMark");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     *
+     * Test the List.SKU2 is MD field "SKU" and has no item title,
+     * that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testListFormSelectAllSKU2IsCorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM2, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "SKU2");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     *
+     * Test the List.Code is standard field "Code" and has no item title,
+     * that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testListFormPackageCodeIsCorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM3, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "Code");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     *
+     * Test the List.Description is expression field "Description" of package and has no item title,
+     * that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testListFormPackageDescriptionIsIncorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM3, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "Description");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNotNull(marker);
+    }
+
+    /**
+     *
+     * Test the List.DeletionMark is standard field "DeletionMark" and has no item title,
+     * that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testListFormPackageDeletionMarkIsCorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM3, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "DeletionMark");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     *
+     * Test the List.SKU is MD field "SKU" and has no item title,
+     * that is correct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testListFormPackageSKUIsCorrect() throws Exception
+    {
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM3, getProject());
+        assertTrue(object instanceof Form);
+        Form form = (Form)object;
+
+        FormField item = getListItem(form, "SKU");
+        assertNotNull(item);
+        Marker marker = getFirstMarker(CHECK_ID, item, getProject());
+        assertNull(marker);
     }
 
     private FormField getListItem(Form form, String name) throws Exception

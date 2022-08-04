@@ -16,15 +16,20 @@ import static com._1c.g5.v8.dt.dcs.model.core.DcsPackage.Literals.LOCAL_STRING;
 import static com._1c.g5.v8.dt.dcs.model.core.DcsPackage.Literals.PRESENTATION;
 import static com._1c.g5.v8.dt.dcs.model.schema.DcsPackage.Literals.DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD;
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.DATA_ITEM__DATA_PATH;
+import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.DATA_ITEM__TITLE_LOCATION;
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.DYNAMIC_LIST_EXT_INFO;
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM;
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM_FIELD;
+import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM_FIELD__TYPE;
 import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.TITLED__TITLE;
+
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.bm.core.BmUriUtil;
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -44,10 +49,21 @@ import com._1c.g5.v8.dt.form.model.FormElementTitleLocation;
 import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.FormItemContainer;
+import com._1c.g5.v8.dt.form.model.ManagedFormFieldType;
 import com._1c.g5.v8.dt.form.model.PropertyInfo;
 import com._1c.g5.v8.dt.form.service.datasourceinfo.IDataSourceInfoAssociationService;
 import com._1c.g5.v8.dt.mcore.DuallyNamedElement;
 import com._1c.g5.v8.dt.mcore.NamedElement;
+import com._1c.g5.v8.dt.metadata.dbview.DbViewElement;
+import com._1c.g5.v8.dt.metadata.dbview.DbViewFieldFieldDef;
+import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.ql.model.DbViewFieldFieldDefFromQuery;
+import com._1c.g5.v8.dt.ql.model.QuerySchemaExpression;
+import com._1c.g5.v8.dt.ql.model.QuerySchemaOperator;
+import com._1c.g5.v8.dt.ql.model.QuerySchemaSelectQuery;
+import com._1c.g5.v8.dt.ql.model.StarExpression;
+import com._1c.g5.v8.dt.ql.resource.QlMapper;
+import com._1c.g5.v8.dt.ql.typesystem.IDynamicDbViewFieldComputer;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckDefinition;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -79,12 +95,19 @@ public class DynamicListItemTitleCheck
 
     private final IDataSourceInfoAssociationService dataSourceInfoAssociationService;
 
+    private final QlMapper qlMapper;
+
+    private final IDynamicDbViewFieldComputer dynamicDbViewFieldComputer;
+
     @Inject
     public DynamicListItemTitleCheck(IV8ProjectManager v8ProjectManager,
-        IDataSourceInfoAssociationService dataSourceInfoAssociationService)
+        IDataSourceInfoAssociationService dataSourceInfoAssociationService, QlMapper qlMapper,
+        IDynamicDbViewFieldComputer dynamicDbViewFieldComputer)
     {
         this.v8ProjectManager = v8ProjectManager;
         this.dataSourceInfoAssociationService = dataSourceInfoAssociationService;
+        this.qlMapper = qlMapper;
+        this.dynamicDbViewFieldComputer = dynamicDbViewFieldComputer;
     }
 
     @Override
@@ -106,7 +129,7 @@ public class DynamicListItemTitleCheck
             .extension(new DynamicListChangeExtension())
             .topObject(FORM)
             .containment(FORM_FIELD)
-            .features(TITLED__TITLE, DATA_ITEM__DATA_PATH);
+            .features(TITLED__TITLE, DATA_ITEM__DATA_PATH, DATA_ITEM__TITLE_LOCATION, FORM_FIELD__TYPE);
     }
 
     @Override
@@ -115,7 +138,8 @@ public class DynamicListItemTitleCheck
     {
         FormField field = (FormField)object;
         AbstractDataPath dataPath = field.getDataPath();
-        if (field.getTitleLocation() == FormElementTitleLocation.NONE || dataPath == null
+        if (field.getTitleLocation() == FormElementTitleLocation.NONE
+            || field.getType() == ManagedFormFieldType.PICTURE_FIELD || dataPath == null
             || dataPath.getSegments().size() != 2 || dataPath.getObjects().size() != 2)
         {
             return;
@@ -144,8 +168,9 @@ public class DynamicListItemTitleCheck
         String segment = dataPath.getSegments().get(1);
         DataPathReferredObject refObject = dataPath.getObjects().get(1);
         EObject source = refObject.getObject();
+        PropertyInfo fieldAttribute = dataSourceInfoAssociationService.findPropertyInfo(form, dataPath, 1);
 
-        if (isSourceUnknownOrSegmentNotEquals(segment, source)
+        if (!isSourceKnownAndSegmentEquals(segment, source, fieldAttribute)
             && isDcsFieldTitleIsEmpty(custormQuery, segment, languageCode))
         {
             resultAceptor.addIssue(Messages.DynamicListItemTitleCheck_message, field, TITLED__TITLE);
@@ -178,12 +203,89 @@ public class DynamicListItemTitleCheck
         return title == null || languageCode != null && StringUtils.isBlank(title.get(languageCode));
     }
 
-    private boolean isSourceUnknownOrSegmentNotEquals(String segment, EObject source)
+    private boolean isSourceKnownAndSegmentEquals(String segment, EObject source, PropertyInfo attribute)
     {
-        return source == null
-            || !(source instanceof NamedElement && segment.equalsIgnoreCase(((NamedElement)source).getName())
-                || source instanceof DuallyNamedElement
-                    && segment.equalsIgnoreCase(((DuallyNamedElement)source).getNameRu()));
+        if (isNameEquals(source, segment))
+        {
+            return true;
+        }
+
+        if (attribute != null)
+        {
+            // no alias or alias is equals to table field name
+            if (isNameEquals(attribute.getSource(), segment))
+            {
+                Object querySource = attribute.getSource();
+                if (querySource instanceof DbViewFieldFieldDefFromQuery)
+                {
+                    EObject mdObject = ((DbViewFieldFieldDefFromQuery)querySource).getMdObject();
+                    return mdObject != null
+                        && isNameEquals(((DbViewFieldFieldDefFromQuery)querySource).getMdObject(), segment)
+                        || mdObject == null && isSelectAllQuery((DbViewFieldFieldDefFromQuery)querySource)
+                        || mdObject == null && isNameEquals(getSourceObject((EObject)querySource), segment);
+
+                }
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isSelectAllQuery(DbViewFieldFieldDefFromQuery querySource)
+    {
+        QuerySchemaSelectQuery select = EcoreUtil2.getContainerOfType(querySource, QuerySchemaSelectQuery.class);
+        if (select == null)
+        {
+            return false;
+        }
+        for (QuerySchemaOperator operator : select.getOperators())
+        {
+            for (QuerySchemaExpression field : operator.getSelectFields())
+            {
+                if (field.getExpression() instanceof StarExpression)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private EObject getSourceObject(EObject object)
+    {
+        Set<EObject> sources = qlMapper.getSourceObjects(object);
+        for (EObject source : sources)
+        {
+            DbViewElement dbModel = null;
+            if (source instanceof QuerySchemaExpression)
+            {
+                dbModel = dynamicDbViewFieldComputer.computeDbView(((QuerySchemaExpression)source).getExpression());
+            }
+            else
+            {
+                dbModel = dynamicDbViewFieldComputer.computeDbView(source);
+            }
+            if (dbModel instanceof DbViewFieldFieldDef)
+            {
+                return dbModel;
+            }
+
+            if (dbModel != null && dbModel.getMdObject() != null)
+            {
+                return dbModel.getMdObject();
+            }
+        }
+
+        return null;
+    }
+
+    private boolean isNameEquals(Object object, String name)
+    {
+        return object instanceof MdObject && name.equalsIgnoreCase(((MdObject)object).getName())
+            || object instanceof NamedElement && name.equalsIgnoreCase(((NamedElement)object).getName())
+            || object instanceof DuallyNamedElement && name.equalsIgnoreCase(((DuallyNamedElement)object).getNameRu());
     }
 
     private boolean isDcsFieldTitleIsEmpty(DynamicListExtInfo custormQuery, String segment, String languageCode)

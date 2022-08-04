@@ -58,4 +58,22 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
+  <forms uuid="8de9695e-466f-4fab-ad62-5c954b4c55d5">
+    <name>ListFormSelectAll</name>
+    <synonym>
+      <key>en</key>
+      <value>List form select all</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="bade1a53-78b2-4daf-b024-8bf7acc2f0ba">
+    <name>ListFormPackage</name>
+    <synonym>
+      <key>en</key>
+      <value>List form package</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>
