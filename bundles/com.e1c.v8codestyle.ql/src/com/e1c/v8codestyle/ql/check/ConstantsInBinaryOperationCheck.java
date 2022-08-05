@@ -70,7 +70,8 @@ public class ConstantsInBinaryOperationCheck
         if ((binaryExpression.getLeft() instanceof StringLiteralExpression)
             && (binaryExpression.getRight() instanceof StringLiteralExpression))
         {
-            String message = Messages.ConstantsInBinaryOperationCheck_Using_binary_operations_with_constants_in_queries_is_forbidden;
+            String message =
+                Messages.ConstantsInBinaryOperationCheck_Using_binary_operations_with_constants_in_queries_is_forbidden;
             resultAceptor.addIssue(message, binaryExpression, ABINARY_OPERATORS_EXPRESSION__RIGHT);
         }
     }
