@@ -50,6 +50,10 @@
             category="com.e1c.v8codestyle.ql"
             class="com.e1c.v8codestyle.ql.check.LikeExpressionWithFieldCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.ql"
+            class="com.e1c.v8codestyle.ql.check.ConstantsInBinaryOperationCheck">
+      </check>
    </extension>
 
 </plugin>
