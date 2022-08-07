@@ -132,9 +132,21 @@ final class Messages
 
     public static String ManagerModuleNamedSelfReferenceCheck_title;
 
+    public static String ModuleStructureTopRegionCheck_Check_duplicates_of_standard_regions;
+
+    public static String ModuleStructureTopRegionCheck_Check_order_of_standard_regions;
+
     public static String ModuleStructureTopRegionCheck_description;
 
     public static String ModuleStructureTopRegionCheck_error_message;
+
+    public static String ModuleStructureTopRegionCheck_Exclude_region_name;
+
+    public static String ModuleStructureTopRegionCheck_Region_has_duplicate;
+
+    public static String ModuleStructureTopRegionCheck_Region_has_the_wrong_order;
+
+    public static String ModuleStructureTopRegionCheck_Region_is_not_standard_for_current_type_of_module;
 
     public static String ModuleStructureTopRegionCheck_title;
 
