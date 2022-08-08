@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f5d1162e-e7b6-4a08-8e17-cb944d7c82fc">
+  <name>CommonModulMultiLevel</name>
+  <synonym>
+    <key>en</key>
+    <value>Common modul multi level</value>
+  </synonym>
+  <server>true</server>
+  <externalConnection>true</externalConnection>
+  <clientOrdinaryApplication>true</clientOrdinaryApplication>
+</mdclass:CommonModule>

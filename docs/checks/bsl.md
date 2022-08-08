@@ -1,7 +1,7 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 60
+Общее количество проверок: 64
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -47,6 +47,9 @@
 | [module-empty-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-empty-method.md) | Проверка пустых методов |
 | [module-region-empty](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-region-empty.md) | Область пустая |
 | [module-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-self-reference.md) | Избыточное использование псевдонима "ЭтотОбъект" |
+| [module-structure-event-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-event-regions.md) | Раздел «Обработчики событий» содержит только методы являющиеся обработчиками событий |
+| [module-structure-form-event-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-form-event-regions.md) | Проверяет регион обработчиков событий формы |
+| [module-structure-method-in-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-method-in-regions.md) | Проверяет что метод находится в области |
 | [module-structure-top-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-top-region.md) | Стандартная область структуры модуля верхнеуровневая |
 | [module-undefined-function](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-function.md) | Функция не определена |
 | [module-undefined-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-method.md) | Метод не определен |
@@ -57,6 +60,7 @@
 | [notify-description-to-server-procedure](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/notify-description-to-server-procedure.md) | Описание оповещения на серверную процедуру |
 | [property-return-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/property-return-type.md) | Свойство объекта имеет тип возвращаемого значения |
 | [query-in-loop](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/query-in-loop.md) | Запрос в цикле |
+| [redundant-export-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/redundant-export-method.md) | Тексты модулей конфигурации не должны содержать неиспользуемые экспортные процедуры и функции. |
 | [rollback-transaction](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/rollback-transaction.md) | Проверка нарушения схемы работы с транзакциями |
 | [server-execution-safe-mode](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/server-execution-safe-mode.md) | Отсутствует включение безопасного режима перед вызовом метода "Выполнить" или "Вычислить" |
 | [statement-type-change](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/statement-type-change.md) | Утверждение меняет тип |

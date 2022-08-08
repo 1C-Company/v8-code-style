@@ -1,7 +1,7 @@
 # Проверки прав ролей 1С
 
 
-Общее количество проверок: 23
+Общее количество проверок: 24
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -10,6 +10,7 @@
 | [right-all-functions-mode](../../bundles/com.e1c.v8codestyle.right/markdown/ru/right-all-functions-mode.md) | Право установлено: Режим "Все функции" |
 | [right-configuration-extensions-administration](../../bundles/com.e1c.v8codestyle.right/markdown/ru/right-configuration-extensions-administration.md) | Право установлено: Администрирование расширений конфигурации |
 | [right-data-administration](../../bundles/com.e1c.v8codestyle.right/markdown/ru/right-data-administration.md) | Право установлено: Администрирование данных |
+| [right-delete](../../bundles/com.e1c.v8codestyle.right/markdown/ru/right-delete.md) | Установлено право "Удаление" |
 | [right-exclusive-mode](../../bundles/com.e1c.v8codestyle.right/markdown/ru/right-exclusive-mode.md) | Право установлено: Монопольный режим |
 | [right-interactive-clear-deletion-mark-predefined-data](../../bundles/com.e1c.v8codestyle.right/markdown/ru/right-interactive-clear-deletion-mark-predefined-data.md) | Установлено право "ИнтерактивноеСнятиеПометкиУдаленияПредопределенныхДанных" |
 | [right-interactive-delete](../../bundles/com.e1c.v8codestyle.right/markdown/ru/right-interactive-delete.md) | Установлено право "ИнтерактивноеУдаление" |

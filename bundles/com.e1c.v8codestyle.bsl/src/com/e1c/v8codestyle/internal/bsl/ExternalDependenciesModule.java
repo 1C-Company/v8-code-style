@@ -15,10 +15,14 @@ package com.e1c.v8codestyle.internal.bsl;
 
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.xtext.findReferences.IReferenceFinder;
+import org.eclipse.xtext.findReferences.IReferenceFinder.IResourceAccess;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.resource.IResourceDescription;
+import org.eclipse.xtext.resource.IResourceDescriptionsProvider;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
+import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
@@ -30,6 +34,7 @@ import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
+import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
@@ -78,5 +83,11 @@ class ExternalDependenciesModule
         bind(IBslOwnerComputerService.class).toProvider(() -> rsp.get(IBslOwnerComputerService.class));
         bind(IScopeProvider.class).toProvider(() -> rsp.get(IScopeProvider.class));
         bind(IQualifiedNameProvider.class).toProvider(() -> rsp.get(IQualifiedNameProvider.class));
+
+        bind(IReferenceFinder.class).toProvider(() -> rsp.get(IReferenceFinder.class));
+        bind(IResourceDescriptionsProvider.class).toProvider(() -> rsp.get(IResourceDescriptionsProvider.class));
+        bind(IResourceAccess.class).toService();
+        bind(ResourceDescriptionsProvider.class).toService();
+        bind(IConfigurationProvider.class).toService();
     }
 }

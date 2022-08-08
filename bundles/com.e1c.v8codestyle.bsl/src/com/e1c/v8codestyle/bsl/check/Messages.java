@@ -104,6 +104,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String RedundantExportCheck_Escess_title;
+
+    public static String RedundantExportCheck_Excess_description;
+
+    public static String RedundantExportCheck_Exclude_title;
+
+    public static String RedundantExportCheck_Unused_export_method__0;
+
     public static String ExportMethodInCommandFormModuleCheck_CheckClientMethodForm;
 
     public static String ExportMethodInCommandFormModuleCheck_CheckServerMethodForm;
@@ -146,6 +154,18 @@ final class Messages
     public static String ModuleUnusedLocalVariableCheck_Unused_local_variable__0;
     public static String ModuleUnusedLocalVariableCheck_Probably_variable_not_initilized_yet__0;
 
+    public static String ModuleStructureEventFormRegionsCheck_Description;
+
+    public static String ModuleStructureEventFormRegionsCheck_Event_method__0__can_not_be_placed_in_the_region__1;
+
+    public static String ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1;
+
+    public static String ModuleStructureEventFormRegionsCheck_Excluded_method_names;
+
+    public static String ModuleStructureEventFormRegionsCheck_Multilevel_nesting_of_regions;
+
+    public static String ModuleStructureEventFormRegionsCheck_Title;
+
     public static String ModuleStructureEventRegionsCheck_Description;
 
     public static String ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1;
@@ -153,6 +173,16 @@ final class Messages
     public static String ModuleStructureEventRegionsCheck_Only_event_methods__0;
 
     public static String ModuleStructureEventRegionsCheck_Title;
+
+    public static String ModuleStructureMethodInRegionCheck_Description;
+
+    public static String ModuleStructureMethodInRegionCheck_Method_should_be_placed_in_one_of_the_standard_regions;
+
+    public static String ModuleStructureMethodInRegionCheck_Multilevel_nesting_of_regions;
+
+    public static String ModuleStructureMethodInRegionCheck_Only_export;
+
+    public static String ModuleStructureMethodInRegionCheck_Title;
 
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
