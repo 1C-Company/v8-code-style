@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5acc3a54-1851-4424-97a8-8298496b2c4c">
+  <name>DeclaredVariableNameTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Declared variable name test</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>
