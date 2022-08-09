@@ -106,7 +106,7 @@ public class ModuleStructureEventRegionsCheck
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Only_event_methods__0, name),
                 McorePackage.Literals.NAMED_ELEMENT__NAME);
         }
-        else if (!eventHandlersName.equals(name) && method.isEvent())
+        else if (!ModuleType.COMMON_MODULE.equals(moduleType) && !eventHandlersName.equals(name) && method.isEvent())
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1,
