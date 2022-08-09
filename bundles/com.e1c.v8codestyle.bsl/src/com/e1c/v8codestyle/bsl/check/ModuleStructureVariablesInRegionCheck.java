@@ -25,6 +25,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.McorePackage;
@@ -67,6 +68,8 @@ public class ModuleStructureVariablesInRegionCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.excludeTypes(ModuleType.COMMON_MODULE, ModuleType.COMMAND_MODULE,
+                ModuleType.MANAGER_MODULE, ModuleType.SESSION_MODULE))
             .module()
             .checkedObjectType(DECLARE_STATEMENT);
     }
@@ -81,10 +84,6 @@ public class ModuleStructureVariablesInRegionCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled())
-        {
-            return;
-        }
 
         DeclareStatement declareStatement = (DeclareStatement)object;
         Method method = EcoreUtil2.getContainerOfType((EObject)declareStatement, Method.class);
@@ -93,14 +92,28 @@ public class ModuleStructureVariablesInRegionCheck
             return;
         }
 
+        if (monitor.isCanceled())
+        {
+            return;
+        }
+
         ScriptVariant scriptVariant = v8ProjectManager.getProject(declareStatement).getScriptVariant();
 
         Collection<ExplicitVariable> variables = declareStatement.getVariables();
+        Optional<RegionPreprocessor> region = Optional.empty();
+        if (!variables.isEmpty())
+        {
+            region = getTopParentRegion(variables.iterator().next());
+        }
         String variablesName = ModuleStructureSection.VARIABLES.getName(scriptVariant);
         for (ExplicitVariable variable : variables)
         {
-            Optional<RegionPreprocessor> region = getTopParentRegion(variable);
-            if (region.isEmpty() || !variablesName.equals(region.get().getName()))
+            if (monitor.isCanceled())
+            {
+                return;
+            }
+
+            if (region.isEmpty() || !variablesName.equalsIgnoreCase(region.get().getName()))
             {
                 resultAceptor.addIssue(
                     MessageFormat.format(Messages.ModuleStructureVariablesInRegionCheck_Issue__0, variablesName),
