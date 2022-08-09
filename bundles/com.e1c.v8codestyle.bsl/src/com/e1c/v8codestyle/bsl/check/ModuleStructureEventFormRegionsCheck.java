@@ -236,7 +236,7 @@ public class ModuleStructureEventFormRegionsCheck
     private void addIssueCommand(ResultAcceptor result, String regionName, String methodName,
         ScriptVariant scriptVariant)
     {
-        if (!isCommandHanlderRegion(regionName, scriptVariant))
+        if (!isCommandHandlerRegion(regionName, scriptVariant))
         {
             String defRegionName = ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
             addIssueShouldBeInRegion(result, methodName, defRegionName);
@@ -246,7 +246,7 @@ public class ModuleStructureEventFormRegionsCheck
     private void addIssueTable(ResultAcceptor result, String tableName, String regionName, String methodName,
         ScriptVariant scriptVariant)
     {
-        if (!isTableHanlderRegion(scriptVariant, regionName, tableName))
+        if (!isTableHandlerRegion(scriptVariant, regionName, tableName))
         {
             String defRegionName =
                 ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant) + tableName;
@@ -256,7 +256,7 @@ public class ModuleStructureEventFormRegionsCheck
 
     private void addIssueForm(ResultAcceptor result, String regionName, String methodName, ScriptVariant scriptVariant)
     {
-        if (!isFormHanlderRegion(regionName, scriptVariant))
+        if (!isFormHandlerRegion(regionName, scriptVariant))
         {
             addIssueShouldBeInRegion(result, methodName,
                 ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant));
@@ -265,7 +265,7 @@ public class ModuleStructureEventFormRegionsCheck
 
     private void addIssueItem(ResultAcceptor result, String regionName, String methodName, ScriptVariant scriptVariant)
     {
-        if (!isFormHeaderHanlderRegion(regionName, scriptVariant))
+        if (!isFormHeaderHandlerRegion(regionName, scriptVariant))
         {
             addIssueShouldBeInRegion(result, methodName,
                 ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant));
@@ -286,32 +286,34 @@ public class ModuleStructureEventFormRegionsCheck
             methodName, regionName), McorePackage.Literals.NAMED_ELEMENT__NAME);
     }
 
-    private boolean isCommandHanlderRegion(String regionName, ScriptVariant scriptVariant)
+    private boolean isCommandHandlerRegion(String regionName, ScriptVariant scriptVariant)
     {
-        return ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+        return ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName);
     }
 
-    private boolean isTableHanlderRegion(ScriptVariant scriptVariant, String regionName, String tableName)
+    private boolean isTableHandlerRegion(ScriptVariant scriptVariant, String regionName, String tableName)
     {
         return (ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant) + tableName)
-            .equals(regionName);
+            .equalsIgnoreCase(regionName);
     }
 
-    private boolean isFormHeaderHanlderRegion(String regionName, ScriptVariant scriptVariant)
+    private boolean isFormHeaderHandlerRegion(String regionName, ScriptVariant scriptVariant)
     {
-        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant)
+            .equalsIgnoreCase(regionName);
     }
 
-    private boolean isFormHanlderRegion(String regionName, ScriptVariant scriptVariant)
+    private boolean isFormHandlerRegion(String regionName, ScriptVariant scriptVariant)
     {
-        return ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName);
+        return ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName);
     }
 
     private boolean isEventHandlerRegion(ScriptVariant scriptVariant, String regionName)
     {
-        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
-            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
-            || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equals(regionName)
+        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant)
+            .equalsIgnoreCase(regionName)
+            || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName)
+            || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName)
             || ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant).indexOf(regionName) != -1;
     }
 
