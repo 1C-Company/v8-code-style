@@ -124,14 +124,15 @@ public class ModuleStructureMethodInRegionCheck
             String internalName = ModuleStructureSection.INTERNAL.getName(scriptVariant);
             String privateName = ModuleStructureSection.PRIVATE.getName(scriptVariant);
             String regionName = region.get().getName();
-            if (!method.isExport() && (publicName.equals(regionName) || internalName.equals(regionName)))
+            if (!method.isExport()
+                && (publicName.equalsIgnoreCase(regionName) || internalName.equalsIgnoreCase(regionName)))
             {
                 resultAceptor.addIssue(
                     MessageFormat.format(Messages.ModuleStructureMethodInRegionCheck_Only_export, regionName),
                     McorePackage.Literals.NAMED_ELEMENT__NAME);
             }
-            else if (method.isExport() && !(publicName.equals(regionName) || internalName.equals(regionName)
-                || privateName.equals(regionName)))
+            else if (method.isExport() && !(publicName.equalsIgnoreCase(regionName)
+                || internalName.equalsIgnoreCase(regionName) || privateName.equalsIgnoreCase(regionName)))
             {
                 addIssue(resultAceptor, method, String.join(", ", publicName, internalName, privateName)); //$NON-NLS-1$
             }
