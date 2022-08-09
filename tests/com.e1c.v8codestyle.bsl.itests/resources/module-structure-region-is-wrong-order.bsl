@@ -1,7 +1,7 @@
 
 #If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
-#Region Private
+#Region private
 
 Procedure PrivateMethod()
     // add code
@@ -9,7 +9,7 @@ EndProcedure
 
 #EndRegion
 
-#Region Public
+#Region public
 
 Procedure PublicMethod() Export
     PrivateMethod();
@@ -17,7 +17,7 @@ EndProcedure
 
 #EndRegion
 
-#Region Internal
+#Region internal
 
 Procedure InternalMethod() Export
     PrivateMethod();

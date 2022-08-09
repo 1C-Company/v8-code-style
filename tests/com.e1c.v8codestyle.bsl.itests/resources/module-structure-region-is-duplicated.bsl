@@ -1,7 +1,7 @@
 
 #If Server Or ThickClientOrdinaryApplication Or ExternalConnection Then
 
-#Region Public
+#Region public
 
 Procedure PublicMethod() Export
     PrivateMethod();
