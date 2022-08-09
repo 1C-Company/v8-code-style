@@ -119,7 +119,8 @@ public class ModuleStructureTopRegionCheck
         }
 
         ScriptVariant scriptVariant = v8ProjectManager.getProject(module).getScriptVariant();
-        Collection<String> names = moduleStructureProvider.getModuleStructureRegions(module.getModuleType(), scriptVariant);
+        Collection<String> names =
+            moduleStructureProvider.getModuleStructureRegions(module.getModuleType(), scriptVariant);
 
         check(resultAceptor, allRegions, names, parameters, scriptVariant, monitor);
 
@@ -184,7 +185,7 @@ public class ModuleStructureTopRegionCheck
     {
         if (str == null || prefix == null)
         {
-            return (str == null && prefix == null);
+            return str == null && prefix == null;
         }
         if (prefix.length() > str.length())
         {
