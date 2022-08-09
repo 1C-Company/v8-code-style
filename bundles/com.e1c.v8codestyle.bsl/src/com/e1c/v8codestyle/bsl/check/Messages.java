@@ -184,6 +184,12 @@ final class Messages
 
     public static String ModuleStructureMethodInRegionCheck_Title;
 
+    public static String ModuleStructureVariablesInRegionCheck_Description;
+
+    public static String ModuleStructureVariablesInRegionCheck_Issue__0;
+
+    public static String ModuleStructureVariablesInRegionCheck_Title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;

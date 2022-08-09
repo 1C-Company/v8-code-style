@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="237162e8-365a-4b64-a27c-42321755f203">
+  <producedTypes>
+    <objectType typeId="4ecdff4a-0f60-4dab-8834-c9132bf01312" valueTypeId="045dfaea-dfcb-4ce4-84d8-733107262aba"/>
+    <refType typeId="971294ed-55e5-4e0e-81c5-9a85a7c73ad4" valueTypeId="370d474f-3798-4858-9dba-4b570895e882"/>
+    <selectionType typeId="36185fae-ec8d-4945-bfb4-f06851b4fbf8" valueTypeId="a10e40fd-5468-49ae-9496-6e017ffc5183"/>
+    <listType typeId="127038c6-50f0-4e43-936c-055cdbf0ce47" valueTypeId="50d23223-0b50-45bc-bdd0-510cd5da960a"/>
+    <managerType typeId="6a49c386-9c1a-489e-a944-e254063145a2" valueTypeId="08210355-5b74-4cda-92c7-49bd63888d01"/>
+  </producedTypes>
+  <name>CatalogOutOfRegion</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog out of region</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.CatalogOutOfRegion.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CatalogOutOfRegion.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>
