@@ -97,14 +97,15 @@ public class ModuleStructureVariablesInRegionCheck
             return;
         }
 
-        ScriptVariant scriptVariant = v8ProjectManager.getProject(declareStatement).getScriptVariant();
-
         Collection<ExplicitVariable> variables = declareStatement.getVariables();
-        Optional<RegionPreprocessor> region = Optional.empty();
-        if (!variables.isEmpty())
+        if (variables.isEmpty())
         {
-            region = getTopParentRegion(variables.iterator().next());
+            return;
         }
+
+        Optional<RegionPreprocessor> region = getTopParentRegion(declareStatement);
+
+        ScriptVariant scriptVariant = v8ProjectManager.getProject(declareStatement).getScriptVariant();
         String variablesName = ModuleStructureSection.VARIABLES.getName(scriptVariant);
         for (ExplicitVariable variable : variables)
         {
