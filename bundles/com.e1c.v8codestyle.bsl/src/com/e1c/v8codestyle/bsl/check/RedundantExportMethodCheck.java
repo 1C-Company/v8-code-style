@@ -70,9 +70,6 @@ public final class RedundantExportMethodCheck
 
     private static final String USER_DATA = "methodName"; //$NON-NLS-1$
 
-    private static final Set<ModuleType> CHECKED_MODULES =
-        Set.of(ModuleType.MANAGER_MODULE, ModuleType.COMMON_MODULE, ModuleType.OBJECT_MODULE);
-
     private static final String DEFAULT_EXCLUDE_REGION_NAME_LIST =
         String.join(",", ModuleStructureSection.PUBLIC.getNames()); //$NON-NLS-1$
 
@@ -119,6 +116,8 @@ public final class RedundantExportMethodCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
             .disable()
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.MANAGER_MODULE, ModuleType.COMMON_MODULE,
+                ModuleType.OBJECT_MODULE))
             //.extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD)
@@ -143,12 +142,6 @@ public final class RedundantExportMethodCheck
         }
 
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
-        //TODO #1091 move to common filter by module type
-        ModuleType moduleType = module.getModuleType();
-        if (!CHECKED_MODULES.contains(moduleType))
-        {
-            return;
-        }
 
         String name = method.getName();
         if (isNotExclusion(parameters, method, monitor) && !isScheduledJobOrEventSubscription(module, name, monitor)
