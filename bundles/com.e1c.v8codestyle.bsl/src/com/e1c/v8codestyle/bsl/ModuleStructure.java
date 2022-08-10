@@ -13,10 +13,10 @@
 package com.e1c.v8codestyle.bsl;
 
 import java.util.Collection;
-import java.util.SortedSet;
+import java.util.Set;
 
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Default module structure list of sections by the module type.
@@ -31,8 +31,8 @@ public enum ModuleStructure
     COMMON_MODULE(ModuleStructureSection.PUBLIC, ModuleStructureSection.INTERNAL, ModuleStructureSection.PRIVATE),
     EXTERNAL_CONN_MODULE(ModuleStructureSection.EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
     FORM_MODULE(ModuleStructureSection.VARIABLES, ModuleStructureSection.FORM_EVENT_HANDLERS,
-        ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS, ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS,
-        ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
+        ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS, ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS,
+        ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
     HTTP_SERVICE_MODULE(ModuleStructureSection.EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
     INTEGRATION_SERVICE_MODULE(ModuleStructureSection.EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
     MANAGED_APP_MODULE(ModuleStructureSection.VARIABLES, ModuleStructureSection.EVENT_HANDLERS,
@@ -97,14 +97,14 @@ public enum ModuleStructure
         default:
             break;
         }
-        return ImmutableSortedSet.of();
+        return Set.of();
     }
 
-    private final SortedSet<ModuleStructureSection> sections;
+    private final ImmutableSet<ModuleStructureSection> sections;
 
     ModuleStructure(ModuleStructureSection... sections)
     {
-        this.sections = ImmutableSortedSet.copyOf(sections);
+        this.sections = ImmutableSet.copyOf(sections);
     }
 
     /**

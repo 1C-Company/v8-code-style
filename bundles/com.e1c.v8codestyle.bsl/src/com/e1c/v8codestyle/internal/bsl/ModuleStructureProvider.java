@@ -38,7 +38,7 @@ import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 import com.e1c.v8codestyle.bsl.ModuleStructure;
-import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.ImmutableSet;
 
 /**
  * The default implementation of module structure provider.
@@ -132,7 +132,7 @@ public class ModuleStructureProvider
     @Override
     public Collection<String> getModuleStructureRegions(ModuleType moduleType, ScriptVariant scriptVariant)
     {
-        return ImmutableSortedSet.copyOf(ModuleStructure.getStructureByType(moduleType)
+        return ImmutableSet.copyOf(ModuleStructure.getStructureByType(moduleType)
             .stream()
             .map(s -> s.getName(scriptVariant))
             .collect(Collectors.toList()));
