@@ -99,6 +99,7 @@ public class ModuleStructureEventFormRegionsCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(METHOD)
             .parameter(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN, String.class, PATTERN_EXCLUDE,
@@ -121,12 +122,6 @@ public class ModuleStructureEventFormRegionsCheck
         ScriptVariant scriptVariant = project.getScriptVariant();
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
         if (module == null)
-        {
-            return;
-        }
-
-        ModuleType moduleType = module.getModuleType();
-        if (!ModuleType.FORM_MODULE.equals(moduleType))
         {
             return;
         }
