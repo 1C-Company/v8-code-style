@@ -1,12 +1,12 @@
 # Индекс проверок
 
 
-Общее количество проверок 1С:Стандарты разработки V8: 119
+Общее количество проверок 1С:Стандарты разработки V8: 122
 
 - form: 6
 - md: 18
-- bsl: 64
-- ql: 7
+- bsl: 66
+- ql: 8
 - right: 24
 
 
@@ -78,8 +78,10 @@
 | [module-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-self-reference.md) | Избыточное использование псевдонима "ЭтотОбъект" |
 | [module-structure-event-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-event-regions.md) | Раздел «Обработчики событий» содержит только методы являющиеся обработчиками событий |
 | [module-structure-form-event-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-form-event-regions.md) | Проверяет регион обработчиков событий формы |
+| [module-structure-init-code-in-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-init-code-in-region.md) | Раздел инициализации содержит код инициализации |
 | [module-structure-method-in-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-method-in-regions.md) | Проверяет что метод находится в области |
-| [module-structure-top-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-top-region.md) | Стандартная область структуры модуля верхнеуровневая |
+| [module-structure-top-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-top-region.md) | Стандартные области структуры модуля верхнего уровня |
+| [module-structure-var-in-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-var-in-region.md) | Раздел описания переменных |
 | [module-undefined-function](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-function.md) | Функция не определена |
 | [module-undefined-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-method.md) | Метод не определен |
 | [module-undefined-variable](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-variable.md) | Переменная не определена |
@@ -90,6 +92,7 @@
 | [property-return-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/property-return-type.md) | Свойство объекта имеет тип возвращаемого значения |
 | [ql-camel-case-string-literal](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-camel-case-string-literal.md) | Строковый литерал в запросе содержит не КемелКейс контент |
 | [ql-cast-to-max-number](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-cast-to-max-number.md) | Выражение к максимальному числу в запросе |
+| [ql-constants-in-binary-operation](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-constants-in-binary-operation.md) | В запросе в бинарной операции используются константные значения или параметры. |
 | [ql-join-to-sub-query](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-join-to-sub-query.md) | Соединение запроса с подзапросом |
 | [ql-like-expression-with-field](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-like-expression-with-field.md) | В качестве правого операнда операции сравнения "ПОДОБНО" указано поле таблицы. |
 | [ql-temp-table-index](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-temp-table-index.md) | Временная таблица должна содержать индексы |

@@ -1,7 +1,7 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 64
+Общее количество проверок: 66
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -49,8 +49,10 @@
 | [module-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-self-reference.md) | Избыточное использование псевдонима "ЭтотОбъект" |
 | [module-structure-event-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-event-regions.md) | Раздел «Обработчики событий» содержит только методы являющиеся обработчиками событий |
 | [module-structure-form-event-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-form-event-regions.md) | Проверяет регион обработчиков событий формы |
+| [module-structure-init-code-in-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-init-code-in-region.md) | Раздел инициализации содержит код инициализации |
 | [module-structure-method-in-regions](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-method-in-regions.md) | Проверяет что метод находится в области |
-| [module-structure-top-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-top-region.md) | Стандартная область структуры модуля верхнеуровневая |
+| [module-structure-top-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-top-region.md) | Стандартные области структуры модуля верхнего уровня |
+| [module-structure-var-in-region](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-structure-var-in-region.md) | Раздел описания переменных |
 | [module-undefined-function](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-function.md) | Функция не определена |
 | [module-undefined-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-method.md) | Метод не определен |
 | [module-undefined-variable](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/module-undefined-variable.md) | Переменная не определена |
