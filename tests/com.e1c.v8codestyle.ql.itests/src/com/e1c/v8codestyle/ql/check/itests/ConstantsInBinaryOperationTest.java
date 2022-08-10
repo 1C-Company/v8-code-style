@@ -71,7 +71,7 @@ public class ConstantsInBinaryOperationTest
     {
         loadQueryAndValidate(FOLDER + "non-compliant.ql");
         List<QueryMarker> markers = getQueryMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(3, markers.size());
 
         QueryMarker marker = markers.get(0);
         assertNotNull(marker.getTarget());
@@ -79,6 +79,10 @@ public class ConstantsInBinaryOperationTest
 
         marker = markers.get(1);
         assertNotNull(marker.getTarget());
-        assertEquals(13, marker.getLineNumber());
+        assertEquals(9, marker.getLineNumber());
+
+        marker = markers.get(2);
+        assertNotNull(marker.getTarget());
+        assertEquals(19, marker.getLineNumber());
     }
 }

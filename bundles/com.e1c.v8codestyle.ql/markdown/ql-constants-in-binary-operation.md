@@ -40,3 +40,5 @@ WHERE
 
 ## See
 
+- [Effective query conditions](https://support.1ci.com/hc/en-us/articles/360011121019-Effective-query-conditions)
+- [Specifics of using LIKE operator in queries](https://support.1ci.com/hc/en-us/articles/360011001500-Specifics-of-using-LIKE-operator-in-queries)

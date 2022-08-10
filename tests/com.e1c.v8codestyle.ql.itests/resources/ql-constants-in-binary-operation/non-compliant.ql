@@ -4,6 +4,12 @@ SELECT
 FROM
     Catalogs.Products AS Products;
 
+SELECT
+    Products.Name AS Name,
+    "My" + &Parameter AS Code
+FROM
+    Catalogs.Products AS Products;
+    
 SELECT 
     Products.Name AS Name,
     FieldName AS Code

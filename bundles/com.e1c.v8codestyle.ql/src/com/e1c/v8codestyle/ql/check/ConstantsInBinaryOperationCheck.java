@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.ql.model.ABinaryOperatorsExpression;
-import com._1c.g5.v8.dt.ql.model.StringLiteralExpression;
+import com._1c.g5.v8.dt.ql.model.ALiteralsExpression;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -67,8 +67,8 @@ public class ConstantsInBinaryOperationCheck
             return;
         }
 
-        if ((binaryExpression.getLeft() instanceof StringLiteralExpression)
-            && (binaryExpression.getRight() instanceof StringLiteralExpression))
+        if ((binaryExpression.getLeft() instanceof ALiteralsExpression)
+            && (binaryExpression.getRight() instanceof ALiteralsExpression))
         {
             String message =
                 Messages.ConstantsInBinaryOperationCheck_Using_binary_operations_with_constants_in_queries_is_forbidden;
