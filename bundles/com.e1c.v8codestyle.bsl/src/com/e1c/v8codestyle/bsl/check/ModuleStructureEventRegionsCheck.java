@@ -72,6 +72,7 @@ public class ModuleStructureEventRegionsCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.excludeTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(METHOD);
     }
@@ -87,10 +88,6 @@ public class ModuleStructureEventRegionsCheck
         ScriptVariant scriptVariant = project.getScriptVariant();
 
         ModuleType moduleType = getModuleType(method);
-        if (ModuleType.FORM_MODULE.equals(moduleType))
-        {
-            return;
-        }
 
         Optional<RegionPreprocessor> region = getTopParentRegion(method);
         if (region.isEmpty())
