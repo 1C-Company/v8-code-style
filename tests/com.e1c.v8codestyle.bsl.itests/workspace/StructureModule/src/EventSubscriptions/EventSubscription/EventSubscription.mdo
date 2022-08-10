@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:EventSubscription xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6467eda5-af3d-4c58-8abf-396d2433a1a1">
+  <name>EventSubscription</name>
+  <synonym>
+    <key>en</key>
+    <value>Event subscription</value>
+  </synonym>
+  <source>
+    <types>CatalogManager</types>
+  </source>
+  <event>AfterWriteDataHistoryVersionsProcessing</event>
+  <handler>CommonModule.CommonModule.EventSubscriptionAfterWriteDataHistoryVersionsProcessing</handler>
+</mdclass:EventSubscription>

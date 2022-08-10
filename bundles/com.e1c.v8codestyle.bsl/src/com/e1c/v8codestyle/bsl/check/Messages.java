@@ -186,6 +186,12 @@ final class Messages
 
     public static String ModuleStructureEventRegionsCheck_Title;
 
+    public static String ModuleStructureInitCodeInRegion_Description;
+
+    public static String ModuleStructureInitCodeInRegion_Issue__0;
+
+    public static String ModuleStructureInitCodeInRegion_Title;
+
     public static String ModuleStructureMethodInRegionCheck_Description;
 
     public static String ModuleStructureMethodInRegionCheck_Method_should_be_placed_in_one_of_the_standard_regions;
@@ -195,6 +201,12 @@ final class Messages
     public static String ModuleStructureMethodInRegionCheck_Only_export;
 
     public static String ModuleStructureMethodInRegionCheck_Title;
+
+    public static String ModuleStructureVariablesInRegionCheck_Description;
+
+    public static String ModuleStructureVariablesInRegionCheck_Issue__0;
+
+    public static String ModuleStructureVariablesInRegionCheck_Title;
 
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
