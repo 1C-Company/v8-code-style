@@ -174,6 +174,12 @@ final class Messages
 
     public static String ModuleStructureEventRegionsCheck_Title;
 
+    public static String ModuleStructureInitCodeInRegion_Description;
+
+    public static String ModuleStructureInitCodeInRegion_Issue__0;
+
+    public static String ModuleStructureInitCodeInRegion_Title;
+
     public static String ModuleStructureMethodInRegionCheck_Description;
 
     public static String ModuleStructureMethodInRegionCheck_Method_should_be_placed_in_one_of_the_standard_regions;
