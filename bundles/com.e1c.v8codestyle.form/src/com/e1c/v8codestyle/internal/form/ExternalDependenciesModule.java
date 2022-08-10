@@ -20,6 +20,8 @@ import org.eclipse.xtext.resource.IResourceServiceProvider;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.form.service.FormItemInformationService;
 import com._1c.g5.v8.dt.form.service.datasourceinfo.IDataSourceInfoAssociationService;
+import com._1c.g5.v8.dt.ql.resource.QlMapper;
+import com._1c.g5.v8.dt.ql.typesystem.IDynamicDbViewFieldComputer;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 
 /**
@@ -48,6 +50,12 @@ public class ExternalDependenciesModule
         bind(FormItemInformationService.class).toProvider(() -> rsp.get(FormItemInformationService.class));
         bind(IV8ProjectManager.class).toService();
         bind(IDataSourceInfoAssociationService.class).toService();
+
+        URI qlUri = URI.createURI("*.qldcs"); //$NON-NLS-1$
+        final IResourceServiceProvider qlRsp =
+            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(qlUri);
+        bind(QlMapper.class).toProvider(() -> qlRsp.get(QlMapper.class));
+        bind(IDynamicDbViewFieldComputer.class).toProvider(() -> qlRsp.get(IDynamicDbViewFieldComputer.class));
     }
 
 }

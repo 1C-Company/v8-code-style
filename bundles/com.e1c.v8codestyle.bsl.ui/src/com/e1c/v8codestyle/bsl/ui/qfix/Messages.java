@@ -48,6 +48,10 @@ final class Messages
 
     public static String SelfReferenceFix_details;
 
+    public static String ServerExecutionSafeModeFix_description;
+
+    public static String ServerExecutionSafeModeFix_details;
+
     public static String UndefinedMethodFix_func_title;
     public static String UndefinedMethodFix_func_desc;
     public static String UndefinedMethodFix_proc_title;

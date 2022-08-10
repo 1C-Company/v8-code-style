@@ -77,30 +77,13 @@ public class SortJob
             return Status.CANCEL_STATUS;
         }
 
-        Object handler = workspaceOrchestrator.beginBackgroundOperation("Sort-MD-objects", //$NON-NLS-1$
-            Arrays.asList(dtProject), ProjectPipelineJob.BUILD);
-
-        try
+        while (!queue.isEmpty() && !monitor.isCanceled())
         {
-            while (!queue.isEmpty() && !monitor.isCanceled())
-            {
-                execute(monitor);
-            }
-            if (monitor.isCanceled())
-            {
-                queue.clear();
-            }
+            execute(monitor);
         }
-        finally
+        if (monitor.isCanceled())
         {
-            if (monitor.isCanceled())
-            {
-                workspaceOrchestrator.cancelOperation(handler);
-            }
-            else
-            {
-                workspaceOrchestrator.endOperation(handler);
-            }
+            queue.clear();
         }
 
         if (monitor.isCanceled())
@@ -122,16 +105,32 @@ public class SortJob
 
     private void execute(IProgressMonitor monitor)
     {
-        List<SortItem> items = new ArrayList<>();
-        SortItem item = null;
-        while ((item = queue.poll()) != null && !monitor.isCanceled())
+        Object handler = workspaceOrchestrator.beginHalfExclusiveOperation("Sort-MD-objects", //$NON-NLS-1$
+            Arrays.asList(dtProject), ProjectPipelineJob.BUILD);
+        try
         {
-            items.add(item);
-        }
+            List<SortItem> items = new ArrayList<>();
+            SortItem item = null;
+            while ((item = queue.poll()) != null && !monitor.isCanceled())
+            {
+                items.add(item);
+            }
 
-        if (!monitor.isCanceled() && !items.isEmpty())
+            if (!monitor.isCanceled() && !items.isEmpty())
+            {
+                sortService.sortObject(dtProject, items, monitor);
+            }
+        }
+        finally
         {
-            sortService.sortObject(dtProject, items, monitor);
+            if (monitor.isCanceled())
+            {
+                workspaceOrchestrator.cancelOperation(handler);
+            }
+            else
+            {
+                workspaceOrchestrator.endOperation(handler);
+            }
         }
     }
 
