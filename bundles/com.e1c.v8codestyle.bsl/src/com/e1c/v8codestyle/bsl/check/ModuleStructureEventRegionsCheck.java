@@ -97,13 +97,14 @@ public class ModuleStructureEventRegionsCheck
 
         String name = region.get().getName();
         String eventHandlersName = ModuleStructureSection.EVENT_HANDLERS.getName(scriptVariant);
-        if (eventHandlersName.equals(name) && !method.isEvent())
+        if (eventHandlersName.equalsIgnoreCase(name) && !method.isEvent())
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Only_event_methods__0, name),
                 McorePackage.Literals.NAMED_ELEMENT__NAME);
         }
-        else if (!ModuleType.COMMON_MODULE.equals(moduleType) && !eventHandlersName.equals(name) && method.isEvent())
+        else if (!ModuleType.COMMON_MODULE.equals(moduleType) && !eventHandlersName.equalsIgnoreCase(name)
+            && method.isEvent())
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1,
