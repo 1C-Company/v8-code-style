@@ -1,6 +1,8 @@
-# Using binary operations with constants in queries.
+# Using binary operations with constants or parameters in queries.
 
-Using binary operations with constants in queries is forbidden.
+Do not generate a template string using calculation or use string concatenation with the query language.
+
+This requirement is based on some specifics of migrating applications to various database management systems.
 
 ## Noncompliant Code Example
 
@@ -8,6 +10,12 @@ Using binary operations with constants in queries is forbidden.
 SELECT
     Products.Name AS Name,
     "My" + "Goods" AS Code
+FROM
+    Catalogs.Products AS Products;
+
+SELECT
+    Products.Name AS Name,
+    "My" + &Parameter AS Code
 FROM
     Catalogs.Products AS Products;
 
@@ -26,6 +34,12 @@ WHERE
 SELECT
     Products.Name AS Name,
     "MyGoods" AS Code
+FROM
+    Catalogs.Products AS Products;
+
+SELECT
+    Products.Name AS Name,
+    &Parameter AS Code
 FROM
     Catalogs.Products AS Products;
 
