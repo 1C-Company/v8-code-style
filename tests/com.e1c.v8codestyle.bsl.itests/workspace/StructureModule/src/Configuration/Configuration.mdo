@@ -38,6 +38,8 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
+  <commonModules>CommonModule.CommonModule</commonModules>
+  <eventSubscriptions>EventSubscription.EventSubscription</eventSubscriptions>
   <catalogs>Catalog.CatalogInRegion</catalogs>
   <catalogs>Catalog.CatalogInRegionWrongMethod</catalogs>
   <catalogs>Catalog.CatalogInWrongRegion</catalogs>

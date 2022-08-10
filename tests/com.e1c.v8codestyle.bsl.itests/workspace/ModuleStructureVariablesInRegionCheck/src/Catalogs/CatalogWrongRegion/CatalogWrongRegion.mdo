@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3f527c81-c2c8-4d2c-b519-b72aa7a860f8">
+  <producedTypes>
+    <objectType typeId="7c63b34e-ecc7-4084-b81c-f75393efad69" valueTypeId="4d93c4a5-1713-4b39-b8ee-cde686afaf95"/>
+    <refType typeId="36b94ad5-e043-4790-a0ff-e7f383e6b51e" valueTypeId="03a3978d-54b7-4a88-a718-1d74e0d9c1ce"/>
+    <selectionType typeId="f83f5f5c-4399-412e-90ac-a478e59e82f7" valueTypeId="70674d6d-a20a-41c9-9148-e72cda44788b"/>
+    <listType typeId="1452d96e-3c36-46b2-8326-02b9e8f09493" valueTypeId="d47022ee-b44c-4327-bd14-67d0a1736dd9"/>
+    <managerType typeId="fa6e5783-95d3-4455-be8c-d9c82e70cac5" valueTypeId="449eaa27-3f8d-4281-960e-797d6f85b325"/>
+  </producedTypes>
+  <name>CatalogWrongRegion</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog wrong region</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.CatalogWrongRegion.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CatalogWrongRegion.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

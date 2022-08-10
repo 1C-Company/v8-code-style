@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="c0716974-5e78-4aef-82e1-dbe213142872">
+  <name>ModuleStructureEventFormRegionsCheck</name>
+  <synonym>
+    <key>en</key>
+    <value>Module structure event form regions check</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="dcd2c9e8-bcf9-457b-aa02-a5e64f5460f5"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="2c8aac55-3d94-4fe7-8680-12d84258f690"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="d2132da7-664c-4fb3-9568-5819456572b2"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="2e6a97b2-195e-41c2-9c64-91ed0a95a8f9"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="c2b2bf6d-196a-48bb-a352-9df74d051c41"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="c40887ba-bbf8-4bd4-9179-61f2a485e581"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="37d35093-21a0-44d0-97c2-921386982f94"/>
+  <configurationExtensionCompatibilityMode>8.3.20</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.20</compatibilityMode>
+  <languages uuid="06599295-e126-4269-83d9-4e15f33270cd">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <catalogs>Catalog.Catalog</catalogs>
+  <catalogs>Catalog.CatalogCommand</catalogs>
+  <catalogs>Catalog.CatalogCommandInWrongMethod</catalogs>
+  <catalogs>Catalog.CatalogCommandInWrongRegion</catalogs>
+  <catalogs>Catalog.CatalogField</catalogs>
+  <catalogs>Catalog.CatalogFieldInWrongMethod</catalogs>
+  <catalogs>Catalog.CatalogFieldInWrongRegion</catalogs>
+  <catalogs>Catalog.CatalogInWrongMethod</catalogs>
+  <catalogs>Catalog.CatalogInWrongRegion</catalogs>
+  <catalogs>Catalog.CatalogTable</catalogs>
+  <catalogs>Catalog.CatalogTableInWrongMethod</catalogs>
+  <catalogs>Catalog.CatalogTableInWrongRegion</catalogs>
+</mdclass:Configuration>
