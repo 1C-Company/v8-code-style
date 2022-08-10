@@ -131,12 +131,14 @@ public class ModuleStructureTopRegionCheck
     {
 
         Map<String, List<RegionPreprocessor>> countRegions = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        List<String> topRegions = countDoublesAndFindTopRegions(allRegions, countRegions);
+        List<String> topRegions = new ArrayList<>();
+        countDoublesAndFindTopRegions(allRegions, topRegions, countRegions);
         LinkedList<String> baseOrdered = new LinkedList<>(baseNames);
 
         String tableName = ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
         String commandName = ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
-        String namesExlude = parameters.getString(PARAMETER_EXCLUDE_REGION_LIST);
+        String[] regionNames = parameters.getString(PARAMETER_EXCLUDE_REGION_LIST).split(","); //$NON-NLS-1$
+
         boolean checkDuplicates = parameters.getBoolean(CHECK_DUPLICATES_OF_STANDARD_REGIONS);
         boolean checkOrder = parameters.getBoolean(CHECK_ORDER_OF_STANDARD_REGIONS);
         for (RegionPreprocessor region : allRegions)
@@ -147,13 +149,13 @@ public class ModuleStructureTopRegionCheck
             }
 
             String regionName = region.getName();
-            if (isExcludeName(regionName, namesExlude))
+            if (isExcludeName(regionName, regionNames))
             {
                 continue;
             }
 
             boolean isStandard = baseNames.stream().anyMatch(regionName::equalsIgnoreCase)
-                || startsWith(regionName, tableName, true);
+                || startsWithIgnoreCase(regionName, tableName);
             boolean isTop = topRegions.stream().anyMatch(regionName::equalsIgnoreCase);
             boolean isDuplicate = countRegions.get(regionName).size() > 1;
 
@@ -168,7 +170,7 @@ public class ModuleStructureTopRegionCheck
             }
 
             if (isTop && baseNames.stream().noneMatch(regionName::equalsIgnoreCase)
-                && !startsWith(regionName, tableName, true))
+                && !startsWithIgnoreCase(regionName, tableName))
             {
                 addIssueStandard(resultAceptor, region);
             }
@@ -181,7 +183,7 @@ public class ModuleStructureTopRegionCheck
         }
     }
 
-    private static boolean startsWith(String str, String prefix, boolean ignoreCase)
+    private static boolean startsWithIgnoreCase(String str, String prefix)
     {
         if (str == null || prefix == null)
         {
@@ -191,19 +193,20 @@ public class ModuleStructureTopRegionCheck
         {
             return false;
         }
+        boolean ignoreCase = true;
         return str.regionMatches(ignoreCase, 0, prefix, 0, prefix.length());
     }
 
     private void check(ResultAcceptor resultAceptor, RegionPreprocessor region, List<String> topRegions,
         LinkedList<String> baseOrdered, String tableName, String commandName)
     {
-        while (baseOrdered.peek() != null && !startsWith(baseOrdered.peek(), tableName, true)
+        while (baseOrdered.peek() != null && !startsWithIgnoreCase(baseOrdered.peek(), tableName)
             && !commandName.equalsIgnoreCase(baseOrdered.peek()))
         {
             baseOrdered.poll();
         }
 
-        if (baseOrdered.peek() != null && startsWith(baseOrdered.peek(), tableName, true))
+        if (baseOrdered.peek() != null && startsWithIgnoreCase(baseOrdered.peek(), tableName))
         {
             baseOrdered.poll();
         }
@@ -238,7 +241,7 @@ public class ModuleStructureTopRegionCheck
     private void addIssueOrder(ResultAcceptor resultAceptor, List<String> topRegions, LinkedList<String> baseOrdered,
         String regionName, RegionPreprocessor regionPreprocessor, String tableName, String commandName)
     {
-        if (startsWith(regionName, tableName, true))
+        if (startsWithIgnoreCase(regionName, tableName))
         {
             check(resultAceptor, regionPreprocessor, topRegions, baseOrdered, tableName, commandName);
         }
@@ -266,10 +269,9 @@ public class ModuleStructureTopRegionCheck
             NAMED_ELEMENT__NAME);
     }
 
-    private List<String> countDoublesAndFindTopRegions(List<RegionPreprocessor> allRegions,
+    private void countDoublesAndFindTopRegions(List<RegionPreprocessor> allRegions, List<String> topRegions,
         Map<String, List<RegionPreprocessor>> countRegions)
     {
-        List<String> topRegions = new ArrayList<>();
         for (RegionPreprocessor region : allRegions)
         {
             String regionName = region.getName();
@@ -280,20 +282,15 @@ public class ModuleStructureTopRegionCheck
                 topRegions.add(regionName);
             }
         }
-        return topRegions;
     }
 
-    private boolean isExcludeName(String regionName, String namesExlude)
+    private boolean isExcludeName(String regionName, String[] regionNames)
     {
-        if (namesExlude != null)
+        for (String name : regionNames)
         {
-            String[] regionNames = namesExlude.split(","); //$NON-NLS-1$
-            for (String name : regionNames)
+            if (regionName.equalsIgnoreCase(name))
             {
-                if (regionName.equalsIgnoreCase(name))
-                {
-                    return true;
-                }
+                return true;
             }
         }
         return false;
