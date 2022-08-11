@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "settings": {
+    "redundant-export-method": {
+      "enabled": true
+    }
+  }
+}

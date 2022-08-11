@@ -12,16 +12,15 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check.itests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.ModuleStructureEventRegionsCheck;
@@ -38,9 +37,13 @@ public class ModuleStructureEventRegionsCheckTest
     private static final String CHECK_ID = "module-structure-event-regions"; //$NON-NLS-1$
     private static final String PROJECT_NAME = "StructureModule";
 
-    private static final String FQN_CATALOG_MODULE_MANAGER_EVENT = "Catalog.CatalogInRegion";
-    private static final String FQN_CATALOG_MODULE_MANAGER_EVENT_WRONG_REGION = "Catalog.CatalogInWrongRegion";
-    private static final String FQN_CATALOG_MODULE_MANAGER_EVENT_WRONG_METHOD = "Catalog.CatalogInRegionWrongMethod";
+    private static final String CATALOG_MODULE_MANAGER_EVENT_FILE_NAME =
+        "/src/Catalogs/CatalogInRegion/ManagerModule.bsl";
+    private static final String CATALOG_MODULE_MANAGER_EVENT_WRONG_REGION_FILE_NAME =
+        "/src/Catalogs/CatalogInWrongRegion/ManagerModule.bsl";
+    private static final String CATALOG_MODULE_MANAGER_EVENT_WRONG_METHOD_FILE_NAME =
+        "/src/Catalogs/CatalogInRegionWrongMethod/ManagerModule.bsl";
+    private static final String COMMON_MODULE_EVENT_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
 
     @Override
     protected String getTestConfigurationName()
@@ -51,49 +54,43 @@ public class ModuleStructureEventRegionsCheckTest
     @Test
     public void testEventModuleManagerInWrongRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_MODULE_MANAGER_EVENT_WRONG_REGION_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_MODULE_MANAGER_EVENT_WRONG_REGION, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        Module module = ((Catalog)mdObject).getManagerModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+        assertEquals("16", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testEventModuleManagerInRegion() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_MODULE_MANAGER_EVENT, dtProject);
-        assertTrue(mdObject instanceof Catalog);
-
-        Module module = ((Catalog)mdObject).getManagerModule();
-        assertNotNull(module);
-
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNull(marker);
+        List<Marker> markers = getMarkers(CATALOG_MODULE_MANAGER_EVENT_FILE_NAME);
+        assertEquals(0, markers.size());
     }
 
     @Test
     public void testEventModuleManagerInRegionWrongMethod() throws Exception
     {
-        IDtProject dtProject = dtProjectManager.getDtProject(PROJECT_NAME);
-        assertNotNull(dtProject);
+        List<Marker> markers = getMarkers(CATALOG_MODULE_MANAGER_EVENT_WRONG_METHOD_FILE_NAME);
+        assertEquals(1, markers.size());
 
-        IBmObject mdObject = getTopObjectByFqn(FQN_CATALOG_MODULE_MANAGER_EVENT_WRONG_METHOD, dtProject);
-        assertTrue(mdObject instanceof Catalog);
+        assertEquals("8", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
 
-        Module module = ((Catalog)mdObject).getManagerModule();
-        assertNotNull(module);
+    @Test
+    public void testEventCommonModuleInRegion() throws Exception
+    {
+        List<Marker> markers = getMarkers(COMMON_MODULE_EVENT_FILE_NAME);
+        assertEquals(0, markers.size());
+    }
 
-        Marker marker = getFirstMarker(CHECK_ID, module.eResource().getURI(), getProject());
-        assertNotNull(marker);
+    private List<Marker> getMarkers(String moduleFileName)
+    {
+        String moduleId = Path.ROOT.append(getTestConfigurationName()).append(moduleFileName).toString();
+        List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
+
+        return markers.stream()
+            .filter(marker -> CHECK_ID.equals(getCheckIdFromMarker(marker, getProject())))
+            .collect(Collectors.toList());
     }
 
 }

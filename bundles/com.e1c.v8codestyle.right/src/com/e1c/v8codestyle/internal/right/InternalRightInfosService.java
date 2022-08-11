@@ -60,7 +60,7 @@ public class InternalRightInfosService
     }
 
     /**
-     * Gets the rights of some {@link EClass} of configuration metadata object that may has some rights.
+     * Gets the rights of some {@link EClass} of configuration metadata object that may have some rights.
      *
      * @param eClass the {@link EClass} of configuration metadata object that has some rights, cannot be {@code null}.
      * @param context the context object of the configuration to determine platform version, cannot be {@code null}.

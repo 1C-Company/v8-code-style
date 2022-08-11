@@ -26,9 +26,9 @@ import static com._1c.g5.v8.dt.rights.model.RightsPackage.Literals.ROLE_DESCRIPT
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -251,7 +251,7 @@ public abstract class RoleRightSetCheck
             }
             else
             {
-                // add marker as closer as possible to the probleb place in the model
+                // add marker as closer as possible to the problem place in the model
                 resultAceptor.addIssue(message, objectRights, OBJECT_RIGHTS__OBJECT);
             }
         }
@@ -337,8 +337,6 @@ public abstract class RoleRightSetCheck
 
     private Collection<MdObject> getDefaultObjectsWithRight(RoleDescription description, IProgressMonitor monitor)
     {
-        Collection<MdObject> result = new LinkedList<>();
-
         IProject project = resourceLookup.getProject(description);
 
         Set<Long> objectIdForRole = getRoleTopObjects(project, description, monitor);
@@ -346,6 +344,9 @@ public abstract class RoleRightSetCheck
         {
             return Collections.emptyList();
         }
+
+        // return only unique objects
+        Map<Long, MdObject> result = new HashMap<>();
 
         IBmEmfIndexProvider bmEmfIndexProvider = bmEmfIndexManager.getEmfIndexProvider(project);
         RightsModelUtil.SUPPORTED_RIGHT_ECLASSES.stream().forEach(eClass -> {
@@ -371,12 +372,12 @@ public abstract class RoleRightSetCheck
 
                     if (!objectIdForRole.contains(bmObjectId))
                     {
-                        result.add((MdObject)object);
+                        result.put(bmObjectId, (MdObject)object);
                     }
                 }
             }
         });
-        return result;
+        return result.values();
     }
 
     private Set<Long> getRoleTopObjects(IProject project, RoleDescription description, IProgressMonitor monitor)

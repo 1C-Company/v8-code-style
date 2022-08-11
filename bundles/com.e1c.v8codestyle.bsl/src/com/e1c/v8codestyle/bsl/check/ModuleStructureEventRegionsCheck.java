@@ -72,6 +72,7 @@ public class ModuleStructureEventRegionsCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.excludeTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(METHOD);
     }
@@ -87,10 +88,6 @@ public class ModuleStructureEventRegionsCheck
         ScriptVariant scriptVariant = project.getScriptVariant();
 
         ModuleType moduleType = getModuleType(method);
-        if (ModuleType.FORM_MODULE.equals(moduleType))
-        {
-            return;
-        }
 
         Optional<RegionPreprocessor> region = getTopParentRegion(method);
         if (region.isEmpty())
@@ -100,13 +97,14 @@ public class ModuleStructureEventRegionsCheck
 
         String name = region.get().getName();
         String eventHandlersName = ModuleStructureSection.EVENT_HANDLERS.getName(scriptVariant);
-        if (eventHandlersName.equals(name) && !method.isEvent())
+        if (eventHandlersName.equalsIgnoreCase(name) && !method.isEvent())
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Only_event_methods__0, name),
                 McorePackage.Literals.NAMED_ELEMENT__NAME);
         }
-        else if (!eventHandlersName.equals(name) && method.isEvent())
+        else if (!ModuleType.COMMON_MODULE.equals(moduleType) && !eventHandlersName.equalsIgnoreCase(name)
+            && method.isEvent())
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1,
