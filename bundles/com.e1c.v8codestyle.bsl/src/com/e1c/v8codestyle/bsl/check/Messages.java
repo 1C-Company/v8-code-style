@@ -126,6 +126,12 @@ final class Messages
 
     public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
 
+    public static String ExtensionMethodPrefixCheck_Description;
+
+    public static String ExtensionMethodPrefixCheck_Ext_method_0_should_have_1_prefix;
+
+    public static String ExtensionMethodPrefixCheck_Title;
+
     public static String ManagerModuleNamedSelfReferenceCheck_description;
 
     public static String ManagerModuleNamedSelfReferenceCheck_issue;
