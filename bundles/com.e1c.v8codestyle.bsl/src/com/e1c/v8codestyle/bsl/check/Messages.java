@@ -104,6 +104,12 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ReadingAttributesFromDataBaseCheck_Description;
+
+    public static String ReadingAttributesFromDataBaseCheck_Issue__0;
+
+    public static String ReadingAttributesFromDataBaseCheck_Title;
+
     public static String RedundantExportCheck_Escess_title;
 
     public static String RedundantExportCheck_Excess_description;
