@@ -13,16 +13,14 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.ReadingAttributesFromDataBaseCheck;
 
 /**
@@ -32,13 +30,22 @@ import com.e1c.v8codestyle.bsl.check.ReadingAttributesFromDataBaseCheck;
  *
  */
 public class ReadingAttributesFromDataBaseCheckTest
-    extends SingleProjectReadOnlyCheckTestBase
+    extends AbstractSingleModuleTestBase
 {
 
-    private static final String CHECK_ID = "reading-attributes-from-database"; //$NON-NLS-1$
-    private static final String PROJECT_NAME = "ReadingAttributesFromDataBaseCheck";
-    private static final String CATALOG_MODULE_WRONG_FILE_NAME = "/src/Catalogs/CatalogWrong/ObjectModule.bsl";
-    private static final String CATALOG_MODULE_FILE_NAME = "/src/Catalogs/Catalog/ObjectModule.bsl";
+    private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
+    private static final String PROJECT_NAME = "ModuleStructureTopRegionCheck";
+
+    public ReadingAttributesFromDataBaseCheckTest()
+    {
+        super(ReadingAttributesFromDataBaseCheck.class);
+    }
+
+    @Override
+    protected String getCheckId()
+    {
+        return CHECK_ID;
+    }
 
     @Override
     protected String getTestConfigurationName()
@@ -49,27 +56,21 @@ public class ReadingAttributesFromDataBaseCheckTest
     @Test
     public void testWrongReadProperty() throws Exception
     {
-        List<Marker> markers = getMarkers(CATALOG_MODULE_WRONG_FILE_NAME);
+        updateModule(FOLDER_RESOURCE + "read-single-property.bsl");
+
+        List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
 
-        assertEquals("18", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("16", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
     public void testReadProperty() throws Exception
     {
-        List<Marker> markers = getMarkers(CATALOG_MODULE_FILE_NAME);
-        assertEquals(0, markers.size());
-    }
+        updateModule(FOLDER_RESOURCE + "read-single-property-compliant.bsl");
 
-    private List<Marker> getMarkers(String moduleFileName)
-    {
-        String moduleId = Path.ROOT.append(getTestConfigurationName()).append(moduleFileName).toString();
-        List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
-
-        return markers.stream()
-            .filter(marker -> CHECK_ID.equals(getCheckIdFromMarker(marker, getProject())))
-            .collect(Collectors.toList());
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
     }
 
 }

@@ -1,4 +1,4 @@
-# Reading specific object attributes from the database
+# Reading single object attribute from the database
 
 When you read separate object attributes from the database, note that once you call the GetObject method or
 access object attributes separated by period from a reference, the whole object is imported from the database with its tabular sections.

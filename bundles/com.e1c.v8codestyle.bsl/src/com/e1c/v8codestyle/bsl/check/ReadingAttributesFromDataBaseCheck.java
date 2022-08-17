@@ -25,6 +25,8 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
+import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
+import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.Property;
@@ -41,7 +43,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
- * Checks reading specific object attributes from the database
+ * Checks reading single object attribute from the database
  *
  * @author Artem Iliukhin
  */
@@ -49,15 +51,17 @@ public class ReadingAttributesFromDataBaseCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "reading-attributes-from-database"; //$NON-NLS-1$
+    private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
 
     private final TypesComputer typesComputer;
+    private final DynamicFeatureAccessComputer dynamicComputer;
 
     @Inject
-    public ReadingAttributesFromDataBaseCheck(TypesComputer typesComputer)
+    public ReadingAttributesFromDataBaseCheck(TypesComputer typesComputer, DynamicFeatureAccessComputer dynamicComputer)
     {
         super();
         this.typesComputer = typesComputer;
+        this.dynamicComputer = dynamicComputer;
     }
 
     @Override
@@ -84,21 +88,7 @@ public class ReadingAttributesFromDataBaseCheck
         IProgressMonitor monitor)
     {
         DynamicFeatureAccess dfa = (DynamicFeatureAccess)object;
-        for (FeatureEntry entry : dfa.getFeatureEntries())
-        {
-            EObject feature = entry.getFeature();
-            if (!(feature instanceof Property))
-            {
-                return;
-            }
-        }
-        check(resultAceptor, dfa, monitor);
-    }
-
-    private void check(ResultAcceptor resultAceptor, DynamicFeatureAccess dfa, IProgressMonitor monitor)
-    {
-        Expression source = dfa.getSource();
-        if (monitor.isCanceled())
+        if (BslUtil.getInvocation(dfa) != null)
         {
             return;
         }
@@ -108,7 +98,25 @@ public class ReadingAttributesFromDataBaseCheck
         {
             return;
         }
+        for (FeatureEntry entry : dynamicComputer.resolveObject(dfa, env.environments()))
+        {
+            EObject feature = entry.getFeature();
+            if (!(feature instanceof Property))
+            {
+                return;
+            }
+        }
+        check(resultAceptor, dfa, monitor, env);
+    }
 
+    private void check(ResultAcceptor resultAceptor, DynamicFeatureAccess dfa, IProgressMonitor monitor,
+        Environmental env)
+    {
+        Expression source = dfa.getSource();
+        if (monitor.isCanceled())
+        {
+            return;
+        }
         List<TypeItem> types = typesComputer.computeTypes(source, env.environments());
         for (TypeItem type : types)
         {
@@ -130,6 +138,7 @@ public class ReadingAttributesFromDataBaseCheck
             {
                 resultAceptor.addIssue(
                     MessageFormat.format(Messages.ReadingAttributesFromDataBaseCheck_Issue__0, dfa.getName()), dfa);
+                return;
             }
         }
     }

@@ -1,8 +1,6 @@
-
-
 Procedure DoIt()
 
-	getCode(Ref);
+    getCode(Catalogs.Catalog.GetRef());
 
 EndProcedure
 
@@ -14,7 +12,7 @@ EndProcedure
 // Returns:
 //  String - Get code
 Function getCode(CatalogRef)
-	
-	return CatalogRef.Code;
-	
+    
+    return CatalogRef.Code;
+    
 EndFunction
