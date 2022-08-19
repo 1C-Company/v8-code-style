@@ -35,7 +35,7 @@ both during group development and during application customization within specif
 #EndRegion
 
 
-```bsl
+```
 
 ## Compliant Solution
 
@@ -53,7 +53,7 @@ both during group development and during application customization within specif
 // Enter code here.
 #EndRegion
 
-```bsl
+```
 
 ## See
 
