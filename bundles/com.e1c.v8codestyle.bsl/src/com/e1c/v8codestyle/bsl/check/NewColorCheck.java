@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.FUNCTION_STYLE_CREATOR;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.OPERATOR_STYLE_CREATOR;
 import static com._1c.g5.v8.dt.platform.IEObjectTypeNames.COLOR;
+import static com._1c.g5.v8.dt.platform.IEObjectTypeNames.COLOR_RU;
 
 import java.util.List;
 
@@ -91,12 +92,14 @@ public final class NewColorCheck
                     }
                 }
             }
+            // TODO: After implementing the issue #G5V8DT-22450 of supporting dfa for the Type,
+            // support scenarios when a variable or method is passed as a parameter that returns Type Color #1128
         }
     }
 
     private void addResultAcceptor(Object object, ResultAcceptor resultAceptor, String name)
     {
-        if (COLOR.equalsIgnoreCase(name))
+        if (COLOR.equalsIgnoreCase(name) || COLOR_RU.equalsIgnoreCase(name))
         {
             resultAceptor.addIssue(Messages.NewColorCheck_Use_style_elements, object);
         }
