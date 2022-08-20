@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="02d3a352-415d-45ef-98be-4e6faf7516e0">
+  <producedTypes>
+    <objectType typeId="646685d0-0a7d-4b45-a3a4-ed34fe2b5601" valueTypeId="aa4da7f4-a123-4947-9fe9-b2c3e0996898"/>
+    <refType typeId="4c2afc76-06dd-44c2-abbf-1bbf0fae486e" valueTypeId="4ac2551b-a157-4750-a2c4-a55d705d71d6"/>
+    <selectionType typeId="5bff28bd-0bb3-4068-a448-0d9052a99b1e" valueTypeId="bd0102d8-2a1c-4beb-bd6e-17603d17b0b7"/>
+    <listType typeId="3739c7f7-9f4a-4b2e-82cb-d75109547614" valueTypeId="ab9477b9-cae4-41e9-b049-f20e70fcf452"/>
+    <managerType typeId="213d24d9-889f-41b0-abf9-399ee7f5095b" valueTypeId="bf89bcc7-146e-4a26-9e84-e481fb312610"/>
+  </producedTypes>
+  <name>CatalogInWrongMethod</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog in wrong method</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.CatalogInWrongMethod.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CatalogInWrongMethod.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.CatalogInWrongMethod.Form.ItemForm</defaultObjectForm>
+  <forms uuid="3fdf6dce-f356-4c13-98f7-83c97b76f836">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

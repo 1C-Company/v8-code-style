@@ -24,6 +24,9 @@ final class Messages
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.md.check.messages"; //$NON-NLS-1$
     public static String CommonModuleNameClient_description;
     public static String CommonModuleNameClient_message;
+    public static String DbObjectRefNonRefTypesCheck_Description;
+    public static String DbObjectRefNonRefTypesCheck_Ref_and_other;
+    public static String DbObjectRefNonRefTypesCheck_Title;
     public static String MdObjectNameWithoutSuffix_Name_suffix_list_title;
     public static String CommonModuleNameClient_title;
     public static String CommonModuleNameClientServer_description;
@@ -41,6 +44,9 @@ final class Messages
     public static String CommonModuleNameServerCallPostfixCheck_0;
     public static String CommonModuleNameServerCallPostfixCheck_Common_module_name_description;
     public static String CommonModuleNameServerCallPostfixCheck_Common_module_postfix_title;
+    public static String DbObjectAnyRefCheck_AnyRef;
+    public static String DbObjectAnyRefCheck_Description;
+    public static String DbObjectAnyRefCheck_Title;
     public static String MdObjectNameLength_description;
     public static String MdObjectNameLength_Maximum_name_length_description;
     public static String MdObjectNameLength_message;

@@ -115,6 +115,10 @@
       <check
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.FunctionCtorReturnSectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ModuleStructureMethodInRegionCheck">
       </check> 
       <check
             category="com.e1c.v8codestyle.bsl.strict"
@@ -241,12 +245,24 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.MissingTemporaryFileDeletionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.SelfReferenceCheck">
       </check>
+      <check
+           category="com.e1c.v8codestyle.bsl"
+           class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ModuleStructureEventFormRegionsCheck">
+     </check>
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormSelfReferenceOutdatedCheck">
       </check>
+      <check
+           category="com.e1c.v8codestyle.bsl"
+           class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ModuleStructureEventRegionsCheck">
+     </check>
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CommonModuleNamedSelfReferenceCheck">
@@ -254,8 +270,35 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ManagerModuleNamedSelfReferenceCheck">
+      </check>      
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.ServerExecutionSafeModeCheck">
       </check>
-  
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.RedundantExportMethodCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.CommitTransactionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.RollbackTransactionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.BeginTransactionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ModuleStructureInitCodeInRegionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ModuleStructureVariablesInRegionCheck">
+      </check>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
@@ -271,12 +314,6 @@
       <provider
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.StrictTypesProjectOptionProvider">
       </provider>
-   </extension>
-   <extension
-         point="com.e1c.g5.v8.dt.check.fixes">
-      <fix
-            class="com.e1c.v8codestyle.bsl.qfix.RemoveExportFix">
-      </fix>
    </extension>
 
 </plugin>

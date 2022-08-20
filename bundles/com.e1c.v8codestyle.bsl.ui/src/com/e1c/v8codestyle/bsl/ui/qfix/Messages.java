@@ -24,6 +24,10 @@ final class Messages
 {
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.ui.qfix.messages"; //$NON-NLS-1$
 
+    public static String ConvertFunctionToProcedureFix_description;
+
+    public static String ConvertFunctionToProcedureFix_details;
+
     public static String CommonModuleNamedSelfReferenceFix_description;
 
     public static String CommonModuleNamedSelfReferenceFix_details;
@@ -43,6 +47,10 @@ final class Messages
     public static String SelfReferenceFix_description;
 
     public static String SelfReferenceFix_details;
+
+    public static String ServerExecutionSafeModeFix_description;
+
+    public static String ServerExecutionSafeModeFix_details;
 
     public static String UndefinedMethodFix_func_title;
     public static String UndefinedMethodFix_func_desc;

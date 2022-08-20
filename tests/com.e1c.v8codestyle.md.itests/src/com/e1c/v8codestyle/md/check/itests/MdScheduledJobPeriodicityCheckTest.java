@@ -21,11 +21,10 @@ import org.eclipse.emf.common.util.EList;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.schedule.model.DailySchedule;
 import com._1c.g5.v8.dt.schedule.model.Schedule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.md.check.MdScheduledJobPeriodicityCheck;
 
 /**
@@ -35,9 +34,9 @@ import com.e1c.v8codestyle.md.check.MdScheduledJobPeriodicityCheck;
  *
  */
 public final class MdScheduledJobPeriodicityCheckTest
-    extends CheckTestBase
+    extends SingleProjectReadOnlyCheckTestBase
 {
-    private static final String CHECK_ID = "shceduled-job-periodicity-too-short"; //$NON-NLS-1$
+    private static final String CHECK_ID = "scheduled-job-periodicity-too-short"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "MdScheduledJobPeriodicity";
 
@@ -49,18 +48,15 @@ public final class MdScheduledJobPeriodicityCheckTest
     @Test
     public void testMdScheduledJobDetailedRepeatPeriodLessOneMinute() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
         IBmObject object =
-            getTopObjectByFqn("ScheduledJob.ScheduledJobWithDetailedRepeatPeriodLessOneMinute.Schedule", dtProject);
+            getTopObjectByFqn("ScheduledJob.ScheduledJobWithDetailedRepeatPeriodLessOneMinute.Schedule", getProject());
         if (object instanceof Schedule)
         {
             Marker marker = null;
             EList<DailySchedule> dailySchedules = ((Schedule)object).getDailySchedules();
             for (DailySchedule dailySchedule : dailySchedules)
             {
-                marker = getFirstMarker(CHECK_ID, ((IBmObject)dailySchedule).bmGetId(), dtProject);
+                marker = getFirstMarker(CHECK_ID, ((IBmObject)dailySchedule).bmGetId(), getProject());
                 assertNotNull(marker);
             }
         }
@@ -74,18 +70,15 @@ public final class MdScheduledJobPeriodicityCheckTest
     @Test
     public void testMdScheduledJobDetailedRepeatPeriodMoreOneMinute() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
         IBmObject object =
-            getTopObjectByFqn("ScheduledJob.ScheduledJobWithDetailedRepeatPeriodMoreOneMinute.Schedule", dtProject);
+            getTopObjectByFqn("ScheduledJob.ScheduledJobWithDetailedRepeatPeriodMoreOneMinute.Schedule", getProject());
         if (object instanceof Schedule)
         {
             Marker marker = null;
             EList<DailySchedule> dailySchedules = ((Schedule)object).getDailySchedules();
             for (DailySchedule dailySchedule : dailySchedules)
             {
-                marker = getFirstMarker(CHECK_ID, ((IBmObject)dailySchedule).bmGetId(), dtProject);
+                marker = getFirstMarker(CHECK_ID, ((IBmObject)dailySchedule).bmGetId(), getProject());
                 assertNull(marker);
             }
         }
@@ -99,11 +92,8 @@ public final class MdScheduledJobPeriodicityCheckTest
     @Test
     public void testMdScheduledJobEmptySchedule() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobWithEmptySchedule.Schedule", dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobWithEmptySchedule.Schedule", getProject());
+        Marker marker = getFirstMarker(CHECK_ID, id, getProject());
         assertNull(marker);
     }
 
@@ -115,11 +105,8 @@ public final class MdScheduledJobPeriodicityCheckTest
     @Test
     public void testMdScheduledJobRepeatPauseLessOneMinute() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobWithRepeatPauseLessOneMinute.Schedule", dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobWithRepeatPauseLessOneMinute.Schedule", getProject());
+        Marker marker = getFirstMarker(CHECK_ID, id, getProject());
         assertNotNull(marker);
     }
 
@@ -131,11 +118,8 @@ public final class MdScheduledJobPeriodicityCheckTest
     @Test
     public void testMdScheduledJobRepeatPeriodLessOneMinute() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobWithRepeatPeriodLessOneMinute.Schedule", dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobWithRepeatPeriodLessOneMinute.Schedule", getProject());
+        Marker marker = getFirstMarker(CHECK_ID, id, getProject());
         assertNotNull(marker);
     }
 
@@ -147,11 +131,14 @@ public final class MdScheduledJobPeriodicityCheckTest
     @Test
     public void testMdScheduledJobRepeatPeriodMoreOneMinute() throws Exception
     {
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobWithRepeatPeriodMoreOneMinute.Schedule", dtProject);
-        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobWithRepeatPeriodMoreOneMinute.Schedule", getProject());
+        Marker marker = getFirstMarker(CHECK_ID, id, getProject());
         assertNull(marker);
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
     }
 }

@@ -46,6 +46,34 @@ final class Messages
     public static String ChangeAndValidateInsteadOfAroundCheck_Use_ChangeAndValidate_instead_of_Around;
     public static String ChangeAndValidateInsteadOfAroundCheck_title;
 
+    public static String CommitTransactionCheck_Commit_transaction_must_be_in_try_catch;
+
+    public static String CommitTransactionCheck_No_begin_transaction_for_commit_transaction;
+
+    public static String RollbackTransactionCheck_No_begin_transaction_for_rollback_transaction;
+
+    public static String RollbackTransactionCheck_No_commit_transaction_for_begin_transaction;
+
+    public static String CommitTransactionCheck_No_rollback_transaction_for_begin_transaction;
+
+    public static String CommitTransactionCheck_Should_be_no_executable_code_between_commit_and_exception;
+
+    public static String RollbackTransactionCheck_Should_be_no_executable_code_between_exception_and_rollback;
+
+    public static String BeginTransactionCheck_Executable_code_between_begin_transaction_and_try;
+
+    public static String CommitTransactionCheck_Transaction_contains_empty_except;
+
+    public static String CommitTransactionCheck_Transactions_is_broken;
+
+    public static String CommitTransactionCheck_Transactions_is_broken_des;
+
+    public static String BeginTransactionCheck_Begin_transaction_is_incorrect;
+
+    public static String BeginTransactionCheck_Try_must_be_after_begin;
+
+    public static String BeginTransactionCheck_Try_was_not_found_after_calling_begin;
+
     public static String CommonModuleNamedSelfReferenceCheck_description;
 
     public static String CommonModuleNamedSelfReferenceCheck_issue;
@@ -76,6 +104,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String RedundantExportCheck_Escess_title;
+
+    public static String RedundantExportCheck_Excess_description;
+
+    public static String RedundantExportCheck_Exclude_title;
+
+    public static String RedundantExportCheck_Unused_export_method__0;
+
     public static String ExportMethodInCommandFormModuleCheck_CheckClientMethodForm;
 
     public static String ExportMethodInCommandFormModuleCheck_CheckServerMethodForm;
@@ -96,9 +132,21 @@ final class Messages
 
     public static String ManagerModuleNamedSelfReferenceCheck_title;
 
+    public static String ModuleStructureTopRegionCheck_Check_duplicates_of_standard_regions;
+
+    public static String ModuleStructureTopRegionCheck_Check_order_of_standard_regions;
+
     public static String ModuleStructureTopRegionCheck_description;
 
     public static String ModuleStructureTopRegionCheck_error_message;
+
+    public static String ModuleStructureTopRegionCheck_Exclude_region_name;
+
+    public static String ModuleStructureTopRegionCheck_Region_has_duplicate;
+
+    public static String ModuleStructureTopRegionCheck_Region_has_the_wrong_order;
+
+    public static String ModuleStructureTopRegionCheck_Region_is_not_standard_for_current_type_of_module;
 
     public static String ModuleStructureTopRegionCheck_title;
 
@@ -118,6 +166,48 @@ final class Messages
     public static String ModuleUnusedLocalVariableCheck_Unused_local_variable__0;
     public static String ModuleUnusedLocalVariableCheck_Probably_variable_not_initilized_yet__0;
 
+    public static String ModuleStructureEventFormRegionsCheck_Description;
+
+    public static String ModuleStructureEventFormRegionsCheck_Event_method__0__can_not_be_placed_in_the_region__1;
+
+    public static String ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1;
+
+    public static String ModuleStructureEventFormRegionsCheck_Excluded_method_names;
+
+    public static String ModuleStructureEventFormRegionsCheck_Multilevel_nesting_of_regions;
+
+    public static String ModuleStructureEventFormRegionsCheck_Title;
+
+    public static String ModuleStructureEventRegionsCheck_Description;
+
+    public static String ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1;
+
+    public static String ModuleStructureEventRegionsCheck_Only_event_methods__0;
+
+    public static String ModuleStructureEventRegionsCheck_Title;
+
+    public static String ModuleStructureInitCodeInRegion_Description;
+
+    public static String ModuleStructureInitCodeInRegion_Issue__0;
+
+    public static String ModuleStructureInitCodeInRegion_Title;
+
+    public static String ModuleStructureMethodInRegionCheck_Description;
+
+    public static String ModuleStructureMethodInRegionCheck_Method_should_be_placed_in_one_of_the_standard_regions;
+
+    public static String ModuleStructureMethodInRegionCheck_Multilevel_nesting_of_regions;
+
+    public static String ModuleStructureMethodInRegionCheck_Only_export;
+
+    public static String ModuleStructureMethodInRegionCheck_Title;
+
+    public static String ModuleStructureVariablesInRegionCheck_Description;
+
+    public static String ModuleStructureVariablesInRegionCheck_Issue__0;
+
+    public static String ModuleStructureVariablesInRegionCheck_Title;
+
     public static String QueryInLoop_check_query_in_infinite_loop;
     public static String QueryInLoop_description;
     public static String QueryInLoop_Loop_has_method_with_query__0;
@@ -131,6 +221,14 @@ final class Messages
     public static String SelfReferenceCheck_Title;
 
     public static String SelfReferenceCheck_Issue;
+
+    public static String ServerExecutionSafeModeCheck_description;
+
+    public static String ServerExecutionSafeModeCheck_eval_issue;
+
+    public static String ServerExecutionSafeModeCheck_execute_issue;
+
+    public static String ServerExecutionSafeModeCheck_title;
 
     public static String StructureCtorTooManyKeysCheck_description;
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
@@ -167,6 +265,12 @@ final class Messages
 
     public static String RegionEmptyCheck_title;
 
+    public static String RollbackTransactionCheck_Rollback_transaction_must_be_in_try_catch;
+
+    public static String RollbackTransactionCheck_Transactions_is_broken;
+
+    public static String RollbackTransactionCheck_Transactions_is_broken_des;
+
     public static String UseNonRecommendedMethods_description;
 
     public static String UseNonRecommendedMethods_message;
@@ -186,6 +290,14 @@ final class Messages
     public static String MethodTooManyPramsCheck_Method_has_more_than__N__params_with_default_value;
 
     public static String MethodTooManyPramsCheck_title;
+
+    public static String MissingTemporaryFileDeletionCheck_Delete_File_Methods;
+
+    public static String MissingTemporaryFileDeletionCheck_description;
+
+    public static String MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion;
+
+    public static String MissingTemporaryFileDeletionCheck_title;
 
     public static String FormModulePragmaCheck_description;
 

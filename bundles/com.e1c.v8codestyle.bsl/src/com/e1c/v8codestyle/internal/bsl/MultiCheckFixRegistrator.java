@@ -17,6 +17,7 @@ import com.e1c.g5.v8.dt.check.qfix.IFix;
 import com.e1c.g5.v8.dt.check.qfix.IFixContext;
 import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
+import com.e1c.v8codestyle.bsl.qfix.RemoveExportFix;
 import com.e1c.v8codestyle.bsl.strict.fix.RemoveStrictTypesAnnotationFix;
 import com.google.inject.Inject;
 
@@ -40,6 +41,7 @@ public class MultiCheckFixRegistrator
     public void activate()
     {
         registerRemoveStrictTypesAnnotationFix();
+        registerRemoveExportFix();
     }
 
     @Override
@@ -55,6 +57,17 @@ public class MultiCheckFixRegistrator
             CheckUid id = new CheckUid(checkId, BslPlugin.PLUGIN_ID);
 
             IFix<? extends IFixContext> instance = new RemoveStrictTypesAnnotationFix(id);
+            fixRepository.registerFix(instance);
+        }
+    }
+
+    private void registerRemoveExportFix()
+    {
+        for (String checkId : RemoveExportFix.getCheckIds())
+        {
+            CheckUid id = new CheckUid(checkId, BslPlugin.PLUGIN_ID);
+
+            IFix<? extends IFixContext> instance = new RemoveExportFix(id);
             fixRepository.registerFix(instance);
         }
     }

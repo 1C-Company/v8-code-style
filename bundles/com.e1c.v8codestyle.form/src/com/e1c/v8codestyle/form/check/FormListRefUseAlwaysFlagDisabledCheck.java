@@ -44,10 +44,10 @@ public class FormListRefUseAlwaysFlagDisabledCheck
     extends BasicCheck
 {
     private static final String CHECK_ID = "form-list-ref-use-always-flag-disabled"; //$NON-NLS-1$
-    private static final List<String> REF_ABSTRACT_DATA_PATH = List.of("Ref", "Список"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final List<String> REF_SEGMENT = List.of("Ref", "Ссылка"); //$NON-NLS-1$ //$NON-NLS-2$
 
     private static final Predicate<? super DbViewFieldDef> NAME_CHECK =
-        name -> name.getName().equals(REF_ABSTRACT_DATA_PATH.get(0));
+        name -> name.getName().equals(REF_SEGMENT.get(0));
 
     private static Predicate<AbstractDataPath> pathCheck = path -> {
         EList<String> segments = path.getSegments();
@@ -57,8 +57,7 @@ public class FormListRefUseAlwaysFlagDisabledCheck
             return false;
         }
 
-        return segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(0))
-            || segments.get(1).equals(REF_ABSTRACT_DATA_PATH.get(1));
+        return segments.get(1).equals(REF_SEGMENT.get(0)) || segments.get(1).equals(REF_SEGMENT.get(1));
     };
 
     @Override
@@ -70,7 +69,8 @@ public class FormListRefUseAlwaysFlagDisabledCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.FormListRefUseAlwaysFlagDisabledCheck_title)
+        builder.extension(new SkipBaseFormExtension())
+            .title(Messages.FormListRefUseAlwaysFlagDisabledCheck_title)
             .description(Messages.FormListRefUseAlwaysFlagDisabledCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)

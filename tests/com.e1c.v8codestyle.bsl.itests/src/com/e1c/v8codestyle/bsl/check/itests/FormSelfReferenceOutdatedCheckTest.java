@@ -61,9 +61,10 @@ public class FormSelfReferenceOutdatedCheckTest
     public void testFormModule() throws Exception
     {
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(3, markers.size());
 
         assertEquals("11", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals("12", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("13", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 }

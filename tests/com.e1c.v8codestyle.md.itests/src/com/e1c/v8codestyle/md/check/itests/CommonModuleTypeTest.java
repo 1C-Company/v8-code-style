@@ -256,6 +256,41 @@ public class CommonModuleTypeTest
         assertNull(marker);
     }
 
+    /**
+     * Test common module type - full access (privileged).
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeFullAccess() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("CommonModule.CommonServerFullAccess", dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    /**
+     * Test common module type - full access (privileged) is correct.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypeFullAccessCorrect() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        String fqn = "CommonModule.CommonServerFullAccess";
+
+        updateCommonModule(dtProject, fqn, CommonModuleTypes.SERVER_FULL_ACCESS);
+        long id = getTopObjectIdByFqn(fqn, dtProject);
+        Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
     private void updateCommonModule(IDtProject dtProject, String fqn, CommonModuleTypes type)
     {
         IBmModel model = bmModelManager.getModel(dtProject);

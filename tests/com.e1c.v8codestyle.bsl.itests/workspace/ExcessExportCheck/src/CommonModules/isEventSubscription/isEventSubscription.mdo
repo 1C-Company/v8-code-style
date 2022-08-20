@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b1d8cded-0f36-45c3-8464-ff7a8b0911b2">
+  <name>isEventSubscription</name>
+  <synonym>
+    <key>en</key>
+    <value>Is event subscription</value>
+  </synonym>
+  <server>true</server>
+</mdclass:CommonModule>

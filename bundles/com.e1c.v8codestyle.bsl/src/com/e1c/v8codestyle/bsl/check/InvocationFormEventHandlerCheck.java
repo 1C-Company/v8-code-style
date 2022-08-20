@@ -17,13 +17,10 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.Procedure;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
@@ -68,6 +65,7 @@ public final class InvocationFormEventHandlerCheck
             .severity(IssueSeverity.TRIVIAL)
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(INVOCATION);
     }
@@ -76,13 +74,6 @@ public final class InvocationFormEventHandlerCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        Module module = EcoreUtil2.getContainerOfType((EObject)object, Module.class);
-        ModuleType type = module.getModuleType();
-        if (type != ModuleType.FORM_MODULE)
-        {
-            return;
-        }
-
         FeatureAccess method = ((Invocation)object).getMethodAccess();
         if (!(method instanceof StaticFeatureAccess))
         {

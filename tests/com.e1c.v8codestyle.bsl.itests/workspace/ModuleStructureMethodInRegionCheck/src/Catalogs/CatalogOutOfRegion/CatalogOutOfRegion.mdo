@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="455d05d5-df0a-4930-bcaa-96fa060a66a4">
+  <producedTypes>
+    <objectType typeId="e139fc3a-546a-453f-a846-faaef7b1dd65" valueTypeId="e780f751-3b85-4010-92b2-c68fd33f5016"/>
+    <refType typeId="a886f0ea-88a3-42a5-aca5-352703c4e2de" valueTypeId="c9403923-f233-4e51-8450-41965fddd4e5"/>
+    <selectionType typeId="ec53fee4-3fbd-40a7-b5c5-13d177b92428" valueTypeId="b0531e68-dfcb-4d0a-bc68-d3223b871d34"/>
+    <listType typeId="17c20a4b-8f31-4756-9ad2-a48ded24e21d" valueTypeId="f5898cbd-b1cd-4dcf-9310-c15945c9bfc4"/>
+    <managerType typeId="54ee0ec3-c09e-4e95-83d1-b0686029fbae" valueTypeId="9b83bae2-1a84-41b2-a69b-917986ad93db"/>
+  </producedTypes>
+  <name>CatalogOutOfRegion</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog out of region</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.CatalogOutOfRegion.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CatalogOutOfRegion.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.CatalogOutOfRegion.Form.ItemForm</defaultObjectForm>
+  <forms uuid="c73c9f63-9a7b-4837-9c04-dcf1f4b51999">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1e11900c-0a79-4163-9288-28ced88445db">
+  <producedTypes>
+    <objectType typeId="33ee9b6d-04a8-4c8c-9b3e-1cf3109df8d2" valueTypeId="92e042ca-a45b-4b81-8658-1dd22714e90c"/>
+    <refType typeId="65d2c670-4f40-459a-9b3d-deb52f0a4121" valueTypeId="d792b028-3eee-4d58-ab71-6d8ad678de31"/>
+    <selectionType typeId="d66b039c-500b-4d31-8a58-a9a6704ec10d" valueTypeId="e180ed78-a053-4d16-aede-b9e4e7a05902"/>
+    <listType typeId="ce122b06-77d1-4b1b-856e-843ed74f1461" valueTypeId="794eea61-b9f7-40c3-a9a7-171f909100d4"/>
+    <managerType typeId="9121e139-383a-4c3b-9a2f-0b928be0a7c3" valueTypeId="e19878cd-50ca-4746-b3b7-29fb2e415369"/>
+  </producedTypes>
+  <name>AnyRefTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Any ref test</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.AnyRefTest.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.AnyRefTest.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="8ad19f3c-5965-47da-af92-037f700a0658">
+    <name>Attributeasdfasdfasdfasdfasdfasdfasdfasfasfasdfasdfasfasfasfasdfasfasfasf</name>
+    <synonym>
+      <key>en</key>
+      <value>Attributeasdfasdfasdfasdfasdfasdfasdfasfasfasdfasdfasfasfasfasdfasfasfasf</value>
+    </synonym>
+    <type>
+      <types>AnyRef</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>

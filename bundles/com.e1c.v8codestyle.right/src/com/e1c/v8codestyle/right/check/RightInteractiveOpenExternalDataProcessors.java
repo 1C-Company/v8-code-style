@@ -14,11 +14,15 @@ package com.e1c.v8codestyle.right.check;
 
 import java.util.List;
 
+import com._1c.g5.v8.dt.bm.index.emf.IBmEmfIndexManager;
+import com._1c.g5.v8.dt.bm.index.rights.IBmRightsIndexManager;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.right.CorePlugin;
+import com.e1c.v8codestyle.internal.right.InternalRightInfosService;
 import com.google.inject.Inject;
 
 /**
@@ -40,10 +44,12 @@ public class RightInteractiveOpenExternalDataProcessors
      * {@inheritDoc}
      */
     @Inject
-    public RightInteractiveOpenExternalDataProcessors(IV8ProjectManager v8ProjectManager,
-        IBmModelManager bmModelManager)
+    public RightInteractiveOpenExternalDataProcessors(IResourceLookup resourceLookup,
+        IV8ProjectManager v8ProjectManager, IBmModelManager bmModelManager, IBmRightsIndexManager bmRightsIndexManager,
+        IBmEmfIndexManager bmEmfIndexManager, InternalRightInfosService rightInfosService)
     {
-        super(v8ProjectManager, bmModelManager);
+        super(resourceLookup, v8ProjectManager, bmModelManager, bmRightsIndexManager, bmEmfIndexManager,
+            rightInfosService);
     }
 
     @Override
@@ -56,7 +62,7 @@ public class RightInteractiveOpenExternalDataProcessors
     protected void configureCheck(CheckConfigurer builder)
     {
         super.configureCheck(builder);
-        builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, bmModelManager))
+        builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, getBmModelManager()))
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .title(Messages.RightInteractiveOpenExternalDataProcessors_title)
             .description(Messages.RightInteractiveOpenExternalDataProcessors_description);
