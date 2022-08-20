@@ -27,7 +27,8 @@ public class SingleLetterVariableNameCheck
     extends BasicCheck
 {
     private static final String CHECK_ID = "bsl-single-letter-variable-name-check"; //$NON-NLS-1$
-    private static final String message = "Variable has a single letter name"; //$NON-NLS-1$
+
+    private static final String PARAM_CHECKED_LENGTH = "1"; //$NON-NLS-1$
 
     public SingleLetterVariableNameCheck()
     {
@@ -50,7 +51,8 @@ public class SingleLetterVariableNameCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .module()
-            .checkedObjectType(VARIABLE, DECLARE_STATEMENT, STATIC_FEATURE_ACCESS);
+            .checkedObjectType(VARIABLE, DECLARE_STATEMENT, STATIC_FEATURE_ACCESS)
+            .parameter(PARAM_CHECKED_LENGTH, Integer.class, "1", Messages.SingleLetterVariableNameCheck_checked_length); //$NON-NLS-1$
 
     }
 
@@ -61,6 +63,10 @@ public class SingleLetterVariableNameCheck
     @Override
     protected void check(Object object, ResultAcceptor acceptor, ICheckParameters parameters, IProgressMonitor monitor)
     {
+        // Reminder: if parameter is essential, check for length checked in variable`s
+        // name must be encountered with.
+
+        String message = Messages.SingleLetterVariableNameCheck_message;
 
         if (monitor.isCanceled())
         {
@@ -92,8 +98,5 @@ public class SingleLetterVariableNameCheck
         }
     }
 
-    public static String getMessage()
-    {
-        return message;
-    }
+
 }

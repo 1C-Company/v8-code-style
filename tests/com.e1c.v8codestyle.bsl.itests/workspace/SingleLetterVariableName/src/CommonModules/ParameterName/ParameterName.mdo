@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mdclass:CommonModule xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="85ddab4a-6d28-4aef-a08e-b1d7e9104bf3">
-  <name>ParameterName</name>
-  <synonym>
-    <key>en</key>
-    <value>Parameter name</value>
-  </synonym>
-  <server>true</server>
-</mdclass:CommonModule>

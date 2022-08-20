@@ -1,6 +1,7 @@
 # Variable has a single letter name
 
-Variable has a single letter name
+Checks if variable (parameter, declared or initialized) has a single letter
+name, which violates code style rules.
 
 ## Noncompliant Code Example
 

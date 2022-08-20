@@ -26,7 +26,7 @@ public class SingleLetterVariableNameCheckTest
 
     private static final String initializedVariableTestPath = "single-letter-initialized-variable-name.bsl";
 
-    private static final String message = SingleLetterVariableNameCheck.getMessage();
+    private static final String message = "Variable has a single letter name";
 
 
     public SingleLetterVariableNameCheckTest()

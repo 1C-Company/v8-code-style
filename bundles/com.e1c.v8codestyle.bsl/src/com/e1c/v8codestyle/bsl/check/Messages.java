@@ -359,6 +359,10 @@ final class Messages
 
     public static String LockOutOfTry_Method_lock_out_of_try;
 
+    public static String SingleLetterVariableNameCheck_checked_length;
+
+    public static String SingleLetterVariableNameCheck_message;
+
     static
     {
         // initialize resource bundle
