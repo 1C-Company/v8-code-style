@@ -38,7 +38,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 public class SingleLetterVariableNameCheck
     extends BasicCheck
 {
-    private static final String CHECK_ID = "bsl-single-letter-variable-name-check"; //$NON-NLS-1$
+    private static final String CHECK_ID = "single-letter-variable-name"; //$NON-NLS-1$
 
     private static final String PARAM_CHECKED_LENGTH = "1"; //$NON-NLS-1$
 
