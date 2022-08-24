@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="8ee9e922-3826-4fdb-969a-b4a81c5ce56e">
+  <name>ExtensionObjectNamePrefixCheck_Extension</name>
+  <synonym>
+    <key>en</key>
+    <value>Extension object name prefix check extension</value>
+  </synonym>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:ConfigurationExtension">
+    <defaultRunMode>Checked</defaultRunMode>
+    <usePurposes>Checked</usePurposes>
+    <commandInterface>Extended</commandInterface>
+    <mainSectionCommandInterface>Extended</mainSectionCommandInterface>
+    <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
+    <compatibilityMode>Checked</compatibilityMode>
+    <defaultStyle>Extended</defaultStyle>
+    <defaultRoles>Extended</defaultRoles>
+  </extension>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="d2419fd2-5e95-4404-a051-20af516c6eac"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="4f06a989-e9ee-4576-b37d-e409efc80290"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="2cb46693-2dd5-4797-951d-55b179b89290"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="652aa577-2231-4293-a756-39ef77c5f4cb"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="7f7db1b6-a872-4de5-baef-9183a177b1ba"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="28bf35b7-122e-497b-910d-7258fa245b76"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="b9808964-a589-4e54-8e54-f2fc57512a28"/>
+  <keepMappingToExtendedConfigurationObjectsByIDs>true</keepMappingToExtendedConfigurationObjectsByIDs>
+  <namePrefix>Ext1_</namePrefix>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <commonModules>CommonModule.Compliant</commonModules>
+  <commonModules>CommonModule.Ext1_Compliant</commonModules>
+  <commonModules>CommonModule.NonCompliant</commonModules>
+</mdclass:Configuration>
