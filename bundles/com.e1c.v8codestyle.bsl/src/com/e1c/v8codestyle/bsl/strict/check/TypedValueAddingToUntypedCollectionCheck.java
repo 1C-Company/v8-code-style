@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.strict.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.FEATURE_ACCESS__NAME;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +29,6 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
-import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
@@ -38,7 +38,6 @@ import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.Method;
 import com._1c.g5.v8.dt.mcore.Type;
 import com._1c.g5.v8.dt.mcore.TypeItem;
-import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -56,14 +55,19 @@ import com.google.inject.Inject;
 public class TypedValueAddingToUntypedCollectionCheck
     extends AbstractTypeCheck
 {
-    private static final String MAP_VALUE = "Value"; //$NON-NLS-1$
-
     private static final String CHECK_ID = "typed-value-adding-to-untyped-collection"; //$NON-NLS-1$
 
+    private static final String MAP_VALUE = "Value"; //$NON-NLS-1$
+
     //@formatter:off
-    private static final Map<String, Map<String, Collection<Integer>>> COLLECTION_ADD_METHODS = Map.of(
-        "Add", Map.of(IEObjectTypeNames.ARRAY, Set.of(0), //$NON-NLS-1$
-            IEObjectTypeNames.VALUE_LIST, Set.of(0))
+    private static final Map<String, Map<String, Integer>> COLLECTION_ADD_METHODS = Map.of(
+        "Add", Map.of(IEObjectTypeNames.ARRAY, 0, //$NON-NLS-1$
+            IEObjectTypeNames.VALUE_LIST, 0),
+        "Insert", Map.of( //$NON-NLS-1$
+            IEObjectTypeNames.ARRAY, 1,
+            IEObjectTypeNames.VALUE_LIST, 1),
+        "Set", Map.of( //$NON-NLS-1$
+            IEObjectTypeNames.ARRAY, 1)
         );
 
     /**
@@ -110,46 +114,50 @@ public class TypedValueAddingToUntypedCollectionCheck
         }
 
         FeatureAccess fa = (FeatureAccess)object;
-        Invocation inv = BslUtil.getInvocation(fa);
+        EObject method = getSourceMethod(fa);
 
-        if (inv == null || inv.getParams().isEmpty())
+        if (method == null || !(method instanceof Method) || ((Method)method).getParamSet().isEmpty())
         {
             return;
         }
 
-        Method method = (Method)getSourceMethod(fa);
+        Collection<TypeItem> expectedCollectionTypes = getExpectedCollectionTypes(fa, (Method)method);
 
-        if (method == null || method.getParamSet().isEmpty())
+        if (expectedCollectionTypes == null || expectedCollectionTypes.isEmpty())
         {
             return;
         }
 
-        Collection<TypeItem> collectionItemTypes =
-            getCollectionItemTypes(inv, method);
+        Collection<TypeItem> actualTypes = getActualCollectionTypes(fa, expectedCollectionTypes);
 
-        if (collectionItemTypes.isEmpty())
+        if(!actualTypes.isEmpty() && isActualCollectionItemTypeEmpty(actualTypes))
         {
+            DynamicFeatureAccess source = (DynamicFeatureAccess)object;
+
             resultAceptor.addIssue(Messages.TypedValueAddingToUntypedCollectionCheck_title,
-                BslPackage.Literals.EXPRESSION__TYPES);
+                source, FEATURE_ACCESS__NAME);
         }
     }
 
-    private Collection<TypeItem> getCollectionItemTypes(Invocation inv,
-        Method method)
+    private Collection<TypeItem> getExpectedCollectionTypes(FeatureAccess fa, Method method)
     {
-        Collection<TypeItem> collectionItemTypes = new ArrayList<>();
-        Environments actualEnvs = getActualEnvironments(inv);
-
-        if (method instanceof SourceObjectLinkProvider || !(inv.getMethodAccess() instanceof DynamicFeatureAccess))
+        if (method instanceof SourceObjectLinkProvider)
         {
-            return collectionItemTypes;
+            return null;
         }
 
-        Map<String, Collection<Integer>> typesAndParams = COLLECTION_ADD_METHODS.get(method.getName());
+        Invocation inv = BslUtil.getInvocation(fa);
+
+        if (!(inv.getMethodAccess() instanceof DynamicFeatureAccess))
+        {
+            return null;
+        }
+
+        Map<String, Integer> typesAndParams = COLLECTION_ADD_METHODS.get(method.getName());
 
         if (typesAndParams == null)
         {
-            return collectionItemTypes;
+            return null;
         }
 
         TypeItem collectionType = EcoreUtil2.getContainerOfType(method, TypeItem.class);
@@ -157,42 +165,57 @@ public class TypedValueAddingToUntypedCollectionCheck
 
         if (typeName == null || !typesAndParams.containsKey(typeName))
         {
-            return collectionItemTypes;
+            return null;
+        }
+
+        int parameterNumber = typesAndParams.get(typeName);
+
+        if (inv.getParams().size() < parameterNumber + 1)
+        {
+            return null;
         }
 
         List<TypeItem> types = typeComputer
-            .computeTypes(((DynamicFeatureAccess)inv.getMethodAccess()).getSource(), actualEnvs);
+            .computeTypes(((DynamicFeatureAccess)inv.getMethodAccess()).getSource(), getActualEnvironments(inv));
 
-        for (TypeItem type : types)
+        return types;
+    }
+
+    private Collection<TypeItem> getActualCollectionTypes(FeatureAccess fa, Collection<TypeItem> expectedTypes)
+    {
+        Collection<TypeItem> actualTypes = new ArrayList<>();
+        Invocation inv = BslUtil.getInvocation(fa);
+
+        for (TypeItem type : expectedTypes)
         {
             type = (TypeItem)EcoreUtil.resolve(type, inv);
 
-            if (!(type instanceof Type) || !typeName.equals(McoreUtil.getTypeName(type)))
-            {
-                continue;
-            }
-
-            if (typeName.equals(IEObjectTypeNames.VALUE_LIST))
+            if (type.getName().equals(IEObjectTypeNames.VALUE_LIST))
             {
                 List<TypeItem> valueListItemTypes = ((Type)type).getCollectionElementTypes().allTypes();
 
                 Set<TypeItem> collectionTypes =
-                    dynamicFeatureAccessComputer.getAllProperties(valueListItemTypes, inv.eResource())
+                    dynamicFeatureAccessComputer.getAllProperties(valueListItemTypes, null)
                         .stream()
                         .flatMap(e -> e.getFirst().stream())
                         .filter(p -> p.getName().equals(MAP_VALUE))
                         .flatMap(p -> p.getTypes().stream())
                         .collect(Collectors.toSet());
-                collectionItemTypes.addAll(collectionTypes);
+                actualTypes.addAll(collectionTypes);
             }
             else
             {
-                collectionItemTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                actualTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
             }
         }
-        // Remove Arbitrary type which do not need to check
-        collectionItemTypes.removeIf(p -> McoreUtil.getTypeName(p).equals(IEObjectTypeNames.ARBITRARY));
 
-        return collectionItemTypes;
+        return actualTypes;
+    }
+
+    private boolean isActualCollectionItemTypeEmpty(Collection<TypeItem> actualTypes)
+    {
+        actualTypes.removeIf(p -> McoreUtil.getTypeName(p).equals(IEObjectTypeNames.ARBITRARY));
+
+        return actualTypes.isEmpty();
     }
 }
