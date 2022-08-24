@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.BinaryExpression;
 import com._1c.g5.v8.dt.bsl.model.BinaryOperation;
@@ -37,7 +36,6 @@ import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.Pragma;
 import com._1c.g5.v8.dt.bsl.model.Procedure;
@@ -107,6 +105,7 @@ public class EventDataExchangeLoadCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PORTABILITY)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.OBJECT_MODULE, ModuleType.RECORDSET_MODULE))
             .module()
             .checkedObjectType(PROCEDURE)
             .parameter(PARAM_CHECK_AT_BEGINNING, Boolean.class, DEFAULT_CHECK_AT_BEGINNING,
@@ -122,13 +121,6 @@ public class EventDataExchangeLoadCheck
         Procedure procedure = (Procedure)object;
 
         if (!isNecessaryEventHandler(procedure))
-        {
-            return;
-        }
-
-        Module module = EcoreUtil2.getContainerOfType(procedure, Module.class);
-
-        if (!checkModuleType(module))
         {
             return;
         }
@@ -232,12 +224,6 @@ public class EventDataExchangeLoadCheck
         }
 
         return false;
-    }
-
-    private boolean checkModuleType(Module module)
-    {
-        return module.getModuleType() == ModuleType.OBJECT_MODULE
-            || module.getModuleType() == ModuleType.RECORDSET_MODULE;
     }
 
     private boolean hasReturnStatement(IfStatement statement, IProgressMonitor monitor)

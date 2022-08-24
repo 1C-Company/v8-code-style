@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -32,9 +33,21 @@ public class ModuleStructureTopRegionCheckTest
     extends AbstractSingleModuleTestBase
 {
 
+    private static final String REGION_HAS_THE_WRONG_ORDER = "Region has the wrong order";
+    private static final String REGION_HAS_DUPLICATE = "Region has duplicate";
+
+    private static final String CATALOG_FORM_MODULE_FILE_NAME = "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
+    private static final String CHECK_ID = "module-structure-top-region"; //$NON-NLS-1$
+
     public ModuleStructureTopRegionCheckTest()
     {
         super(ModuleStructureTopRegionCheck.class);
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return "ModuleStructureTopRegionCheck";
     }
 
     /**
@@ -63,8 +76,7 @@ public class ModuleStructureTopRegionCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
-        Marker marker = markers.get(0);
-        assertEquals("14", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("12", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     /**
@@ -78,8 +90,98 @@ public class ModuleStructureTopRegionCheckTest
         updateModule(FOLDER_RESOURCE + "module-structure-sub-region-after-method.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        // FIXME has to be an error in line 18
-        assertTrue(markers.isEmpty());
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals("18", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
 
+    /**
+     * Test that top module structure regions is compliant.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTopRegionCompliant() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "module-structure-top-region-compliant.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test that top module structure regions is non compliant.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTopRegionNonCompliant() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "module-structure-top-region-noncompliant.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    /**
+     * Test that top module structure region is on top.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTopRegionNotOnTop() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "module-structure-region-is-not-on-top.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    /**
+     * Test that top module structure region is duplicated.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTopRegionIsDuplicated() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "module-structure-region-is-duplicated.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(2, markers.size());
+        assertEquals(REGION_HAS_DUPLICATE, markers.get(0).getMessage());
+        assertEquals(REGION_HAS_DUPLICATE, markers.get(1).getMessage());
+    }
+
+    /**
+     * Test that top module structure region is wrong order.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTopRegionIsWrongOrder() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "module-structure-region-is-wrong-order.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(2, markers.size());
+        assertEquals(REGION_HAS_THE_WRONG_ORDER, markers.get(0).getMessage());
+        assertEquals(REGION_HAS_THE_WRONG_ORDER, markers.get(1).getMessage());
+    }
+
+    /**
+     * Test that top module structure regions in form module is compliant.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTopRegionFormModuleCompliant() throws Exception
+    {
+        Marker marker = getFirstMarker(CHECK_ID, CATALOG_FORM_MODULE_FILE_NAME, getProject());
+        assertNull(marker);
     }
 }

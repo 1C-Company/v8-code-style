@@ -60,6 +60,7 @@ public class FormListRefUserVisibilityEnabledCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.UI_STYLE)
+            .extension(new SkipBaseFormExtension())
             .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
             .containment(ADJUSTABLE_BOOLEAN)
@@ -89,6 +90,7 @@ public class FormListRefUserVisibilityEnabledCheck
         {
             return false;
         }
+
         EList<String> segments = ((AbstractDataPath)eContents.get(1)).getSegments();
         return segments.size() == 2
             && (segments.get(1).equals(REF_SEGMENT.get(0)) || segments.get(1).equals(REF_SEGMENT.get(1)));
