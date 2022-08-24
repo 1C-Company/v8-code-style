@@ -130,7 +130,7 @@ public class TypedValueAddingToUntypedCollectionCheck
 
         Collection<TypeItem> actualTypes = getActualCollectionTypes(fa, expectedCollectionTypes);
 
-        if(!actualTypes.isEmpty() && isActualCollectionItemTypeEmpty(actualTypes))
+        if (!actualTypes.isEmpty() && isActualCollectionItemTypeEmpty(actualTypes))
         {
             DynamicFeatureAccess source = (DynamicFeatureAccess)object;
 
