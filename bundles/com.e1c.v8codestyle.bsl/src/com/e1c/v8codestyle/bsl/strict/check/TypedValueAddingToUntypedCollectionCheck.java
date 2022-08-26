@@ -116,14 +116,14 @@ public class TypedValueAddingToUntypedCollectionCheck
         FeatureAccess fa = (FeatureAccess)object;
         EObject method = getSourceMethod(fa);
 
-        if (method == null || !(method instanceof Method) || ((Method)method).getParamSet().isEmpty())
+        if (!(method instanceof Method) || ((Method)method).getParamSet().isEmpty())
         {
             return;
         }
 
         Collection<TypeItem> expectedCollectionTypes = getExpectedCollectionTypes(fa, (Method)method);
 
-        if (expectedCollectionTypes == null || expectedCollectionTypes.isEmpty())
+        if (expectedCollectionTypes.isEmpty())
         {
             return;
         }
@@ -132,32 +132,31 @@ public class TypedValueAddingToUntypedCollectionCheck
 
         if (!actualTypes.isEmpty() && isActualCollectionItemTypeEmpty(actualTypes))
         {
-            DynamicFeatureAccess source = (DynamicFeatureAccess)object;
-
-            resultAceptor.addIssue(Messages.TypedValueAddingToUntypedCollectionCheck_title,
-                source, FEATURE_ACCESS__NAME);
+            resultAceptor.addIssue(Messages.TypedValueAddingToUntypedCollectionCheck_title, FEATURE_ACCESS__NAME);
         }
     }
 
     private Collection<TypeItem> getExpectedCollectionTypes(FeatureAccess fa, Method method)
     {
+        Collection<TypeItem> expectedTypes = new ArrayList<>();
+
         if (method instanceof SourceObjectLinkProvider)
         {
-            return null;
+            return expectedTypes;
         }
 
         Invocation inv = BslUtil.getInvocation(fa);
 
         if (!(inv.getMethodAccess() instanceof DynamicFeatureAccess))
         {
-            return null;
+            return expectedTypes;
         }
 
         Map<String, Integer> typesAndParams = COLLECTION_ADD_METHODS.get(method.getName());
 
         if (typesAndParams == null)
         {
-            return null;
+            return expectedTypes;
         }
 
         TypeItem collectionType = EcoreUtil2.getContainerOfType(method, TypeItem.class);
@@ -165,20 +164,20 @@ public class TypedValueAddingToUntypedCollectionCheck
 
         if (typeName == null || !typesAndParams.containsKey(typeName))
         {
-            return null;
+            return expectedTypes;
         }
 
         int parameterNumber = typesAndParams.get(typeName);
 
         if (inv.getParams().size() < parameterNumber + 1)
         {
-            return null;
+            return expectedTypes;
         }
 
-        List<TypeItem> types = typeComputer
+        expectedTypes = typeComputer
             .computeTypes(((DynamicFeatureAccess)inv.getMethodAccess()).getSource(), getActualEnvironments(inv));
 
-        return types;
+        return expectedTypes;
     }
 
     private Collection<TypeItem> getActualCollectionTypes(FeatureAccess fa, Collection<TypeItem> expectedTypes)
