@@ -11,7 +11,7 @@ EndProcedure
 
 #Region NotEmpty
 
-#Region Public
+#Region Public1
 
 Procedure Test()
 	
