@@ -16,6 +16,8 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STATIC_FEATURE_ACCESS;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.VARIABLE;
 
+import java.util.List;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
@@ -30,7 +32,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 
 /**
  * Checks if variable (parameter in method, declared or initialized variable)
- * has a single letter name (which violates code style rules).
+ * has a name with length less than or equal to user`s parameter value choice (1 by default).
  *
  * @author Vitaly Prolomov
  *
@@ -53,7 +55,6 @@ public class SingleLetterVariableNameCheck
         return CHECK_ID;
     }
 
-
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
@@ -64,19 +65,19 @@ public class SingleLetterVariableNameCheck
             .issueType(IssueType.CODE_STYLE)
             .module()
             .checkedObjectType(VARIABLE, DECLARE_STATEMENT, STATIC_FEATURE_ACCESS)
-            .parameter(PARAM_CHECKED_LENGTH, Integer.class, "1", Messages.SingleLetterVariableNameCheck_checked_length); //$NON-NLS-1$
+            .parameter(PARAM_CHECKED_LENGTH, Integer.class, "1", //$NON-NLS-1$
+                Messages.SingleLetterVariableNameCheck_checked_length);
 
     }
 
     /**
-     * Checks 3 different cases: parameters in methods, declared and initialized variables for
-     * having single letter name.
+     * Checks 3 different cases: parameters in methods, declared and initialized
+     * variables for having length of the name less than or equal to parameter,
+     * indicating length, selected by user (1 by default)
      */
     @Override
     protected void check(Object object, ResultAcceptor acceptor, ICheckParameters parameters, IProgressMonitor monitor)
     {
-        // Reminder: if parameter is essential, check for length checked in variable`s
-        // name must be encountered with.
 
         String message = Messages.SingleLetterVariableNameCheck_message;
 
@@ -85,7 +86,9 @@ public class SingleLetterVariableNameCheck
             return;
         }
 
-        if (object instanceof Variable && ((Variable)object).getName().length() == 1)
+        int checkedLength = parameters.getInt(PARAM_CHECKED_LENGTH);
+
+        if (object instanceof Variable && ((Variable)object).getName().length() <= checkedLength)
         {
             acceptor.addIssue(message, object);
         }
@@ -93,7 +96,18 @@ public class SingleLetterVariableNameCheck
         {
             Variable variable = ((StaticFeatureAccess)object).getImplicitVariable();
 
-            if (((StaticFeatureAccess)object).getImplicitVariable() != null && variable.getName().length() == 1)
+            if (variable == null)
+            {
+                return;
+            }
+            // Counters inside loops could have short names (according to check requirements)
+            Class varTypeClass = variable.eContainer().eContainer().getClass();
+            if (varTypeClass == com._1c.g5.v8.dt.bsl.model.impl.ForToStatementImpl.class
+                || varTypeClass == com._1c.g5.v8.dt.bsl.model.impl.ForEachStatementImpl.class)
+            {
+                return;
+            }
+            if (variable.getName().length() <= checkedLength)
             {
                 acceptor.addIssue(message, object);
             }
@@ -101,14 +115,17 @@ public class SingleLetterVariableNameCheck
         else if (object instanceof DeclareStatement)
         {
             DeclareStatement ds = (DeclareStatement)object;
-            ExplicitVariable ev = ds.getVariables().get(0);
+            List<ExplicitVariable> evList = ds.getVariables();
 
-            if (ev != null && ev.getName().length() == 1)
+            for (ExplicitVariable expVar : evList)
             {
-                acceptor.addIssue(message, object);
+                if (expVar != null && expVar.getName().length() <= checkedLength)
+                {
+                    acceptor.addIssue(message, object);
+                }
             }
+
         }
     }
-
 
 }

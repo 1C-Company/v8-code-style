@@ -20,13 +20,13 @@ public class SingleLetterVariableNameCheckTest
     extends AbstractSingleModuleTestBase
 {
 
-    private static final String parameterTestPath = "single-letter-parameter-name.bsl";
+    private static final String PARAMETER_TEST_PATH = "single-letter-parameter-name.bsl";
 
-    private static final String declaredVariableTestPath = "single-letter-declared-variable-name.bsl";
+    private static final String SINGLE_DECLARED_VARIABLE_TEST_PATH = "single-letter-declared-variable-name.bsl";
 
-    private static final String initializedVariableTestPath = "single-letter-initialized-variable-name.bsl";
+    private static final String INITIALIZED_VARIABLE_TEST_PATH = "single-letter-initialized-variable-name.bsl";
 
-    private static final String message = "Variable has a single letter name";
+    private static final String LOOPS_COUNTERS_TEST_PATH = "single-letter-loop-counters-names.bsl";
 
 
     public SingleLetterVariableNameCheckTest()
@@ -41,20 +41,17 @@ public class SingleLetterVariableNameCheckTest
      * @throws Exception
      */
     @Test
-    public void testParameterNameIncorrect() throws Exception
+    public void testParameterName() throws Exception
     {
         // com.e1c.v8codestyle.bsl.itests/resources/single-letter-declared-variable-name.bsl
-        updateModule(FOLDER_RESOURCE + parameterTestPath);
+        updateModule(FOLDER_RESOURCE + PARAMETER_TEST_PATH);
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(markers.size(), 1);
+        assertEquals(1, markers.size());
 
         Marker marker = markers.get(0);
 
-        assertEquals(message, marker.getMessage());
-
-        String mistakeLineIndex = "8";
-        assertEquals(mistakeLineIndex, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     /**
@@ -63,19 +60,16 @@ public class SingleLetterVariableNameCheckTest
      * @throws Exception
      */
     @Test
-    public void testInitializedVariableNameCorrect() throws Exception
+    public void testInitializedVariableName() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + initializedVariableTestPath);
+        updateModule(FOLDER_RESOURCE + INITIALIZED_VARIABLE_TEST_PATH);
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(markers.size(), 1);
 
         Marker marker = markers.get(0);
 
-        assertEquals(message, marker.getMessage());
-
-        String mistakeLineIndex = "8";
-        assertEquals(mistakeLineIndex, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     /**
@@ -87,18 +81,33 @@ public class SingleLetterVariableNameCheckTest
      * @throws Exception the exception
      */
     @Test
-    public void testDeclaredVariableNameCorrect() throws Exception
+    public void testDeclaredVariableName() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + declaredVariableTestPath);
+        updateModule(FOLDER_RESOURCE + SINGLE_DECLARED_VARIABLE_TEST_PATH);
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(markers.size(), 1);
+        assertEquals(markers.size(), 4);
 
-        Marker marker = markers.get(0);
+        // First variable is single declared variable in single line.
+        Marker firstMarker = markers.get(0);
+        assertEquals("6", firstMarker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
-        assertEquals(message, marker.getMessage());
+        for (int i = 1; i < markers.size(); ++i)
+        {
+            assertEquals("7", markers.get(i).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+    }
 
-        String mistakeLineIndex = "8";
-        assertEquals(mistakeLineIndex, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    /*
+     * As it is identified in description of this check, loop counters can
+     * have a name of any length, hence short counters should not be marked.
+     */
+    @Test
+    public void testLoopsCountersName() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + LOOPS_COUNTERS_TEST_PATH);
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(markers.size(), 0);
     }
 }

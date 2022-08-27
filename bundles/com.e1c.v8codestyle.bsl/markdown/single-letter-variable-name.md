@@ -1,7 +1,8 @@
 # Variable has a single letter name
 
-Checks if variable (parameter, declared or initialized) has a single letter
-name, which violates code style rules.
+Checks if variable (parameter, declared or initialized) has a name, which length is 
+less than or equal to the value of parameter, input by user (1 by default)
+There is one exception: counters in for-loops can have names of any length
 
 ## Noncompliant Code Example
 
@@ -31,23 +32,39 @@ EndProcedure
 
 ```bsl
 Procedure correctDecalaredName() Export
-    //@skip-check module-unused-local-variable
     var variable; 
 EndProcedure
 ```
 
 ```bsl
 Procedure CorrectInitailizationName() Export
-    //@skip-check module-unused-local-variable
     variable = 0;
 EndProcedure
 ```
 
 ```bsl
-//@skip-check module-empty-method
 Procedure CorrrectParameterName(parameter) Export
     
 EndProcedure
+```
+
+```bsl
+Procedure prod()
+    For i = 1 To 5 Do
+        
+    EndDo;
+КонецПроцедуры 
+
+```bsl
+Procedure prod2()
+    days = new array();
+    days.add("Mn");
+    days.add("Tu");
+    
+    For Each d In days Do
+        d = "l";
+    EndDo;
+КонецПроцедуры
 ```
 
 
