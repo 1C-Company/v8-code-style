@@ -102,8 +102,7 @@ public class SingleLetterVariableNameCheck
                 return;
             }
             // Counters inside loops could have short names (according to check requirements)
-            var varTypeClass = variable.eContainer().eContainer();
-            if (varTypeClass instanceof ForStatement)
+            if (variable.eContainer().eContainer() instanceof ForStatement)
             {
                 return;
             }
