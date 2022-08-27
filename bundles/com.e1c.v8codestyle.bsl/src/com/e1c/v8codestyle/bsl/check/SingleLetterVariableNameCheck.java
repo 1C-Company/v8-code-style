@@ -24,6 +24,8 @@ import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
+import com._1c.g5.v8.dt.bsl.model.impl.ForEachStatementImpl;
+import com._1c.g5.v8.dt.bsl.model.impl.ForToStatementImpl;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -102,8 +104,8 @@ public class SingleLetterVariableNameCheck
             }
             // Counters inside loops could have short names (according to check requirements)
             Class varTypeClass = variable.eContainer().eContainer().getClass();
-            if (varTypeClass == com._1c.g5.v8.dt.bsl.model.impl.ForToStatementImpl.class
-                || varTypeClass == com._1c.g5.v8.dt.bsl.model.impl.ForEachStatementImpl.class)
+            if (varTypeClass == ForToStatementImpl.class
+                || varTypeClass == ForEachStatementImpl.class)
             {
                 return;
             }
