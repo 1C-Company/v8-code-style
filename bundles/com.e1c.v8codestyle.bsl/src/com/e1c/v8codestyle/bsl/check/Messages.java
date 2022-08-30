@@ -241,6 +241,12 @@ final class Messages
 
     public static String NewColorCheck_Using_new_color;
 
+    public static String NewFontCheck_Description;
+
+    public static String NewFontCheck_Issue;
+
+    public static String NewFontCheck_Title;
+
     public static String NstrStringLiteralFormatCheck_Check_empty_interface_for_each_language;
 
     public static String NstrStringLiteralFormatCheck_description;
