@@ -37,7 +37,8 @@ import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
- * Check if Deprecated procedure (function) is placed in the Deprecated region of the Public region in a common module area
+ * Check if Deprecated procedure (function) is placed in the Deprecated region of the Public region
+ * in a common module area
  *
  * @author Olga Bozhko
  *
@@ -81,7 +82,7 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
         {
             BslContextDefMethod defMethod = (BslContextDefMethod)bslContextDef.allMethods()
                 .stream()
-                .filter(m -> (m.getName() != null && m.getName().equals(method.getName())))
+                .filter(m -> m.getName() != null && m.getName().equals(method.getName()))
                 .findAny()
                 .orElse(null);
 
@@ -89,7 +90,7 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
                 || !verifyLocationForDeprecated(getFirstParentRegion(method), getTopParentRegion(method))))
             {
                 resultAceptor.addIssue(MessageFormat.format(
-                    Messages.DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_procedure_or_function_is_outside_deprecated_region,
+                    Messages.DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area,
                     method.getName()), McorePackage.Literals.NAMED_ELEMENT__NAME);
             }
         }
