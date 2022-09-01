@@ -80,6 +80,14 @@ final class Messages
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
 
+    public static String ConsecutiveEmptyLines_Description;
+
+    public static String ConsecutiveEmptyLines_Parameter_title;
+
+    public static String ConsecutiveEmptyLines_Sequence_of_empty_lines_between_0_and_1_is_2_or_greater;
+
+    public static String ConsecutiveEmptyLines_Title;
+
     public static String EmptyExceptStatementCheck_description;
     public static String EmptyExceptStatementCheck_title;
 
