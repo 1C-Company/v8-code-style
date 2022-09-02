@@ -68,6 +68,9 @@ final class Messages
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_description;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error;
+    public static String RegisterResourcePrecisionCheck_description;
+    public static String RegisterResourcePrecisionCheck_message;
+    public static String RegisterResourcePrecisionCheck_title;
     public static String SubsystemSynonymTooLongCheck_description;
     public static String SubsystemSynonymTooLongCheck_Exclude_languages_comma_separated;
     public static String SubsystemSynonymTooLongCheck_Length_of_section_name_more_than_symbols_for_language;
