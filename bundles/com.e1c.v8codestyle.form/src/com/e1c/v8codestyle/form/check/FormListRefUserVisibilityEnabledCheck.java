@@ -16,6 +16,7 @@ import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.ADJUSTABLE_BOOLEAN;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.ADJUSTABLE_BOOLEAN__COMMON;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -78,7 +79,9 @@ public class FormListRefUserVisibilityEnabledCheck
             && pathCheck(adjBoolean.eContainer().eContents()))
         {
             resultAceptor.addIssue(
-                Messages.FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field,
+                MessageFormat.format(
+                    Messages.FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field,
+                    ((FormField)(adjBoolean.eContainer())).bmGetTopObject().bmGetFqn()),
                 ADJUSTABLE_BOOLEAN__COMMON);
         }
 

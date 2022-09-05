@@ -53,7 +53,7 @@
     <titleLocation>None</titleLocation>
     <items xsi:type="form:FormField">
       <name>Ссылка</name>
-      <id>16</id>
+      <id>34</id>
       <visible>true</visible>
       <enabled>true</enabled>
       <userVisible>
@@ -62,10 +62,9 @@
       <dataPath xsi:type="form:DataPath">
         <segments>Список.Ref</segments>
       </dataPath>
-      <defaultItem>true</defaultItem>
       <extendedTooltip>
         <name>СсылкаРасширеннаяПодсказка</name>
-        <id>18</id>
+        <id>36</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -80,7 +79,7 @@
       </extendedTooltip>
       <contextMenu>
         <name>СсылкаКонтекстноеМеню</name>
-        <id>17</id>
+        <id>35</id>
         <visible>true</visible>
         <enabled>true</enabled>
         <userVisible>
@@ -88,14 +87,18 @@
         </userVisible>
         <autoFill>true</autoFill>
       </contextMenu>
-      <type>LabelField</type>
+      <type>InputField</type>
       <editMode>Enter</editMode>
       <showInHeader>true</showInHeader>
       <headerHorizontalAlign>Left</headerHorizontalAlign>
       <showInFooter>true</showInFooter>
-      <extInfo xsi:type="form:LabelFieldExtInfo">
+      <extInfo xsi:type="form:InputFieldExtInfo">
         <autoMaxWidth>true</autoMaxWidth>
         <autoMaxHeight>true</autoMaxHeight>
+        <wrap>true</wrap>
+        <chooseType>true</chooseType>
+        <typeDomainEnabled>true</typeDomainEnabled>
+        <textEdit>true</textEdit>
       </extInfo>
     </items>
     <items xsi:type="form:FormField">
