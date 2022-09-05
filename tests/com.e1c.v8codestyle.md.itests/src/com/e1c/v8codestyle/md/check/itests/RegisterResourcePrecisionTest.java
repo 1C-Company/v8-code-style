@@ -23,7 +23,7 @@ import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.md.check.MdObjectNameLength;
 
 /**
- * Tests for {@link MdObjectNameLength} check
+ * Tests for {@link RegisterResourcePrecision} check
  *
  * @author Timur Mukhamedishin
  *
