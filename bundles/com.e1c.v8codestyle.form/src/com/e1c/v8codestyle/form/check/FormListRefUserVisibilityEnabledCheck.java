@@ -22,6 +22,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.FormField;
@@ -80,7 +81,7 @@ public class FormListRefUserVisibilityEnabledCheck
             && pathCheck(adjBoolean.eContainer().eContents()))
         {
             FormField formField = (FormField)(adjBoolean.eContainer());
-            Table table = (Table)formField.eContainer();
+            Table table = EcoreUtil2.getContainerOfType(formField.eContainer(), Table.class);
             resultAceptor.addIssue(
                 MessageFormat.format(
                     Messages.FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field,
