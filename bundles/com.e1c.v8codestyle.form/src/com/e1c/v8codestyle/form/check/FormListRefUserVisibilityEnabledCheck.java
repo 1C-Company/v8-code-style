@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.FormField;
+import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.metadata.mdclass.AdjustableBoolean;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -79,10 +80,11 @@ public class FormListRefUserVisibilityEnabledCheck
             && pathCheck(adjBoolean.eContainer().eContents()))
         {
             FormField formField = (FormField)(adjBoolean.eContainer());
+            Table table = (Table)formField.eContainer();
             resultAceptor.addIssue(
                 MessageFormat.format(
                     Messages.FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field,
-                    formField.getName(), formField.bmGetTopObject().bmGetFqn()),
+                    formField.getName(), table.getName()),
                 ADJUSTABLE_BOOLEAN__COMMON);
         }
 

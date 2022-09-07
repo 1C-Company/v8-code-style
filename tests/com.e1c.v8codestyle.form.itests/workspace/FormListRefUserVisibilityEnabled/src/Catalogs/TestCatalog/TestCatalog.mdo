@@ -35,7 +35,7 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.TestCatalog.Form.TestListForm</defaultListForm>
-  <forms uuid="4361b02c-09ab-4e77-86e1-c91d295fb421">
+  <forms uuid="682d0d68-35de-4f17-a022-eba051f730de">
     <name>TestListForm</name>
     <synonym>
       <key>en</key>
@@ -44,7 +44,7 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
-  <forms uuid="fc033f05-b7c7-4b58-afeb-c258331353a7">
+  <forms uuid="cb9b45f8-7cf0-4bc0-96fa-c4aa3fddf7e2">
     <name>TestListFormRu</name>
     <synonym>
       <key>en</key>
