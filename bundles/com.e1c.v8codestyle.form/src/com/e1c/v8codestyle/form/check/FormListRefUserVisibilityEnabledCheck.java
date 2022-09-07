@@ -78,10 +78,11 @@ public class FormListRefUserVisibilityEnabledCheck
             && adjBoolean.eContainmentFeature().getName().equals(FEATURE_NAME)
             && pathCheck(adjBoolean.eContainer().eContents()))
         {
+            FormField formField = (FormField)(adjBoolean.eContainer());
             resultAceptor.addIssue(
                 MessageFormat.format(
                     Messages.FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field,
-                    ((FormField)(adjBoolean.eContainer())).bmGetTopObject().bmGetFqn()),
+                    formField.getName(), formField.bmGetTopObject().bmGetFqn()),
                 ADJUSTABLE_BOOLEAN__COMMON);
         }
 

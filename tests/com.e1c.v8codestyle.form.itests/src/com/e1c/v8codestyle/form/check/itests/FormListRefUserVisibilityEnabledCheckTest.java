@@ -50,7 +50,7 @@ public class FormListRefUserVisibilityEnabledCheckTest
     private static final String PROJECT_NAME = "FormListRefUserVisibilityEnabled";
     private static final String FQN_FORM_EN = "Catalog.TestCatalog.Form.TestListForm.Form";
     private static final String FQN_FORM_RU = "Catalog.TestCatalog.Form.TestListFormRu.Form";
-    private static final String MESSAGE = "User visibility is not disabled for the Ref field of {0}";
+    private static final String MESSAGE = "User visibility is not disabled for the Ref field ({0}) of {1}";
 
     /**
      * Test User Visibility is enabled for the Ref field in dynamic list (En Script variant).
@@ -66,9 +66,17 @@ public class FormListRefUserVisibilityEnabledCheckTest
         IBmObject object = getTopObjectByFqn(FQN_FORM_EN, dtProject);
         assertTrue(object instanceof Form);
 
+        Form form = (Form)object;
+        FormItem item = form.getItems().get(1);
+        assertTrue(item instanceof Table);
+
+        Table table = (Table)item;
+        assertEquals("Ref", table.getItems().get(0).getName());
+        FormField fieldRef = (FormField)table.getItems().get(0);
+
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNotNull(marker);
-        assertEquals(MessageFormat.format(MESSAGE, object.bmGetFqn()), marker.getMessage());
+        assertEquals(MessageFormat.format(MESSAGE, fieldRef.getName(), object.bmGetFqn()), marker.getMessage());
     }
 
     /**
