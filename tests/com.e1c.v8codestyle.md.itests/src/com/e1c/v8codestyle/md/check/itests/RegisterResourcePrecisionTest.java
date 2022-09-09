@@ -20,7 +20,6 @@ import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.md.check.MdObjectNameLength;
 
 /**
  * Tests for {@link RegisterResourcePrecision} check
