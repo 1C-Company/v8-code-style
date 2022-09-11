@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ebf247f8-15ce-4a74-a952-54b0bcbf6aa1">
+  <producedTypes>
+    <objectType typeId="c6f2cd52-d0db-4f92-bdb1-76dd17b8c4c6" valueTypeId="3b70d7fe-e710-4a7c-85d4-cd4ecb4f2690"/>
+    <refType typeId="aa56edea-f180-43a0-bbc9-f32c57a9d78d" valueTypeId="8772ebbe-0589-4276-96e5-8e856a50d82c"/>
+    <selectionType typeId="49b448a1-b752-411c-a46c-0e86ecdff534" valueTypeId="1488d5b4-f20e-4354-9884-c944a367e506"/>
+    <listType typeId="a4348c90-d1b5-4ad4-9d77-24d3af91972e" valueTypeId="bef2808e-2778-48e6-ad99-5901148cf293"/>
+    <managerType typeId="32aa2783-d68f-443d-bbbc-06ee2b56d3cc" valueTypeId="1c8d709d-6e8c-41da-bb07-69e321ecce6a"/>
+  </producedTypes>
+  <name>DocumentNotMeantToBePosted</name>
+  <synonym>
+    <key>en</key>
+    <value>Document not meant to be posted</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.DocumentNotMeantToBePosted.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <posting>Deny</posting>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+</mdclass:Document>

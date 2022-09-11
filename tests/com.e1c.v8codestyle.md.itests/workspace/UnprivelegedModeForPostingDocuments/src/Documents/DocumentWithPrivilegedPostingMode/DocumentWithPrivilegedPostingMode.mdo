@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6d3163a8-673e-4fe7-b0a9-8d844b97f3e1">
+  <producedTypes>
+    <objectType typeId="14bbcbd3-c852-424b-9a20-02a0ffc9b830" valueTypeId="03f743d3-92ef-4582-98ee-b755f8ddfe0a"/>
+    <refType typeId="19cd914a-f5f6-43aa-901d-50d535f42e73" valueTypeId="52ea2065-7aa4-4a21-8bf3-831497ab99f1"/>
+    <selectionType typeId="ee591b39-d59a-4f24-a71e-6fc2f5a997b1" valueTypeId="0ab26129-068d-4304-9e85-e2b3bfa717e4"/>
+    <listType typeId="2f1dede4-06d2-428e-805b-0f421fd19688" valueTypeId="6bfa976b-9c99-469f-9d0d-35b9a9a98052"/>
+    <managerType typeId="bdfe253b-7179-4a7c-98de-514c172f3107" valueTypeId="bd4961f5-104c-4521-a21f-d5531b90c8b8"/>
+  </producedTypes>
+  <name>DocumentWithPrivilegedPostingMode</name>
+  <synonym>
+    <key>en</key>
+    <value>Document with privileged posting mode</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.DocumentWithPrivilegedPostingMode.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <registerRecords>AccumulationRegister.AccumulationRegister1</registerRecords>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+</mdclass:Document>
