@@ -13,7 +13,7 @@ to the same line where the variable is declared.
 Var PresentationCurrency;
 Var SupportEmail;
 
-```bsl
+```
 
 ## Compliant Solution
 
@@ -27,7 +27,7 @@ Var SupportEmail;
 
 #EndRegion
 
-```bsl
+```
 
 ## See
 

@@ -16,14 +16,17 @@ import static com._1c.g5.v8.dt.form.model.FormPackage.Literals.FORM;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.ADJUSTABLE_BOOLEAN;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.ADJUSTABLE_BOOLEAN__COMMON;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.FormField;
+import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.metadata.mdclass.AdjustableBoolean;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -77,8 +80,12 @@ public class FormListRefUserVisibilityEnabledCheck
             && adjBoolean.eContainmentFeature().getName().equals(FEATURE_NAME)
             && pathCheck(adjBoolean.eContainer().eContents()))
         {
+            FormField formField = (FormField)(adjBoolean.eContainer());
+            Table table = EcoreUtil2.getContainerOfType(formField.eContainer(), Table.class);
             resultAceptor.addIssue(
-                Messages.FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field,
+                MessageFormat.format(
+                    Messages.FormListRefUserVisibilityEnabledCheck_User_visibility_is_not_disabled_for_the_Ref_field,
+                    formField.getName(), table.getName()),
                 ADJUSTABLE_BOOLEAN__COMMON);
         }
 
