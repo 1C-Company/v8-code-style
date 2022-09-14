@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccountingRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="8115d94d-ac37-41f8-a3e4-b93e53eb006a">
+  <producedTypes>
+    <selectionType typeId="5dfd6d91-80d0-4b68-8757-4ce2168e5953" valueTypeId="688772ee-207f-4410-aff0-e02f96d281e4"/>
+    <listType typeId="10e2a1e5-2697-4791-ba66-26a697de620e" valueTypeId="d16b36c9-81c4-4506-ba01-ceb0ca55204f"/>
+    <managerType typeId="8482de77-1d3e-44c6-bef8-96de2c51724a" valueTypeId="51dcf8df-e4f6-4418-a768-7634dda616e3"/>
+    <recordSetType typeId="5560e67f-8c3c-432e-ab3d-eb3b10398478" valueTypeId="150b3fe5-6c3a-4dbd-921e-100bdd93ec2f"/>
+    <recordKeyType typeId="4782ae91-48cf-434f-a9da-e5fc58045ca1" valueTypeId="9179e996-97db-4a26-a105-bf98231011f2"/>
+    <recordType typeId="28f5a601-4892-4328-858c-c01335fbe216" valueTypeId="15cca61b-a807-4fe2-b443-3ae35340eebe"/>
+    <extDimensionsType typeId="7f0bb213-357f-4554-a22c-7c9a1f269d54" valueTypeId="0e08611f-0f93-4e0f-8429-bba601fc25a8"/>
+  </producedTypes>
+  <name>AccountingRegister1</name>
+  <synonym>
+    <key>en</key>
+    <value>Accounting register1</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+</mdclass:AccountingRegister>

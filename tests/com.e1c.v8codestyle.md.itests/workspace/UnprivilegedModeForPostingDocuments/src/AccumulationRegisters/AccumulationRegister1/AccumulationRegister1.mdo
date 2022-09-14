@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccumulationRegister xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1cc1900d-c97b-476b-b8ff-b958f3a19a6a">
+  <producedTypes>
+    <selectionType typeId="46e74d29-5dff-40e5-b2c2-bde6d1b52584" valueTypeId="fe00ce4f-2599-4ec6-a63b-29df03f3b9f8"/>
+    <listType typeId="fa0ef97d-6aeb-4afe-9428-f657fa5d2e2b" valueTypeId="b840cb77-0262-4690-8ec6-31047a82ef10"/>
+    <managerType typeId="ada783a6-0da7-48fb-8831-4d4b0ec5abf2" valueTypeId="80aaf82f-9c36-4bfb-98c0-ebe3119203e5"/>
+    <recordSetType typeId="33eead58-93e3-40ff-ac49-16311c9432cd" valueTypeId="75fb5818-a502-4df8-86db-32c0177d6cde"/>
+    <recordKeyType typeId="66f0818e-1fa8-4a8c-a17d-485c036e8bd2" valueTypeId="b98341e8-1b97-4420-ad2a-c2d7eafa0795"/>
+    <recordType typeId="c06344ce-40fe-467d-8e56-73d048ff3e89" valueTypeId="a0586051-1a79-45d9-94f5-e2d3e6a26422"/>
+  </producedTypes>
+  <name>AccumulationRegister1</name>
+  <synonym>
+    <key>en</key>
+    <value>Accumulation register1</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+</mdclass:AccumulationRegister>
