@@ -96,7 +96,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.UnprivelegedModeForPostingDocumentsCheck">
+            class="com.e1c.v8codestyle.md.check.UnprivilegedModeForPostingDocumentsCheck">
       </check>
    </extension>
 

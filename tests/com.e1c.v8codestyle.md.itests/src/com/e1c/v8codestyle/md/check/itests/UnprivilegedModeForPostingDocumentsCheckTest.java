@@ -14,15 +14,15 @@ import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 
 /**
- * The test class for {@link UnprivelegedModeForPostingDocumentsCheckTest}
+ * The test class for {@link UnprivilegedModeForPostingDocumentsCheckTest}
  *
  * @author Vitaly Prolomov
  *
  */
-public class UnprivelegedModeForPostingDocumentsCheckTest
+public class UnprivilegedModeForPostingDocumentsCheckTest
     extends CheckTestBase
 {
-    private static final String PROJECT_NAME = "UnprivelegedModeForPostingDocuments";
+    private static final String PROJECT_NAME = "UnprivilegedModeForPostingDocuments";
 
     private static final String CHECK_ID = "unprivileged-mode-for-posting-documents";
 

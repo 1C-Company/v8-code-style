@@ -32,13 +32,13 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
  * @author Vitaly Prolomov
  *
  */
-public class UnprivelegedModeForPostingDocumentsCheck
+public class UnprivilegedModeForPostingDocumentsCheck
     extends BasicCheck
 {
 
     private static final String CHECK_ID = "unprivileged-mode-for-posting-documents"; //$NON-NLS-1$
 
-    public UnprivelegedModeForPostingDocumentsCheck()
+    public UnprivilegedModeForPostingDocumentsCheck()
     {
         super();
     }
