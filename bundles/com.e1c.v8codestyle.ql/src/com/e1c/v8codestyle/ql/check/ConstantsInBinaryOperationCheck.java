@@ -83,24 +83,13 @@ public class ConstantsInBinaryOperationCheck
         if ((binaryExpression.getLeft() instanceof ALiteralsExpression)
             && (binaryExpression.getRight() instanceof ALiteralsExpression))
         {
-            int lineNumber = getEObjectStartLine(object);
-            String expressionText = getEObjectText(object);
+            INode node = NodeModelUtils.findActualNodeFor(object);
+            int lineNumber = node.getStartLine();
+            String expressionText = node.getText().trim();
             String message = MessageFormat.format(
                 Messages.ConstantsInBinaryOperationCheck_Using_binary_operations_with_constants_in_queries_is_forbidden,
                 lineNumber, expressionText);
             resultAceptor.addIssue(message, binaryExpression, ABINARY_OPERATORS_EXPRESSION__RIGHT);
         }
-    }
-
-    private int getEObjectStartLine(EObject object)
-    {
-        INode node = NodeModelUtils.findActualNodeFor(object);
-        return node.getStartLine();
-    }
-
-    private String getEObjectText(EObject object)
-    {
-        INode node = NodeModelUtils.findActualNodeFor(object);
-        return node.getText().trim();
     }
 }
