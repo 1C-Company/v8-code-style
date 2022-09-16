@@ -12,19 +12,20 @@ import org.junit.Test;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.v8codestyle.md.check.PrivilegedModeForPostingDocumentsCheck;
 
 /**
- * The test class for {@link UnprivilegedModeForPostingDocumentsCheckTest}
+ * The test class for {@link PrivilegedModeForPostingDocumentsCheck}
  *
  * @author Vitaly Prolomov
  *
  */
-public class UnprivilegedModeForPostingDocumentsCheckTest
+public class PrivilegedModeForPostingDocumentsCheckTest
     extends CheckTestBase
 {
-    private static final String PROJECT_NAME = "UnprivilegedModeForPostingDocuments";
+    private static final String PROJECT_NAME = "PrivilegedModeForPostingDocuments";
 
-    private static final String CHECK_ID = "unprivileged-mode-for-posting-documents";
+    private static final String CHECK_ID = "privileged-mode-for-posting-documents";
 
     /**
      * Test Document is not meant to be posted (posting is not allowed and does not have any registers).
@@ -62,7 +63,7 @@ public class UnprivilegedModeForPostingDocumentsCheckTest
     }
 
     /**
-     * Test Document is meant to be posted but privilged posting mode is not on,
+     * Test Document is meant to be posted but privileged posting mode is not on,
      * so warning is generated.
      *
      * @throws CoreException

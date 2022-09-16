@@ -23,6 +23,8 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.TopObjectFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.md.CorePlugin;
 
 /**
  * The check for documents that are meant to be posted (which is equivalent to allowing posting and document
@@ -32,13 +34,13 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
  * @author Vitaly Prolomov
  *
  */
-public class UnprivilegedModeForPostingDocumentsCheck
+public class PrivilegedModeForPostingDocumentsCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "unprivileged-mode-for-posting-documents"; //$NON-NLS-1$
+    private static final String CHECK_ID = "privileged-mode-for-posting-documents"; //$NON-NLS-1$
 
-    public UnprivilegedModeForPostingDocumentsCheck()
+    public PrivilegedModeForPostingDocumentsCheck()
     {
         super();
     }
@@ -52,38 +54,33 @@ public class UnprivilegedModeForPostingDocumentsCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.UnprivilegedModeForPostingDocumentsCheck_title)
-            .description(Messages.UnprivilegedModeForPostingDocumentsCheck_description)
+        builder.title(Messages.PrivilegedModeForPostingDocumentsCheck_title)
+            .description(Messages.PrivilegedModeForPostingDocumentsCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
+            .extension(new StandardCheckExtension(CHECK_ID, CorePlugin.PLUGIN_ID))
             .issueType(IssueType.PERFORMANCE)
             .topObject(Literals.DOCUMENT)
             .checkTop()
             .features(Literals.DOCUMENT__POSTING, Literals.DOCUMENT__POST_IN_PRIVILEGED_MODE,
-                Literals.DOCUMENT__UNPOST_IN_PRIVILEGED_MODE);
+                Literals.DOCUMENT__UNPOST_IN_PRIVILEGED_MODE, Literals.DOCUMENT__REGISTER_RECORDS,
+                Literals.DOCUMENT__REGISTER_RECORDS_DELETION);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof Document))
+        final String message = Messages.PrivilegedModeForPostingDocumentsCheck_message;
+
+        if (((Document)object).getPosting() == Posting.ALLOW && !((Document)object).getRegisterRecords().isEmpty())
         {
-            return;
-        }
-
-        Document doc = (Document)object;
-
-        final String message = Messages.UnprivilegedModeForPostingDocumentsCheck_message;
-
-        if (doc.getPosting() == Posting.ALLOW && !doc.getRegisterRecords().isEmpty())
-        {
-            if (!doc.isUnpostInPrivilegedMode())
+            if (!((Document)object).isUnpostInPrivilegedMode())
             {
                 resultAcceptor.addIssue(message, Literals.DOCUMENT__POST_IN_PRIVILEGED_MODE);
             }
-            if (!doc.isPostInPrivilegedMode())
+            if (!((Document)object).isPostInPrivilegedMode())
             {
                 resultAcceptor.addIssue(message, Literals.DOCUMENT__POST_IN_PRIVILEGED_MODE);
             }

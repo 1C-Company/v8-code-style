@@ -65,9 +65,9 @@ final class Messages
     public static String MdScheduledJobPeriodicityCheck_The_minimum_job_interval_is_less_then_minute;
     public static String MdScheduledJobPeriodicityCheck_title;
     public static String MdScheduledJobPeriodicityCheck_Minimum_job_interval_description;
-    public static String UnprivilegedModeForPostingDocumentsCheck_title;
-    public static String UnprivilegedModeForPostingDocumentsCheck_message;
-    public static String UnprivilegedModeForPostingDocumentsCheck_description;
+    public static String PrivilegedModeForPostingDocumentsCheck_title;
+    public static String PrivilegedModeForPostingDocumentsCheck_message;
+    public static String PrivilegedModeForPostingDocumentsCheck_description;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_description;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error;
