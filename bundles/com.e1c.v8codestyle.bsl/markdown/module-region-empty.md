@@ -10,7 +10,7 @@ Check that module region is empty
 
 #EndRegion
 
-```bsl
+```
 
 
 ## Compliant Solution
@@ -25,7 +25,7 @@ EndProcedure
 
 #EndRegion
 
-```bsl
+```
 
 ## See
 

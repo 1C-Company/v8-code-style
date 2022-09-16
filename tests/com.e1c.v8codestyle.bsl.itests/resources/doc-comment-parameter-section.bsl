@@ -7,9 +7,13 @@ Procedure NonComplaint(Parameters, SecondParameter) Export
 	// empty
 EndProcedure
 
-// Parameters:
-//  Parameters - Method should not have parameter section
-Procedure NonComplaint2() Export
+// See Complaint
+Procedure NonComplaint2(Parameters, SecondParameter) Export
+	// empty
+EndProcedure
+
+// No parameter section
+Procedure NonComplaint3(Parameters) Export
 	// empty
 EndProcedure
 
@@ -24,3 +28,9 @@ EndProcedure
 Procedure Complaint2(Parameters, SecondParameter)
 	// empty
 EndProcedure
+
+// local methods may not contains parameters secrion
+Procedure Complaint3(Parameters)
+	// empty
+EndProcedure
+
