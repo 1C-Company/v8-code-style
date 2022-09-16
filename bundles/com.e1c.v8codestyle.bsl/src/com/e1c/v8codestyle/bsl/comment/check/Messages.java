@@ -57,7 +57,10 @@ final class Messages
     public static String ParametersSectionCheck_Check_only_export_method_parameter_section;
     public static String ParametersSectionCheck_description;
     public static String ParametersSectionCheck_Parameter_definition_missed_for__N;
-    public static String ParametersSectionCheck_Remove_useless_parameter_section;
+    public static String ParametersSectionCheck_Require_parameter_section_only_for_Export_methods;
+    public static String RedundantParametersSectionCheck_description;
+    public static String RedundantParametersSectionCheck_Remove_useless_parameter_section;
+    public static String RedundantParametersSectionCheck_title;
     public static String ParametersSectionCheck_title;
     public static String ProcedureReturnSectionCheck_description;
     public static String ProcedureReturnSectionCheck_Procedure_should_has_no_return_section;
