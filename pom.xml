@@ -16,13 +16,13 @@
   <parent>
     <groupId>com.e1c.v8codestyle</groupId>
     <artifactId>bom</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.4.0-SNAPSHOT</version>
     <relativePath>./bom/pom.xml</relativePath>
   </parent>
 
   <groupId>com.e1c.v8codestyle</groupId>
   <artifactId>parent</artifactId>
-  <version>0.3.0-SNAPSHOT</version>
+  <version>0.4.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>1C:Code style V8</name>
