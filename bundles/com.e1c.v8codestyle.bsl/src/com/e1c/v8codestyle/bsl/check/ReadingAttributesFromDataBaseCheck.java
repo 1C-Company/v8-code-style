@@ -18,18 +18,14 @@ import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
-import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
-import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.mcore.Environmental;
-import com._1c.g5.v8.dt.mcore.Property;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
@@ -54,14 +50,12 @@ public class ReadingAttributesFromDataBaseCheck
     private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
 
     private final TypesComputer typesComputer;
-    private final DynamicFeatureAccessComputer dynamicComputer;
 
     @Inject
-    public ReadingAttributesFromDataBaseCheck(TypesComputer typesComputer, DynamicFeatureAccessComputer dynamicComputer)
+    public ReadingAttributesFromDataBaseCheck(TypesComputer typesComputer)
     {
         super();
         this.typesComputer = typesComputer;
-        this.dynamicComputer = dynamicComputer;
     }
 
     @Override
@@ -97,14 +91,6 @@ public class ReadingAttributesFromDataBaseCheck
         if (env == null)
         {
             return;
-        }
-        for (FeatureEntry entry : dynamicComputer.resolveObject(dfa, env.environments()))
-        {
-            EObject feature = entry.getFeature();
-            if (!(feature instanceof Property))
-            {
-                return;
-            }
         }
         check(resultAceptor, dfa, monitor, env);
     }
