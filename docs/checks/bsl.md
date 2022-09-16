@@ -1,7 +1,7 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 66
+Общее количество проверок: 67
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -24,6 +24,7 @@
 | [doc-comment-parameter-in-description-suggestion](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-parameter-in-description-suggestion.md) | Многострочное описание документирующего комментария содержит определение параметра |
 | [doc-comment-parameter-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-parameter-section.md) | В секции параметров документирующего комментария пропущено определение параметра |
 | [doc-comment-procedure-return-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-procedure-return-section.md) | Документирующий комментарий содежрит секцию возвращаемого значения для процедуры |
+| [doc-comment-redundant-parameter-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-redundant-parameter-section.md) | Секция параметров документирующего комментария избыточная |
 | [doc-comment-ref-link](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-ref-link.md) | Ссылка документирующего комментария на существующий объект |
 | [doc-comment-return-section-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-return-section-type.md) | Секция возвращаемого значения документирующего комментария содержит корректные типы |
 | [doc-comment-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-type.md) | Определение типа документирующего комментария |

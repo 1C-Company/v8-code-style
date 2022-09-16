@@ -126,8 +126,14 @@ public class ModuleStructureEventFormRegionsCheck
             return;
         }
 
+        String methodName = method.getName();
+        if (methodName == null)
+        {
+            return;
+        }
+
         String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
-        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(method.getName(), excludeNamePattern))
+        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(methodName, excludeNamePattern))
         {
             return;
         }
@@ -141,7 +147,6 @@ public class ModuleStructureEventFormRegionsCheck
         }
 
         String regionName = region.get().getName();
-        String methodName = method.getName();
         Map<CaseInsensitiveString, List<EObject>> eventHandlers = bslEventsService.getEventHandlersContainer(module);
         List<EObject> containers = eventHandlers.get(new CaseInsensitiveString(methodName));
         if (containers == null)
