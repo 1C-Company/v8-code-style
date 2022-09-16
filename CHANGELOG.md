@@ -100,6 +100,7 @@
 - Не понятно в какой бинарной операции ошибка ql-constants-in-binary-operation #1143
 - Возникает NPE при работе проверки form-list-ref-user-visibility-enabled #1146
 - Проверка: doc-comment-parameter-section не находит ошибку #1087
+- Исправление пересечения родительских типов ОМД #1138
 
 ## 0.2.0
 
