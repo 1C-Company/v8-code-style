@@ -178,6 +178,10 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.RedundantParametersSectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.ProcedureReturnSectionCheck">
       </check>
       <check

@@ -40,6 +40,8 @@ public class ParametersSectionCheckTest
 
     private static final String PARAMETER_CHECK_ONLY_EXPORT = "checkOnlyExport"; //$NON-NLS-1$
 
+    private static final String PARAMETER_PARMA_SECT_FOR_EXPORT = "requireParameterSectionOnlyForExport"; //$NON-NLS-1$
+
     public ParametersSectionCheckTest()
     {
         super(ParametersSectionCheck.class);
@@ -58,35 +60,86 @@ public class ParametersSectionCheckTest
         ICheckSettings settings = checkRepository.getSettings(cuid, project);
         ICheckParameterSettings parameter = settings.getParameters().get(PARAMETER_CHECK_ONLY_EXPORT);
         parameter.setValue(Boolean.TRUE.toString());
+        parameter = settings.getParameters().get(PARAMETER_PARMA_SECT_FOR_EXPORT);
+        parameter.setValue(Boolean.TRUE.toString());
         checkRepository.applyChanges(Collections.singleton(settings), project);
 
         updateModule(FOLDER_RESOURCE + "doc-comment-parameter-section.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(3, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         marker = markers.get(1);
-        assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("11", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        marker = markers.get(2);
+        assertEquals("16", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    /**
+     * Test the documentation comment parameter section should exists in documentation comment not only for
+     * export methods, but for non-export (private) methods
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testParamSectionNotOnlyForExportMethodShouldCheck() throws Exception
+    {
+        IProject project = getProject().getWorkspaceProject();
+        CheckUid cuid = new CheckUid(getCheckId(), BslPlugin.PLUGIN_ID);
+        ICheckSettings settings = checkRepository.getSettings(cuid, project);
+        ICheckParameterSettings parameter = settings.getParameters().get(PARAMETER_CHECK_ONLY_EXPORT);
+        parameter.setValue(Boolean.FALSE.toString());
+        parameter = settings.getParameters().get(PARAMETER_PARMA_SECT_FOR_EXPORT);
+        parameter.setValue(Boolean.FALSE.toString());
+        checkRepository.applyChanges(Collections.singleton(settings), project);
+
+        updateModule(FOLDER_RESOURCE + "doc-comment-parameter-section.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(5, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        marker = markers.get(1);
+        assertEquals("11", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        marker = markers.get(2);
+        assertEquals("16", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        marker = markers.get(3);
+        assertEquals("28", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        marker = markers.get(4);
+        assertEquals("33", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     /**
      * Test the documentation comment parameter section should contains all parameters of all methods.
+     * Only export method should contains parameter section if it has parameters.
+     * This is default settings.
      *
      * @throws Exception the exception
      */
     @Test
     public void testAllMethodParametersShouldCheck() throws Exception
     {
+        IProject project = getProject().getWorkspaceProject();
+        CheckUid cuid = new CheckUid(getCheckId(), BslPlugin.PLUGIN_ID);
+        ICheckSettings settings = checkRepository.getSettings(cuid, project);
+        ICheckParameterSettings parameter = settings.getParameters().get(PARAMETER_CHECK_ONLY_EXPORT);
+        parameter.setValue(Boolean.FALSE.toString());
+        parameter = settings.getParameters().get(PARAMETER_PARMA_SECT_FOR_EXPORT);
+        parameter.setValue(Boolean.TRUE.toString());
+        checkRepository.applyChanges(Collections.singleton(settings), project);
+
         updateModule(FOLDER_RESOURCE + "doc-comment-parameter-section.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(3, markers.size());
+        assertEquals(4, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         marker = markers.get(1);
-        assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("11", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         marker = markers.get(2);
-        assertEquals("22", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("16", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        marker = markers.get(3);
+        assertEquals("28", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 }

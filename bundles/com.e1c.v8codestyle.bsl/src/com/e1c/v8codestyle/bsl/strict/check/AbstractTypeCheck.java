@@ -55,9 +55,9 @@ import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.TypeSet;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
-import com._1c.g5.v8.dt.platform.IEObjectDynamicTypeNames;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Abstract check of types in module objects. Allows to compute types respecting system enums,
@@ -68,14 +68,6 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 public abstract class AbstractTypeCheck
     extends BasicCheck
 {
-
-    private static final Collection<String> ALL_REF_TYPE_SET_PARENT_TYPE_NAMES =
-        Set.of(IEObjectDynamicTypeNames.CATALOG_REF_TYPE_NAME, IEObjectDynamicTypeNames.DOCUMENT_REF_TYPE_NAME,
-            IEObjectDynamicTypeNames.ENUM_REF_TYPE_NAME, IEObjectDynamicTypeNames.COC_REF_TYPE_NAME,
-            IEObjectDynamicTypeNames.COA_REF_TYPE_NAME, IEObjectDynamicTypeNames.CALCULATION_TYPE_REF_TYPE_NAME,
-            IEObjectDynamicTypeNames.BP_REF_TYPE_NAME, IEObjectDynamicTypeNames.BP_ROUTEPOINT_TYPE_NAME,
-            IEObjectDynamicTypeNames.TASK_REF_TYPE_NAME, IEObjectDynamicTypeNames.EXCHANGE_PLAN_REF_TYPE_NAME);
-
     private static final String COMMON_MODULE = "CommonModule"; //$NON-NLS-1$
 
     private static final QualifiedName QN_COMMON_MODULE = QualifiedName.create(COMMON_MODULE);
@@ -101,6 +93,8 @@ public abstract class AbstractTypeCheck
     /** The comment provider service. */
     protected final BslMultiLineCommentDocumentationProvider commentProvider;
 
+    private final InternalTypeNameRegistry internalTypeNameRegistry;
+
     /**
      * Instantiates a new abstract type check.
      *
@@ -121,6 +115,9 @@ public abstract class AbstractTypeCheck
         this.scopeProvider = rsp.get(IScopeProvider.class);
         this.commentProvider = rsp.get(BslMultiLineCommentDocumentationProvider.class);
         this.qualifiedNameConverter = qualifiedNameConverter;
+        this.internalTypeNameRegistry =
+            BslPlugin.getDefault().getInjector().getInstance(InternalTypeNameRegistry.class);
+
     }
 
     /**
@@ -316,7 +313,7 @@ public abstract class AbstractTypeCheck
         return parentTypes;
     }
 
-    private static Collection<String> getTypeNames(Collection<TypeItem> parentTypes, EObject context)
+    private Collection<String> getTypeNames(Collection<TypeItem> parentTypes, EObject context)
     {
         Set<String> typeNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         for (TypeItem type : parentTypes)
@@ -326,6 +323,11 @@ public abstract class AbstractTypeCheck
             if (typeName != null)
             {
                 typeNames.add(typeName);
+                String parentTypeName = getTypeSetItemParentTypeName(typeName);
+                if (parentTypeName != null)
+                {
+                    typeNames.add(parentTypeName);
+                }
             }
             if (type instanceof TypeSet && typeName != null)
             {
@@ -337,48 +339,16 @@ public abstract class AbstractTypeCheck
 
                 if (IEObjectTypeNames.ANY_REF.equals(typeName))
                 {
-                    typeNames.addAll(ALL_REF_TYPE_SET_PARENT_TYPE_NAMES);
-                }
-                else
-                {
-                    String parentTypeName = getTypeSetItemParentTypeName(typeName);
-                    if (parentTypeName != null)
-                    {
-                        typeNames.add(parentTypeName);
-                    }
+                    typeNames.addAll(internalTypeNameRegistry.allRefTypeSetParentTypeNames());
                 }
             }
         }
         return typeNames;
     }
 
-    private static String getTypeSetItemParentTypeName(String typeName)
+    private String getTypeSetItemParentTypeName(String typeName)
     {
-        switch (typeName)
-        {
-        case IEObjectTypeNames.CATALOG_REF:
-            return IEObjectDynamicTypeNames.CATALOG_REF_TYPE_NAME;
-        case IEObjectTypeNames.DOCUMENT_REF:
-            return IEObjectDynamicTypeNames.DOCUMENT_REF_TYPE_NAME;
-        case IEObjectTypeNames.ENUM_REF:
-            return IEObjectDynamicTypeNames.ENUM_REF_TYPE_NAME;
-        case IEObjectTypeNames.CHART_OF_CHARACTERISTIC_TYPES_REF:
-            return IEObjectDynamicTypeNames.COC_REF_TYPE_NAME;
-        case IEObjectTypeNames.CHART_OF_ACCOUNTS_REF:
-            return IEObjectDynamicTypeNames.COA_REF_TYPE_NAME;
-        case IEObjectTypeNames.CHART_OF_CALCULATION_TYPES_REF:
-            return IEObjectDynamicTypeNames.CALCULATION_TYPE_REF_TYPE_NAME;
-        case IEObjectTypeNames.BUSINESS_PROCESS_REF:
-            return IEObjectDynamicTypeNames.BP_REF_TYPE_NAME;
-        case IEObjectTypeNames.BUSINESS_PROCESS_ROUTE_POINT_REF:
-            return IEObjectDynamicTypeNames.BP_ROUTEPOINT_TYPE_NAME;
-        case IEObjectTypeNames.TASK_REF:
-            return IEObjectDynamicTypeNames.TASK_REF_TYPE_NAME;
-        case IEObjectTypeNames.EXCHANGE_PLAN_REF:
-            return IEObjectDynamicTypeNames.EXCHANGE_PLAN_REF_TYPE_NAME;
-        default:
-            return null;
-        }
+        return internalTypeNameRegistry.getInternalTypeName(typeName);
     }
 
 }

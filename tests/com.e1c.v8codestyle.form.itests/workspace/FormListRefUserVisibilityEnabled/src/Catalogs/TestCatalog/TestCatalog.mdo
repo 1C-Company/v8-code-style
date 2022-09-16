@@ -19,6 +19,10 @@
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
   <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>en</key>
+    <value>1</value>
+  </objectPresentation>
   <levelCount>2</levelCount>
   <foldersOnTop>true</foldersOnTop>
   <codeLength>9</codeLength>
@@ -31,7 +35,7 @@
   <editType>InDialog</editType>
   <choiceMode>BothWays</choiceMode>
   <defaultListForm>Catalog.TestCatalog.Form.TestListForm</defaultListForm>
-  <forms uuid="062f3d00-5d12-48bc-90ca-dd71e88247ed">
+  <forms uuid="682d0d68-35de-4f17-a022-eba051f730de">
     <name>TestListForm</name>
     <synonym>
       <key>en</key>
@@ -40,7 +44,7 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
-  <forms uuid="44347602-480a-4345-9bfd-31c6eda4ac64">
+  <forms uuid="cb9b45f8-7cf0-4bc0-96fa-c4aa3fddf7e2">
     <name>TestListFormRu</name>
     <synonym>
       <key>en</key>
