@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccountingRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f06a5082-f22b-4f1e-9bd0-d3821a995fa7">
+  <producedTypes>
+    <selectionType typeId="80ab005e-65d7-443d-b942-4a3b994760b2" valueTypeId="326e3f70-2c5b-404c-ba18-4fe45c28e364"/>
+    <listType typeId="3992043a-b176-4de1-9782-6e29d498f75c" valueTypeId="3e9c51aa-611b-4d05-a9bc-0a416f65e37a"/>
+    <managerType typeId="fee9bfb2-ca64-46af-a841-435843d566ac" valueTypeId="341a0d7c-9ed8-4323-8c0d-5437b93ceca5"/>
+    <recordSetType typeId="74a60a43-37b2-42bd-83be-749cd2a11b4a" valueTypeId="95af0b8e-5c1f-4fab-aa68-ce978ff90039"/>
+    <recordKeyType typeId="280731f4-b221-4c34-a86b-556229bcbf14" valueTypeId="f9ed97b9-3ecf-465d-8d44-05f8602268da"/>
+    <recordType typeId="b98dba37-a5f6-4203-93c6-21c66f4bb6ab" valueTypeId="a138593d-7d72-4388-96c5-740a4b7d4413"/>
+    <extDimensionsType typeId="894b1311-fff0-468e-90a9-ca807c46b0ba" valueTypeId="581f2fbb-ff59-4044-af8b-60a6f6875375"/>
+  </producedTypes>
+  <name>AccountingRegisterTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Accounting register test</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+  <resources uuid="420c3339-cf1a-47a7-83da-ec5e11cce703">
+    <name>CorrectResource</name>
+    <synonym>
+      <key>en</key>
+      <value>Correct resource</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <balance>true</balance>
+  </resources>
+  <resources uuid="dbafc4fe-1a6b-4b08-9ac6-b0ff7b152ce8">
+    <name>WrongResource</name>
+    <synonym>
+      <key>en</key>
+      <value>Wrong resource</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>50</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <balance>true</balance>
+  </resources>
+</mdclass:AccountingRegister>
