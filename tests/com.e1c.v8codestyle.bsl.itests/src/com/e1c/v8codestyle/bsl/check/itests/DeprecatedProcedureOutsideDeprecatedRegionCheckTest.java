@@ -13,14 +13,11 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
@@ -38,18 +35,12 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheckTest
     private static final String MESSAGE =
         "The deprecated procedure (function) {0} should be placed in the Deprecated region of the Public region in a common module area";
     private static final String DEPRECATED_PROCEDURE_NAME = "\"DeprecatedProcedure\"";
-    private static final String MANAGER_MODULE_FILE_NAME = "/src/Catalogs/Catalog/ManagerModule.bsl";
 
     public DeprecatedProcedureOutsideDeprecatedRegionCheckTest()
     {
         super(DeprecatedProcedureOutsideDeprecatedRegionCheck.class);
     }
 
-    @Override
-    protected String getTestConfigurationName()
-    {
-        return "DeprecatedProcedureOutsideDeprecatedRegion";
-    }
     /**
      * Test a deprecated method is placed in the Deprecated region of the Public region in a common module area
      *
@@ -92,27 +83,5 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheckTest
         assertEquals(1, markers.size());
         assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(MessageFormat.format(MESSAGE, DEPRECATED_PROCEDURE_NAME), markers.get(0).getMessage());
-    }
-
-    /**
-     * Test a deprecated method is placed in Manager module area
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testDeprecatedMethodInManagerModule() throws Exception
-    {
-        String moduleId = Path.ROOT.append(getTestConfigurationName()).append(MANAGER_MODULE_FILE_NAME).toString();
-        List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
-
-        String checkId = getCheckId();
-
-        assertNotNull(checkId);
-        List<Marker> markersToCheck = markers.stream()
-            .filter(marker -> checkId.equals(getCheckIdFromMarker(marker, getProject())))
-            .collect(Collectors.toList());
-        assertEquals(1, markersToCheck.size());
-        assertEquals("7", markersToCheck.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(MessageFormat.format(MESSAGE, DEPRECATED_PROCEDURE_NAME), markersToCheck.get(0).getMessage());
     }
 }

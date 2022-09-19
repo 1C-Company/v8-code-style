@@ -27,7 +27,10 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.McorePackage;
+import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -35,6 +38,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Check if Deprecated procedure (function) is placed in the Deprecated region of the Public region
@@ -47,8 +51,14 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
     extends AbstractModuleStructureCheck
 {
     private static final String CHECK_ID = "deprecated-procedure-outside-deprecated-region"; //$NON-NLS-1$
-    private static final String DEPRECATED_REGION = "Deprecated"; //$NON-NLS-1$
-    private static final String DEPRECATED_REGION_RU = "УстаревшиеПроцедурыИФункции"; //$NON-NLS-1$
+    private static final int STANDARD_NUM = 644;
+    private final IV8ProjectManager v8ProjectManager;
+
+    @Inject
+    public DeprecatedProcedureOutsideDeprecatedRegionCheck(IV8ProjectManager v8ProjectManager)
+    {
+        this.v8ProjectManager = v8ProjectManager;
+    }
 
     @Override
     public String getCheckId()
@@ -64,7 +74,9 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(STANDARD_NUM, getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.COMMON_MODULE, ModuleType.MANAGER_MODULE,
+                ModuleType.OBJECT_MODULE, ModuleType.RECORDSET_MODULE, ModuleType.VALUE_MANAGER_MODULE))
             .module()
             .checkedObjectType(METHOD);
     }
@@ -78,6 +90,9 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
         BslContextDef bslContextDef = (BslContextDef)module.getContextDef();
         Method method = (Method)eObject;
 
+        IV8Project project = v8ProjectManager.getProject(method);
+        ScriptVariant scriptVariant = project.getScriptVariant();
+
         if (method.isExport() && method.getName() != null)
         {
             BslContextDefMethod defMethod = (BslContextDefMethod)bslContextDef.allMethods()
@@ -86,8 +101,9 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
                 .findAny()
                 .orElse(null);
 
-            if (defMethod != null && defMethod.isDeprecated() && (getModuleType(method) != ModuleType.COMMON_MODULE
-                || !verifyLocationForDeprecated(getFirstParentRegion(method), getTopParentRegion(method))))
+            if (defMethod != null && defMethod.isDeprecated()
+                && !verifyLocationForDeprecated(getFirstParentRegion(method), getTopParentRegion(method),
+                    scriptVariant))
             {
                 resultAceptor.addIssue(MessageFormat.format(
                     Messages.DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area,
@@ -97,22 +113,17 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
     }
 
     private static boolean verifyLocationForDeprecated(Optional<RegionPreprocessor> regionFirst,
-        Optional<RegionPreprocessor> regionTop)
+        Optional<RegionPreprocessor> regionTop, ScriptVariant scriptVariant)
     {
         if (regionFirst.isEmpty() || regionTop.isEmpty())
         {
             return false;
         }
-        else if (regionFirst.get().getName().equals(DEPRECATED_REGION)
-            && regionTop.get().getName().equals(ModuleStructureSection.PUBLIC.getNames()[0]))
+        if (regionFirst.get().getName() == null || regionTop.get().getName() == null)
         {
-            return true;
+            return false;
         }
-        else if (regionFirst.get().getName().equals(DEPRECATED_REGION_RU)
-            && regionTop.get().getName().equals(ModuleStructureSection.PUBLIC.getNames()[1]))
-        {
-            return true;
-        }
-        return false;
+        return regionFirst.get().getName().equals(ModuleStructureSection.DEPRECATED_REGION.getName(scriptVariant))
+            && regionTop.get().getName().equals(ModuleStructureSection.PUBLIC.getName(scriptVariant));
     }
 }
