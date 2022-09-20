@@ -15,10 +15,9 @@ package com.e1c.v8codestyle.ql.check;
 
 import static com._1c.g5.v8.dt.ql.model.QlPackage.Literals.COMMON_EXPRESSION__CONTENT;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -86,7 +85,7 @@ public class QueryFieldIsNullCheck
             return;
         }
 
-        Set<CommonExpression> orderFields = getOrderFields(sourceTable);
+        List<CommonExpression> orderFields = getOrderFields(sourceTable);
         List<QuerySchemaOperator> operators = sourceTable.getOperators();
         for (QuerySchemaOperator operator : operators)
         {
@@ -114,7 +113,7 @@ public class QueryFieldIsNullCheck
     }
 
     private void removeFieldsWithWhenExpression(CaseOperationExpression caseInvocationExpression,
-        Set<CommonExpression> orderFields, String fieldName)
+        List<CommonExpression> orderFields, String fieldName)
     {
         List<CaseBody> caseBodies = caseInvocationExpression.getBody();
         for (CaseBody caseBody : caseBodies)
@@ -135,10 +134,11 @@ public class QueryFieldIsNullCheck
     }
 
     private void removeFieldsWithIsNullMethod(FunctionInvocationExpression functionInvocationExpression,
-        Set<CommonExpression> orderFields, String fieldName)
+        List<CommonExpression> orderFields, String fieldName)
     {
         FunctionExpression f = functionInvocationExpression.getFunctionType();
         List<String> isNullMethods = getIsNullMethods();
+
         if (isNullMethods.contains(f.getName()))
         {
             List<AbstractExpression> params = functionInvocationExpression.getParams();
@@ -151,11 +151,13 @@ public class QueryFieldIsNullCheck
         }
     }
 
-    private void removeFieldByName(Set<CommonExpression> orderFields, CommonExpression commonExpression,
+    private void removeFieldByName(List<CommonExpression> orderFields, CommonExpression commonExpression,
         String fieldName)
     {
         String paramName = commonExpression.getFullContent();
-        for (CommonExpression orderField : orderFields)
+        List<CommonExpression> unique = new ArrayList<>();
+        unique.addAll(orderFields);
+        for (CommonExpression orderField : unique)
         {
             String fieldFullName = orderField.getFullContent();
             if (paramName.equals(fieldFullName) || fieldName.equals(fieldFullName))
@@ -165,10 +167,10 @@ public class QueryFieldIsNullCheck
         }
     }
 
-    private Set<CommonExpression> getOrderFields(QuerySchemaSelectQuery sourceTable)
+    private List<CommonExpression> getOrderFields(QuerySchemaSelectQuery sourceTable)
     {
         List<QuerySchemaOrderExpression> orderExpressions = sourceTable.getOrderExpressions();
-        Set<CommonExpression> orderFields = new HashSet<>();
+        List<CommonExpression> orderFields = new ArrayList<>();
 
         for (QuerySchemaOrderExpression orderExpression : orderExpressions)
         {
