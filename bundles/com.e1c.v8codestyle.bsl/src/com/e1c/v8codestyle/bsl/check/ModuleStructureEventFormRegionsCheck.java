@@ -314,7 +314,8 @@ public class ModuleStructureEventFormRegionsCheck
             .equalsIgnoreCase(regionName)
             || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName)
             || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName)
-            || ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant).indexOf(regionName) != -1;
+            || regionName != null && regionName
+                .indexOf(ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant)) != -1;
     }
 
     private boolean isExcludeName(String name, String excludeNamePattern)
