@@ -96,7 +96,7 @@ public class ConsecutiveEmptyLinesCheck
                 EObject grammarElement = leafNode.getGrammarElement();
                 int startLine = leafNode.getStartLine();
                 int endLine = leafNode.getEndLine();
-                if (grammarElement instanceof TerminalRule && grammarAccess.getWSRule().equals((grammarElement))
+                if (grammarElement instanceof TerminalRule && grammarAccess.getWSRule().equals(grammarElement)
                     && (endLine - startLine - 1) > numberAllowedLines)
                 {
                     String message = MessageFormat.format(
