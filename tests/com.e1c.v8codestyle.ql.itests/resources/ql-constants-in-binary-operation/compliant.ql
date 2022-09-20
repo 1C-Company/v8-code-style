@@ -18,3 +18,18 @@ FROM
 WHERE 
     FieldName LIKE "123%";
     
+SELECT 
+    Products.Name AS Name,
+    FieldName AS Code
+FROM
+    Catalogs.Products AS Products
+WHERE 
+    &Parameter = True;
+    
+SELECT 
+    Products.Name AS Name,
+    FieldName AS Code
+FROM
+    Catalogs.Products AS Products
+WHERE 
+    &Parameter1 = &Parameter2;
