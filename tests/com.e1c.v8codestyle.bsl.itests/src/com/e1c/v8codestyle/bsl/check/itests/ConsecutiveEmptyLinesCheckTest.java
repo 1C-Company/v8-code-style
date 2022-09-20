@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.v8codestyle.bsl.check.ConsecutiveEmptyLinesCheck;
 
@@ -35,8 +36,7 @@ public class ConsecutiveEmptyLinesCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertFalse(markers.isEmpty());
-        Marker marker = markers.get(0);
-        assertEquals("The sequence of empty lines between lines 1 and 4 is 2 or greater", marker.getMessage());
+        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test

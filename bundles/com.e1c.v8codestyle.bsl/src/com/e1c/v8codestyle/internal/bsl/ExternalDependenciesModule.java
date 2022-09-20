@@ -33,6 +33,7 @@ import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
+import com._1c.g5.v8.dt.bsl.services.BslGrammarAccess;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
@@ -89,5 +90,6 @@ class ExternalDependenciesModule
         bind(IResourceAccess.class).toService();
         bind(ResourceDescriptionsProvider.class).toService();
         bind(IConfigurationProvider.class).toService();
+        bind(BslGrammarAccess.class).toProvider(() -> rsp.get(BslGrammarAccess.class));
     }
 }
