@@ -47,7 +47,7 @@ public class ConsecutiveEmptyLinesCheck
     private static final String PATTERN = "(?<=\\n)"; //$NON-NLS-1$
     private static final String DEFAULT_NUMBER_OF_EMPTY_LINES = "1"; //$NON-NLS-1$
     private static final String NUMBER_OF_EMPTY_LINES = "numberOfEmptyLines"; //$NON-NLS-1$
-    private static final String CHECK_ID = "consecutive-empty-lines"; //$NON-NLS-1$
+    private static final String CHECK_ID = "module-consecutive-blank-lines"; //$NON-NLS-1$
 
     private final BslGrammarAccess grammarAccess;
 
