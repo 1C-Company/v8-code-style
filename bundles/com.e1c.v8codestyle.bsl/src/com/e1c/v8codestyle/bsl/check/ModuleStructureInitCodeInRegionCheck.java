@@ -25,6 +25,7 @@ import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
+import com._1c.g5.v8.dt.bsl.model.RaiseStatement;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -109,6 +110,11 @@ public class ModuleStructureInitCodeInRegionCheck
     {
         if (EcoreUtil2.getContainerOfType(statement, Method.class) == null)
         {
+            if (statement instanceof RaiseStatement)
+            {
+                return;
+            }
+
             Optional<RegionPreprocessor> topRegion = getTopParentRegion(statement);
             if (topRegion.isEmpty() || !initialize.equalsIgnoreCase(topRegion.get().getName()))
             {
