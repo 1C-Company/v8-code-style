@@ -99,6 +99,10 @@ public class FormListRefUserVisibilityEnabledCheck
 
     private boolean isRefPath(AbstractDataPath dataPath)
     {
+        if (dataPath == null || dataPath.getSegments() == null)
+        {
+            return false;
+        }
         EList<String> segments = dataPath.getSegments();
         return segments.size() == 2
             && (REF_SEGMENT.equalsIgnoreCase(segments.get(1)) || REF_SEGMENT_RU.equalsIgnoreCase(segments.get(1)));
