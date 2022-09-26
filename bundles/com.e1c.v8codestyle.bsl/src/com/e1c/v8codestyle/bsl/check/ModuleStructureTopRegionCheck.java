@@ -89,7 +89,7 @@ public class ModuleStructureTopRegionCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(MODULE)
             .parameter(CHECK_DUPLICATES_OF_STANDARD_REGIONS, Boolean.class, Boolean.TRUE.toString(),

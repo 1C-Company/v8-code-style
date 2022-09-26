@@ -60,7 +60,7 @@ public final class RegisterResourcePrecisionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PORTABILITY)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(467, getCheckId(), CorePlugin.PLUGIN_ID))
             .parameter(MAX_PRECISION, Integer.class, MAX_PRECISION_DEFAULT,
                 Messages.RegisterResourcePrecisionCheck_message);
 

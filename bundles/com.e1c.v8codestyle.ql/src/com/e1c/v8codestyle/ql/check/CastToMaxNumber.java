@@ -62,7 +62,7 @@ public class CastToMaxNumber
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.ERROR)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(467, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(CastingNumberType.class);
         builder
             .parameter(MAX_NUMBER_LENGTH, Integer.class, MAX_NUMBER_LENGTH_DEFAULT,

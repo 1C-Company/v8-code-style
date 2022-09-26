@@ -62,7 +62,7 @@ public class CamelCaseStringLiteral
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(762, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(StringLiteralExpression.class);
         builder.parameter(PARAMETER_SKIP_CONTENT_PATTERN, String.class, StringUtils.EMPTY,
             Messages.CamelCaseStringLiteral_Regular_expression_to_skip_literal_content);
