@@ -93,7 +93,7 @@ public class ParametersSectionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(453, getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(ParametersSection.class, BslDocumentationComment.class);
         builder
             .parameter(PARAMETER_CHECK_ONLY_EXPORT, Boolean.class, Boolean.FALSE.toString(),

@@ -65,7 +65,7 @@ public class FormListRefUserVisibilityEnabledCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new SkipBaseFormExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(702, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
             .containment(ADJUSTABLE_BOOLEAN)
             .features(ADJUSTABLE_BOOLEAN__COMMON);

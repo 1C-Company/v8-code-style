@@ -124,7 +124,7 @@ public class DynamicListItemTitleCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(765, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new SkipBaseFormExtension())
             .extension(new DynamicListChangeExtension())
             .topObject(FORM)

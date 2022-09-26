@@ -71,7 +71,7 @@ public class UseNonRecommendedMethodCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(643, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(INVOCATION);
         builder.parameter(PARAM_METHODS_LIST, String.class, DEFAULT_METHODS_LIST,

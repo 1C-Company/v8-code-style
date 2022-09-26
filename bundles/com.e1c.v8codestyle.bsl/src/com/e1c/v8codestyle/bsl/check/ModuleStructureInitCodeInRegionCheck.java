@@ -73,7 +73,7 @@ public class ModuleStructureInitCodeInRegionCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.excludeTypes(ModuleType.COMMON_MODULE, ModuleType.COMMAND_MODULE,
                 ModuleType.MANAGER_MODULE, ModuleType.SESSION_MODULE))
             .module()

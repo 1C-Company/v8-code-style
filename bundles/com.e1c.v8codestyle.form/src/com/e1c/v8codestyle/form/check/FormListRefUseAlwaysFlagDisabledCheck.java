@@ -75,7 +75,7 @@ public class FormListRefUseAlwaysFlagDisabledCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(702, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
             .containment(FORM_ATTRIBUTE)
             .features(FORM_ATTRIBUTE__NOT_DEFAULT_USE_ALWAYS_ATTRIBUTES);
