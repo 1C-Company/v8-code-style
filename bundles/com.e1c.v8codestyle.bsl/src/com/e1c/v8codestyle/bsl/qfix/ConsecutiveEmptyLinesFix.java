@@ -1,6 +1,15 @@
-/**
- * Copyright (C) 2022, 1C
- */
+/*******************************************************************************
+ * Copyright (C) 2022, 1C-Soft LLC and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *******************************************************************************/
 package com.e1c.v8codestyle.bsl.qfix;
 
 import java.util.Iterator;
@@ -71,7 +80,8 @@ public class ConsecutiveEmptyLinesFix
         Iterator<ILeafNode> iterator = node.getLeafNodes().iterator();
 
         IV8Project project = v8ProjectManager.getProject(element);
-        ICheckParameters parameters = checkRepository.getCheckParameters(getCheckId(),project.getDtProject().getWorkspaceProject());
+        ICheckParameters parameters =
+            checkRepository.getCheckParameters(getCheckId(), project.getDtProject().getWorkspaceProject());
         int number = parameters.getInt(NUMBER_OF_EMPTY_LINES);
 
         MultiTextEdit result = new MultiTextEdit();
