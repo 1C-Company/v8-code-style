@@ -44,10 +44,13 @@ import com.e1c.g5.v8.dt.check.ICheck;
 import com.e1c.g5.v8.dt.check.ICheckDefinition;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.ICheckResultAcceptor;
+import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
 import com.e1c.g5.v8.dt.check.context.CheckContextCollectingSession;
 import com.e1c.g5.v8.dt.check.context.OnModelFeatureChangeContextCollector;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.internal.form.CorePlugin;
 
 /**
  * Check if the Reference field is added to dynamic list.
@@ -62,6 +65,8 @@ public class FormListFieldRefNotAddedCheck
     private static final String REF_ABSTRACT_DATA_PATH_RU = "Ссылка"; //$NON-NLS-1$
     private static final Predicate<? super DbViewFieldDef> FIELD_NAME_CHECK =
         name -> (name.getName() != null) && name.getName().equals(REF_ABSTRACT_DATA_PATH);
+
+    private final IBasicCheckExtension extension = new StandardCheckExtension(702, getCheckId(), CorePlugin.PLUGIN_ID);
 
     @Override
     public String getCheckId()
@@ -80,6 +85,8 @@ public class FormListFieldRefNotAddedCheck
         definition.setComplexity(CheckComplexity.NORMAL);
         definition.setDefaultSeverity(IssueSeverity.MINOR);
         definition.setIssueType(IssueType.UI_STYLE);
+        extension.configureContextCollector(definition);
+
     }
 
     @Override

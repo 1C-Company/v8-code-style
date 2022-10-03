@@ -73,7 +73,7 @@ public final class CommonModuleNameGlobal
             .issueType(IssueType.WARNING)
             .extension(new TopObjectFilterExtension())
             .extension(new MdObjectNameWithoutSuffix(NAME_SUFFIX_DEFAULT))
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(COMMON_MODULE)
             .checkTop()

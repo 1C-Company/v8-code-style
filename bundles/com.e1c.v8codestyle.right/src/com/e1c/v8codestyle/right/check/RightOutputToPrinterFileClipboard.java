@@ -63,7 +63,7 @@ public class RightOutputToPrinterFileClipboard
     {
         super.configureCheck(builder);
         builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, getBmModelManager()))
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(488, getCheckId(), CorePlugin.PLUGIN_ID))
             .title(Messages.RightOutputToPrinterFileClipboard_title)
             .description(Messages.RightOutputToPrinterFileClipboard_description);
     }
