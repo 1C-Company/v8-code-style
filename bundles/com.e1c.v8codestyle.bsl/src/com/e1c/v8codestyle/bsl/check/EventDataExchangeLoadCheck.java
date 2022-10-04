@@ -104,7 +104,7 @@ public class EventDataExchangeLoadCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PORTABILITY)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(773, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.OBJECT_MODULE, ModuleType.RECORDSET_MODULE))
             .module()
             .checkedObjectType(PROCEDURE)

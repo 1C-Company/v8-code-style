@@ -61,7 +61,7 @@ public class StructureCtorTooManyKeysCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(640, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(OPERATOR_STYLE_CREATOR)
             .parameter(PARAM_MAX_STRUCTURE_KEYS, Integer.class, DEFAULT_MAX_STRUCTURE_KEYS,

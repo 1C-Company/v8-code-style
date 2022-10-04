@@ -14,7 +14,7 @@ EndProcedure
 
 #EndRegion
 
-```bsl
+```
 
 ## Compliant Solution
 
@@ -28,7 +28,7 @@ EndProcedure
 
 #EndRegion
 
-```bsl
+```
 
 ## See
 

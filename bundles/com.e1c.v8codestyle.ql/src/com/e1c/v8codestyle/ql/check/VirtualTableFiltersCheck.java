@@ -75,7 +75,7 @@ public class VirtualTableFiltersCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(657, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(QuerySchemaTable.class);
 
     }
