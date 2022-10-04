@@ -59,7 +59,7 @@ public class TempTableHasIndex
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(777, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(QuerySchemaSelectQuery.class);
         builder.parameter(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, String.class, StringUtils.EMPTY,
             Messages.TempTableHasIndex_Exclude_table_name_pattern);

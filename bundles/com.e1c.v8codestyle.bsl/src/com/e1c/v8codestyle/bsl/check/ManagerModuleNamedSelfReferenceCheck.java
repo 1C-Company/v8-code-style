@@ -68,7 +68,7 @@ public class ManagerModuleNamedSelfReferenceCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(467, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
     }

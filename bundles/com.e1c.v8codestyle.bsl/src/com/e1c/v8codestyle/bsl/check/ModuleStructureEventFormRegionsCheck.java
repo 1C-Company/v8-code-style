@@ -98,7 +98,7 @@ public class ModuleStructureEventFormRegionsCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(METHOD)
@@ -126,8 +126,14 @@ public class ModuleStructureEventFormRegionsCheck
             return;
         }
 
+        String methodName = method.getName();
+        if (methodName == null)
+        {
+            return;
+        }
+
         String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
-        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(method.getName(), excludeNamePattern))
+        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(methodName, excludeNamePattern))
         {
             return;
         }
@@ -141,7 +147,6 @@ public class ModuleStructureEventFormRegionsCheck
         }
 
         String regionName = region.get().getName();
-        String methodName = method.getName();
         Map<CaseInsensitiveString, List<EObject>> eventHandlers = bslEventsService.getEventHandlersContainer(module);
         List<EObject> containers = eventHandlers.get(new CaseInsensitiveString(methodName));
         if (containers == null)
@@ -309,7 +314,8 @@ public class ModuleStructureEventFormRegionsCheck
             .equalsIgnoreCase(regionName)
             || ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName)
             || ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName)
-            || ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant).indexOf(regionName) != -1;
+            || regionName != null && regionName
+                .indexOf(ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant)) != -1;
     }
 
     private boolean isExcludeName(String name, String excludeNamePattern)

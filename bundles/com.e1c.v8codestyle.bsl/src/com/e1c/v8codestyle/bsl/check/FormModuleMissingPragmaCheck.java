@@ -57,7 +57,7 @@ public class FormModuleMissingPragmaCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.ERROR)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(467, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE, ModuleType.COMMAND_MODULE))
             .module()
             .checkedObjectType(METHOD, DECLARE_STATEMENT);

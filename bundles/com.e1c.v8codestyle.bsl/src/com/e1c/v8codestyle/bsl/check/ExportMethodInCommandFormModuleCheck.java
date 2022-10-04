@@ -91,7 +91,7 @@ public final class ExportMethodInCommandFormModuleCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(544, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(MODULE)
             .parameter(PARAMETER_CHECK_FORM_SERVER_METHODS, Boolean.class, Boolean.TRUE.toString(),

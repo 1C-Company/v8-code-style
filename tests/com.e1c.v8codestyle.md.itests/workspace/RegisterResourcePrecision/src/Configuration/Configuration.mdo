@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="20a84f2b-cefe-4539-878f-0f7ed39f0672">
+  <name>RegisterResourcePrecision</name>
+  <synonym>
+    <key>en</key>
+    <value>Register resource precision</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="10f19cab-e7bd-4f2c-a575-908cbcb28af7"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="5bbfdbba-5e09-4ade-9aff-56f49a4ed62f"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="3b15f715-c7ed-408a-a853-72d3fe7fa380"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="80f97575-17c0-4a54-8b72-f23c4c14c70a"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="f0575f92-54f8-4dbf-9aa8-ccf984f4a37f"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="aae6bb3b-6d1b-430e-8733-7a6dca4d6d54"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="addba4b7-5dd8-4413-8bc0-203ca37f6ecd"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="7ccd8163-8b83-42d1-94d7-ee638da6d2f1">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <documents>Document.DocumentTest</documents>
+  <accumulationRegisters>AccumulationRegister.AccumulationRegisterTest</accumulationRegisters>
+  <accountingRegisters>AccountingRegister.AccountingRegisterTest</accountingRegisters>
+</mdclass:Configuration>

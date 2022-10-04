@@ -59,7 +59,7 @@ public class LikeExpressionWithFieldCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PORTABILITY)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(467, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(LikeExpression.class);
     }
 
