@@ -47,7 +47,6 @@ import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.EmptyExpression;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
-import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
@@ -59,7 +58,6 @@ import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.DuallyNamedElement;
-import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.NamedElement;
 import com._1c.g5.v8.dt.mcore.ParamSet;
@@ -495,37 +493,6 @@ public class InvocationParamIntersectionCheck
             Messages.StrictModuleInvocationCheck_Type_of_N_parameter_not_intersect_with_invocation_type, name,
             String.join(", ", typeNames)); //$NON-NLS-1$
         resultAceptor.addIssue(message, param, BslPackage.Literals.EXPRESSION__TYPES);
-    }
-
-    private EObject getSourceMethod(FeatureAccess object)
-    {
-        Environments actualEnvs = getActualEnvironments(object);
-        if (actualEnvs.isEmpty())
-        {
-            return null;
-        }
-        List<FeatureEntry> objects = dynamicFeatureAccessComputer.resolveObject(object, actualEnvs);
-        for (FeatureEntry entry : objects)
-        {
-            EObject source = entry.getFeature();
-            if (source instanceof Method || (source instanceof com._1c.g5.v8.dt.mcore.Method))
-            {
-                return source;
-            }
-        }
-
-        return null;
-    }
-
-    private Environments getActualEnvironments(EObject object)
-    {
-        Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
-        if (envs == null)
-        {
-            return Environments.EMPTY;
-        }
-
-        return bslPreferences.getLoadEnvs(object).intersect(envs.environments());
     }
 
     private List<ParamSet> actualParamSet(com._1c.g5.v8.dt.mcore.Method method, int numParam)

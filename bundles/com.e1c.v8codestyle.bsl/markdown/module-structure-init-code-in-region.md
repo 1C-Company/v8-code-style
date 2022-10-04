@@ -11,7 +11,7 @@ Ctor();
 ...
 
 
-```bsl
+```
 
 ## Compliant Solution
 
@@ -25,7 +25,7 @@ Ctor();
 
 #EndRegion
 
-```bsl
+```
 
 ## See
 

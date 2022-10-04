@@ -115,7 +115,7 @@ public class EventHandlerBooleanParamCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(686, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(SIMPLE_STATEMENT)
             .parameter(PARAM_CHECK_EVENT_ONLY, Boolean.class, DEFAULT_CHECK_EVENT_ONLY,

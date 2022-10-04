@@ -64,7 +64,7 @@ public final class ConfigurationDataLock
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(460, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(CONFIGURATION)
             .checkTop()
             .features(CONFIGURATION__DATA_LOCK_CONTROL_MODE);

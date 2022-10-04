@@ -97,7 +97,7 @@ public final class LockOutOfTryCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(499, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
     }

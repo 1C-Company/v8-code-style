@@ -17,7 +17,7 @@ Procedure Noncompliant()
 //...
 EndProcedure
 
-```bsl
+```
 
 ## Compliant Solution
 
@@ -31,7 +31,7 @@ EndProcedure
 
 #EndRegion
 
-```bsl
+```
 
 ## See
 
