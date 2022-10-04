@@ -94,7 +94,7 @@ public class AccessibilityAtClientInObjectModuleCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PORTABILITY)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(680, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD, DECLARE_STATEMENT)
             .parameter(PARAMETER_ALLOW_MANAGER_EVENTS_AT_CLIENT, String.class, MANAGER_EVENT_EXCEPTION_NAMES,

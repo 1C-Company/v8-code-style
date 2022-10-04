@@ -72,7 +72,7 @@ public class SubsystemSynonymTooLongCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(712, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .issueType(IssueType.UI_STYLE)
             .topObject(SUBSYSTEM)

@@ -84,7 +84,7 @@ public final class CommonModuleType
             .severity(IssueSeverity.BLOCKER)
             .issueType(IssueType.CODE_STYLE)
             .extension(new TopObjectFilterExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(COMMON_MODULE)
             .checkTop()

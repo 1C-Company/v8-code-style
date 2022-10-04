@@ -63,7 +63,7 @@ public class RightStartThickClient
     {
         super.configureCheck(builder);
         builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, getBmModelManager()))
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(488, getCheckId(), CorePlugin.PLUGIN_ID))
             .title(Messages.RightStartThickClient_title)
             .description(Messages.RightStartThickClient_description);
     }

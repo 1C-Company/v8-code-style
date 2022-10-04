@@ -15,11 +15,17 @@ package com.e1c.v8codestyle.ql.check;
 
 import static com._1c.g5.v8.dt.ql.model.QlPackage.Literals.ABINARY_OPERATORS_EXPRESSION__RIGHT;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.nodemodel.INode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
 import com._1c.g5.v8.dt.ql.model.ABinaryOperatorsExpression;
 import com._1c.g5.v8.dt.ql.model.ALiteralsExpression;
+import com._1c.g5.v8.dt.ql.model.ALogicalBinaryOperatorExpression;
+import com._1c.g5.v8.dt.ql.model.ParameterExpression;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -53,7 +59,7 @@ public class ConstantsInBinaryOperationCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PORTABILITY)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(658, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(ABinaryOperatorsExpression.class);
     }
 
@@ -62,16 +68,27 @@ public class ConstantsInBinaryOperationCheck
         ICheckParameters parameters, IProgressMonitor monitor)
     {
         ABinaryOperatorsExpression binaryExpression = (ABinaryOperatorsExpression)object;
+
         if (monitor.isCanceled())
         {
             return;
         }
 
+        if ((binaryExpression instanceof ALogicalBinaryOperatorExpression)
+            && ((binaryExpression.getLeft() instanceof ParameterExpression)
+                || (binaryExpression.getRight() instanceof ParameterExpression)))
+        {
+            return;
+        }
         if ((binaryExpression.getLeft() instanceof ALiteralsExpression)
             && (binaryExpression.getRight() instanceof ALiteralsExpression))
         {
-            String message =
-                Messages.ConstantsInBinaryOperationCheck_Using_binary_operations_with_constants_in_queries_is_forbidden;
+            INode node = NodeModelUtils.findActualNodeFor(object);
+            int lineNumber = node.getStartLine();
+            String expressionText = node.getText().trim();
+            String message = MessageFormat.format(
+                Messages.ConstantsInBinaryOperationCheck_Using_binary_operations_with_constants_in_queries_is_forbidden,
+                lineNumber, expressionText);
             resultAceptor.addIssue(message, binaryExpression, ABINARY_OPERATORS_EXPRESSION__RIGHT);
         }
     }

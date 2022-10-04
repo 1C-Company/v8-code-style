@@ -63,7 +63,7 @@ public class RightAllFunctionsMode
     {
         super.configureCheck(builder);
         builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, getBmModelManager()))
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(488, getCheckId(), CorePlugin.PLUGIN_ID))
             .title(Messages.RightAllFunctionsMode_title)
             .description(Messages.RightAllFunctionsMode_description);
     }
