@@ -63,7 +63,7 @@ public class RightInteractiveOpenExternalReports
     {
         super.configureCheck(builder);
         builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, getBmModelManager()))
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(488, getCheckId(), CorePlugin.PLUGIN_ID))
             .title(Messages.RightInteractiveOpenExternalReports_title)
             .description(Messages.RightInteractiveOpenExternalReports_description);
     }

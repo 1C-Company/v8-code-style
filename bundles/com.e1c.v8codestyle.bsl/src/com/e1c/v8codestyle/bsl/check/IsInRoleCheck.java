@@ -66,7 +66,7 @@ public class IsInRoleCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(689, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(STATIC_FEATURE_ACCESS)
             .parameter(EXCEPTION_ROLES_PARAM, String.class, DEFAULT_EXCEPTION_ROLES_PARAM,

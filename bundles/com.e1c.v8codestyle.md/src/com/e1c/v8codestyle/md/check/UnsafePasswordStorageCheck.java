@@ -57,7 +57,7 @@ public final class UnsafePasswordStorageCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.SECURITY)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(740, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(CONSTANT)
             .checkTop()
             .features(CONSTANT__PASSWORD_MODE)

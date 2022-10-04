@@ -28,6 +28,7 @@ doc-comment-field-type-strict
 doc-comment-parameter-in-description-suggestion
 doc-comment-parameter-section
 doc-comment-procedure-return-section
+doc-comment-redundant-parameter-section
 doc-comment-ref-link
 doc-comment-return-section-type
 doc-comment-type
