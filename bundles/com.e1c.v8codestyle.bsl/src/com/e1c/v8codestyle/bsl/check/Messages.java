@@ -84,7 +84,7 @@ final class Messages
 
     public static String ConsecutiveEmptyLines_Parameter_title;
 
-    public static String ConsecutiveEmptyLines_Sequence_of_empty_lines_between_0_and_1_is_2_or_greater;
+    public static String ConsecutiveEmptyLines_Sequence_of_empty_lines_between__0__and__1__is_greator_than__2;
 
     public static String ConsecutiveEmptyLines_Title;
 

@@ -51,6 +51,11 @@ public class ConsecutiveEmptyLinesCheck
 
     private final BslGrammarAccess grammarAccess;
 
+    /**
+     * Instantiates a new consecutive empty lines check.
+     *
+     * @param grammarAccess the grammar access
+     */
     @Inject
     public ConsecutiveEmptyLinesCheck(BslGrammarAccess grammarAccess)
     {
@@ -100,7 +105,7 @@ public class ConsecutiveEmptyLinesCheck
                     && (endLine - startLine - 1) > numberAllowedLines)
                 {
                     String message = MessageFormat.format(
-                        Messages.ConsecutiveEmptyLines_Sequence_of_empty_lines_between_0_and_1_is_2_or_greater,
+                        Messages.ConsecutiveEmptyLines_Sequence_of_empty_lines_between__0__and__1__is_greator_than__2,
                         startLine, endLine, numberAllowedLines);
 
                     String[] lines = leafNode.getText().split(PATTERN);
@@ -109,7 +114,7 @@ public class ConsecutiveEmptyLinesCheck
                     DirectLocation directLocation =
                         new DirectLocation(
                             leafNode.getOffset() + headLength,
-                            leafNode.getLength() - getAllowedTailLength(headLength, lines),
+                            leafNode.getLength() - (headLength + getAllowedTailLength(lines)),
                             startLine + numberAllowedLines + 1, module);
 
                     Issue issue = new BslDirectLocationIssue(message, directLocation);
@@ -130,8 +135,8 @@ public class ConsecutiveEmptyLinesCheck
         return sum;
     }
 
-    private int getAllowedTailLength(int sum, String[] lines)
+    private int getAllowedTailLength(String[] lines)
     {
-        return sum + lines[lines.length - 1].length();
+        return lines[lines.length - 1].length();
     }
 }

@@ -30,7 +30,7 @@ public class ConsecutiveEmptyLinesCheckTest
     }
 
     @Test
-    public void testWithEmptyLines() throws Exception
+    public void testWithManyEmptyLines() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "empty-lines.bsl");
 
@@ -40,7 +40,7 @@ public class ConsecutiveEmptyLinesCheckTest
     }
 
     @Test
-    public void testWithOneEmptyLines() throws Exception
+    public void testWithOneEmptyLine() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "one-empty-line.bsl");
 
