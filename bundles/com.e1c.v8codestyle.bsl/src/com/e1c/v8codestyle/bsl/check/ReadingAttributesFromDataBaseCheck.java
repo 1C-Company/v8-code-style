@@ -49,6 +49,8 @@ public class ReadingAttributesFromDataBaseCheck
 
     private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
 
+    private static final String ALLOW_ACCESS_FIELDS_PARAMETER_NAME = "allowAccessFields"; //$NON-NLS-1$
+
     private final TypesComputer typesComputer;
 
     @Inject
@@ -73,6 +75,8 @@ public class ReadingAttributesFromDataBaseCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .parameter(ALLOW_ACCESS_FIELDS_PARAMETER_NAME, Boolean.class, Boolean.TRUE.toString(),
+                Messages.ReadingAttributesFromDataBaseCheck_Allow_access_fields)
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
     }
@@ -92,11 +96,13 @@ public class ReadingAttributesFromDataBaseCheck
         {
             return;
         }
-        check(resultAceptor, dfa, monitor, env);
+
+        boolean allowAccessFields = parameters.getBoolean(ALLOW_ACCESS_FIELDS_PARAMETER_NAME);
+        check(resultAceptor, dfa, monitor, env, allowAccessFields);
     }
 
     private void check(ResultAcceptor resultAceptor, DynamicFeatureAccess dfa, IProgressMonitor monitor,
-        Environmental env)
+        Environmental env, boolean allowAccessFields)
     {
         Expression source = dfa.getSource();
         if (monitor.isCanceled())
@@ -104,6 +110,7 @@ public class ReadingAttributesFromDataBaseCheck
             return;
         }
         List<TypeItem> types = typesComputer.computeTypes(source, env.environments());
+        int numberRefTypes = 0;
         for (TypeItem type : types)
         {
             if (monitor.isCanceled())
@@ -122,15 +129,24 @@ public class ReadingAttributesFromDataBaseCheck
 
             if (isRefType(type))
             {
-                resultAceptor.addIssue(
-                    MessageFormat.format(Messages.ReadingAttributesFromDataBaseCheck_Issue__0, dfa.getName()), dfa);
-                return;
+                numberRefTypes++;
             }
+        }
+
+        if (allowAccessFields && numberRefTypes == types.size() || !allowAccessFields && numberRefTypes > 0)
+        {
+            resultAceptor.addIssue(
+                MessageFormat.format(Messages.ReadingAttributesFromDataBaseCheck_Issue__0, dfa.getName()), dfa);
         }
     }
 
     private boolean isRefType(TypeItem type)
     {
+        if (McoreUtil.getTypeName(type) == null)
+        {
+            return false;
+        }
+
         switch (McoreUtil.getTypeCategory(type))
         {
         case IEObjectTypeNames.EXCHANGE_PLAN_REF:
