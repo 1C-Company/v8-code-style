@@ -77,6 +77,8 @@ public class ConsecutiveEmptyLinesFixTest
         assertTrue(object instanceof CommonModule);
         module = (CommonModule)object;
 
+        waitForDD(dtProject);
+
         marker = getFirstMarker(CHECK_ID, module.getModule(), dtProject);
         assertNull(marker);
     }
