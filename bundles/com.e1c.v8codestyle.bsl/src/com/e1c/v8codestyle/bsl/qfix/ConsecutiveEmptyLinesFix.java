@@ -54,6 +54,13 @@ public class ConsecutiveEmptyLinesFix
 
     private final IV8ProjectManager v8ProjectManager;
 
+    /**
+     * Instantiates a new consecutive empty lines fix.
+     *
+     * @param grammarAccess the grammar access
+     * @param checkRepository the check repository
+     * @param v8ProjectManager the v 8 project manager
+     */
     @Inject
     public ConsecutiveEmptyLinesFix(BslGrammarAccess grammarAccess, ICheckRepository checkRepository,
         IV8ProjectManager v8ProjectManager)
@@ -80,9 +87,8 @@ public class ConsecutiveEmptyLinesFix
         Iterator<ILeafNode> iterator = node.getLeafNodes().iterator();
 
         IV8Project project = v8ProjectManager.getProject(element);
-        ICheckParameters parameters =
-            checkRepository.getCheckParameters(getCheckId(), project.getDtProject().getWorkspaceProject());
-        int number = parameters.getInt(NUMBER_OF_EMPTY_LINES);
+        ICheckParameters parameters = checkRepository.getCheckParameters(getCheckId(), project.getProject());
+        int numberOfEmtyLines = parameters.getInt(NUMBER_OF_EMPTY_LINES);
 
         MultiTextEdit result = new MultiTextEdit();
         while (iterator.hasNext())
@@ -93,10 +99,10 @@ public class ConsecutiveEmptyLinesFix
             int endLine = leafNode.getEndLine();
 
             if (grammarElement instanceof TerminalRule && grammarAccess.getWSRule().equals(grammarElement)
-                && (endLine - startLine - 1) > number)
+                && (endLine - startLine - 1) > numberOfEmtyLines)
             {
                 String[] lines = leafNode.getText().split(PATTERN);
-                int headLength = getAllowedHeadLength(number, lines);
+                int headLength = getAllowedHeadLength(numberOfEmtyLines, lines);
 
                 int tailLength = leafNode.getLength() - getAllowedTailLength(headLength, lines);
                 result.addChild(new DeleteEdit(leafNode.getOffset() + headLength, tailLength == 0 ? 1 : tailLength));

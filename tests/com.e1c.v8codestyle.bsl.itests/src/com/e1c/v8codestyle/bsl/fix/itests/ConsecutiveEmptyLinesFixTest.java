@@ -35,9 +35,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 /**
  * Tests for {@link ConsecutiveEmptyLinesFix} fix.
  *
- *
  * @author Artem Iliukhin
- *
  */
 public class ConsecutiveEmptyLinesFixTest
     extends CheckTestBase
@@ -89,7 +87,7 @@ public class ConsecutiveEmptyLinesFixTest
      * @param marker the marker
      * @param dtProject the DT project of the marker
      */
-    protected void applyFix(Marker marker, IDtProject dtProject)
+    private void applyFix(Marker marker, IDtProject dtProject)
     {
         IMarkerWrapper markerWrapper = new BmMarkerWrapper(marker, dtProject.getWorkspaceProject(), bmModelManager,
             projectManager, symbolicLinkLocalizer, openHelper);
