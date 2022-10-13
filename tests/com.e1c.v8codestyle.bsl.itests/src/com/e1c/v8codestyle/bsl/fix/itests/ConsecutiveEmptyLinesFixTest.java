@@ -44,7 +44,7 @@ public class ConsecutiveEmptyLinesFixTest
     private static final String PROJECT_NAME = "ConsecutiveEmptyLines";
     private static final String FQN_COMMON_MODULE = "CommonModule.CommonModule";
     private static final String CHECK_ID = "module-consecutive-blank-lines";
-    private static final String DESCRIPTION = "Clear empty lines";
+    private static final String DESCRIPTION = "Clear extra empty lines";
     private IFixManager fixManager = ServiceAccess.get(IFixManager.class);
     private IV8ProjectManager projectManager = ServiceAccess.get(IV8ProjectManager.class);
     private ISymbolicLinkLocalizer symbolicLinkLocalizer = new MdSymbolicLinkLocalizer();
