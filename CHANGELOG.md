@@ -129,6 +129,8 @@
 - Возникает NPE при работе проверки form-list-ref-user-visibility-enabled #1146
 - Проверка: doc-comment-parameter-section не находит ошибку #1087
 - Исправление пересечения родительских типов ОМД #1138
+- Ложное срабатывание проверки module-structure-init-code-in-region #1155
+- Ложное срабатывание проверки: module-self-reference #1162
 
 ## 0.2.0
 
