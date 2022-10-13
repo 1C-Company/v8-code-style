@@ -29,6 +29,12 @@ public class NonAdoptedInExtensionMdObjectExtension
     implements IBasicCheckExtension
 {
     private final IV8ProjectManager v8ProjectManager;
+
+    /**
+     * Instantiates a new non adopted in extension md object extension.
+     *
+     * @param v8ProjectManager the v 8 project manager
+     */
     public NonAdoptedInExtensionMdObjectExtension(IV8ProjectManager v8ProjectManager)
     {
         this.v8ProjectManager = v8ProjectManager;

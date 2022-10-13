@@ -48,6 +48,11 @@ public class ExtensionMdObjectNamePrefixCheck
 
     private final IV8ProjectManager v8ProjectManager;
 
+    /**
+     * Instantiates a new extension md object name prefix check.
+     *
+     * @param v8ProjectManager the v 8 project manager
+     */
     @Inject
     public ExtensionMdObjectNamePrefixCheck(IV8ProjectManager v8ProjectManager)
     {
