@@ -47,6 +47,11 @@ public class ExtensionMethodPrefixCheck
 
     private final IV8ProjectManager v8ProjectManager;
 
+    /**
+     * Instantiates a new extension method prefix check.
+     *
+     * @param v8ProjectManager the v 8 project manager
+     */
     @Inject
     public ExtensionMethodPrefixCheck(IV8ProjectManager v8ProjectManager)
     {
@@ -68,7 +73,7 @@ public class ExtensionMethodPrefixCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
-            .extension(new OnlyAdoptedInExtensionObjectExtension())
+            .extension(new AdoptedModuleOwnerExtension())
             .module()
             .checkedObjectType(METHOD);
     }

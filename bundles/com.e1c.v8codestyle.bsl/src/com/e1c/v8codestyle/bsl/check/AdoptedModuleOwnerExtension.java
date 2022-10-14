@@ -25,11 +25,11 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
 
 /**
- * The extension only object that adopted in Extension Configuration.
+ *  Filters a module owner is it was adopted on precheck phase extension.
  *
  * @author Artem Iliukhin
  */
-public class OnlyAdoptedInExtensionObjectExtension
+public class AdoptedModuleOwnerExtension
     implements IBasicCheckExtension
 {
 

@@ -1,6 +1,6 @@
 # Extension method does not have extension prefix
 
-All added objects (methods and objects, reports, processes and subsystems, and event handlers) of the extension, 
+All added objects (methods and objects, reports, data processors and subsystems, and event handlers) of the extension, 
 as well as the names of native methods and variables of extension modules, must have a prefix corresponding 
 to the prefix of the extension itself.
 
