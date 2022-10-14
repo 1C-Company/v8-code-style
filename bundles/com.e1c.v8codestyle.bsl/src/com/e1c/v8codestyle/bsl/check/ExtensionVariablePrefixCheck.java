@@ -55,6 +55,11 @@ public class ExtensionVariablePrefixCheck
 
     private final IV8ProjectManager v8ProjectManager;
 
+    /**
+     * Instantiates a new extension variable prefix check.
+     *
+     * @param v8ProjectManager the v8 project manager
+     */
     @Inject
     public ExtensionVariablePrefixCheck(IV8ProjectManager v8ProjectManager)
     {
@@ -76,7 +81,7 @@ public class ExtensionVariablePrefixCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
-            .extension(new OnlyAdoptedInExtensionObjectExtension())
+            .extension(new AdoptedModuleOwnerExtension())
             .module()
             .checkedObjectType(IMPLICIT_VARIABLE, EXPLICIT_VARIABLE, SIMPLE_STATEMENT, DECLARE_STATEMENT);
     }
