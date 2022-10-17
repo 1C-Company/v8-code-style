@@ -58,7 +58,7 @@ public class ExtensionVariablePrefixCheck
     /**
      * Instantiates a new extension variable prefix check.
      *
-     * @param v8ProjectManager the v8 project manager
+     * @param v8ProjectManager the v8 project manager, cannot be <code>null</code>
      */
     @Inject
     public ExtensionVariablePrefixCheck(IV8ProjectManager v8ProjectManager)
