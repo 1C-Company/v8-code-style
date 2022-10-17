@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d3594514-9dc9-4e83-9a9b-6ed4b6f769fb">
+  <name>ExportVariableInObjectModuleCheck</name>
+  <synonym>
+    <key>en</key>
+    <value>Export variable in object module check</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="6b3037d6-3292-4b71-bfcc-86d2cf745c92"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="83828bcb-f71a-49d6-b3d8-8e367f093e46"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="6a95f15f-bdf5-4cc6-ada9-0fe7da774c76"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="14348ff0-b446-4690-a20e-8c0fa32b2acb"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="8659fa43-8433-43e1-bdc8-5086d7b85f20"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="9b5d36eb-d0f7-43b5-b697-b911620ea1e7"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="398998c0-f9dd-4351-8e80-f1fa952041dd"/>
+  <configurationExtensionCompatibilityMode>8.3.21</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.21</compatibilityMode>
+  <languages uuid="d3af0a12-44b4-4cb0-b8dc-0450b775ccd9">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <catalogs>Catalog.Catalog</catalogs>
+</mdclass:Configuration>
