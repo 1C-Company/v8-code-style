@@ -38,6 +38,12 @@ final class Messages
     public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
 
     public static String AccessibilityAtClientInObjectModuleCheck_title;
+    public static String CachedPublicCheck_Description;
+
+    public static String CachedPublicCheck_Issue;
+
+    public static String CachedPublicCheck_Title;
+
     public static String CanonicalPragmaCheck_description;
     public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1;
     public static String CanonicalPragmaCheck_title;
