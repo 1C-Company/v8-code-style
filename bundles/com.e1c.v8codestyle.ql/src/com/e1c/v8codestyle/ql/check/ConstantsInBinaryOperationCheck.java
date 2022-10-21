@@ -59,7 +59,7 @@ public class ConstantsInBinaryOperationCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PORTABILITY)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(658, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(ABinaryOperatorsExpression.class);
     }
 

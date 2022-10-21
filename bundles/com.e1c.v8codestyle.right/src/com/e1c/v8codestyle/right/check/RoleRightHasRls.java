@@ -135,7 +135,7 @@ public class RoleRightHasRls
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(488, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(ROLE_DESCRIPTION)
             .containment(RLS)
             .features(RLS__CONDITION)

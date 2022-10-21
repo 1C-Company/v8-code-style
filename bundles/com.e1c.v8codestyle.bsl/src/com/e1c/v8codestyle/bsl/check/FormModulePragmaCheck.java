@@ -57,7 +57,7 @@ public class FormModulePragmaCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.ERROR)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(439, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(PRAGMA);
     }

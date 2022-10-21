@@ -84,7 +84,7 @@ public class MdListObjectPresentationCheck
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
             .issueType(IssueType.UI_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(468, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new SkipAdoptedInExtensionMdObjectExtension());
 
         builder.topObject(BASIC_DB_OBJECT)
