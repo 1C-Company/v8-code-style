@@ -30,7 +30,8 @@ public enum ModuleStructureSection
     FORM_EVENT_HANDLERS("FormEventHandlers", "ОбработчикиСобытийФормы"), //$NON-NLS-1$ //$NON-NLS-2$
     FORM_HEADER_ITEMS_EVENT_HANDLERS("FormHeaderItemsEventHandlers", "ОбработчикиСобытийЭлементовШапкиФормы"), //$NON-NLS-1$ //$NON-NLS-2$
     FORM_COMMAND_EVENT_HANDLERS("FormCommandsEventHandlers", "ОбработчикиКомандФормы"), //$NON-NLS-1$ //$NON-NLS-2$
-    FORM_TABLE_ITEMS_EVENT_HANDLERS("FormTableItemsEventHandlers", "ОбработчикиСобытийЭлементовТаблицыФормы"); //$NON-NLS-1$ //$NON-NLS-2$
+    FORM_TABLE_ITEMS_EVENT_HANDLERS("FormTableItemsEventHandlers", "ОбработчикиСобытийЭлементовТаблицыФормы"), //$NON-NLS-1$ //$NON-NLS-2$
+    DEPRECATED_REGION("Deprecated", "УстаревшиеПроцедурыИФункции"); //$NON-NLS-1$ //$NON-NLS-2$
 
     private final String[] names;
 

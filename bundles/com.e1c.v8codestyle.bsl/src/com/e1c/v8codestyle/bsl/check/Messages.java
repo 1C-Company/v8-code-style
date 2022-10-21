@@ -80,6 +80,12 @@ final class Messages
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
 
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_description;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_title;
+
     public static String EmptyExceptStatementCheck_description;
     public static String EmptyExceptStatementCheck_title;
 
