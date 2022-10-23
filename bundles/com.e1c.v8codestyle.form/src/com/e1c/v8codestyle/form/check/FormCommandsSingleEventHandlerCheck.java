@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 
 import com._1c.g5.v8.dt.form.model.CommandHandler;
 import com._1c.g5.v8.dt.form.model.Form;
@@ -35,7 +36,7 @@ import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.form.CorePlugin;
 
 /**
- * The check for the {@link Form} that each command is assigned to one action handler
+ * The check for the {@link Form} that each command is assigned to single action handler
  *
  * @author Artem Iliukhin
  */
@@ -60,7 +61,7 @@ public class FormCommandsSingleEventHandlerCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
             .extension(new CommandHandlerChangeExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
             .checkTop();
     }
@@ -73,32 +74,36 @@ public class FormCommandsSingleEventHandlerCheck
         {
             return;
         }
+
         Form form = (Form)object;
+
+        SubMonitor subMonitor = SubMonitor.convert(monitor, form.getFormCommands().size());
 
         Map<String, String> handlers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (FormCommand formCommand : form.getFormCommands())
         {
-            if (monitor.isCanceled())
-            {
-                return;
-            }
+            subMonitor.split(1);
+            check(resultAceptor, handlers, formCommand);
+        }
+    }
 
-            String commandName = formCommand.getName();
-            for (CommandHandler commandHandler : ModelUtils.getCommandHandlers(formCommand))
+    private void check(ResultAcceptor resultAceptor, Map<String, String> handlers, FormCommand formCommand)
+    {
+        String commandName = formCommand.getName();
+        for (CommandHandler commandHandler : ModelUtils.getCommandHandlers(formCommand))
+        {
+            String nameHandler = commandHandler.getName();
+            if (handlers.containsKey(nameHandler))
             {
-                String nameHandler = commandHandler.getName();
-                if (handlers.containsKey(nameHandler))
-                {
-                    resultAceptor.addIssue(
-                        MessageFormat.format(
-                            Messages.FormCommandsSingleEventHandlerCheck_Handler__0__command__1__assigned_to_command__2,
-                            nameHandler, commandName, handlers.get(nameHandler)),
-                        formCommand, FORM_COMMAND__ACTION);
-                }
-                else
-                {
-                    handlers.put(nameHandler, commandName);
-                }
+                resultAceptor.addIssue(
+                    MessageFormat.format(
+                        Messages.FormCommandsSingleEventHandlerCheck_Handler__0__command__1__assigned_to_command__2,
+                        nameHandler, commandName, handlers.get(nameHandler)),
+                    formCommand, FORM_COMMAND__ACTION);
+            }
+            else
+            {
+                handlers.put(nameHandler, commandName);
             }
         }
     }
