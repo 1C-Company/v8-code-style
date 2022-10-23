@@ -34,7 +34,7 @@ public class FormCommandsSingleEventHandlerCheckTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "form-commands-one-action-handler"; //$NON-NLS-1$
+    private static final String CHECK_ID = "form-commands-single-action-handler"; //$NON-NLS-1$
     private static final String PROJECT_NAME = "FormCommandsSingleEventHandlerCheck";
     private static final String FQN_FORM = "Catalog.Catalog.Form.CompliantForm.Form";
     private static final String FQN_FORM_NON_COMPLIANT = "Catalog.Catalog.Form.NonCompliantForm.Form";

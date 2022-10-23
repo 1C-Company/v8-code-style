@@ -27,7 +27,7 @@ final class Messages
     public static String DynamicListItemTitleCheck_message;
     public static String DynamicListItemTitleCheck_title;
     public static String FormCommandsSingleEventHandlerCheck_Description;
-    public static String FormCommandsSingleEventHandlerCheck_Handler_0_command_1_assigned_to_command__2;
+    public static String FormCommandsSingleEventHandlerCheck_Handler__0__command__1__assigned_to_command__2;
     public static String FormCommandsSingleEventHandlerCheck_Title;
     public static String FormItemsSingleEventHandlerCheck_description;
     public static String FormItemsSingleEventHandlerCheck_itemName_dot_eventName;

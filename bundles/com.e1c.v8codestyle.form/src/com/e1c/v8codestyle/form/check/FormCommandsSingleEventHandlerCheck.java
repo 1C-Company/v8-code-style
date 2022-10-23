@@ -35,7 +35,7 @@ import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.form.CorePlugin;
 
 /**
- * The check for the {@link Form} that each command is assigned to a one action handler
+ * The check for the {@link Form} that each command is assigned to one action handler
  *
  * @author Artem Iliukhin
  */
@@ -43,7 +43,7 @@ public class FormCommandsSingleEventHandlerCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "form-commands-one-action-handler"; //$NON-NLS-1$
+    private static final String CHECK_ID = "form-commands-single-action-handler"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -91,7 +91,7 @@ public class FormCommandsSingleEventHandlerCheck
                 {
                     resultAceptor.addIssue(
                         MessageFormat.format(
-                            Messages.FormCommandsSingleEventHandlerCheck_Handler_0_command_1_assigned_to_command__2,
+                            Messages.FormCommandsSingleEventHandlerCheck_Handler__0__command__1__assigned_to_command__2,
                             nameHandler, commandName, handlers.get(nameHandler)),
                         formCommand, FORM_COMMAND__ACTION);
                 }

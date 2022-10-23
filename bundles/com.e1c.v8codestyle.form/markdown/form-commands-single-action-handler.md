@@ -1,6 +1,6 @@
 # Check handler has assigned to a single command
 
-Check handler has assigned to a single command
+Check handler has assigned to a single command.
 
 ## Noncompliant Code Example
 

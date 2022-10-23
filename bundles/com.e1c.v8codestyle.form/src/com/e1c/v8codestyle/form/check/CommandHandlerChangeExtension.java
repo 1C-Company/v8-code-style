@@ -31,8 +31,8 @@ import com.e1c.g5.v8.dt.check.context.CheckContextCollectingSession;
 import com.e1c.g5.v8.dt.check.context.OnModelFeatureChangeContextCollector;
 
 /**
- * The extension that registers {@link Form} for model check if an command handler
- * or an item contained in the form have been changed
+ * The extension that registers {@link Form} for model check if a command handler
+ * or an item contained in the form has been changed
  *
  * @author Artem Iliukhin
  */
@@ -55,11 +55,9 @@ public class CommandHandlerChangeExtension
         };
 
         definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.FORM_COMMAND);
-        definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.FORM_ITEM_CONTAINER);
 
         Set<EClass> containdedObjects = new HashSet<>();
         containdedObjects.add(FormPackage.Literals.FORM_COMMAND);
-        containdedObjects.add(FormPackage.Literals.FORM_ITEM_CONTAINER);
         definition.addCheckedModelObjects(FormPackage.Literals.FORM, true, containdedObjects);
     }
 
