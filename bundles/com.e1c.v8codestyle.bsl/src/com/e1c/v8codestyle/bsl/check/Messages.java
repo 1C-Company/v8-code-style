@@ -142,7 +142,7 @@ final class Messages
 
     public static String ExtensionMethodPrefixCheck_Description;
 
-    public static String ExtensionMethodPrefixCheck_Ext_method_0_should_have_1_prefix;
+    public static String ExtensionMethodPrefixCheck_Ext_method__0__should_have__1__prefix;
 
     public static String ExtensionMethodPrefixCheck_Title;
 

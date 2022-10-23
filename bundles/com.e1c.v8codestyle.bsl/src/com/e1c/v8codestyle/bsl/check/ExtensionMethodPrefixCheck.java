@@ -50,7 +50,7 @@ public class ExtensionMethodPrefixCheck
     /**
      * Instantiates a new extension method prefix check.
      *
-     * @param v8ProjectManager the v 8 project manager
+     * @param v8ProjectManager the v8 project manager
      */
     @Inject
     public ExtensionMethodPrefixCheck(IV8ProjectManager v8ProjectManager)
@@ -84,20 +84,15 @@ public class ExtensionMethodPrefixCheck
     {
         Method method = (Method)object;
         IV8Project extension = v8ProjectManager.getProject(method);
-        if (extension instanceof IExtensionProject && ((IExtensionProject)extension).getParent() != null)
+        if (extension instanceof IExtensionProject)
         {
             String prefix = getNamePrefix((IExtensionProject)extension);
             String methodName = method.getName();
-
-            if (monitor.isCanceled())
-            {
-                return;
-            }
-
             if (!StringUtils.isEmpty(prefix) && !methodName.startsWith(prefix))
             {
-                resultAceptor.addIssue(MessageFormat
-                    .format(Messages.ExtensionMethodPrefixCheck_Ext_method_0_should_have_1_prefix, methodName, prefix),
+                resultAceptor.addIssue(
+                    MessageFormat.format(Messages.ExtensionMethodPrefixCheck_Ext_method__0__should_have__1__prefix,
+                        methodName, prefix),
                     McorePackage.Literals.NAMED_ELEMENT__NAME);
             }
         }
