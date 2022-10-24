@@ -44,14 +44,14 @@ public class ExtensionMdObjectNamePrefixCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "extension-mdobject-prefix-check"; //$NON-NLS-1$
+    private static final String CHECK_ID = "extension-md-object-prefix"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
     /**
      * Instantiates a new extension md object name prefix check.
      *
-     * @param v8ProjectManager the v 8 project manager
+     * @param v8ProjectManager the v8 project manager
      */
     @Inject
     public ExtensionMdObjectNamePrefixCheck(IV8ProjectManager v8ProjectManager)
@@ -73,7 +73,7 @@ public class ExtensionMdObjectNamePrefixCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new NonAdoptedInExtensionMdObjectExtension(v8ProjectManager))
             .topObject(MD_OBJECT)
             .checkTop()
@@ -85,10 +85,11 @@ public class ExtensionMdObjectNamePrefixCheck
         IProgressMonitor monitor)
     {
         MdObject mdObject = (MdObject)object;
-        String name = mdObject.getName();
+
         IV8Project extension = v8ProjectManager.getProject(mdObject);
-        if (extension instanceof IExtensionProject && ((IExtensionProject)extension).getParent() != null)
+        if (extension instanceof IExtensionProject)
         {
+            String name = mdObject.getName();
             String prefix = getNamePrefix((IExtensionProject)extension);
             if (!StringUtils.isEmpty(prefix) && !name.startsWith(prefix))
             {

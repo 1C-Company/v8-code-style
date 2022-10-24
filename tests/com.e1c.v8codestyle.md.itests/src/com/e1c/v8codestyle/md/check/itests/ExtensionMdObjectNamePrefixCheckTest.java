@@ -34,7 +34,7 @@ public class ExtensionMdObjectNamePrefixCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
 
-    private static final String CHECK_ID = "extension-mdobject-prefix-check"; //$NON-NLS-1$
+    private static final String CHECK_ID = "extension-md-object-prefix"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "ExtensionObjectNamePrefixCheck";
     private static final String PROJECT_EXTENSION_NAME = "ExtensionObjectNamePrefixCheck_Extension";
