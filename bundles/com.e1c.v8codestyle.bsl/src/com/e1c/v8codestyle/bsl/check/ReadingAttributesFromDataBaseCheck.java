@@ -49,7 +49,7 @@ public class ReadingAttributesFromDataBaseCheck
 
     private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
 
-    private static final String PARAMETER_NAME = "allowAccessFieldsNonReferenceType"; //$NON-NLS-1$
+    private static final String PARAMETER_NAME = "allowAccessFieldNonReferenceType"; //$NON-NLS-1$
 
     private final TypesComputer typesComputer;
 
