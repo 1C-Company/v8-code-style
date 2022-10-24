@@ -12,6 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.check;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,7 +30,7 @@ import com.google.inject.Singleton;
 public final class StandardCheckRegistry
 {
 
-    private final Set<CheckUid> checks = ConcurrentHashMap.newKeySet();
+    private final Map<CheckUid, Integer> checks = new ConcurrentHashMap<>();
 
     /**
      * Gets the single shared instance of the registry.
@@ -48,21 +49,22 @@ public final class StandardCheckRegistry
      */
     public Set<CheckUid> getChecks()
     {
-        return Set.copyOf(checks);
+        return Set.copyOf(checks.keySet());
     }
 
     /**
      * Register check for internal use only.
      *
      * @param check the check
+     * @param standard the number of 1C standard
      */
-    void registerCheck(CheckUid check)
+    void registerCheck(CheckUid check, int standard)
     {
         if (check == null)
         {
             return;
         }
-        checks.add(check);
+        checks.put(check, standard);
     }
 
 }

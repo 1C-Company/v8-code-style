@@ -63,7 +63,7 @@ public class RightUpdateDatabaseConfiguration
     {
         super.configureCheck(builder);
         builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, getBmModelManager()))
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(488, getCheckId(), CorePlugin.PLUGIN_ID))
             .title(Messages.RightUpdateDatabaseConfiguration_title)
             .description(Messages.RightUpdateDatabaseConfiguration_description);
     }

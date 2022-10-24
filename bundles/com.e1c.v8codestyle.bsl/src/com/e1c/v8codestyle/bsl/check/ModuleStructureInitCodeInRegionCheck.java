@@ -19,12 +19,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
-import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
+import com._1c.g5.v8.dt.bsl.model.RaiseStatement;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -52,16 +51,16 @@ public class ModuleStructureInitCodeInRegionCheck
 
     private final IV8ProjectManager v8ProjectManager;
 
-    @Override
-    public String getCheckId()
-    {
-        return CHECK_ID;
-    }
-
     @Inject
     public ModuleStructureInitCodeInRegionCheck(IV8ProjectManager v8ProjectManager)
     {
         this.v8ProjectManager = v8ProjectManager;
+    }
+
+    @Override
+    public String getCheckId()
+    {
+        return CHECK_ID;
     }
 
     @Override
@@ -73,7 +72,7 @@ public class ModuleStructureInitCodeInRegionCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.excludeTypes(ModuleType.COMMON_MODULE, ModuleType.COMMAND_MODULE,
                 ModuleType.MANAGER_MODULE, ModuleType.SESSION_MODULE))
             .module()
@@ -98,23 +97,23 @@ public class ModuleStructureInitCodeInRegionCheck
                 return;
             }
 
-            if (!(statement instanceof EmptyStatement))
-            {
-                addIssue(resultAceptor, initialize, statement);
-            }
-        }
-    }
-
-    private void addIssue(ResultAcceptor resultAceptor, String initialize, Statement statement)
-    {
-        if (EcoreUtil2.getContainerOfType(statement, Method.class) == null)
-        {
-            Optional<RegionPreprocessor> topRegion = getTopParentRegion(statement);
-            if (topRegion.isEmpty() || !initialize.equalsIgnoreCase(topRegion.get().getName()))
+            if (!isSkipCheck(statement) && !isInRegion(initialize, statement))
             {
                 resultAceptor.addIssue(
                     MessageFormat.format(Messages.ModuleStructureInitCodeInRegion_Issue__0, initialize), statement);
             }
         }
     }
+
+    private boolean isSkipCheck(Statement statement)
+    {
+        return statement instanceof EmptyStatement || statement instanceof RaiseStatement;
+    }
+
+    private boolean isInRegion(String region, Statement statement)
+    {
+        Optional<RegionPreprocessor> topRegion = getTopParentRegion(statement);
+        return topRegion.isPresent() && region.equalsIgnoreCase(topRegion.get().getName());
+    }
+
 }

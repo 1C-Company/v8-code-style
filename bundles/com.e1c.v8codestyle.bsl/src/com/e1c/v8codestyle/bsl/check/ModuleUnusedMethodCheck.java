@@ -25,6 +25,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.builder.MonitorBasedCancelIndicator;
+import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.resource.IResourceDescription;
 
 import com._1c.g5.v8.dt.bsl.common.IModuleExtensionService;
@@ -56,6 +57,8 @@ public final class ModuleUnusedMethodCheck
 
     private static final String EXCLUDE_METHOD_NAME_PATTERN_PARAMETER_NAME = "excludeModuleMethodNamePattern"; //$NON-NLS-1$
 
+    private static final String DEFAULT_EXCLUDE_METHOD_NAME_PATTERN = "^(?U)(Подключаемый|Attachable)_.*$"; //$NON-NLS-1$
+
     private final IResourceDescription.Manager resourceDescriptionManager;
 
     /**
@@ -83,7 +86,7 @@ public final class ModuleUnusedMethodCheck
             .description(Messages.ModuleUnusedMethodCheck_Description)
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
-            .parameter(EXCLUDE_METHOD_NAME_PATTERN_PARAMETER_NAME, String.class, StringUtils.EMPTY,
+            .parameter(EXCLUDE_METHOD_NAME_PATTERN_PARAMETER_NAME, String.class, DEFAULT_EXCLUDE_METHOD_NAME_PATTERN,
                 Messages.ModuleUnusedMethodCheck_Exclude_method_name_pattern_title)
             .issueType(IssueType.WARNING)
             .module()

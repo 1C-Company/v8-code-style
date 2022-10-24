@@ -25,16 +25,36 @@ public class StandardCheckExtension
     implements IBasicCheckExtension
 {
 
+    private final int standard;
+
     private final CheckUid check;
+
+    /**
+     * Instantiates a new standard check extension.
+     *
+     * @param standard the number of 1C standard
+     * @param checkId the check id, cannot be {@code null}.
+     * @param contributorId the contributor id, cannot be {@code null}.
+     */
+    public StandardCheckExtension(int standard, String checkId, String contributorId)
+    {
+        this.standard = standard;
+        check = new CheckUid(checkId, contributorId);
+    }
 
     /**
      * Instantiates a new standard check extension.
      *
      * @param checkId the check id, cannot be {@code null}.
      * @param contributorId the contributor id, cannot be {@code null}.
+     *
+     * @deprecated use constructor with defining 1C standard number
+     * {@link #StandardCheckExtension(int, String, String)}
      */
+    @Deprecated
     public StandardCheckExtension(String checkId, String contributorId)
     {
+        this.standard = -1;
         check = new CheckUid(checkId, contributorId);
     }
 
@@ -44,7 +64,7 @@ public class StandardCheckExtension
         boolean enable = CheckUtils.isStandardCheckDefaultEnable();
         definition.setEnabled(enable);
 
-        StandardCheckRegistry.getInstance().registerCheck(check);
+        StandardCheckRegistry.getInstance().registerCheck(check, standard);
     }
 
 }

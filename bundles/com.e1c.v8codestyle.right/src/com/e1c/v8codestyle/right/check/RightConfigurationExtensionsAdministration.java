@@ -63,7 +63,7 @@ public class RightConfigurationExtensionsAdministration
     {
         super.configureCheck(builder);
         builder.extension(new ExcludeRoleByNameListExtension(NAMES_DEFAULT, getBmModelManager()))
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(488, getCheckId(), CorePlugin.PLUGIN_ID))
             .title(Messages.RightConfigurationExtensionsAdministration_title)
             .description(Messages.RightConfigurationExtensionsAdministration_description);
     }

@@ -65,7 +65,7 @@ public class FormListRefUserVisibilityEnabledCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new SkipBaseFormExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(702, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
             .containment(ADJUSTABLE_BOOLEAN)
             .features(ADJUSTABLE_BOOLEAN__COMMON);
@@ -99,6 +99,10 @@ public class FormListRefUserVisibilityEnabledCheck
 
     private boolean isRefPath(AbstractDataPath dataPath)
     {
+        if (dataPath == null || dataPath.getSegments() == null)
+        {
+            return false;
+        }
         EList<String> segments = dataPath.getSegments();
         return segments.size() == 2
             && (REF_SEGMENT.equalsIgnoreCase(segments.get(1)) || REF_SEGMENT_RU.equalsIgnoreCase(segments.get(1)));

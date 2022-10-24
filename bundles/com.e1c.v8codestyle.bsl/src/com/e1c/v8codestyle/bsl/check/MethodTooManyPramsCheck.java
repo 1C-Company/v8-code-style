@@ -63,7 +63,7 @@ public class MethodTooManyPramsCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(640, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD)
             .parameter(PARAM_MAX_PARAMS, Integer.class, DEFAULT_MAX_PARAMS,

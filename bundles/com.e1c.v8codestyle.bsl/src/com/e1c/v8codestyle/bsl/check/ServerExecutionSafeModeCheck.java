@@ -77,7 +77,7 @@ public class ServerExecutionSafeModeCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.SECURITY)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(770, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(INVOCATION)
             .checkedObjectType(EXECUTE_STATEMENT);

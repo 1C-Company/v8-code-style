@@ -71,7 +71,7 @@ public class CollectionTypeDefinitionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(453, getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(TypeDefinition.class);
         builder.parameter(PARAMETER_COLLECTION_TYPES, String.class, DEFAULT_COLLECTION_TYPES,
             Messages.CollectionTypeDefinitionCheck_Collection_types);
