@@ -49,7 +49,7 @@ public class ReadingAttributesFromDataBaseCheck
 
     private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
 
-    private static final String PARAMETER_NAME = "allowAccessFieldNonReferenceType"; //$NON-NLS-1$
+    private static final String PARAMETER_NAME = "allowFieldAccessWithCompositeNonReferenceType"; //$NON-NLS-1$
 
     private final TypesComputer typesComputer;
 
@@ -74,7 +74,7 @@ public class ReadingAttributesFromDataBaseCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PERFORMANCE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(496, getCheckId(), BslPlugin.PLUGIN_ID))
             .parameter(PARAMETER_NAME, Boolean.class, Boolean.TRUE.toString(),
                 Messages.ReadingAttributesFromDataBaseCheck_Message)
             .module()
