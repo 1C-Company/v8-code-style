@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.SubMonitor;
 
 import com._1c.g5.v8.dt.form.model.CommandHandler;
 import com._1c.g5.v8.dt.form.model.Form;
@@ -77,12 +76,14 @@ public class FormCommandsSingleEventHandlerCheck
 
         Form form = (Form)object;
 
-        SubMonitor subMonitor = SubMonitor.convert(monitor, form.getFormCommands().size());
-
         Map<String, String> handlers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         for (FormCommand formCommand : form.getFormCommands())
         {
-            subMonitor.split(1);
+            if (monitor.isCanceled())
+            {
+                return;
+            }
+
             check(resultAceptor, handlers, formCommand);
         }
     }

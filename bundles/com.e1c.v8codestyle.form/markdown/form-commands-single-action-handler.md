@@ -15,4 +15,4 @@ Assign a handler for each event. If different actions are required in case of ev
 
 ## See
 
-[Module structure](https://support.1ci.com/hc/en-us/articles/360011002360-Module-structure#2.4.3)
+[Module structure](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/)
