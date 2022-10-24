@@ -34,7 +34,7 @@ public class ReadingAttributesFromDataBaseCheckTest
 {
 
     private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
-    private static final String PROJECT_NAME = "ModuleStructureTopRegionCheck";
+    private static final String PROJECT_NAME = "ReadingAttributesFromDataBaseCheck";
 
     public ReadingAttributesFromDataBaseCheckTest()
     {
@@ -62,6 +62,27 @@ public class ReadingAttributesFromDataBaseCheckTest
         assertEquals(1, markers.size());
 
         assertEquals("16", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    @Test
+    public void testWrongReadPropertyComposite() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "read-single-property-composite.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(2, markers.size());
+
+        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("6", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    @Test
+    public void testWrongReadPropertyCompositeNonRef() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "read-single-property-compliant-non-ref.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
     }
 
     @Test
