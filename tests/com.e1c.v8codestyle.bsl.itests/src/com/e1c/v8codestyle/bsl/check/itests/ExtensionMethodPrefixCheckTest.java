@@ -38,7 +38,7 @@ public class ExtensionMethodPrefixCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
 
-    private static final String CHECK_ID = "extension-method-prefix-check"; //$NON-NLS-1$
+    private static final String CHECK_ID = "extension-method-prefix"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "ExtensionMethodPrefixCheck";
     private static final String PROJECT_EXTENSION_NAME = "ExtensionMethodPrefixCheck_Extension";
