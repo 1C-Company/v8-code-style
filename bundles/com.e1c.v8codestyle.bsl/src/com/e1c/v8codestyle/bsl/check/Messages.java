@@ -104,7 +104,7 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
-    public static String ReadingAttributesFromDataBaseCheck_Allow_access_fields;
+    public static String ReadingAttributesFromDataBaseCheck_Message;
 
     public static String ReadingAttributesFromDataBaseCheck_Description;
 

@@ -49,7 +49,7 @@ public class ReadingAttributesFromDataBaseCheck
 
     private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
 
-    private static final String ALLOW_ACCESS_FIELDS_PARAMETER_NAME = "allowAccessFields"; //$NON-NLS-1$
+    private static final String PARAMETER_NAME = "allowAccessFieldsNonReferenceType"; //$NON-NLS-1$
 
     private final TypesComputer typesComputer;
 
@@ -75,8 +75,8 @@ public class ReadingAttributesFromDataBaseCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
-            .parameter(ALLOW_ACCESS_FIELDS_PARAMETER_NAME, Boolean.class, Boolean.TRUE.toString(),
-                Messages.ReadingAttributesFromDataBaseCheck_Allow_access_fields)
+            .parameter(PARAMETER_NAME, Boolean.class, Boolean.TRUE.toString(),
+                Messages.ReadingAttributesFromDataBaseCheck_Message)
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
     }
@@ -97,12 +97,12 @@ public class ReadingAttributesFromDataBaseCheck
             return;
         }
 
-        boolean allowAccessFields = parameters.getBoolean(ALLOW_ACCESS_FIELDS_PARAMETER_NAME);
-        check(resultAceptor, dfa, monitor, env, allowAccessFields);
+        boolean allowNonRef = parameters.getBoolean(PARAMETER_NAME);
+        check(resultAceptor, dfa, monitor, env, allowNonRef);
     }
 
     private void check(ResultAcceptor resultAceptor, DynamicFeatureAccess dfa, IProgressMonitor monitor,
-        Environmental env, boolean allowAccessFields)
+        Environmental env, boolean allowNonRef)
     {
         Expression source = dfa.getSource();
         if (monitor.isCanceled())
@@ -110,14 +110,11 @@ public class ReadingAttributesFromDataBaseCheck
             return;
         }
         List<TypeItem> types = typesComputer.computeTypes(source, env.environments());
-        int numberRefTypes = 0;
+
+        boolean hasRef = false;
+        boolean hasNonRef = false;
         for (TypeItem type : types)
         {
-            if (monitor.isCanceled())
-            {
-                return;
-            }
-
             if (type.eIsProxy())
             {
                 type = (TypeItem)EcoreUtil.resolve(type, source);
@@ -129,11 +126,15 @@ public class ReadingAttributesFromDataBaseCheck
 
             if (isRefType(type))
             {
-                numberRefTypes++;
+                hasRef = true;
+            }
+            else
+            {
+                hasNonRef = true;
             }
         }
 
-        if (allowAccessFields && numberRefTypes == types.size() || !allowAccessFields && numberRefTypes > 0)
+        if (!allowNonRef && hasNonRef || hasRef && !hasNonRef)
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ReadingAttributesFromDataBaseCheck_Issue__0, dfa.getName()), dfa);
