@@ -120,7 +120,7 @@ public class ExtensionVariablePrefixCheck
     {
         IV8Project extension = v8ProjectManager.getProject(variable);
 
-        if (extension instanceof IExtensionProject && ((IExtensionProject)extension).getParent() != null)
+        if (extension instanceof IExtensionProject)
         {
             String prefix = getNamePrefix((IExtensionProject)extension);
             String variableName = variable.getName();
