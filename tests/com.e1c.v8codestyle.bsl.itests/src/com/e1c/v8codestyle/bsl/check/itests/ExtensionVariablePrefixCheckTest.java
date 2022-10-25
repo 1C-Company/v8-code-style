@@ -38,7 +38,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 public class ExtensionVariablePrefixCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
-    private static final String CHECK_ID = "extension-variable-prefix-check"; //$NON-NLS-1$
+    private static final String CHECK_ID = "extension-variable-prefix"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "ExtensionVariablePrefixCheck";
     private static final String PROJECT_EXTENSION_NAME = "ExtensionVariablePrefixCheck_Extension";

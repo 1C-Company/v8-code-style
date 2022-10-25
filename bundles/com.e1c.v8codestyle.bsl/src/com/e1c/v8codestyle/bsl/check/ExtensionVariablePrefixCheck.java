@@ -37,7 +37,7 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.check.StandardCheckExtension;
+import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
@@ -51,7 +51,7 @@ public class ExtensionVariablePrefixCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "extension-variable-prefix-check"; //$NON-NLS-1$
+    private static final String CHECK_ID = "extension-variable-prefix"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
@@ -80,7 +80,7 @@ public class ExtensionVariablePrefixCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(new AdoptedModuleOwnerExtension())
             .module()
             .checkedObjectType(IMPLICIT_VARIABLE, EXPLICIT_VARIABLE, SIMPLE_STATEMENT, DECLARE_STATEMENT);
