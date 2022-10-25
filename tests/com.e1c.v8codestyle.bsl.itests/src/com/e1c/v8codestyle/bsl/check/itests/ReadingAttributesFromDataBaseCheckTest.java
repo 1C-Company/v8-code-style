@@ -34,7 +34,7 @@ public class ReadingAttributesFromDataBaseCheckTest
 {
 
     private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
-    private static final String PROJECT_NAME = "ReadingAttributesFromDataBaseCheck";
+    private static final String PROJECT_NAME = "ModuleStructureTopRegionCheck";
 
     public ReadingAttributesFromDataBaseCheckTest()
     {
@@ -54,52 +54,38 @@ public class ReadingAttributesFromDataBaseCheckTest
     }
 
     @Test
-    public void testWrongReadProperty() throws Exception
+    public void testWrongReadPropertyDbCompliant() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "read-single-property.bsl");
+        updateModule(FOLDER_RESOURCE + "read-single-property-db-non-compliant.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
 
-        assertEquals("16", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
-    public void testWrongReadPropertyComposite() throws Exception
+    public void testReadPropertyQlCompliant() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "read-single-property-composite.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
-
-        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("6", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-    }
-
-    @Test
-    public void testWrongReadPropertyCompositeNonRef() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "read-single-property-composite-non-ref.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
-
-        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-    }
-
-    @Test
-    public void testReadProperty() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "read-single-property-compliant.bsl");
+        updateModule(FOLDER_RESOURCE + "read-single-property-ql-compliant.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertTrue(markers.isEmpty());
     }
 
     @Test
-    public void testReadPropertyBsl() throws Exception
+    public void testReadPropertyCompliant() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "read-single-property-in-bsl.bsl");
+        updateModule(FOLDER_RESOURCE + "read-single-property-bsl-compliant.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    @Test
+    public void testReadPropertyNonCompliant() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "read-single-property-bsl-non-compliant.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());

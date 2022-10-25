@@ -16,6 +16,7 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACC
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -52,6 +53,18 @@ public class ReadingAttributesFromDataBaseCheck
     private static final String PARAMETER_NAME = "allowFieldAccessWithCompositeNonReferenceType"; //$NON-NLS-1$
 
     private final TypesComputer typesComputer;
+
+    //@formatter:off
+    private static final Set<String> EXCLUDED_TYPES = Set.of(
+        IEObjectTypeNames.NULL,
+        IEObjectTypeNames.STRING,
+        IEObjectTypeNames.NUMBER,
+        IEObjectTypeNames.BOOLEAN,
+        IEObjectTypeNames.DATE,
+        IEObjectTypeNames.VALUE_STORAGE,
+        IEObjectTypeNames.UUID
+        );
+    //@formatter:on
 
     @Inject
     public ReadingAttributesFromDataBaseCheck(TypesComputer typesComputer)
@@ -113,6 +126,7 @@ public class ReadingAttributesFromDataBaseCheck
 
         boolean hasRef = false;
         boolean hasNonRef = false;
+        boolean hasSimpleType = false;
         for (TypeItem type : types)
         {
             if (type.eIsProxy())
@@ -120,21 +134,36 @@ public class ReadingAttributesFromDataBaseCheck
                 type = (TypeItem)EcoreUtil.resolve(type, source);
                 if (type.eIsProxy())
                 {
-                    continue;
+                    return;
                 }
+            }
+
+            String typeName = McoreUtil.getTypeName(type);
+            if (McoreUtil.getTypeName(type) == null)
+            {
+                return;
             }
 
             if (isRefType(type))
             {
                 hasRef = true;
             }
+            else if (EXCLUDED_TYPES.contains(typeName))
+            {
+                hasSimpleType = true;
+            }
             else
             {
                 hasNonRef = true;
             }
+
+            if (hasSimpleType || hasRef && hasNonRef || hasRef && !allowNonRef)
+            {
+                break;
+            }
         }
 
-        if (!allowNonRef && hasNonRef || hasRef && !hasNonRef)
+        if (hasSimpleType || !allowNonRef && hasNonRef || hasRef && !hasNonRef)
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ReadingAttributesFromDataBaseCheck_Issue__0, dfa.getName()), dfa);
@@ -143,11 +172,6 @@ public class ReadingAttributesFromDataBaseCheck
 
     private boolean isRefType(TypeItem type)
     {
-        if (McoreUtil.getTypeName(type) == null)
-        {
-            return false;
-        }
-
         switch (McoreUtil.getTypeCategory(type))
         {
         case IEObjectTypeNames.EXCHANGE_PLAN_REF:
