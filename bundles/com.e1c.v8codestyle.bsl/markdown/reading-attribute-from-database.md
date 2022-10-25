@@ -61,4 +61,4 @@ EndProcedure
 ## See
 
 
-- [Reading specific object attributes from the database](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Code_conventions/Module_formatting/Module_structure)
+- [Reading specific object attributes from the database](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Data_processing/Data_processing_and_modification/Reading_specific_object_attributes_from_the_database)
