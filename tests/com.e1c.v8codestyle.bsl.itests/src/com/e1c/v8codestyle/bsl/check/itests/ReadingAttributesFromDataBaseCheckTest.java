@@ -79,10 +79,12 @@ public class ReadingAttributesFromDataBaseCheckTest
     @Test
     public void testWrongReadPropertyCompositeNonRef() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "read-single-property-compliant-non-ref.bsl");
+        updateModule(FOLDER_RESOURCE + "read-single-property-composite-non-ref.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
+        assertEquals(1, markers.size());
+
+        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test

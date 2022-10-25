@@ -1,7 +1,7 @@
 
 Function getAttribute()
     
-    RefAtt = Catalogs.Catalog.GetRef().AttributeRef;
+    RefAtt = Catalogs.Catalog.GetRef().AttributeNonRef;
     
     Return RefAtt.Code;
     
