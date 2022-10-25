@@ -163,7 +163,7 @@ public class ReadingAttributesFromDataBaseCheck
             }
         }
 
-        if (hasSimpleType || !allowNonRef && hasNonRef || hasRef && !hasNonRef)
+        if (hasSimpleType || !allowNonRef && hasNonRef && hasRef || hasRef && !hasNonRef)
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ReadingAttributesFromDataBaseCheck_Issue__0, dfa.getName()), dfa);
