@@ -96,4 +96,15 @@ public class ReadingAttributesFromDataBaseCheckTest
         assertTrue(markers.isEmpty());
     }
 
+    @Test
+    public void testReadPropertyBsl() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "read-single-property-in-bsl.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+
+        assertEquals("8", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
 }
