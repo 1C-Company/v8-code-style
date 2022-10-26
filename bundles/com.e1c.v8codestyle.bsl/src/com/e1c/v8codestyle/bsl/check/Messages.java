@@ -38,6 +38,14 @@ final class Messages
     public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
 
     public static String AccessibilityAtClientInObjectModuleCheck_title;
+    public static String AttachableEventHandlerNameCheck_Description;
+
+    public static String AttachableEventHandlerNameCheck_Event_handler_name_pattern;
+
+    public static String AttachableEventHandlerNameCheck_Message;
+
+    public static String AttachableEventHandlerNameCheck_Title;
+
     public static String CanonicalPragmaCheck_description;
     public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1;
     public static String CanonicalPragmaCheck_title;
@@ -79,6 +87,12 @@ final class Messages
     public static String CommonModuleNamedSelfReferenceCheck_issue;
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_description;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_title;
 
     public static String EmptyExceptStatementCheck_description;
     public static String EmptyExceptStatementCheck_title;
@@ -125,6 +139,12 @@ final class Messages
     public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result;
 
     public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
+
+    public static String ExtensionMethodPrefixCheck_Description;
+
+    public static String ExtensionMethodPrefixCheck_Ext_method__0__should_have__1__prefix;
+
+    public static String ExtensionMethodPrefixCheck_Title;
 
     public static String ManagerModuleNamedSelfReferenceCheck_description;
 
