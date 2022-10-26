@@ -61,7 +61,7 @@ public final class NewColorCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(667, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(OPERATOR_STYLE_CREATOR)
             .checkedObjectType(FUNCTION_STYLE_CREATOR);
