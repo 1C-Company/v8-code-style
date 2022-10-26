@@ -38,7 +38,7 @@ public class ExportVariableInObjectModuleCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "export-variable-object-module"; //$NON-NLS-1$
+    private static final String CHECK_ID = "object-module-export-variable"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -55,6 +55,7 @@ public class ExportVariableInObjectModuleCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
             .extension(new StandardCheckExtension(639, getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.OBJECT_MODULE))
             .module()
             .checkedObjectType(MODULE);
     }
@@ -64,11 +65,6 @@ public class ExportVariableInObjectModuleCheck
         IProgressMonitor monitor)
     {
         Module module = (Module)object;
-        ModuleType type = module.getModuleType();
-        if (type != ModuleType.OBJECT_MODULE)
-        {
-            return;
-        }
 
         for (DeclareStatement ds : module.allDeclareStatements())
         {
