@@ -48,7 +48,7 @@ public class ExtensionMethodPrefixCheckTest
         "/src/CommonModules/CompliantCommonModule/Module.bsl";
 
     @Override
-    protected String getTestConfigurationName()
+    public void setUp() throws CoreException
     {
         IProject project = testingWorkspace.getProject(PROJECT_NAME);
         if (!project.exists() || !project.isAccessible())
@@ -61,9 +61,15 @@ public class ExtensionMethodPrefixCheckTest
             catch (CoreException e)
             {
                 BslPlugin.logError(e);
-                return e.getMessage();
             }
         }
+
+        super.setUp();
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
         return PROJECT_EXTENSION_NAME;
     }
 
