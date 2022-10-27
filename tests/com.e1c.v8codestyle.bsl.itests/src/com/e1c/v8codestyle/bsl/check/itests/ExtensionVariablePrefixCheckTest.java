@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -26,26 +27,26 @@ import org.junit.Test;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
-import com.e1c.v8codestyle.bsl.check.ExtensionMethodPrefixCheck;
+import com.e1c.v8codestyle.bsl.check.ExtensionVariablePrefixCheck;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
- * Tests for {@link ExtensionMethodPrefixCheck} check.
+ * Tests for {@link ExtensionVariablePrefixCheck} check.
  *
  * @author Artem Iliukhin
  */
-public class ExtensionMethodPrefixCheckTest
+public class ExtensionVariablePrefixCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
+    private static final String CHECK_ID = "extension-variable-prefix"; //$NON-NLS-1$
 
-    private static final String CHECK_ID = "extension-method-prefix"; //$NON-NLS-1$
-
-    private static final String PROJECT_NAME = "ExtensionMethodPrefixCheck";
-    private static final String PROJECT_EXTENSION_NAME = "ExtensionMethodPrefixCheck_Extension";
+    private static final String PROJECT_NAME = "ExtensionVariablePrefixCheck";
+    private static final String PROJECT_EXTENSION_NAME = "ExtensionVariablePrefixCheck_Extension";
 
     private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
     private static final String COMMON_MODULE_COMPLIANT_FILE_NAME =
         "/src/CommonModules/CompliantCommonModule/Module.bsl";
+    private static final String CATALOG_FORM_MODULE_FILE_NAME = "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
 
     @Override
     public void setUp() throws CoreException
@@ -63,7 +64,6 @@ public class ExtensionMethodPrefixCheckTest
                 BslPlugin.logError(e);
             }
         }
-
         super.setUp();
     }
 
@@ -77,9 +77,8 @@ public class ExtensionMethodPrefixCheckTest
     public void testNonCompliantPrefix() throws Exception
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
-        assertEquals(1, markers.size());
-
-        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertFalse(markers.isEmpty());
+        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
@@ -87,6 +86,14 @@ public class ExtensionMethodPrefixCheckTest
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_COMPLIANT_FILE_NAME);
         assertTrue(markers.isEmpty());
+    }
+
+    @Test
+    public void testDSVariablePrefix() throws Exception
+    {
+        List<Marker> markers = getMarkers(CATALOG_FORM_MODULE_FILE_NAME);
+        assertFalse(markers.isEmpty());
+        assertEquals("1", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     private List<Marker> getMarkers(String moduleFileName)
@@ -98,5 +105,4 @@ public class ExtensionMethodPrefixCheckTest
             .filter(marker -> CHECK_ID.equals(getCheckIdFromMarker(marker, getProject())))
             .collect(Collectors.toList());
     }
-
 }

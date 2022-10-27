@@ -25,7 +25,7 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
 
 /**
- *  Filters a module owner is it was adopted on precheck phase extension.
+ * Filters a module owner is it was adopted on precheck phase extension.
  *
  * @author Artem Iliukhin
  */
