@@ -46,11 +46,10 @@ public class ExtensionVariablePrefixCheckTest
     private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
     private static final String COMMON_MODULE_COMPLIANT_FILE_NAME =
         "/src/CommonModules/CompliantCommonModule/Module.bsl";
-    private static final String CATALOG_FORM_MODULE_FILE_NAME =
-        "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
+    private static final String CATALOG_FORM_MODULE_FILE_NAME = "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
 
     @Override
-    protected String getTestConfigurationName()
+    public void setUp() throws CoreException
     {
         IProject project = testingWorkspace.getProject(PROJECT_NAME);
         if (!project.exists() || !project.isAccessible())
@@ -63,9 +62,14 @@ public class ExtensionVariablePrefixCheckTest
             catch (CoreException e)
             {
                 BslPlugin.logError(e);
-                return e.getMessage();
             }
         }
+        super.setUp();
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
         return PROJECT_EXTENSION_NAME;
     }
 
