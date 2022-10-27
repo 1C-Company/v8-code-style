@@ -140,6 +140,12 @@ final class Messages
 
     public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
 
+    public static String ExportVariableInObjectModuleCheck_Description;
+
+    public static String ExportVariableInObjectModuleCheck_Issue;
+
+    public static String ExportVariableInObjectModuleCheck_Title;
+
     public static String ExtensionVariablePrefixCheck_Description;
 
     public static String ExtensionVariablePrefixCheck_Title;
