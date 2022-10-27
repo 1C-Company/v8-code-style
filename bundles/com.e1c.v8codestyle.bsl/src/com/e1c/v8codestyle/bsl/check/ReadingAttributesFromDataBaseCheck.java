@@ -148,7 +148,7 @@ public class ReadingAttributesFromDataBaseCheck
             {
                 hasRef = true;
             }
-            else if (EXCLUDED_TYPES.contains(typeName))
+            else if (EXCLUDED_TYPES.contains(typeName) && types.size() == 1)
             {
                 hasSimpleType = true;
             }
