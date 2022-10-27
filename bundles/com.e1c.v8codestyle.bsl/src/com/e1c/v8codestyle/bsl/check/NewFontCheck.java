@@ -75,7 +75,7 @@ public final class NewFontCheck
         {
             Type type = ((OperatorStyleCreator)object).getType();
             String name = McoreUtil.getTypeName(type);
-            addResultAcceptor(object, resultAceptor, name);
+            check(object, resultAceptor, name);
         }
         else if (object instanceof FunctionStyleCreator && ((FunctionStyleCreator)object).getParamsExpression() != null)
         {
@@ -83,13 +83,11 @@ public final class NewFontCheck
             if (typeNameExpression instanceof Invocation)
             {
                 List<Expression> params = ((Invocation)typeNameExpression).getParams();
-                if (!params.isEmpty() && params.get(0) instanceof StringLiteral)
+                if (!params.isEmpty() && params.get(0) instanceof StringLiteral
+                    && ((StringLiteral)params.get(0)).lines(true).size() == 1)
                 {
-                    for (String line : ((StringLiteral)params.get(0)).getLines())
-                    {
-                        String name = line.replace("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
-                        addResultAcceptor(object, resultAceptor, name);
-                    }
+                    String name = ((StringLiteral)params.get(0)).lines(true).get(0);
+                    check(object, resultAceptor, name);
                 }
             }
             // TODO: After implementing the issue #G5V8DT-22450 of supporting dfa for the Type,
@@ -97,7 +95,7 @@ public final class NewFontCheck
         }
     }
 
-    private void addResultAcceptor(Object object, ResultAcceptor resultAceptor, String name)
+    private void check(Object object, ResultAcceptor resultAceptor, String name)
     {
         if (FONT.equalsIgnoreCase(name) || FONT_RU.equalsIgnoreCase(name))
         {
