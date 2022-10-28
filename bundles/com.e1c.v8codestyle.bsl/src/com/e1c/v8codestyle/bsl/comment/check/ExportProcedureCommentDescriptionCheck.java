@@ -37,7 +37,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 public class ExportProcedureCommentDescriptionCheck
     extends AbstractDocCommentTypeCheck
 {
-    private static final String CHECK_ID = "doc-comment-export-method-description-section"; //$NON-NLS-1$
+    private static final String CHECK_ID = "doc-comment-export-procedure-description-section"; //$NON-NLS-1$
     private static final int STANDARD_NUM = 453;
 
     @Override
