@@ -313,11 +313,6 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ExportProcedureMissingCommentCheck">
-      </check>
-      <check
-            category="com.e1c.v8codestyle.bsl.check"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.ExportProcedureCommentDescriptionCheck">
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ReadingAttributesFromDataBaseCheck">
       </check>
       <check
@@ -339,6 +334,14 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.DeprecatedProcedureOutsideDeprecatedRegionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ExportProcedureMissingCommentCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.check"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.ExportProcedureCommentDescriptionCheck">
       </check>
    </extension>
    <extension
