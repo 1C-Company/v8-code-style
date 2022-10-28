@@ -94,14 +94,12 @@ public class ReadingAttributesFromDataBaseCheckTest
     }
 
     @Test
-    public void testReadPropertySimpleTypeNonCompliant() throws Exception
+    public void testReadPropertySimpleType() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "read-single-property-simple-type.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
-
-        assertEquals("8", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertTrue(markers.isEmpty());
     }
 
 }

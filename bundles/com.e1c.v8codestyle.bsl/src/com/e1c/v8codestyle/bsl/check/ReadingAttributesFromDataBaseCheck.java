@@ -126,7 +126,6 @@ public class ReadingAttributesFromDataBaseCheck
 
         boolean hasRef = false;
         boolean hasNonRef = false;
-        boolean hasSimpleType = false;
         for (TypeItem type : types)
         {
             if (type.eIsProxy())
@@ -144,26 +143,26 @@ public class ReadingAttributesFromDataBaseCheck
                 return;
             }
 
-            if (isRefType(type))
+            //TODO issue #1192 to check each type and contained property
+            if (!EXCLUDED_TYPES.contains(typeName))
             {
-                hasRef = true;
-            }
-            else if (EXCLUDED_TYPES.contains(typeName) && types.size() == 1)
-            {
-                hasSimpleType = true;
-            }
-            else
-            {
-                hasNonRef = true;
+                if (isRefType(type))
+                {
+                    hasRef = true;
+                }
+                else
+                {
+                    hasNonRef = true;
+                }
             }
 
-            if (hasSimpleType || hasRef && hasNonRef || hasRef && !allowNonRef)
+            if (hasRef && hasNonRef || hasRef && !allowNonRef)
             {
                 break;
             }
         }
 
-        if (hasSimpleType || !allowNonRef && hasNonRef && hasRef || hasRef && !hasNonRef)
+        if (!allowNonRef && hasNonRef && hasRef || hasRef && !hasNonRef)
         {
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ReadingAttributesFromDataBaseCheck_Issue__0, dfa.getName()), dfa);
