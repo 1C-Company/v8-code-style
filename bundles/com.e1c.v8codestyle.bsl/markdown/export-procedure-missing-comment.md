@@ -1,4 +1,4 @@
-# Describe the export procedure (function) by adding comments
+# Export procedure (function) should be described by adding comment
 
 Procedures and functions that belong to **program interface of modules** are required to have comments.
 Such procedures and functions are intended to be used in other functional subsystems (or in other applications)

@@ -1,4 +1,4 @@
-# Documentation comment has "Description" section for export procedure or function
+# Documentation comment has no "Description" section for export procedure (function)
 
 In the **Description section**, explain the purpose of the procedure or function in a short, but clear way,
 so that the reader would understand its behavior without looking into the source code.
