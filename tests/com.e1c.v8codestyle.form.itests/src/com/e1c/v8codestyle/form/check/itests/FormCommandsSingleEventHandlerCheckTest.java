@@ -95,7 +95,7 @@ public class FormCommandsSingleEventHandlerCheckTest
                 formCommand.getTitle().put("en", StringUtils.nameToText("Command3"));
 
                 CommandHandler handler = FormFactory.eINSTANCE.createCommandHandler();
-                handler.setName("Command1");
+                handler.setName("Command3");
 
                 FormCommandHandlerContainer container = FormFactory.eINSTANCE.createFormCommandHandlerContainer();
                 container.setHandler(handler);
@@ -112,6 +112,6 @@ public class FormCommandsSingleEventHandlerCheckTest
         assertTrue(object instanceof Form);
 
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
-        assertNotNull(marker);
+        assertNull(marker);
     }
 }
