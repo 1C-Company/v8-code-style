@@ -46,6 +46,10 @@
             category="com.e1c.v8codestyle.form"
             class="com.e1c.v8codestyle.internal.form.ExecutableExtensionFactory:com.e1c.v8codestyle.form.check.FormListFieldRefNotAddedCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.form"
+            class="com.e1c.v8codestyle.internal.form.ExecutableExtensionFactory:com.e1c.v8codestyle.form.check.FormCommandsSingleEventHandlerCheck">
+      </check>
    </extension>
    <extension
          point="com.e1c.g5.v8.dt.check.fixes">
