@@ -126,6 +126,12 @@ final class Messages
 
     public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
 
+    public static String ExportProcedureMissingCommentCheck_description;
+
+    public static String ExportProcedureMissingCommentCheck_Export_procedure_missing_comment;
+
+    public static String ExportProcedureMissingCommentCheck_title;
+
     public static String ManagerModuleNamedSelfReferenceCheck_description;
 
     public static String ManagerModuleNamedSelfReferenceCheck_issue;

@@ -32,6 +32,9 @@ final class Messages
     public static String ExportFunctionReturnSectionCheck_description;
     public static String ExportFunctionReturnSectionCheck_Export_function_return_section_required;
     public static String ExportFunctionReturnSectionCheck_title;
+    public static String ExportMethodCommentDescriptionCheck_description;
+    public static String ExportMethodCommentDescriptionCheck_Missing_Description_in_export_procedure_comment;
+    public static String ExportMethodCommentDescriptionCheck_title;
     public static String FieldDefinitionNameCheck_description;
     public static String FieldDefinitionNameCheck_Field_name__N__is_incorrect_name;
     public static String FieldDefinitionNameCheck_title;
