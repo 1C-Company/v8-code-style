@@ -16,11 +16,21 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
+import com._1c.g5.v8.bm.core.IBmTransaction;
+import com._1c.g5.v8.bm.integration.AbstractBmTask;
+import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.form.model.CommandHandler;
 import com._1c.g5.v8.dt.form.model.Form;
+import com._1c.g5.v8.dt.form.model.FormCommand;
+import com._1c.g5.v8.dt.form.model.FormCommandHandlerContainer;
+import com._1c.g5.v8.dt.form.model.FormFactory;
+import com._1c.g5.v8.dt.form.service.FormIdentifierService;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.form.check.FormCommandsSingleEventHandlerCheck;
@@ -65,4 +75,43 @@ public class FormCommandsSingleEventHandlerCheckTest
         assertNotNull(marker);
     }
 
+    @Test
+    public void testAddSameAction() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmModel bmModel = bmModelManager.getModel(dtProject);
+        bmModel.execute(new AbstractBmTask<Void>("change")
+        {
+            @Override
+            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+            {
+                Form form = (Form)transaction.getTopObjectByFqn(FQN_FORM);
+
+                FormCommand formCommand = FormFactory.eINSTANCE.createFormCommand();
+                formCommand.setId(FormIdentifierService.INSTANCE.getNextCommandId(form));
+                formCommand.setName("Command3");
+                formCommand.getTitle().put("en", StringUtils.nameToText("Command3"));
+
+                CommandHandler handler = FormFactory.eINSTANCE.createCommandHandler();
+                handler.setName("Command1");
+
+                FormCommandHandlerContainer container = FormFactory.eINSTANCE.createFormCommandHandlerContainer();
+                container.setHandler(handler);
+
+                formCommand.setAction(container);
+                form.getFormCommands().add(formCommand);
+
+                return null;
+            }
+        });
+        waitForDD(dtProject);
+
+        IBmObject object = getTopObjectByFqn(FQN_FORM, dtProject);
+        assertTrue(object instanceof Form);
+
+        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+        assertNotNull(marker);
+    }
 }
