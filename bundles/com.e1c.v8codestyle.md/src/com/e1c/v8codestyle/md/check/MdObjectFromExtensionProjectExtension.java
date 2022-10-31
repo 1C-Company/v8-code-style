@@ -24,17 +24,17 @@ import com.e1c.g5.v8.dt.check.ext.ITopObjectFilter;
  *
  * @author Artem Iliukhin
  */
-public class NonAdoptedInExtensionMdObjectExtension
+public class MdObjectFromExtensionProjectExtension
     implements IBasicCheckExtension
 {
     private final IV8ProjectManager v8ProjectManager;
 
     /**
-     * Instantiates a new non adopted in extension md object extension.
+     * Instantiates a new in extension md object extension.
      *
      * @param v8ProjectManager the v 8 project manager
      */
-    public NonAdoptedInExtensionMdObjectExtension(IV8ProjectManager v8ProjectManager)
+    public MdObjectFromExtensionProjectExtension(IV8ProjectManager v8ProjectManager)
     {
         this.v8ProjectManager = v8ProjectManager;
     }
@@ -46,10 +46,7 @@ public class NonAdoptedInExtensionMdObjectExtension
             if (object instanceof MdObject)
             {
                 IV8Project extension = v8ProjectManager.getProject(object);
-                if (extension instanceof IExtensionProject)
-                {
-                    return true;
-                }
+                return extension instanceof IExtensionProject;
             }
             return false;
         };

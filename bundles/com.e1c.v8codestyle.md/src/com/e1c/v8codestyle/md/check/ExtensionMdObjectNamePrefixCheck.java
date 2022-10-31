@@ -12,20 +12,14 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_COMMAND;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_FORM;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_TABULAR_SECTION;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG_ATTRIBUTE;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DB_OBJECT_ATTRIBUTE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.TABULAR_SECTION_ATTRIBUTE;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.TEMPLATE;
 
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
+import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IExtensionProject;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -81,16 +75,10 @@ public class ExtensionMdObjectNamePrefixCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new NonAdoptedInExtensionMdObjectExtension(v8ProjectManager))
+            .extension(new MdObjectFromExtensionProjectExtension(v8ProjectManager))
             .topObject(MD_OBJECT)
             .checkTop()
-            .containment(CATALOG_ATTRIBUTE)
-            .containment(DB_OBJECT_ATTRIBUTE)
-            .containment(BASIC_TABULAR_SECTION)
-            .containment(TABULAR_SECTION_ATTRIBUTE)
-            .containment(BASIC_FORM)
-            .containment(TEMPLATE)
-            .containment(BASIC_COMMAND)
+            .containment(MD_OBJECT)
             .features(MD_OBJECT__NAME);
     }
 
@@ -101,7 +89,8 @@ public class ExtensionMdObjectNamePrefixCheck
 
         MdObject mdObject = (MdObject)object;
         IV8Project extension = v8ProjectManager.getProject(mdObject);
-        if (isNonAdoptedParent(mdObject) || isAdoptedParentNonAdoptedChild(mdObject))
+        if (extension instanceof IExtensionProject
+            && (isNonAdoptedParent(mdObject) || isAdoptedParentNonAdoptedChild(mdObject)))
         {
             String name = mdObject.getName();
             String prefix = getNamePrefix((IExtensionProject)extension);
@@ -116,14 +105,14 @@ public class ExtensionMdObjectNamePrefixCheck
 
     private boolean isAdoptedParentNonAdoptedChild(MdObject mdObject)
     {
-        return mdObject.eContainer() != null
+        return !((IBmObject)mdObject).bmIsTop() && mdObject.eContainer() instanceof MdObject
             && ((MdObject)mdObject.eContainer()).getObjectBelonging() == ObjectBelonging.ADOPTED
             && mdObject.getObjectBelonging() != ObjectBelonging.ADOPTED;
     }
 
     private boolean isNonAdoptedParent(MdObject mdObject)
     {
-        return mdObject.eContainer() == null && mdObject.getObjectBelonging() != ObjectBelonging.ADOPTED;
+        return ((IBmObject)mdObject).bmIsTop() && mdObject.getObjectBelonging() != ObjectBelonging.ADOPTED;
     }
 
     private String getNamePrefix(IExtensionProject extension)
