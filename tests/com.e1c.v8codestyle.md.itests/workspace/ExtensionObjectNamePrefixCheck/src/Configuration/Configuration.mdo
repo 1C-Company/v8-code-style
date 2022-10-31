@@ -39,4 +39,15 @@
     <languageCode>en</languageCode>
   </languages>
   <commonModules>CommonModule.Compliant</commonModules>
+  <catalogs>Catalog.Catalog</catalogs>
+  <catalogs>Catalog.CatalogFormCompliant</catalogs>
+  <catalogs>Catalog.CatalogTemplateCompliant</catalogs>
+  <catalogs>Catalog.CatalogFormNonCompliant</catalogs>
+  <catalogs>Catalog.CatalogTemplateNonCompliant</catalogs>
+  <catalogs>Catalog.CatalogTabular</catalogs>
+  <catalogs>Catalog.CatalogTabularNonCompliant</catalogs>
+  <catalogs>Catalog.CatalogCommand</catalogs>
+  <catalogs>Catalog.CatalogCommandNonCompliant</catalogs>
+  <documents>Document.Document</documents>
+  <documents>Document.DocumentNonCompliant</documents>
 </mdclass:Configuration>

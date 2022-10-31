@@ -12,9 +12,15 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check;
 
-
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_COMMAND;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_FORM;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.BASIC_TABULAR_SECTION;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG_ATTRIBUTE;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DB_OBJECT_ATTRIBUTE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJECT__NAME;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.TABULAR_SECTION_ATTRIBUTE;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.TEMPLATE;
 
 import java.text.MessageFormat;
 
@@ -25,6 +31,7 @@ import com._1c.g5.v8.dt.core.platform.IExtensionProject;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -77,6 +84,13 @@ public class ExtensionMdObjectNamePrefixCheck
             .extension(new NonAdoptedInExtensionMdObjectExtension(v8ProjectManager))
             .topObject(MD_OBJECT)
             .checkTop()
+            .containment(CATALOG_ATTRIBUTE)
+            .containment(DB_OBJECT_ATTRIBUTE)
+            .containment(BASIC_TABULAR_SECTION)
+            .containment(TABULAR_SECTION_ATTRIBUTE)
+            .containment(BASIC_FORM)
+            .containment(TEMPLATE)
+            .containment(BASIC_COMMAND)
             .features(MD_OBJECT__NAME);
     }
 
@@ -84,10 +98,10 @@ public class ExtensionMdObjectNamePrefixCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        MdObject mdObject = (MdObject)object;
 
+        MdObject mdObject = (MdObject)object;
         IV8Project extension = v8ProjectManager.getProject(mdObject);
-        if (extension instanceof IExtensionProject)
+        if (isNonAdoptedParent(mdObject) || isAdoptedParentNonAdoptedChild(mdObject))
         {
             String name = mdObject.getName();
             String prefix = getNamePrefix((IExtensionProject)extension);
@@ -98,6 +112,18 @@ public class ExtensionMdObjectNamePrefixCheck
                     MD_OBJECT__NAME);
             }
         }
+    }
+
+    private boolean isAdoptedParentNonAdoptedChild(MdObject mdObject)
+    {
+        return mdObject.eContainer() != null
+            && ((MdObject)mdObject.eContainer()).getObjectBelonging() == ObjectBelonging.ADOPTED
+            && mdObject.getObjectBelonging() != ObjectBelonging.ADOPTED;
+    }
+
+    private boolean isNonAdoptedParent(MdObject mdObject)
+    {
+        return mdObject.eContainer() == null && mdObject.getObjectBelonging() != ObjectBelonging.ADOPTED;
     }
 
     private String getNamePrefix(IExtensionProject extension)

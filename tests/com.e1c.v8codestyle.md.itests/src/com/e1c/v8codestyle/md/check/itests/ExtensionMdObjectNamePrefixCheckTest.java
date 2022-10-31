@@ -40,7 +40,7 @@ public class ExtensionMdObjectNamePrefixCheckTest
     private static final String PROJECT_EXTENSION_NAME = "ExtensionObjectNamePrefixCheck_Extension";
 
     @Override
-    protected String getTestConfigurationName()
+    public void setUp() throws CoreException
     {
         IProject project = testingWorkspace.getProject(PROJECT_NAME);
         if (!project.exists() || !project.isAccessible())
@@ -53,9 +53,14 @@ public class ExtensionMdObjectNamePrefixCheckTest
             catch (CoreException e)
             {
                 CorePlugin.logError(e);
-                return e.getMessage();
             }
         }
+        super.setUp();
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
         return PROJECT_EXTENSION_NAME;
     }
 
@@ -78,6 +83,127 @@ public class ExtensionMdObjectNamePrefixCheckTest
 
         long id = getTopObjectIdByFqn("CommonModule.Ext1_Compliant", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testNonCompliantCatalogAttributePrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.Catalog", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    @Test
+    public void testNonCompliantCatalogFormPrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.CatalogFormNonCompliant", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    @Test
+    public void testCompliantCatalogFormPrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.CatalogFormCompliant", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testNonCompliantTemplatePrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.CatalogTemplateNonCompliant", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    @Test
+    public void testCompliantTemplatePrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.CatalogTemplateCompliant", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testNonCompliantTabularPrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.CatalogTabularNonCompliant", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    @Test
+    public void testCompliantTabularPrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.CatalogTabular", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testNonCompliantCommandPrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.CatalogCommandNonCompliant", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    @Test
+    public void testCompliantCommandPrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Catalog.CatalogCommand", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNull(marker);
+    }
+
+    @Test
+    public void testNonCompliantTabularDocPrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Document.DocumentNonCompliant", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
+        assertNotNull(marker);
+    }
+
+    @Test
+    public void testCompliantTabularDocPrefix() throws Exception
+    {
+        IDtProject dtProject = getProject();
+        assertNotNull(dtProject);
+
+        long id = getTopObjectIdByFqn("Document.Document", dtProject);
+        Marker marker = getFirstNestedMarker(CHECK_ID, id, dtProject);
         assertNull(marker);
     }
 

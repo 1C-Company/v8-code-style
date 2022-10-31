@@ -33,4 +33,15 @@
   <commonModules>CommonModule.Compliant</commonModules>
   <commonModules>CommonModule.Ext1_Compliant</commonModules>
   <commonModules>CommonModule.NonCompliant</commonModules>
+  <catalogs>Catalog.Catalog</catalogs>
+  <catalogs>Catalog.CatalogFormCompliant</catalogs>
+  <catalogs>Catalog.CatalogFormNonCompliant</catalogs>
+  <catalogs>Catalog.CatalogTemplateCompliant</catalogs>
+  <catalogs>Catalog.CatalogTemplateNonCompliant</catalogs>
+  <catalogs>Catalog.CatalogCommand</catalogs>
+  <catalogs>Catalog.CatalogCommandNonCompliant</catalogs>
+  <catalogs>Catalog.CatalogTabular</catalogs>
+  <catalogs>Catalog.CatalogTabularNonCompliant</catalogs>
+  <documents>Document.Document</documents>
+  <documents>Document.DocumentNonCompliant</documents>
 </mdclass:Configuration>

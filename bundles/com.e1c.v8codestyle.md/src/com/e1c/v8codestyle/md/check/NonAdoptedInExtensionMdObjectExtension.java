@@ -16,7 +16,6 @@ import com._1c.g5.v8.dt.core.platform.IExtensionProject;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
-import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
 import com.e1c.g5.v8.dt.check.components.IBasicCheckExtension;
 import com.e1c.g5.v8.dt.check.ext.ITopObjectFilter;
 
@@ -47,9 +46,9 @@ public class NonAdoptedInExtensionMdObjectExtension
             if (object instanceof MdObject)
             {
                 IV8Project extension = v8ProjectManager.getProject(object);
-                if (extension instanceof IExtensionProject && ((IExtensionProject)extension).getParent() != null)
+                if (extension instanceof IExtensionProject)
                 {
-                    return ((MdObject)object).getObjectBelonging() != ObjectBelonging.ADOPTED;
+                    return true;
                 }
             }
             return false;
