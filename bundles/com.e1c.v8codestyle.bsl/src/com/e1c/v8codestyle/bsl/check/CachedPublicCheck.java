@@ -40,7 +40,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
- * Check cached public method
+ * Checks cached public method
  *
  * @author Artem Iliukhin
  */
@@ -51,6 +51,11 @@ public class CachedPublicCheck
     private static final String CHECK_ID = "cached-public"; //$NON-NLS-1$
     private final IV8ProjectManager v8ProjectManager;
 
+    /**
+     * Creates new instance which helps to check cached public method
+     * 
+     * @param v8ProjectManager
+     */
     @Inject
     public CachedPublicCheck(IV8ProjectManager v8ProjectManager)
     {
