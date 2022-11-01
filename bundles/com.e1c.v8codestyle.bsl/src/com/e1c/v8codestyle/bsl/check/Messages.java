@@ -126,6 +126,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ReadingAttributesFromDataBaseCheck_Message;
+
+    public static String ReadingAttributesFromDataBaseCheck_Description;
+
+    public static String ReadingAttributesFromDataBaseCheck_Issue__0;
+
+    public static String ReadingAttributesFromDataBaseCheck_Title;
+
     public static String RedundantExportCheck_Escess_title;
 
     public static String RedundantExportCheck_Excess_description;
@@ -147,6 +155,18 @@ final class Messages
     public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result;
 
     public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
+
+    public static String ExportVariableInObjectModuleCheck_Description;
+
+    public static String ExportVariableInObjectModuleCheck_Issue;
+
+    public static String ExportVariableInObjectModuleCheck_Title;
+
+    public static String ExtensionVariablePrefixCheck_Description;
+
+    public static String ExtensionVariablePrefixCheck_Title;
+
+    public static String ExtensionVariablePrefixCheck_Variable_0_should_have_1_prefix;
 
     public static String ExtensionMethodPrefixCheck_Description;
 
@@ -268,6 +288,12 @@ final class Messages
     public static String NewColorCheck_Use_style_elements_not_specific_values;
 
     public static String NewColorCheck_Using_new_color;
+
+    public static String NewFontCheck_Description;
+
+    public static String NewFontCheck_Issue;
+
+    public static String NewFontCheck_Title;
 
     public static String NstrStringLiteralFormatCheck_Check_empty_interface_for_each_language;
 
