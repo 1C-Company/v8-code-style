@@ -51,7 +51,9 @@ public class UseNonRecommendedMethodCheck
     private static final Set<String> NON_RECOMENDED_METHODS_LIST = Set.of("CurrentDate", //$NON-NLS-1$
         "ТекущаяДата", //$NON-NLS-1$
         "Message", //$NON-NLS-1$
-        "Сообщить"); //$NON-NLS-1$
+        "Сообщить", //$NON-NLS-1$
+        "Find", //$NON-NLS-1$
+        "Найти"); //$NON-NLS-1$
 
     private static final String DELIMITER = ","; //$NON-NLS-1$
 

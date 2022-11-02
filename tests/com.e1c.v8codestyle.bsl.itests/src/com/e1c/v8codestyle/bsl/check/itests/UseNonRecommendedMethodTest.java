@@ -28,11 +28,11 @@ import com.e1c.v8codestyle.bsl.check.UseNonRecommendedMethodCheck;
  * @author Sergey Kozynskiy
  *
  */
-public class UseNonRecommendedMethodsTest
+public class UseNonRecommendedMethodTest
     extends AbstractSingleModuleTestBase
 {
 
-    public UseNonRecommendedMethodsTest()
+    public UseNonRecommendedMethodTest()
     {
         super(UseNonRecommendedMethodCheck.class);
     }
@@ -55,5 +55,14 @@ public class UseNonRecommendedMethodsTest
 
         marker = markers.get(1);
         assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    @Test
+    public void testUseNonRecommendedMethodFind() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "use-non-recommended-method-find.bsl");
+
+        Marker marker = getModuleFirstMarker();
+        assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 }
