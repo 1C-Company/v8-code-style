@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="bde50b37-0a2d-4096-9a7f-baf10d7500de" extendedConfigurationObject="eaa962f1-66b1-419e-bbd1-dd90ae2e3108">
+  <producedTypes>
+    <objectType typeId="770dacf7-d940-43ed-b0ff-6510a8860796" valueTypeId="474ded7d-1103-47c2-83e1-871c6114471b"/>
+    <refType typeId="b8a1c30e-110f-46f7-8721-2090dd1653f5" valueTypeId="3735d2f4-d21c-4559-b13c-01dc57ff59c1"/>
+    <selectionType typeId="2785e75a-ff8d-4fa5-a053-d3fcce3c471e" valueTypeId="08a4fb44-d707-450e-9806-4549bcfc85c9"/>
+    <listType typeId="b5c77b55-abe2-4c91-bcb7-b151f41bfbcf" valueTypeId="e76a02e6-f952-4ea4-a807-2235fa5faa0d"/>
+    <managerType typeId="d02cf261-294c-4c34-8970-5549aa8a52f4" valueTypeId="797a8878-91f2-42c7-8839-353667ffd94c"/>
+  </producedTypes>
+  <name>Catalog</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CatalogExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+  </extension>
+  <attributes uuid="42f89a27-3152-43ed-b3c0-0ef22d7e2ea4" extendedConfigurationObject="8c62a8fb-96df-4267-ba95-8dc2b253c8af">
+    <name>Attribute</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:BasicFeatureExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+      <typeExtension>
+        <types>
+          <state>Checked</state>
+          <type>String</type>
+        </types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </typeExtension>
+    </extension>
+  </attributes>
+  <attributes uuid="5afd03f7-ab00-44a0-b7bd-b2be63c36855">
+    <name>A1_Attribute</name>
+    <synonym>
+      <key>en</key>
+      <value>Attribute</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>10</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>
