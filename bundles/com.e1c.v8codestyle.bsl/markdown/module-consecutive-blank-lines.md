@@ -3,47 +3,26 @@
 ## Noncompliant Code Example
 
 ```bsl
-BeginTransaction();
-Try
+Procedure Test()
+
+    A1 = 1;
     
     
+    A2 = 2;
     
-    DataLock = new DataLock;
-    DataLockItem = DataLock.Add("Document.Test");
-    DataLockItem.Mode = DataLockMode.Exclusive;
-    DataLock.Lock();
-    
-    CommitTransaction();
-   
-Except
-    RollbackTransaction();
-
-Raise;
-
-
-
-EndTry;
+EndProcedure
 ```
 
 ## Compliant Solution
 
 ```bsl
-BeginTransaction();
-Try
-    
-    DataLock = new DataLock;
-    DataLockItem = DataLock.Add("Document.Test");
-    DataLockItem.Mode = DataLockMode.Exclusive;
-    DataLock.Lock();
-    
-    CommitTransaction();
-   
-Except
-    RollbackTransaction();
+Procedure Test()
 
-Raise;
-
-EndTry;
+    A1 = 1;
+    
+    A2 = 2;
+    
+EndProcedure
 ```
 
 ## See

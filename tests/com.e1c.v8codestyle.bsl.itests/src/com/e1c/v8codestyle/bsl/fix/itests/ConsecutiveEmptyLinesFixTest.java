@@ -3,9 +3,9 @@
  */
 package com.e1c.v8codestyle.bsl.fix.itests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
@@ -13,22 +13,22 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.core.naming.ISymbolicLinkLocalizer;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.md.naming.MdSymbolicLinkLocalizer;
-import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.ui.util.OpenHelper;
 import com._1c.g5.v8.dt.ui.validation.BmMarkerWrapper;
+import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.IMarkerWrapper;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.check.qfix.FixProcessHandle;
 import com.e1c.g5.v8.dt.check.qfix.FixVariantDescriptor;
 import com.e1c.g5.v8.dt.check.qfix.IFixManager;
-import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
+import com.e1c.v8codestyle.bsl.check.ConsecutiveEmptyLinesCheck;
+import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
 import com.e1c.v8codestyle.bsl.qfix.ConsecutiveEmptyLinesFix;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
@@ -38,48 +38,39 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  * @author Artem Iliukhin
  */
 public class ConsecutiveEmptyLinesFixTest
-    extends CheckTestBase
+    extends AbstractSingleModuleTestBase
 {
 
-    private static final String PROJECT_NAME = "ConsecutiveEmptyLines";
-    private static final String FQN_COMMON_MODULE = "CommonModule.CommonModule";
-    private static final String CHECK_ID = "module-consecutive-blank-lines";
     private static final String DESCRIPTION = "Clear extra empty lines";
     private IFixManager fixManager = ServiceAccess.get(IFixManager.class);
     private IV8ProjectManager projectManager = ServiceAccess.get(IV8ProjectManager.class);
     private ISymbolicLinkLocalizer symbolicLinkLocalizer = new MdSymbolicLinkLocalizer();
     private final OpenHelper openHelper = new OpenHelper();
 
+    public ConsecutiveEmptyLinesFixTest()
+    {
+        super(ConsecutiveEmptyLinesCheck.class);
+    }
+
     @Test
     public void testApplyFix() throws Exception
     {
-        IResourceLookup resourceLookup = BslPlugin.getDefault().getInjector().getInstance(IResourceLookup.class);
+        updateModule(FOLDER_RESOURCE + "empty-lines.bsl");
 
-        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
-        assertNotNull(dtProject);
-
-        IBmObject object = getTopObjectByFqn(FQN_COMMON_MODULE, dtProject);
-        assertTrue(object instanceof CommonModule);
-        CommonModule module = (CommonModule)object;
-
-        Marker marker = getFirstMarker(CHECK_ID, module.getModule(), dtProject);
+        Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
+        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
-        applyFix(marker, dtProject);
+        applyFix(marker, getProject());
 
-        IFile file = resourceLookup.getPlatformResource(module.getModule());
+        IResourceLookup resourceLookup = BslPlugin.getDefault().getInjector().getInstance(IResourceLookup.class);
+        IFile file = resourceLookup.getPlatformResource(getModule());
 
         file.setContents(file.getContents(), false, true, new NullProgressMonitor());
 
-        waitForDD(dtProject);
+        waitForDD(getProject());
 
-        object = getTopObjectByFqn(FQN_COMMON_MODULE, dtProject);
-        assertTrue(object instanceof CommonModule);
-        module = (CommonModule)object;
-
-        waitForDD(dtProject);
-
-        marker = getFirstMarker(CHECK_ID, module.getModule(), dtProject);
+        marker = getModuleFirstMarker();
         assertNull(marker);
     }
 
@@ -113,4 +104,3 @@ public class ConsecutiveEmptyLinesFixTest
     }
 
 }
-

@@ -33,6 +33,7 @@ import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
 import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
+import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
@@ -40,7 +41,7 @@ import com.google.inject.Inject;
  *
  * @author Artem Iliukhin
  */
-@QuickFix(checkId = "module-consecutive-blank-lines", supplierId = "com.e1c.v8codestyle.bsl")
+@QuickFix(checkId = "module-consecutive-blank-lines", supplierId = BslPlugin.PLUGIN_ID)
 public class ConsecutiveEmptyLinesFix
     extends SingleVariantXtextBslModuleFix
 {
