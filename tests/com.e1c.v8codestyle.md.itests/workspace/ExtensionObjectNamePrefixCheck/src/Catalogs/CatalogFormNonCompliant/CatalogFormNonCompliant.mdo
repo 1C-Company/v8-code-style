@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="53196f2a-b8fd-49f3-b929-e7268acc4b23">
+  <producedTypes>
+    <objectType typeId="b7a052cd-c8d2-49b9-a43c-bd3f8bcc4b07" valueTypeId="1f66ae3e-b80b-4830-aacb-382f4be92b30"/>
+    <refType typeId="d7a154e2-c615-4122-b6eb-f8c3dcc0158d" valueTypeId="36c41485-956e-4709-87fc-017c5bbd946d"/>
+    <selectionType typeId="50f78946-9cc8-48ca-ae71-b3df75358941" valueTypeId="c6e8aaba-1e1d-4fc8-956b-eb3717bdeeb9"/>
+    <listType typeId="b8303edc-abd8-49f2-9cf2-2e238f56d98b" valueTypeId="a8d045f5-506a-4461-b59f-4fd0523159bf"/>
+    <managerType typeId="611aeec8-e29b-4002-89c9-b16ea192a8f8" valueTypeId="30c4ecca-6f8f-4e13-97db-72b38f387d1a"/>
+  </producedTypes>
+  <name>CatalogFormNonCompliant</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog form non compliant</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.CatalogFormNonCompliant.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CatalogFormNonCompliant.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.CatalogFormNonCompliant.Form.ItemForm</defaultObjectForm>
+  <forms uuid="2954e0ba-087f-4478-a780-c7d609428172">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>
