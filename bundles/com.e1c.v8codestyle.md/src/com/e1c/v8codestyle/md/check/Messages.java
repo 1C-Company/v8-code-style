@@ -50,6 +50,9 @@ final class Messages
     public static String DbObjectAnyRefCheck_AnyRef;
     public static String DbObjectAnyRefCheck_Description;
     public static String DbObjectAnyRefCheck_Title;
+    public static String ExtensionMdObjectNamePrefixCheck_Description;
+    public static String ExtensionMdObjectNamePrefixCheck_Object_0_should_have_1_prefix;
+    public static String ExtensionMdObjectNamePrefixCheck_Title;
     public static String MdObjectNameLength_description;
     public static String MdObjectNameLength_Maximum_name_length_description;
     public static String MdObjectNameLength_message;
