@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="3b85eda4-5a0c-4a2a-8abc-daad3be842c0" extendedConfigurationObject="fa1c0985-93c8-4cff-8af5-0b5a3aff8439">
+  <producedTypes>
+    <objectType typeId="1804cc1c-4f00-439a-b767-3fcb24abd025" valueTypeId="f5e9887f-e144-4416-a3f1-b93cf8320b73"/>
+    <refType typeId="fdd1ffdb-ad61-4bde-ad67-ec2d4c97b64e" valueTypeId="1dc76645-45fd-43cd-8c24-4403d43abc2d"/>
+    <selectionType typeId="f5a03cb1-13f7-433e-bb3a-dde0247e35e9" valueTypeId="cb726be4-aa5a-4efb-aee3-69d76d0b960d"/>
+    <listType typeId="1eb0e4c0-8b6d-4cd4-afe7-5466f2088458" valueTypeId="bfa829da-5942-4f25-b048-c9baa73bfc00"/>
+    <managerType typeId="1a890a3c-1120-42ba-90ba-6394cf6897e1" valueTypeId="4a23bf0f-3049-4df8-af0f-451e1695fd61"/>
+  </producedTypes>
+  <name>CatalogFormCompliant</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CatalogExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+    <defaultObjectForm>Extended</defaultObjectForm>
+  </extension>
+  <defaultObjectForm>Catalog.CatalogFormCompliant.Form.Ext1_ItemForm</defaultObjectForm>
+  <forms uuid="35377a9c-655c-4002-a28e-b71a479fd777" extendedConfigurationObject="3d4ae384-792d-49df-bfb6-b17510f1bf0c">
+    <name>ItemForm</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:BasicFormExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+      <form>Extended</form>
+    </extension>
+  </forms>
+  <forms uuid="568b8e92-3e37-44bb-9add-3a534f65e0c5">
+    <name>Ext1_ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

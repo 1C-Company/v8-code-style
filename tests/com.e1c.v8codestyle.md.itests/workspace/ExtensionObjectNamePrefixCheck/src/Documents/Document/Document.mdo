@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="b06b524e-97dd-4db4-abbd-0dbe864ef3e9">
+  <producedTypes>
+    <objectType typeId="7baaaa53-a30a-45bb-a238-e3e32803a8be" valueTypeId="edcd31ab-84c0-48a9-8b26-4c5e1980f8e7"/>
+    <refType typeId="de4d2f4d-9906-416f-9b33-955deb7b8d43" valueTypeId="03cff808-e0b1-4224-85db-8d5c1afa24d6"/>
+    <selectionType typeId="a451ef62-86c5-4942-9aae-0adc9712fc86" valueTypeId="26498fa3-d9cd-42c1-b13b-772d78a95655"/>
+    <listType typeId="79c350e6-fc78-448d-9335-c645aed678af" valueTypeId="64541864-3886-4256-a24f-120769a70534"/>
+    <managerType typeId="1854a729-965f-4ee4-9e22-8f0ff58de0c4" valueTypeId="35174587-5e86-4548-b5e6-a64fc376b7e3"/>
+  </producedTypes>
+  <name>Document</name>
+  <synonym>
+    <key>en</key>
+    <value>Document</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.Document.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+  <tabularSections uuid="242826bc-562f-40e5-800a-1ed1e82699ff">
+    <producedTypes>
+      <objectType typeId="b5d222ad-78f7-4710-8efa-f17e842f72c4" valueTypeId="70e18f3f-31fe-4104-a4c7-1c38c41b87fe"/>
+      <rowType typeId="4c6597db-45a8-4375-98ad-f91ffbb8c62c" valueTypeId="b37f7a26-23b9-4d46-b795-3fb11719076a"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+    <attributes uuid="9d0937dd-b40d-4aaf-8da0-3201ec8ecaa4">
+      <name>Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Document>

@@ -69,9 +69,7 @@ public class CommonModuleNameGlobalClientCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.WARNING)
-            //.extension(new TopObjectFilterExtension())
             .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
-            //.extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(MD_OBJECT__NAME, COMMON_MODULE__GLOBAL);

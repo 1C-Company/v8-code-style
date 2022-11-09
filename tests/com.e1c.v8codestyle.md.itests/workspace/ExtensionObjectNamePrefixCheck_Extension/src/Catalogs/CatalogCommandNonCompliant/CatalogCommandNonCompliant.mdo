@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="9c30368c-f1c6-444d-ae64-1f3e416cef6c" extendedConfigurationObject="3a2d846c-3e64-468f-9318-31a2d48d1713">
+  <producedTypes>
+    <objectType typeId="d413d1f7-8378-4aa0-81b1-7f44473d3103" valueTypeId="fb3da9f8-194d-4574-ba2b-973d064d4587"/>
+    <refType typeId="e627b37a-53ec-483f-9a56-49047a2ff4ad" valueTypeId="a484a58d-a2d4-499a-b114-a6147f59b754"/>
+    <selectionType typeId="3404e132-0412-4890-9d6e-f61c580bc746" valueTypeId="a67cfa43-7778-44ef-b49b-2cfd9c1ca892"/>
+    <listType typeId="7e51641b-4aab-4899-92ae-7502610d9efe" valueTypeId="cd31dcd0-2cfe-4260-a8d1-992e25fb9334"/>
+    <managerType typeId="bfb499de-dedc-4e9c-ba86-6c2c50dc88ca" valueTypeId="31c2afc4-5a2d-426a-81df-da62123037bd"/>
+  </producedTypes>
+  <name>CatalogCommandNonCompliant</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CatalogExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+  </extension>
+  <commands uuid="28fc07dc-e4ec-4704-87cd-d62c68ae9a1a">
+    <name>C1_Command</name>
+    <synonym>
+      <key>en</key>
+      <value>C1 command</value>
+    </synonym>
+    <group>ActionsPanelTools</group>
+    <representation>Auto</representation>
+  </commands>
+</mdclass:Catalog>
