@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="5f4e82ed-ba1e-4d74-93d8-1322fe809ad3" extendedConfigurationObject="0f0755fc-c39c-4227-9b34-9f321bead131">
+  <producedTypes>
+    <objectType typeId="c3bb863d-7a1b-4b1e-8b9c-c5f8df51c3ac" valueTypeId="47445004-43fd-4f39-9dd5-f96aa0ee0dc8"/>
+    <refType typeId="dc7d6d31-c49a-49af-bb77-8aae01683568" valueTypeId="571af73a-8f8c-4811-8a33-785edc78ca2b"/>
+    <selectionType typeId="8f15a34e-5397-49ec-84da-406d8be95c75" valueTypeId="f17e5ffa-5148-4efa-8231-44995ff32a10"/>
+    <listType typeId="7cdfc285-def3-44dc-a769-6696bf580529" valueTypeId="a03f40be-96bf-4827-b66b-5e04288abf66"/>
+    <managerType typeId="d4aa36ed-adb2-4726-a0eb-cb52809c1ac3" valueTypeId="bfdce639-e4b4-4f88-b148-514fdb21d8c8"/>
+  </producedTypes>
+  <name>CatalogTabularNonCompliant</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CatalogExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+  </extension>
+  <tabularSections uuid="167b538c-77e9-43b0-b7c7-70657756984b">
+    <producedTypes>
+      <objectType typeId="729e902e-45db-4f5b-9e48-ac9dba333c83" valueTypeId="65912a86-27f5-4088-8aa6-d6fb6ecd88c7"/>
+      <rowType typeId="69711a08-e29b-4f15-abc3-0a50046fe8e9" valueTypeId="a483022d-f112-4343-816d-fdf74452b20e"/>
+    </producedTypes>
+    <name>T1_TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>T1 tabular section</value>
+    </synonym>
+  </tabularSections>
+</mdclass:Catalog>

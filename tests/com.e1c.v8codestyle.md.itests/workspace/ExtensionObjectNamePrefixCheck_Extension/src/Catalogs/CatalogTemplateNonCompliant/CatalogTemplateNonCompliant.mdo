@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="615d7736-55c0-401c-973d-de83e4587927" extendedConfigurationObject="be3619d8-8e42-438b-8bfd-55ddebad8d11">
+  <producedTypes>
+    <objectType typeId="5c2fabff-9675-4a5e-bcf0-83563601a160" valueTypeId="85fefc47-b2b9-414f-b046-6120f930a77a"/>
+    <refType typeId="1e1a3de1-ce4e-453b-8148-5c01495b006e" valueTypeId="34d8800b-b0ee-4e32-ac4a-e368d8aa0ec1"/>
+    <selectionType typeId="913361ac-8d07-46fe-b2bf-83297e696e0e" valueTypeId="87472478-c953-4b34-906d-8502d4538261"/>
+    <listType typeId="747e1172-afb7-4dfc-8619-04c88e0a13d8" valueTypeId="cd7b00e1-2ec6-4d07-bc9a-1adc3beff5b3"/>
+    <managerType typeId="dd7b7057-cfe4-418c-892f-d38dd1da910e" valueTypeId="2685ee20-1566-4640-8262-219e6e6ee988"/>
+  </producedTypes>
+  <name>CatalogTemplateNonCompliant</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CatalogExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+  </extension>
+  <templates uuid="b957e3f8-b1fa-470d-8e60-b947d131f61a" extendedConfigurationObject="873847e1-1eb0-4160-84d2-a250d43cdc21">
+    <name>Template</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:BasicTemplateExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+      <template>Extended</template>
+    </extension>
+  </templates>
+  <templates uuid="c3bb7ecb-71e3-41bd-8daa-024bca4eca1f">
+    <name>T1_Template</name>
+    <synonym>
+      <key>en</key>
+      <value>T1 template</value>
+    </synonym>
+  </templates>
+</mdclass:Catalog>
