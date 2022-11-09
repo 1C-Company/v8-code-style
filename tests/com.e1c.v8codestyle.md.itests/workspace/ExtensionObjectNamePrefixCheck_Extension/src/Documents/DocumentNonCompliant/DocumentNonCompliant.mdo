@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="3a472d1b-c16d-4776-ba2e-401007afb935" extendedConfigurationObject="38352939-5b1b-478c-9c45-cc0e02de5e76">
+  <producedTypes>
+    <objectType typeId="f50f347c-2479-4351-a7c4-62b4322aa6b8" valueTypeId="e3105b63-51e5-4187-8721-a3af7f437ced"/>
+    <refType typeId="3de2f7d2-1478-46d7-a990-c4820bf95b3a" valueTypeId="4ab2d679-827a-43f1-b6e7-dff4960d7279"/>
+    <selectionType typeId="c816bbb5-5033-4dcd-b571-354209a796aa" valueTypeId="cade63ac-6b16-4631-86a9-763552de5e26"/>
+    <listType typeId="b149caef-e2bd-44c4-8b1f-0f312406d16f" valueTypeId="07dbee53-7d99-49e6-a069-85eb2e9debc2"/>
+    <managerType typeId="8264714c-3763-491e-8b52-85fb0bedbf38" valueTypeId="7289e4a5-2174-4036-bb20-37b4878fad1f"/>
+  </producedTypes>
+  <name>DocumentNonCompliant</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:DocumentExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+  </extension>
+  <tabularSections uuid="0b21d8df-7d40-468a-ab59-c5f319d9cf04" extendedConfigurationObject="590fd3f6-dbda-4072-a51c-70a3ebc417b7">
+    <producedTypes>
+      <objectType typeId="40f86338-a992-421d-bee6-57d25ec3edc1" valueTypeId="c4fcc8cc-4f38-4715-91ba-dd11fd44708b"/>
+      <rowType typeId="8eb37496-42c0-4512-8085-8414d173260c" valueTypeId="ad87cced-af5e-4d24-a48a-b8b842afeb0c"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:MdObjectExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+    </extension>
+    <attributes uuid="1a0208dd-2514-4331-aeeb-4b13ff8c3075">
+      <name>T1_Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>T1 attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Document>

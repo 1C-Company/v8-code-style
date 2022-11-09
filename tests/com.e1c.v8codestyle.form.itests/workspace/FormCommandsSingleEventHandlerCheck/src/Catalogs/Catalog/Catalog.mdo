@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4672b0cb-df9f-4894-bc81-51b8501fc284">
+  <producedTypes>
+    <objectType typeId="cb4ef2e9-d7fc-4e49-8753-61107985ad19" valueTypeId="23d972b8-43e1-41b9-98b5-db3a4f572206"/>
+    <refType typeId="544b3a07-3b53-4809-9afa-56027fdacf50" valueTypeId="ce6275e1-865e-40e0-8547-e75ba8fba9b0"/>
+    <selectionType typeId="c0fa4c8b-a065-4777-bc5f-07aafd283246" valueTypeId="2c05c5cb-2bf3-4711-a6fa-ad0ab5d62576"/>
+    <listType typeId="84d401c1-33fc-445e-ad9e-c126ead25fc8" valueTypeId="eef8f4e6-0514-4179-ab61-b86480cb7c26"/>
+    <managerType typeId="c110c313-6f57-4fde-8039-5b0b91d2af8f" valueTypeId="b96e5e93-7a01-4345-bf83-02ad23c74330"/>
+  </producedTypes>
+  <name>Catalog</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Catalog.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Catalog.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.Catalog.Form.CompliantForm</defaultObjectForm>
+  <defaultListForm>Catalog.Catalog.Form.NonCompliantForm</defaultListForm>
+  <forms uuid="876bf32a-83e3-424d-8b96-9d09abda2dab">
+    <name>CompliantForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Compliant form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="e281ac5e-08fb-4d35-842d-a80bd2dc22c2">
+    <name>NonCompliantForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Non compliant form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>
