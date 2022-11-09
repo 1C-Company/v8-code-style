@@ -50,8 +50,8 @@ public class CommonModuleMissingApiCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.CommonModuleMissingAPICheck_Title)
-            .description(Messages.CommonModuleMissingAPICheck_Description)
+        builder.title(Messages.CommonModuleMissingApiCheck_Title)
+            .description(Messages.CommonModuleMissingApiCheck_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
@@ -66,24 +66,14 @@ public class CommonModuleMissingApiCheck
     protected void check(Object object, ResultAcceptor result, ICheckParameters parameters, IProgressMonitor monitor)
     {
         Module module = EcoreUtil2.getContainerOfType((Method)object, Module.class);
-        boolean found = false;
         for (Method method : module.allMethods())
         {
-            if (monitor.isCanceled())
+            if (monitor.isCanceled() || method.isExport())
             {
                 return;
             }
-
-            if (method.isExport())
-            {
-                found = true;
-            }
         }
 
-        if (!found)
-        {
-            result.addIssue(Messages.CommonModuleMissingAPICheck_Issue, object,
-                McorePackage.Literals.NAMED_ELEMENT__NAME);
-        }
+        result.addIssue(Messages.CommonModuleMissingApiCheck_Issue, object, McorePackage.Literals.NAMED_ELEMENT__NAME);
     }
 }
