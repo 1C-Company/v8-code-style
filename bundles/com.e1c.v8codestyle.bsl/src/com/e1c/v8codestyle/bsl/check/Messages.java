@@ -95,6 +95,14 @@ final class Messages
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
 
+    public static String ConsecutiveEmptyLines_Description;
+
+    public static String ConsecutiveEmptyLines_Parameter_title;
+
+    public static String ConsecutiveEmptyLines_Sequence_of_empty_lines_between__0__and__1__is_greator_than__2;
+
+    public static String ConsecutiveEmptyLines_Title;
+
     public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area;
 
     public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_description;
