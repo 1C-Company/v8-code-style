@@ -283,6 +283,7 @@ final class Messages
     public static String SingleLetterVariableNameCheck_message;
     public static String SingleLetterVariableNameCheck_title;
 
+
     public static String StructureCtorTooManyKeysCheck_description;
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
