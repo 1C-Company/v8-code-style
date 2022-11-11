@@ -40,4 +40,5 @@
   </languages>
   <commonModules>CommonModule.CommonModule</commonModules>
   <commonModules>CommonModule.CommonModuleCached</commonModules>
+  <commonModules>CommonModule.CommonModuleCachedCompliant</commonModules>
 </mdclass:Configuration>

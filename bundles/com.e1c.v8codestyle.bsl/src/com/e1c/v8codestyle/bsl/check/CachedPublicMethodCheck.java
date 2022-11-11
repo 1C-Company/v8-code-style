@@ -44,11 +44,11 @@ import com.google.inject.Inject;
  *
  * @author Artem Iliukhin
  */
-public class CachedPublicCheck
+public class CachedPublicMethodCheck
     extends AbstractModuleStructureCheck
 {
 
-    private static final String CHECK_ID = "cached-public"; //$NON-NLS-1$
+    private static final String CHECK_ID = "public-method-caching"; //$NON-NLS-1$
     private final IV8ProjectManager v8ProjectManager;
 
     /**
@@ -57,7 +57,7 @@ public class CachedPublicCheck
      * @param v8ProjectManager
      */
     @Inject
-    public CachedPublicCheck(IV8ProjectManager v8ProjectManager)
+    public CachedPublicMethodCheck(IV8ProjectManager v8ProjectManager)
     {
         super();
         this.v8ProjectManager = v8ProjectManager;
@@ -101,7 +101,7 @@ public class CachedPublicCheck
             return;
         }
 
-        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
+        Module module = EcoreUtil2.getContainerOfType(region.get(), Module.class);
         if (module == null)
         {
             return;

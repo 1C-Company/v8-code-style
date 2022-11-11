@@ -24,21 +24,23 @@ import org.junit.Test;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
-import com.e1c.v8codestyle.bsl.check.CachedPublicCheck;
+import com.e1c.v8codestyle.bsl.check.CachedPublicMethodCheck;
 
 /**
- * Tests for {@link CachedPublicCheck} check
+ * Tests for {@link CachedPublicMethodCheck} check
  *
  * @author Artem Iliukhin
  */
-public class CachedPublicCheckTest
+public class CachedPublicMethodCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
 
     private static final String PROJECT_NAME = "CachedPublicCheck";
     private static final String CACHED_FILE_NAME = "/src/CommonModules/CommonModuleCached/Module.bsl";
+    private static final String COMPLIANT_CACHED_FILE_NAME =
+        "/src/CommonModules/CommonModuleCachedCompliant/Module.bsl";
     private static final String NON_CACHED_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
-    private static final String CHECK_ID = "cached-public";
+    private static final String CHECK_ID = "public-method-caching";
 
     @Override
     protected String getTestConfigurationName()
@@ -52,6 +54,13 @@ public class CachedPublicCheckTest
         List<Marker> markers = getMarkers(CACHED_FILE_NAME);
         assertEquals(1, markers.size());
         assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    @Test
+    public void testCachedMethodCompliant() throws Exception
+    {
+        List<Marker> markers = getMarkers(COMPLIANT_CACHED_FILE_NAME);
+        assertTrue(markers.isEmpty());
     }
 
     @Test

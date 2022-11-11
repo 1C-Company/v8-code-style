@@ -19,9 +19,9 @@ EndProcedure
 
 ```bsl
 
-#Region Public
+#Region Internal
 
-Procedure GetData()
+Procedure GetData() Export
 EndProcedure
 
 #EndRegion
