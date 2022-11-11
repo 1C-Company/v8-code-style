@@ -13,13 +13,13 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
@@ -44,7 +44,7 @@ import com.google.inject.Inject;
  *
  * @author Artem Iliukhin
  */
-public class CachedPublicMethodCheck
+public class PublicMethodCachingCheck
     extends AbstractModuleStructureCheck
 {
 
@@ -57,7 +57,7 @@ public class CachedPublicMethodCheck
      * @param v8ProjectManager
      */
     @Inject
-    public CachedPublicMethodCheck(IV8ProjectManager v8ProjectManager)
+    public PublicMethodCachingCheck(IV8ProjectManager v8ProjectManager)
     {
         super();
         this.v8ProjectManager = v8ProjectManager;
@@ -112,6 +112,6 @@ public class CachedPublicMethodCheck
         {
             return;
         }
-        result.addIssue(Messages.CachedPublicCheck_Issue, method, BslPackage.Literals.METHOD__EXPORT);
+        result.addIssue(Messages.CachedPublicCheck_Issue, region.get(), NAMED_ELEMENT__NAME);
     }
 }

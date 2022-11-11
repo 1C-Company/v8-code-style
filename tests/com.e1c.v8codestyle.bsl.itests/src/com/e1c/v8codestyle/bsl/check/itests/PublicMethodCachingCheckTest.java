@@ -24,14 +24,14 @@ import org.junit.Test;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
-import com.e1c.v8codestyle.bsl.check.CachedPublicMethodCheck;
+import com.e1c.v8codestyle.bsl.check.PublicMethodCachingCheck;
 
 /**
- * Tests for {@link CachedPublicMethodCheck} check
+ * Tests for {@link PublicMethodCachingCheck} check
  *
  * @author Artem Iliukhin
  */
-public class CachedPublicMethodCheckTest
+public class PublicMethodCachingCheckTest
     extends SingleProjectReadOnlyCheckTestBase
 {
 
@@ -53,7 +53,7 @@ public class CachedPublicMethodCheckTest
     {
         List<Marker> markers = getMarkers(CACHED_FILE_NAME);
         assertEquals(1, markers.size());
-        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("2", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     @Test
