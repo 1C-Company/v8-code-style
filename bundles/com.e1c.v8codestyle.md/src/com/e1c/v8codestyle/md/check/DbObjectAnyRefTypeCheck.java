@@ -75,7 +75,7 @@ public final class DbObjectAnyRefTypeCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(728, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(BASIC_DB_OBJECT)
             .containment(TYPE_DESCRIPTION)

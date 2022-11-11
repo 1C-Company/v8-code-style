@@ -74,7 +74,7 @@ public final class CommonModuleNameClientCachedCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new TopObjectFilterExtension())
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(COMMON_MODULE)

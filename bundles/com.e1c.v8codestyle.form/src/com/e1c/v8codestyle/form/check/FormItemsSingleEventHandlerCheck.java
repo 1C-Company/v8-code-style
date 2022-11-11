@@ -92,7 +92,7 @@ public class FormItemsSingleEventHandlerCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
             .extension(new EventHandlerChangeExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FormPackage.Literals.FORM)
             .checkTop();
     }

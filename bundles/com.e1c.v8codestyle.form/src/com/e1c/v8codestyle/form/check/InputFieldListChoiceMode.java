@@ -53,7 +53,7 @@ public final class InputFieldListChoiceMode
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(765, getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(FORM)
             .containment(INPUT_FIELD_EXT_INFO)
             .features(INPUT_FIELD_EXT_INFO__LIST_CHOICE_MODE, INPUT_FIELD_EXT_INFO__CHOICE_LIST);

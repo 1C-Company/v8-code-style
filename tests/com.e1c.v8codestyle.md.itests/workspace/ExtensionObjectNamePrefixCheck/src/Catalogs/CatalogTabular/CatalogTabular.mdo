@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="abda7415-233b-4265-9d2e-9a9a32d26496">
+  <producedTypes>
+    <objectType typeId="8451b3ee-6b3f-4355-a797-9ed955a62358" valueTypeId="a76faf7a-9cb9-4b46-b1ec-6a9c5c5ce7a9"/>
+    <refType typeId="ee19c001-8955-4b41-b98d-97c79db89349" valueTypeId="37719c61-7a62-49d7-b2a4-42581b734708"/>
+    <selectionType typeId="d06e8190-d6d4-4417-a2e9-cb0109f77d4b" valueTypeId="cad4bf07-d5e1-459f-a3a2-509116ac6570"/>
+    <listType typeId="7b2a5821-78c5-4e70-bbd9-5feb4619dc9b" valueTypeId="8919f2a2-f389-4bbb-ac6d-07145defea26"/>
+    <managerType typeId="cef2b803-c2c5-44b1-82ce-45c79e97778c" valueTypeId="be3979d9-76a1-44dc-85a2-3f8e0695b6f2"/>
+  </producedTypes>
+  <name>CatalogTabular</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog tabular</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.CatalogTabular.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CatalogTabular.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <tabularSections uuid="1720b838-b5b0-45d1-8a36-5df7dce2eba1">
+    <producedTypes>
+      <objectType typeId="ab926791-b373-48d7-a125-9139951b4c2e" valueTypeId="794c3f48-5c05-4678-8b79-66d1fc19c2ff"/>
+      <rowType typeId="9b683940-e0bc-45b6-b74b-2d6f59d022a6" valueTypeId="6094e78d-6d3e-47a9-a3c7-3d094ede0e3f"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+  </tabularSections>
+</mdclass:Catalog>

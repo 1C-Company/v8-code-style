@@ -69,7 +69,7 @@ public class MissingTemporaryFileDeletionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(542, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(STATIC_FEATURE_ACCESS)
             .parameter(DELETE_FILE_METHODS_PARAM, String.class, DEFAULT_DELETE_FILE_METHODS_PARAM,

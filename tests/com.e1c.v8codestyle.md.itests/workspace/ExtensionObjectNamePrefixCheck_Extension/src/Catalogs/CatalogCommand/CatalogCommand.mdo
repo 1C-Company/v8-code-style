@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="3d3277a7-8935-4281-8132-615fe6932a02" extendedConfigurationObject="76352e82-5469-41ff-a858-5e5dd1262122">
+  <producedTypes>
+    <objectType typeId="fea5da61-2054-4b50-bc43-54d3f43ff476" valueTypeId="aeb0eda5-0388-4bc2-8e9c-9fbe98a2ae95"/>
+    <refType typeId="d466c20d-4cc7-4166-8975-d07ab9707b51" valueTypeId="9133ff5f-9737-4620-9026-41a814502f63"/>
+    <selectionType typeId="072043f7-7508-4778-82e1-f57f6fb80bf4" valueTypeId="0a28f691-d0ff-47d3-aa6b-df3395c6855c"/>
+    <listType typeId="910f9c69-0aa9-499e-8c37-97ee90b9321a" valueTypeId="3326d8ff-7d29-4704-8a8a-49bbe617c790"/>
+    <managerType typeId="6dcc246c-e4a2-46a8-a460-3776328c8739" valueTypeId="556b1935-a9ce-4df5-8689-f3e23f8fbeb6"/>
+  </producedTypes>
+  <name>CatalogCommand</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CatalogExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+  </extension>
+  <commands uuid="15ff1147-803c-4891-8c72-479663324eb2" extendedConfigurationObject="3498ff36-7fcb-415b-b8d9-ee547304ee08">
+    <name>Command</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:BasicCommandExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+      <group>Checked</group>
+    </extension>
+    <group>ActionsPanelTools</group>
+  </commands>
+  <commands uuid="0f0c5f15-e771-48b5-9cf7-6782a1e48ff9">
+    <name>Ext1_Command</name>
+    <synonym>
+      <key>en</key>
+      <value>Command</value>
+    </synonym>
+    <group>ActionsPanelTools</group>
+    <representation>Auto</representation>
+  </commands>
+</mdclass:Catalog>

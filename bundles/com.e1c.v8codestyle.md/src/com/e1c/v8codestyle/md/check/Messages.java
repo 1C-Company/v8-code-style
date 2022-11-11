@@ -47,6 +47,9 @@ final class Messages
     public static String DbObjectAnyRefCheck_AnyRef;
     public static String DbObjectAnyRefCheck_Description;
     public static String DbObjectAnyRefCheck_Title;
+    public static String ExtensionMdObjectNamePrefixCheck_Description;
+    public static String ExtensionMdObjectNamePrefixCheck_Object_0_should_have_1_prefix;
+    public static String ExtensionMdObjectNamePrefixCheck_Title;
     public static String MdObjectNameLength_description;
     public static String MdObjectNameLength_Maximum_name_length_description;
     public static String MdObjectNameLength_message;
@@ -68,6 +71,9 @@ final class Messages
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_description;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error;
+    public static String RegisterResourcePrecisionCheck_description;
+    public static String RegisterResourcePrecisionCheck_message;
+    public static String RegisterResourcePrecisionCheck_title;
     public static String SubsystemSynonymTooLongCheck_description;
     public static String SubsystemSynonymTooLongCheck_Exclude_languages_comma_separated;
     public static String SubsystemSynonymTooLongCheck_Length_of_section_name_more_than_symbols_for_language;

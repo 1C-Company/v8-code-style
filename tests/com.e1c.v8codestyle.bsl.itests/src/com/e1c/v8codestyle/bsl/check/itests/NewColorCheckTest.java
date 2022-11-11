@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class NewColorCheckTest
     }
 
     @Test
-    public void testNewColorO() throws Exception
+    public void testNewColor1() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "new-color.bsl");
 
@@ -50,7 +51,7 @@ public class NewColorCheckTest
     }
 
     @Test
-    public void testNewColorF() throws Exception
+    public void testNewColor2() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "new-color2.bsl");
 
@@ -66,7 +67,7 @@ public class NewColorCheckTest
         updateModule(FOLDER_RESOURCE + "new-color3.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(0, markers.size());
+        assertTrue(markers.isEmpty());
     }
 
     @Test
@@ -75,8 +76,6 @@ public class NewColorCheckTest
         updateModule(FOLDER_RESOURCE + "new-color4.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
-        Marker marker = markers.get(0);
-        assertEquals(NEW_COLOR, marker.getMessage());
+        assertTrue(markers.isEmpty());
     }
 }

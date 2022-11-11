@@ -78,8 +78,6 @@ import com.e1c.g5.v8.dt.check.context.OnModelObjectAssociationContextCollector;
 import com.e1c.g5.v8.dt.check.context.OnModelObjectRemovalContextCollector;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.check.StandardCheckExtension;
-import com.e1c.v8codestyle.internal.right.CorePlugin;
 import com.e1c.v8codestyle.internal.right.InternalRightInfosService;
 
 /**
@@ -148,7 +146,6 @@ public abstract class RoleRightSetCheck
             .extension(new CombinedChangeExtension())
             .extension(new ExcludeRoleByPatternExtension(bmModelManager))
             .extension(new RoleNameChangeExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(ROLE_DESCRIPTION)
             .checkTop()
             .features(ROLE_DESCRIPTION__SET_FOR_NEW_OBJECTS, ROLE_DESCRIPTION__RIGHTS)

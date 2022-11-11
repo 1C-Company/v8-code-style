@@ -38,6 +38,14 @@ final class Messages
     public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
 
     public static String AccessibilityAtClientInObjectModuleCheck_title;
+    public static String AttachableEventHandlerNameCheck_Description;
+
+    public static String AttachableEventHandlerNameCheck_Event_handler_name_pattern;
+
+    public static String AttachableEventHandlerNameCheck_Message;
+
+    public static String AttachableEventHandlerNameCheck_Title;
+
     public static String CanonicalPragmaCheck_description;
     public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1;
     public static String CanonicalPragmaCheck_title;
@@ -80,6 +88,20 @@ final class Messages
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
 
+    public static String ConsecutiveEmptyLines_Description;
+
+    public static String ConsecutiveEmptyLines_Parameter_title;
+
+    public static String ConsecutiveEmptyLines_Sequence_of_empty_lines_between__0__and__1__is_greator_than__2;
+
+    public static String ConsecutiveEmptyLines_Title;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_description;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_title;
+
     public static String EmptyExceptStatementCheck_description;
     public static String EmptyExceptStatementCheck_title;
 
@@ -104,6 +126,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ReadingAttributesFromDataBaseCheck_Message;
+
+    public static String ReadingAttributesFromDataBaseCheck_Description;
+
+    public static String ReadingAttributesFromDataBaseCheck_Issue__0;
+
+    public static String ReadingAttributesFromDataBaseCheck_Title;
+
     public static String RedundantExportCheck_Escess_title;
 
     public static String RedundantExportCheck_Excess_description;
@@ -125,6 +155,24 @@ final class Messages
     public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result;
 
     public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
+
+    public static String ExportVariableInObjectModuleCheck_Description;
+
+    public static String ExportVariableInObjectModuleCheck_Issue;
+
+    public static String ExportVariableInObjectModuleCheck_Title;
+
+    public static String ExtensionVariablePrefixCheck_Description;
+
+    public static String ExtensionVariablePrefixCheck_Title;
+
+    public static String ExtensionVariablePrefixCheck_Variable_0_should_have_1_prefix;
+
+    public static String ExtensionMethodPrefixCheck_Description;
+
+    public static String ExtensionMethodPrefixCheck_Ext_method__0__should_have__1__prefix;
+
+    public static String ExtensionMethodPrefixCheck_Title;
 
     public static String ManagerModuleNamedSelfReferenceCheck_description;
 
@@ -229,10 +277,11 @@ final class Messages
     public static String ServerExecutionSafeModeCheck_execute_issue;
 
     public static String ServerExecutionSafeModeCheck_title;
-
+    
     public static String SingleLetterVariableNameCheck_description;
-
     public static String SingleLetterVariableNameCheck_title;
+    public static String SingleLetterVariableNameCheck_checked_length;
+    public static String SingleLetterVariableNameCheck_message;
 
     public static String StructureCtorTooManyKeysCheck_description;
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
@@ -244,6 +293,12 @@ final class Messages
     public static String NewColorCheck_Use_style_elements_not_specific_values;
 
     public static String NewColorCheck_Using_new_color;
+
+    public static String NewFontCheck_Description;
+
+    public static String NewFontCheck_Issue;
+
+    public static String NewFontCheck_Title;
 
     public static String NstrStringLiteralFormatCheck_Check_empty_interface_for_each_language;
 
@@ -358,10 +413,6 @@ final class Messages
     public static String LockOutOfTry_Lock_out_of_try;
 
     public static String LockOutOfTry_Method_lock_out_of_try;
-
-    public static String SingleLetterVariableNameCheck_checked_length;
-
-    public static String SingleLetterVariableNameCheck_message;
 
     static
     {
