@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STATIC_FEATURE_ACCESS;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.VARIABLE;
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.util.List;
 
@@ -43,7 +44,9 @@ public class SingleLetterVariableNameCheck
 {
     private static final String CHECK_ID = "single-letter-variable-name"; //$NON-NLS-1$
 
-    private static final String PARAM_CHECKED_LENGTH = "1"; //$NON-NLS-1$
+    private static final String PARAM_CHECKED_LENGTH = "minimalLength"; //$NON-NLS-1$
+
+    private static final String DEFAULT_CHECKED_LENGTH = "1"; //$NON-NLS-1$
 
     public SingleLetterVariableNameCheck()
     {
@@ -66,7 +69,7 @@ public class SingleLetterVariableNameCheck
             .issueType(IssueType.CODE_STYLE)
             .module()
             .checkedObjectType(VARIABLE, DECLARE_STATEMENT, STATIC_FEATURE_ACCESS)
-            .parameter(PARAM_CHECKED_LENGTH, Integer.class, "1", //$NON-NLS-1$
+            .parameter(PARAM_CHECKED_LENGTH, Integer.class, DEFAULT_CHECKED_LENGTH,
                 Messages.SingleLetterVariableNameCheck_checked_length);
 
     }
@@ -91,7 +94,7 @@ public class SingleLetterVariableNameCheck
 
         if (object instanceof Variable && ((Variable)object).getName().length() <= checkedLength)
         {
-            acceptor.addIssue(message, object);
+            acceptor.addIssue(message, object, NAMED_ELEMENT__NAME);
         }
         else if (object instanceof StaticFeatureAccess)
         {
@@ -108,7 +111,7 @@ public class SingleLetterVariableNameCheck
             }
             if (variable.getName().length() <= checkedLength)
             {
-                acceptor.addIssue(message, object);
+                acceptor.addIssue(message, variable, NAMED_ELEMENT__NAME);
             }
         }
         else if (object instanceof DeclareStatement)
@@ -120,10 +123,9 @@ public class SingleLetterVariableNameCheck
             {
                 if (expVar != null && expVar.getName().length() <= checkedLength)
                 {
-                    acceptor.addIssue(message, object);
+                    acceptor.addIssue(message, expVar, NAMED_ELEMENT__NAME);
                 }
             }
-
         }
     }
 
