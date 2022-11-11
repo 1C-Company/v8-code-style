@@ -277,7 +277,7 @@ final class Messages
     public static String ServerExecutionSafeModeCheck_execute_issue;
 
     public static String ServerExecutionSafeModeCheck_title;
-    
+
     public static String SingleLetterVariableNameCheck_description;
     public static String SingleLetterVariableNameCheck_title;
     public static String SingleLetterVariableNameCheck_checked_length;
