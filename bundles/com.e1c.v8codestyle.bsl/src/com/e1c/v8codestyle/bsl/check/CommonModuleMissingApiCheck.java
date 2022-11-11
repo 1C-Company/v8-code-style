@@ -12,10 +12,10 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.emf.common.util.EList;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -59,14 +59,15 @@ public class CommonModuleMissingApiCheck
             .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.COMMON_MODULE))
             .module()
-            .checkedObjectType(METHOD);
+            .checkedObjectType(MODULE);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor result, ICheckParameters parameters, IProgressMonitor monitor)
     {
-        Module module = EcoreUtil2.getContainerOfType((Method)object, Module.class);
-        for (Method method : module.allMethods())
+        Module module = (Module)object;
+        EList<Method> allMethods = module.allMethods();
+        for (Method method : allMethods)
         {
             if (monitor.isCanceled() || method.isExport())
             {
@@ -74,6 +75,10 @@ public class CommonModuleMissingApiCheck
             }
         }
 
-        result.addIssue(Messages.CommonModuleMissingApiCheck_Issue, object, McorePackage.Literals.NAMED_ELEMENT__NAME);
+        if (!allMethods.isEmpty())
+        {
+            result.addIssue(Messages.CommonModuleMissingApiCheck_Issue, allMethods.get(0),
+                McorePackage.Literals.NAMED_ELEMENT__NAME);
+        }
     }
 }
