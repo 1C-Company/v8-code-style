@@ -278,10 +278,10 @@ final class Messages
 
     public static String ServerExecutionSafeModeCheck_title;
 
-    public static String SingleLetterVariableNameCheck_description;
-    public static String SingleLetterVariableNameCheck_title;
     public static String SingleLetterVariableNameCheck_checked_length;
+    public static String SingleLetterVariableNameCheck_description;
     public static String SingleLetterVariableNameCheck_message;
+    public static String SingleLetterVariableNameCheck_title;
 
     public static String StructureCtorTooManyKeysCheck_description;
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
