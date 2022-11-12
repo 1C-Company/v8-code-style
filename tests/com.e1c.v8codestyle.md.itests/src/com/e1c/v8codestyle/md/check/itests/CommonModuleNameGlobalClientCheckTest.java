@@ -29,7 +29,7 @@ import com.e1c.v8codestyle.md.check.CommonModuleNameGlobalClientCheck;
  * @author Artem Iliukhin
  *
  */
-public class CommonModuleNameGlobalClientTest
+public class CommonModuleNameGlobalClientCheckTest
     extends CheckTestBase
 {
     private static final String CHECK_ID = "common-module-name-global-client";

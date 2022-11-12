@@ -32,9 +32,9 @@ final class Messages
     public static String CommonModuleNameClientServer_description;
     public static String CommonModuleNameClientServer_message;
     public static String CommonModuleNameClientServer_title;
-    public static String CommonModuleNameGlobal_description;
-    public static String CommonModuleNameGlobal_message;
-    public static String CommonModuleNameGlobal_title;
+    public static String CommonModuleNameGlobal_Description;
+    public static String CommonModuleNameGlobal_Message;
+    public static String CommonModuleNameGlobal_Title;
     public static String CommonModuleType_description;
     public static String CommonModuleType_message;
     public static String CommonModuleType_title;

@@ -66,8 +66,8 @@ public final class CommonModuleNameGlobal
     protected void configureCheck(CheckConfigurer builder)
     {
         //@formatter:off
-        builder.title(Messages.CommonModuleNameGlobal_title)
-            .description(Messages.CommonModuleNameGlobal_description)
+        builder.title(Messages.CommonModuleNameGlobal_Title)
+            .description(Messages.CommonModuleNameGlobal_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.WARNING)
@@ -111,7 +111,7 @@ public final class CommonModuleNameGlobal
             return;
         }
 
-        String message = MessageFormat.format(Messages.CommonModuleNameGlobal_message,
+        String message = MessageFormat.format(Messages.CommonModuleNameGlobal_Message,
             parameters.getString(MdObjectNameWithoutSuffix.NAME_SUFFIX_PARAMETER_NAME));
         resultAceptor.addIssue(message, MD_OBJECT__NAME);
     }
