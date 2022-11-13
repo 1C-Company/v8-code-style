@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="3a2d846c-3e64-468f-9318-31a2d48d1713">
+  <producedTypes>
+    <objectType typeId="4bd1e0fc-aa49-4115-8bd8-646942c616b8" valueTypeId="4b107ec5-647b-4270-9e10-b806aa483935"/>
+    <refType typeId="66a8f938-847a-4775-810f-b27565f32cde" valueTypeId="8364be41-c0da-40d6-b3f6-d125cb16e210"/>
+    <selectionType typeId="6b9007c5-478b-4031-acd9-1a94d36c26a4" valueTypeId="0e8cce65-f2c2-4bb8-b2a4-f52b6586fa46"/>
+    <listType typeId="bba0fc9a-2739-43c0-af86-0ceaf2d48e3b" valueTypeId="6876606a-b235-4fdc-9d47-e93f4c412317"/>
+    <managerType typeId="7a65f99e-0d6a-4072-8ce2-a860df5ed85a" valueTypeId="8575b699-5c2d-46a1-af6f-e3db44c8bb3d"/>
+  </producedTypes>
+  <name>CatalogCommandNonCompliant</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog command non compliant</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.CatalogCommandNonCompliant.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.CatalogCommandNonCompliant.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>
