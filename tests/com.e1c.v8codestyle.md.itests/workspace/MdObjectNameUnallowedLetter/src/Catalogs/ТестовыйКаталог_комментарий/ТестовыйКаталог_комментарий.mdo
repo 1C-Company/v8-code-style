@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1ad2aba2-aea6-4e58-a3eb-f243ec84bceb">
+  <producedTypes>
+    <objectType typeId="f53604a9-2b8c-4793-9aa7-8f4da8a78831" valueTypeId="f9503cd1-fd45-4d9a-a128-756511bb55de"/>
+    <refType typeId="f3ef8059-06af-4e5c-86b4-209e8f65cf13" valueTypeId="b252a136-e1f0-43e9-8589-00102d2ba8b7"/>
+    <selectionType typeId="e229648b-ec16-43d8-b470-604d23cedbd9" valueTypeId="978a2d02-cff0-4bf5-a02c-62aa7c6843b6"/>
+    <listType typeId="26a87f3d-3832-4e1e-989f-c823d58f4ec9" valueTypeId="5ce1bac8-50a9-4fe7-b935-75e218beb7d4"/>
+    <managerType typeId="e7fbf22a-1d8e-4992-825d-5d0ebef5af36" valueTypeId="d5c4e733-4e8b-4662-9a9b-05a802931f7d"/>
+  </producedTypes>
+  <name>ТестовыйКаталог_комментарий</name>
+  <synonym>
+    <key>ru</key>
+    <value>Тестовый каталог комментарий</value>
+  </synonym>
+  <comment>ТестовыйКаталог_ë_комментарий</comment>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.ТестовыйКаталог_комментарий.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.ТестовыйКаталог_комментарий.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <objectPresentation>
+    <key>ru</key>
+    <value>1</value>
+  </objectPresentation>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+</mdclass:Catalog>

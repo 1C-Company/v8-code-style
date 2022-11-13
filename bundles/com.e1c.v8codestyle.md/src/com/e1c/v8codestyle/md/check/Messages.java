@@ -51,6 +51,9 @@ final class Messages
     public static String MdObjectNameLength_Maximum_name_length_description;
     public static String MdObjectNameLength_message;
     public static String MdObjectNameLength_title;
+    public static String MdObjectNameUnallowedLetterCheck_description;
+    public static String MdObjectNameUnallowedLetterCheck_Ru_locale_unallowed_letter_used_for_name_synonym_or_comment;
+    public static String MdObjectNameUnallowedLetterCheck_title;
     public static String MdListObjectPresentationCheck_decription;
     public static String MdListObjectPresentationCheck_Neither_Object_presentation_nor_List_presentation_is_not_filled;
     public static String MdListObjectPresentationCheck_title;
