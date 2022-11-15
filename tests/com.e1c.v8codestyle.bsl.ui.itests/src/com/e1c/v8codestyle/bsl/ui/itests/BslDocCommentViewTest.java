@@ -35,6 +35,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.intro.IIntroPart;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -99,6 +100,7 @@ public class BslDocCommentViewTest
      *
      * @throws Exception the exception
      */
+    @Ignore
     @Test
     public void testOpenModuleAndSelectElements() throws Exception
     {
