@@ -32,10 +32,10 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.intro.IIntroPart;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -100,7 +100,6 @@ public class BslDocCommentViewTest
      *
      * @throws Exception the exception
      */
-    @Ignore
     @Test
     public void testOpenModuleAndSelectElements() throws Exception
     {
@@ -113,7 +112,10 @@ public class BslDocCommentViewTest
         assertTrue(view instanceof BslDocCommentView);
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(view);
 
-        IEditorPart editor = openHelper.openEditor(file, new TextSelection(14, 1));
+        IEditorPart fEditor = openHelper.openEditor(file, new TextSelection(14, 1));
+        assertTrue(fEditor instanceof FormEditor);
+
+        IEditorPart editor = ((FormEditor)fEditor).getActiveEditor();
         assertTrue(editor instanceof BslXtextEditor);
 
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(editor);
@@ -134,14 +136,14 @@ public class BslDocCommentViewTest
         assertEquals(4, textPart.getLineNumber());
         assertEquals("- has not type for key", textPart.getText());
 
-        selectText(bslEditor, 77, 1, view);
+        selectText(bslEditor, 82, 1, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof FieldDefinition);
         FieldDefinition fieldPart = (FieldDefinition)first;
         assertEquals(4, fieldPart.getLineNumber());
         assertEquals("Key1", fieldPart.getName());
 
-        selectText(bslEditor, 50, 1, view);
+        selectText(bslEditor, 54, 1, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof FieldDefinition);
         fieldPart = (FieldDefinition)first;
@@ -161,13 +163,13 @@ public class BslDocCommentViewTest
         assertEquals(3, typePart.getLineNumber());
         assertEquals("Structure", typePart.getTypeName());
 
-        selectText(bslEditor, 169, 0, view);
+        selectText(bslEditor, 179, 0, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof ReturnSection);
         ReturnSection returnPart = (ReturnSection)first;
         assertEquals(0, returnPart.getLineNumber());
 
-        selectText(bslEditor, 187, 1, view);
+        selectText(bslEditor, 198, 1, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof LinkPart);
         LinkPart linkPart = (LinkPart)first;
@@ -175,7 +177,7 @@ public class BslDocCommentViewTest
         assertEquals("Test", linkPart.getLinkText());
         assertEquals("See Test", linkPart.getInitialContent());
 
-        selectText(bslEditor, 192, 1, view);
+        selectText(bslEditor, 203, 1, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof LinkPart);
         linkPart = (LinkPart)first;
@@ -183,7 +185,7 @@ public class BslDocCommentViewTest
         assertEquals("Test", linkPart.getLinkText());
         assertEquals("See Test", linkPart.getInitialContent());
 
-        selectText(bslEditor, 243, 1, view);
+        selectText(bslEditor, 205, 1, view);
         TreeViewer viewer = getViewer((BslDocCommentView)view);
         ITreeSelection selection = viewer.getStructuredSelection();
         assertTrue(selection.isEmpty());
