@@ -136,7 +136,7 @@ public class BslDocCommentViewTest
         assertEquals(4, textPart.getLineNumber());
         assertEquals("- has not type for key", textPart.getText());
 
-        selectText(bslEditor, 82, 1, view);
+        selectText(bslEditor, 81, 1, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof FieldDefinition);
         FieldDefinition fieldPart = (FieldDefinition)first;
