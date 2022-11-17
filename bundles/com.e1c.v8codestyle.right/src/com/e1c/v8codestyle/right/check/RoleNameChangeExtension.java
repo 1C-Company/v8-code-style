@@ -46,7 +46,7 @@ public class RoleNameChangeExtension
                 contextSession.addFullCheck(bmObject);
             }
         };
-        definition.addModelFeatureChangeContextCollector(collector, RightsPackage.Literals.ROLE_DESCRIPTION);
+        definition.addGenericModelFeatureChangeContextCollector(collector, RightsPackage.Literals.ROLE_DESCRIPTION);
     }
 
 }

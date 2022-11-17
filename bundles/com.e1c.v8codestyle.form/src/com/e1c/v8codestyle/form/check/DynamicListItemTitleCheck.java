@@ -316,10 +316,11 @@ public class DynamicListItemTitleCheck
                     addItems(contextSession, (FormItemContainer)top);
                 }
             };
-            definition.addModelAssociationContextCollector(newObjectCollector, DYNAMIC_LIST_EXT_INFO);
-            definition.addModelAssociationContextCollector(newObjectCollector, DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD);
-            definition.addModelAssociationContextCollector(newObjectCollector, PRESENTATION);
-            definition.addModelAssociationContextCollector(newObjectCollector, LOCAL_STRING);
+            definition.addGenericModelAssociationContextCollector(newObjectCollector, DYNAMIC_LIST_EXT_INFO, FORM);
+            definition.addGenericModelAssociationContextCollector(newObjectCollector,
+                DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD, FORM);
+            definition.addGenericModelAssociationContextCollector(newObjectCollector, PRESENTATION, FORM);
+            definition.addGenericModelAssociationContextCollector(newObjectCollector, LOCAL_STRING, FORM);
             OnModelFeatureChangeContextCollector changeCollector = (bmObject, feature, bmEvent, contextSession) -> {
                 IBmObject top = bmObject.bmGetTopObject();
                 if (top instanceof Form)
@@ -327,10 +328,11 @@ public class DynamicListItemTitleCheck
                     addItems(contextSession, (FormItemContainer)top);
                 }
             };
-            definition.addModelFeatureChangeContextCollector(changeCollector, DYNAMIC_LIST_EXT_INFO);
-            definition.addModelFeatureChangeContextCollector(changeCollector, DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD);
-            definition.addModelFeatureChangeContextCollector(changeCollector, PRESENTATION);
-            definition.addModelFeatureChangeContextCollector(changeCollector, LOCAL_STRING);
+            definition.addGenericModelFeatureChangeContextCollector(changeCollector, DYNAMIC_LIST_EXT_INFO, FORM);
+            definition.addGenericModelFeatureChangeContextCollector(changeCollector,
+                DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD, FORM);
+            definition.addGenericModelFeatureChangeContextCollector(changeCollector, PRESENTATION, FORM);
+            definition.addGenericModelFeatureChangeContextCollector(changeCollector, LOCAL_STRING, FORM);
 
             OnModelObjectRemovalContextCollector removeCollector =
                 (removedObjectUri, removedObjectEClass, bmEvent, contextSession, transaction) -> {
