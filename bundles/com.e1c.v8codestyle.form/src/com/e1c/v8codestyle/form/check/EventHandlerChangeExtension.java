@@ -54,12 +54,13 @@ public class EventHandlerChangeExtension
                 }
             }
         };
-        definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.EVENT_HANDLER_CONTAINER);
-        definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.EVENT_HANDLER);
+
         Set<EClass> containdedObjects = new HashSet<>();
         containdedObjects.add(FormPackage.Literals.EVENT_HANDLER);
         containdedObjects.add(FormPackage.Literals.EVENT_HANDLER_CONTAINER);
         definition.addCheckedModelObjects(FormPackage.Literals.FORM, true, containdedObjects);
+        definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.EVENT_HANDLER_CONTAINER);
+        definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.EVENT_HANDLER);
     }
 
     private boolean isHandlerChanged(EStructuralFeature feature)
