@@ -12,7 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.REGION_PREPROCESSOR;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.util.Optional;
@@ -20,7 +20,6 @@ import java.util.Optional;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
@@ -81,27 +80,27 @@ public class PublicMethodCachingCheck
             .extension(new StandardCheckExtension(644, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.COMMON_MODULE))
             .module()
-            .checkedObjectType(METHOD);
+            .checkedObjectType(REGION_PREPROCESSOR);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor result, ICheckParameters parameters, IProgressMonitor monitor)
     {
-        Method method = (Method)object;
-        if (!method.isExport())
-        {
-            return;
-        }
+        RegionPreprocessor region = (RegionPreprocessor)object;
 
-        Optional<RegionPreprocessor> region = getTopParentRegion(method);
-        IV8Project project = v8ProjectManager.getProject(method);
+        Optional<RegionPreprocessor> topRegion = getTopParentRegion(region);
+        if (!topRegion.isEmpty())
+        {
+            region = topRegion.get();
+        }
+        IV8Project project = v8ProjectManager.getProject(region);
         ScriptVariant scriptVariant = project.getScriptVariant();
-        if (region.isEmpty() || !ModuleStructureSection.PUBLIC.getName(scriptVariant).equals(region.get().getName()))
+        if (!ModuleStructureSection.PUBLIC.getName(scriptVariant).equals(region.getName()))
         {
             return;
         }
 
-        Module module = EcoreUtil2.getContainerOfType(region.get(), Module.class);
+        Module module = EcoreUtil2.getContainerOfType(region, Module.class);
         if (module == null)
         {
             return;
@@ -112,6 +111,6 @@ public class PublicMethodCachingCheck
         {
             return;
         }
-        result.addIssue(Messages.CachedPublicCheck_Issue, region.get(), NAMED_ELEMENT__NAME);
+        result.addIssue(Messages.CachedPublicCheck_Issue, region, NAMED_ELEMENT__NAME);
     }
 }
