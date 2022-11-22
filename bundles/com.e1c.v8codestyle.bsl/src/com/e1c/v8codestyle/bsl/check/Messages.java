@@ -38,6 +38,13 @@ final class Messages
     public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
 
     public static String AccessibilityAtClientInObjectModuleCheck_title;
+
+    public static String CachedPublicCheck_Description;
+
+    public static String CachedPublicCheck_Issue;
+
+    public static String CachedPublicCheck_Title;
+
     public static String AttachableEventHandlerNameCheck_Description;
 
     public static String AttachableEventHandlerNameCheck_Event_handler_name_pattern;

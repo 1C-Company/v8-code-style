@@ -96,7 +96,6 @@ public class FormCommandsSingleEventHandlerCheckTest
                 container.setHandler(handler);
 
                 formCommand.setAction(container);
-                form.getFormCommands().add(formCommand);
 
                 return null;
             }
