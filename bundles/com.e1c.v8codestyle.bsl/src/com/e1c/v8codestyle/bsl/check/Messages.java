@@ -38,6 +38,13 @@ final class Messages
     public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
 
     public static String AccessibilityAtClientInObjectModuleCheck_title;
+
+    public static String CachedPublicCheck_Description;
+
+    public static String CachedPublicCheck_Issue;
+
+    public static String CachedPublicCheck_Title;
+
     public static String AttachableEventHandlerNameCheck_Description;
 
     public static String AttachableEventHandlerNameCheck_Event_handler_name_pattern;
@@ -87,6 +94,14 @@ final class Messages
     public static String CommonModuleNamedSelfReferenceCheck_issue;
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
+
+    public static String ConsecutiveEmptyLines_Description;
+
+    public static String ConsecutiveEmptyLines_Parameter_title;
+
+    public static String ConsecutiveEmptyLines_Sequence_of_empty_lines_between__0__and__1__is_greator_than__2;
+
+    public static String ConsecutiveEmptyLines_Title;
 
     public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area;
 

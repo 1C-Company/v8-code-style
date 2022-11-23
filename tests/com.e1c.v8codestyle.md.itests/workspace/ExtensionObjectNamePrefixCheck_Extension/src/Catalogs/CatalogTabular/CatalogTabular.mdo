@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="ec69d626-56ac-40e2-ab9a-11dcac9c7435" extendedConfigurationObject="abda7415-233b-4265-9d2e-9a9a32d26496">
+  <producedTypes>
+    <objectType typeId="0db2c7a8-7698-4473-941c-de08f798a20d" valueTypeId="a61c3617-1fbd-4059-9333-84597699373a"/>
+    <refType typeId="495fc578-b60c-4483-819f-225cbd00c530" valueTypeId="76a61fe5-c5fa-426c-9429-4c0e6264d995"/>
+    <selectionType typeId="2b63b696-6a48-4fe0-b4e1-c62a06bc3ef7" valueTypeId="09d80e84-80eb-4040-8698-e50509d56228"/>
+    <listType typeId="72ae5f4a-6a5d-4ccd-a42d-1460461ad27a" valueTypeId="a0a4fef0-e8ae-4407-9773-a0a5f195edce"/>
+    <managerType typeId="ee7c45e4-90a8-44fb-83ff-f933f8750de6" valueTypeId="f52842d6-c88d-4fe3-b31f-9f119017e109"/>
+  </producedTypes>
+  <name>CatalogTabular</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CatalogExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+  </extension>
+  <tabularSections uuid="70ec2283-7d4a-471e-99f9-ff3b132cf5dc" extendedConfigurationObject="1720b838-b5b0-45d1-8a36-5df7dce2eba1">
+    <producedTypes>
+      <objectType typeId="86577c45-1391-46c4-a092-4318eb640f05" valueTypeId="63f67dc0-f612-4c00-87a4-19aa9d663af5"/>
+      <rowType typeId="25c25121-9821-40e4-9349-df10e61fff82" valueTypeId="09e48890-0f90-4285-a94a-4395961855af"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:MdObjectExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+    </extension>
+  </tabularSections>
+  <tabularSections uuid="615a1981-69ad-4e1b-af69-4e73aad7baad">
+    <producedTypes>
+      <objectType typeId="a73ca4cc-7f66-446a-a8f8-b0318b36069f" valueTypeId="b48ee926-f613-4c11-b85f-d05338cb5875"/>
+      <rowType typeId="344805f4-9b99-4666-b2cf-4e65017df623" valueTypeId="c7b7a4ca-f199-4ae0-8621-feddace62767"/>
+    </producedTypes>
+    <name>Ext1_TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+  </tabularSections>
+</mdclass:Catalog>
