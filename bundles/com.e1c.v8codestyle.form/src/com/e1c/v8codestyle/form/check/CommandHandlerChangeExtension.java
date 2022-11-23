@@ -54,11 +54,10 @@ public class CommandHandlerChangeExtension
             }
         };
 
-        definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.FORM_COMMAND);
-
         Set<EClass> containdedObjects = new HashSet<>();
         containdedObjects.add(FormPackage.Literals.FORM_COMMAND);
         definition.addCheckedModelObjects(FormPackage.Literals.FORM, true, containdedObjects);
+        definition.addModelFeatureChangeContextCollector(collector, FormPackage.Literals.FORM_COMMAND);
     }
 
     private boolean isActionChanged(EStructuralFeature feature)
