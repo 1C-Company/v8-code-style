@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="489b0c32-4916-49ca-a30a-d35d10322c80" extendedConfigurationObject="53196f2a-b8fd-49f3-b929-e7268acc4b23">
+  <producedTypes>
+    <objectType typeId="c3479723-6e1d-4832-aa80-adae0fda4f34" valueTypeId="4a18cdcd-347d-4874-8975-1c539785aea3"/>
+    <refType typeId="de6db0be-ccc3-4ff5-a2df-5ed939f3c16e" valueTypeId="ee4093ec-4d82-4452-b09b-386397eed858"/>
+    <selectionType typeId="25bbc3f2-820a-4eb6-8e36-6831213a62c4" valueTypeId="d921d6bf-82c8-4a20-b92f-9521924b7fa2"/>
+    <listType typeId="20eab6f5-c4bb-488e-ad24-ddbc8af2d810" valueTypeId="073c7e23-ffe5-4489-acca-d8cea7b25384"/>
+    <managerType typeId="18626318-8631-4307-a639-8bceed55380c" valueTypeId="370781c8-6ac4-4a77-bdba-8726927b7242"/>
+  </producedTypes>
+  <name>CatalogFormNonCompliant</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CatalogExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+    <defaultObjectForm>Extended</defaultObjectForm>
+  </extension>
+  <defaultObjectForm>Catalog.CatalogFormNonCompliant.Form.NonPref_ItemForm</defaultObjectForm>
+  <forms uuid="7b1bde03-7321-4106-a5c4-d15de68849aa" extendedConfigurationObject="2954e0ba-087f-4478-a780-c7d609428172">
+    <name>ItemForm</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:BasicFormExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+      <form>Extended</form>
+    </extension>
+  </forms>
+  <forms uuid="e68a4308-c381-4e3e-8d76-96f83ca13dc3">
+    <name>NonPref_ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Non pref item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

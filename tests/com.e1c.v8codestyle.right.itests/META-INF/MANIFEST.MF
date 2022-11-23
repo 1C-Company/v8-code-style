@@ -9,8 +9,8 @@ Automatic-Module-Name: com.e1c.v8codestyle.right.itests
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Localization: fragment
 Import-Package: com._1c.g5.v8.dt.core.platform;version="[10.4.0,11.0.0)",
- com._1c.g5.v8.dt.md.refactoring;version="[7.1.0,8.0.0)",
- com._1c.g5.v8.dt.platform;version="[5.0.0,6.0.0)",
+ com._1c.g5.v8.dt.md.refactoring.core;version="[1.0.0,2.0.0)",
+ com._1c.g5.v8.dt.platform;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.platform.version;version="[2.13.0,3.0.0)",
  com._1c.g5.v8.dt.refactoring.core;version="[3.0.300,4.0.0)",
  com._1c.g5.v8.dt.testing;version="[3.1.0,4.0.0)",
