@@ -8,7 +8,9 @@ FormDataToValue requires the data type to be specified explicitly.Example:
 
 SignaturesTable = FormDataToValue(SignaturesTable, Type("ValueTable"));
 
-In contrast, FormAttributeToValue doesn't require data type to be specified. Example:
+In contrast, FormAttributeToValue doesn't require data type to be specified. 
+
+Example:
 
 SignaturesTable = FormAttributeToValue("SignaturesTable");
 

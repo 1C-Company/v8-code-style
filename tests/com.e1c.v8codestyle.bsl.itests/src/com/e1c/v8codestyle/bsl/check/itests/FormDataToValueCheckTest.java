@@ -39,6 +39,9 @@ public class FormDataToValueCheckTest
 
     private static final String COMMON_FORM_FILE_NAME = "/src/CommonForms/Form/Module.bsl";
 
+    /**
+     * Instantiates a new form data to value check test.
+     */
     public FormDataToValueCheckTest()
     {
         super(FormDataToValueCheck.class);
