@@ -45,7 +45,7 @@ public class UseNonRecommendedMethodTest
     @Test
     public void testUseNonRecommendedMethods() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "use-non-recommended-methods.bsl");
+        updateModule(FOLDER_RESOURCE + "use-non-recommended-methods.bsl"); //$NON-NLS-1$
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
@@ -60,7 +60,7 @@ public class UseNonRecommendedMethodTest
     @Test
     public void testUseNonRecommendedMethodFind() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "use-non-recommended-method-find.bsl");
+        updateModule(FOLDER_RESOURCE + "use-non-recommended-method-find.bsl"); //$NON-NLS-1$
 
         Marker marker = getModuleFirstMarker();
         assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
