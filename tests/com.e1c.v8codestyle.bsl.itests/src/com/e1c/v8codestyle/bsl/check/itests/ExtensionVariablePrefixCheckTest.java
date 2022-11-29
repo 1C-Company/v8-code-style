@@ -74,11 +74,10 @@ public class ExtensionVariablePrefixCheckTest
     }
 
     @Test
-    public void testNonCompliantPrefix() throws Exception
+    public void testCommonModuleCompliantPrefix() throws Exception
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
-        assertFalse(markers.isEmpty());
-        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertTrue(markers.isEmpty());
     }
 
     @Test
