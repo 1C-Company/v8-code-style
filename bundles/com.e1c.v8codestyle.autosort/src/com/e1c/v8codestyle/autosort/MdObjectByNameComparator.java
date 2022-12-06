@@ -47,10 +47,43 @@ public class MdObjectByNameComparator
         {
             String firstName = Strings.nullToEmpty(((MdObject)first).getName());
             String secondName = Strings.nullToEmpty(((MdObject)second).getName());
-            return this.ascending ? firstName.compareToIgnoreCase(secondName)
-                : secondName.compareToIgnoreCase(firstName);
+            return this.ascending ? compareMdObjectNamesWithIgnoreCase(firstName, secondName)
+                : compareMdObjectNamesWithIgnoreCase(secondName, firstName);
         }
         return 0;
     }
 
+    private int compareMdObjectNamesWithIgnoreCase(String s1, String s2)
+    {
+        int n1 = s1.length();
+        int n2 = s2.length();
+        int min = Math.min(n1, n2);
+
+        char lessThanDigits = '!';
+
+        for (int i = 0; i < min; i++)
+        {
+            char c1 = s1.charAt(i);
+            char c2 = s2.charAt(i);
+            if (c1 != c2)
+            {
+                c1 = Character.toUpperCase(c1);
+                c2 = Character.toUpperCase(c2);
+                if (c1 != c2)
+                {
+                    c1 = Character.toLowerCase(c1);
+                    c2 = Character.toLowerCase(c2);
+                    if (c1 != c2)
+                    {
+                        // Symbol "low line" must be less than digits
+                        c1 = (c1 == '_' ? lessThanDigits : c1);
+                        c2 = (c2 == '_' ? lessThanDigits : c2);
+                        // No overflow because of numeric promotion
+                        return c1 - c2;
+                    }
+                }
+            }
+        }
+        return n1 - n2;
+    }
 }
