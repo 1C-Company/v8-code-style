@@ -329,7 +329,7 @@ public class AutoSortPropertyPage
             toolkit.createButton(sortGroup, Messages.AutoSortPropertyPage_Sort_order_as_designer, SWT.RADIO);
         asDesignerSortOrderButton.setSelection(true);
         boolean naturalSortOrder =
-            prefs.getBoolean(AutoSortPreferences.KEY_SORT_ORDER, AutoSortPreferences.DEFAULT_SORT_ASCENDING);
+            prefs.getBoolean(AutoSortPreferences.KEY_SORT_ORDER, AutoSortPreferences.DEFAULT_SORT_ORDER);
         sortOrderButton.setSelection(naturalSortOrder);
         asDesignerSortOrderButton.setSelection(!naturalSortOrder);
     }
