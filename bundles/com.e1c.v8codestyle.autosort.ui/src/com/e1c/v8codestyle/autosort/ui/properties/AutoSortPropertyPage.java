@@ -77,6 +77,8 @@ public class AutoSortPropertyPage
 
     private Button ascendingButton;
 
+    private Button sortOrderButton;
+
     @Inject
     public AutoSortPropertyPage(ISortService sortService)
     {
@@ -103,6 +105,7 @@ public class AutoSortPropertyPage
         composite.setLayoutData(data);
 
         addSortSection(composite);
+        addSortOrderSection(composite);
         addSeparator(composite);
         addTopObjectsSection(composite);
         addSubordinateSection(composite);
@@ -122,6 +125,7 @@ public class AutoSortPropertyPage
     {
         super.performDefaults();
         ascendingButton.setSelection(AutoSortPreferences.DEFAULT_SORT_ASCENDING);
+        sortOrderButton.setSelection(AutoSortPreferences.DEFAULT_SORT_ORDER);
         buttons.get(AutoSortPreferences.KEY_ALL_TOP).setSelection(AutoSortPreferences.DEFAULT_SORT);
         buttons.get(AutoSortPreferences.KEY_SUBORDINATE_OBJECTS).setSelection(AutoSortPreferences.DEFAULT_SORT);
         buttons.get(AutoSortPreferences.KEY_FORMS).setSelection(AutoSortPreferences.DEFAULT_SORT);
@@ -148,6 +152,16 @@ public class AutoSortPropertyPage
         else
         {
             prefs.putBoolean(AutoSortPreferences.KEY_ASCENDING, ascending);
+        }
+
+        boolean sortOrder = sortOrderButton.getSelection();
+        if (sortOrder == AutoSortPreferences.DEFAULT_SORT_ORDER)
+        {
+            prefs.remove(AutoSortPreferences.KEY_SORT_ORDER);
+        }
+        else
+        {
+            prefs.putBoolean(AutoSortPreferences.KEY_SORT_ORDER, sortOrder);
         }
 
         updateSortPreferences(prefs, AutoSortPreferences.KEY_ALL_TOP,
@@ -223,6 +237,8 @@ public class AutoSortPropertyPage
     {
         if (ascendingButton.getSelection() != prefs.getBoolean(AutoSortPreferences.KEY_ASCENDING,
             AutoSortPreferences.DEFAULT_SORT_ASCENDING)
+            || sortOrderButton.getSelection() != prefs.getBoolean(AutoSortPreferences.KEY_SORT_ORDER,
+                AutoSortPreferences.DEFAULT_SORT_ORDER)
             || !prefs.getBoolean(AutoSortPreferences.KEY_ALL_TOP, AutoSortPreferences.DEFAULT_SORT)
                 && buttons.get(AutoSortPreferences.KEY_ALL_TOP).getSelection()
             || !prefs.getBoolean(AutoSortPreferences.KEY_SUBORDINATE_OBJECTS, AutoSortPreferences.DEFAULT_SORT)
@@ -301,6 +317,21 @@ public class AutoSortPropertyPage
             prefs.getBoolean(AutoSortPreferences.KEY_ASCENDING, AutoSortPreferences.DEFAULT_SORT_ASCENDING);
         ascendingButton.setSelection(ascending);
         descendingButton.setSelection(!ascending);
+    }
+
+    private void addSortOrderSection(Composite parent)
+    {
+        Group sortGroup = new Group(parent, SWT.NONE);
+        sortGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
+        toolkit.createLabel(sortGroup, Messages.AutoSortPropertyPage_Sort_order);
+        sortOrderButton = toolkit.createButton(sortGroup, Messages.AutoSortPropertyPage_Sort_order_natural, SWT.RADIO);
+        final Button asDesignerSortOrderButton =
+            toolkit.createButton(sortGroup, Messages.AutoSortPropertyPage_Sort_order_as_designer, SWT.RADIO);
+        asDesignerSortOrderButton.setSelection(true);
+        boolean naturalSortOrder =
+            prefs.getBoolean(AutoSortPreferences.KEY_SORT_ORDER, AutoSortPreferences.DEFAULT_SORT_ASCENDING);
+        sortOrderButton.setSelection(naturalSortOrder);
+        asDesignerSortOrderButton.setSelection(!naturalSortOrder);
     }
 
     private void addSeparator(Composite parent)
