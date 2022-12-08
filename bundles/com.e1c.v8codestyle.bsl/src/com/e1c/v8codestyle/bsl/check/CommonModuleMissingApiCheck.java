@@ -58,6 +58,7 @@ public class CommonModuleMissingApiCheck
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.COMMON_MODULE))
+            .extension(new SkipAdoptedInExtensionModuleOwnerExtension())
             .module()
             .checkedObjectType(MODULE);
     }
