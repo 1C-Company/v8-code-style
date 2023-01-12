@@ -71,4 +71,22 @@ public class RegisterResourcePrecisionTest
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNotNull(marker);
     }
+
+    /**
+     * Test that accounting register resource precision longer than maximal length in user defined type
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testAccountingRegisterResourceWithDefinedTypePrecision() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject object = getTopObjectByFqn("AccountingRegister.AccountingRegisterWithDefinedTypeTest", dtProject);
+        assertNotNull(object);
+
+        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+        assertNotNull(marker);
+    }
 }
