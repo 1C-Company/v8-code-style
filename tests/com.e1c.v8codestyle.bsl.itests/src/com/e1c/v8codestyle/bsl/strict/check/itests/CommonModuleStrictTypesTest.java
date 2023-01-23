@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -655,7 +654,7 @@ public class CommonModuleStrictTypesTest
         return markers;
     }
 
-    private Module updateAndGetModule(String resourceName) throws CoreException, IOException
+    private Module updateAndGetModule(String resourceName) throws Exception
     {
         try (InputStream in = getClass().getResourceAsStream(FOLDER + resourceName + ".bsl"))
         {
@@ -664,6 +663,8 @@ public class CommonModuleStrictTypesTest
         }
         testingWorkspace.waitForBuildCompletion();
         waitForDD(getProject());
+        //after fixing the problem in EDT - delete it
+        Thread.sleep(5000);
 
         IBmObject mdObject = getTopObjectByFqn(FQN, getProject());
         assertTrue(mdObject instanceof CommonModule);
