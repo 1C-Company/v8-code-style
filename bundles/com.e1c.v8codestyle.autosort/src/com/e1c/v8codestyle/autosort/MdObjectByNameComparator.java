@@ -27,8 +27,10 @@ import com.google.common.base.Strings;
 public class MdObjectByNameComparator
     implements Comparator<EObject>
 {
+    private static final char LESS_THAN_DIGITS = '!';
 
     private final boolean ascending;
+
     private final boolean naturalSortOrder;
 
     /**
@@ -62,8 +64,6 @@ public class MdObjectByNameComparator
         int n2 = s2.length();
         int min = Math.min(n1, n2);
 
-        char lessThanDigits = '!';
-
         for (int i = 0; i < min; i++)
         {
             char c1 = s1.charAt(i);
@@ -81,8 +81,8 @@ public class MdObjectByNameComparator
                         if (!naturalSortOrder)
                         {
                             // Symbol "low line" must be less than digits
-                            c1 = (c1 == '_' ? lessThanDigits : c1);
-                            c2 = (c2 == '_' ? lessThanDigits : c2);
+                            c1 = c1 == '_' ? LESS_THAN_DIGITS : c1;
+                            c2 = c2 == '_' ? LESS_THAN_DIGITS : c2;
                         }
                         // No overflow because of numeric promotion
                         return c1 - c2;
