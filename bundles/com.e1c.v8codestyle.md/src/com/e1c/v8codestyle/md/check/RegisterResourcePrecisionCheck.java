@@ -20,9 +20,13 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.ACCUMULA
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.mcore.TypeDescription;
+import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.metadata.mdclass.DefinedType;
 import com._1c.g5.v8.dt.metadata.mdclass.RegisterResource;
+import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -84,8 +88,26 @@ public final class RegisterResourcePrecisionCheck
             return;
         }
 
-        TypeDescription td = (TypeDescription)object;
-        if (!(td.eContainer() instanceof RegisterResource))
+        TypeDescription initialTypeDescription = (TypeDescription)object;
+        if (!(initialTypeDescription.eContainer() instanceof RegisterResource))
+        {
+            return;
+        }
+        TypeDescription td = initialTypeDescription;
+        if (td.getTypes().size() == 1
+            && IEObjectTypeNames.DEFINED_TYPE.equals(McoreUtil.getTypeCategory(td.getTypes().get(0))))
+        {
+            EObject definedType = td.getTypes().get(0).eContainer();
+            while (definedType != null && !(definedType instanceof DefinedType))
+            {
+                definedType = definedType.eContainer();
+            }
+            if (definedType instanceof DefinedType)
+            {
+                td = ((DefinedType)definedType).getType();
+            }
+        }
+        if (td.getNumberQualifiers() == null)
         {
             return;
         }
@@ -95,10 +117,10 @@ public final class RegisterResourcePrecisionCheck
 
         if (precision > maxPrecision)
         {
-            RegisterResource resource = (RegisterResource)(td.eContainer());
+            RegisterResource resource = (RegisterResource)(initialTypeDescription.eContainer());
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.RegisterResourcePrecisionCheck_message, resource.getName(), maxPrecision),
-                td);
+                initialTypeDescription);
         }
     }
 }
