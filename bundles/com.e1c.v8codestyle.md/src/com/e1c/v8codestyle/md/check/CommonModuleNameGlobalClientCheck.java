@@ -35,7 +35,7 @@ import com.google.inject.Inject;
 
 /**
  * Checks client global common module name has not "Client" suffix
- * 
+ *
  * @author Artem Iliukhin
  */
 public class CommonModuleNameGlobalClientCheck
@@ -49,8 +49,8 @@ public class CommonModuleNameGlobalClientCheck
     private final IV8ProjectManager v8ProjectManager;
 
     /**
-     * Instantiates a new common module name global client check. 
-     * 
+     * Instantiates a new common module name global client check.
+     *
      * @param v8ProjectManager
      */
     @Inject
@@ -69,8 +69,8 @@ public class CommonModuleNameGlobalClientCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.CommonModuleNameGlobal_Title)
-            .description(Messages.CommonModuleNameGlobal_Description)
+        builder.title(Messages.CommonModuleNameGlobalClientCheck_Title)
+            .description(Messages.CommonModuleNameGlobalClientCheck_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.WARNING)
@@ -97,7 +97,8 @@ public class CommonModuleNameGlobalClientCheck
         String suffix = ScriptVariant.ENGLISH == variant ? NAME_SUFFIX_EN : NAME_SUFFIX_RU;
         if (name.endsWith(suffix))
         {
-            String message = MessageFormat.format(Messages.CommonModuleNameGlobal_Message, suffix);
+            String message =
+                MessageFormat.format(Messages.CommonModuleNameGlobalClientCheck_Message, suffix);
             resultAceptor.addIssue(message, MD_OBJECT__NAME);
         }
     }
