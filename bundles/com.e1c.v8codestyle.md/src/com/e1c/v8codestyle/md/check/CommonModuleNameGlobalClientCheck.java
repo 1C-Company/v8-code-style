@@ -43,8 +43,8 @@ public class CommonModuleNameGlobalClientCheck
 {
 
     private static final String CHECK_ID = "common-module-name-global-client"; //$NON-NLS-1$
-    private static final String NAME_SUFFIX_RU = "ГлобальныйКлиент"; //$NON-NLS-1$
-    private static final String NAME_SUFFIX_EN = "GlobalClient"; //$NON-NLS-1$
+    private static final String NAME_SUFFIX_RU = "Клиент"; //$NON-NLS-1$
+    private static final String NAME_SUFFIX_EN = "Client"; //$NON-NLS-1$
 
     private final IV8ProjectManager v8ProjectManager;
 
@@ -95,10 +95,9 @@ public class CommonModuleNameGlobalClientCheck
 
         String name = commonModule.getName();
         String suffix = ScriptVariant.ENGLISH == variant ? NAME_SUFFIX_EN : NAME_SUFFIX_RU;
-        if (name.endsWith(suffix))
+        if (name.contains(suffix))
         {
-            String message =
-                MessageFormat.format(Messages.CommonModuleNameGlobalClientCheck_Message, suffix);
+            String message = MessageFormat.format(Messages.CommonModuleNameGlobalClientCheck_Message, suffix);
             resultAceptor.addIssue(message, MD_OBJECT__NAME);
         }
     }
