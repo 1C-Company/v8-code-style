@@ -45,6 +45,8 @@ public final class AutoSortPreferences
 
     public static final String KEY_ASCENDING = "sortAscending"; //$NON-NLS-1$
 
+    public static final String KEY_SORT_ORDER = "naturalSortOrder"; //$NON-NLS-1$
+
     public static final String KEY_ALL_TOP = "topObjects"; //$NON-NLS-1$
 
     public static final String KEY_TOP_NODE = "top"; //$NON-NLS-1$
@@ -75,6 +77,7 @@ public final class AutoSortPreferences
 
     public static final boolean DEFAULT_SORT = false;
 
+    public static final boolean DEFAULT_SORT_ORDER = true;
     /**
      * Checks if the sort direction is ascending in the project.
      *
@@ -87,6 +90,17 @@ public final class AutoSortPreferences
         return rootNode.getBoolean(KEY_ASCENDING, DEFAULT_SORT_ASCENDING);
     }
 
+    /**
+     * Checks if the sort order natural or as designer in the project.
+     *
+     * @param project the project to check, cannot be {@code null}.
+     * @return true, if the sort order is natural, or return true as default if not set for project.
+     */
+    public static boolean isNaturalSortOrder(IProject project)
+    {
+        IEclipsePreferences rootNode = getPreferences(project);
+        return rootNode.getBoolean(KEY_SORT_ORDER, DEFAULT_SORT_ORDER);
+    }
     /**
      * Checks if need to sort all top object.
      *

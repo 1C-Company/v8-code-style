@@ -39,7 +39,9 @@
     <languageCode>en</languageCode>
   </languages>
   <commonModules>CommonModule.ГМодуль</commonModules>
+  <commonModules>CommonModule.АМ2_4Модуль</commonModules>
   <commonModules>CommonModule.БМодуль</commonModules>
+  <commonModules>CommonModule.АМ_Модуль</commonModules>
   <commonModules>CommonModule.ОбщийМодуль</commonModules>
   <commonModules>CommonModule.АМодуль</commonModules>
 </mdclass:Configuration>

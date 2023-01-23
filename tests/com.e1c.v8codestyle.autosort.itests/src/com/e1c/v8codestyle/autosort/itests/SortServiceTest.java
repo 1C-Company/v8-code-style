@@ -81,9 +81,11 @@ public class SortServiceTest
         assertFalse(configuration.getCommonModules().isEmpty());
 
         assertEquals("ГМодуль", configuration.getCommonModules().get(0).getName());
-        assertEquals("БМодуль", configuration.getCommonModules().get(1).getName());
-        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(2).getName());
-        assertEquals("АМодуль", configuration.getCommonModules().get(3).getName());
+        assertEquals("АМ2_4Модуль", configuration.getCommonModules().get(1).getName());
+        assertEquals("БМодуль", configuration.getCommonModules().get(2).getName());
+        assertEquals("АМ_Модуль", configuration.getCommonModules().get(3).getName());
+        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(4).getName());
+        assertEquals("АМодуль", configuration.getCommonModules().get(5).getName());
     }
 
     @Test
@@ -96,6 +98,7 @@ public class SortServiceTest
 
         IEclipsePreferences prefs = AutoSortPreferences.getPreferences(project);
         prefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
+        prefs.putBoolean(AutoSortPreferences.KEY_SORT_ORDER, true);
         prefs.flush();
 
         IStatus status = sortService.sortAllMetadata(dtProject, new NullProgressMonitor());
@@ -106,10 +109,41 @@ public class SortServiceTest
         Configuration configuration = (Configuration)object;
         assertFalse(configuration.getCommonModules().isEmpty());
 
-        assertEquals("АМодуль", configuration.getCommonModules().get(0).getName());
-        assertEquals("БМодуль", configuration.getCommonModules().get(1).getName());
-        assertEquals("ГМодуль", configuration.getCommonModules().get(2).getName());
-        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(3).getName());
+        assertEquals("АМ2_4Модуль", configuration.getCommonModules().get(0).getName());
+        assertEquals("АМ_Модуль", configuration.getCommonModules().get(1).getName());
+        assertEquals("АМодуль", configuration.getCommonModules().get(2).getName());
+        assertEquals("БМодуль", configuration.getCommonModules().get(3).getName());
+        assertEquals("ГМодуль", configuration.getCommonModules().get(4).getName());
+        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
+    }
+
+    @Test
+    public void testSortOrderAsDesigner() throws Exception
+    {
+        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
+        assertNotNull(project);
+        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        assertNotNull(dtProject);
+
+        IEclipsePreferences prefs = AutoSortPreferences.getPreferences(project);
+        prefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
+        prefs.putBoolean(AutoSortPreferences.KEY_SORT_ORDER, false);
+        prefs.flush();
+
+        IStatus status = sortService.sortAllMetadata(dtProject, new NullProgressMonitor());
+        assertTrue(status.isOK());
+        IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
+        assertTrue(object instanceof Configuration);
+
+        Configuration configuration = (Configuration)object;
+        assertFalse(configuration.getCommonModules().isEmpty());
+
+        assertEquals("АМ_Модуль", configuration.getCommonModules().get(0).getName());
+        assertEquals("АМ2_4Модуль", configuration.getCommonModules().get(1).getName());
+        assertEquals("АМодуль", configuration.getCommonModules().get(2).getName());
+        assertEquals("БМодуль", configuration.getCommonModules().get(3).getName());
+        assertEquals("ГМодуль", configuration.getCommonModules().get(4).getName());
+        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
     }
 
     protected IBmObject getTopObjectByFqn(final String fqn, IDtProject dtProject)
