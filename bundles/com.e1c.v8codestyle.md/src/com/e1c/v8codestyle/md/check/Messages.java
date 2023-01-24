@@ -35,9 +35,12 @@ final class Messages
     public static String CommonModuleNamePrivilegedCheck_Description;
     public static String CommonModuleNamePrivilegedCheck_Issue;
     public static String CommonModuleNamePrivilegedCheck_Title;
-    public static String CommonModuleNameGlobal_description;
-    public static String CommonModuleNameGlobal_message;
-    public static String CommonModuleNameGlobal_title;
+    public static String CommonModuleNameGlobal_Description;
+    public static String CommonModuleNameGlobal_Message;
+    public static String CommonModuleNameGlobal_Title;
+    public static String CommonModuleNameGlobalClientCheck_Description;
+    public static String CommonModuleNameGlobalClientCheck_Message;
+    public static String CommonModuleNameGlobalClientCheck_Title;
     public static String CommonModuleType_description;
     public static String CommonModuleType_message;
     public static String CommonModuleType_title;
