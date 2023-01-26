@@ -38,7 +38,10 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
+  <definedTypes>DefinedType.CorrectType</definedTypes>
+  <definedTypes>DefinedType.WrongType</definedTypes>
   <documents>Document.DocumentTest</documents>
   <accumulationRegisters>AccumulationRegister.AccumulationRegisterTest</accumulationRegisters>
   <accountingRegisters>AccountingRegister.AccountingRegisterTest</accountingRegisters>
+  <accountingRegisters>AccountingRegister.AccountingRegisterWithDefinedTypeTest</accountingRegisters>
 </mdclass:Configuration>

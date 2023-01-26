@@ -89,6 +89,12 @@ final class Messages
 
     public static String BeginTransactionCheck_Try_was_not_found_after_calling_begin;
 
+    public static String CommonModuleMissingApiCheck_Description;
+
+    public static String CommonModuleMissingApiCheck_Issue;
+
+    public static String CommonModuleMissingApiCheck_Title;
+
     public static String CommonModuleNamedSelfReferenceCheck_description;
 
     public static String CommonModuleNamedSelfReferenceCheck_issue;
