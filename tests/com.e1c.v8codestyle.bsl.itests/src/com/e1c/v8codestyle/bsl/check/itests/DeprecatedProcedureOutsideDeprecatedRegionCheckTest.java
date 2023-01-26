@@ -56,6 +56,21 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheckTest
     }
 
     /**
+     * Test a deprecated method is placed a nested region in the Deprecated region of the Public region 
+     * in a common module area
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testCompliantNestedRegionDeprecatedMethod() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "deprecated-method-nested-region-compliant.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
      * Test a non-export deprecated method
      *
      * @throws Exception the exception
