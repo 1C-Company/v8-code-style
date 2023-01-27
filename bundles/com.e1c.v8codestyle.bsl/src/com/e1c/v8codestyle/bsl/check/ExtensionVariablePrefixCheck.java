@@ -23,9 +23,11 @@ import static com._1c.g5.v8.dt.bsl.model.ModuleType.SESSION_MODULE;
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
@@ -121,8 +123,13 @@ public class ExtensionVariablePrefixCheck
 
     private void checkVariable(Variable variable, ResultAcceptor resultAceptor, IProgressMonitor monitor)
     {
-        IV8Project extension = v8ProjectManager.getProject(variable);
+        Method method = EcoreUtil2.getContainerOfType(variable, Method.class);
+        if (method != null)
+        {
+            return;
+        }
 
+        IV8Project extension = v8ProjectManager.getProject(variable);
         if (extension instanceof IExtensionProject)
         {
             String prefix = getNamePrefix((IExtensionProject)extension);
