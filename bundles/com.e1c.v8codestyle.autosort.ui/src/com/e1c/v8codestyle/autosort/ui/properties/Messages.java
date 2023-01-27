@@ -38,6 +38,9 @@ final class Messages
     public static String AutoSortPropertyPage_Select_top_objects;
     public static String AutoSortPropertyPage_Select_top_objects_description;
     public static String AutoSortPropertyPage_Sort_direction;
+    public static String AutoSortPropertyPage_Sort_order;
+    public static String AutoSortPropertyPage_Sort_order_as_designer;
+    public static String AutoSortPropertyPage_Sort_order_natural;
     public static String AutoSortPropertyPage_Sort_question;
     public static String AutoSortPropertyPage_Sort_question_title;
     public static String AutoSortPropertyPage_Tabular_sections_of_object;

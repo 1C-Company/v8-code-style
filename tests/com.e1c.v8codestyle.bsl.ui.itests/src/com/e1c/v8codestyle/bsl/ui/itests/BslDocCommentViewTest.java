@@ -32,6 +32,7 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.intro.IIntroPart;
 import org.junit.After;
 import org.junit.Before;
@@ -111,7 +112,10 @@ public class BslDocCommentViewTest
         assertTrue(view instanceof BslDocCommentView);
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(view);
 
-        IEditorPart editor = openHelper.openEditor(file, new TextSelection(14, 1));
+        IEditorPart fEditor = openHelper.openEditor(file, new TextSelection(14, 1));
+        assertTrue(fEditor instanceof FormEditor);
+
+        IEditorPart editor = ((FormEditor)fEditor).getActiveEditor();
         assertTrue(editor instanceof BslXtextEditor);
 
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(editor);
