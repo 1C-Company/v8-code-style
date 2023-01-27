@@ -82,7 +82,7 @@ public class MdObjectNameUnallowedLetterCheck
                 {
                     resultAceptor.addIssue(ISSUE_MESSAGE, MD_OBJECT__NAME);
                 }
-                if (hasUnallowedLetter(mdObject.getSynonym().get(0).getValue()))
+                if (hasUnallowedLetter(mdObject.getSynonym().get(LANGUAGE_KEY_RU)))
                 {
                     resultAceptor.addIssue(ISSUE_MESSAGE, MD_OBJECT__SYNONYM);
                 }
