@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccumulationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="0fc0a0f0-3449-4800-b5dc-5a12771ec1a3">
+  <producedTypes>
+    <selectionType typeId="b8c1dd8d-185a-4f07-977a-eddf952a5955" valueTypeId="b9b0847e-9da9-41ef-a918-f4af63c65e97"/>
+    <listType typeId="5d633f28-2b90-4f48-9f81-6e7a59a7933c" valueTypeId="811058e1-0b85-471d-9f6f-e8597da3ae38"/>
+    <managerType typeId="c4fee4bc-c8f3-4f7d-a2af-c45c5705b322" valueTypeId="25b4dfcd-89a7-485c-b5b8-d56361ce7a23"/>
+    <recordSetType typeId="7228e73e-187a-498f-a37d-329028f17e3e" valueTypeId="933dadfc-3947-42a9-a161-39ef45325a51"/>
+    <recordKeyType typeId="47e97b8a-f2ef-48dc-a90e-7773ba35c1a1" valueTypeId="852fb452-1b82-4288-9038-060c7c61bdc4"/>
+    <recordType typeId="c103e40a-5f32-40db-932c-06ceb76f1326" valueTypeId="6f577159-2cb2-4bc9-b91c-e93c97a13190"/>
+  </producedTypes>
+  <name>AccumulationRegisterTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Accumulation register test</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+  <resources uuid="c75d6720-29b9-493c-8de5-05cb22d29d1c">
+    <name>CorrectResource</name>
+    <synonym>
+      <key>en</key>
+      <value>Correct resource</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+  </resources>
+  <resources uuid="505b898f-30bc-4c3f-b33d-3e7e3128cd3c">
+    <name>WrongResource</name>
+    <synonym>
+      <key>en</key>
+      <value>Wrong resource</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>50</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+  </resources>
+</mdclass:AccumulationRegister>

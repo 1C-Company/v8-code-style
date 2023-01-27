@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,6 +55,7 @@ import com.e1c.v8codestyle.bsl.strict.check.InvocationParamIntersectionCheck;
 import com.e1c.v8codestyle.bsl.strict.check.MethodParamTypeCheck;
 import com.e1c.v8codestyle.bsl.strict.check.SimpleStatementTypeCheck;
 import com.e1c.v8codestyle.bsl.strict.check.StructureCtorValueTypeCheck;
+import com.e1c.v8codestyle.bsl.strict.check.TypedValueAddingToUntypedCollectionCheck;
 import com.e1c.v8codestyle.bsl.strict.check.VariableTypeCheck;
 
 /**
@@ -575,6 +575,70 @@ public class CommonModuleStrictTypesTest
         assertTrue(markers.isEmpty());
     }
 
+    /**
+     * Test of {@link TypedValueAddingToUntypedCollectionCheck} that typed value is adding
+     * to untyped array.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypedValueAddingToUntypedCollectionCheck() throws Exception
+    {
+
+        String checkId = "typed-value-adding-to-untyped-collection";
+        String resouceName = "typed-value-adding-to-untyped-array";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<DynamicFeatureAccess> statements = EcoreUtil2.eAllOfType(module, DynamicFeatureAccess.class);
+        assertEquals(10, statements.size());
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(3, markers.size());
+
+        Set<String> lines = new HashSet<>();
+
+        for (Marker m : markers)
+        {
+            lines.add(m.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+
+        assertEquals(Set.of("19", "20", "21"), lines);
+    }
+
+    /**
+     * Test of {@link TypedValueAddingToUntypedCollectionCheck} that typed value is adding
+     * to untyped value list.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testTypedValueAddingToUntypedValueListCheck() throws Exception
+    {
+
+        String checkId = "typed-value-adding-to-untyped-collection";
+        String resouceName = "typed-value-adding-to-untyped-value-list";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<DynamicFeatureAccess> statements = EcoreUtil2.eAllOfType(module, DynamicFeatureAccess.class);
+        assertEquals(8, statements.size());
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(2, markers.size());
+
+        Set<String> lines = new HashSet<>();
+
+        for (Marker m : markers)
+        {
+            lines.add(m.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+
+        assertEquals(Set.of("18", "19"), lines);
+    }
+
     private IDtProject getProject()
     {
         return dtProject;
@@ -590,7 +654,7 @@ public class CommonModuleStrictTypesTest
         return markers;
     }
 
-    private Module updateAndGetModule(String resourceName) throws CoreException, IOException
+    private Module updateAndGetModule(String resourceName) throws Exception
     {
         try (InputStream in = getClass().getResourceAsStream(FOLDER + resourceName + ".bsl"))
         {
@@ -599,6 +663,8 @@ public class CommonModuleStrictTypesTest
         }
         testingWorkspace.waitForBuildCompletion();
         waitForDD(getProject());
+        //after fixing the problem in EDT - delete it
+        Thread.sleep(5000);
 
         IBmObject mdObject = getTopObjectByFqn(FQN, getProject());
         assertTrue(mdObject instanceof CommonModule);

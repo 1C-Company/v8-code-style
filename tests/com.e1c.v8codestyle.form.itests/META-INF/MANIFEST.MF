@@ -2,15 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.e1c.v8codestyle.form.itests;singleton:=true
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 0.4.0.qualifier
 Bundle-Vendor: %providerName
-Fragment-Host: com.e1c.v8codestyle.form;bundle-version="[0.3.0,0.4.0)"
+Fragment-Host: com.e1c.v8codestyle.form;bundle-version="[0.4.0,0.5.0)"
 Automatic-Module-Name: com.e1c.v8codestyle.form.itests
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Localization: fragment
 Import-Package: com._1c.g5.v8.bm.integration;version="[10.0.0,11.0.0)",
  com._1c.g5.v8.dt.core.naming;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.core.platform;version="[10.3.0,11.0.0)",
+ com._1c.g5.v8.dt.form.model;version="[11.0.0,12.0.0)",
  com._1c.g5.v8.dt.form.naming;version="[5.0.0,6.0.0)",
  com._1c.g5.v8.dt.mcore;version="[6.3.0,7.0.0)",
  com._1c.g5.v8.dt.metadata.mdclass;version="[8.7.0,9.0.0)",

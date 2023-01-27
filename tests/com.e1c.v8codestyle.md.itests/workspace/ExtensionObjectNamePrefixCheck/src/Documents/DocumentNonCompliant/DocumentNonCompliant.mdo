@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="38352939-5b1b-478c-9c45-cc0e02de5e76">
+  <producedTypes>
+    <objectType typeId="32e560bf-da03-4737-ac83-1b58c3acd6a9" valueTypeId="0616bde8-1445-43b2-8218-42e42ad8d026"/>
+    <refType typeId="dd5eb426-8cf3-415e-a9c5-796395a94c09" valueTypeId="ef5ebdd1-eb20-4eea-9fbc-a2ce59a211e6"/>
+    <selectionType typeId="186406cb-d1f7-46fc-bf17-6773b2882bd1" valueTypeId="07faa43a-d05a-42da-ac9e-ed24259ccf40"/>
+    <listType typeId="112143dc-1709-4cfb-b879-a1e7210a12f1" valueTypeId="88acb680-ee5f-4b30-b404-006e704ab99a"/>
+    <managerType typeId="bc812b20-891f-4045-9cad-01a3dfe3d8f3" valueTypeId="ab4d1229-d678-4c0d-b9e9-533a79783e07"/>
+  </producedTypes>
+  <name>DocumentNonCompliant</name>
+  <synonym>
+    <key>en</key>
+    <value>Document non compliant</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.DocumentNonCompliant.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+  <tabularSections uuid="590fd3f6-dbda-4072-a51c-70a3ebc417b7">
+    <producedTypes>
+      <objectType typeId="178a18fa-87cb-4570-aafd-3cf34f6133cf" valueTypeId="695719a4-fe15-4482-8a0b-fb02a384125d"/>
+      <rowType typeId="62fa3442-c1dc-4e54-b36e-2775f4cf4632" valueTypeId="11cfb007-190b-469d-a694-5c106ee1138e"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <synonym>
+      <key>en</key>
+      <value>Tabular section</value>
+    </synonym>
+  </tabularSections>
+</mdclass:Document>

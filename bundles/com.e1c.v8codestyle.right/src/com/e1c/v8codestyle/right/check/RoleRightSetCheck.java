@@ -78,8 +78,6 @@ import com.e1c.g5.v8.dt.check.context.OnModelObjectAssociationContextCollector;
 import com.e1c.g5.v8.dt.check.context.OnModelObjectRemovalContextCollector;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.check.StandardCheckExtension;
-import com.e1c.v8codestyle.internal.right.CorePlugin;
 import com.e1c.v8codestyle.internal.right.InternalRightInfosService;
 
 /**
@@ -148,7 +146,6 @@ public abstract class RoleRightSetCheck
             .extension(new CombinedChangeExtension())
             .extension(new ExcludeRoleByPatternExtension(bmModelManager))
             .extension(new RoleNameChangeExtension())
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
             .topObject(ROLE_DESCRIPTION)
             .checkTop()
             .features(ROLE_DESCRIPTION__SET_FOR_NEW_OBJECTS, ROLE_DESCRIPTION__RIGHTS)
@@ -432,7 +429,7 @@ public abstract class RoleRightSetCheck
         public void configureContextCollector(ICheckDefinition definition)
         {
             // add reaction change of features "SET_FOR_NEW_OBJECTS" of existing object
-            definition.addModelFeatureChangeContextCollector((bmObject, feature, bmEvent, contextSession) -> {
+            definition.addGenericModelFeatureChangeContextCollector((bmObject, feature, bmEvent, contextSession) -> {
                 if (feature == ROLE_DESCRIPTION__SET_FOR_NEW_OBJECTS)
                 {
                     // global flag changed - so fully re-check ROLE_DESCRIPTION for all checks
@@ -441,7 +438,7 @@ public abstract class RoleRightSetCheck
             }, ROLE_DESCRIPTION);
 
             // if MD object changed then schedule full check for description or even for all checks
-            definition.addModelFeatureChangeContextCollector((bmObject, feature, bmEvent, contextSession) -> {
+            definition.addGenericModelFeatureChangeContextCollector((bmObject, feature, bmEvent, contextSession) -> {
                 if (feature == OBJECT_RIGHTS__OBJECT)
                 {
                     IBmObject top = bmObject.bmGetTopObject();
@@ -455,7 +452,7 @@ public abstract class RoleRightSetCheck
                         contextSession.addFullCheck(top);
                     }
                 }
-            }, OBJECT_RIGHTS);
+            }, OBJECT_RIGHTS, ROLE_DESCRIPTION);
 
             // add reaction on creating new objects - that schedule role description
             OnModelObjectAssociationContextCollector topCollector = (bmObject, bmEvent, contextSession) -> {
@@ -465,11 +462,11 @@ public abstract class RoleRightSetCheck
                     contextSession.addModelCheck(top);
                 }
             };
-            definition.addModelAssociationContextCollector(topCollector, OBJECT_RIGHTS);
-            definition.addModelAssociationContextCollector(topCollector, OBJECT_RIGHT);
+            definition.addGenericModelAssociationContextCollector(topCollector, OBJECT_RIGHTS, ROLE_DESCRIPTION);
+            definition.addGenericModelAssociationContextCollector(topCollector, OBJECT_RIGHT, OBJECT_RIGHTS);
 
             // For every new TOP MD object schedule all role descriptions with SetForNewObjects
-            definition.addModelAssociationContextCollector((bmObject, bmEvent, contextSession) -> {
+            definition.addGenericModelAssociationContextCollector((bmObject, bmEvent, contextSession) -> {
                 if (bmObject.bmIsTop() && bmObject.bmGetTransaction() != null)
                 {
                     scheduleFullCheckForAllRoles(bmObject.eClass(), bmObject.bmGetTransaction(), contextSession);
