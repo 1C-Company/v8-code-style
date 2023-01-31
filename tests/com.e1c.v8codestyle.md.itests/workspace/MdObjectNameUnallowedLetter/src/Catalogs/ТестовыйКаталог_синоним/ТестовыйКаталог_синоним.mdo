@@ -10,7 +10,7 @@
   <name>ТестовыйКаталог_синоним</name>
   <synonym>
     <key>ru</key>
-    <value>Тестовый каталог ë синоним</value>
+    <value>Тестовый каталог ё синоним</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.ТестовыйКаталог_синоним.StandardAttribute.Code</inputByString>

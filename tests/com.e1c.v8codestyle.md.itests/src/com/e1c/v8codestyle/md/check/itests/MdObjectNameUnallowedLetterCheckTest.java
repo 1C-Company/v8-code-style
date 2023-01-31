@@ -38,7 +38,7 @@ public class MdObjectNameUnallowedLetterCheckTest
         "In Russian locale, name, synonym or comment of metadata object contain the unallowed letter";
 
     /**
-     * Test that md object name, synonym and comment do not contain unallowed letter "ë" (Ru locale)
+     * Test that md object name, synonym and comment do not contain unallowed letter "ё" (Ru locale)
      *
      * @throws Exception the exception
      */
@@ -54,7 +54,7 @@ public class MdObjectNameUnallowedLetterCheckTest
     }
 
     /**
-     * Test that md object name contains unallowed letter "ë" (Ru locale)
+     * Test that md object name contains unallowed letter "ё" (Ru locale)
      *
      * @throws Exception the exception
      */
@@ -64,14 +64,14 @@ public class MdObjectNameUnallowedLetterCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        long id = getTopObjectIdByFqn("Catalog.ТестовыйКаталог_ë_имя", dtProject);
+        long id = getTopObjectIdByFqn("Catalog.ТестовыйКаталог_ё_имя", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
         assertEquals(marker.getMessage(), MESSAGE);
     }
 
     /**
-     * Test that md object synonym contains unallowed letter "ë" (Ru locale)
+     * Test that md object synonym contains unallowed letter "ё" (Ru locale)
      *
      * @throws Exception the exception
      */
@@ -88,7 +88,7 @@ public class MdObjectNameUnallowedLetterCheckTest
     }
 
     /**
-     * Test that md object comment contains unallowed letter "ë" (Ru locale)
+     * Test that md object comment contains unallowed letter "ё" (Ru locale)
      *
      * @throws Exception the exception
      */

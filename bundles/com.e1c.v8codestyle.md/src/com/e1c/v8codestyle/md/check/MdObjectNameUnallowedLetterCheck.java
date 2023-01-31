@@ -31,7 +31,7 @@ import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.md.CorePlugin;
 
 /**
- * Check in Russian locale, names, synonyms and comments of metadata objects do not contain the letter "ë".
+ * Check in Russian locale, names, synonyms and comments of metadata objects do not contain the letter "ё".
  *
  * @author Olga Bozhko
  */
@@ -41,7 +41,7 @@ public class MdObjectNameUnallowedLetterCheck
     private static final String CHECK_ID = "mdo-ru-name-unallowed-letter"; //$NON-NLS-1$
     private static final int STANDARD_NUM = 474;
     private static final String LANGUAGE_KEY_RU = "ru"; //$NON-NLS-1$
-    private static final String UNALLOWED_LETTER = "ë"; //$NON-NLS-1$
+    private static final String UNALLOWED_LETTER = "ё"; //$NON-NLS-1$
     private static final String ISSUE_MESSAGE =
         Messages.MdObjectNameUnallowedLetterCheck_Ru_locale_unallowed_letter_used_for_name_synonym_or_comment;
 

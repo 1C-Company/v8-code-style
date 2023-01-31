@@ -12,7 +12,7 @@
     <key>ru</key>
     <value>Тестовый каталог комментарий</value>
   </synonym>
-  <comment>ТестовыйКаталог_ë_комментарий</comment>
+  <comment>ТестовыйКаталог_ё_комментарий</comment>
   <useStandardCommands>true</useStandardCommands>
   <inputByString>Catalog.ТестовыйКаталог_комментарий.StandardAttribute.Code</inputByString>
   <inputByString>Catalog.ТестовыйКаталог_комментарий.StandardAttribute.Description</inputByString>

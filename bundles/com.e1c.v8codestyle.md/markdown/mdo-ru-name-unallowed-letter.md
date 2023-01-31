@@ -1,6 +1,6 @@
 # Common cached modules.
 
-In Russian locale, it is not allowed to use the letter "ë" in names, synonyms and comments of metadata objects.
+In Russian locale, it is not allowed to use the letter "ё" in names, synonyms and comments of metadata objects.
 
 
 ## Noncompliant Code Example

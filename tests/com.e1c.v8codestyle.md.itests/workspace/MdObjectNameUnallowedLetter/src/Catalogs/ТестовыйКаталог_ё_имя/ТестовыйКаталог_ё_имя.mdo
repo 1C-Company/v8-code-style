@@ -7,14 +7,14 @@
     <listType typeId="fb2ad3de-9a62-40b4-857c-0406b01e0705" valueTypeId="741f1b6a-0913-44d9-9737-359dee40e17d"/>
     <managerType typeId="c2d2e7ed-2eb1-4c84-84ca-f3a72c0948b1" valueTypeId="8302eeb7-0f61-4d95-bb16-a1c65491e9a7"/>
   </producedTypes>
-  <name>ТестовыйКаталог_ë_имя</name>
+  <name>ТестовыйКаталог_ё_имя</name>
   <synonym>
     <key>ru</key>
     <value>Тестовый каталог</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.ТестовыйКаталог_ë_имя.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.ТестовыйКаталог_ë_имя.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.ТестовыйКаталог_ё_имя.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.ТестовыйКаталог_ё_имя.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>

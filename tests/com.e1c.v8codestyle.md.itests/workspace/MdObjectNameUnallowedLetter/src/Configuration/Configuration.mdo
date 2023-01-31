@@ -40,7 +40,7 @@
     <languageCode>ru</languageCode>
   </languages>
   <catalogs>Catalog.ТестовыйКаталог</catalogs>
-  <catalogs>Catalog.ТестовыйКаталог_ë_имя</catalogs>
+  <catalogs>Catalog.ТестовыйКаталог_ё_имя</catalogs>
   <catalogs>Catalog.ТестовыйКаталог_комментарий</catalogs>
   <catalogs>Catalog.ТестовыйКаталог_синоним</catalogs>
 </mdclass:Configuration>
