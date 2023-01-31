@@ -102,8 +102,9 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
                 .orElse(null);
 
             if (defMethod != null && defMethod.isDeprecated()
-                && !verifyLocationForDeprecated(getFirstParentRegion(method), getTopParentRegion(method),
-                    scriptVariant))
+                && !verifyLocationForDeprecated(
+                    getParentRegionByName(method, ModuleStructureSection.DEPRECATED_REGION.getName(scriptVariant)),
+                    getTopParentRegion(method), scriptVariant))
             {
                 resultAceptor.addIssue(MessageFormat.format(
                     Messages.DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area,
