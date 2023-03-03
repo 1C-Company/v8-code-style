@@ -88,7 +88,7 @@ public class ExtensionVariablePrefixCheck
             .extension(new AdoptedModuleOwnerExtension())
             .extension(ModuleTypeFilter.excludeTypes(COMMAND_MODULE, SESSION_MODULE, COMMON_MODULE, MANAGER_MODULE))
             .module()
-            .checkedObjectType(EXPLICIT_VARIABLE, SIMPLE_STATEMENT, DECLARE_STATEMENT);
+            .checkedObjectType(EXPLICIT_VARIABLE, DECLARE_STATEMENT);
     }
 
 
