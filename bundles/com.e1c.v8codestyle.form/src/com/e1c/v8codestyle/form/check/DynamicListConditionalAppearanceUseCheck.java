@@ -9,6 +9,7 @@
  *
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
+ *     Vadim Goncharov - issue #262
  *******************************************************************************/
 
 package com.e1c.v8codestyle.form.check;
