@@ -68,7 +68,7 @@ public class MdObjectAttributeCommentCheck
         "Comment"); //$NON-NLS-1$
     private static final String DELIMITER = ","; //$NON-NLS-1$
     public static final String DEFAULT_ATTRIBUTES_LIST = String.join(DELIMITER, COMMENT_ATTRIBUTES_LIST);
-    
+
     private static final String DEFAULT_CHECK_MESSAGE = Messages.MdObjectAttributeCommentCheck_Default_check_message;
 
     public MdObjectAttributeCommentCheck()
@@ -87,17 +87,20 @@ public class MdObjectAttributeCommentCheck
             .extension(new StandardCheckExtension(531, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .extension(new TopObjectFilterExtension())
-            .parameter(PARAM_ATTRIBUTES_LIST, String.class, DEFAULT_ATTRIBUTES_LIST, Messages.MdObjectAttributeCommentCheck_Attribute_list);
+            .parameter(PARAM_ATTRIBUTES_LIST, String.class, DEFAULT_ATTRIBUTES_LIST,
+                Messages.MdObjectAttributeCommentCheck_Attribute_list);
 
         builder.topObject(CATALOG)
             .containment(CATALOG_ATTRIBUTE)
             .features(BASIC_FEATURE__TYPE, BASIC_FEATURE__MULTI_LINE)
-            .parameter(RARAM_CHECK_CATALOGS, Boolean.class, DEFAULT_CHECK_CATALOGS, Messages.MdObjectAttributeCommentCheck_Check_catalogs_param);
+            .parameter(RARAM_CHECK_CATALOGS, Boolean.class, DEFAULT_CHECK_CATALOGS,
+                Messages.MdObjectAttributeCommentCheck_Check_catalogs_param);
 
         builder.topObject(DOCUMENT)
             .containment(DOCUMENT_ATTRIBUTE)
             .features(BASIC_FEATURE__TYPE, BASIC_FEATURE__MULTI_LINE)
-            .parameter(PARAM_CHECK_DOCUMENTS, Boolean.class, DEFAULT_CHECK_DOCUMENTS, Messages.MdObjectAttributeCommentCheck_Check_documents_param);
+            .parameter(PARAM_CHECK_DOCUMENTS, Boolean.class, DEFAULT_CHECK_DOCUMENTS,
+                Messages.MdObjectAttributeCommentCheck_Check_documents_param);
 
     }
 
