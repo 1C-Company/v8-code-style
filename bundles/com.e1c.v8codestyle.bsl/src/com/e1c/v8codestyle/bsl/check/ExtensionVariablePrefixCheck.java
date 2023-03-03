@@ -14,7 +14,6 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.EXPLICIT_VARIABLE;
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.ModuleType.COMMAND_MODULE;
 import static com._1c.g5.v8.dt.bsl.model.ModuleType.COMMON_MODULE;
 import static com._1c.g5.v8.dt.bsl.model.ModuleType.MANAGER_MODULE;
