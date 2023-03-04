@@ -90,10 +90,6 @@ public class VariableNameInvalidCheck
         IProgressMonitor monitor)
     {
 
-        if (monitor.isCanceled() || !(object instanceof Module))
-        {
-            return;
-        }
         minLength = parameters.getInt(MIN_NAME_LENGTH_PARAM_NAME);
         if (minLength <= 0)
         {
