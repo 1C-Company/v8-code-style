@@ -58,7 +58,7 @@ public class MdObjectAttributeCommentCheck
     private static final String CHECK_ID = "md-object-attribute-comment-incorrect-type"; //$NON-NLS-1$
 
     public static final String PARAM_CHECK_DOCUMENTS = "checkDocuments"; //$NON-NLS-1$
-    public static final String RARAM_CHECK_CATALOGS = "checkCatalogs"; //$NON-NLS-1$
+    public static final String PARAM_CHECK_CATALOGS = "checkCatalogs"; //$NON-NLS-1$
     public static final String PARAM_ATTRIBUTES_LIST = "attributesList"; //$NON-NLS-1$
 
     public static final String DEFAULT_CHECK_DOCUMENTS = Boolean.toString(true);
@@ -93,7 +93,7 @@ public class MdObjectAttributeCommentCheck
         builder.topObject(CATALOG)
             .containment(CATALOG_ATTRIBUTE)
             .features(BASIC_FEATURE__TYPE, BASIC_FEATURE__MULTI_LINE)
-            .parameter(RARAM_CHECK_CATALOGS, Boolean.class, DEFAULT_CHECK_CATALOGS,
+            .parameter(PARAM_CHECK_CATALOGS, Boolean.class, DEFAULT_CHECK_CATALOGS,
                 Messages.MdObjectAttributeCommentCheck_Check_catalogs_param);
 
         builder.topObject(DOCUMENT)
@@ -115,7 +115,7 @@ public class MdObjectAttributeCommentCheck
         IProgressMonitor monitor)
     {
 
-        boolean checkCatalogs = parameters.getBoolean(RARAM_CHECK_CATALOGS);
+        boolean checkCatalogs = parameters.getBoolean(PARAM_CHECK_CATALOGS);
         boolean checkDocuments = parameters.getBoolean(PARAM_CHECK_DOCUMENTS);
         Set<String> attributeList = getListOfAttributes(parameters);
 
