@@ -30,6 +30,12 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.md.CorePlugin;
 
+/**
+ * The check that in the document that allow posting set flags "Post in privileged mode"
+ * and "Unpost in privileged mode". 
+ *
+ * @author Vadim Gocnharov
+ */
 public class DocumentPostInPrivilegedModeCheck
     extends BasicCheck
 {
