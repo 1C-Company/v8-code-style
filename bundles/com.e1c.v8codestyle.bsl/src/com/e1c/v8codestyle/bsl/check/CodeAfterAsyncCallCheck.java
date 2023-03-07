@@ -126,7 +126,7 @@ public final class CodeAfterAsyncCallCheck
         }
     }
 
-    private final Statement getStatementFromInvoc(Invocation invocation)
+    private Statement getStatementFromInvoc(Invocation invocation)
     {
         EObject container = invocation.eContainer();
         while (!(container instanceof Statement))
@@ -136,7 +136,7 @@ public final class CodeAfterAsyncCallCheck
         return container instanceof Statement ? (Statement)container : null;
     }
 
-    private final Statement getNextStatement(Statement statement)
+    private Statement getNextStatement(Statement statement)
     {
         Iterator<EObject> it = EcoreUtil2.getAllContainers(statement).iterator();
         while (it.hasNext())
