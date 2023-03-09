@@ -68,13 +68,40 @@ public class AsyncInvocationProvider
     @Override
     public Collection<String> getAsyncInvocationNames(Version version)
     {
-        if (cashNames.get(version) != null)
+        if (cashNames.get(version) == null)
         {
-            return cashNames.get(version);
+            synchronized (this)
+            {
+                if (cashNames.get(version) != null)
+                {
+                    return cashNames.get(version);
+                }
+                collect(version);
+            }
         }
+        return cashNames.get(version);
+    }
 
+    @Override
+    public Map<String, Collection<String>> getAsyncTypeMethodNames(Version version)
+    {
+        if (cashTypesMethodNames.get(version) == null)
+        {
+            synchronized (this)
+            {
+                if (cashTypesMethodNames.get(version) != null)
+                {
+                    return cashTypesMethodNames.get(version);
+                }
+                process(version);
+            }
+        }
+        return cashTypesMethodNames.get(version);
+    }
+
+    private void collect(Version version)
+    {
         Collection<String> asyncMethodsNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        cashNames.put(version, asyncMethodsNames);
 
         Collection<IV8Project> projects = v8ProjectManager.getProjects();
         for (IV8Project project : projects)
@@ -94,20 +121,12 @@ public class AsyncInvocationProvider
                 }
             }
         }
-
-        return asyncMethodsNames;
+        cashNames.put(version, asyncMethodsNames);
     }
 
-    @Override
-    public Map<String, Collection<String>> getAsyncTypeMethodNames(Version version)
+    private Map<String, Collection<String>> process(Version version)
     {
-        if (cashTypesMethodNames.get(version) != null)
-        {
-            return cashTypesMethodNames.get(version);
-        }
-
         Map<String, Collection<String>> asyncMethodsNames = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        cashTypesMethodNames.put(version, asyncMethodsNames);
 
         Collection<IV8Project> projects = v8ProjectManager.getProjects();
         for (IV8Project project : projects)
@@ -136,6 +155,8 @@ public class AsyncInvocationProvider
                 }
             }
         }
+
+        cashTypesMethodNames.put(version, asyncMethodsNames);
 
         return asyncMethodsNames;
     }
