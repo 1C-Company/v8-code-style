@@ -17,6 +17,7 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -27,6 +28,7 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
+import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
@@ -116,16 +118,29 @@ public final class CodeAfterAsyncCallCheck
             Collection<String> asyncMethodsNames = asyncInvocationProvider.getAsyncInvocationNames(version);
             if (asyncMethodsNames.contains(featureAccess.getName()))
             {
-                Statement statement = getStatementFromInvoc(inv);
-                if (statement != null && isPreviousStatementAwait(statement))
-                {
-                    statement = getNextStatement(statement);
-                    if (statement != null && !(statement instanceof ReturnStatement)
-                        && !(statement instanceof EmptyStatement))
-                    {
-                        resultAceptor.addIssue(Messages.CodeAfterAsyncCallCheck_Issue, statement);
-                    }
-                }
+                addIssue(resultAceptor, inv);
+            }
+        }
+        else if (featureAccess instanceof DynamicFeatureAccess)
+        {
+            Map<String, Collection<String>> names = asyncInvocationProvider.getAsyncTypeMethodNames(version);
+            if (names.containsKey(featureAccess.getName()))
+            {
+                addIssue(resultAceptor, inv);
+            }
+        }
+    }
+
+    private void addIssue(ResultAcceptor resultAceptor, Invocation inv)
+    {
+        Statement statement = getStatementFromInvoc(inv);
+        if (statement != null && isPreviousStatementAwait(statement))
+        {
+            statement = getNextStatement(statement);
+            if (statement != null && !(statement instanceof ReturnStatement)
+                && !(statement instanceof EmptyStatement))
+            {
+                resultAceptor.addIssue(Messages.CodeAfterAsyncCallCheck_Issue, statement);
             }
         }
     }

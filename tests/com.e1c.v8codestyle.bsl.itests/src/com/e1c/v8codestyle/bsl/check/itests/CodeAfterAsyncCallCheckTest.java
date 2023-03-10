@@ -24,7 +24,7 @@ import com.e1c.v8codestyle.bsl.check.CodeAfterAsyncCallCheck;
 
 /**
  * Tests for {@link CodeAfterAsyncCallCheck} check.
- * 
+ *
  * @author Artem Iliukhin
  */
 public class CodeAfterAsyncCallCheckTest
@@ -66,5 +66,15 @@ public class CodeAfterAsyncCallCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
         assertNull(marker);
+    }
+
+    @Test
+    public void testSpreadsheetDocumentNonCompliant() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "async-call-spread-sh-doc.bsl");
+
+        Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
+        assertNotNull(marker);
+        assertEquals("8", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 }
