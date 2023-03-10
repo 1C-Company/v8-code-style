@@ -36,12 +36,12 @@ public class DocumentPostInPrivilegedModeCheckTest
     private static final String PROJECT_NAME = "DocumentPostInPrivilegedMode";
 
     /**
-     * Test MD-Object has object presentation and list presentation are empty.
+     * Test Documents, that allow post and don't post/unpost in privileged mode.
      *
      * @throws Exception the exception
      */
     @Test
-    public void testDocumentPostUnpostInPrivilegedMode() throws Exception
+    public void testDocumentNotPostUnpostInPrivilegedMode() throws Exception
     {
 
         IDtProject project = openProjectAndWaitForValidationFinish(PROJECT_NAME);
@@ -56,17 +56,30 @@ public class DocumentPostInPrivilegedModeCheckTest
         id = getTopObjectIdByFqn("Document.TestDocument2", project);
         marker = getFirstMarker(CHECK_ID, id, project);
         assertNotNull(marker);
+
+    }
+    
+    /**
+     * Test Documents, that don't allow post or allow post and post/unpost in privileged mode.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testDocumentPostUnpostInProvolegedMode() throws Exception
+    {
+        
+        IDtProject project = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(project);
         
         // Deny post
-        id = getTopObjectIdByFqn("Document.TestDocument3", project);
-        marker = getFirstMarker(CHECK_ID, id, project);
+        long id = getTopObjectIdByFqn("Document.TestDocument3", project);
+        Marker marker = getFirstMarker(CHECK_ID, id, project);
         assertNull(marker);
 
         // Allow post, post & unpost in priv. mode
         id = getTopObjectIdByFqn("Document.TestDocument4", project);
         marker = getFirstMarker(CHECK_ID, id, project);
         assertNull(marker);
-
     }
 
 }
