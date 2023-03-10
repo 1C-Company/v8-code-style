@@ -1,13 +1,13 @@
-# Variable naming conventions
+# Rules for variable names generation
 
-1. Names of variables should be formed from the terms of the subject area in such a way that 
-   its purpose is clear from the name of the variable.
-2. Names should be formed by removing spaces between words. In this case, each word in the name 
-   is written with a capital letter. One-letter prepositions and pronouns are also written in capital letters.
-3. Variable names must not begin with an underscore.
-4. Variable names should not consist of a single character. The use of single-character variable names is only 
-   allowed for loop counters.
-5. Variables reflecting the state of a certain flag should be named as the true value of this flag is written.
+1. To name a variable, use conventional terms related to the respective subject area so 
+   that the variable's name would be descriptive and convey its purpose to the reader.
+2. Variable names mustn't contain spaces, even when it is composed of a few words. 
+   Each word in a variable name starts with a capital letter, including pronounces and prepositions.
+3. Variable names mustn't start with an underscore.
+4. Variable names must contain more than one character, except for loop counters. 
+   It is allowed to assign loop counters with single-character names.
+5. Name Boolean variables so that the name would convey the true state of the variable.
 
 ## Invalid variable name examples
 
@@ -25,4 +25,4 @@ NewDocumentRef;
 	
 ## See
 
-- [Variable naming conventions](https://its.1c.ru/db/v8std#content:454:hdoc:3)
+- [Rules for variable names generation](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Code_conventions/Module_formatting/Rules_for_variable_names_generation/)
