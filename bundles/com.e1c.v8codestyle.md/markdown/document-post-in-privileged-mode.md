@@ -1,12 +1,12 @@
-# In document that allow posting don't set flat "Post (unpost) in privileged mode"
+# In document that require posting don't set flat "Post (unpost) in privileged mode"
 
-1.7. In all documents that require posting, the flags "Privileged mode when posting" 
-and "Privileged mode when canceling posting" must be set, so you do not need to create 
-roles that give rights to change registers subordinate to registrars.
+All documents that require posting must have the "Privileged mode for posting" 
+and "Privileged mode for unposting" check boxes selected. Therefore it is not necessary 
+to create roles that grant rights to change registers subordinate to recorders.
 
-Exception: documents intended for direct updating of register 
-entries can be checked with access rights, but in this case it is necessary to provide 
-roles that give rights to change registers.
+Exception: documents intended for direct adjustment of register records can be posted 
+with access right verification, but in this case, it is necessary to include roles that 
+grant rights to change registers.
 
 ## Noncompliant Solution
 
@@ -14,4 +14,4 @@ roles that give rights to change registers.
 
 ## See
 
-[Setting up roles and access rights](https://its.1c.ru/db/v8std#content:689:hdoc:1.7)
+[Configuring roles and access rights](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Setting_data_access_rights/Configuring_roles_and_access_rights/)
