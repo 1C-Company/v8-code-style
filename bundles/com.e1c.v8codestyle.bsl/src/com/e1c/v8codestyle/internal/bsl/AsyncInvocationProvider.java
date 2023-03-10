@@ -49,6 +49,7 @@ public class AsyncInvocationProvider
     implements IAsyncInvocationProvider
 {
 
+    private static final String EXEPTION_NAME = "RunCallback"; //$NON-NLS-1$
     private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
     private final Map<Version, Collection<String>> cashNames;
     private final Map<Version, Map<String, Collection<String>>> cashTypesMethodNames;
@@ -190,7 +191,7 @@ public class AsyncInvocationProvider
     private void collectMethods(Collection<String> asyncMethodsNames, EObject object)
     {
         Method method = (Method)object;
-        if ("RunCallback".equals(method.getName())) //$NON-NLS-1$
+        if (EXEPTION_NAME.equals(method.getName()))
         {
             return;
         }

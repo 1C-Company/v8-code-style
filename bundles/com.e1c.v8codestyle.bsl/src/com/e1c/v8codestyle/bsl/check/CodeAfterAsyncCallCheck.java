@@ -165,7 +165,7 @@ public final class CodeAfterAsyncCallCheck
             if (st != null)
             {
                 int index = st.indexOf(statement);
-                if (index != -1 && index - 1 < st.size())
+                if (index > 0 && index - 1 < st.size())
                 {
                     Statement awaitStatement = st.get(index - 1);
                     if (awaitStatement instanceof SimpleStatement)
