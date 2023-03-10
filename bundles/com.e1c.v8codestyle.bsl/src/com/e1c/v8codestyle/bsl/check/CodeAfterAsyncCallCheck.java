@@ -28,12 +28,14 @@ import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
+import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItemStatements;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
+import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
@@ -63,6 +65,8 @@ public final class CodeAfterAsyncCallCheck
     extends BasicCheck
 {
 
+    private static final String STATEMENT_NAME_RU = "Ждать"; //$NON-NLS-1$
+    private static final String STATEMENT_NAME = "Await"; //$NON-NLS-1$
     private static final String CHECK_ID = "code-after-async-call"; //$NON-NLS-1$
     private final IResourceLookup resourceLookup;
     private final IAsyncInvocationProvider asyncInvocationProvider;
@@ -113,7 +117,7 @@ public final class CodeAfterAsyncCallCheck
             if (asyncMethodsNames.contains(featureAccess.getName()))
             {
                 Statement statement = getStatementFromInvoc(inv);
-                if (statement != null)
+                if (statement != null && isPreviousStatementAwait(statement))
                 {
                     statement = getNextStatement(statement);
                     if (statement != null && !(statement instanceof ReturnStatement)
@@ -136,37 +140,46 @@ public final class CodeAfterAsyncCallCheck
         return container instanceof Statement ? (Statement)container : null;
     }
 
+    private boolean isPreviousStatementAwait(Statement statement)
+    {
+        Iterator<EObject> it = EcoreUtil2.getAllContainers(statement).iterator();
+        while (it.hasNext())
+        {
+            EObject container = it.next();
+            List<Statement> st = getContainer(container);
+            if (st != null)
+            {
+                int index = st.indexOf(statement);
+                if (index != -1 && index - 1 < st.size())
+                {
+                    Statement awaitStatement = st.get(index - 1);
+                    if (awaitStatement instanceof SimpleStatement)
+                    {
+                        Expression left = ((SimpleStatement)awaitStatement).getLeft();
+                        if (left instanceof StaticFeatureAccess)
+                        {
+                            String name = ((StaticFeatureAccess)left).getName();
+                            if (STATEMENT_NAME.equalsIgnoreCase(name) || STATEMENT_NAME_RU.equalsIgnoreCase(name))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+
+                    return awaitStatement != null;
+                }
+            }
+        }
+        return false;
+    }
+
     private Statement getNextStatement(Statement statement)
     {
         Iterator<EObject> it = EcoreUtil2.getAllContainers(statement).iterator();
         while (it.hasNext())
         {
             EObject container = it.next();
-            List<Statement> st = null;
-            if (container instanceof LoopStatement)
-            {
-                st = ((LoopStatement)container).getStatements();
-            }
-            else if (container instanceof Conditional)
-            {
-                st = ((Conditional)container).getStatements();
-            }
-            else if (container instanceof IfStatement)
-            {
-                st = ((IfStatement)container).getElseStatements();
-            }
-            else if (container instanceof TryExceptStatement)
-            {
-                st = getStatementsFromContainer((TryExceptStatement)container);
-            }
-            else if (container instanceof PreprocessorItemStatements)
-            {
-                st = ((PreprocessorItemStatements)container).getStatements();
-            }
-            else
-            {
-                st = getStatementsFromContainer(container);
-            }
+            List<Statement> st = getContainer(container);
             if (st != null)
             {
                 int index = st.indexOf(statement);
@@ -177,6 +190,36 @@ public final class CodeAfterAsyncCallCheck
             }
         }
         return null;
+    }
+
+    private List<Statement> getContainer(EObject container)
+    {
+        List<Statement> st = null;
+        if (container instanceof LoopStatement)
+        {
+            st = ((LoopStatement)container).getStatements();
+        }
+        else if (container instanceof Conditional)
+        {
+            st = ((Conditional)container).getStatements();
+        }
+        else if (container instanceof IfStatement)
+        {
+            st = ((IfStatement)container).getElseStatements();
+        }
+        else if (container instanceof TryExceptStatement)
+        {
+            st = getStatementsFromContainer((TryExceptStatement)container);
+        }
+        else if (container instanceof PreprocessorItemStatements)
+        {
+            st = ((PreprocessorItemStatements)container).getStatements();
+        }
+        else
+        {
+            st = getStatementsFromContainer(container);
+        }
+        return st;
     }
 
     private List<Statement> getStatementsFromContainer(TryExceptStatement container)

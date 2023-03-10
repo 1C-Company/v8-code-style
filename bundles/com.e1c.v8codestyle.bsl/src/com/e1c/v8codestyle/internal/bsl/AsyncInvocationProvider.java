@@ -49,6 +49,7 @@ public class AsyncInvocationProvider
     implements IAsyncInvocationProvider
 {
 
+    private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
     private final Map<Version, Collection<String>> cashNames;
     private final Map<Version, Map<String, Collection<String>>> cashTypesMethodNames;
     private final IConfigurationProvider configurationProvider;
@@ -225,7 +226,7 @@ public class AsyncInvocationProvider
     {
         for (TypeItem type : param.getType())
         {
-            if ("NotifyDescription".equals(McoreUtil.getTypeName(type))) //$NON-NLS-1$
+            if (TYPE_NAME.equals(McoreUtil.getTypeName(type)))
             {
                 return true;
             }
