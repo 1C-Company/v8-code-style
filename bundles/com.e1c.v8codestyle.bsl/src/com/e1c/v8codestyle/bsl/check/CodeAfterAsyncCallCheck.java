@@ -35,6 +35,7 @@ import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
+import com._1c.g5.v8.dt.bsl.model.PreprocessorConditional;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItemStatements;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
@@ -161,6 +162,10 @@ public final class CodeAfterAsyncCallCheck
         while (it.hasNext())
         {
             EObject container = it.next();
+            if (container instanceof PreprocessorConditional)
+            {
+                continue;
+            }
             List<Statement> st = getContainer(container);
             if (st != null)
             {
@@ -194,6 +199,10 @@ public final class CodeAfterAsyncCallCheck
         while (it.hasNext())
         {
             EObject container = it.next();
+            if (container instanceof PreprocessorConditional)
+            {
+                continue;
+            }
             List<Statement> st = getContainer(container);
             if (st != null)
             {
