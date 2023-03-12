@@ -23,8 +23,7 @@ public class UseGotoOperatorCheckTest
     {
         super(UseGotoOperatorCheck.class);
     }
-    
-    
+
     /**
      * Test the module use goto operator and labeled statement.
      *
@@ -33,18 +32,18 @@ public class UseGotoOperatorCheckTest
     @Test
     public void testUseGotoOperator() throws Exception
     {
-        
+
         updateModule(FOLDER_RESOURCE + "use-goto-operator.bsl");
-        
+
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
-        
+
         Marker marker = markers.get(0);
         assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        
+
         marker = markers.get(1);
         assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        
+
     }
-    
+
 }
