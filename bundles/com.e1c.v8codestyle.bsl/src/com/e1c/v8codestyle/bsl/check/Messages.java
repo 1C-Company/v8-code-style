@@ -338,6 +338,12 @@ final class Messages
 
     public static String RollbackTransactionCheck_Transactions_is_broken_des;
 
+    public static String UnknownFormParameterAccessCheck_description;
+
+    public static String UnknownFormParameterAccessCheck_title;
+
+    public static String UnknownFormParameterAccessCheck_Unknown_form_parameter_access;
+
     public static String UseNonRecommendedMethods_description;
 
     public static String UseNonRecommendedMethods_message;
