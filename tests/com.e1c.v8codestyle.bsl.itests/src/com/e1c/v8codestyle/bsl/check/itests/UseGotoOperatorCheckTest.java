@@ -1,8 +1,11 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -37,12 +40,16 @@ public class UseGotoOperatorCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
-
-        Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
-        marker = markers.get(1);
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        
+        Set<String> testMarkersList = Set.of("3", "5");
+        Set<String> projectMarkersList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        
+        for (Marker marker : markers)
+        {
+            projectMarkersList.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+        
+        assertTrue(testMarkersList.equals(projectMarkersList));
 
     }
 

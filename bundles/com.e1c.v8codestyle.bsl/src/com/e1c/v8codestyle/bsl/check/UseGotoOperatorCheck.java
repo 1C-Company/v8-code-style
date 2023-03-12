@@ -68,27 +68,24 @@ public class UseGotoOperatorCheck
         IProgressMonitor monitor)
     {
 
-        if (object instanceof Block)
+        Block block = (Block)object;
+        for (Statement st : block.allStatements())
         {
-            Block block = (Block)object;
-            for (Statement st : block.allStatements())
+            if (monitor.isCanceled())
             {
-                if (monitor.isCanceled())
-                {
-                    return;
-                }
-
-                if (st instanceof GotoStatement)
-                {
-                    resultAcceptor.addIssue(Messages.UseGotoOperatorCheck_Use_Goto_operator, st);
-                }
-
-                if (st instanceof LabeledStatement)
-                {
-                    resultAcceptor.addIssue(Messages.UseGotoOperatorCheck_Use_Label_with_Goto_operator, st);
-                }
-
+                return;
             }
+
+            if (st instanceof GotoStatement)
+            {
+                resultAcceptor.addIssue(Messages.UseGotoOperatorCheck_Use_Goto_operator, st);
+            }
+
+            if (st instanceof LabeledStatement)
+            {
+                resultAcceptor.addIssue(Messages.UseGotoOperatorCheck_Use_Label_with_Goto_operator, st);
+            }
+
         }
 
     }
