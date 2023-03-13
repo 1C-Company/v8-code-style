@@ -15,18 +15,24 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.VARIABLE;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STATIC_FEATURE_ACCESS;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
+import com._1c.g5.v8.dt.bsl.model.ForStatement;
 import com._1c.g5.v8.dt.bsl.model.ImplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -76,7 +82,7 @@ public class VariableNameInvalidCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(454, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(MODULE)
+            .checkedObjectType(VARIABLE, STATIC_FEATURE_ACCESS, DECLARE_STATEMENT)
             .parameter(MIN_NAME_LENGTH_PARAM_NAME, Integer.class, MIN_NAME_LENGTH_DEFAULT.toString(),
                 Messages.VariableNameInvalidCheck_param_MIN_NAME_LENGTH_PARAM_title);
     }
@@ -92,30 +98,13 @@ public class VariableNameInvalidCheck
             minLength = MIN_NAME_LENGTH_DEFAULT;
         }
 
-        Module module = (Module)object;
-        checkBlockVariables(module, minLength, resultAceptor, monitor);
-
-        if (monitor.isCanceled())
+        if (object instanceof Variable)
         {
-            return;
+            checkVariable((Variable)object, minLength, resultAceptor);
         }
-
-        for (Method method : module.allMethods())
+        else if (object instanceof DeclareStatement)
         {
-            if (monitor.isCanceled())
-            {
-                return;
-            }
-            checkBlockVariables(method, minLength, resultAceptor, monitor);
-        }
-
-    }
-
-    private void checkBlockVariables(Block block, int minLength, ResultAcceptor resultAceptor, IProgressMonitor monitor)
-    {
-        for (DeclareStatement ds : block.allDeclareStatements())
-        {
-            for (ExplicitVariable variable : ds.getVariables())
+            for (ExplicitVariable variable : ((DeclareStatement)object).getVariables())
             {
                 if (monitor.isCanceled())
                 {
@@ -123,16 +112,23 @@ public class VariableNameInvalidCheck
                 }
                 checkVariable(variable, minLength, resultAceptor);
             }
-        }
 
-        for (ImplicitVariable variable : block.getImplicitVariables())
+        }
+        else if (object instanceof StaticFeatureAccess)
         {
-            if (monitor.isCanceled())
+            Variable variable = ((StaticFeatureAccess)object).getImplicitVariable();
+
+            if (variable == null || monitor.isCanceled())
             {
                 return;
             }
-            checkVariable(variable, minLength, resultAceptor);
+
+            if (!isForStatementAccessVariable(variable))
+            {
+                checkVariable(variable, minLength, resultAceptor);
+            }
         }
+
     }
 
     private void checkVariable(Variable variable, int minLength, ResultAcceptor resultAceptor)
@@ -163,6 +159,11 @@ public class VariableNameInvalidCheck
             resultAceptor.addIssue(msg, variable, NAMED_ELEMENT__NAME);
         }
 
+    }
+
+    private boolean isForStatementAccessVariable(Variable variable)
+    {
+        return EcoreUtil2.getContainerOfType(variable, ForStatement.class) != null;
     }
 
 }
