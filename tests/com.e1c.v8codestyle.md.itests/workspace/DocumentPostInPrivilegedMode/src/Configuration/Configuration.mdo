@@ -42,4 +42,6 @@
   <documents>Document.TestDocument2</documents>
   <documents>Document.TestDocument3</documents>
   <documents>Document.TestDocument4</documents>
+  <documents>Document.TestDocument5</documents>
+  <accumulationRegisters>AccumulationRegister.TestAccRegister</accumulationRegisters>
 </mdclass:Configuration>

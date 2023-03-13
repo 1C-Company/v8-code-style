@@ -80,6 +80,11 @@ public class DocumentPostInPrivilegedModeCheckTest
         id = getTopObjectIdByFqn("Document.TestDocument4", project);
         marker = getFirstMarker(CHECK_ID, id, project);
         assertNull(marker);
+        
+        // Allow post, post & unpost in non-priv. mode, but no register records
+        id = getTopObjectIdByFqn("Document.TestDocument4", project);
+        marker = getFirstMarker(CHECK_ID, id, project);
+        assertNull(marker);
     }
 
 }

@@ -23,5 +23,6 @@
   <numberAllowedLength>Variable</numberAllowedLength>
   <checkUnique>true</checkUnique>
   <autonumbering>true</autonumbering>
+  <registerRecords>AccumulationRegister.TestAccRegister</registerRecords>
   <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
 </mdclass:Document>
