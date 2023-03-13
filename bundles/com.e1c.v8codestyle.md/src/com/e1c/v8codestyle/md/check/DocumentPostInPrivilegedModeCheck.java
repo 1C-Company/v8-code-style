@@ -17,6 +17,7 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT__POSTING;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT__POST_IN_PRIVILEGED_MODE;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT__UNPOST_IN_PRIVILEGED_MODE;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT__REGISTER_RECORDS;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -40,7 +41,7 @@ public class DocumentPostInPrivilegedModeCheck
     extends BasicCheck
 {
 
-    public final static String CHECK_ID = "document-post-in-privileged-mode"; //$NON-NLS-1$
+    private static final String CHECK_ID = "document-post-in-privileged-mode"; //$NON-NLS-1$
 
     public DocumentPostInPrivilegedModeCheck()
     {
@@ -65,7 +66,8 @@ public class DocumentPostInPrivilegedModeCheck
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(DOCUMENT)
             .checkTop()
-            .features(DOCUMENT__POSTING, DOCUMENT__POST_IN_PRIVILEGED_MODE, DOCUMENT__UNPOST_IN_PRIVILEGED_MODE);
+            .features(DOCUMENT__POSTING, DOCUMENT__POST_IN_PRIVILEGED_MODE, DOCUMENT__UNPOST_IN_PRIVILEGED_MODE,
+                DOCUMENT__REGISTER_RECORDS);
     }
 
     @Override
@@ -74,23 +76,35 @@ public class DocumentPostInPrivilegedModeCheck
     {
 
         Document document = (Document)object;
-        if (monitor.isCanceled() || document.getPosting().getName().equals(Posting.DENY.getName()))
+        if (monitor.isCanceled() || !documentRequirePosting(document) || !documentHaveRegisterRecords(document))
         {
             return;
         }
 
         if (!document.isPostInPrivilegedMode())
         {
-            resultAcceptor.addIssue(Messages.DocumentPostInPrivilegedModeCheck_In_document_that_allow_posting_dont_set_flag_Post_in_privileged_mode,
+            resultAcceptor.addIssue(
+                Messages.DocumentPostInPrivilegedModeCheck_In_document_that_allow_posting_dont_set_flag_Post_in_privileged_mode,
                 DOCUMENT__POST_IN_PRIVILEGED_MODE);
         }
 
         if (!document.isUnpostInPrivilegedMode())
         {
-            resultAcceptor.addIssue(Messages.DocumentPostInPrivilegedModeCheck_In_document_that_allow_posting_dont_set_flag_Unpost_in_privileged_mode,
+            resultAcceptor.addIssue(
+                Messages.DocumentPostInPrivilegedModeCheck_In_document_that_allow_posting_dont_set_flag_Unpost_in_privileged_mode,
                 DOCUMENT__UNPOST_IN_PRIVILEGED_MODE);
         }
 
+    }
+
+    private boolean documentRequirePosting(Document doc)
+    {
+        return doc.getPosting() == Posting.ALLOW;
+    }
+
+    private boolean documentHaveRegisterRecords(Document doc)
+    {
+        return !doc.getRegisterRecords().isEmpty();
     }
 
 }
