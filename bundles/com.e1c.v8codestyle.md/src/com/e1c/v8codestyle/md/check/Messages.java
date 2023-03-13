@@ -33,6 +33,12 @@ final class Messages
     public static String MdObjectAttributeCommentCheck_Default_check_message;
     public static String MdObjectAttributeCommentCheck_description;
     public static String MdObjectAttributeCommentCheck_title;
+    public static String MdObjectAttributeCommentNotExist_description;
+    public static String MdObjectAttributeCommentNotExist_Md_Object_attribute_Comment_does_not_exist;
+    public static String MdObjectAttributeCommentNotExist_Param_Check_Catalogs;
+    public static String MdObjectAttributeCommentNotExist_Param_Check_Documents;
+    public static String MdObjectAttributeCommentNotExist_Param_Attribute_name_list;
+    public static String MdObjectAttributeCommentNotExist_title;
     public static String MdObjectNameWithoutSuffix_Name_suffix_list_title;
     public static String CommonModuleNameClient_title;
     public static String CommonModuleNameClientServer_description;
