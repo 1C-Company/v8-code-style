@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -38,9 +40,9 @@ public class VariableNameInvalidCheckTest
         updateModule(FOLDER_RESOURCE + "bsl-variable-name-invalid.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(6, markers.size());
+        assertEquals(7, markers.size());
 
-        List<String> benchmarkLines = Arrays.asList("2", "3", "7", "8", "12", "13");
+        List<String> benchmarkLines = Arrays.asList("2", "3", "7", "8", "12", "13", "36");
 
         List<String> markersLines = new ArrayList<>();
         for (Marker m : markers)
