@@ -31,13 +31,10 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormCommand;
-import com._1c.g5.v8.dt.form.model.FormCommandInterfaceItem;
 import com._1c.g5.v8.dt.form.model.Visible;
-import com._1c.g5.v8.dt.mcore.Command;
 import com._1c.g5.v8.dt.mcore.NamedElement;
 import com._1c.g5.v8.dt.metadata.mdclass.AdjustableBoolean;
 import com._1c.g5.v8.dt.metadata.mdclass.ForRoleType;
-import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -114,7 +111,7 @@ public class FormItemVisibleSettingsByRolesCheck
 
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.FormItemVisibleSettingsByRoles_Message_template, propertyName, itemName),
-                eContainer);
+                eContainer, ADJUSTABLE_BOOLEAN__COMMON);
         }
 
     }
