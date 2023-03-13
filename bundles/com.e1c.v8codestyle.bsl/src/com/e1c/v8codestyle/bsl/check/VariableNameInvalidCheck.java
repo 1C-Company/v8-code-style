@@ -15,6 +15,7 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.text.MessageFormat;
 
@@ -146,20 +147,20 @@ public class VariableNameInvalidCheck
         {
             msg = MessageFormat.format(msgTemplate, name, MessageFormat
                 .format(Messages.VariableNameInvalidCheck_message_variable_length_is_less_than, minLength));
-            resultAceptor.addIssue(msg, variable);
+            resultAceptor.addIssue(msg, variable, NAMED_ELEMENT__NAME);
         }
 
         if (name.startsWith(UNDERLINE_SYM))
         {
             msg = MessageFormat.format(msgTemplate, name,
                 Messages.VariableNameInvalidCheck_variable_name_starts_with_an_underline);
-            resultAceptor.addIssue(msg, variable);
+            resultAceptor.addIssue(msg, variable, NAMED_ELEMENT__NAME);
         }
         else if (!Character.isUpperCase(name.charAt(0)))
         {
             msg = MessageFormat.format(msgTemplate, name,
                 Messages.VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter);
-            resultAceptor.addIssue(msg, variable);
+            resultAceptor.addIssue(msg, variable, NAMED_ELEMENT__NAME);
         }
 
     }
