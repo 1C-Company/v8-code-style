@@ -49,11 +49,7 @@ public class VariableNameInvalidCheck
 
     private static final Integer MIN_NAME_LENGTH_DEFAULT = 3;
 
-    private static final String MIN_NAME_LENGTH_PARAM_DEFAULT = MIN_NAME_LENGTH_DEFAULT.toString(); //$NON-NLS-1$
-
     private static final String UNDERLINE_SYM = "_"; //$NON-NLS-1$
-
-    private int minLength;
 
     /**
      * Instantiates a new instance of filter by variable name.
@@ -61,7 +57,6 @@ public class VariableNameInvalidCheck
     public VariableNameInvalidCheck()
     {
         super();
-        minLength = MIN_NAME_LENGTH_DEFAULT;
     }
 
     @Override
@@ -81,7 +76,7 @@ public class VariableNameInvalidCheck
             .extension(new StandardCheckExtension(454, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(MODULE)
-            .parameter(MIN_NAME_LENGTH_PARAM_NAME, Integer.class, MIN_NAME_LENGTH_PARAM_DEFAULT,
+            .parameter(MIN_NAME_LENGTH_PARAM_NAME, Integer.class, MIN_NAME_LENGTH_DEFAULT.toString(),
                 Messages.VariableNameInvalidCheck_param_MIN_NAME_LENGTH_PARAM_title);
     }
 
@@ -90,14 +85,14 @@ public class VariableNameInvalidCheck
         IProgressMonitor monitor)
     {
 
-        minLength = parameters.getInt(MIN_NAME_LENGTH_PARAM_NAME);
+        int minLength = parameters.getInt(MIN_NAME_LENGTH_PARAM_NAME);
         if (minLength <= 0)
         {
             minLength = MIN_NAME_LENGTH_DEFAULT;
         }
 
         Module module = (Module)object;
-        checkBlockVariables(module, resultAceptor, monitor);
+        checkBlockVariables(module, minLength, resultAceptor, monitor);
 
         if (monitor.isCanceled())
         {
@@ -110,12 +105,12 @@ public class VariableNameInvalidCheck
             {
                 return;
             }
-            checkBlockVariables(method, resultAceptor, monitor);
+            checkBlockVariables(method, minLength, resultAceptor, monitor);
         }
 
     }
 
-    private void checkBlockVariables(Block block, ResultAcceptor resultAceptor, IProgressMonitor monitor)
+    private void checkBlockVariables(Block block, int minLength, ResultAcceptor resultAceptor, IProgressMonitor monitor)
     {
         for (DeclareStatement ds : block.allDeclareStatements())
         {
@@ -125,7 +120,7 @@ public class VariableNameInvalidCheck
                 {
                     return;
                 }
-                checkVariable(variable, resultAceptor);
+                checkVariable(variable, minLength, resultAceptor);
             }
         }
 
@@ -135,11 +130,11 @@ public class VariableNameInvalidCheck
             {
                 return;
             }
-            checkVariable(variable, resultAceptor);
+            checkVariable(variable, minLength, resultAceptor);
         }
     }
 
-    private void checkVariable(Variable variable, ResultAcceptor resultAceptor)
+    private void checkVariable(Variable variable, int minLength, ResultAcceptor resultAceptor)
     {
 
         String name = variable.getName();
