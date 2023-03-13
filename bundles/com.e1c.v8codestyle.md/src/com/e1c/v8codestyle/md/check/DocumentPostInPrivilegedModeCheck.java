@@ -83,15 +83,13 @@ public class DocumentPostInPrivilegedModeCheck
 
         if (!document.isPostInPrivilegedMode())
         {
-            resultAcceptor.addIssue(
-                Messages.DocumentPostInPrivilegedModeCheck_In_document_that_allow_posting_dont_set_flag_Post_in_privileged_mode,
+            resultAcceptor.addIssue(Messages.DocumentPostInPrivilegedModeCheck_message_Post_in_privileged_mode,
                 DOCUMENT__POST_IN_PRIVILEGED_MODE);
         }
 
         if (!document.isUnpostInPrivilegedMode())
         {
-            resultAcceptor.addIssue(
-                Messages.DocumentPostInPrivilegedModeCheck_In_document_that_allow_posting_dont_set_flag_Unpost_in_privileged_mode,
+            resultAcceptor.addIssue(Messages.DocumentPostInPrivilegedModeCheck_message_Unpost_in_privileged_mode,
                 DOCUMENT__UNPOST_IN_PRIVILEGED_MODE);
         }
 

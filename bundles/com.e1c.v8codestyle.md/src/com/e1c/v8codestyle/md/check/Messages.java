@@ -54,8 +54,8 @@ final class Messages
     public static String DbObjectAnyRefCheck_Description;
     public static String DbObjectAnyRefCheck_Title;
     public static String DocumentPostInPrivilegedModeCheck_description;
-    public static String DocumentPostInPrivilegedModeCheck_In_document_that_allow_posting_dont_set_flag_Post_in_privileged_mode;
-    public static String DocumentPostInPrivilegedModeCheck_In_document_that_allow_posting_dont_set_flag_Unpost_in_privileged_mode;
+    public static String DocumentPostInPrivilegedModeCheck_message_Post_in_privileged_mode;
+    public static String DocumentPostInPrivilegedModeCheck_message_Unpost_in_privileged_mode;
     public static String DocumentPostInPrivilegedModeCheck_title;
     public static String ExtensionMdObjectNamePrefixCheck_Description;
     public static String ExtensionMdObjectNamePrefixCheck_Object_0_should_have_1_prefix;
