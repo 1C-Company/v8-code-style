@@ -26,23 +26,17 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.bsl.CognitiveComplexityProcessor;
+import com.e1c.v8codestyle.bsl.CyclomaticComplexityProcessor;
 import com.e1c.v8codestyle.bsl.IComplexityProcessor;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
-/**
- * Checks the method that a cognitive complexity is less a threshold.
- *
- * @author Manaev Konstantin
- */
-public final class CognitiveComplexityCheck
+public final class CyclomaticComplexityCheck
     extends BasicCheck
 {
-
-    private static final String CHECK_ID = "cognitive-complexity"; //$NON-NLS-1$
+    private static final String CHECK_ID = "cyclomatic-complexity"; //$NON-NLS-1$
     private static final String PARAM_COMPLEXTITY_THRESHOLD = "complexityThreshold"; //$NON-NLS-1$
-    private static final String DEFAULT_COMPLEXITY_THRESHOLD = "15"; //$NON-NLS-1$
+    private static final String DEFAULT_COMPLEXITY_THRESHOLD = "20"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -53,8 +47,8 @@ public final class CognitiveComplexityCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.CognitiveComplexityCheck_title)
-            .description(MessageFormat.format(Messages.CognitiveComplexityCheck_description, DEFAULT_COMPLEXITY_THRESHOLD))
+        builder.title(Messages.CyclomaticComplexity_title)
+            .description(MessageFormat.format(Messages.CyclomaticComplexity_description, DEFAULT_COMPLEXITY_THRESHOLD))
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
@@ -62,7 +56,7 @@ public final class CognitiveComplexityCheck
             .module()
             .checkedObjectType(METHOD)
             .parameter(PARAM_COMPLEXTITY_THRESHOLD, Integer.class, DEFAULT_COMPLEXITY_THRESHOLD,
-                Messages.CognitiveComplexityCheck_param_threshold_name);
+                Messages.CyclomaticComplexity_param_threshold_name);
     }
 
     @Override
@@ -73,13 +67,13 @@ public final class CognitiveComplexityCheck
         Method method = (Method)object;
         if (method != null)
         {
-            IComplexityProcessor processor = new CognitiveComplexityProcessor();
+            IComplexityProcessor processor = new CyclomaticComplexityProcessor();
             int complexityValue = processor.compute(method, monitor);
 
             int complexityThreshold = parameters.getInt(PARAM_COMPLEXTITY_THRESHOLD);
             if (complexityValue > complexityThreshold)
             {
-                resultAceptor.addIssue(MessageFormat.format(Messages.CognitiveComplexityCheck_issue_message,
+                resultAceptor.addIssue(MessageFormat.format(Messages.CyclomaticComplexity_issues_message,
                     Integer.toString(complexityValue), Integer.toString(complexityThreshold)), NAMED_ELEMENT__NAME);
             }
         }

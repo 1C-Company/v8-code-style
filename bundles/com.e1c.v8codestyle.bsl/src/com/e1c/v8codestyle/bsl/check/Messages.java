@@ -117,6 +117,14 @@ final class Messages
 
     public static String ConsecutiveEmptyLines_Title;
 
+    public static String CyclomaticComplexity_description;
+
+    public static String CyclomaticComplexity_issues_message;
+
+    public static String CyclomaticComplexity_param_threshold_name;
+
+    public static String CyclomaticComplexity_title;
+
     public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area;
 
     public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_description;
