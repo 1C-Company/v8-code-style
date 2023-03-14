@@ -48,12 +48,15 @@ public class UseNonRecommendedMethodsTest
         updateModule(FOLDER_RESOURCE + "use-non-recommended-methods.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(3, markers.size());
 
         Marker marker = markers.get(0);
         assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
         marker = markers.get(1);
         assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+        marker = markers.get(2);
+        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 }
