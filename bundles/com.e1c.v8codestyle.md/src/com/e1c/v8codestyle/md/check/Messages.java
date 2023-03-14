@@ -27,6 +27,12 @@ final class Messages
     public static String DbObjectRefNonRefTypesCheck_Description;
     public static String DbObjectRefNonRefTypesCheck_Ref_and_other;
     public static String DbObjectRefNonRefTypesCheck_Title;
+    public static String MdObjectAttributeCommentCheck_Attribute_list;
+    public static String MdObjectAttributeCommentCheck_Check_catalogs_param;
+    public static String MdObjectAttributeCommentCheck_Check_documents_param;
+    public static String MdObjectAttributeCommentCheck_Default_check_message;
+    public static String MdObjectAttributeCommentCheck_description;
+    public static String MdObjectAttributeCommentCheck_title;
     public static String MdObjectAttributeCommentNotExist_description;
     public static String MdObjectAttributeCommentNotExist_Md_Object_attribute_Comment_does_not_exist;
     public static String MdObjectAttributeCommentNotExist_Param_Check_Catalogs;
