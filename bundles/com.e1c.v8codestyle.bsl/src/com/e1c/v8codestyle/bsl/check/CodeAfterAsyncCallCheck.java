@@ -28,6 +28,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.EmptyExpression;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
@@ -41,6 +42,7 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
+import com._1c.g5.v8.dt.bsl.model.UndefinedLiteral;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.Environmental;
@@ -73,6 +75,8 @@ public final class CodeAfterAsyncCallCheck
     private static final String STATEMENT_NAME_RU = "Ждать"; //$NON-NLS-1$
     private static final String STATEMENT_NAME = "Await"; //$NON-NLS-1$
     private static final String CHECK_ID = "code-after-async-call"; //$NON-NLS-1$
+    private static final String DEFAULT_CHECK = Boolean.toString(Boolean.TRUE);
+    private static final String PARAMETER_NAME = "NotifyDescriptionIsDefined"; //$NON-NLS-1$
     private final IResourceLookup resourceLookup;
     private final IAsyncInvocationProvider asyncInvocationProvider;
     private final IRuntimeVersionSupport runtimeVersionSupport;
@@ -105,7 +109,9 @@ public final class CodeAfterAsyncCallCheck
             .issueType(IssueType.WARNING)
             .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(INVOCATION);
+            .checkedObjectType(INVOCATION)
+            .parameter(PARAMETER_NAME, Boolean.class, DEFAULT_CHECK,
+                Messages.CodeAfterAsyncCallCheck_Parameter);
     }
 
     @Override
@@ -120,9 +126,11 @@ public final class CodeAfterAsyncCallCheck
         if (featureAccess instanceof StaticFeatureAccess)
         {
             Collection<String> asyncMethodsNames = asyncInvocationProvider.getAsyncInvocationNames(version);
-            if (asyncMethodsNames.contains(featureAccess.getName()))
+            if (asyncMethodsNames.contains(featureAccess.getName())
+                && (parameters.getBoolean(PARAMETER_NAME) && isDefinedParam(inv)
+                    || !parameters.getBoolean(PARAMETER_NAME)))
             {
-                addIssue(resultAceptor, inv);
+                    addIssue(resultAceptor, inv);
             }
         }
         else if (featureAccess instanceof DynamicFeatureAccess)
@@ -150,6 +158,18 @@ public final class CodeAfterAsyncCallCheck
                 }
             }
         }
+    }
+
+    private boolean isDefinedParam(Invocation inv)
+    {
+        for (Expression param : inv.getParams())
+        {
+            if (param instanceof EmptyExpression || param instanceof UndefinedLiteral)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void addIssue(ResultAcceptor resultAceptor, Invocation inv)

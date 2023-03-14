@@ -65,6 +65,8 @@ final class Messages
 
     public static String CodeAfterAsyncCallCheck_Issue;
 
+    public static String CodeAfterAsyncCallCheck_Parameter;
+
     public static String CodeAfterAsyncCallCheck_Title;
 
     public static String CommitTransactionCheck_Commit_transaction_must_be_in_try_catch;
