@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2022, 1C-Soft LLC and others.
+ * Copyright (C) 2023, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,6 +35,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  * The test for class {@link SelfReferenceCheck}.
  *
  * @author Maxim Galios
+ * @author Vadim Goncharov
  *
  */
 public class SelfReferenceCheckTest
@@ -94,12 +95,8 @@ public class SelfReferenceCheckTest
 
         IDtProject dtProject = getProject();
         IProject project = dtProject.getWorkspaceProject();
-
-        ICheckSettings settings = checkRepository.getSettings(new CheckUid(getCheckId(), BslPlugin.PLUGIN_ID), project);
-        settings.getParameters()
-            .get(SelfReferenceCheck.PARAMETER_CHECK_ONLY_EXISTING_FORM_PROPERTIES)
-            .setValue(Boolean.toString(false));
-        checkRepository.applyChanges(Collections.singleton(settings), project);
+        changeProjectSetting(project, SelfReferenceCheck.PARAMETER_CHECK_ONLY_EXISTING_FORM_PROPERTIES,
+            Boolean.toString(false));
         waitForDD(dtProject);
 
         List<Marker> markersAfterSettingsChange = getMarkers(FORM_MODULE_FILE_NAME);
@@ -132,6 +129,15 @@ public class SelfReferenceCheckTest
         assertEquals("8", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals("9", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals("9", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+        IDtProject dtProject = getProject();
+        IProject project = dtProject.getWorkspaceProject();
+        changeProjectSetting(project, SelfReferenceCheck.PARAMETER_CHEKC_OBJECT_MODULE, Boolean.toString(false));
+        waitForDD(dtProject);
+
+        List<Marker> markersAfterSettingsChange = getMarkers(OBJECT_MODULE_FILE_NAME);
+        assertEquals(0, markersAfterSettingsChange.size());
+
     }
 
     private List<Marker> getMarkers(String moduleFileName)
@@ -146,4 +152,12 @@ public class SelfReferenceCheckTest
             .filter(marker -> chekcId.equals(getCheckIdFromMarker(marker, getProject())))
             .collect(Collectors.toList());
     }
+
+    private void changeProjectSetting(IProject project, String parameter, String value)
+    {
+        ICheckSettings settings = checkRepository.getSettings(new CheckUid(getCheckId(), BslPlugin.PLUGIN_ID), project);
+        settings.getParameters().get(parameter).setValue(value);
+        checkRepository.applyChanges(Collections.singleton(settings), project);
+    }
+
 }
