@@ -27,6 +27,12 @@ final class Messages
     public static String DbObjectRefNonRefTypesCheck_Description;
     public static String DbObjectRefNonRefTypesCheck_Ref_and_other;
     public static String DbObjectRefNonRefTypesCheck_Title;
+    public static String MdObjectAttributeCommentCheck_Attribute_list;
+    public static String MdObjectAttributeCommentCheck_Check_catalogs_param;
+    public static String MdObjectAttributeCommentCheck_Check_documents_param;
+    public static String MdObjectAttributeCommentCheck_Default_check_message;
+    public static String MdObjectAttributeCommentCheck_description;
+    public static String MdObjectAttributeCommentCheck_title;
     public static String MdObjectAttributeCommentNotExist_description;
     public static String MdObjectAttributeCommentNotExist_Md_Object_attribute_Comment_does_not_exist;
     public static String MdObjectAttributeCommentNotExist_Param_Check_Catalogs;
@@ -59,6 +65,10 @@ final class Messages
     public static String DbObjectAnyRefCheck_AnyRef;
     public static String DbObjectAnyRefCheck_Description;
     public static String DbObjectAnyRefCheck_Title;
+    public static String DocumentPostInPrivilegedModeCheck_description;
+    public static String DocumentPostInPrivilegedModeCheck_message_Post_in_privileged_mode;
+    public static String DocumentPostInPrivilegedModeCheck_message_Unpost_in_privileged_mode;
+    public static String DocumentPostInPrivilegedModeCheck_title;
     public static String ExtensionMdObjectNamePrefixCheck_Description;
     public static String ExtensionMdObjectNamePrefixCheck_Object_0_should_have_1_prefix;
     public static String ExtensionMdObjectNamePrefixCheck_Title;
