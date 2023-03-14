@@ -129,7 +129,7 @@ public final class CodeAfterAsyncCallCheck
                 && (parameters.getBoolean(PARAMETER_NAME) && isNotifyDescription(inv)
                     || !parameters.getBoolean(PARAMETER_NAME)))
             {
-                    addIssue(resultAceptor, inv);
+                addIssue(resultAceptor, inv);
             }
         }
         else if (featureAccess instanceof DynamicFeatureAccess)
