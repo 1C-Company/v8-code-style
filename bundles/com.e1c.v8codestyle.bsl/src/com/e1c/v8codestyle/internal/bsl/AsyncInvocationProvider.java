@@ -13,16 +13,18 @@
 package com.e1c.v8codestyle.internal.bsl;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.resource.IEObjectDescription;
 
-import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
+import com._1c.g5.v8.dt.bm.xtext.BmAwareResourceSetProvider;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.ContextDef;
@@ -34,7 +36,6 @@ import com._1c.g5.v8.dt.mcore.Type;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.TypeSet;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
-import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.platform.IEObjectProvider;
 import com._1c.g5.v8.dt.platform.version.Version;
 import com.e1c.v8codestyle.bsl.IAsyncInvocationProvider;
@@ -49,19 +50,20 @@ public class AsyncInvocationProvider
     implements IAsyncInvocationProvider
 {
 
+    private static final String POSTFIX = "Async"; //$NON-NLS-1$
     private static final String EXEPTION_NAME = "RunCallback"; //$NON-NLS-1$
     private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
     private final Map<Version, Collection<String>> cashNames;
     private final Map<Version, Map<String, Collection<String>>> cashTypesMethodNames;
-    private final IConfigurationProvider configurationProvider;
     private final IV8ProjectManager v8ProjectManager;
+    private final BmAwareResourceSetProvider resourceSetProvider;
 
     @Inject
-    public AsyncInvocationProvider(IConfigurationProvider configurationProvider, IV8ProjectManager v8ProjectManager)
+    public AsyncInvocationProvider(IV8ProjectManager v8ProjectManager, BmAwareResourceSetProvider resourceSetProvider)
     {
         super();
-        this.configurationProvider = configurationProvider;
         this.v8ProjectManager = v8ProjectManager;
+        this.resourceSetProvider = resourceSetProvider;
         this.cashNames = new ConcurrentHashMap<>();
         this.cashTypesMethodNames = new ConcurrentHashMap<>();
     }
@@ -103,13 +105,11 @@ public class AsyncInvocationProvider
     private void collect(Version version)
     {
         Collection<String> asyncMethodsNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-
-        Collection<IV8Project> projects = v8ProjectManager.getProjects();
-        for (IV8Project project : projects)
+        Iterator<IV8Project> iterator = v8ProjectManager.getProjects().iterator();
+        if (iterator.hasNext())
         {
-            Configuration context = configurationProvider.getConfiguration(project.getProject());
+            ResourceSet context = resourceSetProvider.get(iterator.next().getProject());
             IEObjectProvider provider = IEObjectProvider.Registry.INSTANCE.get(McorePackage.Literals.METHOD, version);
-
             Iterable<IEObjectDescription> items = provider.getEObjectDescriptions(null);
             for (IEObjectDescription item : items)
             {
@@ -126,12 +126,10 @@ public class AsyncInvocationProvider
     private Map<String, Collection<String>> process(Version version)
     {
         Map<String, Collection<String>> asyncMethodsNames = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-
-        Collection<IV8Project> projects = v8ProjectManager.getProjects();
-        for (IV8Project project : projects)
+        Iterator<IV8Project> iterator = v8ProjectManager.getProjects().iterator();
+        if (iterator.hasNext())
         {
-            Configuration context = configurationProvider.getConfiguration(project.getProject());
-
+            ResourceSet context = resourceSetProvider.get(iterator.next().getProject());
             IEObjectProvider provider =
                 IEObjectProvider.Registry.INSTANCE.get(McorePackage.Literals.TYPE_ITEM, version);
             Iterable<IEObjectDescription> items = provider.getEObjectDescriptions(null);
@@ -175,52 +173,59 @@ public class AsyncInvocationProvider
 
         for (Method method : contextDef.allMethods())
         {
-            if (method.getName().endsWith("Async")) //$NON-NLS-1$
+            if (method.getName().endsWith(POSTFIX))
             {
-                if (asyncMethodsNames.get(method.getName()) != null)
+                if (asyncMethodsNames.get(method.getName()) == null)
                 {
-                    asyncMethodsNames.get(method.getName()).add(type.getName());
-                    asyncMethodsNames.get(method.getNameRu()).add(type.getNameRu());
+                    asyncMethodsNames.putIfAbsent(method.getName(), new TreeSet<>());
+                    asyncMethodsNames.putIfAbsent(method.getNameRu(), new TreeSet<>());
                 }
-                asyncMethodsNames.putIfAbsent(method.getName(), new TreeSet<>());
-                asyncMethodsNames.putIfAbsent(method.getNameRu(), new TreeSet<>());
+                asyncMethodsNames.get(method.getName()).add(type.getName());
+                asyncMethodsNames.get(method.getName()).add(type.getNameRu());
+                asyncMethodsNames.get(method.getNameRu()).add(type.getName());
+                asyncMethodsNames.get(method.getNameRu()).add(type.getNameRu());
             }
         }
     }
 
     private void collectMethods(Collection<String> asyncMethodsNames, EObject object)
     {
+        if (!(object instanceof Method))
+        {
+            return;
+        }
+
         Method method = (Method)object;
         if (EXEPTION_NAME.equals(method.getName()))
         {
             return;
         }
 
-        if (method.getName().endsWith("Async")) //$NON-NLS-1$
+        if (isMethodAsync(method))
         {
             asyncMethodsNames.add(method.getName());
             asyncMethodsNames.add(method.getNameRu());
         }
-        else
-        {
-            checkParamAndCollectMethods(asyncMethodsNames, method);
-        }
     }
 
-    private void checkParamAndCollectMethods(Collection<String> asyncMethodsNames, Method method)
+    private boolean isMethodAsync(Method method)
     {
+        if (method.getName().endsWith(POSTFIX))
+        {
+            return true;
+        }
+
         for (ParamSet paramSet : method.getParamSet())
         {
             for (Parameter param : paramSet.getParams())
             {
                 if (isCallbackDescription(param))
                 {
-                    asyncMethodsNames.add(method.getName());
-                    asyncMethodsNames.add(method.getNameRu());
-                    break;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     private boolean isCallbackDescription(Parameter param)

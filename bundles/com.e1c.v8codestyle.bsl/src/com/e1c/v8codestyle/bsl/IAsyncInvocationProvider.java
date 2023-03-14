@@ -18,17 +18,27 @@ import java.util.Map;
 import com._1c.g5.v8.dt.platform.version.Version;
 
 /**
- * Platform context asynchronic methods provider
+ * Platform context asynchronous methods provider
  *
  * @author Artem Iliukhin
  */
 public interface IAsyncInvocationProvider
 {
 
-    // Global context methods
+    /**
+     * Global context methods.
+     *
+     * @param version the version of platform
+     * @return the asynchronous invocation names
+     */
     Collection<String> getAsyncInvocationNames(Version version);
 
-    // Methods with a list of types in which they are used
+    /**
+     * Methods with a list of types in which they are used.
+     *
+     * @param version the version of platform
+     * @return the asynchronous type method names
+     */
     Map<String, Collection<String>> getAsyncTypeMethodNames(Version version);
 
 }

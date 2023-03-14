@@ -18,14 +18,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
-import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
@@ -42,10 +41,13 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
+import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.TypeItem;
+import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.v8.dt.platform.version.Version;
-import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -73,14 +75,18 @@ public final class CodeAfterAsyncCallCheck
     private static final String CHECK_ID = "code-after-async-call"; //$NON-NLS-1$
     private final IResourceLookup resourceLookup;
     private final IAsyncInvocationProvider asyncInvocationProvider;
+    private final IRuntimeVersionSupport runtimeVersionSupport;
+    private final TypesComputer typesComputer;
 
     @Inject
-    public CodeAfterAsyncCallCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, IAsyncInvocationProvider asyncInvocationProvider)
+    public CodeAfterAsyncCallCheck(IResourceLookup resourceLookup, IRuntimeVersionSupport runtimeVersionSupport,
+        IAsyncInvocationProvider asyncInvocationProvider, TypesComputer typesComputer)
     {
         super();
         this.resourceLookup = resourceLookup;
         this.asyncInvocationProvider = asyncInvocationProvider;
+        this.runtimeVersionSupport = runtimeVersionSupport;
+        this.typesComputer = typesComputer;
     }
 
     @Override
@@ -106,10 +112,7 @@ public final class CodeAfterAsyncCallCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-
         IProject project = resourceLookup.getProject((EObject)object);
-
-        IRuntimeVersionSupport runtimeVersionSupport = ServiceAccess.get(IRuntimeVersionSupport.class);
         Version version = runtimeVersionSupport.getRuntimeVersion(project);
 
         Invocation inv = (Invocation)object;
@@ -127,7 +130,24 @@ public final class CodeAfterAsyncCallCheck
             Map<String, Collection<String>> names = asyncInvocationProvider.getAsyncTypeMethodNames(version);
             if (names.containsKey(featureAccess.getName()))
             {
-                addIssue(resultAceptor, inv);
+                Expression source = ((DynamicFeatureAccess)featureAccess).getSource();
+                Environmental environmental = EcoreUtil2.getContainerOfType(source, Environmental.class);
+                if (environmental == null)
+                {
+                    return;
+                }
+
+                List<TypeItem> sourceTypes = typesComputer.computeTypes(source, environmental.environments());
+                if (sourceTypes.isEmpty())
+                {
+                    return;
+                }
+
+                if (names.get(featureAccess.getName())
+                    .containsAll(sourceTypes.stream().map(McoreUtil::getTypeName).collect(Collectors.toSet())))
+                {
+                    addIssue(resultAceptor, inv);
+                }
             }
         }
     }
@@ -135,7 +155,7 @@ public final class CodeAfterAsyncCallCheck
     private void addIssue(ResultAcceptor resultAceptor, Invocation inv)
     {
         Statement statement = getStatementFromInvoc(inv);
-        if (statement != null && isPreviousStatementAwait(statement))
+        if (statement != null && !isPreviousStatementAwait(statement))
         {
             statement = getNextStatement(statement);
             if (statement != null && !(statement instanceof ReturnStatement)
