@@ -1,23 +1,24 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.CONTAINING_SOURCE_DERIVED_PROPERTY__CONTAINING_SOURCE;
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.DERIVED_PROPERTY__SOURCE;
 
 import java.text.MessageFormat;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Collection;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.form.model.Form;
-import com._1c.g5.v8.dt.form.model.FormParameter;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
-import com._1c.g5.v8.dt.bsl.model.ModuleType;
+import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
+import com._1c.g5.v8.dt.mcore.ContainingSourceDerivedProperty;
+import com._1c.g5.v8.dt.mcore.DerivedProperty;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -25,6 +26,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Check the use unknown form parameter access in form module
@@ -40,40 +42,18 @@ public class UnknownFormParameterAccessCheck
 
     private static final String PARAMETERS_KEYWORD_RU = "Параметры"; //$NON-NLS-1$
 
-    private static final Set<String> STANDART_PARAMETERS_LIST = Set.of("ChoiceMode", //$NON-NLS-1$
-        "AdditionalParameters", //$NON-NLS-1$
-        "ДополнительныеПараметры", //$NON-NLS-1$
-        "Basis", //$NON-NLS-1$
-        "Основание", //$NON-NLS-1$
-        "ChoiceParameters", //$NON-NLS-1$
-        "ПараметрыВыбора", //$NON-NLS-1$
-        "CloseOnChoice", //$NON-NLS-1$
-        "ЗакрыватьПриВыборе", //$NON-NLS-1$
-        "CloseOnOwnerClose", //$NON-NLS-1$
-        "ЗакрыватьПриЗакрытииВладельца", //$NON-NLS-1$
-        "CopyingValue", //$NON-NLS-1$
-        "ЗначениеКопирования", //$NON-NLS-1$
-        "FillingText", //$NON-NLS-1$
-        "ТекстЗаполнения", //$NON-NLS-1$
-        "FunctionalOptionParameters", //$NON-NLS-1$
-        "ПараметрыФункциональныхОпций", //$NON-NLS-1$
-        "Key", //$NON-NLS-1$
-        "Ключ", //$NON-NLS-1$
-        "PurposeUseKey", //$NON-NLS-1$
-        "КлючНазначенияИспользования", //$NON-NLS-1$
-        "ReadOnly", //$NON-NLS-1$
-        "ТолькоПросмотр", //$NON-NLS-1$
-        "SourceRecordKey", //$NON-NLS-1$
-        "ИсходныйКлючЗаписи", //$NON-NLS-1$
-        "VersionNumberSwitchToDataHistoryVersion", //$NON-NLS-1$
-        "НомерВерсииПереходаНаВерсиюИсторииДанны"); //$NON-NLS-1$
+    private final DynamicFeatureAccessComputer dynamicComputer;
 
-    private static final Set<String> STANDART_METHODS_LIST = Set.of("Свойство", //$NON-NLS-1$
-        "Property"); //$NON-NLS-1$
-
-    public UnknownFormParameterAccessCheck()
+    /**
+     * Instantiates a new unknown form parameter access check.
+     *
+     * @param dynamicComputer the dynamic computer, cannot be {@code null}
+     */
+    @Inject
+    public UnknownFormParameterAccessCheck(DynamicFeatureAccessComputer dynamicComputer)
     {
         super();
+        this.dynamicComputer = dynamicComputer;
     }
 
     @Override
@@ -105,34 +85,18 @@ public class UnknownFormParameterAccessCheck
         String dfaName = dfa.getName();
         Expression src = dfa.getSource();
         if (!(src instanceof StaticFeatureAccess) || !isFormParameterAccess((StaticFeatureAccess)src)
-            || isStandartFormParameter(dfaName) || isStardarmFormParameterMethod(dfaName) || monitor.isCanceled())
+            || monitor.isCanceled())
         {
             return;
         }
 
         Module module = EcoreUtil2.getContainerOfType(dfa, Module.class);
-        EObject moduleOwner = module.getOwner();
-        if (moduleOwner == null || monitor.isCanceled())
-        {
-            return;
-        }
 
-        Form form = (Form)moduleOwner;
-
-        EList<FormParameter> formParameters = form.getParameters();
-        Set<String> paramNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        for (FormParameter param : formParameters)
+        if (!monitor.isCanceled() && isEmptySource(dynamicComputer.resolveObject(dfa, module.environments())))
         {
-            if (monitor.isCanceled())
-            {
-                return;
-            }
-            paramNames.add(param.getName().toLowerCase());
-        }
-
-        if (!paramNames.contains(dfaName))
-        {
-            resultAcceptor.addIssue(MessageFormat.format(Messages.UnknownFormParameterAccessCheck_Unknown_form_parameter_access, dfaName), dfa);
+            resultAcceptor.addIssue(
+                MessageFormat.format(Messages.UnknownFormParameterAccessCheck_Unknown_form_parameter_access, dfaName),
+                dfa);
         }
     }
 
@@ -142,14 +106,25 @@ public class UnknownFormParameterAccessCheck
         return name.equalsIgnoreCase(PARAMETERS_KEYWORD) || name.equalsIgnoreCase(PARAMETERS_KEYWORD_RU);
     }
 
-    private boolean isStardarmFormParameterMethod(String dfaName)
+    // TODO replace this method with BslUtil after 2022.2+
+    private static boolean isEmptySource(Collection<FeatureEntry> features)
     {
-        return STANDART_METHODS_LIST.contains(dfaName);
-    }
+        if (features.isEmpty())
+        {
+            return true;
+        }
 
-    private boolean isStandartFormParameter(String dfaName)
-    {
-        return STANDART_PARAMETERS_LIST.contains(dfaName);
+        return features.stream().allMatch(e -> {
+            if (e.getFeature() instanceof ContainingSourceDerivedProperty)
+            {
+                return e.getFeature().eGet(CONTAINING_SOURCE_DERIVED_PROPERTY__CONTAINING_SOURCE, false) == null;
+            }
+            else if (e.getFeature() instanceof DerivedProperty)
+            {
+                return e.getFeature().eGet(DERIVED_PROPERTY__SOURCE, false) == null;
+            }
+            return false;
+        });
     }
 
 }
