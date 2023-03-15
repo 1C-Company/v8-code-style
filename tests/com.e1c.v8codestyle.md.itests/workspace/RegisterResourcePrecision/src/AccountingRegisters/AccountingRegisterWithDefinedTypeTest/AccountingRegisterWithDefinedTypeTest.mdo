@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccountingRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="72833b52-e4dd-4806-9c54-de51460a86e6">
+  <producedTypes>
+    <selectionType typeId="49c35f20-b405-4548-8b9a-df9698c4a7b5" valueTypeId="696338bd-0682-4981-adf5-4742ec1f55c0"/>
+    <listType typeId="8be989ad-6852-4b15-bf77-0e9563bb0dba" valueTypeId="cc3a32c6-5851-40a4-ab99-5a3122593dfc"/>
+    <managerType typeId="3fe5c4a9-efd4-4877-b8a3-ff2917cf5e8d" valueTypeId="6efa16bb-1738-4369-8507-dd53325bcd9c"/>
+    <recordSetType typeId="a2cecc9c-2048-4af1-a377-39e90af67683" valueTypeId="6d19b0c1-37a8-4e84-be01-039dae5e5a85"/>
+    <recordKeyType typeId="5fe3eeb0-d4b0-4992-9fd0-2d73f0340f7c" valueTypeId="037cca83-dbe0-42ac-ae43-69550853932b"/>
+    <recordType typeId="c623a4a8-cc09-4e34-9326-55c971d278e2" valueTypeId="7ed682cd-61bd-496e-bb63-753b843963db"/>
+    <extDimensionsType typeId="e3951c46-457e-42ea-8c98-c1af63c43f5d" valueTypeId="6b666af5-33fc-48ca-a1e3-2ccd2b139757"/>
+  </producedTypes>
+  <name>AccountingRegisterWithDefinedTypeTest</name>
+  <synonym>
+    <key>en</key>
+    <value>Accounting register with defined type test</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+  <resources uuid="c3818647-2758-4358-8aec-1fd5cfa366df">
+    <name>CorrectResourceWithDefinedType</name>
+    <synonym>
+      <key>en</key>
+      <value>Correct resource with defined type</value>
+    </synonym>
+    <type>
+      <types>DefinedType.CorrectType</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <balance>true</balance>
+  </resources>
+  <resources uuid="fcea05be-5dbb-4650-bbe7-3554978bd06f">
+    <name>WrongResourceWithDefinedType</name>
+    <synonym>
+      <key>en</key>
+      <value>Wrong resource with defined type</value>
+    </synonym>
+    <type>
+      <types>DefinedType.WrongType</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <balance>true</balance>
+  </resources>
+</mdclass:AccountingRegister>

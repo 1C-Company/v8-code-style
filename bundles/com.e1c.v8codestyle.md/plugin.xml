@@ -100,7 +100,27 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameGlobalClientCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.check.CommonModuleNamePrivilegedCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.ExtensionMdObjectNamePrefixCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.check.DocumentPostInPrivilegedModeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.check.MdObjectAttributeCommentCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.check.MdObjectAttributeCommentNotExistCheck">
       </check>
    </extension>
 
