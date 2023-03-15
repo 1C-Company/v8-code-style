@@ -138,18 +138,7 @@ public final class CodeAfterAsyncCallCheck
             if (names.containsKey(featureAccess.getName()))
             {
                 Expression source = ((DynamicFeatureAccess)featureAccess).getSource();
-                Environmental environmental = EcoreUtil2.getContainerOfType(source, Environmental.class);
-                if (environmental == null)
-                {
-                    return;
-                }
-
-                List<TypeItem> sourceTypes = typesComputer.computeTypes(source, environmental.environments());
-                if (sourceTypes.isEmpty())
-                {
-                    return;
-                }
-
+                List<TypeItem> sourceTypes = computeTypes(source);
                 if (names.get(featureAccess.getName())
                     .containsAll(sourceTypes.stream().map(McoreUtil::getTypeName).collect(Collectors.toSet())))
                 {
@@ -163,18 +152,7 @@ public final class CodeAfterAsyncCallCheck
     {
         for (Expression param : inv.getParams())
         {
-            Environmental environmental = EcoreUtil2.getContainerOfType(param, Environmental.class);
-            if (environmental == null)
-            {
-                return false;
-            }
-
-            List<TypeItem> sourceTypes = typesComputer.computeTypes(param, environmental.environments());
-            if (sourceTypes.isEmpty())
-            {
-                return false;
-            }
-
+            List<TypeItem> sourceTypes = computeTypes(param);
             for (TypeItem typeItem : sourceTypes)
             {
                 if (TYPE_NAME.equals(McoreUtil.getTypeName(typeItem)))
@@ -184,6 +162,16 @@ public final class CodeAfterAsyncCallCheck
             }
         }
         return false;
+    }
+
+    private List<TypeItem> computeTypes(Expression expression)
+    {
+        Environmental environmental = EcoreUtil2.getContainerOfType(expression, Environmental.class);
+        if (environmental != null)
+        {
+            return typesComputer.computeTypes(expression, environmental.environments());
+        }
+        return List.of();
     }
 
     private void addIssue(ResultAcceptor resultAceptor, Invocation inv)
