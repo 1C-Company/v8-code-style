@@ -240,7 +240,7 @@ public final class CodeAfterAsyncCallCheck
                         }
                     }
 
-                    return awaitStatement != null;
+                    return false;
                 }
             }
         }
