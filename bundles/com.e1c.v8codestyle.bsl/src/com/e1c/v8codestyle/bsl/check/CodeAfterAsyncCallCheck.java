@@ -260,32 +260,32 @@ public final class CodeAfterAsyncCallCheck
 
     private List<Statement> getContainer(EObject container)
     {
-        List<Statement> st = null;
+        List<Statement> statements = null;
         if (container instanceof LoopStatement)
         {
-            st = ((LoopStatement)container).getStatements();
+            statements = ((LoopStatement)container).getStatements();
         }
         else if (container instanceof Conditional)
         {
-            st = ((Conditional)container).getStatements();
+            statements = ((Conditional)container).getStatements();
         }
         else if (container instanceof IfStatement)
         {
-            st = ((IfStatement)container).getElseStatements();
+            statements = ((IfStatement)container).getElseStatements();
         }
         else if (container instanceof TryExceptStatement)
         {
-            st = getStatementsFromContainer((TryExceptStatement)container);
+            statements = getStatementsFromContainer((TryExceptStatement)container);
         }
         else if (container instanceof PreprocessorItemStatements)
         {
-            st = ((PreprocessorItemStatements)container).getStatements();
+            statements = ((PreprocessorItemStatements)container).getStatements();
         }
         else
         {
-            st = getStatementsFromContainer(container);
+            statements = getStatementsFromContainer(container);
         }
-        return st;
+        return statements;
     }
 
     private List<Statement> getStatementsFromContainer(TryExceptStatement container)
