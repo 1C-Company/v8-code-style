@@ -422,6 +422,12 @@ final class Messages
 
     public static String LockOutOfTry_Method_lock_out_of_try;
 
+    public static String OptionalParameterBeforeRequiredCheck_description;
+
+    public static String OptionalParameterBeforeRequiredCheck_Optional_parameter_before_required;
+
+    public static String OptionalParameterBeforeRequiredCheck_title;
+
     static
     {
         // initialize resource bundle
