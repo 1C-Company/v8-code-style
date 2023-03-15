@@ -17,7 +17,7 @@
 
 #EndRegion
 
-#Region FormTableItemsEventHandlers//<FromTableName>
+#Region FormTableItemsEventHandlers //<FromTableName>
 
 // Enter code here.
 

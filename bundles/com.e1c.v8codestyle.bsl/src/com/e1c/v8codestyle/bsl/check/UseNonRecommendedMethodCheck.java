@@ -53,7 +53,9 @@ public class UseNonRecommendedMethodCheck
         "Message", //$NON-NLS-1$
         "Сообщить", //$NON-NLS-1$
         "Find", //$NON-NLS-1$
-        "Найти"); //$NON-NLS-1$
+        "Найти", //$NON-NLS-1$
+        "ПолучитьФорму", //$NON-NLS-1$
+        "GetForm"); //$NON-NLS-1$
 
     private static final String DELIMITER = ","; //$NON-NLS-1$
 
