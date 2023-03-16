@@ -14,16 +14,19 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.EXPLICIT_VARIABLE;
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.IMPLICIT_VARIABLE;
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT;
+import static com._1c.g5.v8.dt.bsl.model.ModuleType.COMMAND_MODULE;
+import static com._1c.g5.v8.dt.bsl.model.ModuleType.COMMON_MODULE;
+import static com._1c.g5.v8.dt.bsl.model.ModuleType.MANAGER_MODULE;
+import static com._1c.g5.v8.dt.bsl.model.ModuleType.SESSION_MODULE;
 
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
-import com._1c.g5.v8.dt.bsl.model.ImplicitVariable;
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
@@ -82,8 +85,9 @@ public class ExtensionVariablePrefixCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(new AdoptedModuleOwnerExtension())
+            .extension(ModuleTypeFilter.excludeTypes(COMMAND_MODULE, SESSION_MODULE, COMMON_MODULE, MANAGER_MODULE))
             .module()
-            .checkedObjectType(IMPLICIT_VARIABLE, EXPLICIT_VARIABLE, SIMPLE_STATEMENT, DECLARE_STATEMENT);
+            .checkedObjectType(EXPLICIT_VARIABLE, DECLARE_STATEMENT);
     }
 
 
@@ -92,7 +96,7 @@ public class ExtensionVariablePrefixCheck
         IProgressMonitor monitor)
     {
 
-        if (object instanceof ImplicitVariable || object instanceof ExplicitVariable)
+        if (object instanceof ExplicitVariable)
         {
             checkVariable((Variable)object, resultAceptor, monitor);
         }
@@ -118,8 +122,13 @@ public class ExtensionVariablePrefixCheck
 
     private void checkVariable(Variable variable, ResultAcceptor resultAceptor, IProgressMonitor monitor)
     {
-        IV8Project extension = v8ProjectManager.getProject(variable);
+        Method method = EcoreUtil2.getContainerOfType(variable, Method.class);
+        if (method != null)
+        {
+            return;
+        }
 
+        IV8Project extension = v8ProjectManager.getProject(variable);
         if (extension instanceof IExtensionProject)
         {
             String prefix = getNamePrefix((IExtensionProject)extension);
