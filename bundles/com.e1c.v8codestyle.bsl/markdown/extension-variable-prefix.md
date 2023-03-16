@@ -7,18 +7,12 @@ to the prefix of the extension itself.
 ## Noncompliant Code Example
 
 ```bsl
-&Before("NonComplient")
-Procedure Ext1_NonComplient()
-    Ext_Variable = True;
-EndProcedure
+Var Perem Export;
 ```
 
 ## Compliant Solution
 
 ```bsl
-&After("Complient")
-Procedure Ext1_Complient()
-    Ext1_Variable = True;
-EndProcedure
+Var Ext1_Perem Export;
 ```
 ## See
