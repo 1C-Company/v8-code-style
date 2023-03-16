@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5e496d3d-d7f4-45b5-80bc-167592422c71">
+  <producedTypes>
+    <objectType typeId="96effc52-36a2-4f11-94a7-6a3f31baf159" valueTypeId="883453c3-ce85-4782-b1fb-63189f481476"/>
+    <refType typeId="3e0ff7de-5ab2-4c92-b045-27205a455cdc" valueTypeId="3f01d6e8-65e1-4429-ba15-82b1ac374365"/>
+    <selectionType typeId="e0bee0e3-7834-4499-bc11-fa09b09063e0" valueTypeId="1e1c5018-9f9d-4570-806f-8f50f3d6687f"/>
+    <listType typeId="c9126348-c482-4018-8c48-c58db232b7df" valueTypeId="f3895c1e-35d7-4ffd-9770-5979f14126d2"/>
+    <managerType typeId="7b956506-5814-448e-9e76-8ab1616ab5b8" valueTypeId="f4ab6f97-c13b-457d-9e39-44d0e91bc7a5"/>
+  </producedTypes>
+  <name>TestDocument1</name>
+  <synonym>
+    <key>en</key>
+    <value>Test document1</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Document.TestDocument1.StandardAttribute.Number</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <numberType>String</numberType>
+  <numberLength>9</numberLength>
+  <numberAllowedLength>Variable</numberAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <postInPrivilegedMode>true</postInPrivilegedMode>
+  <unpostInPrivilegedMode>true</unpostInPrivilegedMode>
+  <attributes uuid="e247de52-3b2a-4ad6-9a29-3e2184f394ec">
+    <name>Comment</name>
+    <synonym>
+      <key>en</key>
+      <value>Comment</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>20</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Document>

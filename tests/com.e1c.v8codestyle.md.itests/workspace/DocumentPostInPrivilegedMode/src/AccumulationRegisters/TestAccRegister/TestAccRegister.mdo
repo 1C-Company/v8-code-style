@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:AccumulationRegister xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="6745e3ef-2dd7-495e-b7a5-9c007b8dd406">
+  <producedTypes>
+    <selectionType typeId="a9e95936-1dbc-48bd-b6f2-51a0e3503d28" valueTypeId="069a283f-8e82-49e9-bd7d-7eb423e35c95"/>
+    <listType typeId="29b8b26e-93b3-4aba-8200-8ff6ae6d5de4" valueTypeId="e08ceafd-ee12-4a78-ae5f-caba65f6c8d3"/>
+    <managerType typeId="6a1dc5e1-a8e8-4e92-b671-7b9015a20fd2" valueTypeId="8e2cc266-ad98-4021-93e7-69524ac6768f"/>
+    <recordSetType typeId="d05a1a0b-7933-4fa4-bf1b-f87e5b469859" valueTypeId="0d6d7b4b-7500-4a9d-9fdf-5dcad43cbb21"/>
+    <recordKeyType typeId="b8fe8a12-a509-445c-bcec-27b83138e5bc" valueTypeId="7a8eca16-4841-4620-b780-9706aaeaf401"/>
+    <recordType typeId="245af39c-20c0-4390-9c11-d5871cc0c8db" valueTypeId="55c8dd40-f33f-471a-b384-bbbe3622ae01"/>
+  </producedTypes>
+  <name>TestAccRegister</name>
+  <synonym>
+    <key>en</key>
+    <value>Test acc register</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <enableTotalsSplitting>true</enableTotalsSplitting>
+  <resources uuid="4f02fd3f-04a2-41e8-a25b-2ec3731ed78c">
+    <name>Summ</name>
+    <synonym>
+      <key>en</key>
+      <value>Summ</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>10</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+  </resources>
+</mdclass:AccumulationRegister>

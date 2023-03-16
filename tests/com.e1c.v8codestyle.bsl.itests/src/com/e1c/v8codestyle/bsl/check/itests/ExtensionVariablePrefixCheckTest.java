@@ -48,6 +48,8 @@ public class ExtensionVariablePrefixCheckTest
         "/src/CommonModules/CompliantCommonModule/Module.bsl";
     private static final String CATALOG_FORM_MODULE_FILE_NAME = "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
 
+    private static final String COMMON_FORM_FILE_NAME = "/src/CommonForms/Form/Module.bsl";
+
     @Override
     public void setUp() throws CoreException
     {
@@ -74,11 +76,17 @@ public class ExtensionVariablePrefixCheckTest
     }
 
     @Test
-    public void testNonCompliantPrefix() throws Exception
+    public void testCommonModuleCompliantPrefix() throws Exception
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
-        assertFalse(markers.isEmpty());
-        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertTrue(markers.isEmpty());
+    }
+
+    @Test
+    public void testCommonFormMethodsVarPrefix() throws Exception
+    {
+        List<Marker> markers = getMarkers(COMMON_FORM_FILE_NAME);
+        assertTrue(markers.isEmpty());
     }
 
     @Test
