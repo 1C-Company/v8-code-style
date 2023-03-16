@@ -271,11 +271,13 @@ public class SortService
         final Comparator<EObject> sorter;
         if (project == null)
         {
-            sorter = new MdObjectByNameComparator(AutoSortPreferences.DEFAULT_SORT_ASCENDING);
+            sorter = new MdObjectByNameComparator(AutoSortPreferences.DEFAULT_SORT_ASCENDING,
+                AutoSortPreferences.DEFAULT_SORT_ORDER);
         }
         else
         {
-            sorter = new MdObjectByNameComparator(AutoSortPreferences.isSortAscending(project));
+            sorter = new MdObjectByNameComparator(AutoSortPreferences.isSortAscending(project),
+                AutoSortPreferences.isNaturalSortOrder(project));
         }
         return sorter;
     }
@@ -383,7 +385,8 @@ public class SortService
             {
                 List<SortItem> items = new ArrayList<>();
 
-                Comparator<EObject> sorter = new MdObjectByNameComparator(AutoSortPreferences.isSortAscending(project));
+                Comparator<EObject> sorter = new MdObjectByNameComparator(AutoSortPreferences.isSortAscending(project),
+                    AutoSortPreferences.isNaturalSortOrder(project));
 
                 for (Entry<String, Set<EReference>> entry : changedItems.entrySet())
                 {

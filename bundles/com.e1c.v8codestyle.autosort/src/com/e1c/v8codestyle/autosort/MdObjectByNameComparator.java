@@ -27,17 +27,22 @@ import com.google.common.base.Strings;
 public class MdObjectByNameComparator
     implements Comparator<EObject>
 {
+    private static final char LESS_THAN_DIGITS = '!';
 
     private final boolean ascending;
+
+    private final boolean naturalSortOrder;
 
     /**
      * Instantiates a new metadata object comparator by name.
      *
      * @param ascending the ascending
+     * @param naturalSortOrder the sort order
      */
-    public MdObjectByNameComparator(boolean ascending)
+    public MdObjectByNameComparator(boolean ascending, boolean naturalSortOrder)
     {
         this.ascending = ascending;
+        this.naturalSortOrder = naturalSortOrder;
     }
 
     @Override
@@ -47,10 +52,45 @@ public class MdObjectByNameComparator
         {
             String firstName = Strings.nullToEmpty(((MdObject)first).getName());
             String secondName = Strings.nullToEmpty(((MdObject)second).getName());
-            return this.ascending ? firstName.compareToIgnoreCase(secondName)
-                : secondName.compareToIgnoreCase(firstName);
+            return this.ascending ? compareMdObjectNamesWithIgnoreCase(firstName, secondName, this.naturalSortOrder)
+                : compareMdObjectNamesWithIgnoreCase(secondName, firstName, this.naturalSortOrder);
         }
         return 0;
+    }
+
+    private int compareMdObjectNamesWithIgnoreCase(String s1, String s2, boolean naturalSortOrder)
+    {
+        int n1 = s1.length();
+        int n2 = s2.length();
+        int min = Math.min(n1, n2);
+
+        for (int i = 0; i < min; i++)
+        {
+            char c1 = s1.charAt(i);
+            char c2 = s2.charAt(i);
+            if (c1 != c2)
+            {
+                c1 = Character.toUpperCase(c1);
+                c2 = Character.toUpperCase(c2);
+                if (c1 != c2)
+                {
+                    c1 = Character.toLowerCase(c1);
+                    c2 = Character.toLowerCase(c2);
+                    if (c1 != c2)
+                    {
+                        if (!naturalSortOrder)
+                        {
+                            // Symbol "low line" must be less than digits
+                            c1 = c1 == '_' ? LESS_THAN_DIGITS : c1;
+                            c2 = c2 == '_' ? LESS_THAN_DIGITS : c2;
+                        }
+                        // No overflow because of numeric promotion
+                        return c1 - c2;
+                    }
+                }
+            }
+        }
+        return n1 - n2;
     }
 
 }

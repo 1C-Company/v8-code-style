@@ -1,10 +1,11 @@
 # Проверки Форм 1С
 
 
-Общее количество проверок: 6
+Общее количество проверок: 7
 
 | Код проверки | Наименование |
 |--------------|--------------|
+| [form-commands-single-action-handler](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-commands-single-action-handler.md) | У каждого действия команды должна быть назначена своя процедура-обработчик |
 | [form-dynamic-list-item-title](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-dynamic-list-item-title.md) | Пустой заголовок для колонок динамического списка |
 | [form-items-single-event-handler](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-items-single-event-handler.md) | У каждого события должна быть назначена своя процедура-обработчик |
 | [form-list-field-ref-not-added](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-list-field-ref-not-added.md) | Реквизит "Ссылка" динамического списка не выведен в таблицу на форме |

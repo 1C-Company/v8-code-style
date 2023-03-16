@@ -209,6 +209,8 @@ public class AbstractSingleModuleTestBase
         testingWorkspace.waitForBuildCompletion();
         project.getWorkspace().removeResourceChangeListener(listener);
         waitForDD(getProject());
+        //after fixing the problem in EDT - delete it
+        Thread.sleep(5000);
     }
 
     /**
