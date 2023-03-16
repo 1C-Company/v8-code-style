@@ -40,5 +40,6 @@
   </languages>
   <commonModules>CommonModule.CommonModule</commonModules>
   <commonModules>CommonModule.CompliantCommonModule</commonModules>
+  <commonForms>CommonForm.Form</commonForms>
   <catalogs>Catalog.Catalog</catalogs>
 </mdclass:Configuration>
