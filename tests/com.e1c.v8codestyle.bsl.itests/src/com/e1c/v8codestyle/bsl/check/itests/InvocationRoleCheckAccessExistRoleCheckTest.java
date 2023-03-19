@@ -33,22 +33,22 @@ import com.e1c.v8codestyle.bsl.check.InvocationRoleCheckAccessExistRoleCheck;
 public class InvocationRoleCheckAccessExistRoleCheckTest
     extends AbstractSingleModuleTestBase
 {
-    
+
     private static final String PROJECT_NAME = "InvocationRoleCheckAccessExistRole"; //$NON-NLS-1$
-    
+
     private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/RolesCommonModule/Module.bsl"; //$NON-NLS-1$
-    
+
     public InvocationRoleCheckAccessExistRoleCheckTest()
     {
         super(InvocationRoleCheckAccessExistRoleCheck.class);
     }
-    
+
     @Override
     protected String getTestConfigurationName()
     {
         return PROJECT_NAME;
     }
-    
+
     /**
      * Test invocation role check access exist role check.
      *
@@ -59,14 +59,12 @@ public class InvocationRoleCheckAccessExistRoleCheckTest
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
         assertEquals(4, markers.size());
-        
+
         assertEquals("2", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals("9", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals("16", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals("23", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
-    
-    
 
     private List<Marker> getMarkers(String moduleFileName)
     {

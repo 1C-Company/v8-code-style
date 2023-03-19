@@ -1,3 +1,16 @@
+/*******************************************************************************
+ * Copyright (C) 2023, 1C-Soft LLC and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *******************************************************************************/
+
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
@@ -27,6 +40,10 @@ import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
+/**
+ * Check the functions IsInRole and Users.RolesAvailable (SSL), that first param contains exists roles.
+ * @author Vadim Goncharov
+ */
 public class InvocationRoleCheckAccessExistRoleCheck
     extends BasicCheck
 {
@@ -47,6 +64,11 @@ public class InvocationRoleCheckAccessExistRoleCheck
 
     private final IConfigurationProvider configurationProvider;
 
+    /**
+     * Instantiates a new invocation role check access exist role check.
+     *
+     * @param configurationProvider the configuration provider
+     */
     @Inject
     public InvocationRoleCheckAccessExistRoleCheck(IConfigurationProvider configurationProvider)
     {
@@ -86,18 +108,12 @@ public class InvocationRoleCheckAccessExistRoleCheck
         }
 
         EList<Expression> params = inv.getParams();
-        if (monitor.isCanceled() || params.isEmpty())
+        if (monitor.isCanceled() || params.isEmpty() || !(params.get(0) instanceof StringLiteral))
         {
             return;
         }
 
-        Expression firstParam = params.get(0);
-        if (monitor.isCanceled() || !(firstParam instanceof StringLiteral))
-        {
-            return;
-        }
-
-        StringLiteral literal = (StringLiteral)firstParam;
+        StringLiteral literal = (StringLiteral)params.get(0);
         Map<String, Role> map = getMapOfRoles(literal);
 
         if (monitor.isCanceled() || map.isEmpty())
@@ -139,13 +155,9 @@ public class InvocationRoleCheckAccessExistRoleCheck
         {
             DynamicFeatureAccess dfa = (DynamicFeatureAccess)invocation.getMethodAccess();
             Expression source = dfa.getSource();
-            if (source instanceof StaticFeatureAccess)
+            if (source instanceof StaticFeatureAccess && isSSLUsersMethod((StaticFeatureAccess)source, dfa))
             {
-                StaticFeatureAccess sfa = (StaticFeatureAccess)source;
-                if (isSSLUsersMethod(sfa, dfa))
-                {
-                    return true;
-                }
+                return true;
 
             }
         }

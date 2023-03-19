@@ -2,3 +2,7 @@ Function RolesAvailable(RolesNames, User = Undefined, ForPrivilegedMode = True) 
 	//Some checks
 	Return True;
 EndFunction
+
+Function IsFullUser(User = Undefined) Export
+	Return True;
+EndFunction

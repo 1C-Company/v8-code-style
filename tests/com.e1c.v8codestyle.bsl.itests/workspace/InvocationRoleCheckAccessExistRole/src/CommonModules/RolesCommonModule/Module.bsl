@@ -25,3 +25,15 @@ EndProcedure
 	Если Пользователи.РолиДоступны("TestRole1,TestRole2") Then
 	EndIf;
 КонецПроцедуры
+
+Procedure TestStaff()
+	If Users.IsFullUser() Then
+		Message("Test message");
+	EndIf;
+EndProcedure
+
+Процедура ТестПрочее()
+	Если Пользователи.ПолноправныйПользователь() Тогда
+		Сообщить("Тестовое сообщение");
+	КонецЕсли;
+КонецПроцедуры
