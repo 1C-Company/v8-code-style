@@ -85,8 +85,8 @@ public class InvocationRoleCheckAccessExistRoleCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title("Referring to a non-existent role")
-            .description("Referring to a non-existent role")
+        builder.title(Messages.InvocationRoleCheckAccessExistRoleCheck_title)
+            .description(Messages.InvocationRoleCheckAccessExistRoleCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
@@ -131,7 +131,7 @@ public class InvocationRoleCheckAccessExistRoleCheck
         {
             if (item.getValue() == null)
             {
-                String message = MessageFormat.format("Role named {0} not exists in configuration", item.getKey());
+                String message = MessageFormat.format(Messages.InvocationRoleCheckAccessExistRoleCheck_Role_named_not_exists_in_configuration, item.getKey());
                 resultAcceptor.addIssue(message, literal, STRING_LITERAL__LINES);
             }
         }
