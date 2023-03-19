@@ -131,7 +131,9 @@ public class InvocationRoleCheckAccessExistRoleCheck
         {
             if (item.getValue() == null)
             {
-                String message = MessageFormat.format(Messages.InvocationRoleCheckAccessExistRoleCheck_Role_named_not_exists_in_configuration, item.getKey());
+                String message = MessageFormat.format(
+                    Messages.InvocationRoleCheckAccessExistRoleCheck_Role_named_not_exists_in_configuration,
+                    item.getKey());
                 resultAcceptor.addIssue(message, literal, STRING_LITERAL__LINES);
             }
         }
@@ -197,10 +199,10 @@ public class InvocationRoleCheckAccessExistRoleCheck
             {
                 return;
             }
-            
+
             if (map.containsKey(role.getName()))
             {
-                map.put(role.getName(),role);
+                map.put(role.getName(), role);
             }
 
         }
