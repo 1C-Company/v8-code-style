@@ -170,10 +170,10 @@ public class InvocationRoleCheckAccessExistRoleCheck
 
     private boolean isSslUsersMethod(StaticFeatureAccess sfa, DynamicFeatureAccess dfa)
     {
-        return ((sfa.getName().equalsIgnoreCase(COMMONMODULE_USERS_NAME)
+        return (sfa.getName().equalsIgnoreCase(COMMONMODULE_USERS_NAME)
             || sfa.getName().equalsIgnoreCase(COMMONMODULE_USERS_NAME_RU))
             && (dfa.getName().equalsIgnoreCase(METHOD_ISINROLES_NAME)
-                || dfa.getName().equalsIgnoreCase(METHOD_ISINROLES_NAME_RU)));
+                || dfa.getName().equalsIgnoreCase(METHOD_ISINROLES_NAME_RU));
     }
 
     private Map<String, Role> getMapOfRoles(StringLiteral literal)
