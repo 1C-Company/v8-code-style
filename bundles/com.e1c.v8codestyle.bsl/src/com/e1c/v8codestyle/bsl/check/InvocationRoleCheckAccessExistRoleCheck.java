@@ -157,7 +157,7 @@ public class InvocationRoleCheckAccessExistRoleCheck
         {
             DynamicFeatureAccess dfa = (DynamicFeatureAccess)invocation.getMethodAccess();
             Expression source = dfa.getSource();
-            if (source instanceof StaticFeatureAccess && isSSLUsersMethod((StaticFeatureAccess)source, dfa))
+            if (source instanceof StaticFeatureAccess && isSslUsersMethod((StaticFeatureAccess)source, dfa))
             {
                 return true;
 
@@ -168,7 +168,7 @@ public class InvocationRoleCheckAccessExistRoleCheck
 
     }
 
-    private boolean isSSLUsersMethod(StaticFeatureAccess sfa, DynamicFeatureAccess dfa)
+    private boolean isSslUsersMethod(StaticFeatureAccess sfa, DynamicFeatureAccess dfa)
     {
         return ((sfa.getName().equalsIgnoreCase(COMMONMODULE_USERS_NAME)
             || sfa.getName().equalsIgnoreCase(COMMONMODULE_USERS_NAME_RU))
