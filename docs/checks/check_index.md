@@ -1,11 +1,11 @@
 # Индекс проверок
 
 
-Общее количество проверок 1С:Стандарты разработки V8: 139
+Общее количество проверок 1С:Стандарты разработки V8: 146
 
 - form: 7
-- md: 22
-- bsl: 78
+- md: 26
+- bsl: 81
 - ql: 8
 - right: 24
 
@@ -40,6 +40,7 @@
 | [doc-comment-complex-type-with-link](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-complex-type-with-link.md) | Поле документирующего комментария использует объявление сложного типа вместо ссылки на тип |
 | [doc-comment-description-ends-on-dot](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-description-ends-on-dot.md) | Многострочное описание документирующего комментария оканчивается на точку |
 | [doc-comment-export-function-return-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-export-function-return-section.md) | Секция возвращаемого значения документирующего комментария для экспортной функции |
+| [doc-comment-export-procedure-description-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-export-procedure-description-section.md) | Документирующий комментарий не содержит секцию "Описание" для экспортной процедуры (функции) |
 | [doc-comment-field-in-description-suggestion](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-field-in-description-suggestion.md) | Многострочное описание документирующего комментария содержит определение поля |
 | [doc-comment-field-name](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-field-name.md) | Поле документирующего комментария является корректным именем |
 | [doc-comment-field-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-field-type.md) | Поле документирующего комментария не имеет определения типа |
@@ -52,10 +53,12 @@
 | [doc-comment-return-section-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-return-section-type.md) | Секция возвращаемого значения документирующего комментария содержит корректные типы |
 | [doc-comment-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-type.md) | Определение типа документирующего комментария |
 | [doc-comment-use-minus](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-use-minus.md) | Использование только дефис-минуса в документирующем комментарии |
+| [document-post-in-privileged-mode](../../bundles/com.e1c.v8codestyle.md/markdown/ru/document-post-in-privileged-mode.md) | В документе, предполагающем проведение, не установлен флаг "Привилегированный режим при проведении / отмене проведения" |
 | [dynamic-access-method-not-found](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/dynamic-access-method-not-found.md) | Метод в объекте не найден |
 | [empty-except-statement](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/empty-except-statement.md) | Конструкция "Попытка...Исключение...КонецПопытки" не содержит кода в исключении |
 | [event-heandler-boolean-param](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/event-heandler-boolean-param.md) | Использование булевого параметра обработчика события |
 | [export-method-in-command-form-module](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/export-method-in-command-form-module.md) | Ограничения на использование экспортных процедур и функций в модуле команд и форм |
+| [export-procedure-missing-comment](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/export-procedure-missing-comment.md) | Отсутствует комментарий к экспортной процедуре (функции) |
 | [extension-md-object-prefix](../../bundles/com.e1c.v8codestyle.md/markdown/ru/extension-md-object-prefix.md) | У имени объекта отсутствует префикс расширения |
 | [extension-method-prefix](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/extension-method-prefix.md) | У метода отсутствует префикс расширения |
 | [extension-variable-prefix](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/extension-variable-prefix.md) | У имени переменной отсутствует префикс расширения |
@@ -75,8 +78,11 @@
 | [lock-out-of-try](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/lock-out-of-try.md) | Вызов "Заблокировать()" находится вне попытки |
 | [manager-module-named-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/manager-module-named-self-reference.md) | Избыточное обращение по собственному имени внутри модуля менеджера |
 | [md-list-object-presentation](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-list-object-presentation.md) | Не заполнено ни представление объекта, ни представление списка |
+| [md-object-attribute-comment-incorrect-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-object-attribute-comment-incorrect-type.md) | Реквизит «Комментарий» у документов |
+| [md-object-attribute-comment-not-exist](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-object-attribute-comment-not-exist.md) | Документ не имеет реквизита "Комментарий" |
 | [md-standard-attribute-synonym-empty](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-standard-attribute-synonym-empty.md) | Не задан синоним стандартного реквизита "Родитель" или "Владелец". |
 | [mdo-name-length](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-name-length.md) | Длина имени объекта метаданных |
+| [mdo-ru-name-unallowed-letter](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-ru-name-unallowed-letter.md) | Проверка наличия буквы "ё" в имени, синониме или комментарии объекта метаданных |
 | [mdo-scheduled-job-description](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-scheduled-job-description.md) | Задано наименование предопределенного регламентного задания |
 | [method-param-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-param-value-type.md) | Параметр метода имеет тип |
 | [method-too-many-params](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-too-many-params.md) | Метод содержит слишком много параметров |
@@ -150,5 +156,6 @@
 | [typed-value-adding-to-untyped-collection](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/typed-value-adding-to-untyped-collection.md) | Добавление типизированного значения в не типизированную коллекцию |
 | [unsafe-password-ib-storage](../../bundles/com.e1c.v8codestyle.md/markdown/ru/unsafe-password-ib-storage.md) | Небезопасное хранение паролей в информационной базе |
 | [use-non-recommended-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-non-recommended-method.md) | Использование не рекомендуемых методов |
+| [using-form-data-to-value](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-form-data-to-value.md) | Использование РеквизитФормыВЗначение и ДанныеФормыВЗначение |
 | [using-isinrole](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-isinrole.md) | Использован метод "РольДоступна" |
 | [variable-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/variable-value-type.md) | Переменная имеет тип значения |

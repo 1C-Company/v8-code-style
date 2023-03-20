@@ -1,7 +1,7 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 78
+Общее количество проверок: 81
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -19,6 +19,7 @@
 | [doc-comment-complex-type-with-link](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-complex-type-with-link.md) | Поле документирующего комментария использует объявление сложного типа вместо ссылки на тип |
 | [doc-comment-description-ends-on-dot](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-description-ends-on-dot.md) | Многострочное описание документирующего комментария оканчивается на точку |
 | [doc-comment-export-function-return-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-export-function-return-section.md) | Секция возвращаемого значения документирующего комментария для экспортной функции |
+| [doc-comment-export-procedure-description-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-export-procedure-description-section.md) | Документирующий комментарий не содержит секцию "Описание" для экспортной процедуры (функции) |
 | [doc-comment-field-in-description-suggestion](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-field-in-description-suggestion.md) | Многострочное описание документирующего комментария содержит определение поля |
 | [doc-comment-field-name](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-field-name.md) | Поле документирующего комментария является корректным именем |
 | [doc-comment-field-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/doc-comment-field-type.md) | Поле документирующего комментария не имеет определения типа |
@@ -35,6 +36,7 @@
 | [empty-except-statement](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/empty-except-statement.md) | Конструкция "Попытка...Исключение...КонецПопытки" не содержит кода в исключении |
 | [event-heandler-boolean-param](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/event-heandler-boolean-param.md) | Использование булевого параметра обработчика события |
 | [export-method-in-command-form-module](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/export-method-in-command-form-module.md) | Ограничения на использование экспортных процедур и функций в модуле команд и форм |
+| [export-procedure-missing-comment](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/export-procedure-missing-comment.md) | Отсутствует комментарий к экспортной процедуре (функции) |
 | [extension-method-prefix](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/extension-method-prefix.md) | У метода отсутствует префикс расширения |
 | [extension-variable-prefix](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/extension-variable-prefix.md) | У имени переменной отсутствует префикс расширения |
 | [form-module-missing-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-module-missing-pragma.md) | Всегда использовать директивы компиляции в модуле формы |
@@ -81,5 +83,6 @@
 | [structure-consructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-value-type.md) | Типизация значений в конструкторе структуры |
 | [typed-value-adding-to-untyped-collection](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/typed-value-adding-to-untyped-collection.md) | Добавление типизированного значения в не типизированную коллекцию |
 | [use-non-recommended-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-non-recommended-method.md) | Использование не рекомендуемых методов |
+| [using-form-data-to-value](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-form-data-to-value.md) | Использование РеквизитФормыВЗначение и ДанныеФормыВЗначение |
 | [using-isinrole](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-isinrole.md) | Использован метод "РольДоступна" |
 | [variable-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/variable-value-type.md) | Переменная имеет тип значения |
