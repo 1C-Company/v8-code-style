@@ -1,4 +1,4 @@
-# Common cached modules.
+# Check Russian Yo letter "ё" in the name, synonym or comment of metadata object
 
 In Russian locale, it is not allowed to use the letter "ё" in names, synonyms and comments of metadata objects.
 
