@@ -38,8 +38,7 @@ public class ExportProcedureCommentDescriptionCheck
     extends AbstractDocCommentTypeCheck
 {
     private static final String CHECK_ID = "doc-comment-export-procedure-description-section"; //$NON-NLS-1$
-    private static final int STANDARD_NUM = 453;
-
+    
     @Override
     public String getCheckId()
     {
@@ -54,7 +53,7 @@ public class ExportProcedureCommentDescriptionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(STANDARD_NUM, getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(453, getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(BslDocumentationComment.class);
     }
 
@@ -62,8 +61,7 @@ public class ExportProcedureCommentDescriptionCheck
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
         DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
     {
-        if (!(root.getMethod() instanceof Function || root.getMethod() instanceof Procedure)
-            || !root.getMethod().isExport())
+        if (!root.getMethod().isExport())
         {
             return;
         }
