@@ -351,13 +351,13 @@ final class Messages
     public static String UseNonRecommendedMethods_parameter;
 
     public static String UseNonRecommendedMethods_title;
-    
+
     public static String MethodOptionalParameterBeforeRequiredCheck_description;
 
     public static String MethodOptionalParameterBeforeRequiredCheck_Optional_parameter_before_required;
 
     public static String MethodOptionalParameterBeforeRequiredCheck_title;
-    
+
     public static String MethodTooManyPramsCheck_description;
 
     public static String MethodTooManyPramsCheck_Max_parameters;
