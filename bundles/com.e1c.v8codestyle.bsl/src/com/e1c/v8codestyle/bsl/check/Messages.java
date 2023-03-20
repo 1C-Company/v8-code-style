@@ -378,6 +378,12 @@ final class Messages
 
     public static String MissingTemporaryFileDeletionCheck_title;
 
+    public static String FormDataToValueCheck_Description;
+
+    public static String FormDataToValueCheck_Issue;
+
+    public static String FormDataToValueCheck_Title;
+
     public static String FormModulePragmaCheck_description;
 
     public static String FormModulePragmaCheck_Form_module_compilation_pragma_used;
