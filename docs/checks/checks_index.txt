@@ -25,6 +25,7 @@ doc-comment-collection-item-type
 doc-comment-complex-type-with-link
 doc-comment-description-ends-on-dot
 doc-comment-export-function-return-section
+doc-comment-export-procedure-description-section
 doc-comment-field-in-description-suggestion
 doc-comment-field-name
 doc-comment-field-type
@@ -37,10 +38,12 @@ doc-comment-ref-link
 doc-comment-return-section-type
 doc-comment-type
 doc-comment-use-minus
+document-post-in-privileged-mode
 dynamic-access-method-not-found
 empty-except-statement
 event-heandler-boolean-param
 export-method-in-command-form-module
+export-procedure-missing-comment
 extension-md-object-prefix
 extension-method-prefix
 extension-variable-prefix
@@ -60,8 +63,11 @@ invocation-parameter-type-intersect
 lock-out-of-try
 manager-module-named-self-reference
 md-list-object-presentation
+md-object-attribute-comment-incorrect-type
+md-object-attribute-comment-not-exist
 md-standard-attribute-synonym-empty
 mdo-name-length
+mdo-ru-name-unallowed-letter
 mdo-scheduled-job-description
 method-param-value-type
 method-too-many-params
@@ -135,5 +141,6 @@ subsystem-synonym-too-long
 typed-value-adding-to-untyped-collection
 unsafe-password-ib-storage
 use-non-recommended-method
+using-form-data-to-value
 using-isinrole
 variable-value-type
