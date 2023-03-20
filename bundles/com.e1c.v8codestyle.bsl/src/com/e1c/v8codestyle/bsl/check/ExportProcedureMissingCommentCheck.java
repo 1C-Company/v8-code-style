@@ -18,7 +18,6 @@ import java.text.MessageFormat;
 import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -44,8 +43,7 @@ public class ExportProcedureMissingCommentCheck
     extends AbstractModuleStructureCheck
 {
     private static final String CHECK_ID = "export-procedure-missing-comment"; //$NON-NLS-1$
-    private static final int STANDARD_NUM = 453;
-
+    
     @Override
     public String getCheckId()
     {
@@ -60,20 +58,18 @@ public class ExportProcedureMissingCommentCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(STANDARD_NUM, getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(453, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD);
-
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        EObject eObject = (EObject)object;
-        Method method = (Method)eObject;
+        Method method = (Method)object;
 
-        if (verifyTopRegion(getTopParentRegion(method)) && method.isExport()
+        if (method.isExport() && verifyTopRegion(getTopParentRegion(method))
             && isMethodHasNoComment(NodeModelUtils.findActualNodeFor(method)))
         {
             resultAceptor.addIssue(
@@ -97,11 +93,16 @@ public class ExportProcedureMissingCommentCheck
     {
         if (root != null)
         {
+            boolean lastNodeIsComment = false;
             for (ILeafNode node : root.getLeafNodes())
             {
-                if (BslCommentUtils.isCommentNode(node))
+                if (node.isHidden())
                 {
-                    return false;
+                    lastNodeIsComment = BslCommentUtils.isCommentNode(node);
+                }
+                else
+                {
+                    return !lastNodeIsComment;
                 }
             }
         }
