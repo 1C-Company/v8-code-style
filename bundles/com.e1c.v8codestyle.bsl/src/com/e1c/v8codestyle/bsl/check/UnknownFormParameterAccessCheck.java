@@ -14,6 +14,7 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.FEATURE_ACCESS__NAME;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.CONTAINING_SOURCE_DERIVED_PROPERTY__CONTAINING_SOURCE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.DERIVED_PROPERTY__SOURCE;
 
@@ -32,6 +33,8 @@ import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.mcore.ContainingSourceDerivedProperty;
 import com._1c.g5.v8.dt.mcore.DerivedProperty;
+import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.util.Environment;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -103,13 +106,14 @@ public class UnknownFormParameterAccessCheck
             return;
         }
 
-        Module module = EcoreUtil2.getContainerOfType(dfa, Module.class);
+        Environmental envs = EcoreUtil2.getContainerOfType(dfa, Environmental.class);
 
-        if (!monitor.isCanceled() && isEmptySource(dynamicComputer.resolveObject(dfa, module.environments())))
+        if (!monitor.isCanceled() && isEmptySource(dynamicComputer.resolveObject(dfa, envs.environments())))
         {
             resultAcceptor.addIssue(
                 MessageFormat.format(Messages.UnknownFormParameterAccessCheck_Unknown_form_parameter_access, dfaName),
-                dfa);
+                dfa,
+                FEATURE_ACCESS__NAME);
         }
     }
 
