@@ -351,7 +351,13 @@ final class Messages
     public static String UseNonRecommendedMethods_parameter;
 
     public static String UseNonRecommendedMethods_title;
+    
+    public static String MethodOptionalParameterBeforeRequiredCheck_description;
 
+    public static String MethodOptionalParameterBeforeRequiredCheck_Optional_parameter_before_required;
+
+    public static String MethodOptionalParameterBeforeRequiredCheck_title;
+    
     public static String MethodTooManyPramsCheck_description;
 
     public static String MethodTooManyPramsCheck_Max_parameters;
@@ -434,11 +440,13 @@ final class Messages
 
     public static String LockOutOfTry_Method_lock_out_of_try;
 
-    public static String MethodOptionalParameterBeforeRequiredCheck_description;
-
-    public static String MethodOptionalParameterBeforeRequiredCheck_Optional_parameter_before_required;
-
-    public static String MethodOptionalParameterBeforeRequiredCheck_title;
+    public static String VariableNameInvalidCheck_description;
+    public static String VariableNameInvalidCheck_message_variable_length_is_less_than;
+    public static String VariableNameInvalidCheck_param_MIN_NAME_LENGTH_PARAM_title;
+    public static String VariableNameInvalidCheck_title;
+    public static String VariableNameInvalidCheck_variable_name_is_invalid;
+    public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
+    public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
 
     static
     {
