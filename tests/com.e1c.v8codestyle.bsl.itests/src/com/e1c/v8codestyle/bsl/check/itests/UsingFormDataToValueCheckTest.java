@@ -23,14 +23,14 @@ import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.v8codestyle.bsl.check.FormDataToValueCheck;
+import com.e1c.v8codestyle.bsl.check.UsingFormDataToValueCheck;
 
 /**
- * The test for {@link FormDataToValueCheck} check.
+ * The test for {@link UsingFormDataToValueCheck} check.
  * 
  * @author Artem Iliukhin
  */
-public class FormDataToValueCheckTest
+public class UsingFormDataToValueCheckTest
     extends AbstractSingleModuleTestBase
 {
     private static final String PROJECT_NAME = "CommonForm";
@@ -42,9 +42,9 @@ public class FormDataToValueCheckTest
     /**
      * Instantiates a new form data to value check test.
      */
-    public FormDataToValueCheckTest()
+    public UsingFormDataToValueCheckTest()
     {
-        super(FormDataToValueCheck.class);
+        super(UsingFormDataToValueCheck.class);
     }
 
     @Override

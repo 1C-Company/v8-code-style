@@ -4,15 +4,9 @@ In most cases, FormAttributeToValue is preferable to FormDataToValue.
 
 Sticking to this recommendation will help you to keep the code consistent with other 1C:Enterprise applications. Also, 
 FormAttributeToValue has simpler syntax, that is, less chance to make a code mistake. 
-FormDataToValue requires the data type to be specified explicitly.Example:
+FormDataToValue requires the data type to be specified explicitly.
 
-SignaturesTable = FormDataToValue(SignaturesTable, Type("ValueTable"));
-
-In contrast, FormAttributeToValue doesn't require data type to be specified. 
-
-Example:
-
-SignaturesTable = FormAttributeToValue("SignaturesTable");
+In contrast, FormAttributeToValue doesn't require data type to be specified.
 
 1C:Enterprise supports both the FormAttributeToValue and FormDataToValue methods, 
 but the last-mentioned is considered more usable. In terms of efficiency and output, the methods are equal.
