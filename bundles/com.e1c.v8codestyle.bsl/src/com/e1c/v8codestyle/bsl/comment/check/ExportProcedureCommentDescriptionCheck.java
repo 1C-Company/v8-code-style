@@ -15,17 +15,20 @@ package com.e1c.v8codestyle.bsl.comment.check;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.text.MessageFormat;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
-import com._1c.g5.v8.dt.bsl.model.Function;
-import com._1c.g5.v8.dt.bsl.model.Procedure;
+import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
+import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
@@ -38,7 +41,7 @@ public class ExportProcedureCommentDescriptionCheck
     extends AbstractDocCommentTypeCheck
 {
     private static final String CHECK_ID = "doc-comment-export-procedure-description-section"; //$NON-NLS-1$
-    
+
     @Override
     public String getCheckId()
     {
@@ -68,11 +71,53 @@ public class ExportProcedureCommentDescriptionCheck
 
         BslDocumentationComment docComment = (BslDocumentationComment)object;
         BslDocumentationComment.Description description = docComment.getDescription();
-        if (description != null && description.getParts().isEmpty())
+        if (description != null && description.getParts().isEmpty()
+            && verifyTopRegion(getTopParentRegion(root.getMethod())))
         {
             resultAceptor.addIssue(MessageFormat.format(
-                    Messages.ExportMethodCommentDescriptionCheck_Missing_Description_in_export_procedure_comment,
+                Messages.ExportMethodCommentDescriptionCheck_Missing_Description_in_export_procedure_comment,
                 root.getMethod().getName()), root.getMethod(), NAMED_ELEMENT__NAME);
         }
     }
+
+    private static Optional<RegionPreprocessor> getTopParentRegion(EObject object)
+    {
+        EObject parent = object.eContainer();
+        PreprocessorItem lastItem = null;
+        RegionPreprocessor region = null;
+        do
+        {
+            if (parent instanceof RegionPreprocessor)
+            {
+                RegionPreprocessor parentRegion = (RegionPreprocessor)parent;
+                if (lastItem != null && parentRegion.getItem().equals(lastItem))
+                {
+                    region = parentRegion;
+                }
+                else
+                {
+                    lastItem = null;
+                }
+            }
+            else if (parent instanceof PreprocessorItem)
+            {
+                lastItem = (PreprocessorItem)parent;
+            }
+            parent = parent.eContainer();
+        }
+        while (parent != null);
+
+        return Optional.ofNullable(region);
+    }
+
+    private static boolean verifyTopRegion(Optional<RegionPreprocessor> regionTop)
+    {
+        if (regionTop.isEmpty())
+        {
+            return false;
+        }
+        return regionTop.get().getName().equals(ModuleStructureSection.PUBLIC.getNames()[0])
+            || regionTop.get().getName().equals(ModuleStructureSection.PUBLIC.getNames()[1]);
+    }
+
 }
