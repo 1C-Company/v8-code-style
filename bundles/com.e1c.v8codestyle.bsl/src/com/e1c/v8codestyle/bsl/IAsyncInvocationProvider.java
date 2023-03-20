@@ -28,7 +28,7 @@ public interface IAsyncInvocationProvider
     /**
      * Global context methods.
      *
-     * @param version the version of platform
+     * @param version the version of platform, cannot be {@code null}
      * @return the asynchronous invocation names
      */
     Collection<String> getAsyncInvocationNames(Version version);
@@ -36,7 +36,7 @@ public interface IAsyncInvocationProvider
     /**
      * Methods with a list of types in which they are used.
      *
-     * @param version the version of platform
+     * @param version the version of platform, cannot be {@code null}
      * @return the asynchronous type method names
      */
     Map<String, Collection<String>> getAsyncTypeMethodNames(Version version);
