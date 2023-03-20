@@ -1,4 +1,4 @@
-# Optional parameters before required
+# Method optional parameters before required
 
 Optional parameters (with default values) must follow required parameters (without default values). 
 

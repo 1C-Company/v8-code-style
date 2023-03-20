@@ -33,13 +33,13 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  * Check methods formal params, that optional parameter before required.
  * @author Vadim Goncharov
  */
-public class OptionalParameterBeforeRequiredCheck
+public class MethodOptionalParameterBeforeRequiredCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "bsl-optional-parameter-before-required"; //$NON-NLS-1$
+    private static final String CHECK_ID = "method-optional-parameter-before-required"; //$NON-NLS-1$
 
-    public OptionalParameterBeforeRequiredCheck()
+    public MethodOptionalParameterBeforeRequiredCheck()
     {
         super();
     }
@@ -76,8 +76,8 @@ public class OptionalParameterBeforeRequiredCheck
             return;
         }
 
-        Integer indexOfOptionalParam = null;
-        Integer indexOfRequiredParam = null;
+        int indexOfOptionalParam = -1;
+        int indexOfRequiredParam = -1;
 
         for (int i = 0; i < params.size(); i++)
         {
@@ -92,13 +92,12 @@ public class OptionalParameterBeforeRequiredCheck
                 indexOfRequiredParam = i;
             }
 
-            if (params.get(i).getDefaultValue() != null && indexOfOptionalParam == null)
+            if (params.get(i).getDefaultValue() != null && indexOfOptionalParam == -1)
             {
                 indexOfOptionalParam = i;
             }
 
-            if (indexOfOptionalParam != null && indexOfRequiredParam != null
-                && indexOfOptionalParam < indexOfRequiredParam)
+            if (indexOfOptionalParam != -1 && indexOfRequiredParam != -1 && indexOfOptionalParam < indexOfRequiredParam)
             {
                 resultAcceptor.addIssue(
                     Messages.OptionalParameterBeforeRequiredCheck_Optional_parameter_before_required,

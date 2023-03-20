@@ -21,19 +21,19 @@ import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.v8codestyle.bsl.check.OptionalParameterBeforeRequiredCheck;
+import com.e1c.v8codestyle.bsl.check.MethodOptionalParameterBeforeRequiredCheck;
 
 /**
- * Test for the class {@link OptionalParameterBeforeRequiredCheck}.
+ * Test for the class {@link MethodOptionalParameterBeforeRequiredCheck}.
  * @author Vadim Goncharov
  */
-public class OptionalParameterBeforeRequiredCheckTest
+public class MethodOptionalParameterBeforeRequiredCheckTest
     extends AbstractSingleModuleTestBase
 {
 
-    public OptionalParameterBeforeRequiredCheckTest()
+    public MethodOptionalParameterBeforeRequiredCheckTest()
     {
-        super(OptionalParameterBeforeRequiredCheck.class);
+        super(MethodOptionalParameterBeforeRequiredCheck.class);
     }
 
     /**
@@ -44,7 +44,7 @@ public class OptionalParameterBeforeRequiredCheckTest
     @Test
     public void testOptionalParamBeforeRequire() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "bsl-optional-parameter-before-required.bsl");
+        updateModule(FOLDER_RESOURCE + "method-optional-parameter-before-required.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
