@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="2903d8db-9d70-4125-b7de-353d628f3359">
   <name>ExtensionVariablePrefixCheck_Extension</name>
-  <synonym>
-    <key>en</key>
-    <value>Extension variable prefix check extension</value>
-  </synonym>
   <objectBelonging>Adopted</objectBelonging>
   <extension xsi:type="mdclassExtension:ConfigurationExtension">
     <defaultRunMode>Checked</defaultRunMode>
@@ -34,5 +30,6 @@
   <roles>Role.Ext1_DefaultRole</roles>
   <commonModules>CommonModule.CommonModule</commonModules>
   <commonModules>CommonModule.CompliantCommonModule</commonModules>
+  <commonForms>CommonForm.Form</commonForms>
   <catalogs>Catalog.Catalog</catalogs>
 </mdclass:Configuration>
