@@ -19,7 +19,6 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.MD_OBJEC
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com._1c.g5.v8.dt.mcore.impl.LocalStringMapEntryImpl;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -39,7 +38,6 @@ public class MdObjectNameUnallowedLetterCheck
     extends BasicCheck
 {
     private static final String CHECK_ID = "mdo-ru-name-unallowed-letter"; //$NON-NLS-1$
-    private static final int STANDARD_NUM = 474;
     private static final String LANGUAGE_KEY_RU = "ru"; //$NON-NLS-1$
     private static final String UNALLOWED_LETTER = "ё"; //$NON-NLS-1$
     private static final String ISSUE_MESSAGE =
@@ -60,12 +58,10 @@ public class MdObjectNameUnallowedLetterCheck
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
             .issueType(IssueType.UI_STYLE)
-            .extension(new StandardCheckExtension(STANDARD_NUM, getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(474, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(MD_OBJECT)
-            .checkTop()
             .features(MD_OBJECT__NAME, MD_OBJECT__SYNONYM, MD_OBJECT__COMMENT);
-
     }
 
     @Override
@@ -73,24 +69,17 @@ public class MdObjectNameUnallowedLetterCheck
         IProgressMonitor monitor)
     {
         MdObject mdObject = (MdObject)object;
-        if (mdObject.eContents().get(0) instanceof LocalStringMapEntryImpl)
+        if (hasUnallowedLetter(mdObject.getName()))
         {
-            LocalStringMapEntryImpl language = (LocalStringMapEntryImpl)mdObject.eContents().get(0);
-            if (language.getKey().equals(LANGUAGE_KEY_RU))
-            {
-                if (hasUnallowedLetter(mdObject.getName()))
-                {
-                    resultAceptor.addIssue(ISSUE_MESSAGE, MD_OBJECT__NAME);
-                }
-                if (hasUnallowedLetter(mdObject.getSynonym().get(LANGUAGE_KEY_RU)))
-                {
-                    resultAceptor.addIssue(ISSUE_MESSAGE, MD_OBJECT__SYNONYM);
-                }
-                if (hasUnallowedLetter(mdObject.getComment()))
-                {
-                    resultAceptor.addIssue(ISSUE_MESSAGE, MD_OBJECT__COMMENT);
-                }
-            }
+            resultAceptor.addIssue(ISSUE_MESSAGE, MD_OBJECT__NAME);
+        }
+        if (hasUnallowedLetter(mdObject.getSynonym().get(LANGUAGE_KEY_RU)))
+        {
+            resultAceptor.addIssue(ISSUE_MESSAGE, MD_OBJECT__SYNONYM);
+        }
+        if (hasUnallowedLetter(mdObject.getComment()))
+        {
+            resultAceptor.addIssue(ISSUE_MESSAGE, MD_OBJECT__COMMENT);
         }
     }
 
