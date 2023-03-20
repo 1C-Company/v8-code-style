@@ -95,7 +95,8 @@ public class SelfReferenceCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(467, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.COMMON_MODULE, ModuleType.OBJECT_MODULE,
-                ModuleType.VALUE_MANAGER_MODULE, ModuleType.RECORDSET_MODULE, ModuleType.FORM_MODULE))
+                ModuleType.VALUE_MANAGER_MODULE, ModuleType.RECORDSET_MODULE, ModuleType.FORM_MODULE,
+                ModuleType.COMMAND_MODULE))
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS)
             .parameter(PARAMETER_CHECK_ONLY_EXISTING_FORM_PROPERTIES, Boolean.class, Boolean.TRUE.toString(),
@@ -133,11 +134,11 @@ public class SelfReferenceCheck
 
         Module module = EcoreUtil2.getContainerOfType(dynamicFeatureAccess, Module.class);
 
-        if (!checkObjectModule && OBJECT_MODULE_TYPE_LIST.contains(module.getModuleType()))
+        if (!EXCESSIVE_NAMES.contains(source.getName()))
         {
             return false;
         }
-        if (!EXCESSIVE_NAMES.contains(source.getName()))
+        if (!checkObjectModule && OBJECT_MODULE_TYPE_LIST.contains(module.getModuleType()))
         {
             return false;
         }
