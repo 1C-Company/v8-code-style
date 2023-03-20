@@ -53,8 +53,8 @@ public class MethodOptionalParameterBeforeRequiredCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.OptionalParameterBeforeRequiredCheck_title)
-            .description(Messages.OptionalParameterBeforeRequiredCheck_description)
+        builder.title(Messages.MethodOptionalParameterBeforeRequiredCheck_title)
+            .description(Messages.MethodOptionalParameterBeforeRequiredCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.TRIVIAL)
             .issueType(IssueType.CODE_STYLE)
@@ -100,7 +100,7 @@ public class MethodOptionalParameterBeforeRequiredCheck
             if (indexOfOptionalParam != -1 && indexOfRequiredParam != -1 && indexOfOptionalParam < indexOfRequiredParam)
             {
                 resultAcceptor.addIssue(
-                    Messages.OptionalParameterBeforeRequiredCheck_Optional_parameter_before_required,
+                    Messages.MethodOptionalParameterBeforeRequiredCheck_Optional_parameter_before_required,
                     params.get(indexOfOptionalParam), NAMED_ELEMENT__NAME);
                 break;
             }
