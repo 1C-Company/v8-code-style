@@ -27,14 +27,12 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
-import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.mcore.ContainingSourceDerivedProperty;
 import com._1c.g5.v8.dt.mcore.DerivedProperty;
 import com._1c.g5.v8.dt.mcore.Environmental;
-import com._1c.g5.v8.dt.mcore.util.Environment;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -112,8 +110,7 @@ public class UnknownFormParameterAccessCheck
         {
             resultAcceptor.addIssue(
                 MessageFormat.format(Messages.UnknownFormParameterAccessCheck_Unknown_form_parameter_access, dfaName),
-                dfa,
-                FEATURE_ACCESS__NAME);
+                dfa, FEATURE_ACCESS__NAME);
         }
     }
 
