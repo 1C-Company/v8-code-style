@@ -16,6 +16,7 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STRING_LITERAL__LINES;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGURATION__ROLES;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.ROLE;
 
 import java.text.MessageFormat;
 
@@ -31,6 +32,7 @@ import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.naming.ITopObjectFqnGenerator;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -53,25 +55,28 @@ public class IsInRoleMethodRoleExistCheck
     private static final String METHOD_ISINROLE_NAME = "IsInRole"; //$NON-NLS-1$
 
     private static final String METHOD_ISINROLE_NAME_RU = "РольДоступна"; //$NON-NLS-1$
-    
-    private static final String ROLE_FQN_FIRST_SEGMENT = "Role."; //$NON-NLS-1$
 
     private final IScopeProvider scopeProvider;
 
     private final IQualifiedNameConverter qualifiedNameConverter;
+
+    private final ITopObjectFqnGenerator topObjectFqnGenerator;
 
     /**
      * Instantiates a new invocation role check access exist role check.
      *
      * @param scopeProvider the scope provider
      * @param qualifiedNameConverter the qualified name converter
+     * @param topObjectFqnGenerator the top object fqn generator
      */
     @Inject
-    public IsInRoleMethodRoleExistCheck(IScopeProvider scopeProvider, IQualifiedNameConverter qualifiedNameConverter)
+    public IsInRoleMethodRoleExistCheck(IScopeProvider scopeProvider, IQualifiedNameConverter qualifiedNameConverter,
+        ITopObjectFqnGenerator topObjectFqnGenerator)
     {
         super();
         this.scopeProvider = scopeProvider;
         this.qualifiedNameConverter = qualifiedNameConverter;
+        this.topObjectFqnGenerator = topObjectFqnGenerator;
     }
 
     @Override
@@ -121,8 +126,8 @@ public class IsInRoleMethodRoleExistCheck
         IEObjectDescription roleDesc = getRoleDescFromScope(inv, roleName);
         if (!monitor.isCanceled() && roleDesc == null)
         {
-            String message = MessageFormat.format(
-                Messages.IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration, roleName);
+            String message = MessageFormat
+                .format(Messages.IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration, roleName);
             resultAcceptor.addIssue(message, literal, STRING_LITERAL__LINES);
         }
 
@@ -148,7 +153,8 @@ public class IsInRoleMethodRoleExistCheck
     private IEObjectDescription getRoleDescFromScope(Invocation inv, String roleName)
     {
         IScope scope = scopeProvider.getScope(inv, CONFIGURATION__ROLES);
-        return scope.getSingleElement(qualifiedNameConverter.toQualifiedName(ROLE_FQN_FIRST_SEGMENT + roleName));
+        String fqn = topObjectFqnGenerator.generateStandaloneObjectFqn(ROLE, roleName);
+        return scope.getSingleElement(qualifiedNameConverter.toQualifiedName(fqn));
     }
 
 }

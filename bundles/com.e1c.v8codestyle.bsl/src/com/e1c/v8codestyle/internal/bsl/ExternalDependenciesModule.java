@@ -42,6 +42,7 @@ import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
 import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
+import com._1c.g5.v8.dt.core.naming.ITopObjectFqnGenerator;
 
 /**
  * The external dependencies for plugin
@@ -66,6 +67,7 @@ class ExternalDependenciesModule
         bind(IBslPreferences.class).toService();
         bind(IQualifiedNameConverter.class).toService();
         bind(IBslModuleContextDefService.class).toService();
+        bind(ITopObjectFqnGenerator.class).toService();
 
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
