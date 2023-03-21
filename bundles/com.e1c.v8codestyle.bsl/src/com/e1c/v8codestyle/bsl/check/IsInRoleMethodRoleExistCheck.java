@@ -111,7 +111,7 @@ public class IsInRoleMethodRoleExistCheck
         }
 
         StringLiteral literal = (StringLiteral)params.get(0);
-        String roleName = literal.lines(true).get(0).replace("\"", "");
+        String roleName = literal.lines(true).get(0);
 
         if (StringUtils.isEmpty(roleName))
         {
