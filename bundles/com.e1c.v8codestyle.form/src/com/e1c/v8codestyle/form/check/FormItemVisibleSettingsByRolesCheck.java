@@ -111,7 +111,7 @@ public class FormItemVisibleSettingsByRolesCheck
 
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.FormItemVisibleSettingsByRoles_Message_template, propertyName, itemName),
-                eContainer, 
+                adjBoolean, 
                 ADJUSTABLE_BOOLEAN__COMMON);
         }
 
