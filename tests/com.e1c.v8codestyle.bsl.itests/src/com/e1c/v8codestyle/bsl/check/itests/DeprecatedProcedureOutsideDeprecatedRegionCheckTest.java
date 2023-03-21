@@ -56,7 +56,21 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheckTest
     }
 
     /**
-     * Test a deprecated method is placed a nested region in the Deprecated region of the Public region 
+     * Test a deprecated method is placed in the Deprecated region of the Internal region in a common module area
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testCompliantDeprecatedMethodInInternal() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "deprecated-method-compliant2.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test a deprecated method is placed a nested region in the Deprecated region of the Public region
      * in a common module area
      *
      * @throws Exception the exception
