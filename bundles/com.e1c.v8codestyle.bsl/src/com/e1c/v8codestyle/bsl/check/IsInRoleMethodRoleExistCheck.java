@@ -54,7 +54,7 @@ public class IsInRoleMethodRoleExistCheck
 
     private static final String METHOD_ISINROLE_NAME_RU = "РольДоступна"; //$NON-NLS-1$
     
-    private static final String ROLE_FQN_FIRST_SEGMENT = "Role.";
+    private static final String ROLE_FQN_FIRST_SEGMENT = "Role."; //$NON-NLS-1$
 
     private final IScopeProvider scopeProvider;
 
