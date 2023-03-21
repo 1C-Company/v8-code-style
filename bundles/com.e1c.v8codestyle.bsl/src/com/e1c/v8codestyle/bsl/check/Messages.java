@@ -344,6 +344,12 @@ final class Messages
 
     public static String RollbackTransactionCheck_Transactions_is_broken_des;
 
+    public static String UnknownFormParameterAccessCheck_description;
+
+    public static String UnknownFormParameterAccessCheck_title;
+
+    public static String UnknownFormParameterAccessCheck_Unknown_form_parameter_access;
+
     public static String UseNonRecommendedMethods_description;
 
     public static String UseNonRecommendedMethods_message;
@@ -439,6 +445,14 @@ final class Messages
     public static String LockOutOfTry_Lock_out_of_try;
 
     public static String LockOutOfTry_Method_lock_out_of_try;
+
+    public static String VariableNameInvalidCheck_description;
+    public static String VariableNameInvalidCheck_message_variable_length_is_less_than;
+    public static String VariableNameInvalidCheck_param_MIN_NAME_LENGTH_PARAM_title;
+    public static String VariableNameInvalidCheck_title;
+    public static String VariableNameInvalidCheck_variable_name_is_invalid;
+    public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
+    public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
 
     static
     {
