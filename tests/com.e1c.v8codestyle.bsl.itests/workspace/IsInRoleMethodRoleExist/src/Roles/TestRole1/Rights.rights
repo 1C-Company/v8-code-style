@@ -4,7 +4,7 @@
 	<setForAttributesByDefault>true</setForAttributesByDefault>
 	<independentRightsOfChildObjects>false</independentRightsOfChildObjects>
 	<object>
-		<name>Configuration.InvocationRoleCheckAccessExistRole</name>
+		<name>Configuration.IsInRoleMethodRoleExist</name>
 		<right>
 			<name>SaveUserData</name>
 			<value>true</value>

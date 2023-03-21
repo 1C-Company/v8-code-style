@@ -410,12 +410,6 @@ final class Messages
 
     public static String InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_title;
 
-    public static String InvocationRoleCheckAccessExistRoleCheck_description;
-
-    public static String InvocationRoleCheckAccessExistRoleCheck_Role_named_not_exists_in_configuration;
-
-    public static String InvocationRoleCheckAccessExistRoleCheck_title;
-
     public static String IsInRoleCheck_Exception_Roles;
 
     public static String IsInRoleCheck_Use_AccessRight;
@@ -424,6 +418,12 @@ final class Messages
 
     public static String IsInRoleCheck_Using_IsInRole;
 
+    public static String IsInRoleMethodRoleExistCheck_description;
+
+    public static String IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration;
+
+    public static String IsInRoleMethodRoleExistCheck_title;
+    
     public static String ModuleUndefinedVariableCheck_Title;
     public static String ModuleUndefinedVariableCheck_Description;
     public static String ModuleUndefinedVariable_msg;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="94ce6be4-4189-4a62-85af-1d9e391d338a">
-  <name>InvocationRoleCheckAccessExistRole</name>
+  <name>IsInRoleMethodRoleExist</name>
   <synonym>
     <key>en</key>
-    <value>Invocation role check access exist role</value>
+    <value>IsInRoleMethodRoleExistCheck</value>
   </synonym>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="cfa3e992-f719-4203-af07-9f7c4f155fb0"/>
   <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="1976c333-6fbe-408d-99b8-3bdabac4d2ed"/>
@@ -39,8 +39,6 @@
     <languageCode>en</languageCode>
   </languages>
   <roles>Role.TestRole1</roles>
-  <roles>Role.TestRole2</roles>
   <commonModules>CommonModule.RolesCommonModule</commonModules>
   <commonModules>CommonModule.Users</commonModules>
-  <commonModules>CommonModule.Пользователи</commonModules>
 </mdclass:Configuration>
