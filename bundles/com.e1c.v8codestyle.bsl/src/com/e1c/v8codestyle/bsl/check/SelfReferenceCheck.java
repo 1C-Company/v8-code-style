@@ -94,9 +94,10 @@ public class SelfReferenceCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(467, getCheckId(), BslPlugin.PLUGIN_ID))
-            .extension(ModuleTypeFilter.onlyTypes(ModuleType.COMMON_MODULE, ModuleType.OBJECT_MODULE,
-                ModuleType.VALUE_MANAGER_MODULE, ModuleType.RECORDSET_MODULE, ModuleType.FORM_MODULE,
-                ModuleType.COMMAND_MODULE))
+            .extension(ModuleTypeFilter.excludeTypes(ModuleType.ORDINARY_APP_MODULE, ModuleType.MANAGED_APP_MODULE,
+                ModuleType.EXTERNAL_CONN_MODULE, ModuleType.SESSION_MODULE, ModuleType.MANAGER_MODULE,
+                ModuleType.WEB_SERVICE_MODULE, ModuleType.HTTP_SERVICE_MODULE, ModuleType.INTEGRATION_SERVICE_MODULE,
+                ModuleType.BOT_MODULE))
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS)
             .parameter(PARAMETER_CHECK_ONLY_EXISTING_FORM_PROPERTIES, Boolean.class, Boolean.TRUE.toString(),
