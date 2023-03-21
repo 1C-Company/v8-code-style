@@ -1,7 +1,6 @@
 # Referring to a non-existent role
 
-In the parameters of the functions "IsInRole" and "Users.RolesAvailable" must
-existing roles to be specified.
+In the parameter of the function "IsInRole" must existing role to be specified.
 
 ## Noncompliant Code Example
 
