@@ -133,21 +133,22 @@ public class SelfReferenceCheck
         boolean checkOnlyExistingFormProperties = parameters.getBoolean(PARAMETER_CHECK_ONLY_EXISTING_FORM_PROPERTIES);
         boolean checkObjectModule = parameters.getBoolean(PARAMETER_CHEKC_OBJECT_MODULE);
 
-        Module module = EcoreUtil2.getContainerOfType(dynamicFeatureAccess, Module.class);
-
         if (!EXCESSIVE_NAMES.contains(source.getName()))
         {
             return false;
         }
+        
+        Module module = EcoreUtil2.getContainerOfType(dynamicFeatureAccess, Module.class);
         if (!checkObjectModule && OBJECT_MODULE_TYPE_LIST.contains(module.getModuleType()))
         {
             return false;
         }
+        
         if (!checkOnlyExistingFormProperties || (dynamicFeatureAccess.eContainer() instanceof Invocation))
         {
             return true;
         }
-
+        
         return !(module.getModuleType() == ModuleType.FORM_MODULE
             && isEmptySource(dynamicFeatureAccessComputer.resolveObject(dynamicFeatureAccess, module.environments())));
     }
