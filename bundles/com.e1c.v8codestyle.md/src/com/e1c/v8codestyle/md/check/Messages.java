@@ -65,6 +65,10 @@ final class Messages
     public static String DbObjectAnyRefCheck_AnyRef;
     public static String DbObjectAnyRefCheck_Description;
     public static String DbObjectAnyRefCheck_Title;
+    public static String DocumentPostInPrivilegedModeCheck_description;
+    public static String DocumentPostInPrivilegedModeCheck_message_Post_in_privileged_mode;
+    public static String DocumentPostInPrivilegedModeCheck_message_Unpost_in_privileged_mode;
+    public static String DocumentPostInPrivilegedModeCheck_title;
     public static String ExtensionMdObjectNamePrefixCheck_Description;
     public static String ExtensionMdObjectNamePrefixCheck_Object_0_should_have_1_prefix;
     public static String ExtensionMdObjectNamePrefixCheck_Title;
@@ -72,6 +76,9 @@ final class Messages
     public static String MdObjectNameLength_Maximum_name_length_description;
     public static String MdObjectNameLength_message;
     public static String MdObjectNameLength_title;
+    public static String MdObjectNameUnallowedLetterCheck_description;
+    public static String MdObjectNameUnallowedLetterCheck_Ru_locale_unallowed_letter_used_for_name_synonym_or_comment;
+    public static String MdObjectNameUnallowedLetterCheck_title;
     public static String MdListObjectPresentationCheck_decription;
     public static String MdListObjectPresentationCheck_Neither_Object_presentation_nor_List_presentation_is_not_filled;
     public static String MdListObjectPresentationCheck_title;
