@@ -51,12 +51,7 @@ public class CodeAfterAsyncCallCheckTest
     @Test
     public void testCodeAfterExistence() throws Exception
     {
-        IDtProject dtProject = getProject();
-        IProject project = dtProject.getWorkspaceProject();
-        ICheckSettings settings = checkRepository.getSettings(new CheckUid(CHECK_ID, BslPlugin.PLUGIN_ID), project);
-        settings.getParameters().get(PARAMETER_NAME).setValue(Boolean.toString(Boolean.FALSE));
-        checkRepository.applyChanges(Collections.singleton(settings), project);
-        waitForDD(dtProject);
+        setParameterValue(Boolean.FALSE);
 
         updateModule(FOLDER_RESOURCE + "code-after-async-call-existence.bsl");
 
@@ -77,7 +72,42 @@ public class CodeAfterAsyncCallCheckTest
     @Test
     public void testPromiseCompliant() throws Exception
     {
+        setParameterValue(Boolean.FALSE);
+
         updateModule(FOLDER_RESOURCE + "async-call-promise.bsl");
+
+        Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
+        assertNull(marker);
+    }
+
+    @Test
+    public void testPromiseCompliant2() throws Exception
+    {
+        setParameterValue(Boolean.FALSE);
+
+        updateModule(FOLDER_RESOURCE + "async-call-promise2.bsl");
+
+        Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
+        assertNull(marker);
+    }
+
+    @Test
+    public void testPromiseCompliant3() throws Exception
+    {
+        setParameterValue(Boolean.FALSE);
+
+        updateModule(FOLDER_RESOURCE + "async-call-promise3.bsl");
+
+        Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
+        assertNull(marker);
+    }
+
+    @Test
+    public void testPromiseComplian4() throws Exception
+    {
+        setParameterValue(Boolean.FALSE);
+
+        updateModule(FOLDER_RESOURCE + "async-call-promise4.bsl");
 
         Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
         assertNull(marker);
@@ -91,5 +121,15 @@ public class CodeAfterAsyncCallCheckTest
         Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
         assertNotNull(marker);
         assertEquals("8", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
+
+    private void setParameterValue(Boolean value)
+    {
+        IDtProject dtProject = getProject();
+        IProject project = dtProject.getWorkspaceProject();
+        ICheckSettings settings = checkRepository.getSettings(new CheckUid(CHECK_ID, BslPlugin.PLUGIN_ID), project);
+        settings.getParameters().get(PARAMETER_NAME).setValue(Boolean.toString(value));
+        checkRepository.applyChanges(Collections.singleton(settings), project);
+        waitForDD(dtProject);
     }
 }

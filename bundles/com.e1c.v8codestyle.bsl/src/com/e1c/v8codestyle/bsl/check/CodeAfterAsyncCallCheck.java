@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 
+import com._1c.g5.v8.dt.bsl.model.AwaitStatement;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
@@ -36,7 +37,6 @@ import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorConditional;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItemStatements;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
-import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
@@ -68,8 +68,6 @@ public final class CodeAfterAsyncCallCheck
     extends BasicCheck
 {
 
-    private static final String STATEMENT_NAME_RU = "Ждать"; //$NON-NLS-1$
-    private static final String STATEMENT_NAME = "Await"; //$NON-NLS-1$
     private static final String CHECK_ID = "code-after-async-call"; //$NON-NLS-1$
     private static final String DEFAULT_CHECK = Boolean.toString(Boolean.TRUE);
     private static final String PARAMETER_NAME = "notifyDescriptionIsDefined"; //$NON-NLS-1$
@@ -172,11 +170,11 @@ public final class CodeAfterAsyncCallCheck
     private void checkNeighboringStatement(ResultAcceptor resultAceptor, Invocation inv)
     {
         Statement statement = getStatementFromInvoc(inv);
-        if (statement != null && !isPreviousStatementAwait(statement))
+        if (statement != null && !(statement instanceof AwaitStatement))
         {
             statement = getNextStatement(statement);
             if (statement != null && !(statement instanceof ReturnStatement)
-                && !(statement instanceof EmptyStatement))
+                && !(statement instanceof EmptyStatement) && !(statement instanceof AwaitStatement))
             {
                 resultAceptor.addIssue(Messages.CodeAfterAsyncCallCheck_Issue, statement);
             }
@@ -191,35 +189,6 @@ public final class CodeAfterAsyncCallCheck
             container = container.eContainer();
         }
         return container instanceof Statement ? (Statement)container : null;
-    }
-
-    private boolean isPreviousStatementAwait(Statement statement)
-    {
-        EObject container = statement.eContainer();
-        List<Statement> st = getContainer(container);
-        if (st != null)
-        {
-            int index = st.indexOf(statement);
-            if (index > 0 && index - 1 < st.size())
-            {
-                Statement awaitStatement = st.get(index - 1);
-                if (awaitStatement instanceof SimpleStatement)
-                {
-                    Expression left = ((SimpleStatement)awaitStatement).getLeft();
-                    if (left instanceof StaticFeatureAccess)
-                    {
-                        String name = ((StaticFeatureAccess)left).getName();
-                        if (STATEMENT_NAME.equalsIgnoreCase(name) || STATEMENT_NAME_RU.equalsIgnoreCase(name))
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-        }
-        return false;
     }
 
     private Statement getNextStatement(Statement statement)
