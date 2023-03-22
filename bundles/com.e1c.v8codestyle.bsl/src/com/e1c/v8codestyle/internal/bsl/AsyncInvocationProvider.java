@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.internal.bsl;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,6 +36,7 @@ import com._1c.g5.v8.dt.mcore.Parameter;
 import com._1c.g5.v8.dt.mcore.Type;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.TypeSet;
+import com._1c.g5.v8.dt.mcore.util.Environment;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectProvider;
 import com._1c.g5.v8.dt.platform.version.Version;
@@ -50,13 +52,14 @@ public class AsyncInvocationProvider
     implements IAsyncInvocationProvider
 {
 
-    private static final String POSTFIX = "Async"; //$NON-NLS-1$
+    private static final String RET_TYPE_NAME = "Promise"; //$NON-NLS-1$
     private static final String EXEPTION_NAME = "RunCallback"; //$NON-NLS-1$
     private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
     private final Map<Version, Collection<String>> cashNames;
     private final Map<Version, Map<String, Collection<String>>> cashTypesMethodNames;
     private final IV8ProjectManager v8ProjectManager;
     private final BmAwareResourceSetProvider resourceSetProvider;
+    private final Set<Environment> clientEnv;
 
     @Inject
     public AsyncInvocationProvider(IV8ProjectManager v8ProjectManager, BmAwareResourceSetProvider resourceSetProvider)
@@ -66,43 +69,23 @@ public class AsyncInvocationProvider
         this.resourceSetProvider = resourceSetProvider;
         this.cashNames = new ConcurrentHashMap<>();
         this.cashTypesMethodNames = new ConcurrentHashMap<>();
+        this.clientEnv = Set.of(Environment.CLIENT, Environment.MNG_CLIENT, Environment.MOBILE_CLIENT,
+            Environment.MOBILE_THIN_CLIENT, Environment.THIN_CLIENT, Environment.WEB_CLIENT);
     }
 
     @Override
     public Collection<String> getAsyncInvocationNames(Version version)
     {
-        if (cashNames.get(version) == null)
-        {
-            synchronized (this)
-            {
-                if (cashNames.get(version) != null)
-                {
-                    return cashNames.get(version);
-                }
-                collect(version);
-            }
-        }
-        return cashNames.get(version);
+        return cashNames.computeIfAbsent(version, this::collectGlobalAsyncMethods);
     }
 
     @Override
     public Map<String, Collection<String>> getAsyncTypeMethodNames(Version version)
     {
-        if (cashTypesMethodNames.get(version) == null)
-        {
-            synchronized (this)
-            {
-                if (cashTypesMethodNames.get(version) != null)
-                {
-                    return cashTypesMethodNames.get(version);
-                }
-                process(version);
-            }
-        }
-        return cashTypesMethodNames.get(version);
+        return cashTypesMethodNames.computeIfAbsent(version, this::collectAsyncMethods);
     }
 
-    private void collect(Version version)
+    private Collection<String> collectGlobalAsyncMethods(Version version)
     {
         Collection<String> asyncMethodsNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         Iterator<IV8Project> iterator = v8ProjectManager.getProjects().iterator();
@@ -116,14 +99,14 @@ public class AsyncInvocationProvider
                 EObject object = EcoreUtil.resolve(item.getEObjectOrProxy(), context);
                 if (object instanceof Method)
                 {
-                    collectMethods(asyncMethodsNames, object);
+                    collectMethod(asyncMethodsNames, (Method)object);
                 }
             }
         }
-        cashNames.put(version, asyncMethodsNames);
+        return asyncMethodsNames;
     }
 
-    private Map<String, Collection<String>> process(Version version)
+    private Map<String, Collection<String>> collectAsyncMethods(Version version)
     {
         Map<String, Collection<String>> asyncMethodsNames = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         Iterator<IV8Project> iterator = v8ProjectManager.getProjects().iterator();
@@ -153,8 +136,6 @@ public class AsyncInvocationProvider
             }
         }
 
-        cashTypesMethodNames.put(version, asyncMethodsNames);
-
         return asyncMethodsNames;
     }
 
@@ -173,7 +154,7 @@ public class AsyncInvocationProvider
 
         for (Method method : contextDef.allMethods())
         {
-            if (method.getName().endsWith(POSTFIX))
+            if (isClient(method) && isRetTypePromise(method))
             {
                 if (asyncMethodsNames.get(method.getName()) == null)
                 {
@@ -188,14 +169,8 @@ public class AsyncInvocationProvider
         }
     }
 
-    private void collectMethods(Collection<String> asyncMethodsNames, EObject object)
+    private void collectMethod(Collection<String> asyncMethodsNames, Method method)
     {
-        if (!(object instanceof Method))
-        {
-            return;
-        }
-
-        Method method = (Method)object;
         if (EXEPTION_NAME.equals(method.getName()))
         {
             return;
@@ -210,7 +185,7 @@ public class AsyncInvocationProvider
 
     private boolean isMethodAsync(Method method)
     {
-        if (method.getName().endsWith(POSTFIX))
+        if (isClient(method) && isRetTypePromise(method))
         {
             return true;
         }
@@ -223,6 +198,30 @@ public class AsyncInvocationProvider
                 {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean isClient(Method method)
+    {
+        for (Environment env : method.environments().toArray())
+        {
+            if (!clientEnv.contains(env))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isRetTypePromise(Method method)
+    {
+        for (TypeItem type : method.getRetValType())
+        {
+            if (RET_TYPE_NAME.equals(McoreUtil.getTypeName(type)))
+            {
+                return true;
             }
         }
         return false;

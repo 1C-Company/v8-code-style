@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
@@ -42,7 +41,6 @@ import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
-import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
@@ -74,19 +72,17 @@ public final class CodeAfterAsyncCallCheck
     private static final String STATEMENT_NAME = "Await"; //$NON-NLS-1$
     private static final String CHECK_ID = "code-after-async-call"; //$NON-NLS-1$
     private static final String DEFAULT_CHECK = Boolean.toString(Boolean.TRUE);
-    private static final String PARAMETER_NAME = "NotifyDescriptionIsDefined"; //$NON-NLS-1$
+    private static final String PARAMETER_NAME = "notifyDescriptionIsDefined"; //$NON-NLS-1$
     private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
-    private final IResourceLookup resourceLookup;
     private final IAsyncInvocationProvider asyncInvocationProvider;
     private final IRuntimeVersionSupport runtimeVersionSupport;
     private final TypesComputer typesComputer;
 
     @Inject
-    public CodeAfterAsyncCallCheck(IResourceLookup resourceLookup, IRuntimeVersionSupport runtimeVersionSupport,
+    public CodeAfterAsyncCallCheck(IRuntimeVersionSupport runtimeVersionSupport,
         IAsyncInvocationProvider asyncInvocationProvider, TypesComputer typesComputer)
     {
         super();
-        this.resourceLookup = resourceLookup;
         this.asyncInvocationProvider = asyncInvocationProvider;
         this.runtimeVersionSupport = runtimeVersionSupport;
         this.typesComputer = typesComputer;
@@ -117,8 +113,7 @@ public final class CodeAfterAsyncCallCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        IProject project = resourceLookup.getProject((EObject)object);
-        Version version = runtimeVersionSupport.getRuntimeVersion(project);
+        Version version = runtimeVersionSupport.getRuntimeVersionOrDefault((EObject)object, Version.LATEST);
 
         Invocation inv = (Invocation)object;
         FeatureAccess featureAccess = inv.getMethodAccess();
@@ -126,29 +121,29 @@ public final class CodeAfterAsyncCallCheck
         {
             Collection<String> asyncMethodsNames = asyncInvocationProvider.getAsyncInvocationNames(version);
             if (asyncMethodsNames.contains(featureAccess.getName())
-                && (parameters.getBoolean(PARAMETER_NAME) && isNotifyDescription(inv)
-                    || !parameters.getBoolean(PARAMETER_NAME)))
+                && (isNotifyDescriptionDefined(inv) || !parameters.getBoolean(PARAMETER_NAME)))
             {
-                addIssue(resultAceptor, inv);
+                checkNeighboringStatement(resultAceptor, inv);
             }
         }
         else if (featureAccess instanceof DynamicFeatureAccess)
         {
             Map<String, Collection<String>> names = asyncInvocationProvider.getAsyncTypeMethodNames(version);
-            if (names.containsKey(featureAccess.getName()))
+            if (names.containsKey(featureAccess.getName())
+                && (isNotifyDescriptionDefined(inv) || !parameters.getBoolean(PARAMETER_NAME)))
             {
                 Expression source = ((DynamicFeatureAccess)featureAccess).getSource();
                 List<TypeItem> sourceTypes = computeTypes(source);
-                if (names.get(featureAccess.getName())
-                    .containsAll(sourceTypes.stream().map(McoreUtil::getTypeName).collect(Collectors.toSet())))
+                Collection<String> collection = names.get(featureAccess.getName());
+                if (collection.retainAll(sourceTypes.stream().map(McoreUtil::getTypeName).collect(Collectors.toSet())))
                 {
-                    addIssue(resultAceptor, inv);
+                    checkNeighboringStatement(resultAceptor, inv);
                 }
             }
         }
     }
 
-    private boolean isNotifyDescription(Invocation inv)
+    private boolean isNotifyDescriptionDefined(Invocation inv)
     {
         for (Expression param : inv.getParams())
         {
@@ -174,7 +169,7 @@ public final class CodeAfterAsyncCallCheck
         return List.of();
     }
 
-    private void addIssue(ResultAcceptor resultAceptor, Invocation inv)
+    private void checkNeighboringStatement(ResultAcceptor resultAceptor, Invocation inv)
     {
         Statement statement = getStatementFromInvoc(inv);
         if (statement != null && !isPreviousStatementAwait(statement))
@@ -200,36 +195,28 @@ public final class CodeAfterAsyncCallCheck
 
     private boolean isPreviousStatementAwait(Statement statement)
     {
-        Iterator<EObject> it = EcoreUtil2.getAllContainers(statement).iterator();
-        while (it.hasNext())
+        EObject container = statement.eContainer();
+        List<Statement> st = getContainer(container);
+        if (st != null)
         {
-            EObject container = it.next();
-            if (container instanceof PreprocessorConditional)
+            int index = st.indexOf(statement);
+            if (index > 0 && index - 1 < st.size())
             {
-                continue;
-            }
-            List<Statement> st = getContainer(container);
-            if (st != null)
-            {
-                int index = st.indexOf(statement);
-                if (index > 0 && index - 1 < st.size())
+                Statement awaitStatement = st.get(index - 1);
+                if (awaitStatement instanceof SimpleStatement)
                 {
-                    Statement awaitStatement = st.get(index - 1);
-                    if (awaitStatement instanceof SimpleStatement)
+                    Expression left = ((SimpleStatement)awaitStatement).getLeft();
+                    if (left instanceof StaticFeatureAccess)
                     {
-                        Expression left = ((SimpleStatement)awaitStatement).getLeft();
-                        if (left instanceof StaticFeatureAccess)
+                        String name = ((StaticFeatureAccess)left).getName();
+                        if (STATEMENT_NAME.equalsIgnoreCase(name) || STATEMENT_NAME_RU.equalsIgnoreCase(name))
                         {
-                            String name = ((StaticFeatureAccess)left).getName();
-                            if (STATEMENT_NAME.equalsIgnoreCase(name) || STATEMENT_NAME_RU.equalsIgnoreCase(name))
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                     }
-
-                    return false;
                 }
+
+                return false;
             }
         }
         return false;

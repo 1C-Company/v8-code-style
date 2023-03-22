@@ -38,7 +38,7 @@ public class CodeAfterAsyncCallCheckTest
     extends AbstractSingleModuleTestBase
 {
     private static final String CHECK_ID = "code-after-async-call"; //$NON-NLS-1$
-    private static final String PARAMETER_NAME = "NotifyDescriptionIsDefined"; //$NON-NLS-1$
+    private static final String PARAMETER_NAME = "notifyDescriptionIsDefined"; //$NON-NLS-1$
 
     /**
      * Instantiates a new code after async call check test.
