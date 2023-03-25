@@ -30,5 +30,10 @@
          </enabledWhen>
       </page>
    </extension>
+   <extension
+         point="com._1c.g5.wiring.serviceProvider">
+      <bundle
+            symbolicName="com.e1c.v8codestyle.autosort.ui"></bundle>
+   </extension>
 
 </plugin>
