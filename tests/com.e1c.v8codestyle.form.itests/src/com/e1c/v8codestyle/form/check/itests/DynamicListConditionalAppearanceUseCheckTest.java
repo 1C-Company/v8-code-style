@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.form.model.Form;
+import com._1c.g5.v8.dt.dcs.model.settings.DataCompositionSettings;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.form.check.DynamicListConditionalAppearanceUseCheck;
@@ -23,8 +23,8 @@ public class DynamicListConditionalAppearanceUseCheckTest
 {
     private static final String CHECK_ID = "form-dynamic-list-conditional-appearance-use";
     private static final String PROJECT_NAME = "DynamicListConditionalAppearanceUse";
-    private static final String FQN_FORM1 = "Catalog.TestCatalog1.Form.ListForm.Form";
-    private static final String FQN_FORM2 = "Catalog.TestCatalog2.Form.ListForm.Form";
+    private static final String FQN_DL1 = "Catalog.TestCatalog1.Form.ListForm.Form.Attributes.List.ExtInfo.ListSettings";
+    private static final String FQN_DL2 = "Catalog.TestCatalog2.Form.ListForm.Form.Attributes.List.ExtInfo.ListSettings";
     
     /**
      * Test the Dynamic List use the conditional appearance.
@@ -37,8 +37,8 @@ public class DynamicListConditionalAppearanceUseCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject object = getTopObjectByFqn(FQN_FORM1, dtProject);
-        assertTrue(object instanceof Form);
+        IBmObject object = getTopObjectByFqn(FQN_DL1, dtProject);
+        assertTrue(object instanceof DataCompositionSettings);
 
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNotNull(marker);
@@ -55,8 +55,8 @@ public class DynamicListConditionalAppearanceUseCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(dtProject);
 
-        IBmObject object = getTopObjectByFqn(FQN_FORM2, dtProject);
-        assertTrue(object instanceof Form);
+        IBmObject object = getTopObjectByFqn(FQN_DL2, dtProject);
+        assertTrue(object instanceof DataCompositionSettings);
 
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNull(marker);
