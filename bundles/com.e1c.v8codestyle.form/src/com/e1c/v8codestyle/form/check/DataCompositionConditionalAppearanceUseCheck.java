@@ -85,7 +85,7 @@ public class DataCompositionConditionalAppearanceUseCheck
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
+    protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
 
@@ -113,7 +113,7 @@ public class DataCompositionConditionalAppearanceUseCheck
                 return;
             }
 
-            resultAceptor.addIssue(MessageFormat.format(
+            resultAcceptor.addIssue(MessageFormat.format(
                 Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance,
                 "Form attribute", formAttribute.getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
 
@@ -126,7 +126,7 @@ public class DataCompositionConditionalAppearanceUseCheck
                 return;
             }
 
-            resultAceptor.addIssue(MessageFormat.format(
+            resultAcceptor.addIssue(MessageFormat.format(
                 Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance, "Form",
                 form.getMdForm().getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
 
