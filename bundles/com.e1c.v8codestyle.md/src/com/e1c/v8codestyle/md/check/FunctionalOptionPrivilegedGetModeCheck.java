@@ -71,7 +71,7 @@ public class FunctionalOptionPrivilegedGetModeCheck
         FunctionalOption fo = (FunctionalOption)object;
         if (!fo.isPrivilegedGetMode())
         {
-            resultAcceptor.addIssue(Messages.FunctionalOptionPrivilegedGetModeCheck_Functional_option_dont_use_privileged_get_mode, fo,
+            resultAcceptor.addIssue(Messages.FunctionalOptionPrivilegedGetModeCheck_message, fo,
                 FUNCTIONAL_OPTION__PRIVILEGED_GET_MODE);
         }
 

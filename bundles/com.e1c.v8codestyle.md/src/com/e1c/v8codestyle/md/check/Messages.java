@@ -73,7 +73,7 @@ final class Messages
     public static String ExtensionMdObjectNamePrefixCheck_Object_0_should_have_1_prefix;
     public static String ExtensionMdObjectNamePrefixCheck_Title;
     public static String FunctionalOptionPrivilegedGetModeCheck_description;
-    public static String FunctionalOptionPrivilegedGetModeCheck_Functional_option_dont_use_privileged_get_mode;
+    public static String FunctionalOptionPrivilegedGetModeCheck_message;
     public static String FunctionalOptionPrivilegedGetModeCheck_title;
     public static String MdObjectNameLength_description;
     public static String MdObjectNameLength_Maximum_name_length_description;
