@@ -41,6 +41,10 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
+/**
+ * Check the Parameter.Property() access to exist parameter of form.
+ * @author Vadim Goncharov
+ */
 public class OptionalFormParameterAccessCheck
     extends BasicCheck
 {
