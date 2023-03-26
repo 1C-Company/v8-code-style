@@ -30,6 +30,7 @@ import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormParameter;
+import com._1c.g5.v8.dt.mcore.DuallyNamedElement;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -118,11 +119,15 @@ public class OptionalFormParameterAccessCheck
         {
             DynamicFeatureAccess dfa = (DynamicFeatureAccess)access;
             Expression source = dfa.getSource();
-            if (source instanceof StaticFeatureAccess)
+            if (source instanceof StaticFeatureAccess && !(((StaticFeatureAccess)source).getFeatureEntries().isEmpty()))
             {
-                StaticFeatureAccess sfa = (StaticFeatureAccess)source;
-                return (sfa.getName().equalsIgnoreCase(PARAMETERS_KEYWORD)
-                    || sfa.getName().equalsIgnoreCase(PARAMETERS_KEYWORD_RU)) && isValidParam(inv);
+                EObject featureEntry = ((StaticFeatureAccess)source).getFeatureEntries().get(0).getFeature();
+                if (featureEntry instanceof DuallyNamedElement)
+                {
+                    DuallyNamedElement namedElement = (DuallyNamedElement)featureEntry;
+                    return (namedElement.getName().equalsIgnoreCase(PARAMETERS_KEYWORD)
+                        || namedElement.getNameRu().equalsIgnoreCase(PARAMETERS_KEYWORD_RU)) && isValidParam(inv);
+                }
             }
         }
 
