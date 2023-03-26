@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:FunctionalOption xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="06dc6e76-1d2f-4fe8-b6fe-c0e020f288ad">
+  <name>UseWH</name>
+  <synonym>
+    <key>en</key>
+    <value>Use WH</value>
+  </synonym>
+  <location>Constant.UseWH</location>
+  <privilegedGetMode>true</privilegedGetMode>
+  <content>Catalog.WH</content>
+</mdclass:FunctionalOption>

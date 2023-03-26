@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e07fba1f-19d5-4fff-9993-6299a77c042d">
+  <producedTypes>
+    <managerType typeId="d332705f-f367-40a0-aeb8-5208d89103ff" valueTypeId="4c54d407-778b-4bd8-813d-0787c7ea9161"/>
+    <valueManagerType typeId="34141bfe-6a5e-4814-88e8-ade8e4d7cad8" valueTypeId="24efdeb7-692d-47e3-b1fa-b254d9f99a6f"/>
+    <valueKeyType typeId="2e5657de-1309-41a1-9a61-60fe3ced7071" valueTypeId="69004c7f-769f-4a91-865c-1b55d614fd45"/>
+  </producedTypes>
+  <name>UseOrganisations</name>
+  <synonym>
+    <key>en</key>
+    <value>Use organisations</value>
+  </synonym>
+  <type>
+    <types>Boolean</types>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>
