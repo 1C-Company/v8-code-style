@@ -128,20 +128,19 @@ public class OptionalFormParameterAccessCheck
             if (featureEntry instanceof DuallyNamedElement)
             {
 
-                DuallyNamedElement namedElementDFA = (DuallyNamedElement)featureEntry;
+                DuallyNamedElement namedElement = (DuallyNamedElement)featureEntry;
                 Expression source = dfa.getSource();
-                if ((namedElementDFA.getName().equalsIgnoreCase(PROPERTY_NAME)
-                    || namedElementDFA.getNameRu().equalsIgnoreCase(PROPERTY_NAME_RU))
+                if ((namedElement.getName().equalsIgnoreCase(PROPERTY_NAME)
+                    || namedElement.getNameRu().equalsIgnoreCase(PROPERTY_NAME_RU))
                     && source instanceof StaticFeatureAccess
                     && !(((StaticFeatureAccess)source).getFeatureEntries().isEmpty()))
                 {
                     featureEntry = ((StaticFeatureAccess)source).getFeatureEntries().get(0).getFeature();
                     if (featureEntry instanceof DuallyNamedElement)
                     {
-                        DuallyNamedElement namedElementSFA = (DuallyNamedElement)featureEntry;
-                        return (namedElementSFA.getName().equalsIgnoreCase(PARAMETERS_KEYWORD)
-                            || namedElementSFA.getNameRu().equalsIgnoreCase(PARAMETERS_KEYWORD_RU))
-                            && isValidParam(inv);
+                        namedElement = (DuallyNamedElement)featureEntry;
+                        return (namedElement.getName().equalsIgnoreCase(PARAMETERS_KEYWORD)
+                            || namedElement.getNameRu().equalsIgnoreCase(PARAMETERS_KEYWORD_RU)) && isValidParam(inv);
                     }
                 }
             }
