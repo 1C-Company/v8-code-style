@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:FunctionalOption xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="272e8a2f-16e7-4a38-9839-a996471ed1fb">
+  <name>UseFinPlan</name>
+  <synonym>
+    <key>en</key>
+    <value>Use fin plan</value>
+  </synonym>
+</mdclass:FunctionalOption>

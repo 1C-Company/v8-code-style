@@ -54,6 +54,10 @@ public class FunctionalOptionPrivilegedGetModeTest
         id = getTopObjectIdByFqn("FunctionalOption.UseWH", project);
         marker = getFirstMarker(CHECK_ID, id, project);
         assertNull(marker);
+        
+        id = getTopObjectIdByFqn("FunctionalOption.UseFinPlan", project);
+        marker = getFirstMarker(CHECK_ID, id, project);
+        assertNull(marker);
     }
 
 }

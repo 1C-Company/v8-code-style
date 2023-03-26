@@ -6,5 +6,4 @@
     <value>Use organisations</value>
   </synonym>
   <location>Constant.UseOrganisations</location>
-  <content>Catalog.Organisations</content>
 </mdclass:FunctionalOption>

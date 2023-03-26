@@ -7,5 +7,4 @@
   </synonym>
   <location>Constant.UseWH</location>
   <privilegedGetMode>true</privilegedGetMode>
-  <content>Catalog.WH</content>
 </mdclass:FunctionalOption>

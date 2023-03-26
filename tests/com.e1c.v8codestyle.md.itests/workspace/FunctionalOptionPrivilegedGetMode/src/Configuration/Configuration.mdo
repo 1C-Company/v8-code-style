@@ -40,8 +40,7 @@
   </languages>
   <functionalOptions>FunctionalOption.UseOrganisations</functionalOptions>
   <functionalOptions>FunctionalOption.UseWH</functionalOptions>
+  <functionalOptions>FunctionalOption.UseFinPlan</functionalOptions>
   <constants>Constant.UseOrganisations</constants>
   <constants>Constant.UseWH</constants>
-  <catalogs>Catalog.Organisations</catalogs>
-  <catalogs>Catalog.WH</catalogs>
 </mdclass:Configuration>

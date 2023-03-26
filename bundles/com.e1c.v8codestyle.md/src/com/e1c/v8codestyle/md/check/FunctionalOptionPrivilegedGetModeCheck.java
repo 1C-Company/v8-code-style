@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.md.check;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.FUNCTIONAL_OPTION;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.FUNCTIONAL_OPTION__PRIVILEGED_GET_MODE;
+import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.FUNCTIONAL_OPTION__LOCATION;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -60,7 +61,7 @@ public class FunctionalOptionPrivilegedGetModeCheck
             .extension(new SkipAdoptedInExtensionMdObjectExtension())
             .topObject(FUNCTIONAL_OPTION)
             .checkTop()
-            .features(FUNCTIONAL_OPTION__PRIVILEGED_GET_MODE);
+            .features(FUNCTIONAL_OPTION__PRIVILEGED_GET_MODE, FUNCTIONAL_OPTION__LOCATION);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class FunctionalOptionPrivilegedGetModeCheck
     {
 
         FunctionalOption fo = (FunctionalOption)object;
-        if (!fo.isPrivilegedGetMode())
+        if (!monitor.isCanceled() && fo.getLocation() != null && !fo.isPrivilegedGetMode())
         {
             resultAcceptor.addIssue(Messages.FunctionalOptionPrivilegedGetModeCheck_message, fo,
                 FUNCTIONAL_OPTION__PRIVILEGED_GET_MODE);
