@@ -45,9 +45,9 @@ public class OptionalFormParameterAccessCheck
 
     private static final String CHECK_ID = "optional-form-parameter-access"; //$NON-NLS-1$
 
-    private static final String INV_NAME_RU = "Свойство"; //$NON-NLS-1$
+    private static final String PROPERTY_NAME_RU = "Свойство"; //$NON-NLS-1$
 
-    private static final String INV_NAME = "Property"; //$NON-NLS-1$
+    private static final String PROPERTY_NAME = "Property"; //$NON-NLS-1$
 
     private static final String PARAMETERS_KEYWORD_RU = "Параметры"; //$NON-NLS-1$
 
@@ -112,21 +112,29 @@ public class OptionalFormParameterAccessCheck
     {
 
         FeatureAccess access = inv.getMethodAccess();
-        String accessName = access.getName();
-
-        if ((access instanceof DynamicFeatureAccess)
-            && (accessName.equalsIgnoreCase(INV_NAME) || accessName.equalsIgnoreCase(INV_NAME_RU)))
+        if ((access instanceof DynamicFeatureAccess) && !(((DynamicFeatureAccess)access).getFeatureEntries().isEmpty()))
         {
+
             DynamicFeatureAccess dfa = (DynamicFeatureAccess)access;
-            Expression source = dfa.getSource();
-            if (source instanceof StaticFeatureAccess && !(((StaticFeatureAccess)source).getFeatureEntries().isEmpty()))
+            EObject featureEntry = dfa.getFeatureEntries().get(0).getFeature();
+            if (featureEntry instanceof DuallyNamedElement)
             {
-                EObject featureEntry = ((StaticFeatureAccess)source).getFeatureEntries().get(0).getFeature();
-                if (featureEntry instanceof DuallyNamedElement)
+
+                DuallyNamedElement namedElementDFA = (DuallyNamedElement)featureEntry;
+                Expression source = dfa.getSource();
+                if ((namedElementDFA.getName().equalsIgnoreCase(PROPERTY_NAME)
+                    || namedElementDFA.getNameRu().equalsIgnoreCase(PROPERTY_NAME_RU))
+                    && source instanceof StaticFeatureAccess
+                    && !(((StaticFeatureAccess)source).getFeatureEntries().isEmpty()))
                 {
-                    DuallyNamedElement namedElement = (DuallyNamedElement)featureEntry;
-                    return (namedElement.getName().equalsIgnoreCase(PARAMETERS_KEYWORD)
-                        || namedElement.getNameRu().equalsIgnoreCase(PARAMETERS_KEYWORD_RU)) && isValidParam(inv);
+                    featureEntry = ((StaticFeatureAccess)source).getFeatureEntries().get(0).getFeature();
+                    if (featureEntry instanceof DuallyNamedElement)
+                    {
+                        DuallyNamedElement namedElementSFA = (DuallyNamedElement)featureEntry;
+                        return (namedElementSFA.getName().equalsIgnoreCase(PARAMETERS_KEYWORD)
+                            || namedElementSFA.getNameRu().equalsIgnoreCase(PARAMETERS_KEYWORD_RU))
+                            && isValidParam(inv);
+                    }
                 }
             }
         }
