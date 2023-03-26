@@ -440,6 +440,12 @@ final class Messages
 
     public static String LockOutOfTry_Method_lock_out_of_try;
 
+    public static String OptionalFormParameterAccessCheck_description;
+
+    public static String OptionalFormParameterAccessCheck_Optional_form_parameter_access;
+
+    public static String OptionalFormParameterAccessCheck_title;
+
     public static String VariableNameInvalidCheck_description;
     public static String VariableNameInvalidCheck_message_variable_length_is_less_than;
     public static String VariableNameInvalidCheck_param_MIN_NAME_LENGTH_PARAM_title;
