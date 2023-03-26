@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="be070d86-c318-4fd6-bf9e-4319d4596e58">
-  <name>DynamicListConditionalAppearanceUse</name>
+  <name>DataCompositionConditionalAppearanceUse</name>
   <synonym>
     <key>en</key>
-    <value>Dynamic list conditional appearance use</value>
+    <value>DataCompositionConditionalAppearanceUse</value>
   </synonym>
   <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="efde72cb-2980-4654-9ef7-4541585b9754"/>
   <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="9742d1c6-653c-472b-b4e2-997432ed1b0b"/>
@@ -40,4 +40,6 @@
   </languages>
   <catalogs>Catalog.TestCatalog1</catalogs>
   <catalogs>Catalog.TestCatalog2</catalogs>
+  <catalogs>Catalog.TestCatalog3</catalogs>
+  <catalogs>Catalog.TestCatalog4</catalogs>
 </mdclass:Configuration>

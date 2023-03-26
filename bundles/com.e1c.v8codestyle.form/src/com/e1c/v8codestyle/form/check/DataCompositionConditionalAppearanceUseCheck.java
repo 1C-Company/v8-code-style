@@ -27,6 +27,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.dcs.model.settings.DataCompositionConditionalAppearance;
 import com._1c.g5.v8.dt.form.model.DynamicListExtInfo;
+import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.metadata.ExternalPropertyManagerProvider;
 import com._1c.g5.v8.dt.metadata.IExternalPropertyManager;
@@ -40,14 +41,14 @@ import com.e1c.v8codestyle.internal.form.CorePlugin;
 import com.google.inject.Inject;
 
 /**
- * The check find form attributes of type "Dynamic List" that use conditional appearance.
+ * The check find form or form attributes, that use conditional appearance.
  * @author Vadim Goncharov
  */
-public class DynamicListConditionalAppearanceUseCheck
+public class DataCompositionConditionalAppearanceUseCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "form-dynamic-list-conditional-appearance-use"; //$NON-NLS-1$
+    private static final String CHECK_ID = "data-composition-conditional-appearance-use"; //$NON-NLS-1$
 
     private final IBmModelManager bmModelManager;
 
@@ -57,7 +58,7 @@ public class DynamicListConditionalAppearanceUseCheck
      * @param bmModelManager the BmModelManager
      */
     @Inject
-    public DynamicListConditionalAppearanceUseCheck(IBmModelManager bmModelManager)
+    public DataCompositionConditionalAppearanceUseCheck(IBmModelManager bmModelManager)
     {
         super();
         this.bmModelManager = bmModelManager;
@@ -72,8 +73,8 @@ public class DynamicListConditionalAppearanceUseCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.DynamicListConditionalAppearanceUseCheck_title)
-            .description(Messages.DynamicListConditionalAppearanceUseCheck_description)
+        builder.title(Messages.DataCompositionConditionalAppearanceUseCheck_title)
+            .description(Messages.DataCompositionConditionalAppearanceUseCheck_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
@@ -101,20 +102,35 @@ public class DynamicListConditionalAppearanceUseCheck
             throw new IllegalStateException("ExternalPropertyManagerProvider not initialized");
         }
 
-        DynamicListExtInfo dl = manager.getOwner((EObject)dcca, DynamicListExtInfo.class);
-        if (monitor.isCanceled() || dl == null)
-        {
-            return;
-        }
-        FormAttribute formAttribute = EcoreUtil2.getContainerOfType(dl, FormAttribute.class);
-        if (monitor.isCanceled() || formAttribute == null)
-        {
-            return;
-        }
+        EObject eObject = dcca;
 
-        resultAceptor.addIssue(MessageFormat.format(
-            Messages.DynamicListConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance,
-            formAttribute.getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
+        DynamicListExtInfo dl = manager.getOwner(eObject, DynamicListExtInfo.class);
+        if (dl != null)
+        {
+            FormAttribute formAttribute = EcoreUtil2.getContainerOfType(dl, FormAttribute.class);
+            if (monitor.isCanceled() || formAttribute == null)
+            {
+                return;
+            }
+
+            resultAceptor.addIssue(MessageFormat.format(
+                Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance,
+                "Form attribute", formAttribute.getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
+
+        }
+        else
+        {
+            Form form = manager.getOwner(eObject, Form.class);
+            if (monitor.isCanceled() || form == null)
+            {
+                return;
+            }
+
+            resultAceptor.addIssue(MessageFormat.format(
+                Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance, "Form",
+                form.getMdForm().getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
+
+        }
 
     }
 }
