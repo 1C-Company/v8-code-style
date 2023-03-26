@@ -13,14 +13,13 @@
 
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.BLOCK;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.GOTO_STATEMENT;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.LABELED_STATEMENT;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.GotoStatement;
 import com._1c.g5.v8.dt.bsl.model.LabeledStatement;
-import com._1c.g5.v8.dt.bsl.model.Statement;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -60,34 +59,21 @@ public class UseGotoOperatorCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(547, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(BLOCK);
+            .checkedObjectType(GOTO_STATEMENT, LABELED_STATEMENT);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-
-        Block block = (Block)object;
-        for (Statement st : block.allStatements())
+        if (object instanceof GotoStatement)
         {
-            if (monitor.isCanceled())
-            {
-                return;
-            }
-
-            if (st instanceof GotoStatement)
-            {
-                resultAcceptor.addIssue(Messages.UseGotoOperatorCheck_Use_Goto_operator, st);
-            }
-
-            if (st instanceof LabeledStatement)
-            {
-                resultAcceptor.addIssue(Messages.UseGotoOperatorCheck_Use_Label_with_Goto_operator, st);
-            }
-
+            resultAcceptor.addIssue(Messages.UseGotoOperatorCheck_Use_Goto_operator, object);
         }
-
+        else if (object instanceof LabeledStatement)
+        {
+            resultAcceptor.addIssue(Messages.UseGotoOperatorCheck_Use_Label_with_Goto_operator, object);
+        }
     }
 
 }
