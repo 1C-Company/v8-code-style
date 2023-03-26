@@ -15,6 +15,8 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
 
+import java.text.MessageFormat;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
@@ -104,7 +106,9 @@ public class OptionalFormParameterAccessCheck
         Form form = (Form)moduleOwner;
         if (!monitor.isCanceled() && findParameter(form, paramName))
         {
-            resultAcceptor.addIssue(Messages.OptionalFormParameterAccessCheck_Optional_form_parameter_access, inv);
+            String msg = MessageFormat.format(Messages.OptionalFormParameterAccessCheck_Optional_form_parameter_access,
+                paramName);
+            resultAcceptor.addIssue(msg, inv);
         }
     }
 
