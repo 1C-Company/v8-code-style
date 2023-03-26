@@ -4,6 +4,8 @@ Make sure your configuration does not contain unused metadata objects, such as c
 command interface sections, and other. Also it must not contain the code of common modules, procedures, 
 functions, and variables, which is not used in the configuration and for integration with other systems.
 
+The check searches for all references to the method, so it can take a long time.
+
 ## Noncompliant Code Example
 
 ```bsl
