@@ -125,6 +125,7 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheck
             return false;
         }
         return regionFirst.get().getName().equals(ModuleStructureSection.DEPRECATED_REGION.getName(scriptVariant))
-            && regionTop.get().getName().equals(ModuleStructureSection.PUBLIC.getName(scriptVariant));
+            && (regionTop.get().getName().equals(ModuleStructureSection.PUBLIC.getName(scriptVariant))
+                || regionTop.get().getName().equals(ModuleStructureSection.INTERNAL.getName(scriptVariant)));
     }
 }
