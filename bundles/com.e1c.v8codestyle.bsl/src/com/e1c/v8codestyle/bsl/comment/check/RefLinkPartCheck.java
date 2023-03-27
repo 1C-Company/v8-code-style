@@ -58,6 +58,11 @@ public class RefLinkPartCheck
 
     private final IScopeProvider scopeProvider;
 
+    /**
+     * Instantiates a new reference link part check.
+     *
+     * @param scopeProvider the scope provider service, cannot be {@code null}.
+     */
     @Inject
     public RefLinkPartCheck(IResourceLookup resourceLookup, INamingService namingService,
         IBmModelManager bmModelManager, IScopeProvider scopeProvider)
@@ -97,7 +102,7 @@ public class RefLinkPartCheck
             && object.getParent() instanceof Description && linkPart.getPartsWithOffset().size() == 1;
 
         if (!isWebLink(linkPart) && !isSingleWordInDescription
-            && getLinkPartLastObject(linkPart, scopeProvider, root.getMethod()).isEmpty())
+            && getLinkPartLastObject(linkPart, scopeProvider, root.getMethod(), typeComputationContext).isEmpty())
         {
             resultAceptor.addIssue(Messages.RefLinkPartCheck_Link_referenced_to_unexisting_object,
                 linkPart.getLineNumber(), linkPart.getLinkTextOffset(), linkPart.getLinkText().length());
