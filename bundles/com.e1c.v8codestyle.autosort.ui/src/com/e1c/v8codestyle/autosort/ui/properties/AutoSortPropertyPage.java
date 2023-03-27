@@ -26,7 +26,6 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.BaseLabelProvider;
@@ -48,13 +47,13 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
 import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -278,9 +277,8 @@ public class AutoSortPropertyPage
         Link sortSettingsMovedLink = new Link(parent, SWT.NONE);
         sortSettingsMovedLink.setText(format("<a>%s</a>", Messages.AutoSortPropertyPage_Sort_settings_moved)); //$NON-NLS-1$
         sortSettingsMovedLink.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-            PreferenceDialog dialog = PreferencesUtil.createPropertyDialogOn(getShell(), getProject(),
-                MD_SORT_PROPERTY_PAGE_ID, null, null, PreferencesUtil.OPTION_NONE);
-            dialog.open();
+            IWorkbenchPreferenceContainer pageContainer = (IWorkbenchPreferenceContainer)getContainer();
+            pageContainer.openPage(MD_SORT_PROPERTY_PAGE_ID, null);
         }));
         GridDataFactory.fillDefaults().grab(true, false).applyTo(sortSettingsMovedLink);
 
@@ -300,16 +298,23 @@ public class AutoSortPropertyPage
 
             Button transferSortSettingsButton = new Button(moveSortSettingsComposite, SWT.NONE);
             transferSortSettingsButton.setText(Messages.AutoSortPropertyPage_Transfer);
+
+            Button clearSortSettingsButton = new Button(moveSortSettingsComposite, SWT.NONE);
+            clearSortSettingsButton.setText(Messages.AutoSortPropertyPage_Clear);
+
             transferSortSettingsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
                 changeMdSortPreferences(AutoSortPreferences.isSortAscending(project),
                     AutoSortPreferences.isNaturalSortOrder(project));
                 clearSettingsOfSortDirectionAndOrderOfAutoSortPreferences();
+                transferSortSettingsButton.setEnabled(false);
+                clearSortSettingsButton.setEnabled(false);
             }));
 
-            Button clearSortSettingsButton = new Button(moveSortSettingsComposite, SWT.NONE);
-            clearSortSettingsButton.setText(Messages.AutoSortPropertyPage_Clear);
-            clearSortSettingsButton.addSelectionListener(SelectionListener
-                .widgetSelectedAdapter(e -> clearSettingsOfSortDirectionAndOrderOfAutoSortPreferences()));
+            clearSortSettingsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+                clearSettingsOfSortDirectionAndOrderOfAutoSortPreferences();
+                transferSortSettingsButton.setEnabled(false);
+                clearSortSettingsButton.setEnabled(false);
+            }));
         }
     }
 

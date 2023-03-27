@@ -19,7 +19,7 @@
          point="org.eclipse.ui.propertyPages">
       <page
             name="%propertypage.autosort.name"
-            category="com._1c.g5.v8.dt.ui.V8Property"
+            category="com._1c.g5.v8.dt.md.ui.sort.MdSortPropertyPage"
             class="com.e1c.v8codestyle.internal.autosort.ui.UiExecutableExtensionFactory:com.e1c.v8codestyle.autosort.ui.properties.AutoSortPropertyPage"
             selectionFilter="single"
             id="com.e1c.v8codestyle.autosort.ui.properties.PropertyPage">
