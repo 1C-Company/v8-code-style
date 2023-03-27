@@ -453,7 +453,7 @@ public class SortService
                     return result;
                 }
 
-                Iterable<EClass> eClassIterator = transaction.getTopObjectEClasses();
+                Iterator<EClass> eClassIterator = transaction.getTopObjectEClasses();
                 Map<EClass, List<EReference>> sortListRefs = getSubordinateListsToSort(eClassIterator, project);
 
                 appendSubordinateObjects(result, sortListRefs, transaction, m);
@@ -481,12 +481,13 @@ public class SortService
             }
         }
 
-        private Map<EClass, List<EReference>> getSubordinateListsToSort(Iterable<EClass> eClassIterator,
+        private Map<EClass, List<EReference>> getSubordinateListsToSort(Iterator<EClass> eClassIterator,
             IProject project)
         {
             Map<EClass, List<EReference>> sortListRefs = new HashMap<>();
-            for (EClass topObjectEClass : eClassIterator)
+            while (eClassIterator.hasNext())
             {
+                EClass topObjectEClass = eClassIterator.next();
                 if (topObjectEClass.equals(CONFIGURATION) || !MD_OBJECT.isSuperTypeOf(topObjectEClass))
                 {
                     continue;

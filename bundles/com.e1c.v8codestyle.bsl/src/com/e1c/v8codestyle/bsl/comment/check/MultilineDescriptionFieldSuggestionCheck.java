@@ -22,6 +22,10 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Descri
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TextPart;
 import com._1c.g5.v8.dt.bsl.model.Procedure;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -29,6 +33,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Validates any description in documentation comment that is multi-line and may contains File definition like:
@@ -52,6 +57,13 @@ public class MultilineDescriptionFieldSuggestionCheck
     private static final Pattern PATTERN_FIELD =
         Pattern.compile("^\\s*\\*+\\s*\\w+\\s*-", Pattern.UNICODE_CHARACTER_CLASS | Pattern.CASE_INSENSITIVE); //$NON-NLS-1$
 
+    @Inject
+    public MultilineDescriptionFieldSuggestionCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager)
+    {
+        super(resourceLookup, namingService, bmModelManager);
+    }
+
     @Override
     public String getCheckId()
     {
@@ -72,7 +84,8 @@ public class MultilineDescriptionFieldSuggestionCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         Description description = (Description)object;
 
