@@ -21,9 +21,12 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -51,9 +54,9 @@ public class MethodParamTypeCheck
      */
     @Inject
     public MethodParamTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
     }
 
     @Override
@@ -78,7 +81,7 @@ public class MethodParamTypeCheck
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
         if (monitor.isCanceled() || !(object instanceof EObject))
         {
@@ -87,7 +90,7 @@ public class MethodParamTypeCheck
 
         FormalParam param = (FormalParam)object;
 
-        if (isEmptyTypes(param))
+        if (isEmptyTypes(param, bmTransaction))
         {
             String message =
                 MessageFormat.format(Messages.MethodParamTypeCheck_Method_param_N_has_no_value_type, param.getName());

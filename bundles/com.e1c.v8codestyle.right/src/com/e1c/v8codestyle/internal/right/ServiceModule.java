@@ -12,7 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.internal.right;
 
-import com._1c.g5.v8.dt.rights.ui.editors.controllers.IRightInfosService;
+import com._1c.g5.v8.dt.rights.IRightInfosService;
 import com.google.inject.AbstractModule;
 
 /**
@@ -23,7 +23,7 @@ import com.google.inject.AbstractModule;
 public class ServiceModule
     extends AbstractModule
 {
-    private static final String SERVICE_CLASS = "com._1c.g5.v8.dt.internal.rights.ui.editors.RightsInfoService"; //$NON-NLS-1$
+    private static final String SERVICE_CLASS = "com._1c.g5.v8.dt.internal.rights.RightsInfoService"; //$NON-NLS-1$
 
     @SuppressWarnings("unchecked")
     @Override

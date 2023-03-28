@@ -35,11 +35,13 @@ import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.services.BslGrammarAccess;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.qfix.IFixRepository;
 import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
 
@@ -66,6 +68,8 @@ class ExternalDependenciesModule
         bind(IBslPreferences.class).toService();
         bind(IQualifiedNameConverter.class).toService();
         bind(IBslModuleContextDefService.class).toService();
+        bind(IBmModelManager.class).toService();
+        bind(INamingService.class).toService();
 
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();

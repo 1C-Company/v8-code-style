@@ -39,6 +39,7 @@ import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.util.Triple;
 import org.eclipse.xtext.util.Tuples;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslCommentUtils;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
@@ -54,6 +55,7 @@ import com._1c.g5.v8.dt.bsl.model.SourceObjectLinkProvider;
 import com._1c.g5.v8.dt.bsl.model.UndefinedLiteral;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -69,6 +71,8 @@ import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -137,9 +141,9 @@ public class InvocationParamIntersectionCheck
     @Inject
     public InvocationParamIntersectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
         IQualifiedNameConverter qualifiedNameConverter, IV8ProjectManager v8ProjectManager,
-        ExportMethodTypeProvider exportMethodTypeProvider)
+        ExportMethodTypeProvider exportMethodTypeProvider, INamingService namingService, IBmModelManager bmModelManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
         this.exportMethodTypeProvider = exportMethodTypeProvider;
         this.v8ProjectManager = v8ProjectManager;
     }
@@ -169,7 +173,7 @@ public class InvocationParamIntersectionCheck
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
         if (monitor.isCanceled() || !(object instanceof EObject))
         {
@@ -188,16 +192,17 @@ public class InvocationParamIntersectionCheck
         if (source instanceof Method)
         {
             boolean allowDynamicTypesCheck = parameters.getBoolean(PARAM_ALLOW_DYNAMIC_TYPES_CHECK);
-            checkParamTypesIntersect(inv, (Method)source, allowDynamicTypesCheck, resultAceptor, monitor);
+            checkParamTypesIntersect(inv, (Method)source, allowDynamicTypesCheck, resultAceptor, bmTransaction,
+                monitor);
         }
         else if (source instanceof com._1c.g5.v8.dt.mcore.Method)
         {
-            checkParamTypesIntersect(inv, (com._1c.g5.v8.dt.mcore.Method)source, resultAceptor, monitor);
+            checkParamTypesIntersect(inv, (com._1c.g5.v8.dt.mcore.Method)source, resultAceptor, bmTransaction, monitor);
         }
     }
 
     private void checkParamTypesIntersect(Invocation inv, com._1c.g5.v8.dt.mcore.Method method,
-        ResultAcceptor resultAceptor, IProgressMonitor monitor)
+        ResultAcceptor resultAceptor, IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
         if (method.getParamSet().isEmpty())
         {
@@ -285,9 +290,11 @@ public class InvocationParamIntersectionCheck
 
                 if (docComment != null && docComment.isPresent())
                 {
+                    BmOperationContext typeComputationContext =
+                        new BmOperationContext(namingService, bmModelManager, bmTransaction);
                     targetTypes = docComment.get()
                         .computeParameterTypes(parameter.getName(), typeScope, scopeProvider, qualifiedNameConverter,
-                            commentProvider, oldFormatComment, method);
+                            commentProvider, oldFormatComment, method, typeComputationContext);
                 }
 
                 if (targetTypes.isEmpty())
@@ -408,7 +415,7 @@ public class InvocationParamIntersectionCheck
     }
 
     private void checkParamTypesIntersect(Invocation inv, Method method, boolean allowDynamicTypesCheck,
-        ResultAcceptor resultAceptor, IProgressMonitor monitor)
+        ResultAcceptor resultAceptor, IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
         Environments actualEnvs = getActualEnvironments(inv);
 
@@ -449,10 +456,12 @@ public class InvocationParamIntersectionCheck
             Collection<TypeItem> targetTypes = null;
             if (docComment.isPresent() && docComment.get().getParametersSection().getParameterByName(paramName) != null)
             {
+                BmOperationContext typeComputationContext =
+                    new BmOperationContext(namingService, bmModelManager, bmTransaction);
                 // if parameter declared in doc-comment then check only declared types
                 targetTypes = docComment.get()
                     .computeParameterTypes(paramName, typeScope, scopeProvider, qualifiedNameConverter, commentProvider,
-                        oldFormatComment, method);
+                        oldFormatComment, method, typeComputationContext);
             }
             else
             {

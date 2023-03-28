@@ -24,16 +24,23 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
+import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.dt.bsl.model.BslIndexPackage;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.ModuleContextDefIndex;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.DerivedProperty;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.Method;
@@ -42,6 +49,7 @@ import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -60,11 +68,9 @@ import com.google.inject.Inject;
 public class NotifyDescriptionToServerProcedureCheck
     extends BasicCheck
 {
-    private static final String CD_ROOT = "/0/@contextDef"; //$NON-NLS-1$
-
     private static final String CHECK_ID = "notify-description-to-server-procedure"; //$NON-NLS-1$
 
-    private static final String BSLCD = "bslcd"; //$NON-NLS-1$
+    private static final String BSL = "bsl"; //$NON-NLS-1$
 
     private static final String THIS_OBJECT = "ThisObject"; //$NON-NLS-1$
 
@@ -76,6 +82,13 @@ public class NotifyDescriptionToServerProcedureCheck
 
     private final ExportMethodProvider exportMethodProvider;
 
+    private final IResourceLookup resourceLookup;
+
+    private final INamingService namingService;
+
+    private final IBmModelManager bmModelManager;
+
+
     /**
      * Instantiates a new notify description to server procedure check.
      *
@@ -84,11 +97,15 @@ public class NotifyDescriptionToServerProcedureCheck
      */
     @Inject
     public NotifyDescriptionToServerProcedureCheck(DynamicFeatureAccessComputer dynamicFeatureAccessComputer,
-        ExportMethodProvider exportMethodProvider)
+        ExportMethodProvider exportMethodProvider, IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager)
     {
         super();
         this.dynamicFeatureAccessComputer = dynamicFeatureAccessComputer;
         this.exportMethodProvider = exportMethodProvider;
+        this.resourceLookup = resourceLookup;
+        this.namingService = namingService;
+        this.bmModelManager = bmModelManager;
     }
 
     @Override
@@ -130,14 +147,27 @@ public class NotifyDescriptionToServerProcedureCheck
             return;
         }
 
-        String contextDefUri = getBslContexDefUri(osc);
+        String contextDefUriAsString = getBslModuleUri(osc);
 
-        if (monitor.isCanceled() || contextDefUri == null)
+        if (monitor.isCanceled() || contextDefUriAsString == null)
         {
             return;
         }
 
-        Collection<Method> methods = exportMethodProvider.getMockMethods(contextDefUri, methodName, osc);
+        URI contextDefUri = URI.createURI(contextDefUriAsString, true);
+
+        IDtProject project = resourceLookup.getDtProject(contextDefUri);
+        String contextDefIndexFqn = namingService.getDependentObjectFqnAsString(contextDefUri,
+            BslIndexPackage.Literals.MODULE_CONTEXT_DEF_INDEX);
+        IBmModel model = bmModelManager.getModel(project);
+        IBmTransaction bmTransaction = model.getEngine().getCurrentTransaction();
+        ModuleContextDefIndex index = (ModuleContextDefIndex)bmTransaction.getTopObjectByFqn(contextDefIndexFqn);
+        if (index == null)
+        {
+            return;
+        }
+
+        Collection<Method> methods = exportMethodProvider.getMockMethods(index.getContextDef(), methodName, osc);
         if (methods.isEmpty())
         {
             resultAceptor.addIssue(
@@ -175,7 +205,7 @@ public class NotifyDescriptionToServerProcedureCheck
         return null;
     }
 
-    private String getBslContexDefUri(OperatorStyleCreator osc)
+    private String getBslModuleUri(OperatorStyleCreator osc)
     {
         List<Expression> params = osc.getParams();
 
@@ -184,18 +214,18 @@ public class NotifyDescriptionToServerProcedureCheck
             Expression moduleParam = params.get(1);
             if (moduleParam instanceof StaticFeatureAccess)
             {
-                return getBslContexDefUri((StaticFeatureAccess)moduleParam);
+                return getBslModuleUri((StaticFeatureAccess)moduleParam);
             }
             else if (moduleParam instanceof DynamicFeatureAccess)
             {
-                return getBslContexDefUri((DynamicFeatureAccess)moduleParam);
+                return getBslModuleUri((DynamicFeatureAccess)moduleParam);
             }
         }
 
         return null;
     }
 
-    private String getBslContexDefUri(StaticFeatureAccess object)
+    private String getBslModuleUri(StaticFeatureAccess object)
     {
         URI uri = null;
         if (object.getName().equals(THIS_OBJECT) || object.getName().equals(THIS_OBJECT_RU))
@@ -206,23 +236,23 @@ public class NotifyDescriptionToServerProcedureCheck
         {
             uri = getCommonModuleUri(object);
         }
-        return constructBslCdUri(uri);
+        return constructBslUri(uri);
     }
 
-    private String getBslContexDefUri(DynamicFeatureAccess object)
+    private String getBslModuleUri(DynamicFeatureAccess object)
     {
         URI uri = getCommonModuleUri(object);
 
-        return constructBslCdUri(uri);
+        return constructBslUri(uri);
     }
 
-    private String constructBslCdUri(URI uri)
+    private String constructBslUri(URI uri)
     {
         if (uri == null)
         {
             return null;
         }
-        return uri.trimFragment().trimFileExtension().appendFileExtension(BSLCD).appendFragment(CD_ROOT).toString();
+        return uri.trimFragment().trimFileExtension().appendFileExtension(BSL).toString();
     }
 
     private URI getCommonModuleUri(DynamicFeatureAccess object)

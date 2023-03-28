@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.Expression;
@@ -35,6 +36,7 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.bsl.util.BslUtil;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.Environmental;
@@ -42,6 +44,7 @@ import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -77,9 +80,10 @@ public class SimpleStatementTypeCheck
      */
     @Inject
     public SimpleStatementTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IV8ProjectManager v8ProjectManager, IQualifiedNameConverter qualifiedNameConverter)
+        IV8ProjectManager v8ProjectManager, IQualifiedNameConverter qualifiedNameConverter,
+        INamingService namingService, IBmModelManager bmModelManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
         this.v8ProjectManager = v8ProjectManager;
     }
 
@@ -109,7 +113,7 @@ public class SimpleStatementTypeCheck
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
         SimpleStatement statment = (SimpleStatement)object;
 
@@ -158,7 +162,7 @@ public class SimpleStatementTypeCheck
         if (left instanceof StaticFeatureAccess && !((StaticFeatureAccess)left).getFeatureEntries().isEmpty()
             && ((StaticFeatureAccess)left).getFeatureEntries().get(0).getFeature() instanceof Variable)
         {
-            Collection<TypeItem> commentTypes = computeCommentTypes(right);
+            Collection<TypeItem> commentTypes = computeCommentTypes(right, bmTransaction);
             newTypes.addAll(commentTypes);
 
         }
