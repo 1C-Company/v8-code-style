@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021, 1C-Soft LLC and others.
+ * Copyright (C) 2023, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -38,6 +38,7 @@ import com.e1c.v8codestyle.ql.check.TempTableHasIndex;
  * Test {@link TempTableHasIndex} class that checks selection query that put to new temporary table and has indexes.
  *
  * @author Dmitriy Marmyshev
+ * @author Vadim Goncharov
  */
 public class TempTableHasIndexTest
     extends SingleProjectReadOnlyCheckTestBase
@@ -48,7 +49,7 @@ public class TempTableHasIndexTest
     private static final String FOLDER = "/resources/";
 
     private static final String PARAMETER_EXCLUDE_TABLE_NAME_PATTERN = "excludeObjectNamePattern";
-    
+
     private static final String PARAMETER_MAX_TOP = "maxTop";
 
     private static final int MAX_TOP_DEFAULT = 1000;
@@ -72,7 +73,8 @@ public class TempTableHasIndexTest
     {
         resultAcceptor = new TestingCheckResultAcceptor();
         qlResultAcceptor = new TestingQlResultAcceptor();
-        defaultParameters = new TestingCheckParameters(Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, "", PARAMETER_MAX_TOP, MAX_TOP_DEFAULT));
+        defaultParameters = new TestingCheckParameters(
+            Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, "", PARAMETER_MAX_TOP, MAX_TOP_DEFAULT));
         QlBasicDelegateCheck.setResultAcceptor((o, f) -> qlResultAcceptor);
         check = new TempTableHasIndex();
     }
@@ -132,11 +134,12 @@ public class TempTableHasIndexTest
         check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
 
         assertFalse(qlResultAcceptor.getMarkers().isEmpty());
-        
+
         qlResultAcceptor.getMarkers().clear();
-        TestingCheckParameters newParameters = new TestingCheckParameters(Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, "", PARAMETER_MAX_TOP, 110000));
+        TestingCheckParameters newParameters =
+            new TestingCheckParameters(Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, "", PARAMETER_MAX_TOP, 110000));
         check.check(selectQuery, resultAcceptor, newParameters, new NullProgressMonitor());
-        
+
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
     }

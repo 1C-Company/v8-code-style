@@ -64,7 +64,8 @@ public class TempTableHasIndex
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(777, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(QuerySchemaSelectQuery.class);
-        builder.parameter(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, String.class, StringUtils.EMPTY,
+        builder
+            .parameter(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, String.class, StringUtils.EMPTY,
                 Messages.TempTableHasIndex_Exclude_table_name_pattern)
             .parameter(PARAMETER_MAX_TOP, Integer.class, Integer.toString(MAX_TOP_DEFAULT),
                 Messages.TempTableHasIndex_Parameter_max_top);
