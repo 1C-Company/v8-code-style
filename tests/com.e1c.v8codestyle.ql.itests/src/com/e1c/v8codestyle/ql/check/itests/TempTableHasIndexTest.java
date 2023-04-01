@@ -48,12 +48,16 @@ public class TempTableHasIndexTest
     private static final String FOLDER = "/resources/";
 
     private static final String PARAMETER_EXCLUDE_TABLE_NAME_PATTERN = "excludeObjectNamePattern";
+    
+    private static final String PARAMETER_MAX_TOP = "maxTop";
+
+    private static final int MAX_TOP_DEFAULT = 1000;
 
     private TestingCheckResultAcceptor resultAcceptor;
 
     private TestingQlResultAcceptor qlResultAcceptor;
 
-    private TestingCheckParameters emptyParameters;
+    private TestingCheckParameters defaultParameters;
 
     private TempTableHasIndex check;
 
@@ -68,7 +72,7 @@ public class TempTableHasIndexTest
     {
         resultAcceptor = new TestingCheckResultAcceptor();
         qlResultAcceptor = new TestingQlResultAcceptor();
-        emptyParameters = new TestingCheckParameters(Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, ""));
+        defaultParameters = new TestingCheckParameters(Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, "", PARAMETER_MAX_TOP, MAX_TOP_DEFAULT));
         QlBasicDelegateCheck.setResultAcceptor((o, f) -> qlResultAcceptor);
         check = new TempTableHasIndex();
     }
@@ -90,13 +94,13 @@ public class TempTableHasIndexTest
         EObject selectQuery = querySchema.getQueries().get(1);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
 
-        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
-        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
 
         assertFalse(qlResultAcceptor.getMarkers().isEmpty());
 
@@ -119,15 +123,21 @@ public class TempTableHasIndexTest
         EObject selectQuery = querySchema.getQueries().get(1);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
 
-        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
-        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
 
         assertFalse(qlResultAcceptor.getMarkers().isEmpty());
+        
+        qlResultAcceptor.getMarkers().clear();
+        TestingCheckParameters newParameters = new TestingCheckParameters(Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, "", PARAMETER_MAX_TOP, 110000));
+        check.check(selectQuery, resultAcceptor, newParameters, new NullProgressMonitor());
+        
+        assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
     }
 
@@ -147,13 +157,13 @@ public class TempTableHasIndexTest
         EObject selectQuery = querySchema.getQueries().get(1);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
 
-        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
-        check.check(selectQuery, resultAcceptor, emptyParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
     }
