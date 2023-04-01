@@ -99,7 +99,8 @@ public class DataCompositionConditionalAppearanceUseCheck
             ExternalPropertyManagerProvider.INSTANCE.getExternalPropertyManager(bmModelManager.getModel(dcca));
         if (manager == null)
         {
-            throw new IllegalStateException("ExternalPropertyManagerProvider not initialized");
+            CorePlugin.logError(new IllegalStateException("ExternalPropertyManagerProvider not initialized"));
+            return;
         }
 
         EObject eObject = dcca;
