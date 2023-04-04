@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.internal.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -45,7 +45,7 @@ public class ProjectOptionsDtNewWizardPage
 
     private final IProjectOptionManager projectOptionManager;
 
-    private Map<ProjectOption, Button> options = new HashMap<>();
+    private final Map<ProjectOption, Boolean> optionValues = new HashMap<>();
 
     /**
      * Instantiates a new project options DT new wizard page.
@@ -73,8 +73,11 @@ public class ProjectOptionsDtNewWizardPage
         for (ProjectOption option : projectOptionManager.getAvailableOptions())
         {
             Button button = new Button(composite, SWT.CHECK);
-            button.setSelection(option.getDefaultValue());
             button.setText(option.getPresentation());
+            button.setSelection(option.getDefaultValue());
+            button.addSelectionListener(
+                SelectionListener.widgetSelectedAdapter(e -> optionValues.put(option, button.getSelection())));
+            optionValues.put(option, option.getDefaultValue());
 
             String description = option.getDescription();
             if (StringUtils.isNotEmpty(description))
@@ -84,30 +87,19 @@ public class ProjectOptionsDtNewWizardPage
                 label.setText(description);
                 label.setToolTipText(description);
             }
-
-            options.put(option, button);
         }
 
     }
 
     @Override
-    public void dispose()
-    {
-        options.clear();
-        super.dispose();
-    }
-
-    @Override
     public void finish(IProgressMonitor monitor)
     {
-        final Map<ProjectOption, Boolean> values =
-            options.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> e.getValue().getSelection()));
         final IProject project = getContext().getV8project().getProject();
 
         // Run job to separate it from ws building lock
         Job job = Job.create(Messages.ProjectOptionsDtNewWizardPage_save_job_title, m -> {
 
-            for (Entry<ProjectOption, Boolean> entry : values.entrySet())
+            for (Entry<ProjectOption, Boolean> entry : optionValues.entrySet())
             {
                 if (m.isCanceled())
                 {
