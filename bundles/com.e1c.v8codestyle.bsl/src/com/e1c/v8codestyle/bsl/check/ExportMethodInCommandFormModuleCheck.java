@@ -130,13 +130,19 @@ public final class ExportMethodInCommandFormModuleCheck
 
             if (method.isExport())
             {
+                String name = method.getName();
+                if (name == null)
+                {
+                    return;
+                }
+
                 if (commandModule)
                 {
-                    exportMethods.put(method.getName(), method);
+                    exportMethods.put(name, method);
                 }
                 else if (serverMethodCheck && clientMethodCheck)
                 {
-                    exportMethods.put(method.getName(), method);
+                    exportMethods.put(name, method);
                 }
                 else if (serverMethodCheck ^ clientMethodCheck)
                 {
@@ -146,7 +152,7 @@ public final class ExportMethodInCommandFormModuleCheck
                         .intersect(serverMethodCheck ? Environments.ALL_SERVERS : Environments.ALL_CLIENTS);
                     if (enivronmetsObject.containsAny(checkingEnvs))
                     {
-                        exportMethods.put(method.getName(), method);
+                        exportMethods.put(name, method);
                     }
                 }
             }
