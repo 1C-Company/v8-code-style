@@ -138,7 +138,7 @@ public class ReadingAttributesFromDataBaseCheck
             }
 
             String typeName = McoreUtil.getTypeName(type);
-            if (McoreUtil.getTypeName(type) == null)
+            if (typeName == null)
             {
                 return;
             }
