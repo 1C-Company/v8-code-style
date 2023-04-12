@@ -23,6 +23,7 @@ import com._1c.g5.v8.dt.metadata.mdclass.Catalog;
 import com._1c.g5.v8.dt.metadata.mdclass.StandardAttribute;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
+import com.e1c.v8codestyle.md.check.MdStandardAttributeSynonymEmpty;
 
 /**
  * The test for class {@link MdStandardAttributeSynonymEmpty}.
@@ -68,7 +69,7 @@ public class MdStandardAttributeSynonymEmptyTest
         assertNotNull(marker);
 
         Catalog catalog = (Catalog)getTopObjectByFqn("Catalog.NegativeOwnerTestWithComment", dtProject);
-        StandardAttribute attribute = catalog.getStandardAttributes().get(0);
+        StandardAttribute attribute = getStandardAttributeByName(catalog, "Owner"); //$NON-NLS-1$
         marker = getFirstMarker(CHECK_ID, attribute, dtProject);
         assertNotNull(marker);
 
@@ -84,7 +85,7 @@ public class MdStandardAttributeSynonymEmptyTest
         assertNotNull(marker);
 
         Catalog catalog = (Catalog)getTopObjectByFqn("Catalog.NegativeParentTestWithComment", dtProject);
-        StandardAttribute attribute = catalog.getStandardAttributes().get(0);
+        StandardAttribute attribute = getStandardAttributeByName(catalog, "Parent"); //$NON-NLS-1$
         marker = getFirstMarker(CHECK_ID, attribute, dtProject);
         assertNotNull(marker);
     }
@@ -95,4 +96,15 @@ public class MdStandardAttributeSynonymEmptyTest
         return PROJECT_NAME;
     }
 
+    private StandardAttribute getStandardAttributeByName(Catalog catalog, String standardAttributeName)
+    {
+        for (StandardAttribute standardAttribute : catalog.getStandardAttributes())
+        {
+            if (standardAttribute.getName().equals(standardAttributeName))
+            {
+                return standardAttribute;
+            }
+        }
+        return null;
+    }
 }
