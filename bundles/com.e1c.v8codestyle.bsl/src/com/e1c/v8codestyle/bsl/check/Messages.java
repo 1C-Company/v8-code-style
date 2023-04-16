@@ -61,6 +61,14 @@ final class Messages
     public static String ChangeAndValidateInsteadOfAroundCheck_Use_ChangeAndValidate_instead_of_Around;
     public static String ChangeAndValidateInsteadOfAroundCheck_title;
 
+    public static String CodeAfterAsyncCallCheck_Description;
+
+    public static String CodeAfterAsyncCallCheck_Issue;
+
+    public static String CodeAfterAsyncCallCheck_Parameter;
+
+    public static String CodeAfterAsyncCallCheck_Title;
+
     public static String CommitTransactionCheck_Commit_transaction_must_be_in_try_catch;
 
     public static String CommitTransactionCheck_No_begin_transaction_for_commit_transaction;
