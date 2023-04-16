@@ -50,6 +50,7 @@ import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
  *
  * @author Dmitriy Marmyshev
  */
+@SuppressWarnings("restriction")
 class ExternalDependenciesModule
     extends AbstractServiceAwareModule
 {

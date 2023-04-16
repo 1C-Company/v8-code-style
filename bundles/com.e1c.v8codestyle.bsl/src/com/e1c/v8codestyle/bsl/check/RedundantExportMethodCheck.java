@@ -64,6 +64,7 @@ import com.google.inject.Inject;
  *
  * @author Artem Iliukhin
  */
+@SuppressWarnings("restriction")
 public final class RedundantExportMethodCheck
     extends AbstractModuleStructureCheck
 {
