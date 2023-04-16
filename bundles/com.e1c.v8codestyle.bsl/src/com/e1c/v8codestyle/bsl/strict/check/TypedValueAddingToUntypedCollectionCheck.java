@@ -216,7 +216,7 @@ public class TypedValueAddingToUntypedCollectionCheck
 
     private boolean isActualCollectionItemTypeEmpty(Collection<TypeItem> actualTypes)
     {
-        actualTypes.removeIf(p -> McoreUtil.getTypeName(p).equals(IEObjectTypeNames.ARBITRARY));
+        actualTypes.removeIf(p -> IEObjectTypeNames.ARBITRARY.equals(McoreUtil.getTypeName(p)));
 
         return actualTypes.isEmpty();
     }

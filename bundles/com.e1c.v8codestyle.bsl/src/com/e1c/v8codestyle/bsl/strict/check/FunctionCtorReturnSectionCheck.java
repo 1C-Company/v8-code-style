@@ -283,7 +283,10 @@ public class FunctionCtorReturnSectionCheck
                 .collect(Collectors.toList());
 
             List<TypeItem> types2 = types.stream()
-                .filter(t -> McoreUtil.getTypeName(t) != null && !declaredType.contains(McoreUtil.getTypeName(t)))
+                .filter(t -> {
+                    String typeName = McoreUtil.getTypeName(t);
+                    return typeName != null && !declaredType.contains(typeName);
+                })
                 .collect(Collectors.toList());
             if (types.isEmpty())
             {
@@ -353,6 +356,7 @@ public class FunctionCtorReturnSectionCheck
                 property.getTypes()
                     .stream()
                     .map(useRussianScript ? McoreUtil::getTypeNameRu : McoreUtil::getTypeName)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList())));
 
         resultAceptor.addIssue(message, statment, Literals.RETURN_STATEMENT__EXPRESSION);
@@ -367,10 +371,12 @@ public class FunctionCtorReturnSectionCheck
                 property.getTypes()
                     .stream()
                     .map(useRussianScript ? McoreUtil::getTypeNameRu : McoreUtil::getTypeName)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList())),
             String.join(", ", //$NON-NLS-1$
                 missingTypes.stream()
                     .map(useRussianScript ? McoreUtil::getTypeNameRu : McoreUtil::getTypeName)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList())));
 
         resultAceptor.addIssue(message, statment, Literals.RETURN_STATEMENT__EXPRESSION);

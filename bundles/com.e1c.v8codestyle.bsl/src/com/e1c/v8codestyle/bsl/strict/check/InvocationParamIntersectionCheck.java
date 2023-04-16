@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -491,7 +492,8 @@ public class InvocationParamIntersectionCheck
         ScriptVariant variant = project.getScriptVariant();
         Function<TypeItem, String> nameFunc =
             variant == ScriptVariant.RUSSIAN ? McoreUtil::getTypeNameRu : McoreUtil::getTypeName;
-        List<String> typeNames = targetTypes.stream().map(nameFunc).collect(Collectors.toList());
+        List<String> typeNames =
+            targetTypes.stream().map(nameFunc).filter(Objects::nonNull).collect(Collectors.toList());
 
         String name = parameter == null ? String.valueOf(index + 1) : parameter.getName();
         if (parameter instanceof DuallyNamedElement && variant == ScriptVariant.RUSSIAN)
