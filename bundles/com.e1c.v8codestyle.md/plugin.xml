@@ -126,6 +126,10 @@
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.MdObjectAttributeCommentNotExistCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.check.FunctionalOptionPrivilegedGetModeCheck">
+      </check>
    </extension>
    
 </plugin>
