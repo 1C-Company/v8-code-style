@@ -31,7 +31,9 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.ILeafNode;
@@ -144,10 +146,26 @@ public final class StrictTypeUtil
      */
     public static boolean hasStrictTypeAnnotation(Module module)
     {
-        ICompositeNode node = NodeModelUtils.getNode(module);
-        node = node.getRootNode();
+        ModuleAnnotationAdapter adapter =
+            (ModuleAnnotationAdapter)EcoreUtil.getExistingAdapter(module, ModuleAnnotationAdapter.class);
+        if (adapter == null)
+        {
+            ICompositeNode node = NodeModelUtils.getNode(module);
+            node = node.getRootNode();
+            ILeafNode annotationNode = getStrictTypeAnnotationNode(node);
+            synchronized (module.eAdapters())
+            {
+                // double check and add adapter if absent
+                adapter = (ModuleAnnotationAdapter)EcoreUtil.getExistingAdapter(module, ModuleAnnotationAdapter.class);
+                if (adapter == null)
+                {
+                    adapter = new ModuleAnnotationAdapter(annotationNode);
+                    module.eAdapters().add(adapter);
+                }
+            }
+        }
 
-        return hasStrictTypeAnnotation(node);
+        return adapter.getStrictTypeAnnotationNode() != null;
     }
 
     /**
@@ -277,5 +295,27 @@ public final class StrictTypeUtil
         throw new IllegalAccessError();
     }
 
+    private static final class ModuleAnnotationAdapter
+        extends AdapterImpl
+    {
+
+        private final ILeafNode annotationNode;
+
+        private ModuleAnnotationAdapter(ILeafNode annotationNode)
+        {
+            this.annotationNode = annotationNode;
+        }
+
+        public ILeafNode getStrictTypeAnnotationNode()
+        {
+            return annotationNode;
+        }
+
+        @Override
+        public boolean isAdapterForType(Object type)
+        {
+            return getClass() == type;
+        }
+    }
 
 }

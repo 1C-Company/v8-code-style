@@ -5,11 +5,9 @@ Bundle-SymbolicName: com.e1c.v8codestyle.bsl.ui;singleton:=true
 Bundle-Version: 0.5.0.qualifier
 Bundle-Activator: com.e1c.v8codestyle.internal.bsl.ui.UiPlugin
 Bundle-Vendor: %providerName
-Require-Bundle: org.eclipse.ui;bundle-version="[3.119.0,4.0.0)",
- org.eclipse.core.runtime;bundle-version="[3.20.0,4.0.0)",
+Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.20.0,4.0.0)",
  org.eclipse.emf.ecore;bundle-version="[2.23.0,3.0.0)",
  org.eclipse.core.resources;bundle-version="[3.14.0,4.0.0)",
- org.eclipse.ui.forms;bundle-version="[3.11.100,4.0.0)",
  org.eclipse.emf.databinding;bundle-version="[1.5.0,2.0.0)",
  org.eclipse.xtext;bundle-version="[2.24.0,3.0.0)",
  org.eclipse.xtext.ui;bundle-version="[2.24.0,3.0.0)",
@@ -36,9 +34,7 @@ Import-Package: com._1c.g5.ides.ui.texteditor.xtext.embedded;version="[6.0.0,7.0
  com._1c.g5.v8.dt.core.filesystem;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.core.model;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.core.platform;version="[11.0.0,12.0.0)",
- com._1c.g5.v8.dt.lcore.ui.editor;version="[2.3.0,3.0.0)",
  com._1c.g5.v8.dt.lcore.ui.texteditor;version="[1.1.0,2.0.0)",
- com._1c.g5.v8.dt.lcore.util;version="[2.0.0,3.0.0)",
  com._1c.g5.v8.dt.mcore;version="[7.0.0,8.0.0)",
  com._1c.g5.v8.dt.metadata.mdclass;version="[8.0.0,9.0.0)",
  com._1c.g5.v8.dt.theming.ui.util;version="[1.0.0,2.0.0)",

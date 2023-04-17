@@ -12,13 +12,14 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.13.0,4.0.0)",
  org.eclipse.text;bundle-version="[3.8.100,4.0.0)",
  org.eclipse.xtext;bundle-version="[2.17.0,3.0.0)",
  org.eclipse.xtext.builder;bundle-version="[2.18.0,3.0.0)",
- org.eclipse.xtext.ui;bundle-version="[2.24.0,3.0.0)",
  org.eclipse.jdt.annotation;bundle-version="[2.2.0,3.0.0)";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: com.e1c.v8codestyle.bsl
 Bundle-ActivationPolicy: lazy
 Import-Package: com._1c.g5.v8.bm.core;version="[8.0.0,9.0.0)",
  com._1c.g5.v8.bm.integration;version="[11.0.0,12.0.0)",
+ com._1c.g5.v8.dt.bm.xtext;version="[15.0.0,16.0.0)",
+ com._1c.g5.v8.dt.bsl;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.bsl.comment;version="[3.0.0,4.0.0)",
  com._1c.g5.v8.dt.bsl.common;version="[6.0.0,7.0.0)",
  com._1c.g5.v8.dt.bsl.contextdef;version="[2.0.0,3.0.0)",
