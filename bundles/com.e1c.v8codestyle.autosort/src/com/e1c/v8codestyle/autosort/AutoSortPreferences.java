@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.emf.ecore.EReference;
 import org.osgi.service.prefs.BackingStoreException;
 
+import com._1c.g5.v8.dt.md.sort.MdSortPreferences;
 import com.e1c.v8codestyle.internal.autosort.AutoSortPlugin;
 
 /**
@@ -42,9 +43,16 @@ import com.e1c.v8codestyle.internal.autosort.AutoSortPlugin;
  */
 public final class AutoSortPreferences
 {
-
+    /**
+     * @deprecated Use the parameter {@link MdSortPreferences#ASCENDING_SORT} instead.
+     */
+    @Deprecated(since = "0.5.0")
     public static final String KEY_ASCENDING = "sortAscending"; //$NON-NLS-1$
 
+    /**
+     * @deprecated Use the parameter {@link MdSortPreferences#NATURAL_SORT_ORDER} instead.
+     */
+    @Deprecated(since = "0.5.0")
     public static final String KEY_SORT_ORDER = "naturalSortOrder"; //$NON-NLS-1$
 
     public static final String KEY_ALL_TOP = "topObjects"; //$NON-NLS-1$
@@ -73,17 +81,28 @@ public final class AutoSortPreferences
 
     public static final String KEY_TABULAR_SECTIONS = CATALOG__TABULAR_SECTIONS.getName();
 
+    /**
+     * @deprecated Use the parameter {@link MdSortPreferences#DEFAULT_ASCENDING_SORT} instead.
+     */
+    @Deprecated(since = "0.5.0")
     public static final boolean DEFAULT_SORT_ASCENDING = true;
 
     public static final boolean DEFAULT_SORT = false;
 
+    /**
+     * @deprecated Use the parameter {@link MdSortPreferences#DEFAULT_NATURAL_SORT_ORDER} instead.
+     */
+    @Deprecated(since = "0.5.0")
     public static final boolean DEFAULT_SORT_ORDER = true;
+
     /**
      * Checks if the sort direction is ascending in the project.
      *
      * @param project the project to check, cannot be {@code null}.
      * @return true, if the sort is ascending, or return true as default if not set for project.
+     * @deprecated Use the method {@link MdSortPreferences#isAscendingSort(IProject)} instead.
      */
+    @Deprecated(since = "0.5.0")
     public static boolean isSortAscending(IProject project)
     {
         IEclipsePreferences rootNode = getPreferences(project);
@@ -95,7 +114,9 @@ public final class AutoSortPreferences
      *
      * @param project the project to check, cannot be {@code null}.
      * @return true, if the sort order is natural, or return true as default if not set for project.
+     * @deprecated Use the method {@link MdSortPreferences#isNaturalSortOrder(IProject)} instead.
      */
+    @Deprecated(since = "0.5.0")
     public static boolean isNaturalSortOrder(IProject project)
     {
         IEclipsePreferences rootNode = getPreferences(project);
@@ -183,10 +204,38 @@ public final class AutoSortPreferences
         }
     }
 
+    /**
+     * Checks whether the auto sort is enabled for the specified project.
+     *
+     * @param project the project to check, cannot be {@code null}.
+     * @return {@code true} if the auto sort is enabled for the project, {@code false otherwise}
+     */
+    public static boolean isAutoSortEnabled(IProject project)
+    {
+        if (isSortAllTop(project) || isSortSubOrdinateObjects(project))
+        {
+            return true;
+        }
+        for (EReference reference : ListConstants.TOP_OPBJECT_LISTS)
+        {
+            if (isSortTopList(project, reference))
+            {
+                return true;
+            }
+        }
+        for (EReference reference : ListConstants.SUBORDINATE_OBJECT_LISTS)
+        {
+            if (isSortSubordinateList(project, reference))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private static boolean isSortTopList(IProject project, EReference listRef)
     {
         IEclipsePreferences rootNode = getPreferences(project);
-
         return rootNode.node(KEY_TOP_NODE).getBoolean(listRef.getName(), DEFAULT_SORT);
     }
 

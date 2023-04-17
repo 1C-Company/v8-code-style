@@ -14,6 +14,7 @@ package com.e1c.v8codestyle.internal.autosort.ui;
 
 import org.eclipse.core.runtime.Plugin;
 
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 import com.e1c.v8codestyle.autosort.ISortService;
 
@@ -35,6 +36,7 @@ class ExternalDependenciesModule
     protected void doConfigure()
     {
         bind(ISortService.class).toService();
+        bind(IV8ProjectManager.class).toService();
     }
 
 }
