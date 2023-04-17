@@ -96,7 +96,7 @@ public class MdSortPreferenceChangeNotifier
         }
     }
 
-    private class MdSortPreferenceChangeListener
+    private final class MdSortPreferenceChangeListener
         implements IPreferenceChangeListener
     {
         private final IProject project;
