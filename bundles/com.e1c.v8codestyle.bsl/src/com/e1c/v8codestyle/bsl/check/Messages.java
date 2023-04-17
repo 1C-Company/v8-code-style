@@ -61,6 +61,14 @@ final class Messages
     public static String ChangeAndValidateInsteadOfAroundCheck_Use_ChangeAndValidate_instead_of_Around;
     public static String ChangeAndValidateInsteadOfAroundCheck_title;
 
+    public static String CodeAfterAsyncCallCheck_Description;
+
+    public static String CodeAfterAsyncCallCheck_Issue;
+
+    public static String CodeAfterAsyncCallCheck_Parameter;
+
+    public static String CodeAfterAsyncCallCheck_Title;
+
     public static String CommitTransactionCheck_Commit_transaction_must_be_in_try_catch;
 
     public static String CommitTransactionCheck_No_begin_transaction_for_commit_transaction;
@@ -445,6 +453,12 @@ final class Messages
     public static String LockOutOfTry_Lock_out_of_try;
 
     public static String LockOutOfTry_Method_lock_out_of_try;
+
+    public static String OptionalFormParameterAccessCheck_description;
+
+    public static String OptionalFormParameterAccessCheck_Optional_form_parameter_access;
+
+    public static String OptionalFormParameterAccessCheck_title;
 
     public static String VariableNameInvalidCheck_description;
     public static String VariableNameInvalidCheck_message_variable_length_is_less_than;

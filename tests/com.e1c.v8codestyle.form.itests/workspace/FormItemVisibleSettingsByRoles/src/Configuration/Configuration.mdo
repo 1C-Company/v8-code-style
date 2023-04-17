@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="26f4970b-c897-4aa2-866d-ad17153eafb2">
+  <name>FormItemVisibleSettingsByRoles</name>
+  <synonym>
+    <key>en</key>
+    <value>Form item visible settings by roles</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="196a845a-13dd-4713-99d0-217a5022aabc"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="14efdbc2-c91a-4592-8894-eaece1e78015"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="d8f46aa6-ef9b-4824-af95-24cda3b203fc"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="a63d8cf6-8d73-48ab-a95d-c439ef46d0d9"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="44fa1756-5d92-4466-b9a3-58482e2b466e"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="97c6744f-e578-49e1-9616-6f8dd26045bc"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="1f4a3b62-d948-46d7-8a84-7c4e318ad383"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="8b1f0920-6533-48d6-8daa-726a6c5cfbb9">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <roles>Role.TestRole1</roles>
+  <roles>Role.TestRole2</roles>
+  <commonForms>CommonForm.TestForm1</commonForms>
+  <commonForms>CommonForm.TestForm2</commonForms>
+  <commonForms>CommonForm.TestForm3</commonForms>
+  <commonForms>CommonForm.TestForm4</commonForms>
+  <commonForms>CommonForm.TestForm5</commonForms>
+</mdclass:Configuration>

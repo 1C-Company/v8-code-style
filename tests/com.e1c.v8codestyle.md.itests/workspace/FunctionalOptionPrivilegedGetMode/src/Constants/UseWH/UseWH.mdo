@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Constant xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="d123187a-ac23-4b47-8e00-eaba44eda1f1">
+  <producedTypes>
+    <managerType typeId="97a35551-f2d4-454f-8b24-695a4d5148d9" valueTypeId="f84c9c7a-2647-47de-bd62-20189d4ec401"/>
+    <valueManagerType typeId="49cc1fcf-c475-4343-a5c4-03051b6e5c6a" valueTypeId="986ff5cb-4fe2-4d0d-9104-5f2b5f592ab3"/>
+    <valueKeyType typeId="80cca2c3-22e2-4caf-b89e-e7cf8ba38773" valueTypeId="22a98862-e390-4eb7-8c78-4763b0b5a2df"/>
+  </producedTypes>
+  <name>UseWH</name>
+  <synonym>
+    <key>en</key>
+    <value>Use WH</value>
+  </synonym>
+  <type>
+    <types>Boolean</types>
+  </type>
+  <useStandardCommands>true</useStandardCommands>
+  <minValue xsi:type="core:UndefinedValue"/>
+  <maxValue xsi:type="core:UndefinedValue"/>
+  <dataLockControlMode>Managed</dataLockControlMode>
+</mdclass:Constant>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1b741952-6feb-4d71-86bc-e42c8829502c">
+  <name>FunctionalOptionPrivilegedGetMode</name>
+  <synonym>
+    <key>en</key>
+    <value>Functional option privileged get mode</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="92e41153-3388-4488-9109-6ac2f2da2f85"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="0e61eb98-13c9-4f17-8d8b-d7c3db1f1cf9"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="5feda00b-2a34-4ef7-94c7-a42d2c1b3383"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="1394d1c5-e816-4ebe-ad8e-0a9e7c010de0"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="87d1c60c-d799-4f9e-a5c2-6fafb1ca5de6"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="f12d9825-2e11-4907-9195-584011211b6c"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="aea3f88c-6d77-42c3-a856-d730b30708c4"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="ce819e23-56d0-46b5-a0d6-c1db9d31d2e1">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <functionalOptions>FunctionalOption.UseOrganisations</functionalOptions>
+  <functionalOptions>FunctionalOption.UseWH</functionalOptions>
+  <functionalOptions>FunctionalOption.UseFinPlan</functionalOptions>
+  <constants>Constant.UseOrganisations</constants>
+  <constants>Constant.UseWH</constants>
+</mdclass:Configuration>
