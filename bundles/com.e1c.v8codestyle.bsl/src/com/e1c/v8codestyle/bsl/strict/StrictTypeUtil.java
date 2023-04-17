@@ -301,12 +301,7 @@ public final class StrictTypeUtil
 
         private final ILeafNode annotationNode;
 
-        /**
-         * Instantiates a new module annotation adapter.
-         *
-         * @param annotationNode the annotation node
-         */
-        public ModuleAnnotationAdapter(ILeafNode annotationNode)
+        private ModuleAnnotationAdapter(ILeafNode annotationNode)
         {
             this.annotationNode = annotationNode;
         }
