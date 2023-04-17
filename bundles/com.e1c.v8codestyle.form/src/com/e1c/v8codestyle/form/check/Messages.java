@@ -36,6 +36,12 @@ final class Messages
     public static String FormItemsSingleEventHandlerCheck_itemName_dot_eventName;
     public static String FormItemsSingleEventHandlerCheck_the_handler_is_already_assigned_to_event;
     public static String FormItemsSingleEventHandlerCheck_title;
+    public static String FormItemVisibleSettingsByRoles_description;
+    public static String FormItemVisibleSettingsByRoles_Message_template;
+    public static String FormItemVisibleSettingsByRoles_Property_name_edit;
+    public static String FormItemVisibleSettingsByRoles_Property_name_use;
+    public static String FormItemVisibleSettingsByRoles_Property_name_visible;
+    public static String FormItemVisibleSettingsByRoles_title;
     public static String FormListFieldRefNotAddedCheck_description;
     public static String FormListFieldRefNotAddedCheck_The_Ref_field_is_not_added_to_dynamic_list;
     public static String FormListFieldRefNotAddedCheck_title;

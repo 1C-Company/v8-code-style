@@ -349,6 +349,14 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.MethodOptionalParameterBeforeRequiredCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.CodeAfterAsyncCallCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.UnknownFormParameterAccessCheck">
       </check>
       <check
@@ -366,6 +374,10 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.ExportProcedureCommentDescriptionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.OptionalFormParameterAccessCheck">
       </check>
    </extension>
    <extension
