@@ -116,7 +116,6 @@ public class DataCompositionConditionalAppearanceUseCheck
 
             resultAcceptor.addIssue(
                 MessageFormat.format(
-                    Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance,
                     Messages.DataCompositionConditionalAppearanceUseCheck_Form_attribute, formAttribute.getName()),
                 dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
 
@@ -131,7 +130,6 @@ public class DataCompositionConditionalAppearanceUseCheck
 
             resultAcceptor.addIssue(
                 MessageFormat.format(
-                    Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance,
                     Messages.DataCompositionConditionalAppearanceUseCheck_Form, form.getMdForm().getName()),
                 dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
 
