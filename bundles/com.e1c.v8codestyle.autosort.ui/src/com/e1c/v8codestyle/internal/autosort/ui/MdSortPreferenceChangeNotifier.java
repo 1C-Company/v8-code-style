@@ -102,7 +102,7 @@ public class MdSortPreferenceChangeNotifier
         private final IProject project;
         private final AtomicBoolean mdSortPreferenceChanged = new AtomicBoolean(false);
 
-        public MdSortPreferenceChangeListener(IProject project)
+        private MdSortPreferenceChangeListener(IProject project)
         {
             this.project = project;
         }
