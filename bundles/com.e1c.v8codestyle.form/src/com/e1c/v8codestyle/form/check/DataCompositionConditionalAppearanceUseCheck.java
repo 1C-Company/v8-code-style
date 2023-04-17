@@ -99,7 +99,7 @@ public class DataCompositionConditionalAppearanceUseCheck
             ExternalPropertyManagerProvider.INSTANCE.getExternalPropertyManager(bmModelManager.getModel(dcca));
         if (manager == null)
         {
-            CorePlugin.logError(new IllegalStateException("ExternalPropertyManagerProvider not initialized"));
+            CorePlugin.logError(new IllegalStateException("ExternalPropertyManagerProvider not initialized")); //$NON-NLS-1$
             return;
         }
 
@@ -116,7 +116,7 @@ public class DataCompositionConditionalAppearanceUseCheck
 
             resultAcceptor.addIssue(MessageFormat.format(
                 Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance,
-                "Form attribute", formAttribute.getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
+                Messages.DataCompositionConditionalAppearanceUseCheck_Form_attribute, formAttribute.getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
 
         }
         else
@@ -128,7 +128,7 @@ public class DataCompositionConditionalAppearanceUseCheck
             }
 
             resultAcceptor.addIssue(MessageFormat.format(
-                Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance, "Form",
+                Messages.DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance, Messages.DataCompositionConditionalAppearanceUseCheck_Form,
                 form.getMdForm().getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
 
         }

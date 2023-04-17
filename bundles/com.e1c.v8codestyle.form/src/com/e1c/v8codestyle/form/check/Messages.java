@@ -25,6 +25,8 @@ final class Messages
     private static final String BUNDLE_NAME = "com.e1c.v8codestyle.form.check.messages"; //$NON-NLS-1$
     public static String DataCompositionConditionalAppearanceUseCheck_description;
     public static String DataCompositionConditionalAppearanceUseCheck_Dynamic_list_use_conditional_appearance;
+    public static String DataCompositionConditionalAppearanceUseCheck_Form;
+    public static String DataCompositionConditionalAppearanceUseCheck_Form_attribute;
     public static String DataCompositionConditionalAppearanceUseCheck_title;
     public static String DynamicListItemTitleCheck_Description;
     public static String DynamicListItemTitleCheck_message;
