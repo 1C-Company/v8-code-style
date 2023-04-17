@@ -49,6 +49,12 @@ public class IsInRoleMethodRoleExistCheckTest
         return PROJECT_NAME;
     }
 
+    @Override
+    protected String getModuleFileName()
+    {
+        return COMMON_MODULE_FILE_NAME;
+    }
+
     /**
      * Test invocation role check access exist role check.
      *
@@ -57,24 +63,12 @@ public class IsInRoleMethodRoleExistCheckTest
     @Test
     public void testIsInRoleMethodRoleExistCheck() throws Exception
     {
-        List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
+
+        List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
 
         assertEquals("2", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals("9", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-    }
-
-    private List<Marker> getMarkers(String moduleFileName)
-    {
-        String moduleId = Path.ROOT.append(getTestConfigurationName()).append(moduleFileName).toString();
-        List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
-
-        String chekcId = getCheckId();
-
-        assertNotNull(chekcId);
-        return markers.stream()
-            .filter(marker -> chekcId.equals(getCheckIdFromMarker(marker, getProject())))
-            .collect(Collectors.toList());
     }
 
 }
