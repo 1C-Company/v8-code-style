@@ -440,6 +440,12 @@ final class Messages
 
     public static String IsInRoleCheck_Using_IsInRole;
 
+    public static String IsInRoleMethodRoleExistCheck_description;
+
+    public static String IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration;
+
+    public static String IsInRoleMethodRoleExistCheck_title;
+    
     public static String ModuleUndefinedVariableCheck_Title;
     public static String ModuleUndefinedVariableCheck_Description;
     public static String ModuleUndefinedVariable_msg;
