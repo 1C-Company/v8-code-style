@@ -533,7 +533,12 @@ public class InvocationParamIntersectionCheck
     {
         EObject source = EcoreFactory.eINSTANCE.createEObject();
         ((InternalEObject)source).eSetProxyURI(mcoreMethod.getSourceUri());
-        Method sourceMethod = (Method)EcoreUtil.resolve(source, mcoreMethod);
+        source = EcoreUtil.resolve(source, mcoreMethod);
+        if (source.eIsProxy() || !(source instanceof Method))
+        {
+            return Optional.empty();
+        }
+        Method sourceMethod = (Method)source;
 
         BslDocumentationComment docComment =
             BslCommentUtils.parseTemplateComment(sourceMethod, oldFormatComment, commentProvider);
