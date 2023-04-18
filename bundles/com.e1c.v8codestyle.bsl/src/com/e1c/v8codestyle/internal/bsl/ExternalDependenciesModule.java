@@ -36,6 +36,7 @@ import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.services.BslGrammarAccess;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
+import com._1c.g5.v8.dt.core.naming.ITopObjectFqnGenerator;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
@@ -72,6 +73,7 @@ class ExternalDependenciesModule
         bind(IBslModuleContextDefService.class).toService();
         bind(IBmModelManager.class).toService();
         bind(INamingService.class).toService();
+        bind(ITopObjectFqnGenerator.class).toService();
 
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
