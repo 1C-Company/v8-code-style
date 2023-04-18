@@ -61,6 +61,14 @@ final class Messages
     public static String ChangeAndValidateInsteadOfAroundCheck_Use_ChangeAndValidate_instead_of_Around;
     public static String ChangeAndValidateInsteadOfAroundCheck_title;
 
+    public static String CodeAfterAsyncCallCheck_Description;
+
+    public static String CodeAfterAsyncCallCheck_Issue;
+
+    public static String CodeAfterAsyncCallCheck_Parameter;
+
+    public static String CodeAfterAsyncCallCheck_Title;
+
     public static String CommitTransactionCheck_Commit_transaction_must_be_in_try_catch;
 
     public static String CommitTransactionCheck_No_begin_transaction_for_commit_transaction;
@@ -281,6 +289,8 @@ final class Messages
     public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_title;
 
+    public static String SelfReferenceCheck_check_object_module;
+
     public static String SelfReferenceCheck_check_only_existing_form_properties;
 
     public static String SelfReferenceCheck_Description;
@@ -366,6 +376,12 @@ final class Messages
 
     public static String UseNonRecommendedMethods_title;
 
+    public static String MethodOptionalParameterBeforeRequiredCheck_description;
+
+    public static String MethodOptionalParameterBeforeRequiredCheck_Optional_parameter_before_required;
+
+    public static String MethodOptionalParameterBeforeRequiredCheck_title;
+
     public static String MethodTooManyPramsCheck_description;
 
     public static String MethodTooManyPramsCheck_Max_parameters;
@@ -432,6 +448,12 @@ final class Messages
 
     public static String IsInRoleCheck_Using_IsInRole;
 
+    public static String IsInRoleMethodRoleExistCheck_description;
+
+    public static String IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration;
+
+    public static String IsInRoleMethodRoleExistCheck_title;
+    
     public static String ModuleUndefinedVariableCheck_Title;
     public static String ModuleUndefinedVariableCheck_Description;
     public static String ModuleUndefinedVariable_msg;
@@ -447,6 +469,12 @@ final class Messages
     public static String LockOutOfTry_Lock_out_of_try;
 
     public static String LockOutOfTry_Method_lock_out_of_try;
+
+    public static String OptionalFormParameterAccessCheck_description;
+
+    public static String OptionalFormParameterAccessCheck_Optional_form_parameter_access;
+
+    public static String OptionalFormParameterAccessCheck_title;
 
     public static String VariableNameInvalidCheck_description;
     public static String VariableNameInvalidCheck_message_variable_length_is_less_than;
