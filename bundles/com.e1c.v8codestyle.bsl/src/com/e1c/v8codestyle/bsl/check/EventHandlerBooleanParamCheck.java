@@ -226,7 +226,12 @@ public class EventHandlerBooleanParamCheck
         int index = params.indexOf(param);
 
         Map<CaseInsensitiveString, Event> eventHandlers = getAllModuleEvents(module);
-        CaseInsensitiveString methodName = new CaseInsensitiveString(method.getName());
+        String name = method.getName();
+        if (name == null)
+        {
+            return null;
+        }
+        CaseInsensitiveString methodName = new CaseInsensitiveString(name);
         Event event = eventHandlers.get(methodName);
         if (event == null && isCorrectModuleForCustomHandlers(module))
         {

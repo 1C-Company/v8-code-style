@@ -88,7 +88,7 @@ public class ExtensionMethodPrefixCheck
         {
             String prefix = getNamePrefix((IExtensionProject)extension);
             String methodName = method.getName();
-            if (!StringUtils.isEmpty(prefix) && !methodName.startsWith(prefix))
+            if (methodName != null && !StringUtils.isEmpty(prefix) && !methodName.startsWith(prefix))
             {
                 resultAceptor.addIssue(
                     MessageFormat.format(Messages.ExtensionMethodPrefixCheck_Ext_method__0__should_have__1__prefix,
