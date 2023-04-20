@@ -102,7 +102,8 @@ public final class ModuleUnusedMethodCheck
         IModuleExtensionService service = IModuleExtensionServiceProvider.INSTANCE.getModuleExtensionService();
         String excludeNamePattern = parameters.getString(EXCLUDE_METHOD_NAME_PATTERN_PARAMETER_NAME);
 
-        Predicate<? super Method> predicate = method -> !method.isUsed() && !method.isExport() && !method.isEvent()
+        Predicate<? super Method> predicate = method -> method.getName() != null && !method.isUsed()
+            && !method.isExport() && !method.isEvent()
             && service.getSourceMethodNames(method).isEmpty() && !isExcludeName(method.getName(), excludeNamePattern);
 
         // TODO - only full validation first, optimization later
