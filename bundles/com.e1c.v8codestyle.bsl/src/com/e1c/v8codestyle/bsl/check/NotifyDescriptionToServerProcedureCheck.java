@@ -76,7 +76,8 @@ public class NotifyDescriptionToServerProcedureCheck
 
     private static final String THIS_OBJECT_RU = "ЭтотОбъект"; //$NON-NLS-1$
 
-    private static final String NOTIFICATION = "NotifyDescription"; //$NON-NLS-1$
+    private static final String NOTIFICATION_OLD = "NotifyDescription"; //$NON-NLS-1$
+    private static final String NOTIFICATION = "CallbackDescription"; //$NON-NLS-1$
 
     private final DynamicFeatureAccessComputer dynamicFeatureAccessComputer;
 
@@ -134,7 +135,7 @@ public class NotifyDescriptionToServerProcedureCheck
         OperatorStyleCreator osc = (OperatorStyleCreator)object;
         String operatorName = McoreUtil.getTypeName(osc.getType());
 
-        if (!NOTIFICATION.equals(operatorName) || osc.getParams().isEmpty()
+        if ((!NOTIFICATION_OLD.equals(operatorName) && !NOTIFICATION.equals(operatorName)) || osc.getParams().isEmpty()
             || !(osc.getParams().get(0) instanceof StringLiteral))
         {
             return;
