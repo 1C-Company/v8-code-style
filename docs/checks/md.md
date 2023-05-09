@@ -1,7 +1,7 @@
 # Проверки метаданных 1С
 
 
-Общее количество проверок: 26
+Общее количество проверок: 27
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -20,6 +20,7 @@
 | [db-object-ref-non-ref-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/db-object-ref-non-ref-type.md) | Реквизиты составного типа |
 | [document-post-in-privileged-mode](../../bundles/com.e1c.v8codestyle.md/markdown/ru/document-post-in-privileged-mode.md) | В документе, предполагающем проведение, не установлен флаг "Привилегированный режим при проведении / отмене проведения" |
 | [extension-md-object-prefix](../../bundles/com.e1c.v8codestyle.md/markdown/ru/extension-md-object-prefix.md) | У имени объекта отсутствует префикс расширения |
+| [functional-option-privileged-get-mode](../../bundles/com.e1c.v8codestyle.md/markdown/ru/functional-option-privileged-get-mode.md) | В функциональной опции не установлен флаг "Привилегированный режим при получении" |
 | [md-list-object-presentation](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-list-object-presentation.md) | Не заполнено ни представление объекта, ни представление списка |
 | [md-object-attribute-comment-incorrect-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-object-attribute-comment-incorrect-type.md) | Реквизит «Комментарий» у документов |
 | [md-object-attribute-comment-not-exist](../../bundles/com.e1c.v8codestyle.md/markdown/ru/md-object-attribute-comment-not-exist.md) | Документ не имеет реквизита "Комментарий" |
