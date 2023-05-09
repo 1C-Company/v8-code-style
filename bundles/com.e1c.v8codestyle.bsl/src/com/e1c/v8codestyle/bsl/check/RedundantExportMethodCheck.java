@@ -146,6 +146,10 @@ public final class RedundantExportMethodCheck
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
 
         String name = method.getName();
+        if (name == null)
+        {
+            return;
+        }
         if (isNotExclusion(parameters, method, monitor) && !isScheduledJobOrEventSubscription(module, name, monitor)
             && !existLocalNotifyDescription(module, name, monitor) && !haveCallerInOtherModule(method, monitor))
         {

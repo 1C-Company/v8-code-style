@@ -1,7 +1,9 @@
 begin-transaction
 bsl-canonical-pragma
 bsl-nstr-string-literal-format
+bsl-variable-name-invalid
 change-and-validate-instead-of-around
+code-after-async-call
 commit-transaction
 common-module-missing-api
 common-module-name-cached
@@ -17,6 +19,7 @@ common-module-named-self-reference
 common-module-type
 configuration-data-lock-mode
 constructor-function-return-section
+data-composition-conditional-appearance-use
 data-exchange-load
 db-object-anyref-type
 db-object-ref-non-ref-type
@@ -49,6 +52,7 @@ extension-method-prefix
 extension-variable-prefix
 form-commands-single-action-handler
 form-dynamic-list-item-title
+form-item-visible-settings-by-roles
 form-items-single-event-handler
 form-list-field-ref-not-added
 form-list-ref-use-always-flag-disabled
@@ -57,6 +61,7 @@ form-module-missing-pragma
 form-module-pragma
 form-self-reference
 function-return-value-type
+functional-option-privileged-get-mode
 input-field-list-choice-mode
 invocation-form-event-handler
 invocation-parameter-type-intersect
@@ -69,6 +74,8 @@ md-standard-attribute-synonym-empty
 mdo-name-length
 mdo-ru-name-unallowed-letter
 mdo-scheduled-job-description
+method-isinrole-role-exist
+method-optional-parameter-before-required
 method-param-value-type
 method-too-many-params
 missing-temporary-file-deletion
@@ -93,6 +100,7 @@ new-color
 new-font
 notify-description-to-server-procedure
 object-module-export-variable
+optional-form-parameter-access
 property-return-type
 public-method-caching
 ql-camel-case-string-literal
@@ -139,6 +147,7 @@ structure-consructor-too-many-keys
 structure-consructor-value-type
 subsystem-synonym-too-long
 typed-value-adding-to-untyped-collection
+unknown-form-parameter-access
 unsafe-password-ib-storage
 use-non-recommended-method
 using-form-data-to-value

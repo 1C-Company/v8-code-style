@@ -116,6 +116,11 @@ public class AttachableEventHandlerNameCheck
         Invocation inv = (Invocation)object;
         FeatureAccess method = inv.getMethodAccess();
         String methodName = method.getName();
+        if (methodName == null)
+        {
+            return;
+        }
+
         String actionPattern = parameters.getString(PARAM_ACTION_PATTERN);
         if (!(method instanceof DynamicFeatureAccess) || StringUtils.isEmpty(actionPattern)
             || inv.getParams().size() != 2 || !(inv.getParams().get(1) instanceof StringLiteral)
