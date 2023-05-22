@@ -78,6 +78,10 @@ public final class ModuleEmptyMethodCheck
     {
         Method method = (Method)object;
         String methodName = method.getName();
+        if (methodName == null)
+        {
+            return;
+        }
 
         String excludeNamePattern = parameters.getString(EXCLUDE_METHOD_NAME_PATTERN_PARAMETER_NAME);
         boolean allowMethodComments = parameters.getBoolean(ALLOW_METHOD_COMMENTS_PARAMETER_NAME);

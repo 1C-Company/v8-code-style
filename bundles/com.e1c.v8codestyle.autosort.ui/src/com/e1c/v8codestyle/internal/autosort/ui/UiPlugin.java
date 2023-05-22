@@ -18,6 +18,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import com._1c.g5.wiring.InjectorAwareServiceRegistrator;
+import com._1c.g5.wiring.ServiceInitialization;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -35,6 +37,8 @@ public class UiPlugin
     private static UiPlugin plugin;
 
     private volatile Injector injector;
+
+    private InjectorAwareServiceRegistrator registrator;
 
     /**
      * Writes a status to the plugin log.
@@ -100,6 +104,12 @@ public class UiPlugin
     {
         super.start(context);
         plugin = this;
+
+        registrator = new InjectorAwareServiceRegistrator(context, this::getInjector);
+
+        ServiceInitialization.schedule(() -> {
+            registrator.service(MdSortPreferenceChangeNotifier.class).registerInjected();
+        });
     }
 
     /*
@@ -109,6 +119,7 @@ public class UiPlugin
     @Override
     public void stop(BundleContext context) throws Exception
     {
+        registrator.unregisterServices();
         plugin = null;
         super.stop(context);
     }

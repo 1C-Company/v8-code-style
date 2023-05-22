@@ -24,6 +24,10 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -31,6 +35,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Check that comment for the export procedure (function) contains Description section
@@ -41,6 +46,13 @@ public class ExportProcedureCommentDescriptionCheck
     extends AbstractDocCommentTypeCheck
 {
     private static final String CHECK_ID = "doc-comment-export-procedure-description-section"; //$NON-NLS-1$
+
+    @Inject
+    public ExportProcedureCommentDescriptionCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager)
+    {
+        super(resourceLookup, namingService, bmModelManager);
+    }
 
     @Override
     public String getCheckId()
@@ -62,7 +74,8 @@ public class ExportProcedureCommentDescriptionCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         if (!root.getMethod().isExport())
         {

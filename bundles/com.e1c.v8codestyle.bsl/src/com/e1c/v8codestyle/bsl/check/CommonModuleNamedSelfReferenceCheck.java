@@ -90,6 +90,11 @@ public class CommonModuleNamedSelfReferenceCheck
             return false;
         }
         CommonModule commonModule = (CommonModule)module.getOwner();
+        if (commonModule == null)
+        {
+            // To support partially-inconsistent models
+            return false;
+        }
         return (commonModule.getReturnValuesReuse() == ReturnValuesReuse.DONT_USE)
             && StringUtils.equals(commonModule.getName(), source.getName());
     }

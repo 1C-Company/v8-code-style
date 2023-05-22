@@ -1,14 +1,16 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 81
+Общее количество проверок: 87
 
 | Код проверки | Наименование |
 |--------------|--------------|
 | [begin-transaction](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/begin-transaction.md) | После начала транзакции отсуствует блок Попытка-Исключение |
 | [bsl-canonical-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/bsl-canonical-pragma.md) | Аннотация написана канонически |
 | [bsl-nstr-string-literal-format](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/bsl-nstr-string-literal-format.md) | НСтр формат строкового литерала |
+| [bsl-variable-name-invalid](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/bsl-variable-name-invalid.md) | Правила образования имен переменных |
 | [change-and-validate-instead-of-around](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/change-and-validate-instead-of-around.md) | Используется аннотация &ИзменениеИКонтроль вместо &Вместо |
+| [code-after-async-call](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/code-after-async-call.md) | Код расположен после асинхронного вызова |
 | [commit-transaction](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/commit-transaction.md) | Проверка нарушения схемы работы с транзакциями |
 | [common-module-missing-api](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/common-module-missing-api.md) | Общий модуль должен иметь хотя бы один экспортный метод |
 | [common-module-named-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/common-module-named-self-reference.md) | Избыточное обращение по собственному имени внутри общего модуля |
@@ -47,6 +49,8 @@
 | [invocation-parameter-type-intersect](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-parameter-type-intersect.md) | Вызываемый тип пересекается с типом параметра |
 | [lock-out-of-try](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/lock-out-of-try.md) | Вызов "Заблокировать()" находится вне попытки |
 | [manager-module-named-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/manager-module-named-self-reference.md) | Избыточное обращение по собственному имени внутри модуля менеджера |
+| [method-isinrole-role-exist](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-isinrole-role-exist.md) | Обращение к несуществующей роли |
+| [method-optional-parameter-before-required](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-optional-parameter-before-required.md) | Необязательные параметры процедуры/функции расположены перед обязательными |
 | [method-param-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-param-value-type.md) | Параметр метода имеет тип |
 | [method-too-many-params](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-too-many-params.md) | Метод содержит слишком много параметров |
 | [missing-temporary-file-deletion](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/missing-temporary-file-deletion.md) | Отсутствует удаление временного файла после использования. |
@@ -71,6 +75,7 @@
 | [new-font](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/new-font.md) | Использование конструкции "Новый Шрифт" |
 | [notify-description-to-server-procedure](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/notify-description-to-server-procedure.md) | Описание оповещения на серверную процедуру |
 | [object-module-export-variable](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/object-module-export-variable.md) | Использование переменных в программных модулях |
+| [optional-form-parameter-access](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/optional-form-parameter-access.md) | Обращение к опциональному параметру формы |
 | [property-return-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/property-return-type.md) | Свойство объекта имеет тип возвращаемого значения |
 | [public-method-caching](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/public-method-caching.md) | Проверка кэширования программного интерфейса |
 | [query-in-loop](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/query-in-loop.md) | Запрос в цикле |
@@ -82,6 +87,7 @@
 | [structure-consructor-too-many-keys](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-too-many-keys.md) | Конструктор структуры содержит слишком много ключей |
 | [structure-consructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-value-type.md) | Типизация значений в конструкторе структуры |
 | [typed-value-adding-to-untyped-collection](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/typed-value-adding-to-untyped-collection.md) | Добавление типизированного значения в не типизированную коллекцию |
+| [unknown-form-parameter-access](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/unknown-form-parameter-access.md) | Обращение к несуществующему параметру формы |
 | [use-non-recommended-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-non-recommended-method.md) | Использование не рекомендуемых методов |
 | [using-form-data-to-value](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-form-data-to-value.md) | Использование РеквизитФормыВЗначение и ДанныеФормыВЗначение |
 | [using-isinrole](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-isinrole.md) | Использован метод "РольДоступна" |

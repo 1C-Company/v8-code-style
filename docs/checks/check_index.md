@@ -1,11 +1,11 @@
 # Индекс проверок
 
 
-Общее количество проверок 1С:Стандарты разработки V8: 146
+Общее количество проверок 1С:Стандарты разработки V8: 155
 
-- form: 7
-- md: 26
-- bsl: 81
+- form: 9
+- md: 27
+- bsl: 87
 - ql: 8
 - right: 24
 
@@ -16,7 +16,9 @@
 | [begin-transaction](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/begin-transaction.md) | После начала транзакции отсуствует блок Попытка-Исключение |
 | [bsl-canonical-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/bsl-canonical-pragma.md) | Аннотация написана канонически |
 | [bsl-nstr-string-literal-format](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/bsl-nstr-string-literal-format.md) | НСтр формат строкового литерала |
+| [bsl-variable-name-invalid](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/bsl-variable-name-invalid.md) | Правила образования имен переменных |
 | [change-and-validate-instead-of-around](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/change-and-validate-instead-of-around.md) | Используется аннотация &ИзменениеИКонтроль вместо &Вместо |
+| [code-after-async-call](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/code-after-async-call.md) | Код расположен после асинхронного вызова |
 | [commit-transaction](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/commit-transaction.md) | Проверка нарушения схемы работы с транзакциями |
 | [common-module-missing-api](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/common-module-missing-api.md) | Общий модуль должен иметь хотя бы один экспортный метод |
 | [common-module-name-cached](../../bundles/com.e1c.v8codestyle.md/markdown/ru/common-module-name-cached.md) | Общий модуль с повторно используемыми значениями |
@@ -32,6 +34,7 @@
 | [common-module-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/common-module-type.md) | Общий модуль имеет некорректный тип |
 | [configuration-data-lock-mode](../../bundles/com.e1c.v8codestyle.md/markdown/ru/configuration-data-lock-mode.md) | Режим блокировки данных конфигурации |
 | [constructor-function-return-section](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/constructor-function-return-section.md) | Секция возвращаемого значения функции-конструктора данных |
+| [data-composition-conditional-appearance-use](../../bundles/com.e1c.v8codestyle.form/markdown/ru/data-composition-conditional-appearance-use.md) | Условное оформление в формах |
 | [data-exchange-load](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/data-exchange-load.md) | Проверка ОбменДанными.Загрузка в обработчике события |
 | [db-object-anyref-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/db-object-anyref-type.md) | Реквизиты составного типа, такие как ЛюбаяСсылка и аналогичные |
 | [db-object-ref-non-ref-type](../../bundles/com.e1c.v8codestyle.md/markdown/ru/db-object-ref-non-ref-type.md) | Реквизиты составного типа |
@@ -64,6 +67,7 @@
 | [extension-variable-prefix](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/extension-variable-prefix.md) | У имени переменной отсутствует префикс расширения |
 | [form-commands-single-action-handler](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-commands-single-action-handler.md) | У каждого действия команды должна быть назначена своя процедура-обработчик |
 | [form-dynamic-list-item-title](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-dynamic-list-item-title.md) | Пустой заголовок для колонок динамического списка |
+| [form-item-visible-settings-by-roles](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-item-visible-settings-by-roles.md) | Использована ролевая настройка видимости (редактирования, использования) для элемента формы |
 | [form-items-single-event-handler](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-items-single-event-handler.md) | У каждого события должна быть назначена своя процедура-обработчик |
 | [form-list-field-ref-not-added](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-list-field-ref-not-added.md) | Реквизит "Ссылка" динамического списка не выведен в таблицу на форме |
 | [form-list-ref-use-always-flag-disabled](../../bundles/com.e1c.v8codestyle.form/markdown/ru/form-list-ref-use-always-flag-disabled.md) | У реквизита "Ссылка" динамического списка выключен признак "Использовать всегда" |
@@ -72,6 +76,7 @@
 | [form-module-pragma](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-module-pragma.md) | Использование директив компиляции модуля формы |
 | [form-self-reference](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/form-self-reference.md) | Использование устаревшего псевдонима |
 | [function-return-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/function-return-value-type.md) | Функция возвращает типизированное значение |
+| [functional-option-privileged-get-mode](../../bundles/com.e1c.v8codestyle.md/markdown/ru/functional-option-privileged-get-mode.md) | В функциональной опции не установлен флаг "Привилегированный режим при получении" |
 | [input-field-list-choice-mode](../../bundles/com.e1c.v8codestyle.form/markdown/ru/input-field-list-choice-mode.md) | В полях форм со списками выбора следует всегда устанавливать свойство **РежимВыбораИзСписка** в значение Истина |
 | [invocation-form-event-handler](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-form-event-handler.md) | Программный вызов обработчика события формы |
 | [invocation-parameter-type-intersect](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/invocation-parameter-type-intersect.md) | Вызываемый тип пересекается с типом параметра |
@@ -84,6 +89,8 @@
 | [mdo-name-length](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-name-length.md) | Длина имени объекта метаданных |
 | [mdo-ru-name-unallowed-letter](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-ru-name-unallowed-letter.md) | Проверка наличия буквы "ё" в имени, синониме или комментарии объекта метаданных |
 | [mdo-scheduled-job-description](../../bundles/com.e1c.v8codestyle.md/markdown/ru/mdo-scheduled-job-description.md) | Задано наименование предопределенного регламентного задания |
+| [method-isinrole-role-exist](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-isinrole-role-exist.md) | Обращение к несуществующей роли |
+| [method-optional-parameter-before-required](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-optional-parameter-before-required.md) | Необязательные параметры процедуры/функции расположены перед обязательными |
 | [method-param-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-param-value-type.md) | Параметр метода имеет тип |
 | [method-too-many-params](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/method-too-many-params.md) | Метод содержит слишком много параметров |
 | [missing-temporary-file-deletion](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/missing-temporary-file-deletion.md) | Отсутствует удаление временного файла после использования. |
@@ -108,6 +115,7 @@
 | [new-font](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/new-font.md) | Использование конструкции "Новый Шрифт" |
 | [notify-description-to-server-procedure](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/notify-description-to-server-procedure.md) | Описание оповещения на серверную процедуру |
 | [object-module-export-variable](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/object-module-export-variable.md) | Использование переменных в программных модулях |
+| [optional-form-parameter-access](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/optional-form-parameter-access.md) | Обращение к опциональному параметру формы |
 | [property-return-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/property-return-type.md) | Свойство объекта имеет тип возвращаемого значения |
 | [public-method-caching](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/public-method-caching.md) | Проверка кэширования программного интерфейса |
 | [ql-camel-case-string-literal](../../bundles/com.e1c.v8codestyle.ql/markdown/ru/ql-camel-case-string-literal.md) | Строковый литерал в запросе содержит не КемелКейс контент |
@@ -154,6 +162,7 @@
 | [structure-consructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-value-type.md) | Типизация значений в конструкторе структуры |
 | [subsystem-synonym-too-long](../../bundles/com.e1c.v8codestyle.md/markdown/ru/subsystem-synonym-too-long.md) | Длина названия раздела превышает 35 символов |
 | [typed-value-adding-to-untyped-collection](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/typed-value-adding-to-untyped-collection.md) | Добавление типизированного значения в не типизированную коллекцию |
+| [unknown-form-parameter-access](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/unknown-form-parameter-access.md) | Обращение к несуществующему параметру формы |
 | [unsafe-password-ib-storage](../../bundles/com.e1c.v8codestyle.md/markdown/ru/unsafe-password-ib-storage.md) | Небезопасное хранение паролей в информационной базе |
 | [use-non-recommended-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-non-recommended-method.md) | Использование не рекомендуемых методов |
 | [using-form-data-to-value](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-form-data-to-value.md) | Использование РеквизитФормыВЗначение и ДанныеФормыВЗначение |

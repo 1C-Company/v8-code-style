@@ -20,14 +20,17 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.EmptyExpression;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -55,9 +58,9 @@ public class StructureCtorValueTypeCheck
      */
     @Inject
     public StructureCtorValueTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
     }
 
     @Override
@@ -82,7 +85,7 @@ public class StructureCtorValueTypeCheck
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
         OperatorStyleCreator osc = (OperatorStyleCreator)object;
         if (monitor.isCanceled() || osc.getParams().isEmpty()
@@ -109,7 +112,7 @@ public class StructureCtorValueTypeCheck
             if (totalParams > i && osc.getParams().get(i + 1) != null)
             {
                 Expression param = osc.getParams().get(i + 1);
-                if (isEmptyTypes(param))
+                if (isEmptyTypes(param, bmTransaction))
                 {
                     param = param instanceof EmptyExpression ? literal : param;
                     String message = MessageFormat.format(

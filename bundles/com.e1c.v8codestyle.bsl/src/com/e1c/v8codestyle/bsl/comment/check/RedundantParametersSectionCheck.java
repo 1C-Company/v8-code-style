@@ -17,6 +17,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -24,6 +28,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  *  Validates that method without parameters should not have parameter section.
@@ -35,6 +40,13 @@ public class RedundantParametersSectionCheck
     extends DocumentationCommentBasicDelegateCheck
 {
     private static final String CHECK_ID = "doc-comment-redundant-parameter-section"; //$NON-NLS-1$
+
+    @Inject
+    public RedundantParametersSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager)
+    {
+        super(resourceLookup, namingService, bmModelManager);
+    }
 
     @Override
     public String getCheckId()
@@ -56,7 +68,8 @@ public class RedundantParametersSectionCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         ParametersSection parameterSection = (ParametersSection)object;
 

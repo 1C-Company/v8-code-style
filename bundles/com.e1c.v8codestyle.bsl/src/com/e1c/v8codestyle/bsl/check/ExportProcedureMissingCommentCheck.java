@@ -43,7 +43,7 @@ public class ExportProcedureMissingCommentCheck
     extends AbstractModuleStructureCheck
 {
     private static final String CHECK_ID = "export-procedure-missing-comment"; //$NON-NLS-1$
-    
+
     @Override
     public String getCheckId()
     {
@@ -72,9 +72,14 @@ public class ExportProcedureMissingCommentCheck
         if (method.isExport() && verifyTopRegion(getTopParentRegion(method))
             && isMethodHasNoComment(NodeModelUtils.findActualNodeFor(method)))
         {
-            resultAceptor.addIssue(
-                MessageFormat.format(Messages.ExportProcedureMissingCommentCheck_Export_procedure_missing_comment,
-                    method.getName()),
+            String name = method.getName();
+            if (name == null)
+            {
+                return;
+            }
+
+            resultAceptor.addIssue(MessageFormat
+                .format(Messages.ExportProcedureMissingCommentCheck_Export_procedure_missing_comment, name),
                 McorePackage.Literals.NAMED_ELEMENT__NAME);
         }
     }
