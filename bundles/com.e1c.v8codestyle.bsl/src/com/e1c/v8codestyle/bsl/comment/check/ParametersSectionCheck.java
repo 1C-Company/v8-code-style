@@ -34,7 +34,10 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -69,10 +72,11 @@ public class ParametersSectionCheck
     private final BslMultiLineCommentDocumentationProvider commentProvider;
 
     @Inject
-    public ParametersSectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IScopeProvider scopeProvider, BslMultiLineCommentDocumentationProvider commentProvider)
+    public ParametersSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager, IBslPreferences bslPreferences, IScopeProvider scopeProvider,
+        BslMultiLineCommentDocumentationProvider commentProvider)
     {
-        super();
+        super(resourceLookup, namingService, bmModelManager);
         this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
         this.scopeProvider = scopeProvider;
@@ -104,7 +108,8 @@ public class ParametersSectionCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         if (root.getMethod().getFormalParams().isEmpty())
         {
@@ -113,7 +118,7 @@ public class ParametersSectionCheck
 
         if (object instanceof BslDocumentationComment)
         {
-            check((BslDocumentationComment)object, resultAceptor, parameters, monitor);
+            check((BslDocumentationComment)object, resultAceptor, parameters, typeComputationContext, monitor);
         }
         else if (object instanceof ParametersSection)
         {
@@ -136,7 +141,7 @@ public class ParametersSectionCheck
     }
 
     private void check(BslDocumentationComment object, DocumentationCommentResultAcceptor resultAceptor,
-        ICheckParameters parameters, IProgressMonitor monitor)
+        ICheckParameters parameters, BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         if (object.getParametersSection() != null
             || (!object.getMethod().isExport() && parameters.getBoolean(PARAMETER_PARMA_SECT_FOR_EXPORT)))
@@ -154,7 +159,7 @@ public class ParametersSectionCheck
             DocumentationCommentProperties props = bslPreferences.getDocumentCommentProperties(project);
 
             docComment = BslCommentUtils.getLinkPartCommentContent(linkPart, scopeProvider, commentProvider,
-                props.oldCommentFormat(), object.getMethod());
+                props.oldCommentFormat(), object.getMethod(), typeComputationContext);
         }
         if (docComment == null)
         {

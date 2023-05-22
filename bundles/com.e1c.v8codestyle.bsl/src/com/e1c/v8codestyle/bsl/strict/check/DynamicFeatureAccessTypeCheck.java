@@ -18,7 +18,9 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.google.inject.Inject;
 
 /**
@@ -40,9 +42,9 @@ public class DynamicFeatureAccessTypeCheck
      */
     @Inject
     public DynamicFeatureAccessTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
     }
 
     @Override

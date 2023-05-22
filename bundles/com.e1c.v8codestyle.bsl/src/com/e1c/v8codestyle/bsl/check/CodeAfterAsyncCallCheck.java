@@ -71,7 +71,8 @@ public final class CodeAfterAsyncCallCheck
     private static final String CHECK_ID = "code-after-async-call"; //$NON-NLS-1$
     private static final String DEFAULT_CHECK = Boolean.toString(Boolean.TRUE);
     private static final String PARAMETER_NAME = "notifyDescriptionIsDefined"; //$NON-NLS-1$
-    private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME_OLD = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME = "CallbackDescription"; //$NON-NLS-1$
     private final IAsyncInvocationProvider asyncInvocationProvider;
     private final IRuntimeVersionSupport runtimeVersionSupport;
     private final TypesComputer typesComputer;
@@ -103,8 +104,7 @@ public final class CodeAfterAsyncCallCheck
             .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(INVOCATION)
-            .parameter(PARAMETER_NAME, Boolean.class, DEFAULT_CHECK,
-                Messages.CodeAfterAsyncCallCheck_Parameter);
+            .parameter(PARAMETER_NAME, Boolean.class, DEFAULT_CHECK, Messages.CodeAfterAsyncCallCheck_Parameter);
     }
 
     @Override
@@ -148,7 +148,8 @@ public final class CodeAfterAsyncCallCheck
             List<TypeItem> sourceTypes = computeTypes(param);
             for (TypeItem typeItem : sourceTypes)
             {
-                if (TYPE_NAME.equals(McoreUtil.getTypeName(typeItem)))
+                if (TYPE_NAME_OLD.equals(McoreUtil.getTypeName(typeItem))
+                    || TYPE_NAME.equals(McoreUtil.getTypeName(typeItem)))
                 {
                     return true;
                 }
@@ -173,8 +174,8 @@ public final class CodeAfterAsyncCallCheck
         if (statement != null && !(statement instanceof AwaitStatement))
         {
             statement = getNextStatement(statement);
-            if (statement != null && !(statement instanceof ReturnStatement)
-                && !(statement instanceof EmptyStatement) && !(statement instanceof AwaitStatement))
+            if (statement != null && !(statement instanceof ReturnStatement) && !(statement instanceof EmptyStatement)
+                && !(statement instanceof AwaitStatement))
             {
                 resultAceptor.addIssue(Messages.CodeAfterAsyncCallCheck_Issue, statement);
             }

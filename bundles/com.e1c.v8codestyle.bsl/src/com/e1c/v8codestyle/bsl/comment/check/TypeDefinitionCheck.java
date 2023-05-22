@@ -25,7 +25,11 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.LinkContainsTypeDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.McorePackage;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -50,8 +54,10 @@ public class TypeDefinitionCheck
     private final IQualifiedNameConverter qualifiedNameConverter;
 
     @Inject
-    public TypeDefinitionCheck(IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider)
+    public TypeDefinitionCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager, IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider)
     {
+        super(resourceLookup, namingService, bmModelManager);
         this.qualifiedNameConverter = qualifiedNameConverter;
         this.scopeProvider = scopeProvider;
     }
@@ -76,7 +82,8 @@ public class TypeDefinitionCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         if (object instanceof LinkContainsTypeDefinition)
         {

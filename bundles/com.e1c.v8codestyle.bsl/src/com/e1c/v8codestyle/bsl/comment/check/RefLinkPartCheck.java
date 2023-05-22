@@ -20,6 +20,10 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Descri
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -60,8 +64,10 @@ public class RefLinkPartCheck
      * @param scopeProvider the scope provider service, cannot be {@code null}.
      */
     @Inject
-    public RefLinkPartCheck(IScopeProvider scopeProvider)
+    public RefLinkPartCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager, IScopeProvider scopeProvider)
     {
+        super(resourceLookup, namingService, bmModelManager);
         this.scopeProvider = scopeProvider;
     }
 
@@ -87,7 +93,8 @@ public class RefLinkPartCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         LinkPart linkPart = (LinkPart)object;
 
@@ -95,7 +102,7 @@ public class RefLinkPartCheck
             && object.getParent() instanceof Description && linkPart.getPartsWithOffset().size() == 1;
 
         if (!isWebLink(linkPart) && !isSingleWordInDescription
-            && getLinkPartLastObject(linkPart, scopeProvider, root.getMethod()).isEmpty())
+            && getLinkPartLastObject(linkPart, scopeProvider, root.getMethod(), typeComputationContext).isEmpty())
         {
             resultAceptor.addIssue(Messages.RefLinkPartCheck_Link_referenced_to_unexisting_object,
                 linkPart.getLineNumber(), linkPart.getLinkTextOffset(), linkPart.getLinkText().length());

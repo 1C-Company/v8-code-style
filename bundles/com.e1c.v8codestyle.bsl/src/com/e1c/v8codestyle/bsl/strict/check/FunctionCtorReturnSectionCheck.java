@@ -43,6 +43,7 @@ import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -52,6 +53,8 @@ import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -111,9 +114,10 @@ public class FunctionCtorReturnSectionCheck
     public FunctionCtorReturnSectionCheck(IResourceLookup resourceLookup, IV8ProjectManager v8ProjectManager,
         IQualifiedNameConverter qualifiedNameConverter, IBslPreferences bslPreferences, TypesComputer typesComputer,
         DynamicFeatureAccessComputer dynamicComputer, IScopeProvider scopeProvider,
-        BslMultiLineCommentDocumentationProvider commentProvider)
+        BslMultiLineCommentDocumentationProvider commentProvider, INamingService namingService,
+        IBmModelManager bmModelManager)
     {
-        super();
+        super(resourceLookup, namingService, bmModelManager);
         this.typesComputer = typesComputer;
         this.dynamicComputer = dynamicComputer;
         this.scopeProvider = scopeProvider;
@@ -148,7 +152,8 @@ public class FunctionCtorReturnSectionCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext context, IProgressMonitor monitor)
     {
         if (monitor.isCanceled()
             || !(root.getMethod() instanceof Function)
@@ -173,7 +178,7 @@ public class FunctionCtorReturnSectionCheck
         boolean oldFormat = props.oldCommentFormat();
 
         Collection<TypeItem> computedReturnTypes = root.computeReturnTypes(typeScope, scopeProvider,
-            qualifiedNameConverter, commentProvider, oldFormat, method);
+            qualifiedNameConverter, commentProvider, oldFormat, method, context);
 
         Set<String> checkTypes = getCheckTypes(parameters);
 
@@ -278,7 +283,10 @@ public class FunctionCtorReturnSectionCheck
                 .collect(Collectors.toList());
 
             List<TypeItem> types2 = types.stream()
-                .filter(t -> McoreUtil.getTypeName(t) != null && !declaredType.contains(McoreUtil.getTypeName(t)))
+                .filter(t -> {
+                    String typeName = McoreUtil.getTypeName(t);
+                    return typeName != null && !declaredType.contains(typeName);
+                })
                 .collect(Collectors.toList());
             if (types.isEmpty())
             {
@@ -348,6 +356,7 @@ public class FunctionCtorReturnSectionCheck
                 property.getTypes()
                     .stream()
                     .map(useRussianScript ? McoreUtil::getTypeNameRu : McoreUtil::getTypeName)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList())));
 
         resultAceptor.addIssue(message, statment, Literals.RETURN_STATEMENT__EXPRESSION);
@@ -362,10 +371,12 @@ public class FunctionCtorReturnSectionCheck
                 property.getTypes()
                     .stream()
                     .map(useRussianScript ? McoreUtil::getTypeNameRu : McoreUtil::getTypeName)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList())),
             String.join(", ", //$NON-NLS-1$
                 missingTypes.stream()
                     .map(useRussianScript ? McoreUtil::getTypeNameRu : McoreUtil::getTypeName)
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList())));
 
         resultAceptor.addIssue(message, statment, Literals.RETURN_STATEMENT__EXPRESSION);

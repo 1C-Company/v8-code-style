@@ -64,6 +64,7 @@ import com.google.inject.Inject;
  *
  * @author Artem Iliukhin
  */
+@SuppressWarnings("restriction")
 public final class RedundantExportMethodCheck
     extends AbstractModuleStructureCheck
 {
@@ -77,7 +78,8 @@ public final class RedundantExportMethodCheck
 
     private static final String CHECK_ID = "redundant-export-method"; //$NON-NLS-1$
 
-    private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME_OLD = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME = "CallbackDescription"; //$NON-NLS-1$
 
     private final IReferenceFinder referenceFinder;
 
@@ -207,17 +209,20 @@ public final class RedundantExportMethodCheck
             }
 
             EObject containedObject = iterator.next();
-            if (containedObject instanceof OperatorStyleCreator
-                && TYPE_NAME.equals(McoreUtil.getTypeName(((OperatorStyleCreator)containedObject).getType())))
+            if (containedObject instanceof OperatorStyleCreator)
             {
-                List<Expression> params = ((OperatorStyleCreator)containedObject).getParams();
-                if (!params.isEmpty() && params.get(0) instanceof StringLiteral)
+                String typeName = McoreUtil.getTypeName(((OperatorStyleCreator)containedObject).getType());
+                if (TYPE_NAME_OLD.equals(typeName) || TYPE_NAME.equals(typeName))
                 {
-                    StringLiteral literal = (StringLiteral)params.get(0);
-                    List<String> lines = literal.lines(true);
-                    if (!lines.isEmpty() && lines.get(0).equals(name))
+                    List<Expression> params = ((OperatorStyleCreator)containedObject).getParams();
+                    if (!params.isEmpty() && params.get(0) instanceof StringLiteral)
                     {
-                        return true;
+                        StringLiteral literal = (StringLiteral)params.get(0);
+                        List<String> lines = literal.lines(true);
+                        if (!lines.isEmpty() && lines.get(0).equals(name))
+                        {
+                            return true;
+                        }
                     }
                 }
             }

@@ -60,12 +60,13 @@ import com._1c.g5.v8.dt.core.platform.IWorkspaceOrchestrator;
 import com._1c.g5.v8.dt.lifecycle.LifecycleParticipant;
 import com._1c.g5.v8.dt.lifecycle.LifecyclePhase;
 import com._1c.g5.v8.dt.lifecycle.LifecycleService;
+import com._1c.g5.v8.dt.md.sort.MdObjectByNameComparator;
+import com._1c.g5.v8.dt.md.sort.MdSortPreferences;
 import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com.e1c.v8codestyle.autosort.AutoSortPreferences;
 import com.e1c.v8codestyle.autosort.ISortService;
-import com.e1c.v8codestyle.autosort.MdObjectByNameComparator;
 import com.e1c.v8codestyle.autosort.SortItem;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -266,22 +267,6 @@ public class SortService
         return model.executeReadonlyTask(new ReadSortObjects(project, monitor), true);
     }
 
-    private Comparator<EObject> createProjectSorter(IProject project)
-    {
-        final Comparator<EObject> sorter;
-        if (project == null)
-        {
-            sorter = new MdObjectByNameComparator(AutoSortPreferences.DEFAULT_SORT_ASCENDING,
-                AutoSortPreferences.DEFAULT_SORT_ORDER);
-        }
-        else
-        {
-            sorter = new MdObjectByNameComparator(AutoSortPreferences.isSortAscending(project),
-                AutoSortPreferences.isNaturalSortOrder(project));
-        }
-        return sorter;
-    }
-
     private final class MdObjectChangeListener
         implements IBmAsyncEventListener
     {
@@ -385,8 +370,8 @@ public class SortService
             {
                 List<SortItem> items = new ArrayList<>();
 
-                Comparator<EObject> sorter = new MdObjectByNameComparator(AutoSortPreferences.isSortAscending(project),
-                    AutoSortPreferences.isNaturalSortOrder(project));
+                Comparator<EObject> sorter = new MdObjectByNameComparator(MdSortPreferences.isAscendingSort(project),
+                    MdSortPreferences.isNaturalSortOrder(project));
 
                 for (Entry<String, Set<EReference>> entry : changedItems.entrySet())
                 {
@@ -453,7 +438,7 @@ public class SortService
                     return result;
                 }
 
-                Iterable<EClass> eClassIterator = transaction.getTopObjectEClasses();
+                Iterator<EClass> eClassIterator = transaction.getTopObjectEClasses();
                 Map<EClass, List<EReference>> sortListRefs = getSubordinateListsToSort(eClassIterator, project);
 
                 appendSubordinateObjects(result, sortListRefs, transaction, m);
@@ -481,12 +466,13 @@ public class SortService
             }
         }
 
-        private Map<EClass, List<EReference>> getSubordinateListsToSort(Iterable<EClass> eClassIterator,
+        private Map<EClass, List<EReference>> getSubordinateListsToSort(Iterator<EClass> eClassIterator,
             IProject project)
         {
             Map<EClass, List<EReference>> sortListRefs = new HashMap<>();
-            for (EClass topObjectEClass : eClassIterator)
+            while (eClassIterator.hasNext())
             {
+                EClass topObjectEClass = eClassIterator.next();
                 if (topObjectEClass.equals(CONFIGURATION) || !MD_OBJECT.isSuperTypeOf(topObjectEClass))
                 {
                     continue;
@@ -531,6 +517,15 @@ public class SortService
                     }
                 }
             }
+        }
+
+        private Comparator<EObject> createProjectSorter(IProject project)
+        {
+            boolean ascendingSort =
+                project != null ? MdSortPreferences.isAscendingSort(project) : MdSortPreferences.DEFAULT_ASCENDING_SORT;
+            boolean naturalSortOrder = project != null ? MdSortPreferences.isNaturalSortOrder(project)
+                : MdSortPreferences.DEFAULT_NATURAL_SORT_ORDER;
+            return new MdObjectByNameComparator(ascendingSort, naturalSortOrder);
         }
     }
 

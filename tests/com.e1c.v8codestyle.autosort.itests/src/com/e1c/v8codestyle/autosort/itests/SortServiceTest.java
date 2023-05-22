@@ -34,6 +34,7 @@ import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
+import com._1c.g5.v8.dt.md.sort.MdSortPreferences;
 import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.testing.GuiceModules;
 import com._1c.g5.v8.dt.testing.JUnitGuiceRunner;
@@ -96,10 +97,13 @@ public class SortServiceTest
         IDtProject dtProject = dtProjectManager.getDtProject(project);
         assertNotNull(dtProject);
 
-        IEclipsePreferences prefs = AutoSortPreferences.getPreferences(project);
-        prefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
-        prefs.putBoolean(AutoSortPreferences.KEY_SORT_ORDER, true);
-        prefs.flush();
+        IEclipsePreferences autoSortPrefs = AutoSortPreferences.getPreferences(project);
+        autoSortPrefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
+        autoSortPrefs.flush();
+
+        IEclipsePreferences mdSortPrefs = MdSortPreferences.getPreferences(project);
+        mdSortPrefs.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, true);
+        mdSortPrefs.flush();
 
         IStatus status = sortService.sortAllMetadata(dtProject, new NullProgressMonitor());
         assertTrue(status.isOK());
@@ -125,10 +129,13 @@ public class SortServiceTest
         IDtProject dtProject = dtProjectManager.getDtProject(project);
         assertNotNull(dtProject);
 
-        IEclipsePreferences prefs = AutoSortPreferences.getPreferences(project);
-        prefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
-        prefs.putBoolean(AutoSortPreferences.KEY_SORT_ORDER, false);
-        prefs.flush();
+        IEclipsePreferences autoSortPrefs = AutoSortPreferences.getPreferences(project);
+        autoSortPrefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
+        autoSortPrefs.flush();
+
+        IEclipsePreferences mdSortPrefs = MdSortPreferences.getPreferences(project);
+        mdSortPrefs.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, false);
+        mdSortPrefs.flush();
 
         IStatus status = sortService.sortAllMetadata(dtProject, new NullProgressMonitor());
         assertTrue(status.isOK());

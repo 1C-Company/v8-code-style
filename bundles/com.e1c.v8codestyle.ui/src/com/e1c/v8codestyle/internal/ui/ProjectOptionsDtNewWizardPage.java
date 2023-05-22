@@ -15,7 +15,6 @@ package com.e1c.v8codestyle.internal.ui;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,6 +23,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
@@ -45,7 +45,7 @@ public class ProjectOptionsDtNewWizardPage
 
     private final IProjectOptionManager projectOptionManager;
 
-    private Map<ProjectOption, Button> options = new HashMap<>();
+    private Map<ProjectOption, Boolean> options = new HashMap<>();
 
     /**
      * Instantiates a new project options DT new wizard page.
@@ -65,7 +65,6 @@ public class ProjectOptionsDtNewWizardPage
     @Override
     public void createPageControls(Composite container)
     {
-
         Composite composite = new Composite(container, SWT.NONE);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(composite);
         GridLayoutFactory.swtDefaults().numColumns(1).applyTo(composite);
@@ -73,7 +72,12 @@ public class ProjectOptionsDtNewWizardPage
         for (ProjectOption option : projectOptionManager.getAvailableOptions())
         {
             Button button = new Button(composite, SWT.CHECK);
+            button.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+                options.put(option, button.getSelection());
+            }));
+
             button.setSelection(option.getDefaultValue());
+            options.put(option, option.getDefaultValue());
             button.setText(option.getPresentation());
 
             String description = option.getDescription();
@@ -84,10 +88,7 @@ public class ProjectOptionsDtNewWizardPage
                 label.setText(description);
                 label.setToolTipText(description);
             }
-
-            options.put(option, button);
         }
-
     }
 
     @Override
@@ -100,14 +101,13 @@ public class ProjectOptionsDtNewWizardPage
     @Override
     public void finish(IProgressMonitor monitor)
     {
-        final Map<ProjectOption, Boolean> values =
-            options.entrySet().stream().collect(Collectors.toMap(Entry::getKey, e -> e.getValue().getSelection()));
         final IProject project = getContext().getV8project().getProject();
+        // Copy options to transfer to another thread
+        Map<ProjectOption, Boolean> localOptions = new HashMap<>(options);
 
         // Run job to separate it from ws building lock
         Job job = Job.create(Messages.ProjectOptionsDtNewWizardPage_save_job_title, m -> {
-
-            for (Entry<ProjectOption, Boolean> entry : values.entrySet())
+            for (Entry<ProjectOption, Boolean> entry : localOptions.entrySet())
             {
                 if (m.isCanceled())
                 {
@@ -119,5 +119,4 @@ public class ProjectOptionsDtNewWizardPage
         job.setRule(project);
         job.schedule();
     }
-
 }

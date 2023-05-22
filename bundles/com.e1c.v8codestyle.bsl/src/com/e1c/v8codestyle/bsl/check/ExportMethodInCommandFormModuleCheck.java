@@ -56,7 +56,8 @@ public final class ExportMethodInCommandFormModuleCheck
 {
 
     private static final String PATTERN_EXCLUDE = "^(?U)(Подключаемый|Attachable)_.*$"; //$NON-NLS-1$
-    private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME_OLD = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME = "CallbackDescription"; //$NON-NLS-1$
     private static final String CHECK_ID = "export-method-in-command-form-module"; //$NON-NLS-1$
     private static final String PARAMETER_NOTIFY_METHODS_EXCLUSION = "notifyDescriptionMethods"; //$NON-NLS-1$
     private static final String PARAMETER_EXCLUDE_METHOD_NAME_PATTERN = "excludeModuleMethodNamePattern"; //$NON-NLS-1$
@@ -196,20 +197,23 @@ public final class ExportMethodInCommandFormModuleCheck
             }
 
             EObject containedObject = iterator.next();
-            if (containedObject instanceof OperatorStyleCreator
-                && TYPE_NAME.equals(McoreUtil.getTypeName(((OperatorStyleCreator)containedObject).getType())))
+            if (containedObject instanceof OperatorStyleCreator)
             {
-                List<Expression> params = ((OperatorStyleCreator)containedObject).getParams();
-                if (!params.isEmpty() && params.get(0) instanceof StringLiteral)
+                String typeName = McoreUtil.getTypeName(((OperatorStyleCreator)containedObject).getType());
+                if (TYPE_NAME_OLD.equals(typeName) || TYPE_NAME.equals(typeName))
                 {
-                    StringLiteral literal = (StringLiteral)params.get(0);
-                    List<String> lines = literal.lines(true);
-                    if (!lines.isEmpty())
+                    List<Expression> params = ((OperatorStyleCreator)containedObject).getParams();
+                    if (!params.isEmpty() && params.get(0) instanceof StringLiteral)
                     {
-                        exportMethods.remove(lines.get(0));
-                        if (exportMethods.isEmpty())
+                        StringLiteral literal = (StringLiteral)params.get(0);
+                        List<String> lines = literal.lines(true);
+                        if (!lines.isEmpty())
                         {
-                            return;
+                            exportMethods.remove(lines.get(0));
+                            if (exportMethods.isEmpty())
+                            {
+                                return;
+                            }
                         }
                     }
                 }
