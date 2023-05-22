@@ -52,7 +52,7 @@ public class PublicMethodCachingCheck
 
     /**
      * Creates new instance which helps to check cached public method
-     * 
+     *
      * @param v8ProjectManager
      */
     @Inject
@@ -107,7 +107,7 @@ public class PublicMethodCachingCheck
         }
 
         CommonModule commonModule = (CommonModule)module.getOwner();
-        if (commonModule.getReturnValuesReuse() == ReturnValuesReuse.DONT_USE)
+        if (commonModule == null || commonModule.getReturnValuesReuse() == ReturnValuesReuse.DONT_USE)
         {
             return;
         }
