@@ -354,6 +354,14 @@ final class Messages
 
     public static String RollbackTransactionCheck_Transactions_is_broken_des;
 
+    public static String UseGotoOperatorCheck_description;
+
+    public static String UseGotoOperatorCheck_title;
+
+    public static String UseGotoOperatorCheck_Use_Goto_operator;
+
+    public static String UseGotoOperatorCheck_Use_Label_with_Goto_operator;
+
     public static String UnknownFormParameterAccessCheck_description;
 
     public static String UnknownFormParameterAccessCheck_title;
