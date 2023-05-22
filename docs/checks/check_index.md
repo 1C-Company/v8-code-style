@@ -1,11 +1,11 @@
 # Индекс проверок
 
 
-Общее количество проверок 1С:Стандарты разработки V8: 155
+Общее количество проверок 1С:Стандарты разработки V8: 156
 
 - form: 9
 - md: 27
-- bsl: 87
+- bsl: 88
 - ql: 8
 - right: 24
 
@@ -164,6 +164,7 @@
 | [typed-value-adding-to-untyped-collection](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/typed-value-adding-to-untyped-collection.md) | Добавление типизированного значения в не типизированную коллекцию |
 | [unknown-form-parameter-access](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/unknown-form-parameter-access.md) | Обращение к несуществующему параметру формы |
 | [unsafe-password-ib-storage](../../bundles/com.e1c.v8codestyle.md/markdown/ru/unsafe-password-ib-storage.md) | Небезопасное хранение паролей в информационной базе |
+| [use-goto-operator](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-goto-operator.md) | Используется оператор Перейти |
 | [use-non-recommended-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-non-recommended-method.md) | Использование не рекомендуемых методов |
 | [using-form-data-to-value](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-form-data-to-value.md) | Использование РеквизитФормыВЗначение и ДанныеФормыВЗначение |
 | [using-isinrole](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-isinrole.md) | Использован метод "РольДоступна" |

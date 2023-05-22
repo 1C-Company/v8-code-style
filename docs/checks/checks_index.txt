@@ -149,6 +149,7 @@ subsystem-synonym-too-long
 typed-value-adding-to-untyped-collection
 unknown-form-parameter-access
 unsafe-password-ib-storage
+use-goto-operator
 use-non-recommended-method
 using-form-data-to-value
 using-isinrole

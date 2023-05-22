@@ -1,7 +1,7 @@
 # Проверки модулей 1С
 
 
-Общее количество проверок: 87
+Общее количество проверок: 88
 
 | Код проверки | Наименование |
 |--------------|--------------|
@@ -88,6 +88,7 @@
 | [structure-consructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-value-type.md) | Типизация значений в конструкторе структуры |
 | [typed-value-adding-to-untyped-collection](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/typed-value-adding-to-untyped-collection.md) | Добавление типизированного значения в не типизированную коллекцию |
 | [unknown-form-parameter-access](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/unknown-form-parameter-access.md) | Обращение к несуществующему параметру формы |
+| [use-goto-operator](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-goto-operator.md) | Используется оператор Перейти |
 | [use-non-recommended-method](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/use-non-recommended-method.md) | Использование не рекомендуемых методов |
 | [using-form-data-to-value](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-form-data-to-value.md) | Использование РеквизитФормыВЗначение и ДанныеФормыВЗначение |
 | [using-isinrole](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/using-isinrole.md) | Использован метод "РольДоступна" |
