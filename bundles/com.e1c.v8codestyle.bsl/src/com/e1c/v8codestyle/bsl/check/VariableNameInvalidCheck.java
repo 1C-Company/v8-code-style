@@ -14,8 +14,6 @@
 
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT;
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STATIC_FEATURE_ACCESS;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.VARIABLE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
@@ -24,8 +22,6 @@ import java.text.MessageFormat;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
-import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.ForStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
@@ -77,7 +73,7 @@ public class VariableNameInvalidCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(454, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(VARIABLE, STATIC_FEATURE_ACCESS, DECLARE_STATEMENT)
+            .checkedObjectType(VARIABLE)
             .parameter(MIN_NAME_LENGTH_PARAM_NAME, Integer.class, MIN_NAME_LENGTH_DEFAULT.toString(),
                 Messages.VariableNameInvalidCheck_param_MIN_NAME_LENGTH_PARAM_title);
     }
@@ -93,36 +89,12 @@ public class VariableNameInvalidCheck
             minLength = MIN_NAME_LENGTH_DEFAULT;
         }
 
-        if (object instanceof Variable)
+        Variable variable = (Variable)object;
+        if (variable.eContainer() instanceof StaticFeatureAccess && isForStatementAccessVariable(variable))
         {
-            checkVariable((Variable)object, minLength, resultAceptor);
+            return;
         }
-        else if (object instanceof DeclareStatement)
-        {
-            for (ExplicitVariable variable : ((DeclareStatement)object).getVariables())
-            {
-                if (monitor.isCanceled())
-                {
-                    return;
-                }
-                checkVariable(variable, minLength, resultAceptor);
-            }
-
-        }
-        else if (object instanceof StaticFeatureAccess)
-        {
-            Variable variable = ((StaticFeatureAccess)object).getImplicitVariable();
-
-            if (variable == null || monitor.isCanceled())
-            {
-                return;
-            }
-
-            if (!isForStatementAccessVariable(variable))
-            {
-                checkVariable(variable, minLength, resultAceptor);
-            }
-        }
+        checkVariable(variable, minLength, resultAceptor);
 
     }
 

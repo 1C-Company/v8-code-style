@@ -12,10 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.strict.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.EXPLICIT_VARIABLE;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.IMPLICIT_VARIABLE;
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.text.MessageFormat;
@@ -84,7 +82,7 @@ public class VariableTypeCheck
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StrictTypeAnnotationCheckExtension())
             .module()
-            .checkedObjectType(IMPLICIT_VARIABLE, EXPLICIT_VARIABLE, SIMPLE_STATEMENT, DECLARE_STATEMENT);
+            .checkedObjectType(IMPLICIT_VARIABLE, EXPLICIT_VARIABLE);
 
     }
 
