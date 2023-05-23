@@ -37,6 +37,12 @@ import com.e1c.v8codestyle.autosort.ISortService;
 import com.e1c.v8codestyle.internal.autosort.AutoSortPlugin;
 import com.google.inject.Inject;
 
+/**
+ * The CLI command allows to import and to sort project in workspace or to sort existing project in workspace.
+ * When it runs on each project it turns on default sort settings if not set up.
+ *
+ * @author Dmitriy Marmyshev
+ */
 public class SortCommand
     extends BaseCliCommand
 {
