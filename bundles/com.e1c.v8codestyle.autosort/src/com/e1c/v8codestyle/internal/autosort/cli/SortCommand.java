@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021, 2023, 1C-Soft LLC and others.
+ * Copyright (C) 2023, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -141,7 +141,7 @@ public class SortCommand
             {
                 AutoSortPreferences.setupProjectDefault(project.getWorkspaceProject());
             }
-            exclusiveOperation("Sort-MD-objects", project, ProjectPipelineJob.BUILD, () -> { //$NON-NLS-1$
+            exclusiveOperation("Sort-MD-objects", project, ProjectPipelineJob.AFTER_BUILD_DD, () -> { //$NON-NLS-1$
                 sortService.sortAllMetadata(project, new NullProgressMonitor());
                 return null;
             });
@@ -152,7 +152,7 @@ public class SortCommand
 
         for (IDtProject project : projects)
         {
-            exclusiveOperation("After-Sort-MD-objects", project, ProjectPipelineJob.BUILD, () -> { //$NON-NLS-1$
+            exclusiveOperation("After-Sort-MD-objects", project, ProjectPipelineJob.AFTER_BUILD_DD, () -> { //$NON-NLS-1$
                 return null;
             });
         }
