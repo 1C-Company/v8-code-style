@@ -14,7 +14,7 @@ package com.e1c.v8codestyle.internal.autosort;
 
 import org.osgi.framework.Bundle;
 
-import com._1c.g5.wiring.AbstractGuiceAwareExecutableExtensionFactory;
+import com.e1c.g5.v8.dt.cli.api.components.BaseCliCommandExtensionFactory;
 import com.google.inject.Injector;
 
 /**
@@ -23,7 +23,7 @@ import com.google.inject.Injector;
  * @author Dmitriy Marmyshev
  */
 public class ExecutableExtensionFactory
-    extends AbstractGuiceAwareExecutableExtensionFactory
+    extends BaseCliCommandExtensionFactory
 {
     @Override
     protected Bundle getBundle()
