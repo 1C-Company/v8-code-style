@@ -55,9 +55,15 @@ public class SortCommand
         this.sortService = sortService;
     }
 
+    /**
+     * Import projects into workspace and sort projects.
+     *
+     * @param projectPaths the project paths where to find all projects recursively
+     * @return the status of command
+     */
     @CliCommand(command = "sort-project", value = "SortCommand_Description")
     public IStatus importAndSortProjects(
-        @Argument(value = "--projects", descriptor = "SortCommand_ProjectPaths_Description") String[] projectPaths)
+        @Argument(value = "--projects", descriptor = "SortCommand_Project_paths_Description") String[] projectPaths)
     {
         if (projectPaths == null || projectPaths.length == 0)
         {
@@ -71,10 +77,10 @@ public class SortCommand
             paths[i] = Paths.get(path).toAbsolutePath();
         }
 
-        Collection<File> prjectFilePaths = findProjectsRecursively(paths);
+        Collection<File> projectFilePaths = findProjectsRecursively(paths);
 
         List<IDtProject> projects = new ArrayList<>();
-        for (File prjectFile : prjectFilePaths)
+        for (File prjectFile : projectFilePaths)
         {
             IDtProject dtProject = startDtProject(prjectFile.getParentFile().toPath());
             if (dtProject != null && dtProject.getWorkspaceProject() != null)
@@ -89,6 +95,7 @@ public class SortCommand
         }
         if (projects.isEmpty())
         {
+            // here we tried to import any project but not found - so command should be unsuccessful
             return Status.CANCEL_STATUS;
         }
 
@@ -97,9 +104,15 @@ public class SortCommand
         return Status.OK_STATUS;
     }
 
+    /**
+     * Sort projects that are existing in workspace.
+     *
+     * @param projectNames the project names
+     * @return the status of command
+     */
     @CliCommand(command = "sort-project", value = "SortCommand_Description")
-    public IStatus sortExistingProjects(
-        @Argument(value = "--project-names", descriptor = "SortCommand_ProjectNames_Description") String[] projectNames)
+    public IStatus sortExistingProjects(@Argument(value = "--project-names",
+        descriptor = "SortCommand_Project_names_Description") String[] projectNames)
     {
         if (projectNames == null || projectNames.length == 0)
         {
@@ -158,9 +171,8 @@ public class SortCommand
 
         for (IDtProject project : projects)
         {
-            exclusiveOperation("After-Sort-MD-objects", project, ProjectPipelineJob.AFTER_BUILD_DD, () -> { //$NON-NLS-1$
-                return null;
-            });
+            // wait here to build project after sorting
+            exclusiveOperation("After-Sort-MD-objects", project, ProjectPipelineJob.AFTER_BUILD_DD, () -> null); //$NON-NLS-1$
         }
     }
 }

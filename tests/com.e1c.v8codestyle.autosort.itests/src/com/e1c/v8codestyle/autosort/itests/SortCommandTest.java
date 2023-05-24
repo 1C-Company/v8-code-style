@@ -129,13 +129,11 @@ public class SortCommandTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
     }
 
-
-    protected IBmObject getTopObjectByFqn(final String fqn, IDtProject dtProject)
+    private IBmObject getTopObjectByFqn(final String fqn, IDtProject dtProject)
     {
         IBmModel model = this.bmModelManager.getModel(dtProject);
         return model.executeReadonlyTask(new AbstractBmTask<IBmObject>("GetObject")
         {
-
             @Override
             public IBmObject execute(IBmTransaction transaction, IProgressMonitor progressMonitor)
             {
