@@ -14,7 +14,6 @@ package com.e1c.v8codestyle.internal.autosort.cli;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
@@ -62,8 +60,8 @@ public class SortCommand
      * @return the status of command
      */
     @CliCommand(command = "sort-project", value = "SortCommand_Description")
-    public IStatus importAndSortProjects(
-        @Argument(value = "--projects", descriptor = "SortCommand_Project_paths_Description") String[] projectPaths)
+    public IStatus importAndSortProjects(@Argument(value = "--projects", elementType = Path.class,
+        descriptor = "SortCommand_Project_paths_Description") Path[] projectPaths)
     {
         if (projectPaths == null || projectPaths.length == 0)
         {
@@ -73,8 +71,8 @@ public class SortCommand
         Path[] paths = new Path[projectPaths.length];
         for (int i = 0; i < projectPaths.length; i++)
         {
-            String path = projectPaths[i];
-            paths[i] = Paths.get(path).toAbsolutePath();
+            Path path = projectPaths[i];
+            paths[i] = path.toAbsolutePath();
         }
 
         Collection<File> projectFilePaths = findProjectsRecursively(paths);
@@ -111,8 +109,8 @@ public class SortCommand
      * @return the status of command
      */
     @CliCommand(command = "sort-project", value = "SortCommand_Description")
-    public IStatus sortExistingProjects(@Argument(value = "--project-names",
-        descriptor = "SortCommand_Project_names_Description") String[] projectNames)
+    public IStatus sortExistingProjects(@Argument(value = "--project-names", elementType = IProject.class,
+        descriptor = "SortCommand_Project_names_Description") IProject[] projectNames)
     {
         if (projectNames == null || projectNames.length == 0)
         {
@@ -122,24 +120,24 @@ public class SortCommand
 
         for (int i = 0; i < projectNames.length; i++)
         {
-            String projectName = projectNames[i];
-            IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+            IProject project = projectNames[i];
             if (!project.isAccessible())
             {
                 String error =
-                    MessageFormat.format(Messages.SortCommand_Project__0__not_found_in_workspace, projectName);
+                    MessageFormat.format(Messages.SortCommand_Project__0__not_found_in_workspace, project.getName());
                 logError(error);
                 return AutoSortPlugin.createErrorStatus(error, null);
             }
             waitUntilStarted(project, DT_PROJECT_STARTUP_DURATION);
-            IDtProject dtProject = getContext().getDtProjectManager().getDtProject(projectName);
+            IDtProject dtProject = getContext().getDtProjectManager().getDtProject(project);
             if (dtProject != null && dtProject.getWorkspaceProject() != null)
             {
                 projects.add(dtProject);
             }
             else
             {
-                logError(MessageFormat.format(Messages.SortCommand_Project__0__not_found_in_workspace, projectName));
+                logError(
+                    MessageFormat.format(Messages.SortCommand_Project__0__not_found_in_workspace, project.getName()));
             }
         }
 

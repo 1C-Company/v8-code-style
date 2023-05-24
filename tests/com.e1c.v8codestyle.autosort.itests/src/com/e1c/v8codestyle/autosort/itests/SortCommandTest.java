@@ -18,6 +18,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.file.Path;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -79,7 +81,7 @@ public class SortCommandTest
         IDtProject dtProject = dtProjectManager.getDtProject(project);
         assertNotNull(dtProject);
 
-        IStatus status = command.sortExistingProjects(new String[] { PROJECT_NAME });
+        IStatus status = command.sortExistingProjects(new IProject[] { project });
 
         assertTrue(status.isOK());
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
@@ -99,7 +101,8 @@ public class SortCommandTest
     @Test
     public void testSortNonExisting() throws Exception
     {
-        IStatus status = command.sortExistingProjects(new String[] { "OtherProject" });
+        IProject project = testingWorkspace.getProject("OtherProject");
+        IStatus status = command.sortExistingProjects(new IProject[] { project });
 
         assertFalse(status.isOK());
     }
@@ -112,7 +115,7 @@ public class SortCommandTest
         IDtProject dtProject = dtProjectManager.getDtProject(project);
         assertNotNull(dtProject);
 
-        IStatus status = command.importAndSortProjects(new String[] { project.getLocation().toString() });
+        IStatus status = command.importAndSortProjects(new Path[] { project.getLocation().toFile().toPath() });
 
         assertTrue(status.isOK());
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
