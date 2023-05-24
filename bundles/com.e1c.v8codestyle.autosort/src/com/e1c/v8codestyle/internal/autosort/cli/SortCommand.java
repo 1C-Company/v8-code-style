@@ -171,7 +171,7 @@ public class SortCommand
 
         for (IDtProject project : projects)
         {
-            // wait here to build project after sorting
+            // wait here to build project after sorting, to avoid dropping/stopping project while saving
             exclusiveOperation("After-Sort-MD-objects", project, ProjectPipelineJob.AFTER_BUILD_DD, () -> null); //$NON-NLS-1$
         }
     }
