@@ -25,8 +25,8 @@ final class Messages
     public static String SortCommand_Description;
     public static String SortCommand_Project__0__did_not_import_into_workspace;
     public static String SortCommand_Project__0__not_found_in_workspace;
-    public static String SortCommand_ProjectNames_Description;
-    public static String SortCommand_ProjectPaths_Description;
+    public static String SortCommand_Project_names_Description;
+    public static String SortCommand_Project_paths_Description;
     public static String SortCommand_Sort_project__0__finished;
     public static String SortCommand_Sort_projects__0;
     static
