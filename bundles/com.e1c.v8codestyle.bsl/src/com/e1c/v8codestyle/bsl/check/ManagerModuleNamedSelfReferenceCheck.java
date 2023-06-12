@@ -46,9 +46,10 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
 /**
- * CHeck self reference by name in manager modules.
+ * Check self reference by name in manager modules.
  *
  * @author Maxim Galios
+ * @author Vadim Goncharov
  *
  */
 public class ManagerModuleNamedSelfReferenceCheck
