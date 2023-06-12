@@ -34,7 +34,7 @@ public class ManagerModuleNamedSelfReferenceCheckTest
 {
     private static final String PROJECT_NAME = "ManagerModuleNamedSelfReferenceCheck";
 
-    private static final String MANAGER_MODULE_FILE_NAME = "/src/Catalogs/Catalog/ManagerModule.bsl";
+    private static final String MANAGER_MODULE_FILE_NAME = "/src/Catalogs/ProductionStatus/ManagerModule.bsl";
 
     public ManagerModuleNamedSelfReferenceCheckTest()
     {
