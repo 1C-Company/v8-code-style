@@ -14,9 +14,10 @@ package com.e1c.v8codestyle.internal.autosort;
 
 import org.eclipse.core.runtime.Plugin;
 
+import com._1c.g5.v8.activitytracking.core.ISystemIdleService;
 import com._1c.g5.v8.dt.core.model.IModelEditingSupport;
-import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
+import com._1c.g5.v8.dt.core.platform.IDerivedDataManagerProvider;
 import com.e1c.g5.v8.dt.cli.api.components.BaseCliCommandExternalDependencyModule;
 
 /**
@@ -38,9 +39,10 @@ class ExternalDependenciesModule
     {
         super.doConfigure();
         // V8 DT
-        bind(IBmModelManager.class).toService();
         bind(IConfigurationProvider.class).toService();
         bind(IModelEditingSupport.class).toService();
+        bind(ISystemIdleService.class).toService();
+        bind(IDerivedDataManagerProvider.class).toService();
     }
 
 }
