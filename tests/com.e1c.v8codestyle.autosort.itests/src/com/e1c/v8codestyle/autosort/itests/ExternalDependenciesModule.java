@@ -12,7 +12,9 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.autosort.itests;
 
+import com._1c.g5.v8.activitytracking.core.ISystemIdleService;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IDerivedDataManagerProvider;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 import com.e1c.v8codestyle.autosort.ISortService;
@@ -39,6 +41,8 @@ public class ExternalDependenciesModule
         bind(ISortService.class).toService();
         bind(IBmModelManager.class).toService();
         bind(IDtProjectManager.class).toService();
+        bind(ISystemIdleService.class).toService();
+        bind(IDerivedDataManagerProvider.class).toService();
     }
 
 }
