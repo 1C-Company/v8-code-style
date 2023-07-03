@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
+import static org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider.PERSISTED_DESCRIPTIONS;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -245,8 +246,7 @@ public final class RedundantExportMethodCheck
 
         ResourceSet resourceSet = new ResourceSetImpl();
         //special ResourceSet for checking by saved modules
-        resourceSet.getLoadOptions()
-            .put(org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider.PERSISTED_DESCRIPTIONS, Boolean.TRUE);
+        resourceSet.getLoadOptions().put(PERSISTED_DESCRIPTIONS, Boolean.TRUE);
 
         IResourceDescriptions indexData = resourceDescriptionsProvider.getResourceDescriptions(resourceSet);
 
