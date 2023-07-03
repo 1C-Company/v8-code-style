@@ -154,15 +154,15 @@ public class CommonModuleStrictTypesTest
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(1, markers.size());
+        assertEquals(2, markers.size());
 
         String uriToProblem = EcoreUtil.getURI(variables.get(0)).toString();
-
         Marker marker = markers.get(0);
-
         assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
+        marker = markers.get(1);
+        assertEquals("22", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     /**
