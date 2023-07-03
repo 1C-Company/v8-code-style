@@ -32,6 +32,8 @@ import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -123,6 +125,17 @@ public class VariableTypeCheck
     private void checkVariable(Variable variable, EObject checkObject, ResultAcceptor resultAceptor,
         IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
+        if (variable instanceof Environmental)
+        {
+            //checks only variables with selected validation Environments
+            Environments actualEnvs =
+                bslPreferences.getLoadEnvs(checkObject).intersect(((Environmental)variable).environments());
+            if (actualEnvs.isEmpty())
+            {
+                return;
+            }
+        }
+
         if (checkObject != null && variable != null && isEmptyTypes(checkObject, bmTransaction)
             && !monitor.isCanceled())
         {

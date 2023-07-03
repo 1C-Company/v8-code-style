@@ -19,6 +19,12 @@ Procedure Complaint2(Object, AttributeName) Export
 	
 	TestVar2 = Object[AttributeName]; // Number
 	
+	TestVar3 = Object[AttributeName];
+	
+	#If MobileStandaloneServer Then
+		TestVar4 = Object[AttributeName]; 
+	#EndIf
+	
 EndProcedure
 
 // Returns:
