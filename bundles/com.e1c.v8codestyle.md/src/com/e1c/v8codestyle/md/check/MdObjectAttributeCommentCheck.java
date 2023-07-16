@@ -58,17 +58,17 @@ public class MdObjectAttributeCommentCheck
 
     private static final String CHECK_ID = "md-object-attribute-comment-incorrect-type"; //$NON-NLS-1$
 
-    public static final String PARAM_CHECK_DOCUMENTS = "checkDocuments"; //$NON-NLS-1$
-    public static final String PARAM_CHECK_CATALOGS = "checkCatalogs"; //$NON-NLS-1$
-    public static final String PARAM_ATTRIBUTES_LIST = "attributesList"; //$NON-NLS-1$
+    private static final String PARAM_CHECK_DOCUMENTS = "checkDocuments"; //$NON-NLS-1$
+    private static final String PARAM_CHECK_CATALOGS = "checkCatalogs"; //$NON-NLS-1$
+    private static final String PARAM_ATTRIBUTES_LIST = "attributesList"; //$NON-NLS-1$
 
-    public static final String DEFAULT_CHECK_DOCUMENTS = Boolean.toString(true);
-    public static final String DEFAULT_CHECK_CATALOGS = Boolean.toString(false);
+    private static final String DEFAULT_CHECK_DOCUMENTS = Boolean.toString(true);
+    private static final String DEFAULT_CHECK_CATALOGS = Boolean.toString(false);
 
     private static final Set<String> COMMENT_ATTRIBUTES_LIST = Set.of("Комментарий", //$NON-NLS-1$
         "Comment"); //$NON-NLS-1$
     private static final String DELIMITER = ","; //$NON-NLS-1$
-    public static final String DEFAULT_ATTRIBUTES_LIST = String.join(DELIMITER, COMMENT_ATTRIBUTES_LIST);
+    private static final String DEFAULT_ATTRIBUTES_LIST = String.join(DELIMITER, COMMENT_ATTRIBUTES_LIST);
 
     public MdObjectAttributeCommentCheck()
     {
@@ -126,15 +126,14 @@ public class MdObjectAttributeCommentCheck
             return;
         }
 
-        if (!monitor.isCanceled() && checkDocuments && isDocumentAttribute(object))
+        boolean isDocument = checkDocuments && isDocumentAttribute(object);
+        boolean isCatalog = checkCatalogs && isCatalogAttribute(object);
+
+        if (!monitor.isCanceled() && (isDocument || isCatalog))
         {
             checkAttribute(attribute, resultAceptor);
         }
 
-        if (!monitor.isCanceled() && checkCatalogs && isCatalogAttribute(object))
-        {
-            checkAttribute(attribute, resultAceptor);
-        }
     }
 
     private void checkAttribute(BasicFeature attribute, ResultAcceptor resultAceptor)
