@@ -10,6 +10,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-Localization: fragment
 Import-Package: com._1c.g5.v8.dt.bsl.ui.editor;version="[9.0.0,10.0.0)",
  com._1c.g5.v8.dt.testing;version="[3.1.0,4.0.0)",
- com._1c.g5.v8.dt.ui.util;version="[6.0.0,7.0.0)",
+ com._1c.g5.v8.dt.ui.util;version="[7.0.0,8.0.0)",
  org.junit;version="[4.13.0,5.0.0)"
 Require-Bundle: org.eclipse.ui.forms;bundle-version="[3.11.0,4.0.0)"
