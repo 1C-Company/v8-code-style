@@ -109,6 +109,7 @@
 <unit id="javax.servlet" version="0.0.0"/>
 <unit id="org.apache.lucene.grouping" version="0.0.0"/>
 <unit id="org.apache.lucene.queries" version="0.0.0"/>
+<unit id="com.google.protobuf" version="0.0.0"/>
 </location>
 
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
