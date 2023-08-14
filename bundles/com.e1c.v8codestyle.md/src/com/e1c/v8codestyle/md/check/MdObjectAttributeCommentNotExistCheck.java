@@ -134,6 +134,12 @@ public class MdObjectAttributeCommentNotExistCheck
                 }
 
             }
+
+            if (!monitor.isCanceled() && !attributeExist)
+            {
+                resultAcceptor.addIssue(
+                    Messages.MdObjectAttributeCommentNotExist_Md_Object_attribute_Comment_does_not_exist, object);
+            }
         }
         else if (object instanceof Catalog && checkCatalogs)
         {
@@ -153,12 +159,12 @@ public class MdObjectAttributeCommentNotExistCheck
                     break;
                 }
             }
-        }
 
-        if (!monitor.isCanceled() && !attributeExist)
-        {
-            resultAcceptor
-                .addIssue(Messages.MdObjectAttributeCommentNotExist_Md_Object_attribute_Comment_does_not_exist, object);
+            if (!monitor.isCanceled() && !attributeExist)
+            {
+                resultAcceptor.addIssue(
+                    Messages.MdObjectAttributeCommentNotExist_Md_Object_attribute_Comment_does_not_exist, object);
+            }
         }
 
     }
@@ -179,4 +185,5 @@ public class MdObjectAttributeCommentNotExistCheck
 
         return attributeNames;
     }
+
 }
