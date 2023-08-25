@@ -387,17 +387,21 @@ public class CommonModuleStrictTypesTest
         Module module = updateAndGetModule(checkId);
 
         List<Function> finctions = EcoreUtil2.eAllOfType(module, Function.class);
-        assertEquals(2, finctions.size());
+        assertEquals(4, finctions.size());
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(2, markers.size());
+        assertEquals(3, markers.size());
 
         Marker marker = markers.get(0);
         assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         // different key
         marker = markers.get(1);
         assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+        // missing type
+        marker = markers.get(2);
+        assertEquals("29", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
