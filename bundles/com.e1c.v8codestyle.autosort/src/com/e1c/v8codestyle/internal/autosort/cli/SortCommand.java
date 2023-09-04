@@ -60,8 +60,8 @@ public class SortCommand
      * @return the status of command
      */
     @CliCommand(command = "sort-project", value = "SortCommand_Description")
-    public IStatus importAndSortProjects(@Argument(value = "--projects", elementType = Path.class,
-        descriptor = "SortCommand_Project_paths_Description") Path[] projectPaths)
+    public IStatus importAndSortProjects(@Argument(value = "--project-list", elementType = Path.class,
+        descriptor = "SortCommand_Projects_location") Path[] projectPaths)
     {
         if (projectPaths == null || projectPaths.length == 0)
         {
@@ -109,8 +109,8 @@ public class SortCommand
      * @return the status of command
      */
     @CliCommand(command = "sort-project", value = "SortCommand_Description")
-    public IStatus sortExistingProjects(@Argument(value = "--project-names", elementType = IProject.class,
-        descriptor = "SortCommand_Project_names_Description") IProject[] projectNames)
+    public IStatus sortExistingProjects(@Argument(value = "--project-name-list", elementType = IProject.class,
+        descriptor = "SortCommand_Projects") IProject[] projectNames)
     {
         if (projectNames == null || projectNames.length == 0)
         {
