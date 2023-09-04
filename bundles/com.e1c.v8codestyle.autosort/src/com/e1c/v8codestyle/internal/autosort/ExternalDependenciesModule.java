@@ -41,8 +41,8 @@ class ExternalDependenciesModule
         // V8 DT
         bind(IConfigurationProvider.class).toService();
         bind(IModelEditingSupport.class).toService();
-        bind(ISystemIdleService.class).toService();
         bind(IDerivedDataManagerProvider.class).toService();
+        bind(ISystemIdleService.class).toService();
     }
 
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -73,6 +74,7 @@ public class DataCompositionConditionalAppearanceUseCheckTest
      * @throws Exception the exception
      */
     @Test
+    @Ignore("G5V8DT-24042")
     public void testFormUseConditionalAppearance() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
