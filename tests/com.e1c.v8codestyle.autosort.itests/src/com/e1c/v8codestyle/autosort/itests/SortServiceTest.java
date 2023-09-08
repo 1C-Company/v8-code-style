@@ -194,7 +194,7 @@ public class SortServiceTest
                 return null;
             }
         });
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(20);
 
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
         assertTrue(object instanceof Configuration);
@@ -240,7 +240,7 @@ public class SortServiceTest
                 return null;
             }
         });
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(20);
 
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
         assertTrue(object instanceof Configuration);
@@ -291,7 +291,7 @@ public class SortServiceTest
                 return null;
             }
         });
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(20);
 
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
         Configuration configuration = (Configuration)object;
