@@ -18,6 +18,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -32,10 +35,15 @@ import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IConfigurationAware;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.md.sort.MdSortPreferences;
+import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
+import com._1c.g5.v8.dt.metadata.mdclass.MdClassFactory;
 import com._1c.g5.v8.dt.testing.GuiceModules;
 import com._1c.g5.v8.dt.testing.JUnitGuiceRunner;
 import com._1c.g5.v8.dt.testing.TestingWorkspace;
@@ -50,7 +58,6 @@ import com.google.inject.Inject;
 @GuiceModules(modules = { ExternalDependenciesModule.class })
 public class SortServiceTest
 {
-
     private static final String PROJECT_NAME = "Sort";
 
     @Rule
@@ -61,6 +68,9 @@ public class SortServiceTest
 
     @Inject
     public IDtProjectManager dtProjectManager;
+
+    @Inject
+    private IV8ProjectManager v8ProjectManager;
 
     @Inject
     public IBmModelManager bmModelManager;
@@ -153,12 +163,154 @@ public class SortServiceTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
     }
 
+    @Test
+    public void testSortAfterRemoveEvent() throws Exception
+    {
+        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
+        assertNotNull(project);
+        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        assertNotNull(dtProject);
+        IV8Project v8Project = v8ProjectManager.getProject(dtProject);
+        assertNotNull(dtProject);
+
+        IEclipsePreferences autoSortPrefs = AutoSortPreferences.getPreferences(project);
+        autoSortPrefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
+        autoSortPrefs.flush();
+
+        IEclipsePreferences mdSortPrefs = MdSortPreferences.getPreferences(project);
+        mdSortPrefs.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, false);
+        mdSortPrefs.flush();
+
+        bmModelManager.getModel(project).execute(new AbstractBmTask<Void>("Detach a top object") //$NON-NLS-1$
+        {
+            @Override
+            public Void execute(IBmTransaction transaction, IProgressMonitor monitor)
+            {
+                IBmObject commonModule = transaction.getTopObjectByFqn("CommonModule.ГМодуль");
+                Configuration configuration =
+                    transaction.toTransactionObject(((IConfigurationAware)v8Project).getConfiguration());
+                configuration.getCommonModules().remove(commonModule);
+                transaction.detachTopObject(commonModule);
+                return null;
+            }
+        });
+        TimeUnit.SECONDS.sleep(10);
+
+        IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
+        assertTrue(object instanceof Configuration);
+
+
+        Configuration configuration = (Configuration)object;
+        assertFalse(configuration.getCommonModules().isEmpty());
+
+        assertEquals("АМ_Модуль", configuration.getCommonModules().get(0).getName());
+        assertEquals("АМ2_4Модуль", configuration.getCommonModules().get(1).getName());
+        assertEquals("АМодуль", configuration.getCommonModules().get(2).getName());
+        assertEquals("БМодуль", configuration.getCommonModules().get(3).getName());
+        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(4).getName());
+    }
+
+    @Test
+    public void testSortAfterMoveEvent() throws Exception
+    {
+        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
+        assertNotNull(project);
+        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        assertNotNull(dtProject);
+        IV8Project v8Project = v8ProjectManager.getProject(dtProject);
+        assertNotNull(dtProject);
+
+        IEclipsePreferences autoSortPrefs = AutoSortPreferences.getPreferences(project);
+        autoSortPrefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
+        autoSortPrefs.flush();
+
+        IEclipsePreferences mdSortPrefs = MdSortPreferences.getPreferences(project);
+        mdSortPrefs.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, false);
+        mdSortPrefs.flush();
+
+        bmModelManager.getModel(project).execute(new AbstractBmTask<Void>("Move a top object") //$NON-NLS-1$
+        {
+            @Override
+            public Void execute(IBmTransaction transaction, IProgressMonitor progressMonitor)
+            {
+                IBmObject commonModule = transaction.getTopObjectByFqn("CommonModule.БМодуль");
+                Configuration configuration =
+                    transaction.toTransactionObject(((IConfigurationAware)v8Project).getConfiguration());
+                configuration.getCommonModules().move(4, (CommonModule)commonModule);
+                return null;
+            }
+        });
+        TimeUnit.SECONDS.sleep(10);
+
+        IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
+        assertTrue(object instanceof Configuration);
+
+        Configuration configuration = (Configuration)object;
+        assertFalse(configuration.getCommonModules().isEmpty());
+
+        assertEquals("АМ_Модуль", configuration.getCommonModules().get(0).getName());
+        assertEquals("АМ2_4Модуль", configuration.getCommonModules().get(1).getName());
+        assertEquals("АМодуль", configuration.getCommonModules().get(2).getName());
+        assertEquals("БМодуль", configuration.getCommonModules().get(3).getName());
+        assertEquals("ГМодуль", configuration.getCommonModules().get(4).getName());
+        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
+    }
+
+    @Test
+    public void testSortAfterAddEvent() throws Exception
+    {
+        IProject project = testingWorkspace.setUpProject(PROJECT_NAME, getClass());
+        assertNotNull(project);
+        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        assertNotNull(dtProject);
+        IV8Project v8Project = v8ProjectManager.getProject(dtProject);
+        assertNotNull(dtProject);
+
+        IEclipsePreferences autoSortPrefs = AutoSortPreferences.getPreferences(project);
+        autoSortPrefs.putBoolean(AutoSortPreferences.KEY_ALL_TOP, true);
+        autoSortPrefs.flush();
+
+        IEclipsePreferences mdSortPrefs = MdSortPreferences.getPreferences(project);
+        mdSortPrefs.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, false);
+        mdSortPrefs.flush();
+
+        bmModelManager.getModel(project).execute(new AbstractBmTask<Void>("Add a top object") //$NON-NLS-1$
+        {
+            @Override
+            public Void execute(IBmTransaction transaction, IProgressMonitor progressMonitor)
+            {
+                CommonModule commonModule = MdClassFactory.eINSTANCE.createCommonModule();
+                commonModule.setName("КМодуль");
+                commonModule.setUuid(UUID.randomUUID());
+                transaction.attachTopObject((IBmObject)commonModule, "CommonModule.КМодуль");
+
+                Configuration configuration =
+                    transaction.toTransactionObject(((IConfigurationAware)v8Project).getConfiguration());
+
+                configuration.getCommonModules().add(commonModule);
+                return null;
+            }
+        });
+        TimeUnit.SECONDS.sleep(10);
+
+        IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
+        Configuration configuration = (Configuration)object;
+        assertFalse(configuration.getCommonModules().isEmpty());
+
+        assertEquals("АМ_Модуль", configuration.getCommonModules().get(0).getName());
+        assertEquals("АМ2_4Модуль", configuration.getCommonModules().get(1).getName());
+        assertEquals("АМодуль", configuration.getCommonModules().get(2).getName());
+        assertEquals("БМодуль", configuration.getCommonModules().get(3).getName());
+        assertEquals("ГМодуль", configuration.getCommonModules().get(4).getName());
+        assertEquals("КМодуль", configuration.getCommonModules().get(5).getName());
+        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(6).getName());
+    }
+
     protected IBmObject getTopObjectByFqn(final String fqn, IDtProject dtProject)
     {
         IBmModel model = this.bmModelManager.getModel(dtProject);
         return model.executeReadonlyTask(new AbstractBmTask<IBmObject>("GetObject")
         {
-
             @Override
             public IBmObject execute(IBmTransaction transaction, IProgressMonitor progressMonitor)
             {

@@ -325,7 +325,7 @@ public class SortService
                 {
                     Object notifier = notification.getNotifier();
                     Object value = notification.getNewValue();
-                    if (notifier instanceof IBmObject && value instanceof MdObject)
+                    if (notifier instanceof IBmObject && (value instanceof MdObject || value == null))
                     {
                         changedItems.computeIfAbsent(((IBmObject)notifier).bmGetFqn(), k -> new HashSet<>())
                             .add(listRef);
