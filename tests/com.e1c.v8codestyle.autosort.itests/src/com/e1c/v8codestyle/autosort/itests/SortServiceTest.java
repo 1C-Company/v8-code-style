@@ -189,7 +189,7 @@ public class SortServiceTest
                 IBmObject commonModule = transaction.getTopObjectByFqn("CommonModule.ГМодуль");
                 Configuration configuration =
                     transaction.toTransactionObject(((IConfigurationAware)v8Project).getConfiguration());
-                configuration.getCommonModules().remove(commonModule);
+                configuration.getCommonModules().remove((CommonModule)commonModule);
                 transaction.detachTopObject(commonModule);
                 return null;
             }
