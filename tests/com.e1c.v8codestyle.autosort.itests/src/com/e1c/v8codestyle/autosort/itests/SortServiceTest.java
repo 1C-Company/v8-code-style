@@ -213,7 +213,7 @@ public class SortServiceTest
                 }
 
                 @Override
-                protected boolean isShouldNotifyAboutEvent()
+                protected boolean isShouldCountDownLatch()
                 {
                     return isBmObjectRemoved && isStortStarted;
                 }
@@ -284,7 +284,7 @@ public class SortServiceTest
                 }
 
                 @Override
-                protected boolean isShouldNotifyAboutEvent()
+                protected boolean isShouldCountDownLatch()
                 {
                     return moveCount == 2;
                 }
@@ -359,7 +359,7 @@ public class SortServiceTest
                 }
 
                 @Override
-                protected boolean isShouldNotifyAboutEvent()
+                protected boolean isShouldCountDownLatch()
                 {
                     return isBmObjectAdded && isStortStarted;
                 }
@@ -452,7 +452,7 @@ public class SortServiceTest
                     }
                 }
             }
-            if (isShouldNotifyAboutEvent())
+            if (isShouldCountDownLatch())
             {
                 latch.countDown();
             }
@@ -470,6 +470,6 @@ public class SortServiceTest
          *
          * @return {@code true} if should count down latch, {@code false} otherwise
          */
-        protected abstract boolean isShouldNotifyAboutEvent();
+        protected abstract boolean isShouldCountDownLatch();
     }
 }
