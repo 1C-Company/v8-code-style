@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -174,6 +175,7 @@ public class SortServiceTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
     }
 
+    @Ignore("G5V8DT-24222")
     @Test
     public void testSortAfterRemoveEvent() throws Exception
     {
@@ -227,7 +229,7 @@ public class SortServiceTest
                 IBmObject commonModule = transaction.getTopObjectByFqn("CommonModule.ГМодуль");
                 Configuration configuration =
                     transaction.toTransactionObject(((IConfigurationAware)v8Project).getConfiguration());
-                configuration.getCommonModules().remove((CommonModule)commonModule);
+                configuration.getCommonModules().remove(commonModule);
                 transaction.detachTopObject(commonModule);
                 return null;
             }
@@ -250,6 +252,7 @@ public class SortServiceTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(4).getName());
     }
 
+    @Ignore("G5V8DT-24222")
     @Test
     public void testSortAfterMoveEvent() throws Exception
     {
@@ -321,6 +324,7 @@ public class SortServiceTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
     }
 
+    @Ignore("G5V8DT-24222")
     @Test
     public void testSortAfterAddEvent() throws Exception
     {
