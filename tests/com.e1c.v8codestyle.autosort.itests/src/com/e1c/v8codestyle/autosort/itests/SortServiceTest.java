@@ -302,6 +302,7 @@ public class SortServiceTest
                 return null;
             }
         });
+
         waitSortStartedlatch.await();
         // wait until sorting is performed.
         TimeUnit.SECONDS.sleep(5);
@@ -382,6 +383,7 @@ public class SortServiceTest
                 return null;
             }
         });
+
         waitSortStartedlatch.await();
         // wait until sorting is performed.
         TimeUnit.SECONDS.sleep(5);
