@@ -18,7 +18,11 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IProject;
@@ -26,14 +30,20 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.IBmTransaction;
+import com._1c.g5.v8.bm.core.event.BmChangeEvent;
+import com._1c.g5.v8.bm.core.event.BmEvent;
 import com._1c.g5.v8.bm.integration.AbstractBmTask;
 import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.bm.integration.event.IBmSyncEventListener;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationAware;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
@@ -49,6 +59,7 @@ import com._1c.g5.v8.dt.testing.JUnitGuiceRunner;
 import com._1c.g5.v8.dt.testing.TestingWorkspace;
 import com.e1c.v8codestyle.autosort.AutoSortPreferences;
 import com.e1c.v8codestyle.autosort.ISortService;
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 
 /**
@@ -181,6 +192,33 @@ public class SortServiceTest
         mdSortPrefs.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, false);
         mdSortPrefs.flush();
 
+        CountDownLatch waitSortStartedlatch = new CountDownLatch(1);
+        bmModelManager.addSyncEventListener(bmModelManager.getBmNamespace(project),
+            new BmEventListener(project, waitSortStartedlatch)
+            {
+                boolean isBmObjectRemoved = false;
+                boolean isStortStarted = false;
+
+                @Override
+                protected void registerEvent(Notification notification)
+                {
+                    if (notification.getEventType() == Notification.REMOVE)
+                    {
+                        isBmObjectRemoved = true;
+                    }
+                    else if (notification.getEventType() == Notification.MOVE)
+                    {
+                        isStortStarted = true;
+                    }
+                }
+
+                @Override
+                protected boolean isShouldNotifyAboutEvent()
+                {
+                    return isBmObjectRemoved && isStortStarted;
+                }
+            });
+
         bmModelManager.getModel(project).execute(new AbstractBmTask<Void>("Detach a top object") //$NON-NLS-1$
         {
             @Override
@@ -189,16 +227,18 @@ public class SortServiceTest
                 IBmObject commonModule = transaction.getTopObjectByFqn("CommonModule.ГМодуль");
                 Configuration configuration =
                     transaction.toTransactionObject(((IConfigurationAware)v8Project).getConfiguration());
-                configuration.getCommonModules().remove((CommonModule)commonModule);
+                configuration.getCommonModules().remove(commonModule);
                 transaction.detachTopObject(commonModule);
                 return null;
             }
         });
-        TimeUnit.SECONDS.sleep(20);
+
+        waitSortStartedlatch.await();
+        // wait until sorting is completed.
+        TimeUnit.SECONDS.sleep(5);
 
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
         assertTrue(object instanceof Configuration);
-
 
         Configuration configuration = (Configuration)object;
         assertFalse(configuration.getCommonModules().isEmpty());
@@ -228,6 +268,28 @@ public class SortServiceTest
         mdSortPrefs.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, false);
         mdSortPrefs.flush();
 
+        CountDownLatch waitSortStartedlatch = new CountDownLatch(1);
+        bmModelManager.addSyncEventListener(bmModelManager.getBmNamespace(project),
+            new BmEventListener(project, waitSortStartedlatch)
+            {
+                private int moveCount = 0;
+
+                @Override
+                protected void registerEvent(Notification notification)
+                {
+                    if (notification.getEventType() == Notification.MOVE)
+                    {
+                        moveCount++;
+                    }
+                }
+
+                @Override
+                protected boolean isShouldNotifyAboutEvent()
+                {
+                    return moveCount == 2;
+                }
+            });
+
         bmModelManager.getModel(project).execute(new AbstractBmTask<Void>("Move a top object") //$NON-NLS-1$
         {
             @Override
@@ -240,7 +302,9 @@ public class SortServiceTest
                 return null;
             }
         });
-        TimeUnit.SECONDS.sleep(20);
+        waitSortStartedlatch.await();
+        // wait until sorting is performed.
+        TimeUnit.SECONDS.sleep(5);
 
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
         assertTrue(object instanceof Configuration);
@@ -274,6 +338,33 @@ public class SortServiceTest
         mdSortPrefs.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, false);
         mdSortPrefs.flush();
 
+        CountDownLatch waitSortStartedlatch = new CountDownLatch(1);
+        bmModelManager.addSyncEventListener(bmModelManager.getBmNamespace(project),
+            new BmEventListener(project, waitSortStartedlatch)
+            {
+                boolean isBmObjectAdded = false;
+                boolean isStortStarted = false;
+
+                @Override
+                protected void registerEvent(Notification notification)
+                {
+                    if (notification.getEventType() == Notification.ADD)
+                    {
+                        isBmObjectAdded = true;
+                    }
+                    else if (notification.getEventType() == Notification.MOVE)
+                    {
+                        isStortStarted = true;
+                    }
+                }
+
+                @Override
+                protected boolean isShouldNotifyAboutEvent()
+                {
+                    return isBmObjectAdded && isStortStarted;
+                }
+            });
+
         bmModelManager.getModel(project).execute(new AbstractBmTask<Void>("Add a top object") //$NON-NLS-1$
         {
             @Override
@@ -291,7 +382,9 @@ public class SortServiceTest
                 return null;
             }
         });
-        TimeUnit.SECONDS.sleep(20);
+        waitSortStartedlatch.await();
+        // wait until sorting is performed.
+        TimeUnit.SECONDS.sleep(5);
 
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
         Configuration configuration = (Configuration)object;
@@ -317,5 +410,59 @@ public class SortServiceTest
                 return transaction.getTopObjectByFqn(fqn);
             }
         });
+    }
+
+    private abstract class BmEventListener
+        implements IBmSyncEventListener
+    {
+        private final CountDownLatch latch;
+        private final IProject project;
+
+        /**
+         * Creates instance of listener.
+         *
+         * @param project project to listen events to, cannot be {@code null}
+         * @param latch latch waiting until notified about {@code eventType} and starting sort, cannot be {@code null}
+         */
+        public BmEventListener(IProject project, CountDownLatch latch)
+        {
+            this.project = Preconditions.checkNotNull(project);
+            this.latch = Preconditions.checkNotNull(latch);
+        }
+
+        @Override
+        public void handleSyncEvent(BmEvent event)
+        {
+            for (BmChangeEvent changeEvent : event.getChangeEvents().values())
+            {
+                if (changeEvent.getObject() instanceof IBmObject && ((IBmObject)changeEvent.getObject()).bmIsTop()
+                    && ((IBmObject)changeEvent.getObject()).bmGetFqn() != null)
+                {
+                    Map<EStructuralFeature, List<Notification>> notifications = changeEvent.getNotifications();
+                    for (Entry<EStructuralFeature, List<Notification>> entry : notifications.entrySet())
+                    {
+                        if (entry.getKey() instanceof EReference
+                            && AutoSortPreferences.isAllowedToSort(project, (EReference)entry.getKey()))
+                        {
+                            for (Notification notification : entry.getValue())
+                            {
+                                registerEvent(notification);
+                            }
+                        }
+                    }
+                }
+            }
+            if (isShouldNotifyAboutEvent())
+            {
+                latch.countDown();
+            }
+        }
+
+        /**
+         * @param notification
+         */
+        protected abstract void registerEvent(Notification notification);
+
+        protected abstract boolean isShouldNotifyAboutEvent();
     }
 }
