@@ -227,7 +227,7 @@ public class SortServiceTest
                 IBmObject commonModule = transaction.getTopObjectByFqn("CommonModule.ГМодуль");
                 Configuration configuration =
                     transaction.toTransactionObject(((IConfigurationAware)v8Project).getConfiguration());
-                configuration.getCommonModules().remove(commonModule);
+                configuration.getCommonModules().remove((CommonModule)commonModule);
                 transaction.detachTopObject(commonModule);
                 return null;
             }
@@ -459,10 +459,17 @@ public class SortServiceTest
         }
 
         /**
-         * @param notification
+         * Specifies how event must be registered.
+         *
+         * @param notification the notification containing event data, cannot be {@code null}
          */
         protected abstract void registerEvent(Notification notification);
 
+        /**
+         * Checks if listener should count down latch.
+         *
+         * @return {@code true} if should count down latch, {@code false} otherwise
+         */
         protected abstract boolean isShouldNotifyAboutEvent();
     }
 }
