@@ -175,7 +175,7 @@ public class SortServiceTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
     }
 
-    @Ignore("G5V8DT-24222")
+    @Ignore("G5V8DT-22608")
     @Test
     public void testSortAfterRemoveEvent() throws Exception
     {
@@ -229,7 +229,7 @@ public class SortServiceTest
                 IBmObject commonModule = transaction.getTopObjectByFqn("CommonModule.ГМодуль");
                 Configuration configuration =
                     transaction.toTransactionObject(((IConfigurationAware)v8Project).getConfiguration());
-                configuration.getCommonModules().remove(commonModule);
+                configuration.getCommonModules().remove((CommonModule)commonModule);
                 transaction.detachTopObject(commonModule);
                 return null;
             }
@@ -252,7 +252,7 @@ public class SortServiceTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(4).getName());
     }
 
-    @Ignore("G5V8DT-24222")
+    @Ignore("G5V8DT-22608")
     @Test
     public void testSortAfterMoveEvent() throws Exception
     {
@@ -324,7 +324,7 @@ public class SortServiceTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
     }
 
-    @Ignore("G5V8DT-24222")
+    @Ignore("G5V8DT-22608")
     @Test
     public void testSortAfterAddEvent() throws Exception
     {
