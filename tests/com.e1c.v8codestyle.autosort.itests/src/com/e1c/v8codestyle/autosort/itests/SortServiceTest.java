@@ -168,7 +168,7 @@ public class SortServiceTest
         assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
     }
 
-//    @Ignore("G5V8DT-22608")
+//    @Ignore("#1365")
 //    @Test
 //    public void testSortAfterRemoveEvent() throws Exception
 //    {
@@ -245,7 +245,7 @@ public class SortServiceTest
 //        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(4).getName());
 //    }
 //
-//    @Ignore("G5V8DT-22608")
+//    @Ignore("#1365")
 //    @Test
 //    public void testSortAfterMoveEvent() throws Exception
 //    {
@@ -317,7 +317,7 @@ public class SortServiceTest
 //        assertEquals("ОбщийМодуль", configuration.getCommonModules().get(5).getName());
 //    }
 //
-//    @Ignore("G5V8DT-22608")
+//    @Ignore("#1365")
 //    @Test
 //    public void testSortAfterAddEvent() throws Exception
 //    {
