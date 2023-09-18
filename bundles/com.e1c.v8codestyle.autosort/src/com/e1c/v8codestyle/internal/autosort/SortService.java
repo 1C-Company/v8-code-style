@@ -320,11 +320,12 @@ public class SortService
         {
             for (Notification notification : notifications)
             {
-                if (notification.getEventType() == Notification.ADD)
+                if (notification.getEventType() == Notification.ADD || notification.getEventType() == Notification.MOVE
+                    || notification.getEventType() == Notification.REMOVE)
                 {
                     Object notifier = notification.getNotifier();
                     Object value = notification.getNewValue();
-                    if (notifier instanceof IBmObject && value instanceof MdObject)
+                    if (notifier instanceof IBmObject && (value instanceof MdObject || value == null))
                     {
                         changedItems.computeIfAbsent(((IBmObject)notifier).bmGetFqn(), k -> new HashSet<>())
                             .add(listRef);
