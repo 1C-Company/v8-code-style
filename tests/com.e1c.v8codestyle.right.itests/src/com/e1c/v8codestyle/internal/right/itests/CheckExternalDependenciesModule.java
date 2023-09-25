@@ -19,6 +19,7 @@ import com._1c.g5.v8.dt.core.platform.IDerivedDataManagerProvider;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
 import com._1c.g5.v8.dt.core.platform.IWorkspaceOrchestrator;
 import com._1c.g5.v8.dt.md.refactoring.core.IMdRefactoringService;
+import com._1c.g5.v8.dt.rights.IRightInfosService;
 import com._1c.g5.v8.dt.validation.marker.IMarkerManager;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 import com.e1c.g5.v8.dt.check.settings.ICheckRepository;
@@ -49,5 +50,6 @@ public class CheckExternalDependenciesModule
         bind(IMarkerManager.class).toService();
         bind(IMdRefactoringService.class).toService();
         bind(IWorkspaceOrchestrator.class).toService();
+        bind(IRightInfosService.class).toService();
     }
 }
