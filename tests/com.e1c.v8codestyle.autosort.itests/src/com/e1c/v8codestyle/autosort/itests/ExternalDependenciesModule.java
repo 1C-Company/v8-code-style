@@ -17,6 +17,7 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDerivedDataManagerProvider;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
+import com.e1c.g5.v8.dt.cli.api.ICliCommandExecutor;
 import com.e1c.v8codestyle.autosort.ISortService;
 import com.e1c.v8codestyle.internal.autosort.AutoSortPlugin;
 
@@ -43,6 +44,9 @@ public class ExternalDependenciesModule
         bind(IDtProjectManager.class).toService();
         bind(ISystemIdleService.class).toService();
         bind(IDerivedDataManagerProvider.class).toService();
+
+        // 1C:EDT CLI API
+        bind(ICliCommandExecutor.class).toService();
     }
 
 }

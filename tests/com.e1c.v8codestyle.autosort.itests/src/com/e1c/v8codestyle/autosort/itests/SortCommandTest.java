@@ -17,15 +17,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-
-import java.nio.file.Path;
+import static org.junit.Assert.fail;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Platform;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,6 +36,8 @@ import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.testing.GuiceModules;
 import com._1c.g5.v8.dt.testing.JUnitGuiceRunner;
 import com._1c.g5.v8.dt.testing.TestingWorkspace;
+import com.e1c.g5.v8.dt.cli.api.CliCommandException;
+import com.e1c.g5.v8.dt.cli.api.ICliCommandExecutor;
 import com.e1c.v8codestyle.internal.autosort.cli.SortCommand;
 import com.google.inject.Inject;
 
@@ -51,8 +48,6 @@ import com.google.inject.Inject;
 @GuiceModules(modules = { ExternalDependenciesModule.class })
 public class SortCommandTest
 {
-    private static final String CLASS_NAME =
-        "com.e1c.v8codestyle.internal.autosort.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.autosort.cli.SortCommand";
 
     private static final String PROJECT_NAME = "Sort";
 
@@ -65,13 +60,8 @@ public class SortCommandTest
     @Inject
     private IBmModelManager bmModelManager;
 
-    private SortCommand command;
-
-    @Before
-    public void setUp() throws Exception
-    {
-        command = createSortCommand();
-    }
+    @Inject
+    private ICliCommandExecutor commandExecutor;
 
     @Test
     public void testSortExisting() throws Exception
@@ -81,9 +71,8 @@ public class SortCommandTest
         IDtProject dtProject = dtProjectManager.getDtProject(project);
         assertNotNull(dtProject);
 
-        IStatus status = command.sortExistingProjects(new IProject[] { project });
+        commandExecutor.execute("sort-project --project-name-list [" + PROJECT_NAME + "]");
 
-        assertTrue(status.isOK());
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
         assertTrue(object instanceof Configuration);
 
@@ -101,10 +90,15 @@ public class SortCommandTest
     @Test
     public void testSortNonExisting() throws Exception
     {
-        IProject project = testingWorkspace.getProject("OtherProject");
-        IStatus status = command.sortExistingProjects(new IProject[] { project });
-
-        assertFalse(status.isOK());
+        try
+        {
+            commandExecutor.execute("sort-project --project-name-list [OtherProject]");
+            fail("Successfully sorted a non-existent project");
+        }
+        catch (CliCommandException e)
+        {
+            assertTrue(e.getCause().getMessage().contains("OtherProject"));
+        }
     }
 
     @Test
@@ -115,9 +109,8 @@ public class SortCommandTest
         IDtProject dtProject = dtProjectManager.getDtProject(project);
         assertNotNull(dtProject);
 
-        IStatus status = command.importAndSortProjects(new Path[] { project.getLocation().toFile().toPath() });
+        commandExecutor.execute("sort-project --project-list [\"" + project.getLocation().toFile().toPath() + "\"]");
 
-        assertTrue(status.isOK());
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
         assertTrue(object instanceof Configuration);
 
@@ -144,23 +137,4 @@ public class SortCommandTest
             }
         });
     }
-
-    private SortCommand createSortCommand() throws Exception
-    {
-        IConfigurationElement[] elements = Platform.getExtensionRegistry()
-            .getExtensionPoint("com.e1c.g5.v8.dt.cli.api", "cliCommand")
-            .getConfigurationElements();
-        for (int i = 0; i < elements.length; i++)
-        {
-            IConfigurationElement element = elements[i];
-            if (!CLASS_NAME.equals(element.getAttribute("class")))
-            {
-                continue;
-            }
-
-            return (SortCommand)element.createExecutableExtension("class");
-        }
-        return null;
-    }
-
 }
