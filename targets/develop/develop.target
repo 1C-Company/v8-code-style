@@ -13,7 +13,7 @@
 
 <!-- EDT -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2023.2/"/>
+<repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2023.3/"/>
 <unit id="com._1c.g5.aef.feature.feature.group" version="0.0.0"/>
 <unit id="com._1c.g5.commons.feature.group" version="0.0.0"/>
 <unit id="com._1c.g5.edt.license.feature.group" version="0.0.0"/>
