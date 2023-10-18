@@ -35,6 +35,31 @@ public final class ModuleRegionInformation
     private Map<String, ModuleRegionInformation> suffixes;
 
     /**
+     * Create and calculate module region offsets
+     *
+     * @param document actual {@link IDocument} to get offsets from, can't be {@code null}
+     * @param node {@link INode} to get offsets from, can't be {@code null}
+     * @param nodeAfter {@link INode} to get offsets from, can't be {@code null}
+     * @return module region information with calculated region offsets or {@code null}
+     */
+    public static ModuleRegionInformation create(IDocument document, INode node, INode nodeAfter)
+    {
+        try
+        {
+            int startLine = node.getTotalStartLine() - 1;
+            int startOffset = document.getLineOffset((startLine <= 1) ? 0 : startLine);
+            int endOffset = nodeAfter.getTotalOffset();
+            int insertOffset = document.getLineOffset(document.getLineOfOffset(nodeAfter.getTotalOffset()));
+            return new ModuleRegionInformation(startOffset, endOffset, insertOffset);
+        }
+        catch (BadLocationException ex)
+        {
+            UiPlugin.log(UiPlugin.createErrorStatus("Can't create module region information", ex)); //$NON-NLS-1$
+        }
+        return null;
+    }
+
+    /**
      * Start offset of module region
      *
      * @return offset before region declaration
@@ -127,30 +152,5 @@ public final class ModuleRegionInformation
         this.startOffset = startOffset;
         this.endOffset = endOffset;
         this.insertOffset = insertOffset;
-    }
-
-    /**
-     * Create and calculate module region offsets
-     *
-     * @param document actual {@link IDocument} to get offsets from, can't be {@code null}
-     * @param node {@link INode} to get offsets from, can't be {@code null}
-     * @param nodeAfter {@link INode} to get offsets from, can't be {@code null}
-     * @return module region information with calculated region offsets or {@code null}
-     */
-    public static ModuleRegionInformation create(IDocument document, INode node, INode nodeAfter)
-    {
-        try
-        {
-            int startLine = node.getTotalStartLine() - 1;
-            int startOffset = document.getLineOffset((startLine <= 1) ? 0 : startLine);
-            int endOffset = nodeAfter.getTotalOffset();
-            int insertOffset = document.getLineOffset(document.getLineOfOffset(nodeAfter.getTotalOffset()));
-            return new ModuleRegionInformation(startOffset, endOffset, insertOffset);
-        }
-        catch (BadLocationException ex)
-        {
-            UiPlugin.log(UiPlugin.createErrorStatus("Can't create module region information", ex)); //$NON-NLS-1$
-        }
-        return null;
     }
 }
