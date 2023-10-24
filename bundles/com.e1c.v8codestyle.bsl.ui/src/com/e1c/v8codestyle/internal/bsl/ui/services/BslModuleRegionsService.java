@@ -26,7 +26,7 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 import com._1c.g5.v8.dt.bsl.common.IBslModuleEventData;
 import com._1c.g5.v8.dt.bsl.common.IBslModuleInformation;
-import com._1c.g5.v8.dt.bsl.common.IBslModuleRegionsService;
+import com._1c.g5.v8.dt.bsl.common.IBslModuleInformationService;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
@@ -41,12 +41,12 @@ import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 
 /**
- * Implementation of {@link IBslModuleRegionsService}
+ * Implementation of {@link IBslModuleInformationService}
  *
  * @author Kuznetsov Nikita
  */
 public class BslModuleRegionsService
-    implements IBslModuleRegionsService
+    implements IBslModuleInformationService
 {
     @Override
     public IBslModuleInformation<?> getInformation(IXtextDocument document, Module module, int defaultPosition,
