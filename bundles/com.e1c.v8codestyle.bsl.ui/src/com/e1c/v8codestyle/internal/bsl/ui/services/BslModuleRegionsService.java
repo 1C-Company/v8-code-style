@@ -16,13 +16,27 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
+import com._1c.g5.v8.dt.bsl.common.IBslModuleEventData;
+import com._1c.g5.v8.dt.bsl.common.IBslModuleInformation;
 import com._1c.g5.v8.dt.bsl.common.IBslModuleRegionsService;
+import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
-import com._1c.g5.v8.dt.common.Pair;
+import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
+import com._1c.g5.v8.dt.bsl.resource.owner.BslOwnerComputerService;
+import com._1c.g5.v8.dt.bsl.ui.event.BslModuleEventRegionData;
+import com._1c.g5.v8.dt.bsl.ui.event.EventItemType;
+import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.mcore.NamedElement;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 
@@ -34,44 +48,55 @@ import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 public class BslModuleRegionsService
     implements IBslModuleRegionsService
 {
-    private static final String FORM_NAME = "Form"; //$NON-NLS-1$
-    private static final String GRAPHICAL_SCHEME_NAME = "GraphicalScheme"; //$NON-NLS-1$
-
     @Override
-    public Pair<Integer, String> getRegionInformation(IXtextDocument document,
-        List<RegionPreprocessor> regionPreprocessors, String suffix, int defaultOffset, ScriptVariant scriptVariant,
-        String eventOwnerRootName, boolean isMain, boolean isCommand, boolean isTable)
+    public IBslModuleInformation<?> getInformation(IXtextDocument document, Module module, int defaultPosition,
+        IBslModuleEventData<?> data)
     {
-        String declaredRegionName =
-            getDeclaredRegionName(eventOwnerRootName, isMain, isCommand, isTable, scriptVariant);
-        Map<String, ModuleRegionInformation> regionOffsets =
+        if (!(data instanceof BslModuleEventRegionData))
+        {
+            return BslModuleRegionInformation.create(module, defaultPosition, null);
+        }
+        URI moduleResourceURI = module.eResource().getURI();
+        IResourceServiceProvider rsp =
+            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceURI);
+        IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
+        BslOwnerComputerService bslOwnerComputerService = rsp.get(BslOwnerComputerService.class);
+        IV8Project project = projectManager.getProject(moduleResourceURI);
+        EClass moduleOwner = bslOwnerComputerService.computeOwnerEClass(module);
+        BslModuleEventRegionData regionData = (BslModuleEventRegionData)data;
+        EObject eventOwner = regionData.getEventOwner();
+        EventItemType itemType = regionData.getData();
+        String suffix = getSuffix(eventOwner, itemType);
+        List<RegionPreprocessor> regionPreprocessors = BslUtil.getAllRegionPreprocessors(module);
+        ScriptVariant scriptVariant = project.getScriptVariant();
+        String declaredRegionName = getDeclaredRegionName(moduleOwner, itemType, scriptVariant);
+        Map<String, BslModuleOffsets> regionOffsets =
             getRegionOffsets(document, regionPreprocessors, declaredRegionName, scriptVariant);
-        int offset = getRegionOffset(regionOffsets, declaredRegionName, suffix, defaultOffset, scriptVariant);
+        int offset = getRegionOffset(regionOffsets, declaredRegionName, suffix, defaultPosition, scriptVariant);
         String regionName = null;
         if (!isRegionExists(regionOffsets, declaredRegionName, suffix))
         {
             regionName = suffix.isEmpty() ? declaredRegionName : (declaredRegionName + suffix);
         }
-        return new Pair<>(offset, regionName);
+        return BslModuleRegionInformation.create(module, offset, regionName);
     }
 
     @Override
-    public String wrapByRegion(String content, String regionName, String beginRegion, String endRegion, String space,
-        String lineSeparator)
+    public String wrap(String content, String name, String begin, String end, String space, String lineSeparator)
     {
         StringBuilder builder = new StringBuilder();
-        builder.append(lineSeparator).append(beginRegion).append(space).append(regionName);
-        builder.append(content);
-        builder.append(endRegion);
+        builder.append(lineSeparator).append(begin).append(space).append(name);
+        builder.append(lineSeparator).append(content).append(lineSeparator);
+        builder.append(end);
         builder.append(lineSeparator);
         return builder.toString();
     }
 
-    private Map<String, ModuleRegionInformation> getRegionOffsets(IXtextDocument document,
+    private Map<String, BslModuleOffsets> getRegionOffsets(IXtextDocument document,
         List<RegionPreprocessor> regionPreprocessors, String targetRegionName, ScriptVariant scriptVariant)
     {
         ModuleStructureSection[] declaredRegionNames = ModuleStructureSection.values();
-        Map<String, ModuleRegionInformation> regionOffsets = new HashMap<>(declaredRegionNames.length / 2);
+        Map<String, BslModuleOffsets> regionOffsets = new HashMap<>(declaredRegionNames.length / 2);
         for (RegionPreprocessor regionPreprocessor : regionPreprocessors)
         {
             INode nodeAfter = NodeModelUtils.findActualNodeFor(regionPreprocessor.getItemAfter());
@@ -88,7 +113,7 @@ public class BslModuleRegionsService
                         INode node = NodeModelUtils.findActualNodeFor(regionPreprocessor.getItem());
                         if (node != null)
                         {
-                            ModuleRegionInformation moduleRegionInformation = null;
+                            BslModuleOffsets moduleRegionInformation = null;
                             if (!preprocessorRegionName.equals(declaredRegionName))
                             {
                                 if (!moduleStructureSection.isSuffixed())
@@ -99,7 +124,7 @@ public class BslModuleRegionsService
                                 moduleRegionInformation = regionOffsets.get(declaredRegionName);
                                 if (moduleRegionInformation == null)
                                 {
-                                    moduleRegionInformation = ModuleRegionInformation.create(document, node, nodeAfter);
+                                    moduleRegionInformation = BslModuleOffsets.create(document, node, nodeAfter);
                                     if (moduleRegionInformation == null)
                                     {
                                         return regionOffsets;
@@ -109,7 +134,7 @@ public class BslModuleRegionsService
                             }
                             if (moduleRegionInformation == null && !moduleStructureSection.isSuffixed())
                             {
-                                moduleRegionInformation = ModuleRegionInformation.create(document, node, nodeAfter);
+                                moduleRegionInformation = BslModuleOffsets.create(document, node, nodeAfter);
                             }
                             if (moduleRegionInformation != null)
                             {
@@ -127,17 +152,17 @@ public class BslModuleRegionsService
         return regionOffsets;
     }
 
-    private int getRegionOffset(Map<String, ModuleRegionInformation> regionOffsets, String declaredRegionName,
-        String suffix, int defaultOffset, ScriptVariant scriptVariant)
+    private int getRegionOffset(Map<String, BslModuleOffsets> regionOffsets, String declaredRegionName, String suffix,
+        int defaultOffset, ScriptVariant scriptVariant)
     {
         int offset = defaultOffset;
         boolean createNewRegion = !isRegionExists(regionOffsets, declaredRegionName, suffix);
-        ModuleRegionInformation regionOffset = regionOffsets.get(declaredRegionName);
+        BslModuleOffsets regionOffset = regionOffsets.get(declaredRegionName);
         if (regionOffset != null)
         {
             if (!suffix.isEmpty())
             {
-                ModuleRegionInformation suffixedRegionInformation = regionOffset.getInformationBySuffix(suffix);
+                BslModuleOffsets suffixedRegionInformation = regionOffset.getInformationBySuffix(suffix);
                 if (suffixedRegionInformation != null)
                 {
                     return suffixedRegionInformation.getBeforeEndOffset();
@@ -156,16 +181,16 @@ public class BslModuleRegionsService
         return offset;
     }
 
-    private boolean isRegionExists(Map<String, ModuleRegionInformation> regionOffsets, String declaredRegionName,
+    private boolean isRegionExists(Map<String, BslModuleOffsets> regionOffsets, String declaredRegionName,
         String suffix)
     {
-        ModuleRegionInformation moduleRegionInformation = regionOffsets.get(declaredRegionName);
+        BslModuleOffsets moduleRegionInformation = regionOffsets.get(declaredRegionName);
         return (moduleRegionInformation != null)
             && (suffix.isEmpty() || moduleRegionInformation.getInformationBySuffix(suffix) != null);
     }
 
-    private int getNewRegionOffset(Map<String, ModuleRegionInformation> regionOffsets, String regionName,
-        String suffix, int defaultOffset, ScriptVariant scriptVariant)
+    private int getNewRegionOffset(Map<String, BslModuleOffsets> regionOffsets, String regionName, String suffix,
+        int defaultOffset, ScriptVariant scriptVariant)
     {
         boolean placeBefore = false;
         int offset = regionOffsets.isEmpty() ? 0 : defaultOffset;
@@ -178,7 +203,7 @@ public class BslModuleRegionsService
             {
                 placeBefore = true;
             }
-            ModuleRegionInformation regionInformation = regionOffsets.get(declaredRegionName);
+            BslModuleOffsets regionInformation = regionOffsets.get(declaredRegionName);
             if (regionInformation != null)
             {
                 if (placeBefore && (suffix.isEmpty() || !declaredRegionName.equals(regionName)))
@@ -191,46 +216,60 @@ public class BslModuleRegionsService
         return offset;
     }
 
-    private String getDeclaredRegionName(String eventOwnerRootName, boolean isMain, boolean isCommand, boolean isTable,
-        ScriptVariant scriptVariant)
+    private String getDeclaredRegionName(EClass moduleOwnerClass, EventItemType itemType, ScriptVariant scriptVariant)
     {
-        if (eventOwnerRootName.equals(FORM_NAME))
+        String moduleOwnerName = moduleOwnerClass.getName();
+        switch (moduleOwnerName)
         {
-            return getDeclaredRegionNameForForm(isMain, isCommand, isTable, scriptVariant);
+        case "AbstractForm": //$NON-NLS-1$
+            return getDeclaredRegionNameForForm(itemType, scriptVariant);
+        case "WebService": //$NON-NLS-1$
+        case "HTTPService": //$NON-NLS-1$
+        case "IntegrationService": //$NON-NLS-1$
+            return getPrivateRegionName(scriptVariant);
+        default:
+            return getDefaultRegionName(scriptVariant);
         }
-        if (eventOwnerRootName.equals(GRAPHICAL_SCHEME_NAME))
-        {
-            return getDeclaredRegionNameForGraphicalScheme(scriptVariant);
-        }
-        return getDefaultRegionName(scriptVariant);
     }
 
-    private String getDeclaredRegionNameForForm(boolean isMain, boolean isCommand, boolean isTable,
-        ScriptVariant scriptVariant)
+    private String getDeclaredRegionNameForForm(EventItemType itemType, ScriptVariant scriptVariant)
     {
-        if (isMain)
+        switch (itemType)
         {
+        case MAIN:
             return ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant);
-        }
-        else if (isCommand)
-        {
+        case COMMAND:
             return ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
-        }
-        else if (isTable)
-        {
+        case TABLE:
             return ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
+        default:
+            return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
         }
-        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant);
     }
 
-    private String getDeclaredRegionNameForGraphicalScheme(ScriptVariant scriptVariant)
+    private String getPrivateRegionName(ScriptVariant scriptVariant)
     {
-        return ModuleStructureSection.EVENT_HANDLERS.getName(scriptVariant);
+        return ModuleStructureSection.PRIVATE.getName(scriptVariant);
     }
 
     private String getDefaultRegionName(ScriptVariant scriptVariant)
     {
-        return ModuleStructureSection.PRIVATE.getName(scriptVariant);
+        return ModuleStructureSection.EVENT_HANDLERS.getName(scriptVariant);
+    }
+
+    private String getSuffix(EObject eventOwner, EventItemType itemType)
+    {
+        if (itemType.equals(EventItemType.TABLE))
+        {
+            while ((eventOwner = eventOwner.eContainer()) != null)
+            {
+                if (eventOwner instanceof NamedElement && eventOwner.eClass().getName().equals("Table")) //$NON-NLS-1$
+                {
+                    return ((NamedElement)eventOwner).getName();
+                }
+            }
+        }
+        return StringUtils.EMPTY;
     }
 
     private String getSuffixOfMatchingRegion(String regionName, String declaredRegionName)

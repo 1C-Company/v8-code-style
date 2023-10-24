@@ -26,13 +26,13 @@ import com.e1c.v8codestyle.internal.bsl.ui.UiPlugin;
  *
  * @author Kuznetsov Nikita
  */
-public final class ModuleRegionInformation
+public final class BslModuleOffsets
 {
     private int startOffset;
     private int endOffset;
     private int insertOffset;
 
-    private Map<String, ModuleRegionInformation> suffixes;
+    private Map<String, BslModuleOffsets> suffixes;
 
     /**
      * Create and calculate module region offsets
@@ -42,7 +42,7 @@ public final class ModuleRegionInformation
      * @param nodeAfter {@link INode} to get offsets from, can't be {@code null}
      * @return module region information with calculated region offsets or {@code null}
      */
-    public static ModuleRegionInformation create(IDocument document, INode node, INode nodeAfter)
+    public static BslModuleOffsets create(IDocument document, INode node, INode nodeAfter)
     {
         try
         {
@@ -50,7 +50,7 @@ public final class ModuleRegionInformation
             int startOffset = document.getLineOffset((startLine <= 1) ? 0 : startLine);
             int endOffset = nodeAfter.getTotalOffset();
             int insertOffset = document.getLineOffset(document.getLineOfOffset(nodeAfter.getTotalOffset()));
-            return new ModuleRegionInformation(startOffset, endOffset, insertOffset);
+            return new BslModuleOffsets(startOffset, endOffset, insertOffset);
         }
         catch (BadLocationException ex)
         {
@@ -103,7 +103,7 @@ public final class ModuleRegionInformation
         {
             suffixes = new HashMap<>();
         }
-        ModuleRegionInformation suffixRegionInformation = create(document, node, nodeAfter);
+        BslModuleOffsets suffixRegionInformation = create(document, node, nodeAfter);
         if (suffixRegionInformation != null)
         {
             suffixes.put(suffix, suffixRegionInformation);
@@ -136,9 +136,9 @@ public final class ModuleRegionInformation
      * Get module region information by suffix if exists
      *
      * @param suffix {@link String} suffix of declared name module region
-     * @return {@link ModuleRegionInformation} if suffix exists, {@code null} otherwise
+     * @return {@link BslModuleOffsets} if suffix exists, {@code null} otherwise
      */
-    public ModuleRegionInformation getInformationBySuffix(String suffix)
+    public BslModuleOffsets getInformationBySuffix(String suffix)
     {
         if (hasSuffixes())
         {
@@ -147,7 +147,7 @@ public final class ModuleRegionInformation
         return null;
     }
 
-    private ModuleRegionInformation(int startOffset, int endOffset, int insertOffset)
+    private BslModuleOffsets(int startOffset, int endOffset, int insertOffset)
     {
         this.startOffset = startOffset;
         this.endOffset = endOffset;
