@@ -12,22 +12,17 @@ import com._1c.g5.v8.dt.bsl.model.Module;
  * @author Kuznetsov Nikita
  */
 public class BslModuleRegionInformation
-    implements IBslModuleInformation<String>
+    implements IBslModuleInformation
 {
     private final Module module;
     private final int insertPosition;
-    private final String wrapData;
+    private final String regionName;
 
-    public static IBslModuleInformation<String> create(Module module, int insertPosition, String wrapData)
-    {
-        return new BslModuleRegionInformation(module, insertPosition, wrapData);
-    }
-
-    private BslModuleRegionInformation(Module module, int insertPosition, String wrapData)
+    public BslModuleRegionInformation(Module module, int insertPosition, String regionName)
     {
         this.module = module;
         this.insertPosition = insertPosition;
-        this.wrapData = wrapData;
+        this.regionName = regionName;
     }
 
     @Override
@@ -42,9 +37,8 @@ public class BslModuleRegionInformation
         return insertPosition;
     }
 
-    @Override
-    public String getData()
+    public String getRegionName()
     {
-        return wrapData;
+        return regionName;
     }
 }
