@@ -34,6 +34,7 @@ import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.bsl.resource.owner.BslOwnerComputerService;
 import com._1c.g5.v8.dt.bsl.ui.BslGeneratorMultiLangProposals;
 import com._1c.g5.v8.dt.bsl.ui.event.BslModuleEventData;
+import com._1c.g5.v8.dt.common.PreferenceUtils;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -55,14 +56,14 @@ public class BslModuleRegionsService
     {
         if (!(data instanceof BslModuleEventData))
         {
-            return new BslModuleRegionInformation(module, defaultPosition, null);
+            return () -> defaultPosition;
         }
         URI moduleResourceURI = module.eResource().getURI();
         IResourceServiceProvider rsp =
             IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceURI);
         IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
-        IV8Project project = projectManager.getProject(moduleResourceURI);
         BslOwnerComputerService bslOwnerComputerService = rsp.get(BslOwnerComputerService.class);
+        IV8Project project = projectManager.getProject(moduleResourceURI);
         EClass moduleOwner = bslOwnerComputerService.computeOwnerEClass(module);
         EObject eventOwner = data.getEventOwner();
         BslModuleEventData regionData = (BslModuleEventData)data;
@@ -79,35 +80,39 @@ public class BslModuleRegionsService
         {
             regionName = suffix.isEmpty() ? declaredRegionName : (declaredRegionName + suffix);
         }
-        return new BslModuleRegionInformation(module, offset, regionName);
-
+        return new BslModuleRegionInformation(offset, module, regionName);
     }
 
     @Override
-    public String wrap(String content, IBslModuleInformation name, String lineSeparator)
+    public String wrap(IBslModuleInformation moduleInformation, String content)
     {
-        if (!(name instanceof BslModuleRegionInformation))
+        if (moduleInformation instanceof BslModuleRegionInformation)
         {
-            return content;
+            BslModuleRegionInformation moduleRegionInformation = (BslModuleRegionInformation)moduleInformation;
+            Module module = moduleInformation.getModule();
+            String regionName = moduleRegionInformation.getRegionName();
+            if (module != null && regionName != null)
+            {
+                URI moduleResourceURI = module.eResource().getURI();
+                IResourceServiceProvider rsp =
+                    IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceURI);
+                IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
+                BslGeneratorMultiLangProposals proposals = rsp.get(BslGeneratorMultiLangProposals.class);
+                IV8Project project = projectManager.getProject(moduleResourceURI);
+                String lineSeparator = PreferenceUtils.getLineSeparator(project.getProject());
+                proposals.setRussianLang(ScriptVariant.RUSSIAN.equals(project.getScriptVariant()));
+                String beginRegion = proposals.getBeginRegionPropStr();
+                String endRegion = proposals.getEndRegionPropStr();
+                String space = proposals.getSpacePropStr();
+                StringBuilder builder = new StringBuilder();
+                builder.append(lineSeparator).append(beginRegion).append(space).append(regionName);
+                builder.append(lineSeparator).append(content).append(lineSeparator);
+                builder.append(endRegion);
+                builder.append(lineSeparator);
+                return builder.toString();
+            }
         }
-        IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl"));//$NON-NLS-1$
-        IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
-        IV8Project project = projectManager.getProject(name.getModule());
-        BslGeneratorMultiLangProposals proposals = rsp.get(BslGeneratorMultiLangProposals.class);
-        proposals.setRussianLang(ScriptVariant.RUSSIAN.equals(project.getScriptVariant()));
-        String beginRegion = proposals.getBeginRegionPropStr();
-        String endRegion = proposals.getEndRegionPropStr();
-        String space = proposals.getSpacePropStr();
-        StringBuilder builder = new StringBuilder();
-        builder.append(lineSeparator)
-            .append(beginRegion)
-            .append(space)
-            .append(((BslModuleRegionInformation)name).getRegionName());
-        builder.append(lineSeparator).append(content).append(lineSeparator);
-        builder.append(endRegion);
-        builder.append(lineSeparator);
-        return builder.toString();
+        return content;
     }
 
     private Map<String, BslModuleOffsets> getRegionOffsets(IXtextDocument document,
