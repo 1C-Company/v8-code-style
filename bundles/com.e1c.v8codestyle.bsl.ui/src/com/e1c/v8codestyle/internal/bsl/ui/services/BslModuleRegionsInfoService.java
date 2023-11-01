@@ -26,8 +26,8 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 import com._1c.g5.v8.dt.bsl.common.EventItemType;
 import com._1c.g5.v8.dt.bsl.common.IBslModuleEventData;
-import com._1c.g5.v8.dt.bsl.common.IBslModuleInformation;
-import com._1c.g5.v8.dt.bsl.common.IBslModuleInformationService;
+import com._1c.g5.v8.dt.bsl.common.IBslModuleTextInsertInfo;
+import com._1c.g5.v8.dt.bsl.common.IBslModuleTextInsertInfoService;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
@@ -38,21 +38,22 @@ import com._1c.g5.v8.dt.common.PreferenceUtils;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.form.model.FormPackage;
 import com._1c.g5.v8.dt.mcore.NamedElement;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 
 /**
- * Implementation of {@link IBslModuleInformationService}
+ * Module regions related implementation of {@link IBslModuleTextInsertInfoService}
  *
  * @author Kuznetsov Nikita
  */
-public class BslModuleRegionsService
-    implements IBslModuleInformationService
+public class BslModuleRegionsInfoService
+    implements IBslModuleTextInsertInfoService
 {
     @Override
-    public IBslModuleInformation getInformation(IXtextDocument document, Module module, int defaultPosition,
-        IBslModuleEventData data)
+    public IBslModuleTextInsertInfo getEventHandlerTextInsertInfo(IXtextDocument document, Module module,
+        int defaultPosition, IBslModuleEventData data)
     {
         if (!(data instanceof BslModuleEventData))
         {
@@ -80,16 +81,16 @@ public class BslModuleRegionsService
         {
             regionName = suffix.isEmpty() ? declaredRegionName : (declaredRegionName + suffix);
         }
-        return new BslModuleRegionInformation(offset, module, regionName);
+        return new BslModuleRegionsInfo(offset, module, regionName);
     }
 
     @Override
-    public String wrap(IBslModuleInformation moduleInformation, String content)
+    public String wrap(IBslModuleTextInsertInfo moduleTextInsertInfo, String content)
     {
-        if (moduleInformation instanceof BslModuleRegionInformation)
+        if (moduleTextInsertInfo instanceof BslModuleRegionsInfo)
         {
-            BslModuleRegionInformation moduleRegionInformation = (BslModuleRegionInformation)moduleInformation;
-            Module module = moduleInformation.getModule();
+            BslModuleRegionsInfo moduleRegionInformation = (BslModuleRegionsInfo)moduleTextInsertInfo;
+            Module module = moduleTextInsertInfo.getModule();
             String regionName = moduleRegionInformation.getRegionName();
             if (module != null && regionName != null)
             {
@@ -286,7 +287,7 @@ public class BslModuleRegionsService
         {
             while ((eventOwner = eventOwner.eContainer()) != null)
             {
-                if (eventOwner instanceof NamedElement && eventOwner.eClass().getName().equals("Table")) //$NON-NLS-1$
+                if (eventOwner.eClass() == FormPackage.Literals.TABLE)
                 {
                     return ((NamedElement)eventOwner).getName();
                 }

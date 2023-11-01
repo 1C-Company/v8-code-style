@@ -369,10 +369,10 @@
     </fix>
  </extension>
  <extension
-       point="com._1c.g5.v8.dt.bsl.ui.bslModuleInformationService">
-    <bslModuleInformationService
-          class="com.e1c.v8codestyle.internal.bsl.ui.services.BslModuleRegionsService">
-    </bslModuleInformationService>
+       point="com._1c.g5.v8.dt.bsl.ui.bslModuleTextInsertInfoService">
+    <bslModuleTextInsertInfoService
+          class="com.e1c.v8codestyle.internal.bsl.ui.services.BslModuleRegionsInfoService">
+    </bslModuleTextInsertInfoService>
  </extension>
 
 </plugin>

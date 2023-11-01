@@ -3,7 +3,7 @@
  */
 package com.e1c.v8codestyle.internal.bsl.ui.services;
 
-import com._1c.g5.v8.dt.bsl.common.IBslModuleInformation;
+import com._1c.g5.v8.dt.bsl.common.IBslModuleTextInsertInfo;
 import com._1c.g5.v8.dt.bsl.model.Module;
 
 /**
@@ -11,21 +11,21 @@ import com._1c.g5.v8.dt.bsl.model.Module;
  *
  * @author Kuznetsov Nikita
  */
-public class BslModuleRegionInformation
-    implements IBslModuleInformation
+public class BslModuleRegionsInfo
+    implements IBslModuleTextInsertInfo
 {
     private final int insertPosition;
     private final Module module;
     private final String regionName;
 
     /**
-     * {@link BslModuleRegionInformation} constructor
+     * {@link BslModuleRegionsInfo} constructor
      *
-     * @param insertPosition
+     * @param insertPosition <code>int</code> insertion offset, cannot be negative
      * @param module current {@link Module}, cannot be <code>null</code>
-     * @param regionName
+     * @param regionName {@link String} region name, can be <code>null</code>
      */
-    public BslModuleRegionInformation(int insertPosition, Module module, String regionName)
+    public BslModuleRegionsInfo(int insertPosition, Module module, String regionName)
     {
         this.insertPosition = insertPosition;
         this.module = module;
@@ -45,7 +45,7 @@ public class BslModuleRegionInformation
     }
 
     /**
-     * Get region name
+     * Returns region name
      *
      * @return {@link String} region name, can be <code>null</code>
      */

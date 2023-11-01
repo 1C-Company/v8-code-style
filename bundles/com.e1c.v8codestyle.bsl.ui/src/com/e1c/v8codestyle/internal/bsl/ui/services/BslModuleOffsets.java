@@ -60,7 +60,7 @@ public final class BslModuleOffsets
     }
 
     /**
-     * Start offset of module region
+     * Returns start offset of module region
      *
      * @return offset before region declaration
      */
@@ -70,7 +70,7 @@ public final class BslModuleOffsets
     }
 
     /**
-     * End offset of module region
+     * Returns end offset of module region
      *
      * @return offset after region declaration
      */
@@ -80,7 +80,7 @@ public final class BslModuleOffsets
     }
 
     /**
-     * Before end offset inside module region
+     * Returns before end offset inside module region
      *
      * @return offset before end of region declaration
      */
@@ -133,7 +133,7 @@ public final class BslModuleOffsets
     }
 
     /**
-     * Get module region information by suffix if exists
+     * Returns module region information by suffix if exists
      *
      * @param suffix {@link String} suffix of declared name module region
      * @return {@link BslModuleOffsets} if suffix exists, {@code null} otherwise
