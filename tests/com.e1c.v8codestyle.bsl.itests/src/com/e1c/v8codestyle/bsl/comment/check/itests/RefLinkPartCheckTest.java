@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
@@ -66,6 +67,7 @@ public class RefLinkPartCheckTest
      * @throws Exception the exception
      */
     @Test
+    @Ignore("https://github.com/1C-Company/v8-code-style/issues/1376")
     public void testInvalidLinks() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "doc-comment-ref-link.bsl");
