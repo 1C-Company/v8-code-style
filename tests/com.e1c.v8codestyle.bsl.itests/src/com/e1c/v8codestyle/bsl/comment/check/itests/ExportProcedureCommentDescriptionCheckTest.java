@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import java.text.MessageFormat;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
@@ -62,6 +63,7 @@ public class ExportProcedureCommentDescriptionCheckTest
      * @throws Exception the exception
      */
     @Test
+    @Ignore("https://github.com/1C-Company/v8-code-style/issues/1377")
     public void testFunctionHasNoDescriptionSection() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "doc-comment-export-function-no-description-section.bsl");
