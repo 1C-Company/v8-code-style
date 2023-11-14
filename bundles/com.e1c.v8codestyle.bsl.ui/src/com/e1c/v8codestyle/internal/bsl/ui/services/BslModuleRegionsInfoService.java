@@ -59,12 +59,12 @@ public class BslModuleRegionsInfoService
         {
             return () -> defaultPosition;
         }
-        URI moduleResourceURI = module.eResource().getURI();
+        URI moduleResourceUri = module.eResource().getURI();
         IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceURI);
+            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceUri);
         IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
         BslOwnerComputerService bslOwnerComputerService = rsp.get(BslOwnerComputerService.class);
-        IV8Project project = projectManager.getProject(moduleResourceURI);
+        IV8Project project = projectManager.getProject(moduleResourceUri);
         EClass moduleOwner = bslOwnerComputerService.computeOwnerEClass(module);
         EObject eventOwner = data.getEventOwner();
         BslModuleEventData regionData = (BslModuleEventData)data;
@@ -94,12 +94,12 @@ public class BslModuleRegionsInfoService
             String regionName = moduleRegionInformation.getRegionName();
             if (module != null && regionName != null)
             {
-                URI moduleResourceURI = module.eResource().getURI();
+                URI moduleResourceUri = module.eResource().getURI();
                 IResourceServiceProvider rsp =
-                    IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceURI);
+                    IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceUri);
                 IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
                 BslGeneratorMultiLangProposals proposals = rsp.get(BslGeneratorMultiLangProposals.class);
-                IV8Project project = projectManager.getProject(moduleResourceURI);
+                IV8Project project = projectManager.getProject(moduleResourceUri);
                 String lineSeparator = PreferenceUtils.getLineSeparator(project.getProject());
                 proposals.setRussianLang(ScriptVariant.RUSSIAN.equals(project.getScriptVariant()));
                 String beginRegion = proposals.getBeginRegionPropStr();
@@ -285,11 +285,12 @@ public class BslModuleRegionsInfoService
     {
         if (itemType.equals(EventItemType.TABLE))
         {
-            while ((eventOwner = eventOwner.eContainer()) != null)
+            EObject container;
+            while ((container = eventOwner.eContainer()) != null)
             {
-                if (eventOwner.eClass() == FormPackage.Literals.TABLE)
+                if (container.eClass() == FormPackage.Literals.TABLE)
                 {
-                    return ((NamedElement)eventOwner).getName();
+                    return ((NamedElement)container).getName();
                 }
             }
         }
