@@ -324,12 +324,18 @@ public abstract class RoleRightSetCheck
             return "Unknown"; //$NON-NLS-1$
         }
 
-        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN
+            && MdUtil.getFullyQualifiedNameRu(mdObject) != null)
         {
             return MdUtil.getFullyQualifiedNameRu(mdObject).toString();
         }
 
-        return MdUtil.getFullyQualifiedName(mdObject).toString();
+        if (MdUtil.getFullyQualifiedName(mdObject) != null)
+        {
+            return MdUtil.getFullyQualifiedName(mdObject).toString();
+        }
+
+        return "Unknown"; //$NON-NLS-1$
     }
 
     private Collection<MdObject> getDefaultObjectsWithRight(RoleDescription description, IProgressMonitor monitor)
