@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.comment.check.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String CollectionTypeDefinitionCheck_Collection_type_should_have_contain_item_type;
     public static String CollectionTypeDefinitionCheck_Collection_types;
     public static String CollectionTypeDefinitionCheck_description;
