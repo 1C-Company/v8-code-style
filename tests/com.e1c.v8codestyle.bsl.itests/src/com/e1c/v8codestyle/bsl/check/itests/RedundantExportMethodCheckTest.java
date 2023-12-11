@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.Path;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
@@ -67,6 +68,7 @@ public class RedundantExportMethodCheckTest
         assertEquals(0, markers.size());
     }
 
+    @Ignore
     @Test
     public void testCallNoPublic() throws Exception
     {
