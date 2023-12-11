@@ -65,6 +65,10 @@ final class Messages
     public static String DbObjectAnyRefCheck_AnyRef;
     public static String DbObjectAnyRefCheck_Description;
     public static String DbObjectAnyRefCheck_Title;
+    public static String DbObjectMaxNumberLengthCheck_description;
+    public static String DbObjectMaxNumberLengthCheck_message;
+    public static String DbObjectMaxNumberLengthCheck_parameter;
+    public static String DbObjectMaxNumberLengthCheck_title;
     public static String DocumentPostInPrivilegedModeCheck_description;
     public static String DocumentPostInPrivilegedModeCheck_message_Post_in_privileged_mode;
     public static String DocumentPostInPrivilegedModeCheck_message_Unpost_in_privileged_mode;

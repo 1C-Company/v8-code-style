@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f0f18fb0-3d0d-41d9-8af4-4bafd15119bd">
+  <producedTypes>
+    <objectType typeId="33306c15-7cd6-49a9-a05b-a68d9a5e144a" valueTypeId="68a68e62-0749-4761-9fd3-29827fac8655"/>
+    <refType typeId="c95aaf72-6d62-4be3-a643-3facd2476f9a" valueTypeId="51974e59-18d9-46de-ba66-53aa73b81c8b"/>
+    <selectionType typeId="2eb21769-9d44-4f0a-893d-27a1904babe3" valueTypeId="46ef7d52-ee9e-45cf-9818-6b79e593806c"/>
+    <listType typeId="2debf106-20c5-46cd-834a-e68540a16585" valueTypeId="06837688-1dfa-4988-a7fd-9fcb175ffa98"/>
+    <managerType typeId="9ab64266-acf8-459b-bbb7-c5afbb57b44b" valueTypeId="0c5726c3-e204-4eb7-9790-4943a587d42f"/>
+  </producedTypes>
+  <name>Test</name>
+  <synonym>
+    <key>en</key>
+    <value>Test</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Test.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Test.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="439b11ce-a91f-463e-97c4-d81f4cd06540">
+    <name>Correct</name>
+    <synonym>
+      <key>en</key>
+      <value>Correct</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>31</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="2711edb1-235c-4dc4-8245-32df553398bd">
+    <name>Incorrect</name>
+    <synonym>
+      <key>en</key>
+      <value>Incorrect</value>
+    </synonym>
+    <type>
+      <types>Number</types>
+      <numberQualifiers>
+        <precision>32</precision>
+      </numberQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="a7d7d4c4-c79a-4e3f-8abc-1564ec47b820">
+    <name>DefinedCorrect</name>
+    <synonym>
+      <key>en</key>
+      <value>Defined correct</value>
+    </synonym>
+    <type>
+      <types>DefinedType.Correct</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <attributes uuid="72671264-7da0-4838-92ae-1f61cb6a94f5">
+    <name>DefinedTooLong</name>
+    <synonym>
+      <key>en</key>
+      <value>Defined too long</value>
+    </synonym>
+    <type>
+      <types>DefinedType.TooLong</types>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+</mdclass:Catalog>
