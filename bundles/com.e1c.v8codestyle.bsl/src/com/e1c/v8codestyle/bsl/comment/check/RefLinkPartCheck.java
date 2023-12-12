@@ -193,8 +193,10 @@ public class RefLinkPartCheck
                 LinkPart link = (LinkPart)part;
 
                 int globalOffset = 0;
-                if (offsets.length != 0)
+                if (offsets.length <= link.getLineNumber())
+                {
                     globalOffset = offsets[link.getLineNumber()];
+                }
 
                 link.setLinkTextOffset(globalOffset + link.getLinkTextOffset());
 

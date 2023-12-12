@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2023, 1C
+ * Copyright (C) 2023, 1C-Soft LLC and others.
  */
 package com.e1c.v8codestyle.bsl;
 
@@ -56,9 +56,13 @@ public final class BslUtils
         {
             ILeafNode leafNode = it.next();
             if (leafNode.getOffset() < skipBefore)
+            {
                 continue;
+            }
             if (leafNode.getOffset() >= until)
+            {
                 return allComments;
+            }
 
             if (leafNode.isHidden() && BslCommentUtils.isCommentNode(leafNode))
             {
@@ -71,7 +75,9 @@ public final class BslUtils
             }
         }
         if (!found.isEmpty())
+        {
             allComments.add(found);
+        }
 
         return allComments;
     }
@@ -88,7 +94,9 @@ public final class BslUtils
         for (INode node : nodes)
             result.compute(node.getText(), (key, list) -> {
                 if (list == null)
+                {
                     list = new LinkedList<>();
+                }
                 list.add(node);
                 return list;
             });
