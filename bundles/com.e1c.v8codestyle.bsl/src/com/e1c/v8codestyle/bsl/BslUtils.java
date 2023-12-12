@@ -1,6 +1,15 @@
-/**
- * Copyright (C) 2023, 1C-Soft LLC and others.
- */
+/*******************************************************************************
+ * Copyright (C) 2021, 1C-Soft LLC and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *******************************************************************************/
 package com.e1c.v8codestyle.bsl;
 
 import java.util.ArrayList;
@@ -92,6 +101,7 @@ public final class BslUtils
     {
         Map<String, List<INode>> result = new HashMap<>();
         for (INode node : nodes)
+        {
             result.compute(node.getText(), (key, list) -> {
                 if (list == null)
                 {
@@ -100,6 +110,7 @@ public final class BslUtils
                 list.add(node);
                 return list;
             });
+        }
         return result;
     }
 
@@ -114,8 +125,7 @@ public final class BslUtils
      * @return the link part last object
      */
     public static Optional<EObject> getLinkPartLastObject(LinkPart linkPart, IScopeProvider scopeProvider,
-        EObject context,
-        BmOperationContext typeComputationContext)
+        EObject context, BmOperationContext typeComputationContext)
     {
 
         if (linkPart.getPartsWithOffset().size() > 1 && (linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$

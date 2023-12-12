@@ -218,20 +218,18 @@ public class RefLinkPartCheck
 
             if (returnSection.getReturnTypes() != null)
             {
-               List<IDescriptionPart> parts = returnSection.getReturnTypes()
-                   .stream()
-                   .flatMap(t -> t.getDescription().getParts().stream())
-                   .collect(Collectors.toList());
-               result.addAll(getLinkParts(parts));
+                List<IDescriptionPart> parts = returnSection.getReturnTypes()
+                    .stream()
+                    .flatMap(t -> t.getDescription().getParts().stream())
+                    .collect(Collectors.toList());
+                result.addAll(getLinkParts(parts));
             }
         }
 
         ParametersSection parametersSection = comment.getParametersSection();
         if (parametersSection != null)
         {
-            result.addAll(getLinkParts(parametersSection
-                .getDescription()
-                .getParts()));
+            result.addAll(getLinkParts(parametersSection.getDescription().getParts()));
 
             if (parametersSection.getParameterDefinitions() != null)
             {
