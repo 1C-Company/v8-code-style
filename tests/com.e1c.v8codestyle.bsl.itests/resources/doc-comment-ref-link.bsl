@@ -3,8 +3,8 @@
 // 
 // Parameters:
 //  LinkToMethodParameter - See Complaint.UnknownParameter
-//  LinkToMethod - See NonComplaint()
-//  LinkToExtMethod - See Catalogs.Products.NonComplaint()
+//  LinkToMethod - See NonComplaint
+//  LinkToExtMethod - See Catalogs.Products.UnknownMethod
 // 
 // Returns:
 //  AnyRef - any ref
