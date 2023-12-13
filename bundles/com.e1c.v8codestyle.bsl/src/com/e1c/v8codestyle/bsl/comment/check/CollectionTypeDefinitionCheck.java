@@ -23,7 +23,11 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.LinkContainsTypeDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -31,6 +35,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Check type definition that collection type (like array, map etc.) has type of contain item.
@@ -57,6 +62,20 @@ public class CollectionTypeDefinitionCheck
         "FixedCollection", "ФиксированнаяКоллекция")); //$NON-NLS-1$ //$NON-NLS-2$
     //@formatter:on
 
+    /**
+     * Constructs an instance
+     *
+     * @param resourceLookup
+     * @param namingService
+     * @param bmModelManager
+     */
+    @Inject
+    public CollectionTypeDefinitionCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager)
+    {
+        super(resourceLookup, namingService, bmModelManager);
+    }
+
     @Override
     public String getCheckId()
     {
@@ -71,7 +90,7 @@ public class CollectionTypeDefinitionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(453, getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(TypeDefinition.class);
         builder.parameter(PARAMETER_COLLECTION_TYPES, String.class, DEFAULT_COLLECTION_TYPES,
             Messages.CollectionTypeDefinitionCheck_Collection_types);
@@ -79,7 +98,8 @@ public class CollectionTypeDefinitionCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         if (object instanceof LinkContainsTypeDefinition)
         {

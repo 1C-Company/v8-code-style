@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="1bfea9cd-2e7c-4bae-9b93-35404a91623e">
+  <producedTypes>
+    <objectType typeId="aa6e4113-25a9-4221-b960-8aec7ec853ee" valueTypeId="f123fb57-12f3-4c09-b1ea-cdb6669878c1"/>
+    <refType typeId="d675bfa3-64c5-4e4e-a9ef-1bb1e963b836" valueTypeId="7b4d0e92-cd76-468c-b386-dc34ad339135"/>
+    <selectionType typeId="c10b141d-0eef-4227-b05c-4af463fdab33" valueTypeId="41ec092d-23ed-4243-82e5-e543fb672ca9"/>
+    <listType typeId="5b1c9492-ae7b-4ce2-ba77-2e79741ab403" valueTypeId="2ea3a23f-be08-4f6c-80e5-332da92507be"/>
+    <managerType typeId="a603e77d-f8aa-4f8a-94f8-cbd58ab2dc8d" valueTypeId="603e5c28-cecb-4f6b-9a4d-be98a73a71cf"/>
+  </producedTypes>
+  <name>Catalog</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Catalog.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Catalog.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.Catalog.Form.ItemForm</defaultObjectForm>
+  <forms uuid="7e9928b9-a9a0-4eee-9db9-a3c863fb5ad7">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

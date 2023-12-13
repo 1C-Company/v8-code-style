@@ -78,13 +78,12 @@ public class ModuleStructureMethodInRegionCheck
     protected void configureCheck(CheckConfigurer builder)
     {
         builder.title(Messages.ModuleStructureMethodInRegionCheck_Title)
-            .description(
-                Messages.ModuleStructureMethodInRegionCheck_Description)
+            .description(Messages.ModuleStructureMethodInRegionCheck_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD)
             .parameter(MULTILEVEL_NESTING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_NESTING_OF_REGIONS,
@@ -141,8 +140,14 @@ public class ModuleStructureMethodInRegionCheck
 
     private void addIssue(ResultAcceptor resultAceptor, Method method, String regions)
     {
+        String name = method.getName();
+        if (name == null)
+        {
+            return;
+        }
+
         resultAceptor.addIssue(MessageFormat.format(
-            Messages.ModuleStructureMethodInRegionCheck_Method_should_be_placed_in_one_of_the_standard_regions,
-            method.getName(), regions), McorePackage.Literals.NAMED_ELEMENT__NAME);
+            Messages.ModuleStructureMethodInRegionCheck_Method_should_be_placed_in_one_of_the_standard_regions, name,
+            regions), McorePackage.Literals.NAMED_ELEMENT__NAME);
     }
 }

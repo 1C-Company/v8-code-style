@@ -12,10 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.strict.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DECLARE_STATEMENT;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.EXPLICIT_VARIABLE;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.IMPLICIT_VARIABLE;
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.text.MessageFormat;
@@ -24,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
@@ -31,7 +30,11 @@ import com._1c.g5.v8.dt.bsl.model.ImplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.util.Environments;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -59,9 +62,9 @@ public class VariableTypeCheck
      */
     @Inject
     public VariableTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
     }
 
     @Override
@@ -81,13 +84,13 @@ public class VariableTypeCheck
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StrictTypeAnnotationCheckExtension())
             .module()
-            .checkedObjectType(IMPLICIT_VARIABLE, EXPLICIT_VARIABLE, SIMPLE_STATEMENT, DECLARE_STATEMENT);
+            .checkedObjectType(IMPLICIT_VARIABLE, EXPLICIT_VARIABLE);
 
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
         if (monitor.isCanceled() || !(object instanceof EObject))
         {
@@ -96,14 +99,14 @@ public class VariableTypeCheck
 
         if (object instanceof ImplicitVariable || object instanceof ExplicitVariable)
         {
-            checkVariable((Variable)object, (EObject)object, resultAceptor, monitor);
+            checkVariable((Variable)object, (EObject)object, resultAceptor, bmTransaction, monitor);
         }
         else if (object instanceof SimpleStatement && ((SimpleStatement)object).getLeft() instanceof StaticFeatureAccess
             && ((StaticFeatureAccess)((SimpleStatement)object).getLeft()).getImplicitVariable() != null)
         {
             EObject checkType = ((SimpleStatement)object).getLeft();
             Variable variable = ((StaticFeatureAccess)((SimpleStatement)object).getLeft()).getImplicitVariable();
-            checkVariable(variable, checkType, resultAceptor, monitor);
+            checkVariable(variable, checkType, resultAceptor, bmTransaction, monitor);
         }
         else if (object instanceof DeclareStatement)
         {
@@ -114,15 +117,27 @@ public class VariableTypeCheck
                 {
                     return;
                 }
-                checkVariable(variable, variable, resultAceptor, monitor);
+                checkVariable(variable, variable, resultAceptor, bmTransaction, monitor);
             }
         }
     }
 
     private void checkVariable(Variable variable, EObject checkObject, ResultAcceptor resultAceptor,
-        IProgressMonitor monitor)
+        IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
-        if (checkObject != null && variable != null && isEmptyTypes(checkObject) && !monitor.isCanceled())
+        if (variable instanceof Environmental)
+        {
+            //checks only variables with selected validation Environments
+            Environments actualEnvs =
+                bslPreferences.getLoadEnvs(checkObject).intersect(((Environmental)variable).environments());
+            if (actualEnvs.isEmpty())
+            {
+                return;
+            }
+        }
+
+        if (checkObject != null && variable != null && isEmptyTypes(checkObject, bmTransaction)
+            && !monitor.isCanceled())
         {
             String message =
                 MessageFormat.format(Messages.VariableTypeCheck_Variable_M_has_no_value_type, variable.getName());

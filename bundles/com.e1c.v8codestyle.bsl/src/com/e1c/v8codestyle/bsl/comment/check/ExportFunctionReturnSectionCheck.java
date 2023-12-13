@@ -26,7 +26,10 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentati
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.bsl.model.Function;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -59,14 +62,18 @@ public class ExportFunctionReturnSectionCheck
      * Instantiates a new check of export function return section.
      *
      * @param resourceLookup the resource lookup service, cannot be {@code null}.
+     * @param namingService
+     * @param bmModelManager
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
      * @param commentProvider the comment provider service, cannot be {@code null}.
      * @param scopeProvider the scope provider service, cannot be {@code null}.
      */
     @Inject
-    public ExportFunctionReturnSectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
+    public ExportFunctionReturnSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager, IBslPreferences bslPreferences,
         BslMultiLineCommentDocumentationProvider commentProvider, IScopeProvider scopeProvider)
     {
+        super(resourceLookup, namingService, bmModelManager);
         this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
         this.commentProvider = commentProvider;
@@ -87,13 +94,14 @@ public class ExportFunctionReturnSectionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(453, getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(BslDocumentationComment.class);
     }
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         if (!(root.getMethod() instanceof Function) || !root.getMethod().isExport())
         {
@@ -109,12 +117,11 @@ public class ExportFunctionReturnSectionCheck
             DocumentationCommentProperties props = bslPreferences.getDocumentCommentProperties(project);
 
             docComment = BslCommentUtils.getLinkPartCommentContent(linkPart, scopeProvider, commentProvider,
-                props.oldCommentFormat(), root.getMethod());
+                props.oldCommentFormat(), root.getMethod(), typeComputationContext);
         }
 
-        if (docComment == null || docComment.getReturnSection() == null
-            || isTypeEmptyAndNoLink(docComment.getReturnSection().getReturnTypes(),
-                docComment.getReturnSection().getDescription()))
+        if (docComment == null || docComment.getReturnSection() == null || isTypeEmptyAndNoLink(
+            docComment.getReturnSection().getReturnTypes(), docComment.getReturnSection().getDescription()))
         {
             resultAceptor.addIssue(Messages.ExportFunctionReturnSectionCheck_Export_function_return_section_required,
                 root.getMethod(), NAMED_ELEMENT__NAME);

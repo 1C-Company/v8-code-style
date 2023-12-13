@@ -28,9 +28,12 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentati
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.TypeItem;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -62,10 +65,11 @@ public class FunctionReturnSectionCheck
     private final IQualifiedNameConverter qualifiedNameConverter;
 
     @Inject
-    public FunctionReturnSectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider,
-        BslMultiLineCommentDocumentationProvider commentProvider)
+    public FunctionReturnSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager, IBslPreferences bslPreferences, IQualifiedNameConverter qualifiedNameConverter,
+        IScopeProvider scopeProvider, BslMultiLineCommentDocumentationProvider commentProvider)
     {
+        super(resourceLookup, namingService, bmModelManager);
         this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
         this.qualifiedNameConverter = qualifiedNameConverter;
@@ -87,13 +91,14 @@ public class FunctionReturnSectionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(453, getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(ReturnSection.class);
     }
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         Method method = root.getMethod();
         if (!(method instanceof Function))
@@ -113,8 +118,9 @@ public class FunctionReturnSectionCheck
 
         IScope typeScope = scopeProvider.getScope(method, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
 
-        Collection<TypeItem> computedReturnTypes = root.computeReturnTypes(typeScope, scopeProvider,
-            qualifiedNameConverter, commentProvider, oldCommentFormat(root.getModule()), method);
+        Collection<TypeItem> computedReturnTypes =
+            root.computeReturnTypes(typeScope, scopeProvider, qualifiedNameConverter, commentProvider,
+                oldCommentFormat(root.getModule()), method, typeComputationContext);
 
         if (computedReturnTypes.isEmpty())
         {

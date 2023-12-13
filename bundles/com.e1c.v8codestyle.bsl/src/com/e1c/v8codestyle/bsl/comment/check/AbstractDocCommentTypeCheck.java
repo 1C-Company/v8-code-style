@@ -31,10 +31,14 @@ import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.Method;
 import com._1c.g5.v8.dt.mcore.Parameter;
 import com._1c.g5.v8.dt.mcore.Property;
 import com._1c.g5.v8.dt.mcore.TypeItem;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck;
 
 /**
@@ -45,6 +49,18 @@ import com.e1c.g5.v8.dt.bsl.check.DocumentationCommentBasicDelegateCheck;
 public abstract class AbstractDocCommentTypeCheck
     extends DocumentationCommentBasicDelegateCheck
 {
+    /**
+     * Constructs an instance
+     *
+     * @param resourceLookup
+     * @param namingService
+     * @param bmModelManager
+     */
+    protected AbstractDocCommentTypeCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager)
+    {
+        super(resourceLookup, namingService, bmModelManager);
+    }
 
     /**
      * Gets the link part from description only if the link is single element of the description.
@@ -144,22 +160,24 @@ public abstract class AbstractDocCommentTypeCheck
      * @param linkPart the link part, cannot be {@link null}.
      * @param scopeProvider the scope provider, cannot be {@link null}.
      * @param context the context, cannot be {@link null}.
+     * @param typeComputationContext the type computation context, cannot be {@link null}.
      * @return the last object of link part
      */
-    protected Optional<EObject> getLinkPartLastObject(LinkPart linkPart, IScopeProvider scopeProvider, EObject context)
+    protected Optional<EObject> getLinkPartLastObject(LinkPart linkPart, IScopeProvider scopeProvider, EObject context,
+        BmOperationContext typeComputationContext)
     {
         // get object of last segment of the link to method/parameter,
         // without final brackets "(See ModuleName.MethodName.)", or witn ending dot "See ModuleName.MethodName."
         if (linkPart.getPartsWithOffset().size() > 1 && (linkPart.getInitialContent().startsWith("(") //$NON-NLS-1$
             || (linkPart.getPartsWithOffset().get(linkPart.getPartsWithOffset().size() - 1)).getFirst().isEmpty()))
         {
-            return Optional.ofNullable(
-                linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 2, scopeProvider, context));
+            return Optional.ofNullable(linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 2,
+                scopeProvider, context, typeComputationContext));
         }
         else
         {
-            return Optional.ofNullable(
-                linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 1, scopeProvider, context));
+            return Optional.ofNullable(linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 1,
+                scopeProvider, context, typeComputationContext));
         }
     }
 
@@ -172,11 +190,13 @@ public abstract class AbstractDocCommentTypeCheck
      * @param linkPart the link part, cannot be {@link null}.
      * @param scopeProvider the scope provider, cannot be {@link null}.
      * @param context the context, cannot be {@link null}.
+     * @param typeComputationContext the type computation context, cannot be {@link null}.
      * @return true, if the object of link part is exist
      */
-    protected boolean isLinkPartObjectExist(LinkPart linkPart, IScopeProvider scopeProvider, EObject context)
+    protected boolean isLinkPartObjectExist(LinkPart linkPart, IScopeProvider scopeProvider, EObject context,
+        BmOperationContext typeComputationContext)
     {
-        Optional<EObject> optional = getLinkPartLastObject(linkPart, scopeProvider, context);
+        Optional<EObject> optional = getLinkPartLastObject(linkPart, scopeProvider, context, typeComputationContext);
         if (optional.isPresent())
         {
             EObject object = optional.get();

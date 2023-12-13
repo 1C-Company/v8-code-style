@@ -115,7 +115,7 @@ public class EventHandlerBooleanParamCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.WARNING)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(686, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(SIMPLE_STATEMENT)
             .parameter(PARAM_CHECK_EVENT_ONLY, Boolean.class, DEFAULT_CHECK_EVENT_ONLY,
@@ -226,7 +226,12 @@ public class EventHandlerBooleanParamCheck
         int index = params.indexOf(param);
 
         Map<CaseInsensitiveString, Event> eventHandlers = getAllModuleEvents(module);
-        CaseInsensitiveString methodName = new CaseInsensitiveString(method.getName());
+        String name = method.getName();
+        if (name == null)
+        {
+            return null;
+        }
+        CaseInsensitiveString methodName = new CaseInsensitiveString(name);
         Event event = eventHandlers.get(methodName);
         if (event == null && isCorrectModuleForCustomHandlers(module))
         {

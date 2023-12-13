@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
+import static org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider.PERSISTED_DESCRIPTIONS;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -25,7 +26,8 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.findReferences.IReferenceFinder;
@@ -64,6 +66,7 @@ import com.google.inject.Inject;
  *
  * @author Artem Iliukhin
  */
+@SuppressWarnings("restriction")
 public final class RedundantExportMethodCheck
     extends AbstractModuleStructureCheck
 {
@@ -77,7 +80,8 @@ public final class RedundantExportMethodCheck
 
     private static final String CHECK_ID = "redundant-export-method"; //$NON-NLS-1$
 
-    private static final String TYPE_NAME = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME_OLD = "NotifyDescription"; //$NON-NLS-1$
+    private static final String TYPE_NAME = "CallbackDescription"; //$NON-NLS-1$
 
     private final IReferenceFinder referenceFinder;
 
@@ -144,6 +148,10 @@ public final class RedundantExportMethodCheck
         Module module = EcoreUtil2.getContainerOfType(method, Module.class);
 
         String name = method.getName();
+        if (name == null)
+        {
+            return;
+        }
         if (isNotExclusion(parameters, method, monitor) && !isScheduledJobOrEventSubscription(module, name, monitor)
             && !existLocalNotifyDescription(module, name, monitor) && !haveCallerInOtherModule(method, monitor))
         {
@@ -203,17 +211,20 @@ public final class RedundantExportMethodCheck
             }
 
             EObject containedObject = iterator.next();
-            if (containedObject instanceof OperatorStyleCreator
-                && TYPE_NAME.equals(McoreUtil.getTypeName(((OperatorStyleCreator)containedObject).getType())))
+            if (containedObject instanceof OperatorStyleCreator)
             {
-                List<Expression> params = ((OperatorStyleCreator)containedObject).getParams();
-                if (!params.isEmpty() && params.get(0) instanceof StringLiteral)
+                String typeName = McoreUtil.getTypeName(((OperatorStyleCreator)containedObject).getType());
+                if (TYPE_NAME_OLD.equals(typeName) || TYPE_NAME.equals(typeName))
                 {
-                    StringLiteral literal = (StringLiteral)params.get(0);
-                    List<String> lines = literal.lines(true);
-                    if (!lines.isEmpty() && lines.get(0).equals(name))
+                    List<Expression> params = ((OperatorStyleCreator)containedObject).getParams();
+                    if (!params.isEmpty() && params.get(0) instanceof StringLiteral)
                     {
-                        return true;
+                        StringLiteral literal = (StringLiteral)params.get(0);
+                        List<String> lines = literal.lines(true);
+                        if (!lines.isEmpty() && lines.get(0).equals(name))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -233,10 +244,11 @@ public final class RedundantExportMethodCheck
             }
         };
 
-        Resource resource = object.eResource();
+        ResourceSet resourceSet = new ResourceSetImpl();
+        //special ResourceSet for checking by saved modules
+        resourceSet.getLoadOptions().put(PERSISTED_DESCRIPTIONS, Boolean.TRUE);
 
-        IResourceDescriptions indexData =
-            resourceDescriptionsProvider.getResourceDescriptions(resource.getResourceSet());
+        IResourceDescriptions indexData = resourceDescriptionsProvider.getResourceDescriptions(resourceSet);
 
         IReferenceFinder.Acceptor acceptor = new IReferenceFinder.Acceptor()
         {

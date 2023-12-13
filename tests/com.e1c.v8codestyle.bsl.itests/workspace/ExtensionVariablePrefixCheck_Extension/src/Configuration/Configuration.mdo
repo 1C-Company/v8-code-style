@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="2903d8db-9d70-4125-b7de-353d628f3359">
+  <name>ExtensionVariablePrefixCheck_Extension</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:ConfigurationExtension">
+    <defaultRunMode>Checked</defaultRunMode>
+    <usePurposes>Checked</usePurposes>
+    <commandInterface>Extended</commandInterface>
+    <mainSectionCommandInterface>Extended</mainSectionCommandInterface>
+    <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
+    <compatibilityMode>Checked</compatibilityMode>
+    <defaultStyle>Extended</defaultStyle>
+    <defaultRoles>Extended</defaultRoles>
+  </extension>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="d0bcef14-041d-4409-b538-57d68b95233e"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="25697c0d-4bae-420c-86d2-98f340efa476"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="c3882a96-1d0f-4646-a1a7-ea086562115e"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="1afe4b88-9ecd-465d-b1fb-efded8f9d16c"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="97838fa7-97cf-4f9c-9cc6-d14e83e301b6"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="6c74f3ab-ce25-4a66-97de-223bc4f0a3ff"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="a0773194-6ca4-459a-8660-02262f78f07d"/>
+  <keepMappingToExtendedConfigurationObjectsByIDs>true</keepMappingToExtendedConfigurationObjectsByIDs>
+  <namePrefix>Ext1_</namePrefix>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <defaultRoles>Role.Ext1_DefaultRole</defaultRoles>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <roles>Role.Ext1_DefaultRole</roles>
+  <commonModules>CommonModule.CommonModule</commonModules>
+  <commonModules>CommonModule.CompliantCommonModule</commonModules>
+  <commonForms>CommonForm.Form</commonForms>
+  <catalogs>Catalog.Catalog</catalogs>
+</mdclass:Configuration>

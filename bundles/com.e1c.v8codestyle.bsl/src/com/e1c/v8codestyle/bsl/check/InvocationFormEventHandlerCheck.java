@@ -64,7 +64,7 @@ public final class InvocationFormEventHandlerCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.TRIVIAL)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(INVOCATION);

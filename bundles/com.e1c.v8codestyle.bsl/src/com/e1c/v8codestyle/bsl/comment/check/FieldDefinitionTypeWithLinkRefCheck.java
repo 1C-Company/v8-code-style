@@ -28,7 +28,11 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -80,8 +84,10 @@ public class FieldDefinitionTypeWithLinkRefCheck
      * @param scopeProvider the scope provider service, cannot be {@code null}.
      */
     @Inject
-    public FieldDefinitionTypeWithLinkRefCheck(IScopeProvider scopeProvider)
+    public FieldDefinitionTypeWithLinkRefCheck(IResourceLookup resourceLookup, INamingService namingService,
+        IBmModelManager bmModelManager, IScopeProvider scopeProvider)
     {
+        super(resourceLookup, namingService, bmModelManager);
         this.scopeProvider = scopeProvider;
     }
 
@@ -107,7 +113,8 @@ public class FieldDefinitionTypeWithLinkRefCheck
 
     @Override
     protected void checkDocumentationCommentObject(IDescriptionPart object, BslDocumentationComment root,
-        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters, IProgressMonitor monitor)
+        DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
+        BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
         String parameterCollectionTypes = parameters.getString(PARAMETER_COLLECTION_TYPES);
         if (StringUtils.isBlank(parameterCollectionTypes))
@@ -120,7 +127,7 @@ public class FieldDefinitionTypeWithLinkRefCheck
         types.addAll(List.of(paramTypes));
 
         FieldDefinition fieldDef = (FieldDefinition)object;
-        if (isFieldTypeWithLinkRef(fieldDef, types, root.getMethod()))
+        if (isFieldTypeWithLinkRef(fieldDef, types, root.getMethod(), typeComputationContext))
         {
             String message = MessageFormat.format(
                 Messages.FieldDefinitionTypeWithLinkRefCheck_Field__F__use_declaration_of_complex_type_instead_of_link,
@@ -130,12 +137,13 @@ public class FieldDefinitionTypeWithLinkRefCheck
         }
     }
 
-    private boolean isFieldTypeWithLinkRef(FieldDefinition fieldDef, Set<String> types, EObject context)
+    private boolean isFieldTypeWithLinkRef(FieldDefinition fieldDef, Set<String> types, EObject context,
+        BmOperationContext typeComputationContext)
     {
         if (fieldDef.getTypeSections().size() == 1 && isComplexType(fieldDef.getTypeSections().get(0), types))
         {
             LinkPart linkPart = getSingleLinkPartForField(fieldDef);
-            return linkPart != null && isLinkPartObjectExist(linkPart, scopeProvider, context);
+            return linkPart != null && isLinkPartObjectExist(linkPart, scopeProvider, context, typeComputationContext);
         }
         return false;
     }

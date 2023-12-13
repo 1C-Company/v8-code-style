@@ -24,6 +24,7 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -35,6 +36,8 @@ import org.eclipse.xtext.resource.IResourceServiceProvider;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
+import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
@@ -49,6 +52,8 @@ import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.McorePackage;
@@ -58,6 +63,9 @@ import com._1c.g5.v8.dt.mcore.TypeSet;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
+import com.e1c.g5.dt.core.api.naming.INamingService;
+import com.e1c.g5.dt.core.api.platform.BmOperationContext;
+import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
@@ -76,6 +84,12 @@ public abstract class AbstractTypeCheck
 
     /** The resource lookup service. */
     protected final IResourceLookup resourceLookup;
+
+    /** The naming service. */
+    protected final INamingService namingService;
+
+    /** BM manager service. */
+    protected final IBmModelManager bmModelManager;
 
     /** The BSL preferences service. */
     protected final IBslPreferences bslPreferences;
@@ -105,10 +119,12 @@ public abstract class AbstractTypeCheck
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
      */
     protected AbstractTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
     {
         super();
         this.resourceLookup = resourceLookup;
+        this.namingService = namingService;
+        this.bmModelManager = bmModelManager;
         this.bslPreferences = bslPreferences;
         IResourceServiceProvider rsp =
             IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
@@ -122,13 +138,25 @@ public abstract class AbstractTypeCheck
 
     }
 
+    @Override
+    protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
+        IProgressMonitor progressMonitor)
+    {
+        IDtProject dtProject = resourceLookup.getDtProject((EObject)object);
+        IBmModel bmModel = bmModelManager.getModel(dtProject);
+        check(object, resultAcceptor, parameters, bmModel.getEngine().getCurrentTransaction(), progressMonitor);
+    }
+
+    protected abstract void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
+        IBmTransaction bmTransaction, IProgressMonitor progressMonitor);
+
     /**
      * Checks if the object has empty types.
      *
      * @param object the object, cannot be {@code null}.
      * @return true, if the object has empty types
      */
-    protected boolean isEmptyTypes(EObject object)
+    protected boolean isEmptyTypes(EObject object, IBmTransaction bmTransaction)
     {
         Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
         if (envs == null)
@@ -151,7 +179,7 @@ public abstract class AbstractTypeCheck
 
         if (types.isEmpty() && object instanceof ExplicitVariable)
         {
-            Collection<TypeItem> commentTypes = computeCommentTypes(object);
+            Collection<TypeItem> commentTypes = computeCommentTypes(object, bmTransaction);
             return commentTypes.isEmpty();
         }
 
@@ -216,13 +244,14 @@ public abstract class AbstractTypeCheck
      * @param object the object, cannot be {@code null}.
      * @return the collection of comment types, cannot return {@code null}.
      */
-    protected Collection<TypeItem> computeCommentTypes(EObject object)
+    protected Collection<TypeItem> computeCommentTypes(EObject object, IBmTransaction bmTransaction)
     {
         IScope typeScope = scopeProvider.getScope(object, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
         IProject project = resourceLookup.getProject(object);
         boolean oldFormatComment = bslPreferences.getDocumentCommentProperties(project).oldCommentFormat();
         return TypeSystemUtil.computeCommentTypes(object, typeScope, scopeProvider, qualifiedNameConverter,
-            commentProvider, oldFormatComment);
+            commentProvider, oldFormatComment,
+            new BmOperationContext(namingService, bmModelManager, bmTransaction));
     }
 
     /**

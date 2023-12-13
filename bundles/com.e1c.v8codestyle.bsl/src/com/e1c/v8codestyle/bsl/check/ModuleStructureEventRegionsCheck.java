@@ -71,7 +71,7 @@ public class ModuleStructureEventRegionsCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.excludeTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(METHOD);
@@ -106,9 +106,15 @@ public class ModuleStructureEventRegionsCheck
         else if (!ModuleType.COMMON_MODULE.equals(moduleType) && !eventHandlersName.equalsIgnoreCase(name)
             && method.isEvent())
         {
+            String methodName = method.getName();
+            if (methodName == null)
+            {
+                return;
+            }
             resultAceptor.addIssue(
                 MessageFormat.format(Messages.ModuleStructureEventRegionsCheck_Event_handler__0__not_region__1,
-                method.getName(), eventHandlersName), McorePackage.Literals.NAMED_ELEMENT__NAME);
+                    methodName, eventHandlersName),
+                McorePackage.Literals.NAMED_ELEMENT__NAME);
         }
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021, 1C-Soft LLC and others.
+ * Copyright (C) 2023, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -34,6 +34,7 @@ import com.e1c.v8codestyle.internal.ql.CorePlugin;
  * This check may be enhanced in the future.
  *
  * @author Dmitriy Marmyshev
+ * @author Vadim Goncharov
  */
 public class TempTableHasIndex
     extends QlBasicDelegateCheck
@@ -43,7 +44,9 @@ public class TempTableHasIndex
 
     private static final String PARAMETER_EXCLUDE_TABLE_NAME_PATTERN = "excludeObjectNamePattern"; //$NON-NLS-1$
 
-    private static final int MAX_TOP = 1000;
+    private static final String PARAMETER_MAX_TOP = "maxTop"; //$NON-NLS-1$
+
+    private static final int MAX_TOP_DEFAULT = 1000;
 
     @Override
     public String getCheckId()
@@ -59,10 +62,13 @@ public class TempTableHasIndex
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
-            .extension(new StandardCheckExtension(getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(777, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(QuerySchemaSelectQuery.class);
-        builder.parameter(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, String.class, StringUtils.EMPTY,
-            Messages.TempTableHasIndex_Exclude_table_name_pattern);
+        builder
+            .parameter(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, String.class, StringUtils.EMPTY,
+                Messages.TempTableHasIndex_Exclude_table_name_pattern)
+            .parameter(PARAMETER_MAX_TOP, Integer.class, Integer.toString(MAX_TOP_DEFAULT),
+                Messages.TempTableHasIndex_Parameter_max_top);
     }
 
     @Override
@@ -70,7 +76,8 @@ public class TempTableHasIndex
         ICheckParameters parameters, IProgressMonitor monitor)
     {
         QuerySchemaSelectQuery selectQuery = (QuerySchemaSelectQuery)object;
-        if (selectQuery.getPlacementTable() == null || isTopLessThenThousand(selectQuery))
+        int maxTop = parameters.getInt(PARAMETER_MAX_TOP);
+        if (selectQuery.getPlacementTable() == null || isTopLessThenMaxTop(selectQuery, maxTop))
         {
             return;
         }
@@ -89,7 +96,7 @@ public class TempTableHasIndex
         }
     }
 
-    private boolean isTopLessThenThousand(QuerySchemaSelectQuery selectQuery)
+    private boolean isTopLessThenMaxTop(QuerySchemaSelectQuery selectQuery, int maxTop)
     {
         if (!selectQuery.getOperators().isEmpty() && selectQuery.getOperators().get(0).getGetRecordsCount() != null)
         {
@@ -97,7 +104,7 @@ public class TempTableHasIndex
             try
             {
                 int top = Integer.parseInt(count);
-                return top < MAX_TOP;
+                return top < maxTop;
             }
             catch (NumberFormatException e)
             {

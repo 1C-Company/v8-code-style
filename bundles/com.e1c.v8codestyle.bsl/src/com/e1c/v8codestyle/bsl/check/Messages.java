@@ -38,6 +38,21 @@ final class Messages
     public static String AccessibilityAtClientInObjectModuleCheck_Methods_should_be_AtClient;
 
     public static String AccessibilityAtClientInObjectModuleCheck_title;
+
+    public static String CachedPublicCheck_Description;
+
+    public static String CachedPublicCheck_Issue;
+
+    public static String CachedPublicCheck_Title;
+
+    public static String AttachableEventHandlerNameCheck_Description;
+
+    public static String AttachableEventHandlerNameCheck_Event_handler_name_pattern;
+
+    public static String AttachableEventHandlerNameCheck_Message;
+
+    public static String AttachableEventHandlerNameCheck_Title;
+
     public static String CanonicalPragmaCheck_description;
     public static String CanonicalPragmaCheck_Pragma_0_is_not_written_canonically_correct_spelling_is_1;
     public static String CanonicalPragmaCheck_title;
@@ -45,6 +60,14 @@ final class Messages
     public static String ChangeAndValidateInsteadOfAroundCheck_description;
     public static String ChangeAndValidateInsteadOfAroundCheck_Use_ChangeAndValidate_instead_of_Around;
     public static String ChangeAndValidateInsteadOfAroundCheck_title;
+
+    public static String CodeAfterAsyncCallCheck_Description;
+
+    public static String CodeAfterAsyncCallCheck_Issue;
+
+    public static String CodeAfterAsyncCallCheck_Parameter;
+
+    public static String CodeAfterAsyncCallCheck_Title;
 
     public static String CommitTransactionCheck_Commit_transaction_must_be_in_try_catch;
 
@@ -74,11 +97,31 @@ final class Messages
 
     public static String BeginTransactionCheck_Try_was_not_found_after_calling_begin;
 
+    public static String CommonModuleMissingApiCheck_Description;
+
+    public static String CommonModuleMissingApiCheck_Issue;
+
+    public static String CommonModuleMissingApiCheck_Title;
+
     public static String CommonModuleNamedSelfReferenceCheck_description;
 
     public static String CommonModuleNamedSelfReferenceCheck_issue;
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
+
+    public static String ConsecutiveEmptyLines_Description;
+
+    public static String ConsecutiveEmptyLines_Parameter_title;
+
+    public static String ConsecutiveEmptyLines_Sequence_of_empty_lines_between__0__and__1__is_greator_than__2;
+
+    public static String ConsecutiveEmptyLines_Title;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_description;
+
+    public static String DeprecatedProcedureOutsideDeprecatedRegionCheck_title;
 
     public static String EmptyExceptStatementCheck_description;
     public static String EmptyExceptStatementCheck_title;
@@ -104,6 +147,14 @@ final class Messages
 
     public static String EventHandlerBooleanParamCheck_title;
 
+    public static String ReadingAttributesFromDataBaseCheck_Message;
+
+    public static String ReadingAttributesFromDataBaseCheck_Description;
+
+    public static String ReadingAttributesFromDataBaseCheck_Issue__0;
+
+    public static String ReadingAttributesFromDataBaseCheck_Title;
+
     public static String RedundantExportCheck_Escess_title;
 
     public static String RedundantExportCheck_Excess_description;
@@ -125,6 +176,30 @@ final class Messages
     public static String ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result;
 
     public static String ExportMethodInCommandModule_Do_not_use_export_method_in_commands_module;
+
+    public static String ExportProcedureMissingCommentCheck_description;
+
+    public static String ExportProcedureMissingCommentCheck_Export_procedure_missing_comment;
+
+    public static String ExportProcedureMissingCommentCheck_title;
+
+    public static String ExportVariableInObjectModuleCheck_Description;
+
+    public static String ExportVariableInObjectModuleCheck_Issue;
+
+    public static String ExportVariableInObjectModuleCheck_Title;
+
+    public static String ExtensionVariablePrefixCheck_Description;
+
+    public static String ExtensionVariablePrefixCheck_Title;
+
+    public static String ExtensionVariablePrefixCheck_Variable_0_should_have_1_prefix;
+
+    public static String ExtensionMethodPrefixCheck_Description;
+
+    public static String ExtensionMethodPrefixCheck_Ext_method__0__should_have__1__prefix;
+
+    public static String ExtensionMethodPrefixCheck_Title;
 
     public static String ManagerModuleNamedSelfReferenceCheck_description;
 
@@ -214,6 +289,8 @@ final class Messages
     public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_title;
 
+    public static String SelfReferenceCheck_check_object_module;
+
     public static String SelfReferenceCheck_check_only_existing_form_properties;
 
     public static String SelfReferenceCheck_Description;
@@ -240,6 +317,12 @@ final class Messages
     public static String NewColorCheck_Use_style_elements_not_specific_values;
 
     public static String NewColorCheck_Using_new_color;
+
+    public static String NewFontCheck_Description;
+
+    public static String NewFontCheck_Issue;
+
+    public static String NewFontCheck_Title;
 
     public static String NstrStringLiteralFormatCheck_Check_empty_interface_for_each_language;
 
@@ -271,6 +354,20 @@ final class Messages
 
     public static String RollbackTransactionCheck_Transactions_is_broken_des;
 
+    public static String UseGotoOperatorCheck_description;
+
+    public static String UseGotoOperatorCheck_title;
+
+    public static String UseGotoOperatorCheck_Use_Goto_operator;
+
+    public static String UseGotoOperatorCheck_Use_Label_with_Goto_operator;
+
+    public static String UnknownFormParameterAccessCheck_description;
+
+    public static String UnknownFormParameterAccessCheck_title;
+
+    public static String UnknownFormParameterAccessCheck_Unknown_form_parameter_access;
+
     public static String UseNonRecommendedMethods_description;
 
     public static String UseNonRecommendedMethods_message;
@@ -278,6 +375,12 @@ final class Messages
     public static String UseNonRecommendedMethods_parameter;
 
     public static String UseNonRecommendedMethods_title;
+
+    public static String MethodOptionalParameterBeforeRequiredCheck_description;
+
+    public static String MethodOptionalParameterBeforeRequiredCheck_Optional_parameter_before_required;
+
+    public static String MethodOptionalParameterBeforeRequiredCheck_title;
 
     public static String MethodTooManyPramsCheck_description;
 
@@ -298,6 +401,12 @@ final class Messages
     public static String MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion;
 
     public static String MissingTemporaryFileDeletionCheck_title;
+
+    public static String FormDataToValueCheck_Description;
+
+    public static String FormDataToValueCheck_Issue;
+
+    public static String FormDataToValueCheck_Title;
 
     public static String FormModulePragmaCheck_description;
 
@@ -339,6 +448,12 @@ final class Messages
 
     public static String IsInRoleCheck_Using_IsInRole;
 
+    public static String IsInRoleMethodRoleExistCheck_description;
+
+    public static String IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration;
+
+    public static String IsInRoleMethodRoleExistCheck_title;
+    
     public static String ModuleUndefinedVariableCheck_Title;
     public static String ModuleUndefinedVariableCheck_Description;
     public static String ModuleUndefinedVariable_msg;
@@ -354,6 +469,20 @@ final class Messages
     public static String LockOutOfTry_Lock_out_of_try;
 
     public static String LockOutOfTry_Method_lock_out_of_try;
+
+    public static String OptionalFormParameterAccessCheck_description;
+
+    public static String OptionalFormParameterAccessCheck_Optional_form_parameter_access;
+
+    public static String OptionalFormParameterAccessCheck_title;
+
+    public static String VariableNameInvalidCheck_description;
+    public static String VariableNameInvalidCheck_message_variable_length_is_less_than;
+    public static String VariableNameInvalidCheck_param_MIN_NAME_LENGTH_PARAM_title;
+    public static String VariableNameInvalidCheck_title;
+    public static String VariableNameInvalidCheck_variable_name_is_invalid;
+    public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
+    public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
 
     static
     {

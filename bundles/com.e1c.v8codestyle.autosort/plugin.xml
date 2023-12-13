@@ -25,5 +25,11 @@
             class="com.e1c.v8codestyle.internal.autosort.AutoSortProjectOptionProvider">
       </provider>
    </extension>
+   <extension
+         point="com.e1c.g5.v8.dt.cli.api.cliCommand">
+      <cliCommand
+            class="com.e1c.v8codestyle.internal.autosort.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.autosort.cli.SortCommand">
+      </cliCommand>
+   </extension>
 
 </plugin>

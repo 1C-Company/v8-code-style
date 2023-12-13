@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.autosort.ui.properties;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SUBSYSTEM__SUBSYSTEMS;
+import static java.lang.String.format;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +24,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -35,15 +37,15 @@ import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.ui.forms.events.ExpansionAdapter;
@@ -51,10 +53,12 @@ import org.eclipse.ui.forms.events.ExpansionEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 import com._1c.g5.v8.dt.common.Functions;
+import com._1c.g5.v8.dt.md.sort.MdSortPreferences;
 import com.e1c.v8codestyle.autosort.AutoSortPreferences;
 import com.e1c.v8codestyle.autosort.ISortService;
 import com.e1c.v8codestyle.autosort.ListConstants;
@@ -64,6 +68,7 @@ import com.google.inject.Inject;
 public class AutoSortPropertyPage
     extends PropertyPage
 {
+    private static final String MD_SORT_PROPERTY_PAGE_ID = "com._1c.g5.v8.dt.md.ui.sort.MdSortPropertyPage"; //$NON-NLS-1$
 
     private final ISortService sortService;
 
@@ -74,8 +79,6 @@ public class AutoSortPropertyPage
     private Map<String, Button> buttons = new HashMap<>();
 
     private Map<String, Boolean> topObjects = new HashMap<>();
-
-    private Button ascendingButton;
 
     @Inject
     public AutoSortPropertyPage(ISortService sortService)
@@ -90,7 +93,6 @@ public class AutoSortPropertyPage
     @Override
     protected Control createContents(Composite parent)
     {
-
         toolkit = new FormToolkit(parent.getDisplay());
 
         prefs = AutoSortPreferences.getPreferences(getProject());
@@ -121,7 +123,6 @@ public class AutoSortPropertyPage
     protected void performDefaults()
     {
         super.performDefaults();
-        ascendingButton.setSelection(AutoSortPreferences.DEFAULT_SORT_ASCENDING);
         buttons.get(AutoSortPreferences.KEY_ALL_TOP).setSelection(AutoSortPreferences.DEFAULT_SORT);
         buttons.get(AutoSortPreferences.KEY_SUBORDINATE_OBJECTS).setSelection(AutoSortPreferences.DEFAULT_SORT);
         buttons.get(AutoSortPreferences.KEY_FORMS).setSelection(AutoSortPreferences.DEFAULT_SORT);
@@ -139,16 +140,6 @@ public class AutoSortPropertyPage
     public boolean performOk()
     {
         boolean needToSort = needToSort();
-
-        boolean ascending = ascendingButton.getSelection();
-        if (ascending == AutoSortPreferences.DEFAULT_SORT_ASCENDING)
-        {
-            prefs.remove(AutoSortPreferences.KEY_ASCENDING);
-        }
-        else
-        {
-            prefs.putBoolean(AutoSortPreferences.KEY_ASCENDING, ascending);
-        }
 
         updateSortPreferences(prefs, AutoSortPreferences.KEY_ALL_TOP,
             buttons.get(AutoSortPreferences.KEY_ALL_TOP).getSelection());
@@ -221,17 +212,10 @@ public class AutoSortPropertyPage
 
     private boolean needToSort()
     {
-        if (ascendingButton.getSelection() != prefs.getBoolean(AutoSortPreferences.KEY_ASCENDING,
-            AutoSortPreferences.DEFAULT_SORT_ASCENDING)
-            || !prefs.getBoolean(AutoSortPreferences.KEY_ALL_TOP, AutoSortPreferences.DEFAULT_SORT)
-                && buttons.get(AutoSortPreferences.KEY_ALL_TOP).getSelection()
+        return !prefs.getBoolean(AutoSortPreferences.KEY_ALL_TOP, AutoSortPreferences.DEFAULT_SORT)
+            && buttons.get(AutoSortPreferences.KEY_ALL_TOP).getSelection()
             || !prefs.getBoolean(AutoSortPreferences.KEY_SUBORDINATE_OBJECTS, AutoSortPreferences.DEFAULT_SORT)
-                && buttons.get(AutoSortPreferences.KEY_SUBORDINATE_OBJECTS).getSelection())
-        {
-            return true;
-        }
-
-        return false;
+                && buttons.get(AutoSortPreferences.KEY_SUBORDINATE_OBJECTS).getSelection();
     }
 
     private IProject getProject()
@@ -290,17 +274,48 @@ public class AutoSortPropertyPage
 
     private void addSortSection(Composite parent)
     {
-        Group sortGroup = new Group(parent, SWT.NONE);
-        sortGroup.setLayout(new RowLayout(SWT.HORIZONTAL));
-        toolkit.createLabel(sortGroup, Messages.AutoSortPropertyPage_Sort_direction);
-        ascendingButton = toolkit.createButton(sortGroup, Messages.AutoSortPropertyPage_Ascending, SWT.RADIO);
-        final Button descendingButton =
-            toolkit.createButton(sortGroup, Messages.AutoSortPropertyPage_Descending, SWT.RADIO);
-        descendingButton.setSelection(true);
-        boolean ascending =
-            prefs.getBoolean(AutoSortPreferences.KEY_ASCENDING, AutoSortPreferences.DEFAULT_SORT_ASCENDING);
-        ascendingButton.setSelection(ascending);
-        descendingButton.setSelection(!ascending);
+        Link sortSettingsMovedLink = new Link(parent, SWT.NONE);
+        sortSettingsMovedLink.setText(format("<a>%s</a>", Messages.AutoSortPropertyPage_Sort_settings_moved)); //$NON-NLS-1$
+        sortSettingsMovedLink.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            IWorkbenchPreferenceContainer pageContainer = (IWorkbenchPreferenceContainer)getContainer();
+            pageContainer.openPage(MD_SORT_PROPERTY_PAGE_ID, null);
+        }));
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(sortSettingsMovedLink);
+
+        IProject project = getProject();
+        boolean customSettingOfSortAscending =
+            AutoSortPreferences.isSortAscending(project) != AutoSortPreferences.DEFAULT_SORT_ASCENDING;
+        boolean customSettingOfNaturalSortOrder =
+            AutoSortPreferences.isNaturalSortOrder(project) != AutoSortPreferences.DEFAULT_SORT_ORDER;
+        if (customSettingOfSortAscending || customSettingOfNaturalSortOrder)
+        {
+            Composite moveSortSettingsComposite = new Composite(parent, SWT.NONE);
+            GridLayoutFactory.swtDefaults().numColumns(3).applyTo(moveSortSettingsComposite);
+            GridDataFactory.fillDefaults().grab(true, false).applyTo(moveSortSettingsComposite);
+
+            Label moveSortSettingsLabel = new Label(moveSortSettingsComposite, SWT.NONE);
+            moveSortSettingsLabel.setText(Messages.AutoSortPropertyPage_Transfer_or_clear_sort_settings);
+
+            Button transferSortSettingsButton = new Button(moveSortSettingsComposite, SWT.NONE);
+            transferSortSettingsButton.setText(Messages.AutoSortPropertyPage_Transfer);
+
+            Button clearSortSettingsButton = new Button(moveSortSettingsComposite, SWT.NONE);
+            clearSortSettingsButton.setText(Messages.AutoSortPropertyPage_Clear);
+
+            transferSortSettingsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+                changeMdSortPreferences(AutoSortPreferences.isSortAscending(project),
+                    AutoSortPreferences.isNaturalSortOrder(project));
+                clearSettingsOfSortDirectionAndOrderOfAutoSortPreferences();
+                transferSortSettingsButton.setEnabled(false);
+                clearSortSettingsButton.setEnabled(false);
+            }));
+
+            clearSortSettingsButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(e -> {
+                clearSettingsOfSortDirectionAndOrderOfAutoSortPreferences();
+                transferSortSettingsButton.setEnabled(false);
+                clearSortSettingsButton.setEnabled(false);
+            }));
+        }
     }
 
     private void addSeparator(Composite parent)
@@ -454,6 +469,53 @@ public class AutoSortPropertyPage
                 buttons.get(AutoSortPreferences.KEY_TABULAR_SECTIONS).setSelection(check);
             }
         });
+    }
+
+    private void changeMdSortPreferences(boolean ascendingSort, boolean naturalSortOrder)
+    {
+        IEclipsePreferences mdSortPreferences = MdSortPreferences.getPreferences(getProject());
+
+        if (ascendingSort == MdSortPreferences.DEFAULT_ASCENDING_SORT)
+        {
+            mdSortPreferences.remove(MdSortPreferences.ASCENDING_SORT);
+        }
+        else
+        {
+            mdSortPreferences.putBoolean(MdSortPreferences.ASCENDING_SORT, ascendingSort);
+        }
+
+        if (naturalSortOrder == MdSortPreferences.DEFAULT_NATURAL_SORT_ORDER)
+        {
+            mdSortPreferences.remove(MdSortPreferences.NATURAL_SORT_ORDER);
+        }
+        else
+        {
+            mdSortPreferences.putBoolean(MdSortPreferences.NATURAL_SORT_ORDER, naturalSortOrder);
+        }
+
+        try
+        {
+            mdSortPreferences.flush();
+        }
+        catch (BackingStoreException e)
+        {
+            UiPlugin.logError(e);
+        }
+    }
+
+    private void clearSettingsOfSortDirectionAndOrderOfAutoSortPreferences()
+    {
+        prefs.remove(AutoSortPreferences.KEY_ASCENDING);
+        prefs.remove(AutoSortPreferences.KEY_SORT_ORDER);
+
+        try
+        {
+            prefs.flush();
+        }
+        catch (BackingStoreException e)
+        {
+            UiPlugin.logError(e);
+        }
     }
 
     private static final class FeatureLabelProvider

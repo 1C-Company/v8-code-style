@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="8178b09f-92be-458f-bc57-6f51998fa576" extendedConfigurationObject="b06b524e-97dd-4db4-abbd-0dbe864ef3e9">
+  <producedTypes>
+    <objectType typeId="c1fee696-9c60-4d53-86a2-6b4af6578613" valueTypeId="883a1f58-e374-4244-afde-332ee5972608"/>
+    <refType typeId="fbfe0aa5-b23f-4c42-937a-d9443350ee8e" valueTypeId="4b1896de-22a7-4cfe-beb7-bc33357a1135"/>
+    <selectionType typeId="57b4a395-c5ec-48fb-8978-cf795534aee1" valueTypeId="586dc6d6-517d-4b0b-b5bf-703296fa7b11"/>
+    <listType typeId="a7658662-c946-46c6-a2bf-6ad7c662a6cd" valueTypeId="bf325525-4b7e-4303-87d2-ac2d46f097db"/>
+    <managerType typeId="010e07e5-a27c-4d9b-b319-5ed82b2fd252" valueTypeId="b04d4716-6c08-431b-b263-c6efd9069614"/>
+  </producedTypes>
+  <name>Document</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:DocumentExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+  </extension>
+  <tabularSections uuid="40452360-36dc-4f30-a571-9ff83726027a" extendedConfigurationObject="242826bc-562f-40e5-800a-1ed1e82699ff">
+    <producedTypes>
+      <objectType typeId="f1ed95b4-0c4e-4b1a-bc0d-c4e44621e6ca" valueTypeId="b1e35057-1125-45ea-841c-869b6f79c8f9"/>
+      <rowType typeId="5d015d4d-7c63-43cf-967f-1bc8a89efc4b" valueTypeId="35445e9b-18eb-475b-b4cc-38b2f69d7e83"/>
+    </producedTypes>
+    <name>TabularSection</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:MdObjectExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+    </extension>
+    <attributes uuid="0a335190-b7c0-4173-acfd-9becca86a741" extendedConfigurationObject="9d0937dd-b40d-4aaf-8da0-3201ec8ecaa4">
+      <name>Attribute</name>
+      <objectBelonging>Adopted</objectBelonging>
+      <extension xsi:type="mdclassExtension:BasicFeatureExtension">
+        <extendedConfigurationObject>Checked</extendedConfigurationObject>
+        <typeExtension>
+          <types>
+            <state>Checked</state>
+            <type>String</type>
+          </types>
+          <stringQualifiers>
+            <length>10</length>
+          </stringQualifiers>
+        </typeExtension>
+      </extension>
+    </attributes>
+    <attributes uuid="16fe0607-1f17-463c-badf-4a9ed6a36eb1">
+      <name>Ext1_Attribute</name>
+      <synonym>
+        <key>en</key>
+        <value>Attribute</value>
+      </synonym>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>10</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Document>

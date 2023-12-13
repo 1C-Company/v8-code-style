@@ -16,7 +16,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -155,15 +154,15 @@ public class CommonModuleStrictTypesTest
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(1, markers.size());
+        assertEquals(2, markers.size());
 
         String uriToProblem = EcoreUtil.getURI(variables.get(0)).toString();
-
         Marker marker = markers.get(0);
-
         assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
+        marker = markers.get(1);
+        assertEquals("22", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     /**
@@ -388,17 +387,21 @@ public class CommonModuleStrictTypesTest
         Module module = updateAndGetModule(checkId);
 
         List<Function> finctions = EcoreUtil2.eAllOfType(module, Function.class);
-        assertEquals(2, finctions.size());
+        assertEquals(4, finctions.size());
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(2, markers.size());
+        assertEquals(3, markers.size());
 
         Marker marker = markers.get(0);
         assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         // different key
         marker = markers.get(1);
         assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+        // missing type
+        marker = markers.get(2);
+        assertEquals("29", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -655,7 +658,7 @@ public class CommonModuleStrictTypesTest
         return markers;
     }
 
-    private Module updateAndGetModule(String resourceName) throws CoreException, IOException
+    private Module updateAndGetModule(String resourceName) throws Exception
     {
         try (InputStream in = getClass().getResourceAsStream(FOLDER + resourceName + ".bsl"))
         {
@@ -664,6 +667,8 @@ public class CommonModuleStrictTypesTest
         }
         testingWorkspace.waitForBuildCompletion();
         waitForDD(getProject());
+        //after fixing the problem in EDT - delete it
+        Thread.sleep(5000);
 
         IBmObject mdObject = getTopObjectByFqn(FQN, getProject());
         assertTrue(mdObject instanceof CommonModule);

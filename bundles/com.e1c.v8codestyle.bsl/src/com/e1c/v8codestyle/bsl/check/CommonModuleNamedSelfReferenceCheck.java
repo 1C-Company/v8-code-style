@@ -59,7 +59,7 @@ public class CommonModuleNamedSelfReferenceCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
-            .extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(467, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
     }
@@ -90,6 +90,11 @@ public class CommonModuleNamedSelfReferenceCheck
             return false;
         }
         CommonModule commonModule = (CommonModule)module.getOwner();
+        if (commonModule == null)
+        {
+            // To support partially-inconsistent models
+            return false;
+        }
         return (commonModule.getReturnValuesReuse() == ReturnValuesReuse.DONT_USE)
             && StringUtils.equals(commonModule.getName(), source.getName());
     }
