@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.internal.autosort.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String AutoSortProjectOptionProvider_description;
     public static String AutoSortProjectOptionProvider_presentation;
     public static String SortJob_Sort_metadata_objects__0;
