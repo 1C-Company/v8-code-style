@@ -12,9 +12,9 @@
 #     1C-Soft LLC - initial API and implementation
 #*******************************************************************************
 
-current_version='0.4.0'
-new_version='0.5.0'
-next_version='0.6.0'
+current_version='0.6.0'
+new_version='0.7.0'
+next_version='0.8.0'
 
 find . -name 'pom.xml' -exec sed -i '' "s/${current_version}-SNAPSHOT/${new_version}-SNAPSHOT/g" {} +
 

@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.qfix.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String ConsecutiveEmptyLinesFix_Description;
     public static String ConsecutiveEmptyLinesFix_Details;
     public static String RemoveExportFix_Remove_export_keyword_des;

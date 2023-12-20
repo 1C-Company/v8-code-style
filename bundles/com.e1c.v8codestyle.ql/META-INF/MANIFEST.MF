@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.e1c.v8codestyle.ql;singleton:=true
-Bundle-Version: 0.5.0.qualifier
+Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: com.e1c.v8codestyle.internal.ql.CorePlugin
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.18.0,4.0.0)",
@@ -27,5 +27,5 @@ Import-Package: com._1c.g5.v8.bm.core;version="[8.0.0,9.0.0)",
  com.e1c.g5.v8.dt.check.components;version="[2.0.0,3.0.0)",
  com.e1c.g5.v8.dt.check.settings;version="1.0.0",
  com.e1c.g5.v8.dt.ql.check;version="[1.0.0,2.0.0)",
- com.e1c.v8codestyle.check;version="[0.5.0,0.6.0)",
+ com.e1c.v8codestyle.check;version="[0.7.0,0.8.0)",
  com.google.inject;version="[5.0.1,6.0.0)"
