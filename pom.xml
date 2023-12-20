@@ -50,6 +50,21 @@
             <repositoryName>${project.name} Repository</repositoryName>
           </configuration>
         </plugin>
+		<plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>target-platform-configuration</artifactId>
+            <configuration>
+              <dependency-resolution>
+                <extraRequirements>
+                  <requirement>
+                    <type>eclipse-plugin</type>
+                    <id>org.eclipse.equinox.ds</id>
+                    <versionRange>0.0.0</versionRange>
+                  </requirement>
+                </extraRequirements>
+              </dependency-resolution>
+            </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
   </build>
