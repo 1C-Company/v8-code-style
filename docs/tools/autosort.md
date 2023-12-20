@@ -31,7 +31,10 @@
 1cedtcli -data ./ws -command help sort-project
 
 // запуск сортировки по проекту с импортом в рабочую область
-1cedtcli -data ./ws -command sort-project --projects "${PWD}/myproject"
+1cedtcli -data ./ws -command sort-project --project-list "${PWD}/myproject"
+
+// запуск сортировки по проекту существующему в рабочей области
+1cedtcli -data ./ws -command sort-project --project-name-list "myproject"
 
 ```
 
