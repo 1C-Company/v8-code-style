@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.md.check.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String DbObjectRefNonRefTypesCheck_Description;
     public static String DbObjectRefNonRefTypesCheck_Ref_and_other;
     public static String DbObjectRefNonRefTypesCheck_Title;
@@ -41,6 +41,10 @@ final class Messages
     public static String DbObjectAnyRefCheck_AnyRef;
     public static String DbObjectAnyRefCheck_Description;
     public static String DbObjectAnyRefCheck_Title;
+    public static String DbObjectMaxNumberLengthCheck_description;
+    public static String DbObjectMaxNumberLengthCheck_message;
+    public static String DbObjectMaxNumberLengthCheck_parameter;
+    public static String DbObjectMaxNumberLengthCheck_title;
     public static String ExtensionMdObjectNamePrefixCheck_Description;
     public static String ExtensionMdObjectNamePrefixCheck_Object_0_should_have_1_prefix;
     public static String ExtensionMdObjectNamePrefixCheck_Title;

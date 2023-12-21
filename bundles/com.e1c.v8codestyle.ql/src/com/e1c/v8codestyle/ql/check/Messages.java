@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.ql.check.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String CamelCaseStringLiteral_description;
     public static String CamelCaseStringLiteral_Regular_expression_to_skip_literal_content;
     public static String CamelCaseStringLiteral_String_literal_contains_non_CamelCase_symbols__0;

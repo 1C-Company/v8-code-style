@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DefinedType xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="e3510ea9-df1d-41c9-b863-cfaa0efda0d6">
+  <producedTypes>
+    <containerType typeId="45984b95-9be2-4a16-84d0-e91ffe35fee4" valueTypeId="bce59ff6-493a-4f04-96a5-4242c7d9a2ea"/>
+  </producedTypes>
+  <name>Correct</name>
+  <synonym>
+    <key>en</key>
+    <value>Correct</value>
+  </synonym>
+  <type>
+    <types>Number</types>
+    <numberQualifiers>
+      <precision>31</precision>
+    </numberQualifiers>
+  </type>
+</mdclass:DefinedType>

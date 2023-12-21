@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.internal.ui.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String ProjectOptionsDtNewWizardPage_description;
     public static String ProjectOptionsDtNewWizardPage_save_job_title;
     public static String ProjectOptionsDtNewWizardPage_title;
