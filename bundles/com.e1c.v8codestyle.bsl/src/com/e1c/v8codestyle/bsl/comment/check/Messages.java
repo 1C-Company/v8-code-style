@@ -37,6 +37,7 @@ final class Messages
     public static String ExportMethodCommentDescriptionCheck_title;
     public static String FieldDefinitionNameCheck_description;
     public static String FieldDefinitionNameCheck_Field_name__N__is_incorrect_name;
+    public static String FieldDefinitionNameCheck_Field_name__N__is_not_unique;
     public static String FieldDefinitionNameCheck_title;
     public static String FieldDefinitionTypeCheck_description;
     public static String FieldDefinitionTypeCheck_Field_M_has_no_type_definition;
