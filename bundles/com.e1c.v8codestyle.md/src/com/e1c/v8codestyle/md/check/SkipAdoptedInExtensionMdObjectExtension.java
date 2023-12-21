@@ -25,6 +25,22 @@ import com.e1c.g5.v8.dt.check.ext.ITopObjectFilter;
 public class SkipAdoptedInExtensionMdObjectExtension
     implements IBasicCheckExtension
 {
+    private static IBasicCheckExtension instance;
+
+    public static synchronized IBasicCheckExtension instance()
+    {
+        if (instance == null)
+        {
+            instance = new SkipAdoptedInExtensionMdObjectExtension();
+        }
+        return instance;
+    }
+
+    private SkipAdoptedInExtensionMdObjectExtension()
+    {
+        // empty
+    }
+
     @Override
     public ITopObjectFilter contributeTopObjectFilter()
     {

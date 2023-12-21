@@ -84,7 +84,7 @@ public class MdObjectAttributeCommentCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(531, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .extension(new TopObjectFilterExtension())
             .parameter(PARAM_ATTRIBUTES_LIST, String.class, DEFAULT_ATTRIBUTES_LIST,
                 Messages.MdObjectAttributeCommentCheck_Attribute_list);

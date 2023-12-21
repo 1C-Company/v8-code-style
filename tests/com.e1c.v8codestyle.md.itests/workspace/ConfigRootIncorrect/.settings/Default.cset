@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "settings": {
+    "configuration-copyright": {
+      "properties": {
+        "checkLanguages": "all"
+      }
+    },
+    "mdo-synonym": {
+      "properties": {
+        "checkLanguages": "all",
+        "checkSubObjects": "true"
+      }
+    }
+  }
+}

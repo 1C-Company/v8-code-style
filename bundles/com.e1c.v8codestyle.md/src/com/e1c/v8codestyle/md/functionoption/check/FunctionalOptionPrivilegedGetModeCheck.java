@@ -59,7 +59,7 @@ public class FunctionalOptionPrivilegedGetModeCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
             .extension(new StandardCheckExtension(689, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(FUNCTIONAL_OPTION)
             .checkTop()
             .features(FUNCTIONAL_OPTION__PRIVILEGED_GET_MODE, FUNCTIONAL_OPTION__LOCATION);

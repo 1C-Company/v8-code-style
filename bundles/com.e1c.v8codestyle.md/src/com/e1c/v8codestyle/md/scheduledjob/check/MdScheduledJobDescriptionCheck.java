@@ -57,7 +57,7 @@ public class MdScheduledJobDescriptionCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(767, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(SCHEDULED_JOB)
             .checkTop()
             .features(SCHEDULED_JOB__DESCRIPTION, SCHEDULED_JOB__PREDEFINED);

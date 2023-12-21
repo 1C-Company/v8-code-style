@@ -81,7 +81,7 @@ public class MdObjectAttributeCommentNotExistCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(531, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .extension(new TopObjectFilterExtension())
             .parameter(PARAM_ATTRIBUTE_NAMES_LIST, String.class, DEFAULT_ATTRIBUTE_NAMES_LIST,
                 Messages.MdObjectAttributeCommentNotExist_Param_Attribute_name_list);
