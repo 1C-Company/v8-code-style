@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
@@ -241,7 +242,7 @@ public class StructureKeyModificationCheck
     {
         BslDerivedPropertySource source = (BslDerivedPropertySource)property.getSource();
 
-        URI uri = EcoreUtil2.getURI(currentMethodObject).trimFragment().appendFragment(MODULE_URI_FRAGMENT);
+        URI uri = EcoreUtil.getURI(currentMethodObject).trimFragment().appendFragment(MODULE_URI_FRAGMENT);
         if (source.getModuleUri() != null && !source.getModuleUri().equals(uri.toString()))
         {
             return true;

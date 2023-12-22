@@ -1,6 +1,6 @@
 # Structure key modification outside constructor function
 
-If Structure was created by constructor function then changing the compositoon of the structure keys using methods
+If Structure was created by constructor function then changing the composition of the structure keys using methods
 `Structure.Insert("Key", ...); Structure.Delete("Key"); Structure.Clear();` 
 can lead to errors due to the uncertainty of data composition.
 
@@ -38,7 +38,7 @@ EndFunction
 ## Compliant Solution
 
 Access to existing key directly and set new value. 
-Insead of delete key should set a value that represents blank or initial value.
+Instead of delete key should set a value that represents blank or initial value.
 
 ```bsl
 // @strict-types
