@@ -164,7 +164,7 @@ public class AccessibilityAtClientInObjectModuleCheck
     private boolean allowManagerEventAtClient(EObject object, Module module, ICheckParameters parameters)
     {
         if (object instanceof Method && module.getModuleType() == ModuleType.MANAGER_MODULE
-            && ((Method)object).isEvent())
+            && (((Method)object).isEvent() || !((Method)object).getPragmas().isEmpty()))
         {
             String parameterMethodNames = parameters.getString(PARAMETER_ALLOW_MANAGER_EVENTS_AT_CLIENT);
             if (StringUtils.isEmpty(parameterMethodNames))
@@ -175,8 +175,11 @@ public class AccessibilityAtClientInObjectModuleCheck
             Method method = (Method)object;
             Set<String> methodNames = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
             methodNames.addAll(List.of(parameterMethodNames.split(",\\s*"))); //$NON-NLS-1$
-            return methodNames.contains(method.getName());
-
+            return methodNames.contains(method.getName()) || !method.getPragmas().isEmpty() && method.getPragmas()
+                .stream()
+                .map(p -> p.getValue().replace("\"", "")) //$NON-NLS-1$ //$NON-NLS-2$
+                .filter(StringUtils::isNotBlank)
+                .anyMatch(methodNames::contains);
         }
         return false;
     }

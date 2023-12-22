@@ -81,7 +81,7 @@ public class AccessibilityAtClientInObjectModuleCheckTest
         Marker marker = markers.get(0);
         assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         marker = markers.get(1);
-        assertEquals("22", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("27", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     private List<Marker> getObjectModuleMarkers()
