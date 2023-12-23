@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
+import static org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider.PERSISTED_DESCRIPTIONS;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -25,7 +26,8 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.findReferences.IReferenceFinder;
@@ -242,10 +244,11 @@ public final class RedundantExportMethodCheck
             }
         };
 
-        Resource resource = object.eResource();
+        ResourceSet resourceSet = new ResourceSetImpl();
+        //special ResourceSet for checking by saved modules
+        resourceSet.getLoadOptions().put(PERSISTED_DESCRIPTIONS, Boolean.TRUE);
 
-        IResourceDescriptions indexData =
-            resourceDescriptionsProvider.getResourceDescriptions(resource.getResourceSet());
+        IResourceDescriptions indexData = resourceDescriptionsProvider.getResourceDescriptions(resourceSet);
 
         IReferenceFinder.Acceptor acceptor = new IReferenceFinder.Acceptor()
         {

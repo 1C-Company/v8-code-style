@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.internal.bsl.ui.preferences.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String ModuleStructurePreferencePage_Automatically_create_module_structure;
     public static String ModuleStructurePreferencePage_Automatically_create_strict_types_module;
     static

@@ -13,7 +13,7 @@
 
 <!-- EDT -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2023.1/"/>
+<repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2023.2/"/>
 <unit id="com._1c.g5.aef.feature.feature.group" version="0.0.0"/>
 <unit id="com._1c.g5.commons.feature.group" version="0.0.0"/>
 <unit id="com._1c.g5.edt.license.feature.group" version="0.0.0"/>
@@ -112,6 +112,8 @@
 <unit id="org.apache.batik.ext" version="0.0.0"/>
 <unit id="org.apache.batik.transcoder" version="0.0.0"/>
 <unit id="javax.servlet" version="0.0.0"/>
+<unit id="org.apache.lucene.grouping" version="0.0.0"/>
+<unit id="org.apache.lucene.queries" version="0.0.0"/>
 <unit id="com.e1c.ssl.feature.feature.group" version="0.0.0"/>
 <unit id="com.e1c.dt.check.feature.feature.group" version="0.0.0"/>
 </location>
@@ -127,6 +129,7 @@
 <unit id="org.objenesis" version="0.0.0"/>
 <unit id="net.bytebuddy.byte-buddy" version="0.0.0"/>
 <unit id="net.bytebuddy.byte-buddy-agent" version="0.0.0"/>
+<unit id="com.google.protobuf" version="0.0.0"/>
 <unit id="org.apache.xalan.source" version="2.7.2.v20201124-1837"/>
 <unit id="org.apache.batik.script.source" version="1.14.0.v20210324-0332"/>
 <unit id="org.apache.batik.codec.source" version="1.14.0.v20210324-0332"/>

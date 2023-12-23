@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DefinedType xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="ab453ff0-a191-49e2-97d1-1e84f68f5759">
+  <producedTypes>
+    <containerType typeId="4e97882d-3868-49b4-a1bd-ce6ea6413dd6" valueTypeId="c000397f-6a4c-4caf-a3f8-ee9a87f4c702"/>
+  </producedTypes>
+  <name>TooLong</name>
+  <synonym>
+    <key>en</key>
+    <value>Too long</value>
+  </synonym>
+  <type>
+    <types>Number</types>
+    <numberQualifiers>
+      <precision>37</precision>
+    </numberQualifiers>
+  </type>
+</mdclass:DefinedType>

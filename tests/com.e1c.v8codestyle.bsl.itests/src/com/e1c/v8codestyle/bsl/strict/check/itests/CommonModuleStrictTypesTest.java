@@ -55,6 +55,7 @@ import com.e1c.v8codestyle.bsl.strict.check.InvocationParamIntersectionCheck;
 import com.e1c.v8codestyle.bsl.strict.check.MethodParamTypeCheck;
 import com.e1c.v8codestyle.bsl.strict.check.SimpleStatementTypeCheck;
 import com.e1c.v8codestyle.bsl.strict.check.StructureCtorValueTypeCheck;
+import com.e1c.v8codestyle.bsl.strict.check.StructureKeyModificationCheck;
 import com.e1c.v8codestyle.bsl.strict.check.TypedValueAddingToUntypedCollectionCheck;
 import com.e1c.v8codestyle.bsl.strict.check.VariableTypeCheck;
 
@@ -154,15 +155,15 @@ public class CommonModuleStrictTypesTest
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(1, markers.size());
+        assertEquals(2, markers.size());
 
         String uriToProblem = EcoreUtil.getURI(variables.get(0)).toString();
-
         Marker marker = markers.get(0);
-
         assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
 
+        marker = markers.get(1);
+        assertEquals("22", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     /**
@@ -387,17 +388,21 @@ public class CommonModuleStrictTypesTest
         Module module = updateAndGetModule(checkId);
 
         List<Function> finctions = EcoreUtil2.eAllOfType(module, Function.class);
-        assertEquals(2, finctions.size());
+        assertEquals(4, finctions.size());
 
         List<Marker> markers = getMarters(checkId, module);
 
-        assertEquals(2, markers.size());
+        assertEquals(3, markers.size());
 
         Marker marker = markers.get(0);
         assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
         // different key
         marker = markers.get(1);
         assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+
+        // missing type
+        marker = markers.get(2);
+        assertEquals("29", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
 
     }
 
@@ -637,6 +642,33 @@ public class CommonModuleStrictTypesTest
         }
 
         assertEquals(Set.of("18", "19"), lines);
+    }
+
+    /**
+     * Test of {@link StructureKeyModificationCheck} that check replace existing key of external structure key,
+     * delete key or clear structure with existing keys.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStructureKeyModification() throws Exception
+    {
+
+        String checkId = "structure-key-modification";
+        String resouceName = "structure-key-modification";
+
+        Module module = updateAndGetModule(resouceName);
+
+        List<Marker> markers = getMarters(checkId, module);
+
+        assertEquals(10, markers.size());
+
+        Set<String> lines = new HashSet<>();
+        for (Marker marker : markers)
+        {
+            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        }
+        assertEquals(Set.of("7", "8", "9", "10", "36", "38", "39", "47", "49", "50"), lines);
     }
 
     private IDtProject getProject()

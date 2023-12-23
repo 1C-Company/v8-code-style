@@ -27,6 +27,7 @@ import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bm.xtext.BmAwareResourceSetProvider;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
+import com._1c.g5.v8.dt.bsl.common.IStaticExpressionValueComputer;
 import com._1c.g5.v8.dt.bsl.contextdef.IBslModuleContextDefService;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.bsl.model.resource.owner.IBslOwnerComputerService;
@@ -100,5 +101,6 @@ class ExternalDependenciesModule
         bind(IConfigurationProvider.class).toService();
         bind(BslGrammarAccess.class).toProvider(() -> rsp.get(BslGrammarAccess.class));
         bind(BmAwareResourceSetProvider.class).toProvider(() -> rsp.get(BmAwareResourceSetProvider.class));
+        bind(IStaticExpressionValueComputer.class).toProvider(() -> rsp.get(IStaticExpressionValueComputer.class));
     }
 }

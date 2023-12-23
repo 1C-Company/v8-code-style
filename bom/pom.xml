@@ -18,7 +18,7 @@
 
   <groupId>com.e1c.v8codestyle</groupId>
   <artifactId>bom</artifactId>
-  <version>0.5.0-SNAPSHOT</version>
+  <version>0.7.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>BOM</name>
@@ -28,8 +28,8 @@
   </prerequisites>
 
   <properties>
-    <tycho.version>2.2.0</tycho.version>
-    <tycho.extras.version>2.2.0</tycho.extras.version>
+    <tycho.version>2.7.0</tycho.version>
+    <tycho.extras.version>2.7.0</tycho.extras.version>
     <markdown-page-generator.version>2.3.1</markdown-page-generator.version>
     <!-- Override this property in each project -->
     <markdown.page.generator.html.file.path>${project.basedir}</markdown.page.generator.html.file.path>
@@ -48,7 +48,7 @@
     <maven.build.timestamp.format>'v'yyyyMMdd-HHmm</maven.build.timestamp.format>
     <qualifier>${maven.build.timestamp}</qualifier>
 
-    <eclipse.p2.latest>http://download.eclipse.org/releases/2020-06/</eclipse.p2.latest>
+    <eclipse.p2.latest>http://download.eclipse.org/releases/2022-03/</eclipse.p2.latest>
 
     <p2repo.archive.skip>false</p2repo.archive.skip>
     <org.jacoco.version>0.8.6</org.jacoco.version>
@@ -104,7 +104,7 @@
               <artifact>
                 <groupId>com.e1c.v8codestyle</groupId>
                 <artifactId>default</artifactId>
-                <version>0.5.0-SNAPSHOT</version>
+                <version>0.7.0-SNAPSHOT</version>
               </artifact>
             </target>
             <environments>
