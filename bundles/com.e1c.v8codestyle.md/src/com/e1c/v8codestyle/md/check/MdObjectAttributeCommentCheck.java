@@ -21,6 +21,7 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CATALOG_
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT;
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.DOCUMENT_ATTRIBUTE;
 
+import java.text.MessageFormat;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -57,19 +58,17 @@ public class MdObjectAttributeCommentCheck
 
     private static final String CHECK_ID = "md-object-attribute-comment-incorrect-type"; //$NON-NLS-1$
 
-    public static final String PARAM_CHECK_DOCUMENTS = "checkDocuments"; //$NON-NLS-1$
-    public static final String PARAM_CHECK_CATALOGS = "checkCatalogs"; //$NON-NLS-1$
-    public static final String PARAM_ATTRIBUTES_LIST = "attributesList"; //$NON-NLS-1$
+    private static final String PARAM_CHECK_DOCUMENTS = "checkDocuments"; //$NON-NLS-1$
+    private static final String PARAM_CHECK_CATALOGS = "checkCatalogs"; //$NON-NLS-1$
+    private static final String PARAM_ATTRIBUTES_LIST = "attributesList"; //$NON-NLS-1$
 
-    public static final String DEFAULT_CHECK_DOCUMENTS = Boolean.toString(true);
-    public static final String DEFAULT_CHECK_CATALOGS = Boolean.toString(false);
+    private static final String DEFAULT_CHECK_DOCUMENTS = Boolean.toString(true);
+    private static final String DEFAULT_CHECK_CATALOGS = Boolean.toString(false);
 
     private static final Set<String> COMMENT_ATTRIBUTES_LIST = Set.of("Комментарий", //$NON-NLS-1$
         "Comment"); //$NON-NLS-1$
     private static final String DELIMITER = ","; //$NON-NLS-1$
-    public static final String DEFAULT_ATTRIBUTES_LIST = String.join(DELIMITER, COMMENT_ATTRIBUTES_LIST);
-
-    private static final String DEFAULT_CHECK_MESSAGE = Messages.MdObjectAttributeCommentCheck_Default_check_message;
+    private static final String DEFAULT_ATTRIBUTES_LIST = String.join(DELIMITER, COMMENT_ATTRIBUTES_LIST);
 
     public MdObjectAttributeCommentCheck()
     {
@@ -127,15 +126,14 @@ public class MdObjectAttributeCommentCheck
             return;
         }
 
-        if (!monitor.isCanceled() && checkDocuments && isDocumentAttribute(object))
+        boolean isDocument = checkDocuments && isDocumentAttribute(object);
+        boolean isCatalog = checkCatalogs && isCatalogAttribute(object);
+
+        if (!monitor.isCanceled() && (isDocument || isCatalog))
         {
             checkAttribute(attribute, resultAceptor);
         }
 
-        if (!monitor.isCanceled() && checkCatalogs && isCatalogAttribute(object))
-        {
-            checkAttribute(attribute, resultAceptor);
-        }
     }
 
     private void checkAttribute(BasicFeature attribute, ResultAcceptor resultAceptor)
@@ -149,7 +147,9 @@ public class MdObjectAttributeCommentCheck
         TypeDescription typeDesc = attribute.getType();
         if (McoreUtil.isCompoundType(typeDesc))
         {
-            resultAceptor.addIssue(DEFAULT_CHECK_MESSAGE, BASIC_FEATURE__TYPE);
+            String msg = MessageFormat.format(Messages.MdObjectAttributeCommentCheck_message,
+                Messages.MdObjectAttributeCommentCheck_Is_compound_type);
+            resultAceptor.addIssue(msg, BASIC_FEATURE__TYPE);
             return;
         }
 
@@ -170,13 +170,17 @@ public class MdObjectAttributeCommentCheck
         StringQualifiers qualifiers = typeDesc.getStringQualifiers();
         if (qualifiers == null)
         {
-            resultAceptor.addIssue(DEFAULT_CHECK_MESSAGE, BASIC_FEATURE__TYPE);
+            String msg = MessageFormat.format(Messages.MdObjectAttributeCommentCheck_message,
+                Messages.MdObjectAttributeCommentCheck_Not_a_String);
+            resultAceptor.addIssue(msg, BASIC_FEATURE__TYPE);
             return;
         }
 
         if (qualifiers.getLength() != 0)
         {
-            resultAceptor.addIssue(DEFAULT_CHECK_MESSAGE, BASIC_FEATURE__TYPE);
+            String msg = MessageFormat.format(Messages.MdObjectAttributeCommentCheck_message,
+                Messages.MdObjectAttributeCommentCheck_String_is_not_unlimited);
+            resultAceptor.addIssue(msg, BASIC_FEATURE__TYPE);
         }
 
     }
@@ -185,7 +189,9 @@ public class MdObjectAttributeCommentCheck
     {
         if (!attribute.isMultiLine())
         {
-            resultAceptor.addIssue(DEFAULT_CHECK_MESSAGE, BASIC_FEATURE__MULTI_LINE);
+            String msg = MessageFormat.format(Messages.MdObjectAttributeCommentCheck_message,
+                Messages.MdObjectAttributeCommentCheck_Multiline_edit_is_not_enabled);
+            resultAceptor.addIssue(msg, BASIC_FEATURE__MULTI_LINE);
         }
     }
 
