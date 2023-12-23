@@ -58,6 +58,14 @@ final class Messages
     public static String StructureCtorValueTypeCheck_Structure_key__N__K__has_no_default_value_initializer;
     public static String StructureCtorValueTypeCheck_Structure_key__N__K__value_initialized_with_empty_types;
     public static String StructureCtorValueTypeCheck_title;
+    public static String StructureKeyModificationCheck_Check_Clear_method;
+    public static String StructureKeyModificationCheck_Check_Delete_method;
+    public static String StructureKeyModificationCheck_Check_Insert_method;
+    public static String StructureKeyModificationCheck_description;
+    public static String StructureKeyModificationCheck_error_message_Clear;
+    public static String StructureKeyModificationCheck_error_message_Delete;
+    public static String StructureKeyModificationCheck_error_message_Insert;
+    public static String StructureKeyModificationCheck_title;
     public static String TypedValueAddingToUntypedCollectionCheck_description;
     public static String TypedValueAddingToUntypedCollectionCheck_title;
     public static String VariableTypeCheck_description;

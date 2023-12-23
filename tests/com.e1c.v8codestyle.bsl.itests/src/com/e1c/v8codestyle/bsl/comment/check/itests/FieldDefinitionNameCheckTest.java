@@ -52,4 +52,20 @@ public class FieldDefinitionNameCheckTest
         Marker marker = markers.get(0);
         assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
+
+    /**
+     * Test the documentation comment field name is unique name
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvalidFieldNameUnunique() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-field-name-ununique.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+    }
 }
