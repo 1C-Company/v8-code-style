@@ -9,8 +9,9 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.118.0,4.0.0)",
  org.eclipse.core.runtime;bundle-version="[3.20.0,4.0.0)",
  org.eclipse.core.resources;bundle-version="[3.13.0,4.0.0)",
  org.eclipse.ui.forms;bundle-version="[3.11.0,4.0.0)",
- org.eclipse.emf.ecore;bundle-version="[2.23.0,3.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+ org.eclipse.emf.ecore;bundle-version="[2.23.0,3.0.0)",
+ com.google.inject;bundle-version="[7.0.0,8.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: com.e1c.v8codestyle.autosort.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
@@ -23,5 +24,4 @@ Import-Package: com._1c.g5.v8.dt.common;version="[6.0.0,7.0.0)",
  com._1c.g5.wiring;version="[2.2.0,3.0.0)",
  com._1c.g5.wiring.binder;version="[1.1.0,2.0.0)",
  com.e1c.v8codestyle.autosort;version="[0.5.0,0.6.0)",
- com.google.common.base;version="[30.1.0,31.0.0)",
- com.google.inject;version="[5.0.0,6.0.0)"
+ com.google.common.base;version="[32.1.0,33.0.0)"
