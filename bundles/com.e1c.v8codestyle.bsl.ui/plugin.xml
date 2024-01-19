@@ -371,7 +371,7 @@
  <extension
        point="com._1c.g5.v8.dt.bsl.ui.bslModuleTextInsertInfoService">
     <bslModuleTextInsertInfoService
-          class="com.e1c.v8codestyle.internal.bsl.ui.services.BslModuleRegionsInfoService">
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ui.services.BslModuleRegionsInfoService">
     </bslModuleTextInsertInfoService>
  </extension>
 

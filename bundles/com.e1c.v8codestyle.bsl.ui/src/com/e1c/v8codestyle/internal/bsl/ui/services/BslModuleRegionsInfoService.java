@@ -41,7 +41,9 @@ import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.form.model.FormPackage;
 import com._1c.g5.v8.dt.mcore.NamedElement;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
+import com.google.inject.Inject;
 
 /**
  * Module regions related implementation of {@link IBslModuleTextInsertInfoService}
@@ -51,6 +53,9 @@ import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 public class BslModuleRegionsInfoService
     implements IBslModuleTextInsertInfoService
 {
+    @Inject
+    private IModuleStructureProvider moduleStructureProvider;
+
     @Override
     public IBslModuleTextInsertInfo getEventHandlerTextInsertInfo(IXtextDocument document, Module module,
         int defaultPosition, IBslModuleEventData data)
@@ -77,7 +82,8 @@ public class BslModuleRegionsInfoService
             getRegionOffsets(document, regionPreprocessors, declaredRegionName, scriptVariant);
         int offset = getRegionOffset(regionOffsets, declaredRegionName, suffix, defaultPosition, scriptVariant);
         String regionName = null;
-        if (!isRegionExists(regionOffsets, declaredRegionName, suffix))
+        if (!isRegionExists(regionOffsets, declaredRegionName, suffix) && project.getProject() != null
+            && moduleStructureProvider.canCreateStructure(project.getProject()))
         {
             regionName = suffix.isEmpty() ? declaredRegionName : (declaredRegionName + suffix);
         }
@@ -285,12 +291,16 @@ public class BslModuleRegionsInfoService
     {
         if (itemType.equals(EventItemType.TABLE))
         {
-            EObject container;
-            while ((container = eventOwner.eContainer()) != null)
+            EObject container = eventOwner;
+            while (container != null)
             {
                 if (container.eClass() == FormPackage.Literals.TABLE)
                 {
                     return ((NamedElement)container).getName();
+                }
+                else
+                {
+                    container = container.eContainer();
                 }
             }
         }
