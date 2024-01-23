@@ -55,6 +55,7 @@ import com._1c.g5.v8.dt.bsl.typesystem.util.TypeSystemUtil;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.Type;
@@ -109,6 +110,8 @@ public abstract class AbstractTypeCheck
     /** The comment provider service. */
     protected final BslMultiLineCommentDocumentationProvider commentProvider;
 
+    protected final IV8ProjectManager v8ProjectManager;
+
     private final InternalTypeNameRegistry internalTypeNameRegistry;
 
     /**
@@ -119,13 +122,15 @@ public abstract class AbstractTypeCheck
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
      */
     protected AbstractTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
         super();
         this.resourceLookup = resourceLookup;
         this.namingService = namingService;
         this.bmModelManager = bmModelManager;
         this.bslPreferences = bslPreferences;
+        this.v8ProjectManager = v8ProjectManager;
         IResourceServiceProvider rsp =
             IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(URI.createURI("*.bsl")); //$NON-NLS-1$
         this.typeComputer = rsp.get(TypesComputer.class);
@@ -250,7 +255,7 @@ public abstract class AbstractTypeCheck
         IProject project = resourceLookup.getProject(object);
         boolean oldFormatComment = bslPreferences.getDocumentCommentProperties(project).oldCommentFormat();
         return TypeSystemUtil.computeCommentTypes(object, typeScope, scopeProvider, qualifiedNameConverter,
-            commentProvider, oldFormatComment,
+            commentProvider, v8ProjectManager, oldFormatComment,
             new BmOperationContext(namingService, bmModelManager, bmTransaction));
     }
 

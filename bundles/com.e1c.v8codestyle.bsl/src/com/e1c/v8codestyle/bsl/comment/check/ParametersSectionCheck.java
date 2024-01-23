@@ -36,6 +36,7 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -74,9 +75,9 @@ public class ParametersSectionCheck
     @Inject
     public ParametersSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
         IBmModelManager bmModelManager, IBslPreferences bslPreferences, IScopeProvider scopeProvider,
-        BslMultiLineCommentDocumentationProvider commentProvider)
+        BslMultiLineCommentDocumentationProvider commentProvider, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
         this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
         this.scopeProvider = scopeProvider;
@@ -159,7 +160,7 @@ public class ParametersSectionCheck
             DocumentationCommentProperties props = bslPreferences.getDocumentCommentProperties(project);
 
             docComment = BslCommentUtils.getLinkPartCommentContent(linkPart, scopeProvider, commentProvider,
-                props.oldCommentFormat(), object.getMethod(), typeComputationContext);
+                props.oldCommentFormat(), object.getMethod(), v8ProjectManager, typeComputationContext);
         }
         if (docComment == null)
         {

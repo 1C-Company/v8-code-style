@@ -25,6 +25,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.dt.core.api.platform.BmOperationContext;
@@ -71,9 +72,9 @@ public class CollectionTypeDefinitionCheck
      */
     @Inject
     public CollectionTypeDefinitionCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override

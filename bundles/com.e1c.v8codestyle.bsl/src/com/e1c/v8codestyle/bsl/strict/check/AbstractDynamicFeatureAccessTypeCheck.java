@@ -32,6 +32,7 @@ import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.Environments;
@@ -68,9 +69,10 @@ public abstract class AbstractDynamicFeatureAccessTypeCheck
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
      */
     protected AbstractDynamicFeatureAccessTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override

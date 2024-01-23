@@ -28,6 +28,7 @@ import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.dt.core.api.naming.INamingService;
@@ -58,9 +59,10 @@ public class StructureCtorValueTypeCheck
      */
     @Inject
     public StructureCtorValueTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override

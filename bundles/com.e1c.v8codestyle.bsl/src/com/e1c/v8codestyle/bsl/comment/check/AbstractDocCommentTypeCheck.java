@@ -33,6 +33,7 @@ import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.Method;
 import com._1c.g5.v8.dt.mcore.Parameter;
 import com._1c.g5.v8.dt.mcore.Property;
@@ -57,9 +58,9 @@ public abstract class AbstractDocCommentTypeCheck
      * @param bmModelManager
      */
     protected AbstractDocCommentTypeCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
     }
 
     /**
@@ -172,12 +173,12 @@ public abstract class AbstractDocCommentTypeCheck
             || (linkPart.getPartsWithOffset().get(linkPart.getPartsWithOffset().size() - 1)).getFirst().isEmpty()))
         {
             return Optional.ofNullable(linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 2,
-                scopeProvider, context, typeComputationContext));
+                scopeProvider, context, v8ProjectManager, typeComputationContext));
         }
         else
         {
             return Optional.ofNullable(linkPart.getActualObjectForPart(linkPart.getPartsWithOffset().size() - 1,
-                scopeProvider, context, typeComputationContext));
+                scopeProvider, context, v8ProjectManager, typeComputationContext));
         }
     }
 

@@ -26,6 +26,7 @@ import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -49,9 +50,9 @@ public class ExportProcedureCommentDescriptionCheck
 
     @Inject
     public ExportProcedureCommentDescriptionCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override

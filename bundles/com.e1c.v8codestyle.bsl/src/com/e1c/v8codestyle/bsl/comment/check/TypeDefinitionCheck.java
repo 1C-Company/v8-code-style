@@ -27,6 +27,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.dt.core.api.platform.BmOperationContext;
@@ -55,9 +56,10 @@ public class TypeDefinitionCheck
 
     @Inject
     public TypeDefinitionCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager, IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider)
+        IBmModelManager bmModelManager, IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider,
+        IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
         this.qualifiedNameConverter = qualifiedNameConverter;
         this.scopeProvider = scopeProvider;
     }

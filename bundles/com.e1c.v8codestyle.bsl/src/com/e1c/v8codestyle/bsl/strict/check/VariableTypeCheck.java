@@ -32,6 +32,7 @@ import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.dt.core.api.naming.INamingService;
@@ -62,9 +63,10 @@ public class VariableTypeCheck
      */
     @Inject
     public VariableTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override

@@ -30,6 +30,7 @@ import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com.e1c.g5.dt.core.api.naming.INamingService;
@@ -67,9 +68,10 @@ public class FunctionReturnSectionCheck
     @Inject
     public FunctionReturnSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
         IBmModelManager bmModelManager, IBslPreferences bslPreferences, IQualifiedNameConverter qualifiedNameConverter,
-        IScopeProvider scopeProvider, BslMultiLineCommentDocumentationProvider commentProvider)
+        IScopeProvider scopeProvider, BslMultiLineCommentDocumentationProvider commentProvider,
+        IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
         this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
         this.qualifiedNameConverter = qualifiedNameConverter;
@@ -119,7 +121,7 @@ public class FunctionReturnSectionCheck
         IScope typeScope = scopeProvider.getScope(method, McorePackage.Literals.TYPE_DESCRIPTION__TYPES);
 
         Collection<TypeItem> computedReturnTypes =
-            root.computeReturnTypes(typeScope, scopeProvider, qualifiedNameConverter, commentProvider,
+            root.computeReturnTypes(typeScope, scopeProvider, qualifiedNameConverter, commentProvider, v8ProjectManager,
                 oldCommentFormat(root.getModule()), method, typeComputationContext);
 
         if (computedReturnTypes.isEmpty())

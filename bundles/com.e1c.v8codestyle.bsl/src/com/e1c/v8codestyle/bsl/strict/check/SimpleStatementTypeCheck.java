@@ -68,8 +68,6 @@ public class SimpleStatementTypeCheck
 
     private static final String DEFAULT_ALLOW_IMPLICIT_VAR_RESET_TO_UNDEFINED = Boolean.TRUE.toString();
 
-    private final IV8ProjectManager v8ProjectManager;
-
     /**
      * Instantiates a new simple statement change type check.
      *
@@ -80,11 +78,10 @@ public class SimpleStatementTypeCheck
      */
     @Inject
     public SimpleStatementTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IV8ProjectManager v8ProjectManager, IQualifiedNameConverter qualifiedNameConverter,
-        INamingService namingService, IBmModelManager bmModelManager)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
-        this.v8ProjectManager = v8ProjectManager;
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override

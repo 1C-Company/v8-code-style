@@ -98,8 +98,6 @@ public class FunctionCtorReturnSectionCheck
 
     private final IResourceLookup resourceLookup;
 
-    private final IV8ProjectManager v8ProjectManager;
-
     private final IBslPreferences bslPreferences;
 
     /**
@@ -115,20 +113,19 @@ public class FunctionCtorReturnSectionCheck
      * @param commentProvider the comment provider service, cannot be {@code null}.
      */
     @Inject
-    public FunctionCtorReturnSectionCheck(IResourceLookup resourceLookup, IV8ProjectManager v8ProjectManager,
+    public FunctionCtorReturnSectionCheck(IResourceLookup resourceLookup,
         IQualifiedNameConverter qualifiedNameConverter, IBslPreferences bslPreferences, TypesComputer typesComputer,
         DynamicFeatureAccessComputer dynamicComputer, IScopeProvider scopeProvider,
         BslMultiLineCommentDocumentationProvider commentProvider, INamingService namingService,
-        IBmModelManager bmModelManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
         this.typesComputer = typesComputer;
         this.dynamicComputer = dynamicComputer;
         this.scopeProvider = scopeProvider;
         this.commentProvider = commentProvider;
         this.qualifiedNameConverter = qualifiedNameConverter;
         this.resourceLookup = resourceLookup;
-        this.v8ProjectManager = v8ProjectManager;
         this.bslPreferences = bslPreferences;
     }
 
@@ -181,7 +178,7 @@ public class FunctionCtorReturnSectionCheck
         boolean oldFormat = props.oldCommentFormat();
 
         Collection<TypeItem> computedReturnTypes = root.computeReturnTypes(typeScope, scopeProvider,
-            qualifiedNameConverter, commentProvider, oldFormat, method, context);
+            qualifiedNameConverter, commentProvider, v8ProjectManager, oldFormat, method, context);
 
         Set<String> checkTypes = getCheckTypes(parameters);
 

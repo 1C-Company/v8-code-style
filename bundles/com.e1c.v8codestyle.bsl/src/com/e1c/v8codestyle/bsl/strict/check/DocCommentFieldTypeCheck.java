@@ -23,6 +23,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.dt.core.api.platform.BmOperationContext;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -52,9 +53,9 @@ public class DocCommentFieldTypeCheck
      */
     @Inject
     public DocCommentFieldTypeCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override

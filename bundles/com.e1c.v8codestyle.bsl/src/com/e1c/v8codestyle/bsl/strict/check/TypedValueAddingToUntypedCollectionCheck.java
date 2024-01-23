@@ -37,6 +37,7 @@ import com._1c.g5.v8.dt.bsl.model.SourceObjectLinkProvider;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.Method;
 import com._1c.g5.v8.dt.mcore.Type;
 import com._1c.g5.v8.dt.mcore.TypeItem;
@@ -82,9 +83,9 @@ public class TypedValueAddingToUntypedCollectionCheck
      */
     @Inject
     public TypedValueAddingToUntypedCollectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override
