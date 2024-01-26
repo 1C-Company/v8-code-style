@@ -20,6 +20,9 @@ import java.util.TreeSet;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.comment.DocumentationCommentProperties;
@@ -36,6 +39,7 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.dt.core.api.platform.BmOperationContext;
@@ -64,21 +68,30 @@ public class ParametersSectionCheck
 
     private static final String PARAMETER_PARMA_SECT_FOR_EXPORT = "requireParameterSectionOnlyForExport"; //$NON-NLS-1$
 
-    private final IResourceLookup resourceLookup;
-
     private final IBslPreferences bslPreferences;
 
     private final IScopeProvider scopeProvider;
 
     private final BslMultiLineCommentDocumentationProvider commentProvider;
 
+    /**
+     * Constructs an instance
+     *
+     * @param resourceLookup service for look up workspace resources, see {@link IResourceLookup}, cannot be <code>null</code>
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
+     * @param bslPreferences service for getting preferences for Built-In language, cannot be <code>null</code>
+     * @param qualifiedNameConverter service for getting {@link QualifiedName} by {@link EObject}, cannot be <code>null</code>
+     * @param scopeProvider service for getting {@link IScope} for Built-In language, cannot be <code>null</code>
+     * @param commentProvider service for getting comments content in Built-In language, cannot be <code>null</code>
+     */
     @Inject
     public ParametersSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager, IBslPreferences bslPreferences, IScopeProvider scopeProvider,
-        BslMultiLineCommentDocumentationProvider commentProvider, IV8ProjectManager v8ProjectManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager, IBslPreferences bslPreferences,
+        IScopeProvider scopeProvider, BslMultiLineCommentDocumentationProvider commentProvider)
     {
         super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
-        this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
         this.scopeProvider = scopeProvider;
         this.commentProvider = commentProvider;

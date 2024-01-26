@@ -15,7 +15,9 @@ package com.e1c.v8codestyle.bsl.comment.check;
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
@@ -27,6 +29,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com.e1c.g5.dt.core.api.naming.INamingService;
@@ -54,10 +57,20 @@ public class TypeDefinitionCheck
 
     private final IQualifiedNameConverter qualifiedNameConverter;
 
+    /**
+     * Constructs an instance
+     *
+     * @param resourceLookup service for look up workspace resources, see {@link IResourceLookup}, cannot be <code>null</code>
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
+     * @param qualifiedNameConverter service for getting {@link QualifiedName} by {@link EObject}, cannot be <code>null</code>
+     * @param scopeProvider service for getting {@link IScope} for Built-In language, cannot be <code>null</code>
+     */
     @Inject
     public TypeDefinitionCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager, IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider,
-        IV8ProjectManager v8ProjectManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager,
+        IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider)
     {
         super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
         this.qualifiedNameConverter = qualifiedNameConverter;

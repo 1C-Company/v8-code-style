@@ -16,6 +16,7 @@ import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.comment.DocumentationCommentProperties;
@@ -28,6 +29,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.dt.core.api.platform.BmOperationContext;
@@ -62,18 +64,18 @@ public class ExportFunctionReturnSectionCheck
     /**
      * Instantiates a new check of export function return section.
      *
-     * @param resourceLookup the resource lookup service, cannot be {@code null}.
-     * @param namingService
-     * @param bmModelManager
+     * @param resourceLookup service for look up workspace resources, see {@link IResourceLookup}, cannot be <code>null</code>
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
      * @param commentProvider the comment provider service, cannot be {@code null}.
      * @param scopeProvider the scope provider service, cannot be {@code null}.
      */
     @Inject
     public ExportFunctionReturnSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager, IBslPreferences bslPreferences,
-        BslMultiLineCommentDocumentationProvider commentProvider, IScopeProvider scopeProvider,
-        IV8ProjectManager v8ProjectManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager, IBslPreferences bslPreferences,
+        BslMultiLineCommentDocumentationProvider commentProvider, IScopeProvider scopeProvider)
     {
         super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
         this.resourceLookup = resourceLookup;

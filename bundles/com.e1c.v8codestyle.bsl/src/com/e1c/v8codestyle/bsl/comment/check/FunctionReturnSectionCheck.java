@@ -18,6 +18,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.IScopeProvider;
 
@@ -30,6 +31,7 @@ import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.TypeItem;
@@ -65,11 +67,23 @@ public class FunctionReturnSectionCheck
 
     private final IQualifiedNameConverter qualifiedNameConverter;
 
+    /**
+     * Constructs an instance
+     *
+     * @param resourceLookup service for look up workspace resources, see {@link IResourceLookup}, cannot be <code>null</code>
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
+     * @param bslPreferences service for getting preferences for Built-In language, cannot be <code>null</code>
+     * @param qualifiedNameConverter service for getting {@link QualifiedName} by {@link EObject}, cannot be <code>null</code>
+     * @param scopeProvider service for getting {@link IScope} for Built-In language, cannot be <code>null</code>
+     * @param commentProvider service for getting comments content in Built-In language, cannot be <code>null</code>
+     */
     @Inject
     public FunctionReturnSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager, IBslPreferences bslPreferences, IQualifiedNameConverter qualifiedNameConverter,
-        IScopeProvider scopeProvider, BslMultiLineCommentDocumentationProvider commentProvider,
-        IV8ProjectManager v8ProjectManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager, IBslPreferences bslPreferences,
+        IQualifiedNameConverter qualifiedNameConverter, IScopeProvider scopeProvider,
+        BslMultiLineCommentDocumentationProvider commentProvider)
     {
         super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
         this.resourceLookup = resourceLookup;

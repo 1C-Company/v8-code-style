@@ -29,6 +29,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
@@ -96,8 +97,6 @@ public class FunctionCtorReturnSectionCheck
 
     private final BslMultiLineCommentDocumentationProvider commentProvider;
 
-    private final IResourceLookup resourceLookup;
-
     private final IBslPreferences bslPreferences;
 
     /**
@@ -111,6 +110,9 @@ public class FunctionCtorReturnSectionCheck
      * @param dynamicComputer the dynamic computer service, cannot be {@code null}.
      * @param scopeProvider the scope provider service, cannot be {@code null}.
      * @param commentProvider the comment provider service, cannot be {@code null}.
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
      */
     @Inject
     public FunctionCtorReturnSectionCheck(IResourceLookup resourceLookup,
@@ -125,7 +127,6 @@ public class FunctionCtorReturnSectionCheck
         this.scopeProvider = scopeProvider;
         this.commentProvider = commentProvider;
         this.qualifiedNameConverter = qualifiedNameConverter;
-        this.resourceLookup = resourceLookup;
         this.bslPreferences = bslPreferences;
     }
 

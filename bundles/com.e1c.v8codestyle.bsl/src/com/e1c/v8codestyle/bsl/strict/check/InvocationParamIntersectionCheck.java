@@ -134,8 +134,10 @@ public class InvocationParamIntersectionCheck
      * @param resourceLookup the resource lookup service, cannot be {@code null}.
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
-     * @param v8ProjectManager the v 8 project manager service, cannot be {@code null}.
      * @param exportMethodTypeProvider the export method type provider service, cannot be {@code null}.
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
      */
     @Inject
     public InvocationParamIntersectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
