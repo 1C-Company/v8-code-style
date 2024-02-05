@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
@@ -78,5 +79,27 @@ public class RefLinkPartCheckTest
             .collect(Collectors.toSet());
 
         assertEquals(Set.of("5", "7"), lines);
+    }
+
+    /**
+     * Сhecks for invalid links in the method body and documenting comment
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    @Ignore("G5V8DT-24769 - 2024.1")
+    public void testInvalidLinksInMethodComments() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-method-ref-link.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(9, markers.size());
+
+        Set<String> lines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY))
+            .collect(Collectors.toSet());
+
+        Set<String> expected = Set.of("1", "2", "5", "8", "11", "15", "17", "19", "21");
+        assertEquals(expected, lines);
     }
 }
