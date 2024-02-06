@@ -101,6 +101,7 @@ public final class CodeAfterAsyncCallCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
+            .disable()
             .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(INVOCATION)
