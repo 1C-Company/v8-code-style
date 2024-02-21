@@ -104,7 +104,8 @@ public abstract class AbstractDocCommentTypeCheck
         {
             String text = ((TextPart)part).getText();
             if (text != null && (".".equals(text.trim()) //$NON-NLS-1$
-                || IBslCommentToken.TYPE_SECTION_DASH.equals(text.trim()) && lastLine != part.getLineNumber()))
+                || IBslCommentToken.TYPE_SECTION_DASH.equals(text.trim()) && lastLine != part.getLineNumber())
+                || text != null && text.startsWith("@skip-check")) //$NON-NLS-1$
             {
                 return true;
             }
