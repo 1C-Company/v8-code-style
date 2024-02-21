@@ -16,13 +16,7 @@ import java.util.Collection;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 
-import com._1c.g5.v8.dt.core.naming.ISymbolicLinkLocalizer;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
-import com._1c.g5.v8.dt.form.naming.FormSymbolicLinkLocalizer;
-import com._1c.g5.v8.dt.ui.util.OpenHelper;
-import com._1c.g5.v8.dt.ui.validation.BmMarkerWrapper;
-import com._1c.g5.v8.dt.validation.marker.IMarkerWrapper;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.check.qfix.FixProcessHandle;
@@ -41,9 +35,6 @@ public abstract class FormFixTestBase
 
     private final String fixDescriptionPattern;
     private IFixManager fixManager = ServiceAccess.get(IFixManager.class);
-    private IV8ProjectManager projectManager = ServiceAccess.get(IV8ProjectManager.class);
-    private ISymbolicLinkLocalizer symbolicLinkLocalizer = new FormSymbolicLinkLocalizer();
-    private final OpenHelper openHelper = new OpenHelper();
 
     /**
      * Instantiates a new form fix test base.
@@ -64,10 +55,7 @@ public abstract class FormFixTestBase
      */
     protected void applyFix(Marker marker, IDtProject dtProject)
     {
-        IMarkerWrapper markerWrapper = new BmMarkerWrapper(marker, dtProject.getWorkspaceProject(), bmModelManager,
-            projectManager, symbolicLinkLocalizer, openHelper);
-
-        FixProcessHandle handle = fixManager.prepareFix(markerWrapper, dtProject);
+        FixProcessHandle handle = fixManager.prepareFix(marker, dtProject);
 
         FixVariantDescriptor variantDescr = null;
 
