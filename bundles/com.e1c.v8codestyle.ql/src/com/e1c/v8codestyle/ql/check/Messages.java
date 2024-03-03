@@ -41,6 +41,9 @@ final class Messages
     public static String JoinToSubQuery_description;
     public static String JoinToSubQuery_Query_join_to_sub_query_not_allowed;
     public static String JoinToSubQuery_title;
+    public static String QueryFieldIsNullCheck_description;
+    public static String QueryFieldIsNullCheck_Query_missing_NULL_check_for_field_potentially_contain_NULL;
+    public static String QueryFieldIsNullCheck_title;
     public static String TempTableHasIndex_description;
     public static String TempTableHasIndex_Exclude_table_name_pattern;
     public static String TempTableHasIndex_New_temporary_table_should_have_indexes;

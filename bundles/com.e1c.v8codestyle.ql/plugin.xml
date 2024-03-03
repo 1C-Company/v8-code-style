@@ -54,6 +54,10 @@
             category="com.e1c.v8codestyle.ql"
             class="com.e1c.v8codestyle.ql.check.ConstantsInBinaryOperationCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.ql"
+            class="com.e1c.v8codestyle.ql.check.QueryFieldIsNullCheck">
+      </check>
    </extension>
 
 </plugin>
