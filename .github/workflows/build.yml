@@ -51,6 +51,13 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-latest-
 
+    - name: Build with Maven
+      working-directory: ./
+      run: |
+        Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &
+        export DISPLAY=:5
+        mvn clean verify -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V
+
     - name: Cache SonarCloud packages
       uses: actions/cache@v2
       if: inputs.analyze
@@ -59,19 +66,22 @@ jobs:
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
   
-    - name: Build with Maven
+    - name: Set up JDK 17
+      if: inputs.analyze
+      uses: actions/setup-java@v1
+      with:
+        java-version: 17
+        java-package: jdk
+
+    - name: Sonar scan
+      # Do not start Sonar-scanning for forks without label, and pass fork PR number directly
+      if: inputs.analyze
       env:
-        # Do not start Sonar-scanning for forks without label, and pass fork PR number directly
-        SONAR_PARAM: "${{ inputs.analyze && format('{0}{1}', 'org.sonarsource.scanner.maven:sonar-maven-plugin:sonar', env.PR_NUMBER) || '' }}"
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.sonar_token }}
       working-directory: ./
-      run: |
-        Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &
-        export DISPLAY=:5
-        echo "Sonar param: \"${SONAR_PARAM}\""
-        mvn clean verify ${SONAR_PARAM} -PSDK,find-bugs -Dtycho.localArtifacts=ignore -B -V
-
+      run: mvn compile org.sonarsource.scanner.maven:sonar-maven-plugin:sonar ${{ env.PR_NUMBER }} -Dtycho.localArtifacts=ignore -B -V
+        
     - name: Publish Test Report
       uses: scacap/action-surefire-report@v1
       if: inputs.analyze
@@ -96,7 +106,6 @@ jobs:
       with:
         name: jacoco
         path: |
-          ./**/target/jacoco.exec
           ./**/target/site/jacoco*/
     
     - name: Upload test logs on failure
