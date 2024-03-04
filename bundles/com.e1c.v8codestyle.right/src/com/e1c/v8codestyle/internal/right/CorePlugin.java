@@ -153,7 +153,7 @@ public class CorePlugin
     {
         try
         {
-            return Guice.createInjector(new ServiceModule(), new ExternalDependenciesModule(this));
+            return Guice.createInjector(new ExternalDependenciesModule(this));
         }
         catch (Exception e)
         {

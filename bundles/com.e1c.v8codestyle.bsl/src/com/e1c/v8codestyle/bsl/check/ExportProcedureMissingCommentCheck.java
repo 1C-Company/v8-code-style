@@ -86,7 +86,7 @@ public class ExportProcedureMissingCommentCheck
 
     private static boolean verifyTopRegion(Optional<RegionPreprocessor> regionTop)
     {
-        if (regionTop.isEmpty())
+        if (regionTop.isEmpty() || regionTop.get().getName() == null)
         {
             return false;
         }

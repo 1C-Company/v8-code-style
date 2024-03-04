@@ -275,6 +275,10 @@ public class ModuleStructureTopRegionCheck
         for (RegionPreprocessor region : allRegions)
         {
             String regionName = region.getName();
+            if (StringUtils.isBlank(regionName))
+            {
+                continue;
+            }
             countRegions.putIfAbsent(regionName, new ArrayList<>());
             countRegions.get(regionName).add(region);
             if (getFirstParentRegion(region).isEmpty())
@@ -288,7 +292,7 @@ public class ModuleStructureTopRegionCheck
     {
         for (String name : regionNames)
         {
-            if (regionName.equalsIgnoreCase(name))
+            if (regionName == null || regionName.equalsIgnoreCase(name))
             {
                 return true;
             }

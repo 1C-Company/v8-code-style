@@ -16,6 +16,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmTransaction;
@@ -58,6 +59,7 @@ public class ConfigurationDataLockTest
     }
 
     @Test
+    @Ignore("https://github.com/1C-Company/v8-code-style/issues/1375")
     public void testManagedDataLockMode() throws Exception
     {
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
