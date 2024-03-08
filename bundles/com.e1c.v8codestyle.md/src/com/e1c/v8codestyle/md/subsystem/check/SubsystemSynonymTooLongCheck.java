@@ -74,7 +74,7 @@ public class SubsystemSynonymTooLongCheck
             .severity(IssueSeverity.MINOR)
             .extension(new TopObjectFilterExtension())
             .extension(new StandardCheckExtension(712, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .issueType(IssueType.UI_STYLE)
             .topObject(SUBSYSTEM)
             .checkTop()

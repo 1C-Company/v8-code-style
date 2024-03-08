@@ -31,6 +31,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.md.CorePlugin;
+import com.e1c.v8codestyle.md.check.SkipAdoptedInExtensionMdObjectExtension;
 import com.google.inject.Inject;
 
 /**
@@ -75,6 +76,7 @@ public class CommonModuleNameGlobalClientCheck
             .severity(IssueSeverity.CRITICAL)
             .issueType(IssueType.WARNING)
             .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(MD_OBJECT__NAME, COMMON_MODULE__GLOBAL);

@@ -85,7 +85,7 @@ public class MdListObjectPresentationCheck
             .extension(new TopObjectFilterExtension())
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(468, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension());
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance());
 
         builder.topObject(BASIC_DB_OBJECT)
             .checkTop()

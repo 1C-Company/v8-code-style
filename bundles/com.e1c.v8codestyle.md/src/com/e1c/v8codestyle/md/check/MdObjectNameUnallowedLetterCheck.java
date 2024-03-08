@@ -59,7 +59,7 @@ public class MdObjectNameUnallowedLetterCheck
             .extension(new TopObjectFilterExtension())
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(474, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(MD_OBJECT)
             .features(MD_OBJECT__NAME, MD_OBJECT__SYNONYM, MD_OBJECT__COMMENT);
     }

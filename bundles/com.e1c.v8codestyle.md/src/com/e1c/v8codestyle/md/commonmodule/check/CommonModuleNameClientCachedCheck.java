@@ -77,7 +77,7 @@ public final class CommonModuleNameClientCachedCheck
             .issueType(IssueType.WARNING)
             .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
             .extension(new TopObjectFilterExtension())
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(MD_OBJECT__NAME, COMMON_MODULE__RETURN_VALUES_REUSE);

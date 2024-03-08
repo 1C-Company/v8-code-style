@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://g5.1c.ru/v8/dt/mcore" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="acb8cb06-9beb-46bd-968d-50d3a9c1ad2e">
+  <producedTypes>
+    <objectType typeId="211d8516-4e03-4a86-8288-71c0ce6d4f73" valueTypeId="d54d3f19-7f95-4d5b-8fbc-2697e2bb98fa"/>
+    <refType typeId="d6c2519f-b3a1-485d-9c57-6821da6b6003" valueTypeId="1705d8c0-db2a-48b3-8d7c-11b37ec4f1bf"/>
+    <selectionType typeId="fc980f44-bfd8-4b6f-a614-49f196a53e03" valueTypeId="ad7c3b7e-06d3-49fa-9e90-998339b7d17f"/>
+    <listType typeId="c7db0d46-a1d5-4041-a039-c012e330f356" valueTypeId="b97f6402-db95-444b-a88a-1fd2a08ac622"/>
+    <managerType typeId="60042313-e351-4184-8aff-3f218766a1db" valueTypeId="a152a0c1-198a-404b-bdad-63ff712a9267"/>
+  </producedTypes>
+  <name>Products</name>
+  <synonym>
+    <key>en</key>
+    <value>Products</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Products.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Products.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <attributes uuid="cfb90fdd-acd9-46a5-9e84-cef4639d3f5e">
+    <name>SKU</name>
+    <synonym>
+      <key>en</key>
+      <value>SKU</value>
+    </synonym>
+    <type>
+      <types>String</types>
+      <stringQualifiers>
+        <length>50</length>
+      </stringQualifiers>
+    </type>
+    <minValue xsi:type="core:UndefinedValue"/>
+    <maxValue xsi:type="core:UndefinedValue"/>
+    <fillValue xsi:type="core:UndefinedValue"/>
+    <fullTextSearch>Use</fullTextSearch>
+    <dataHistory>Use</dataHistory>
+  </attributes>
+  <tabularSections uuid="336430ce-634e-4e3e-b8ba-fc9346537a28">
+    <producedTypes>
+      <objectType typeId="88bba61e-b8b4-4fcb-8a79-e25ad0b7624f" valueTypeId="316dcc6c-9162-45aa-9565-4341d9b7546f"/>
+      <rowType typeId="26427cfa-48ce-4d98-b6bf-522d86c481da" valueTypeId="fee31205-78a7-4f9e-a6f6-997abb93a758"/>
+    </producedTypes>
+    <name>Pakages</name>
+    <synonym>
+      <key>en</key>
+      <value>Pakages</value>
+    </synonym>
+    <attributes uuid="3217b46a-926a-4744-9195-9ef2188c817f">
+      <name>Package</name>
+      <type>
+        <types>String</types>
+        <stringQualifiers>
+          <length>50</length>
+        </stringQualifiers>
+      </type>
+      <minValue xsi:type="core:UndefinedValue"/>
+      <maxValue xsi:type="core:UndefinedValue"/>
+      <dataHistory>Use</dataHistory>
+      <fullTextSearch>Use</fullTextSearch>
+    </attributes>
+  </tabularSections>
+</mdclass:Catalog>

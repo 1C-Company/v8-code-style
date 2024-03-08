@@ -17,9 +17,6 @@ import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGUR
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import com._1c.g5.v8.dt.core.platform.IConfigurationProject;
-import com._1c.g5.v8.dt.core.platform.IV8Project;
-import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.metadata.mdclass.DefaultDataLockControlMode;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -29,7 +26,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.md.CorePlugin;
-import com.google.inject.Inject;
+import com.e1c.v8codestyle.md.check.SkipAdoptedInExtensionMdObjectExtension;
 
 /**
  * Check configuration data lock mode should be managed
@@ -41,14 +38,6 @@ public final class ConfigurationDataLock
 {
 
     private static final String CHECK_ID = "configuration-data-lock-mode"; //$NON-NLS-1$
-
-    private final IV8ProjectManager v8ProjectManager;
-
-    @Inject
-    public ConfigurationDataLock(IV8ProjectManager v8ProjectManager)
-    {
-        this.v8ProjectManager = v8ProjectManager;
-    }
 
     @Override
     public String getCheckId()
@@ -65,6 +54,7 @@ public final class ConfigurationDataLock
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(460, getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(CONFIGURATION)
             .checkTop()
             .features(CONFIGURATION__DATA_LOCK_CONTROL_MODE);
@@ -75,9 +65,7 @@ public final class ConfigurationDataLock
         IProgressMonitor monitor)
     {
         Configuration configuration = (Configuration)object;
-        IV8Project v8Project = v8ProjectManager.getProject(configuration);
-        if (v8Project instanceof IConfigurationProject
-            && DefaultDataLockControlMode.MANAGED != configuration.getDataLockControlMode())
+        if (DefaultDataLockControlMode.MANAGED != configuration.getDataLockControlMode())
         {
             resultAceptor.addIssue(Messages.ConfigurationDataLock_message, CONFIGURATION__DATA_LOCK_CONTROL_MODE);
         }

@@ -14,7 +14,6 @@ package com.e1c.v8codestyle.md.configuration.check;
 
 import org.eclipse.osgi.util.NLS;
 
-
 /**
  * @author Dmitriy Marmyshev
  *

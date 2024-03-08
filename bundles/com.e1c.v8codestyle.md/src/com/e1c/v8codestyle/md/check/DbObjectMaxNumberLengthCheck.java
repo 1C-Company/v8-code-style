@@ -72,7 +72,7 @@ public final class DbObjectMaxNumberLengthCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PORTABILITY)
             .extension(new StandardCheckExtension(467, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .parameter(MAX_LENGTH, Integer.class, MAX_LENGTH_DEFAULT, Messages.DbObjectMaxNumberLengthCheck_parameter);
 
         builder.topObject(BASIC_DB_OBJECT)
