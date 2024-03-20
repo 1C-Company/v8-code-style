@@ -467,6 +467,34 @@ public class SortService
             }
         }
 
+        private void appendNestedSubsystems(Collection<SortItem> result, EReference ref, IBmTransaction transaction,
+            IProgressMonitor m)
+        {
+            Iterator<EClass> eClassIterator = transaction.getTopObjectEClasses();
+
+            while (eClassIterator.hasNext())
+            {
+                EClass topObjectEClass = eClassIterator.next();
+
+                if (!topObjectEClass.equals(MdClassPackage.Literals.SUBSYSTEM))
+                {
+                    continue;
+                }
+
+                for (EReference feature : topObjectEClass.getEAllReferences())
+                {
+                    for (Iterator<IBmObject> iterator = transaction.getTopObjectIterator(topObjectEClass); iterator
+                        .hasNext();)
+                    {
+                        IBmObject object = iterator.next();
+                        String fqn = object.bmGetFqn();
+                        result.add(new SortItem(fqn, feature, sorter));
+                    }
+                }
+            }
+
+        }
+
         private Map<EClass, List<EReference>> getSubordinateListsToSort(Iterator<EClass> eClassIterator,
             IProject project)
         {
@@ -474,7 +502,8 @@ public class SortService
             while (eClassIterator.hasNext())
             {
                 EClass topObjectEClass = eClassIterator.next();
-                if (topObjectEClass.equals(CONFIGURATION) || !MD_OBJECT.isSuperTypeOf(topObjectEClass))
+                if (topObjectEClass.equals(CONFIGURATION) || topObjectEClass.equals(MdClassPackage.Literals.SUBSYSTEM)
+                    || !MD_OBJECT.isSuperTypeOf(topObjectEClass))
                 {
                     continue;
                 }
@@ -515,6 +544,10 @@ public class SortService
                     if (collection.size() > 1)
                     {
                         result.add(new SortItem(CONFIGURATION_FQN, feature, sorter));
+                    }
+                    if (feature.equals(MdClassPackage.Literals.CONFIGURATION__SUBSYSTEMS))
+                    {
+                        appendNestedSubsystems(result, feature, transaction, m);
                     }
                 }
             }
