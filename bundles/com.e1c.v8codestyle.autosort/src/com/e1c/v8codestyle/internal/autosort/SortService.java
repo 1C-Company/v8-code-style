@@ -483,6 +483,10 @@ public class SortService
 
                 for (EReference feature : topObjectEClass.getEAllReferences())
                 {
+                    if (feature != MdClassPackage.Literals.SUBSYSTEM__SUBSYSTEMS)
+                    {
+                        continue;
+                    }
                     for (Iterator<IBmObject> iterator = transaction.getTopObjectIterator(topObjectEClass); iterator
                         .hasNext();)
                     {
