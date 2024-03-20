@@ -1,6 +1,15 @@
-/**
+/*******************************************************************************
+ * Copyright (C) 2021, 1C-Soft LLC and others.
  *
- */
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *******************************************************************************/
 package com.e1c.v8codestyle.autosort.itests;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGURATION;
@@ -30,8 +39,9 @@ import com.e1c.v8codestyle.autosort.ISortService;
 import com.google.inject.Inject;
 
 /**
- * @author Tihon Tihonin
+ * Test ensuring subsystems are sorted properly when top metadata sorting enabled.
  *
+ * @author Tihon Tihonin
  */
 @RunWith(JUnitGuiceRunner.class)
 @GuiceModules(modules = { ExternalDependenciesModule.class })
