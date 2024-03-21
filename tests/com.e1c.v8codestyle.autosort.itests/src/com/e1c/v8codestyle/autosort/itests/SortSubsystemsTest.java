@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021, 1C-Soft LLC and others.
+ * Copyright (C) 2024, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,13 +14,11 @@ package com.e1c.v8codestyle.autosort.itests;
 
 import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGURATION;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.junit.ClassRule;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,10 +31,8 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
-import com._1c.g5.v8.dt.platform.version.Version;
 import com._1c.g5.v8.dt.testing.GuiceModules;
 import com._1c.g5.v8.dt.testing.JUnitGuiceRunner;
-import com._1c.g5.v8.dt.testing.TestingPlatformSupport;
 import com._1c.g5.v8.dt.testing.TestingWorkspace;
 import com.e1c.v8codestyle.autosort.ISortService;
 import com.google.inject.Inject;
@@ -55,9 +51,6 @@ public class SortSubsystemsTest
     @Rule
     public TestingWorkspace testingWorkspace = new TestingWorkspace(true, true);
 
-    @ClassRule
-    public static final TestingPlatformSupport testingPlatformSupport = new TestingPlatformSupport(Version.V8_3_23);
-
     @Inject
     private ISortService sortService;
 
@@ -75,13 +68,13 @@ public class SortSubsystemsTest
         IDtProject dtProject = dtProjectManager.getDtProject(project);
         assertNotNull(dtProject);
 
-        sortService.startSortAllMetadata(dtProject.getWorkspaceProject());
-        Thread.sleep(2000);
         IBmObject object = getTopObjectByFqn(CONFIGURATION.getName(), dtProject);
-        assertTrue(object instanceof Configuration);
-
         Configuration configuration = (Configuration)object;
-        assertFalse(configuration.getSubsystems().isEmpty());
+
+        assertEquals("Subsystem2", configuration.getSubsystems().get(0).getSubsystems().get(0).getName());
+        assertEquals("Subsystem1", configuration.getSubsystems().get(0).getSubsystems().get(1).getName());
+
+        sortService.sortAllMetadata(dtProject, new NullProgressMonitor());
 
         assertEquals("Subsystem1", configuration.getSubsystems().get(0).getSubsystems().get(0).getName());
         assertEquals("Subsystem2", configuration.getSubsystems().get(0).getSubsystems().get(1).getName());
@@ -89,7 +82,7 @@ public class SortSubsystemsTest
 
     protected IBmObject getTopObjectByFqn(final String fqn, IDtProject dtProject)
     {
-        IBmModel model = this.bmModelManager.getModel(dtProject);
+        IBmModel model = bmModelManager.getModel(dtProject);
         return model.executeReadonlyTask(new AbstractBmTask<IBmObject>("GetObject")
         {
             @Override

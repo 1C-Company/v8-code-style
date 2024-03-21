@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="33e43f9a-04bb-4dd1-9d22-c135507d414e">
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="86f63cb9-32f6-4dc9-8543-2020a04e43bc">
   <name>SubsystemsAutoSort</name>
   <synonym>
     <key>en</key>
     <value>Subsystems auto sort</value>
   </synonym>
-  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="cfeecb3a-a17e-4c00-a273-876107d52ed0"/>
-  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="bcb3b717-5d69-484c-9046-9e9801b9681e"/>
-  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="3b13e899-fce4-434a-ace0-163a14dbc75c"/>
-  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="0513585f-3f88-4130-9700-9a4012d492d0"/>
-  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="0dd82e2c-1e45-451f-8704-6d1fcfa608c9"/>
-  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="516d13d2-5958-4954-ae84-e8b67c2766be"/>
-  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="99fa57ad-8381-48c7-b383-796a3f304fb3"/>
-  <configurationExtensionCompatibilityMode>8.3.23</configurationExtensionCompatibilityMode>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="56178892-2f82-497e-86ca-7af5484df5c7"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="b3a36ea0-8070-4591-9711-a811387355bf"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="ed97aa7e-418f-4c2b-bf94-8c632dae5be6"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="d0398e16-622f-491c-8af6-a2d8e67b53ad"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="52c465e6-ca3e-4db4-985a-c31ea429a2ee"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="a25c9bbf-13ce-46d3-a727-addc5d862d2e"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="3eebbc79-8b9d-43c1-b659-b0f388a2c597"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
   <defaultRunMode>ManagedApplication</defaultRunMode>
   <usePurposes>PersonalComputer</usePurposes>
   <usedMobileApplicationFunctionalities>
@@ -29,8 +29,8 @@
   <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
   <modalityUseMode>DontUse</modalityUseMode>
   <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
-  <compatibilityMode>8.3.23</compatibilityMode>
-  <languages uuid="53a4c31b-6848-4e8c-b3af-57c027a224e9">
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="0c381cff-50fb-42d1-8b6c-81995b34ce46">
     <name>English</name>
     <synonym>
       <key>en</key>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="26fcd0b8-f48d-4bd1-a1f8-0509554c69f3">
+<mdclass:Subsystem xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="5b455de0-f05d-4997-b76f-ed47fb2d67fd">
   <name>Subsystem1</name>
   <synonym>
     <key>en</key>

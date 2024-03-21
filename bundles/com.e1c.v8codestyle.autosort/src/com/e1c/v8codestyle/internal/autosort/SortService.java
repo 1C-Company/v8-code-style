@@ -467,36 +467,21 @@ public class SortService
             }
         }
 
-        private void appendNestedSubsystems(Collection<SortItem> result, EReference ref, IBmTransaction transaction,
-            IProgressMonitor m)
+        private void appendSubordinateSubsystems(Collection<SortItem> result, IBmTransaction transaction)
         {
-            Iterator<EClass> eClassIterator = transaction.getTopObjectEClasses();
-
-            while (eClassIterator.hasNext())
+            for (Iterator<IBmObject> iterator =
+                transaction.getTopObjectIterator(MdClassPackage.Literals.SUBSYSTEM); iterator.hasNext();)
             {
-                EClass topObjectEClass = eClassIterator.next();
+                IBmObject subsystem = iterator.next();
 
-                if (!topObjectEClass.equals(MdClassPackage.Literals.SUBSYSTEM))
+                EList<?> subordinateSubsystems =
+                    (EList<?>)subsystem.eGet(MdClassPackage.Literals.SUBSYSTEM__SUBSYSTEMS, false);
+                if (subordinateSubsystems.size() > 1)
                 {
-                    continue;
-                }
-
-                for (EReference feature : topObjectEClass.getEAllReferences())
-                {
-                    if (feature != MdClassPackage.Literals.SUBSYSTEM__SUBSYSTEMS)
-                    {
-                        continue;
-                    }
-                    for (Iterator<IBmObject> iterator = transaction.getTopObjectIterator(topObjectEClass); iterator
-                        .hasNext();)
-                    {
-                        IBmObject object = iterator.next();
-                        String fqn = object.bmGetFqn();
-                        result.add(new SortItem(fqn, feature, sorter));
-                    }
+                    String fqn = subsystem.bmGetFqn();
+                    result.add(new SortItem(fqn, MdClassPackage.Literals.SUBSYSTEM__SUBSYSTEMS, sorter));
                 }
             }
-
         }
 
         private Map<EClass, List<EReference>> getSubordinateListsToSort(Iterator<EClass> eClassIterator,
@@ -551,7 +536,7 @@ public class SortService
                     }
                     if (feature.equals(MdClassPackage.Literals.CONFIGURATION__SUBSYSTEMS))
                     {
-                        appendNestedSubsystems(result, feature, transaction, m);
+                        appendSubordinateSubsystems(result, transaction);
                     }
                 }
             }
