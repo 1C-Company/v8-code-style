@@ -19,6 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,8 +32,10 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
+import com._1c.g5.v8.dt.platform.version.Version;
 import com._1c.g5.v8.dt.testing.GuiceModules;
 import com._1c.g5.v8.dt.testing.JUnitGuiceRunner;
+import com._1c.g5.v8.dt.testing.TestingPlatformSupport;
 import com._1c.g5.v8.dt.testing.TestingWorkspace;
 import com.e1c.v8codestyle.autosort.ISortService;
 import com.google.inject.Inject;
@@ -50,6 +53,9 @@ public class SortSubsystemsTest
 
     @Rule
     public TestingWorkspace testingWorkspace = new TestingWorkspace(true, true);
+
+    @ClassRule
+    public static final TestingPlatformSupport testingPlatformSupport = new TestingPlatformSupport(Version.V8_3_19);
 
     @Inject
     private ISortService sortService;
