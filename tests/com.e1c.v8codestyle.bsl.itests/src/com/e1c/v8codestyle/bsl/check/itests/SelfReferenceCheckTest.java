@@ -72,10 +72,10 @@ public class SelfReferenceCheckTest
         List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
         assertEquals(4, markers.size());
 
-        assertEquals("6", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("6", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("10", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("10", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("6", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("6", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("10", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals("10", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
     }
 
     /**
@@ -150,6 +150,9 @@ public class SelfReferenceCheckTest
         assertNotNull(chekcId);
         return markers.stream()
             .filter(marker -> chekcId.equals(getCheckIdFromMarker(marker, getProject())))
+            .sorted((marker1, marker2) -> marker1.getExtraInfo()
+                .get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY)
+                .compareTo(marker2.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY)))
             .collect(Collectors.toList());
     }
 

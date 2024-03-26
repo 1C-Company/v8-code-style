@@ -207,7 +207,10 @@ public class TypedValueAddingToUntypedCollectionCheck
             }
             else
             {
-                actualTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                if (((Type)type).getCollectionElementTypes() != null)
+                {
+                    actualTypes.addAll(((Type)type).getCollectionElementTypes().allTypes());
+                }
             }
         }
 

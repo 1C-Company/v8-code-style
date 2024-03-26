@@ -20,7 +20,7 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
-import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
+import com._1c.g5.v8.dt.rights.IRightInfosService;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 
 /**
@@ -32,7 +32,6 @@ import com._1c.g5.wiring.AbstractServiceAwareModule;
 public class ExternalDependenciesModule
     extends AbstractServiceAwareModule
 {
-
     /**
      * @param plugin
      */
@@ -50,9 +49,6 @@ public class ExternalDependenciesModule
         bind(IBmRightsIndexManager.class).toService();
         bind(IBmEmfIndexManager.class).toService();
         bind(IConfigurationProvider.class).toService();
-
-        // XXX remove this when the IRightInfosService become OSGi service
-        bind(IRuntimeVersionSupport.class).toService();
+        bind(IRightInfosService.class).toService();
     }
-
 }

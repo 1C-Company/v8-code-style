@@ -40,6 +40,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
 
 import com._1c.g5.v8.bm.core.BmUriUtil;
@@ -61,6 +62,7 @@ import com._1c.g5.v8.dt.md.MdUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
 import com._1c.g5.v8.dt.metadata.mdclass.Role;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
+import com._1c.g5.v8.dt.rights.IRightInfosService;
 import com._1c.g5.v8.dt.rights.model.ObjectRight;
 import com._1c.g5.v8.dt.rights.model.ObjectRights;
 import com._1c.g5.v8.dt.rights.model.Right;
@@ -78,7 +80,6 @@ import com.e1c.g5.v8.dt.check.context.OnModelObjectAssociationContextCollector;
 import com.e1c.g5.v8.dt.check.context.OnModelObjectRemovalContextCollector;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.internal.right.InternalRightInfosService;
 
 /**
  * Abstract check that role has some right for any object.
@@ -114,7 +115,7 @@ public abstract class RoleRightSetCheck
 
     private final IBmEmfIndexManager bmEmfIndexManager;
 
-    private final InternalRightInfosService rightInfosService;
+    private final IRightInfosService rightInfosService;
 
     /**
      * Creates new instance which helps to check that role has specified right for an object.
@@ -127,7 +128,7 @@ public abstract class RoleRightSetCheck
      */
     protected RoleRightSetCheck(IResourceLookup resourceLookup, IV8ProjectManager v8ProjectManager,
         IBmModelManager bmModelManager, IBmRightsIndexManager bmRightsIndexManager,
-        IBmEmfIndexManager bmEmfIndexManager, InternalRightInfosService rightInfosService)
+        IBmEmfIndexManager bmEmfIndexManager, IRightInfosService rightInfosService)
     {
         this.resourceLookup = resourceLookup;
         this.v8ProjectManager = v8ProjectManager;
@@ -319,17 +320,27 @@ public abstract class RoleRightSetCheck
 
     private String getMdObjectName(MdObject mdObject, IV8Project project)
     {
-        if (mdObject == null)
+        if (mdObject == null || project == null)
         {
             return "Unknown"; //$NON-NLS-1$
         }
 
-        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
-            return MdUtil.getFullyQualifiedNameRu(mdObject).toString();
+            QualifiedName fqn = MdUtil.getFullyQualifiedNameRu(mdObject);
+            if (fqn != null)
+            {
+                return fqn.toString();
+            }
         }
 
-        return MdUtil.getFullyQualifiedName(mdObject).toString();
+        QualifiedName fqn = MdUtil.getFullyQualifiedName(mdObject);
+        if (fqn != null)
+        {
+            return fqn.toString();
+        }
+
+        return "Unknown"; //$NON-NLS-1$
     }
 
     private Collection<MdObject> getDefaultObjectsWithRight(RoleDescription description, IProgressMonitor monitor)
@@ -413,7 +424,7 @@ public abstract class RoleRightSetCheck
 
     private boolean hasRight(EClass eClass, EObject context)
     {
-        Set<Right> rights = rightInfosService.getEClassRights(eClass, context);
+        Set<Right> rights = rightInfosService.getEClassRights(context, eClass);
         Set<String> rightNames = rights.stream().map(NamedElement::getName).collect(Collectors.toSet());
         return rightNames.contains(getRightName().getName());
     }
