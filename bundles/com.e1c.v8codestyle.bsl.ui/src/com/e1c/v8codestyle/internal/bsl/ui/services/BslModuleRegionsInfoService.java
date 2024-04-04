@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2023, 1C-Soft LLC and others.
+ * Copyright (C) 2023-2024, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -74,10 +74,10 @@ public class BslModuleRegionsInfoService
         EObject eventOwner = data.getEventOwner();
         BslModuleEventData regionData = (BslModuleEventData)data;
         EventItemType itemType = regionData.getEventItemType();
-        String suffix = getSuffix(eventOwner, itemType);
+        String suffix = getSuffix(eventOwner, itemType, data.isDirective());
         List<RegionPreprocessor> regionPreprocessors = BslUtil.getAllRegionPreprocessors(module);
         ScriptVariant scriptVariant = project.getScriptVariant();
-        String declaredRegionName = getDeclaredRegionName(moduleOwner, itemType, scriptVariant);
+        String declaredRegionName = getDeclaredRegionName(moduleOwner, itemType, data.isDirective(), scriptVariant);
         Map<String, BslModuleOffsets> regionOffsets =
             getRegionOffsets(document, regionPreprocessors, declaredRegionName, scriptVariant);
         int offset = getRegionOffset(regionOffsets, declaredRegionName, suffix, defaultPosition, scriptVariant);
@@ -188,6 +188,7 @@ public class BslModuleRegionsInfoService
         int offset = defaultOffset;
         boolean createNewRegion = !isRegionExists(regionOffsets, declaredRegionName, suffix);
         BslModuleOffsets regionOffset = regionOffsets.get(declaredRegionName);
+
         if (regionOffset != null)
         {
             if (!suffix.isEmpty())
@@ -246,8 +247,13 @@ public class BslModuleRegionsInfoService
         return offset;
     }
 
-    private String getDeclaredRegionName(EClass moduleOwnerClass, EventItemType itemType, ScriptVariant scriptVariant)
+    private String getDeclaredRegionName(EClass moduleOwnerClass, EventItemType itemType, boolean isDirective,
+        ScriptVariant scriptVariant)
     {
+        if (isDirective)
+        {
+            return getPrivateRegionName(scriptVariant);
+        }
         String moduleOwnerName = moduleOwnerClass.getName();
         switch (moduleOwnerName)
         {
@@ -287,8 +293,12 @@ public class BslModuleRegionsInfoService
         return ModuleStructureSection.EVENT_HANDLERS.getName(scriptVariant);
     }
 
-    private String getSuffix(EObject eventOwner, EventItemType itemType)
+    private String getSuffix(EObject eventOwner, EventItemType itemType, boolean isDirective)
     {
+        if (isDirective)
+        {
+            return StringUtils.EMPTY;
+        }
         if (itemType.equals(EventItemType.TABLE))
         {
             EObject container = eventOwner;
