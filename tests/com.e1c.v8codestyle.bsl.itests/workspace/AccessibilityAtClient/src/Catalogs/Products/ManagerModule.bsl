@@ -19,6 +19,11 @@ Procedure PresentationFieldsGetProcessing(Fields, StandardProcessing)
 	// Complaint
 EndProcedure
 
+&After("PresentationFieldsGetProcessing")
+Procedure Compiant2(Fields, StandardProcessing)
+	// Complaint
+EndProcedure
+
 Procedure Noncompiant2() Export
 	// empty
 EndProcedure

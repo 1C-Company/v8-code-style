@@ -240,7 +240,7 @@ public final class CodeAfterAsyncCallCheck
         }
         else
         {
-            statements = getStatementsFromContainer(container);
+            //statements = getStatementsFromContainer(container);
         }
         return statements;
     }

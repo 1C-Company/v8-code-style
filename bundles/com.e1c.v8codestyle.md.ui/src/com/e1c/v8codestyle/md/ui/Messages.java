@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.md.ui.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String CommonModuleTypeDtNewWizardPage_Choose_valid_common_module_type_from_list;
     public static String CommonModuleTypeDtNewWizardPage_Select_common_module_type;
     public static String CommonModuleTypeDtNewWizardPage_Select_type;

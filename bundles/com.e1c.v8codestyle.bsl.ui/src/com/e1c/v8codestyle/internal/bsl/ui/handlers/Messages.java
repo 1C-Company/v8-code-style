@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.internal.bsl.ui.handlers.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String AddStrictTypeAnnotationHandler_Get_prject_module_files;
     public static String AddStrictTypeAnnotationHandler_Job_title;
     public static String AddStrictTypeAnnotationHandler_Update_module_files;
