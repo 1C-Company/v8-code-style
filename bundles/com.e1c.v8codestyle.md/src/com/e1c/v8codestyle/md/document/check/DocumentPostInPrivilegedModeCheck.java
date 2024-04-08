@@ -64,7 +64,7 @@ public class DocumentPostInPrivilegedModeCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
             .extension(new StandardCheckExtension(689, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(DOCUMENT)
             .checkTop()
             .features(DOCUMENT__POSTING, DOCUMENT__POST_IN_PRIVILEGED_MODE, DOCUMENT__UNPOST_IN_PRIVILEGED_MODE,

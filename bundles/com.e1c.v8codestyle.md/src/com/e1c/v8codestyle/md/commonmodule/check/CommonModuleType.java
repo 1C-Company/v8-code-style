@@ -86,7 +86,7 @@ public final class CommonModuleType
             .issueType(IssueType.CODE_STYLE)
             .extension(new TopObjectFilterExtension())
             .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(CommonModuleTypes.SERVER.getFeatureValues(false).keySet().toArray(new EStructuralFeature[0]));

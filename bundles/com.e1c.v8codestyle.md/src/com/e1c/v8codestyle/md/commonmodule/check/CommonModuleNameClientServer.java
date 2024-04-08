@@ -77,7 +77,7 @@ public final class CommonModuleNameClientServer
             .extension(new TopObjectFilterExtension())
             .extension(new MdObjectNameWithoutSuffix(NAME_SUFFIX_DEFAULT))
             .extension(new StandardCheckExtension(469, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(COMMON_MODULE)
             .checkTop()
             .features(MD_OBJECT__NAME,

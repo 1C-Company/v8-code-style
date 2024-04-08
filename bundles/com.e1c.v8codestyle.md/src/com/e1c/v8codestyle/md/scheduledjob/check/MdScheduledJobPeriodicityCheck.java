@@ -125,7 +125,7 @@ public final class MdScheduledJobPeriodicityCheck
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(402, getCheckId(), CorePlugin.PLUGIN_ID))
-            .extension(new SkipAdoptedInExtensionMdObjectExtension())
+            .extension(SkipAdoptedInExtensionMdObjectExtension.instance())
             .topObject(SCHEDULE)
             .checkTop()
             .containment(DAILY_SCHEDULE)
