@@ -467,6 +467,23 @@ public class SortService
             }
         }
 
+        private void appendSubordinateSubsystems(Collection<SortItem> result, IBmTransaction transaction)
+        {
+            for (Iterator<IBmObject> iterator =
+                transaction.getTopObjectIterator(MdClassPackage.Literals.SUBSYSTEM); iterator.hasNext();)
+            {
+                IBmObject subsystem = iterator.next();
+
+                EList<?> subordinateSubsystems =
+                    (EList<?>)subsystem.eGet(MdClassPackage.Literals.SUBSYSTEM__SUBSYSTEMS, false);
+                if (subordinateSubsystems.size() > 1)
+                {
+                    String fqn = subsystem.bmGetFqn();
+                    result.add(new SortItem(fqn, MdClassPackage.Literals.SUBSYSTEM__SUBSYSTEMS, sorter));
+                }
+            }
+        }
+
         private Map<EClass, List<EReference>> getSubordinateListsToSort(Iterator<EClass> eClassIterator,
             IProject project)
         {
@@ -474,7 +491,8 @@ public class SortService
             while (eClassIterator.hasNext())
             {
                 EClass topObjectEClass = eClassIterator.next();
-                if (topObjectEClass.equals(CONFIGURATION) || !MD_OBJECT.isSuperTypeOf(topObjectEClass))
+                if (topObjectEClass.equals(CONFIGURATION) || topObjectEClass.equals(MdClassPackage.Literals.SUBSYSTEM)
+                    || !MD_OBJECT.isSuperTypeOf(topObjectEClass))
                 {
                     continue;
                 }
@@ -515,6 +533,10 @@ public class SortService
                     if (collection.size() > 1)
                     {
                         result.add(new SortItem(CONFIGURATION_FQN, feature, sorter));
+                    }
+                    if (feature.equals(MdClassPackage.Literals.CONFIGURATION__SUBSYSTEMS))
+                    {
+                        appendSubordinateSubsystems(result, transaction);
                     }
                 }
             }
