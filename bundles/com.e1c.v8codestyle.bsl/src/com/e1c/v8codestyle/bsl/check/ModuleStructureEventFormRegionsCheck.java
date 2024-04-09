@@ -164,8 +164,9 @@ public class ModuleStructureEventFormRegionsCheck
     private void check(ResultAcceptor result, List<EObject> containers, String regionName, String methodName,
         ScriptVariant scriptVariant, IProgressMonitor monitor)
     {
-        for (EObject obj : containers)
+        if (containers.iterator().hasNext())
         {
+            EObject obj = containers.iterator().next();
             if (monitor.isCanceled())
             {
                 return;
