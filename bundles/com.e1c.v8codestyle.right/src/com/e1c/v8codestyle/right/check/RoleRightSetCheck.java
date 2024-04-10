@@ -40,6 +40,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
 
 import com._1c.g5.v8.bm.core.BmUriUtil;
@@ -319,17 +320,27 @@ public abstract class RoleRightSetCheck
 
     private String getMdObjectName(MdObject mdObject, IV8Project project)
     {
-        if (mdObject == null)
+        if (mdObject == null || project == null)
         {
             return "Unknown"; //$NON-NLS-1$
         }
 
-        if (project != null && project.getScriptVariant() == ScriptVariant.RUSSIAN)
+        if (project.getScriptVariant() == ScriptVariant.RUSSIAN)
         {
-            return MdUtil.getFullyQualifiedNameRu(mdObject).toString();
+            QualifiedName fqn = MdUtil.getFullyQualifiedNameRu(mdObject);
+            if (fqn != null)
+            {
+                return fqn.toString();
+            }
         }
 
-        return MdUtil.getFullyQualifiedName(mdObject).toString();
+        QualifiedName fqn = MdUtil.getFullyQualifiedName(mdObject);
+        if (fqn != null)
+        {
+            return fqn.toString();
+        }
+
+        return "Unknown"; //$NON-NLS-1$
     }
 
     private Collection<MdObject> getDefaultObjectsWithRight(RoleDescription description, IProgressMonitor monitor)
