@@ -172,6 +172,10 @@
 <unit id="org.apache.commons.commons-io" version="0.0.0"/>
 
 <unit id="jakarta.annotation-api" version="2.1.1"/>
+
+<unit id="org.sat4j.core" version="2.3.6.v20201214"/>
+<unit id="org.sat4j.pb" version="2.3.6.v20201214"/>
+
 <repository id="eclipse_repository" location="https://download.eclipse.org/releases/2023-12/"/>
 </location>
 

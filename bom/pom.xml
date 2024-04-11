@@ -24,12 +24,12 @@
   <name>BOM</name>
 
   <prerequisites>
-    <maven>3.6.0</maven>
+    <maven>3.9.4</maven>
   </prerequisites>
 
   <properties>
-    <tycho.version>2.7.0</tycho.version>
-    <tycho.extras.version>2.7.0</tycho.extras.version>
+    <tycho.version>4.0.5</tycho.version>
+    <tycho.extras.version>4.0.5</tycho.extras.version>
     <markdown-page-generator.version>2.3.1</markdown-page-generator.version>
     <!-- Override this property in each project -->
     <markdown.page.generator.html.file.path>${project.basedir}</markdown.page.generator.html.file.path>
@@ -41,9 +41,9 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.release>11</maven.compiler.release>
 
     <maven.build.timestamp.format>'v'yyyyMMdd-HHmm</maven.build.timestamp.format>
     <qualifier>${maven.build.timestamp}</qualifier>
