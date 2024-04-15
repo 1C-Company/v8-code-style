@@ -152,6 +152,11 @@
 <unit id="org.sat4j.core" version="2.3.6.v20201214"/>
 <unit id="org.sat4j.pb" version="2.3.6.v20201214"/>
 
+<unit id="org.eclipse.jetty.server" version="12.0.3"/>
+<unit id="org.eclipse.jetty.ee8.server" version="12.0.3"/>
+<unit id="org.eclipse.jetty.security" version="12.0.3"/>
+<unit id="org.eclipse.jetty.session" version="12.0.3"/>
+
 <repository id="eclipse_repository" location="https://download.eclipse.org/releases/2023-12/"/>
 </location>
 
