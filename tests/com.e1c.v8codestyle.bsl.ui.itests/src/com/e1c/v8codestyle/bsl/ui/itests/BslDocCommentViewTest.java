@@ -74,6 +74,16 @@ public class BslDocCommentViewTest
     @Before
     public void setUp() throws CoreException
     {
+        IIntroPart introPart = PlatformUI.getWorkbench().getIntroManager().getIntro();
+        PlatformUI.getWorkbench().getIntroManager().closeIntro(introPart);
+
+        boolean closed = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
+        assertTrue(closed);
+        Display display = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
+        while (!display.isDisposed() && display.readAndDispatch())
+        {
+            // do it
+        }
 
         project = testingWorkspace.getProject(PROJECT_NAME);
 
@@ -82,16 +92,17 @@ public class BslDocCommentViewTest
             testingWorkspace.cleanUpWorkspace();
             project = this.testingWorkspace.setUpProject(PROJECT_NAME, getClass());
         }
-        PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
-
-        IIntroPart introPart = PlatformUI.getWorkbench().getIntroManager().getIntro();
-        PlatformUI.getWorkbench().getIntroManager().closeIntro(introPart);
     }
 
     @After
     public void shutDown()
     {
         PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().closeAllEditors(false);
+        Display display = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getDisplay();
+        while (!display.isDisposed() && display.readAndDispatch())
+        {
+            // do it
+        }
     }
 
     /**
