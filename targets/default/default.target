@@ -119,6 +119,7 @@
 <unit id="org.objenesis" version="0.0.0"/>
 <unit id="net.bytebuddy.byte-buddy" version="0.0.0"/>
 <unit id="net.bytebuddy.byte-buddy-agent" version="0.0.0"/>
+<unit id="org.apache.commons.codec" version="1.6.0.v201305230611"/>
 <repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository/"/>
 </location>
 
