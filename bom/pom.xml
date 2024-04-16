@@ -41,9 +41,9 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
 
     <maven.build.timestamp.format>'v'yyyyMMdd-HHmm</maven.build.timestamp.format>
     <qualifier>${maven.build.timestamp}</qualifier>
@@ -51,7 +51,7 @@
     <eclipse.p2.latest>http://download.eclipse.org/releases/2022-03/</eclipse.p2.latest>
 
     <p2repo.archive.skip>false</p2repo.archive.skip>
-    <org.jacoco.version>0.8.6</org.jacoco.version>
+    <org.jacoco.version>0.8.8</org.jacoco.version>
     <!-- SonarQube Settings -->
     <sonar.projectKey>1C-Company_v8-code-style</sonar.projectKey>
     <sonar.organization>1c-company</sonar.organization>
