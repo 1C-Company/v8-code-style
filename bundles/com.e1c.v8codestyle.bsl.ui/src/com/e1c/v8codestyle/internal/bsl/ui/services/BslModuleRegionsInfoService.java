@@ -19,6 +19,7 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
@@ -53,6 +54,7 @@ import com.google.inject.Inject;
 public class BslModuleRegionsInfoService
     implements IBslModuleTextInsertInfoService
 {
+
     @Inject
     private IModuleStructureProvider moduleStructureProvider;
 
@@ -64,38 +66,53 @@ public class BslModuleRegionsInfoService
         {
             return () -> defaultPosition;
         }
-        URI moduleResourceUri = module.eResource().getURI();
+        BslModuleEventData bslModuleEventData = (BslModuleEventData)data;
+        Resource resource = module.eResource();
+        URI resourceUri = resource != null ? resource.getURI() : document.getResourceURI();
         IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceUri);
+            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(resourceUri);
         IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
         BslOwnerComputerService bslOwnerComputerService = rsp.get(BslOwnerComputerService.class);
-        IV8Project project = projectManager.getProject(moduleResourceUri);
+        IV8Project project = projectManager.getProject(resourceUri);
         EClass moduleOwner = bslOwnerComputerService.computeOwnerEClass(module);
         EObject eventOwner = data.getEventOwner();
         BslModuleEventData regionData = (BslModuleEventData)data;
         EventItemType itemType = regionData.getEventItemType();
-        String suffix = getSuffix(eventOwner, itemType, data.isDirective());
+        String suffix = getSuffix(eventOwner, itemType, bslModuleEventData.isInternal());
         List<RegionPreprocessor> regionPreprocessors = BslUtil.getAllRegionPreprocessors(module);
         ScriptVariant scriptVariant = project.getScriptVariant();
-        String declaredRegionName = getDeclaredRegionName(moduleOwner, itemType, data.isDirective(), scriptVariant);
+        String declaredRegionName =
+            getDeclaredRegionName(moduleOwner, itemType, bslModuleEventData.isInternal(), scriptVariant);
         Map<String, BslModuleOffsets> regionOffsets =
             getRegionOffsets(document, regionPreprocessors, declaredRegionName, scriptVariant);
+        BslModuleOffsets bslModuleOffsets = regionOffsets.get(declaredRegionName);
         int offset = getRegionOffset(regionOffsets, declaredRegionName, suffix, defaultPosition, scriptVariant);
         String regionName = null;
-        if (!isRegionExists(regionOffsets, declaredRegionName, suffix) && project.getProject() != null
+        boolean createRegion = !isRegionExists(regionOffsets, declaredRegionName, suffix);
+        int clearOffset = -1;
+        int clearLength = -1;
+        if (bslModuleOffsets != null && bslModuleOffsets.needReplace())
+        {
+            createRegion = true;
+            String lineSeparator = PreferenceUtils.getLineSeparator(project.getProject());
+            int lineSeparatorOffset =
+                bslModuleOffsets.getStartOffset() >= lineSeparator.length() ? lineSeparator.length() : 0;
+            clearOffset = bslModuleOffsets.getStartOffset() - lineSeparatorOffset;
+            clearLength = bslModuleOffsets.getEndOffset() - bslModuleOffsets.getStartOffset() + lineSeparatorOffset;
+        }
+        if (createRegion && project.getProject() != null
             && moduleStructureProvider.canCreateStructure(project.getProject()))
         {
             regionName = suffix.isEmpty() ? declaredRegionName : (declaredRegionName + suffix);
         }
-        return new BslModuleRegionsInfo(offset, module, regionName);
+        return new BslModuleRegionsInfo(offset, clearOffset, clearLength, module, regionName);
     }
 
     @Override
     public String wrap(IBslModuleTextInsertInfo moduleTextInsertInfo, String content)
     {
-        if (moduleTextInsertInfo instanceof BslModuleRegionsInfo)
+        if (moduleTextInsertInfo instanceof BslModuleRegionsInfo moduleRegionInformation)
         {
-            BslModuleRegionsInfo moduleRegionInformation = (BslModuleRegionsInfo)moduleTextInsertInfo;
             Module module = moduleTextInsertInfo.getModule();
             String regionName = moduleRegionInformation.getRegionName();
             if (module != null && regionName != null)
@@ -112,10 +129,10 @@ public class BslModuleRegionsInfoService
                 String endRegion = proposals.getEndRegionPropStr();
                 String space = proposals.getSpacePropStr();
                 StringBuilder builder = new StringBuilder();
-                builder.append(lineSeparator).append(beginRegion).append(space).append(regionName);
-                builder.append(lineSeparator).append(content).append(lineSeparator);
-                builder.append(endRegion);
                 builder.append(lineSeparator);
+                builder.append(beginRegion).append(space).append(regionName);
+                builder.append(content);
+                builder.append(endRegion);
                 return builder.toString();
             }
         }
@@ -171,6 +188,10 @@ public class BslModuleRegionsInfoService
                                 regionOffsets.put(declaredRegionName, moduleRegionInformation);
                                 if ((targetRegionName != null) && targetRegionName.equals(preprocessorRegionName))
                                 {
+                                    if (node.getLength() == 0)
+                                    {
+                                        moduleRegionInformation.setNeedReplace();
+                                    }
                                     return regionOffsets;
                                 }
                             }
@@ -226,6 +247,8 @@ public class BslModuleRegionsInfoService
         boolean placeBefore = false;
         int offset = regionOffsets.isEmpty() ? 0 : defaultOffset;
         ModuleStructureSection[] declaredRegionNames = ModuleStructureSection.values();
+        BslModuleOffsets lastRegionInformation = null;
+        BslModuleOffsets regionInformation = null;
         for (int regionNameIndex = 0; regionNameIndex < declaredRegionNames.length; regionNameIndex++)
         {
             ModuleStructureSection moduleStructuredSection = declaredRegionNames[regionNameIndex];
@@ -234,12 +257,17 @@ public class BslModuleRegionsInfoService
             {
                 placeBefore = true;
             }
-            BslModuleOffsets regionInformation = regionOffsets.get(declaredRegionName);
+            if (regionInformation != null)
+            {
+                lastRegionInformation = regionInformation;
+            }
+            regionInformation = regionOffsets.get(declaredRegionName);
             if (regionInformation != null)
             {
                 if (placeBefore && (suffix.isEmpty() || !declaredRegionName.equals(regionName)))
                 {
-                    return regionInformation.getStartOffset();
+                    return lastRegionInformation != null ? lastRegionInformation.getEndOffset()
+                        : regionInformation.getStartOffset();
                 }
                 offset = placeBefore ? regionInformation.getStartOffset() : regionInformation.getEndOffset();
             }
@@ -247,25 +275,18 @@ public class BslModuleRegionsInfoService
         return offset;
     }
 
-    private String getDeclaredRegionName(EClass moduleOwnerClass, EventItemType itemType, boolean isDirective,
+    private String getDeclaredRegionName(EClass moduleOwnerClass, EventItemType itemType, boolean isInternal,
         ScriptVariant scriptVariant)
     {
-        if (isDirective)
+        if (isInternal)
         {
             return getPrivateRegionName(scriptVariant);
         }
-        String moduleOwnerName = moduleOwnerClass.getName();
-        switch (moduleOwnerName)
+        if (moduleOwnerClass.getName().equals("AbstractForm")) //$NON-NLS-1$
         {
-        case "AbstractForm": //$NON-NLS-1$
             return getDeclaredRegionNameForForm(itemType, scriptVariant);
-        case "WebService": //$NON-NLS-1$
-        case "HTTPService": //$NON-NLS-1$
-        case "IntegrationService": //$NON-NLS-1$
-            return getPrivateRegionName(scriptVariant);
-        default:
-            return getDefaultRegionName(scriptVariant);
         }
+        return getDefaultRegionName(scriptVariant);
     }
 
     private String getDeclaredRegionNameForForm(EventItemType itemType, ScriptVariant scriptVariant)
@@ -293,9 +314,9 @@ public class BslModuleRegionsInfoService
         return ModuleStructureSection.EVENT_HANDLERS.getName(scriptVariant);
     }
 
-    private String getSuffix(EObject eventOwner, EventItemType itemType, boolean isDirective)
+    private String getSuffix(EObject eventOwner, EventItemType itemType, boolean isInternal)
     {
-        if (isDirective)
+        if (isInternal)
         {
             return StringUtils.EMPTY;
         }
