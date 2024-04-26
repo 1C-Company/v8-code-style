@@ -58,7 +58,7 @@
                 <extraRequirements>
                   <requirement>
                     <type>eclipse-plugin</type>
-                    <id>org.eclipse.equinox.ds</id>
+                    <id>org.apache.felix.scr</id>
                     <versionRange>0.0.0</versionRange>
                   </requirement>
                 </extraRequirements>
@@ -68,5 +68,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
 </project>

@@ -24,12 +24,12 @@
   <name>BOM</name>
 
   <prerequisites>
-    <maven>3.6.0</maven>
+    <maven>3.9.4</maven>
   </prerequisites>
 
   <properties>
-    <tycho.version>2.7.0</tycho.version>
-    <tycho.extras.version>2.7.0</tycho.extras.version>
+    <tycho.version>4.0.5</tycho.version>
+    <tycho.extras.version>4.0.5</tycho.extras.version>
     <markdown-page-generator.version>2.3.1</markdown-page-generator.version>
     <!-- Override this property in each project -->
     <markdown.page.generator.html.file.path>${project.basedir}</markdown.page.generator.html.file.path>
@@ -41,9 +41,9 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven.compiler.release>11</maven.compiler.release>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
 
     <maven.build.timestamp.format>'v'yyyyMMdd-HHmm</maven.build.timestamp.format>
     <qualifier>${maven.build.timestamp}</qualifier>
@@ -51,7 +51,7 @@
     <eclipse.p2.latest>http://download.eclipse.org/releases/2022-03/</eclipse.p2.latest>
 
     <p2repo.archive.skip>false</p2repo.archive.skip>
-    <org.jacoco.version>0.8.6</org.jacoco.version>
+    <org.jacoco.version>0.8.8</org.jacoco.version>
     <!-- SonarQube Settings -->
     <sonar.projectKey>1C-Company_v8-code-style</sonar.projectKey>
     <sonar.organization>1c-company</sonar.organization>
@@ -87,6 +87,8 @@
     <sonar.issue.ignore.multicriteria.t4.resourceKey>/tests/**/*.java</sonar.issue.ignore.multicriteria.t4.resourceKey>
     <!-- Source files should not have any duplicated blocks -->
     <sonar.cpd.exclusions>**/*Plugin.java,/tests/**/*</sonar.cpd.exclusions>
+
+    <eclipse.jarsigner.plugin.version>1.1.2_p3</eclipse.jarsigner.plugin.version>
   </properties>
 
   <build>
@@ -98,7 +100,7 @@
           <version>${tycho.version}</version>
           <configuration>
             <resolver>p2</resolver>
-            <executionEnvironment>JavaSE-11</executionEnvironment>
+            <executionEnvironment>JavaSE-17</executionEnvironment>
             <includePackedArtifacts>false</includePackedArtifacts>
             <target>
               <artifact>
@@ -239,7 +241,7 @@
           <artifactId>maven-antrun-plugin</artifactId>
           <version>1.8</version>
         </plugin>
-        <plugin>
+        <!--plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
             <version>${org.jacoco.version}</version>
@@ -248,7 +250,7 @@
                 <exclude>**/MdClassPackageImpl*</exclude>
               </excludes>
             </configuration>
-        </plugin>
+        </plugin-->
         <plugin>
           <groupId>com.ruleoftech</groupId>
           <artifactId>markdown-page-generator-plugin</artifactId>
@@ -299,6 +301,20 @@
             </excludes>
            </configuration>
         </plugin>
+        <plugin>
+          <groupId>org.eclipse.cbi.maven.plugins</groupId>
+          <artifactId>eclipse-jarsigner-plugin</artifactId>
+          <version>${eclipse.jarsigner.plugin.version}</version>
+          <configuration>
+            <signerUrl>${signer.url}/jarsign.php</signerUrl>
+            <excludeInnerJars>true</excludeInnerJars>
+            <retryLimit>5</retryLimit>
+            <systemPropertyVariables>
+              <signer.ssl.keyStore>${env.SIGN_KEYSTORE_PATH}</signer.ssl.keyStore>
+              <signer.ssl.keyStorePassword>${keystorePassword}</signer.ssl.keyStorePassword>
+            </systemPropertyVariables>
+          </configuration>
+      </plugin>
       </plugins>
     </pluginManagement>
 
@@ -387,5 +403,32 @@
   	    </plugins>
   	  </build>
   	</profile>
+
+    <profile>
+      <id>sign</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.eclipse.cbi.maven.plugins</groupId>
+            <artifactId>eclipse-jarsigner-plugin</artifactId>
+            <version>${eclipse.jarsigner.plugin.version}</version>
+            <executions>
+              <execution>
+                <id>sign</id>
+                <phase>package</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <fork>true</fork>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+
   </profiles>
 </project>
