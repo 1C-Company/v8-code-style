@@ -35,7 +35,7 @@ jobs:
 #       java-package: jdk+fx
 
     - name: Set up Maven 3.9.6
-      uses: s4u/setup-maven-action@3.9.6
+      uses: s4u/setup-maven-action
       with:
         java-version: 17
         java-package: jdk+fx
