@@ -28,8 +28,14 @@ jobs:
     - uses: actions/checkout@v2
       if: ${{ !inputs.analyze }}
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v1
+#  - name: Set up JDK 17
+#     uses: actions/setup-java@v1
+#     with:
+#       java-version: 17
+#       java-package: jdk+fx
+
+    - name: Set up Maven 3.9.6
+      uses: s4u/setup-maven-action@3.9.6
       with:
         java-version: 17
         java-package: jdk+fx
