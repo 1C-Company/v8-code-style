@@ -314,7 +314,7 @@
               <signer.ssl.keyStorePassword>${keystorePassword}</signer.ssl.keyStorePassword>
             </systemPropertyVariables>
           </configuration>
-      </plugin>
+        </plugin>
       </plugins>
     </pluginManagement>
 
