@@ -34,7 +34,7 @@
     <!-- Override this property in each project -->
     <markdown.page.generator.html.file.path>${project.basedir}</markdown.page.generator.html.file.path>
     
-    <spotbugs.maven.plugin.version>4.8.4.0</spotbugs.maven.plugin.version>
+    <spotbugs.maven.plugin.version>4.8.3</spotbugs.maven.plugin.version>
     <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
     <checkstyle.version>8.29</checkstyle.version>
     <checkstyle.header.file>java.header</checkstyle.header.file>
