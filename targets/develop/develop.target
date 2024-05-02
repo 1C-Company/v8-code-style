@@ -96,6 +96,7 @@
 <unit id="org.eclipse.jgit.http.apache.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.jgit.lfs.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.jgit.pgm.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jgit.gpg.bc.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.nebula.widgets.datechooser.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.nebula.widgets.formattedtext.feature.feature.group" version="0.0.0"/>
 <unit id="org.eclipse.nebula.widgets.grid.feature.feature.group" version="0.0.0"/>
