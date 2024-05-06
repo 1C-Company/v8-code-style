@@ -19,10 +19,10 @@ import com._1c.g5.v8.dt.bm.index.rights.IBmRightsIndexManager;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.rights.IRightInfosService;
 import com._1c.g5.v8.dt.rights.model.util.RightName;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.right.CorePlugin;
-import com.e1c.v8codestyle.internal.right.InternalRightInfosService;
 import com.google.inject.Inject;
 
 /**
@@ -48,7 +48,7 @@ public class RightExclusiveMode
     @Inject
     public RightExclusiveMode(IResourceLookup resourceLookup, IV8ProjectManager v8ProjectManager,
         IBmModelManager bmModelManager, IBmRightsIndexManager bmRightsIndexManager,
-        IBmEmfIndexManager bmEmfIndexManager, InternalRightInfosService rightInfosService)
+        IBmEmfIndexManager bmEmfIndexManager, IRightInfosService rightInfosService)
     {
         super(resourceLookup, v8ProjectManager, bmModelManager, bmRightsIndexManager, bmEmfIndexManager,
             rightInfosService);
