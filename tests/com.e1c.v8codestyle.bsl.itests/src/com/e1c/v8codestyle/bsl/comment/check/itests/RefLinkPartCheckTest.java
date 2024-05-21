@@ -87,7 +87,6 @@ public class RefLinkPartCheckTest
      * @throws Exception the exception
      */
     @Test
-    @Ignore("G5V8DT-24769 - 2024.1")
     public void testInvalidLinksInMethodComments() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "doc-comment-method-ref-link.bsl");
