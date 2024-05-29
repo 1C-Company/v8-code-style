@@ -19,11 +19,12 @@ import java.util.Map;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.IResourceServiceProvider;
+import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 
 import com._1c.g5.v8.dt.bsl.common.EventItemType;
 import com._1c.g5.v8.dt.bsl.common.IBslModuleEventData;
@@ -34,6 +35,7 @@ import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.bsl.resource.owner.BslOwnerComputerService;
 import com._1c.g5.v8.dt.bsl.ui.BslGeneratorMultiLangProposals;
+import com._1c.g5.v8.dt.bsl.ui.editor.BslXtextDocument;
 import com._1c.g5.v8.dt.bsl.ui.event.BslModuleEventData;
 import com._1c.g5.v8.dt.common.PreferenceUtils;
 import com._1c.g5.v8.dt.common.StringUtils;
@@ -59,38 +61,38 @@ public class BslModuleRegionsInfoService
     private IModuleStructureProvider moduleStructureProvider;
 
     @Override
-    public IBslModuleTextInsertInfo getEventHandlerTextInsertInfo(IXtextDocument document, Module module,
-        int defaultPosition, IBslModuleEventData data)
+    public IBslModuleTextInsertInfo getEventHandlerTextInsertInfo(IXtextDocument document, int defaultPosition,
+        IBslModuleEventData data)
     {
         if (!(data instanceof BslModuleEventData))
         {
-            return () -> defaultPosition;
+            return IBslModuleTextInsertInfo.getDefaultModuleTextInsertInfo(document, defaultPosition);
         }
         BslModuleEventData bslModuleEventData = (BslModuleEventData)data;
-        Resource resource = module.eResource();
-        URI resourceUri = resource != null ? resource.getURI() : document.getResourceURI();
+        URI resourceURI = document.getResourceURI();
         IResourceServiceProvider rsp =
-            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(resourceUri);
+            IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(resourceURI);
         IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
-        BslOwnerComputerService bslOwnerComputerService = rsp.get(BslOwnerComputerService.class);
-        IV8Project project = projectManager.getProject(resourceUri);
-        EClass moduleOwner = bslOwnerComputerService.computeOwnerEClass(module);
+        IV8Project project = projectManager.getProject(resourceURI);
+        ModuleInfoUnitOfWork moduleInfoUnitOfWork = new ModuleInfoUnitOfWork(rsp.get(BslOwnerComputerService.class));
+        ModuleInfo moduleInfo = document instanceof BslXtextDocument bslXTextDocument
+            ? bslXTextDocument.readOnlyDataModelWithoutSync(moduleInfoUnitOfWork)
+            : document.readOnly(moduleInfoUnitOfWork);
         EObject eventOwner = data.getEventOwner();
         BslModuleEventData regionData = (BslModuleEventData)data;
         EventItemType itemType = regionData.getEventItemType();
         String suffix = getSuffix(eventOwner, itemType, bslModuleEventData.isInternal());
-        List<RegionPreprocessor> regionPreprocessors = BslUtil.getAllRegionPreprocessors(module);
         ScriptVariant scriptVariant = project.getScriptVariant();
         String declaredRegionName =
-            getDeclaredRegionName(moduleOwner, itemType, bslModuleEventData.isInternal(), scriptVariant);
+            getDeclaredRegionName(moduleInfo.owner, itemType, bslModuleEventData.isInternal(), scriptVariant);
         Map<String, BslModuleOffsets> regionOffsets =
-            getRegionOffsets(document, regionPreprocessors, declaredRegionName, scriptVariant);
+            getRegionOffsets(document, moduleInfo.regionPreprocessors, declaredRegionName, scriptVariant);
         BslModuleOffsets bslModuleOffsets = regionOffsets.get(declaredRegionName);
         int offset = getRegionOffset(regionOffsets, declaredRegionName, suffix, defaultPosition, scriptVariant);
         String regionName = null;
         boolean createRegion = !isRegionExists(regionOffsets, declaredRegionName, suffix);
-        int clearOffset = -1;
-        int clearLength = -1;
+        int clearOffset = 0;
+        int clearLength = 0;
         if (bslModuleOffsets != null && bslModuleOffsets.needReplace())
         {
             createRegion = true;
@@ -105,7 +107,7 @@ public class BslModuleRegionsInfoService
         {
             regionName = suffix.isEmpty() ? declaredRegionName : (declaredRegionName + suffix);
         }
-        return new BslModuleRegionsInfo(offset, clearOffset, clearLength, module, regionName);
+        return new BslModuleRegionsInfo(resourceURI, offset, clearOffset, clearLength, regionName);
     }
 
     @Override
@@ -113,26 +115,31 @@ public class BslModuleRegionsInfoService
     {
         if (moduleTextInsertInfo instanceof BslModuleRegionsInfo moduleRegionInformation)
         {
-            Module module = moduleTextInsertInfo.getModule();
             String regionName = moduleRegionInformation.getRegionName();
-            if (module != null && regionName != null)
+            if (regionName != null)
             {
-                URI moduleResourceUri = module.eResource().getURI();
-                IResourceServiceProvider rsp =
-                    IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(moduleResourceUri);
+                IResourceServiceProvider rsp = IResourceServiceProvider.Registry.INSTANCE
+                    .getResourceServiceProvider(moduleTextInsertInfo.getResourceURI());
                 IV8ProjectManager projectManager = rsp.get(IV8ProjectManager.class);
                 BslGeneratorMultiLangProposals proposals = rsp.get(BslGeneratorMultiLangProposals.class);
-                IV8Project project = projectManager.getProject(moduleResourceUri);
+                IV8Project project = projectManager.getProject(moduleTextInsertInfo.getResourceURI());
                 String lineSeparator = PreferenceUtils.getLineSeparator(project.getProject());
                 proposals.setRussianLang(ScriptVariant.RUSSIAN.equals(project.getScriptVariant()));
                 String beginRegion = proposals.getBeginRegionPropStr();
                 String endRegion = proposals.getEndRegionPropStr();
                 String space = proposals.getSpacePropStr();
                 StringBuilder builder = new StringBuilder();
-                builder.append(lineSeparator);
+                if (moduleTextInsertInfo.getPosition() != 0)
+                {
+                    builder.append(lineSeparator);
+                }
                 builder.append(beginRegion).append(space).append(regionName);
                 builder.append(content);
                 builder.append(endRegion);
+                if (moduleTextInsertInfo.getPosition() == 0)
+                {
+                    builder.append(lineSeparator);
+                }
                 return builder.toString();
             }
         }
@@ -348,5 +355,36 @@ public class BslModuleRegionsInfoService
         int declaredRegionNameLength = declaredRegionName.length();
         return regionName.length() >= declaredRegionNameLength
             && regionName.substring(0, declaredRegionNameLength).equals(declaredRegionName);
+    }
+
+    private final class ModuleInfo
+    {
+        private final EClass owner;
+        private final List<RegionPreprocessor> regionPreprocessors;
+
+        public ModuleInfo(EClass owner, List<RegionPreprocessor> regionPreprocessors)
+        {
+            this.owner = owner;
+            this.regionPreprocessors = regionPreprocessors;
+        }
+    }
+
+    private final class ModuleInfoUnitOfWork
+        implements IUnitOfWork<ModuleInfo, XtextResource>
+    {
+        private final BslOwnerComputerService bslOwnerComputerService;
+
+        public ModuleInfoUnitOfWork(BslOwnerComputerService bslOwnerComputerService)
+        {
+            this.bslOwnerComputerService = bslOwnerComputerService;
+        }
+
+        @Override
+        public ModuleInfo exec(XtextResource resource) throws Exception
+        {
+            Module module = (Module)resource.getParseResult().getRootASTElement();
+            return new ModuleInfo(bslOwnerComputerService.computeOwnerEClass(module),
+                BslUtil.getAllRegionPreprocessors(module));
+        }
     }
 }

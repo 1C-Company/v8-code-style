@@ -12,8 +12,9 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.internal.bsl.ui.services;
 
+import org.eclipse.emf.common.util.URI;
+
 import com._1c.g5.v8.dt.bsl.common.IBslModuleTextInsertInfo;
-import com._1c.g5.v8.dt.bsl.model.Module;
 
 /**
  * Built-in language module region information with {@link String} region wrap data
@@ -23,29 +24,35 @@ import com._1c.g5.v8.dt.bsl.model.Module;
 public class BslModuleRegionsInfo
     implements IBslModuleTextInsertInfo
 {
+    private final URI resourceURI;
     private final int insertPosition;
     private final int clearPosition;
     private final int clearLength;
-    private final Module module;
     private final String regionName;
 
     /**
      * {@link BslModuleRegionsInfo} constructor
      *
+     * @param resourceURI current module or document resource {@link URI}, cannot be <code>null</code>
      * @param insertPosition <code>int</code> insertion offset, cannot be negative
      * @param clearPosition text clear <code>int</code> position, can be negative if no clear needed
      * @param clearLength text clear <code>int</code> length, can be negative if no clear needed
-     * @param module current {@link Module}, cannot be <code>null</code>
      * @param regionName {@link String} region name, can be <code>null</code>
      */
-    public BslModuleRegionsInfo(int insertPosition, int clearPosition, int clearLength, Module module,
+    public BslModuleRegionsInfo(URI resourceURI, int insertPosition, int clearPosition, int clearLength,
         String regionName)
     {
+        this.resourceURI = resourceURI;
         this.insertPosition = insertPosition;
         this.clearPosition = clearPosition;
         this.clearLength = clearLength;
-        this.module = module;
         this.regionName = regionName;
+    }
+
+    @Override
+    public URI getResourceURI()
+    {
+        return resourceURI;
     }
 
     @Override
@@ -58,12 +65,6 @@ public class BslModuleRegionsInfo
     public int getClearLength()
     {
         return clearLength;
-    }
-
-    @Override
-    public Module getModule()
-    {
-        return module;
     }
 
     /**

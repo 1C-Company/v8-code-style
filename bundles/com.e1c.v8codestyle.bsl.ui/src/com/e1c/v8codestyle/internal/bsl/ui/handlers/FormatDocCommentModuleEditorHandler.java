@@ -165,7 +165,7 @@ public class FormatDocCommentModuleEditorHandler
             int methodOffset = lines.get(0).getOffset();
             int length = lines.get(lines.size() - 1).getEndOffset() - methodOffset;
 
-            String lineFormatter = proposalProvider.getLineFormatter(module, methodOffset, viewer.getDocument());
+            String lineFormatter = proposalProvider.getLineFormatter(module, viewer.getDocument(), methodOffset);
             IV8Project project = v8projectManager.getProject(module);
             boolean oldFormat = (project != null && project.getProject() != null)
                 ? this.bslPreferences.getDocumentCommentProperties(project.getProject()).oldCommentFormat() : true;
