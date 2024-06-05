@@ -215,6 +215,10 @@ public class FunctionCtorReturnSectionCheck
 
                 for (TypeItem returnType : returnTypes)
                 {
+                    if (returnType.eIsProxy())
+                    {
+                        continue;
+                    }
                     String returnTypeName = McoreUtil.getTypeName(returnType);
                     if (returnTypeName != null && computedReturnTypeNames.contains(returnTypeName))
                     {
