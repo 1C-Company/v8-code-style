@@ -119,6 +119,20 @@ public class SortService
         this.configurationProvider = configurationProvider;
         this.workspaceOrchestrator = workspaceOrchestrator;
         this.modelEditingSupport = modelEditingSupport;
+        workspaceOrchestrator.addListener(event -> {
+            if (event.isProjectClosing())
+            {
+                IProject project = event.getProject().getWorkspaceProject();
+                if (project != null)
+                {
+                    SortJob job = jobs.remove(project);
+                    if (job != null)
+                    {
+                        job.cancel();
+                    }
+                }
+            }
+        });
     }
 
     @LifecycleParticipant(phase = LifecyclePhase.RESOURCE_LOADING,
