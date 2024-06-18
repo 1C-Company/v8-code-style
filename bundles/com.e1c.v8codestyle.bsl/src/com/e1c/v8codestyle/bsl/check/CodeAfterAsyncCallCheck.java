@@ -52,8 +52,6 @@ import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.IAsyncInvocationProvider;
-import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
-import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
@@ -101,7 +99,7 @@ public final class CodeAfterAsyncCallCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
-            .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
+            .disable()
             .module()
             .checkedObjectType(INVOCATION)
             .parameter(PARAMETER_NAME, Boolean.class, DEFAULT_CHECK, Messages.CodeAfterAsyncCallCheck_Parameter);
@@ -240,7 +238,7 @@ public final class CodeAfterAsyncCallCheck
         }
         else
         {
-            statements = getStatementsFromContainer(container);
+            //statements = getStatementsFromContainer(container);
         }
         return statements;
     }

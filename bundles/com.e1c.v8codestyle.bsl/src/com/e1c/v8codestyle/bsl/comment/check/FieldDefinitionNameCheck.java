@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.comment.check;
 
 import java.text.MessageFormat;
+import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -20,6 +21,7 @@ import org.eclipse.emf.ecore.EObject;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
+import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
@@ -95,5 +97,35 @@ public class FieldDefinitionNameCheck
             resultAceptor.addIssue(message, fieldDef.getLineNumber(), fieldDef.getNameOffset(),
                 fieldDef.getName().length());
         }
+        else if (!isUnique(fieldDef))
+        {
+            String message = MessageFormat.format(Messages.FieldDefinitionNameCheck_Field_name__N__is_not_unique,
+                fieldDef.getName());
+            resultAceptor.addIssue(message, fieldDef.getLineNumber(), fieldDef.getNameOffset(),
+                fieldDef.getName().length());
+        }
+    }
+
+    private boolean isUnique(FieldDefinition fieldDef)
+    {
+        IDescriptionPart parent = fieldDef.getParent();
+        if (parent instanceof TypeDefinition)
+        {
+            List<FieldDefinition> fields = ((TypeDefinition)parent).getFieldDefinitionExtension();
+            String name = fieldDef.getName();
+            for (FieldDefinition field : fields)
+            {
+                if (field == fieldDef)
+                {
+                    return true;
+                }
+                else if (name.equalsIgnoreCase(field.getName()))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

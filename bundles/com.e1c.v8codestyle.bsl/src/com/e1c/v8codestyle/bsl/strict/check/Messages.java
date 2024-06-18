@@ -21,7 +21,7 @@ import org.eclipse.osgi.util.NLS;
 final class Messages
     extends NLS
 {
-    private static final String BUNDLE_NAME = "com.e1c.v8codestyle.bsl.strict.check.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String AbstractDynamicFeatureAccessTypeCheck_Skip_source_object_types;
     public static String DocCommentFieldTypeCheck_description;
     public static String DocCommentFieldTypeCheck_Field__N__has_no_type_definition;
@@ -58,6 +58,14 @@ final class Messages
     public static String StructureCtorValueTypeCheck_Structure_key__N__K__has_no_default_value_initializer;
     public static String StructureCtorValueTypeCheck_Structure_key__N__K__value_initialized_with_empty_types;
     public static String StructureCtorValueTypeCheck_title;
+    public static String StructureKeyModificationCheck_Check_Clear_method;
+    public static String StructureKeyModificationCheck_Check_Delete_method;
+    public static String StructureKeyModificationCheck_Check_Insert_method;
+    public static String StructureKeyModificationCheck_description;
+    public static String StructureKeyModificationCheck_error_message_Clear;
+    public static String StructureKeyModificationCheck_error_message_Delete;
+    public static String StructureKeyModificationCheck_error_message_Insert;
+    public static String StructureKeyModificationCheck_title;
     public static String TypedValueAddingToUntypedCollectionCheck_description;
     public static String TypedValueAddingToUntypedCollectionCheck_title;
     public static String VariableTypeCheck_description;

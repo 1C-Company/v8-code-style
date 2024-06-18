@@ -24,7 +24,7 @@
       </category>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.ConfigurationDataLock">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.configuration.check.ConfigurationDataLock">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
@@ -32,19 +32,19 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameClient">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameClient">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameClientServer">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameClientServer">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameGlobal">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameGlobal">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleType">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleType">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
@@ -52,7 +52,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdScheduledJobDescriptionCheck">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.scheduledjob.check.MdScheduledJobDescriptionCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
@@ -60,27 +60,27 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.MdScheduledJobPeriodicityCheck">
+            class="com.e1c.v8codestyle.md.scheduledjob.check.MdScheduledJobPeriodicityCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.RegisterResourcePrecisionCheck">
+            class="com.e1c.v8codestyle.md.register.check.RegisterResourcePrecisionCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCheck">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameServerCallCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameCachedCheck">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameCachedCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameClientCachedCheck">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameClientCachedCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameServerCallCachedCheck">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameServerCallCachedCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
@@ -92,19 +92,23 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.check.DbObjectMaxNumberLengthCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.UnsafePasswordStorageCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.SubsystemSynonymTooLongCheck">
+            class="com.e1c.v8codestyle.md.subsystem.check.SubsystemSynonymTooLongCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.CommonModuleNameGlobalClientCheck">
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameGlobalClientCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.CommonModuleNamePrivilegedCheck">
+            class="com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNamePrivilegedCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
@@ -116,7 +120,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.DocumentPostInPrivilegedModeCheck">
+            class="com.e1c.v8codestyle.md.document.check.DocumentPostInPrivilegedModeCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.md"
@@ -128,7 +132,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.md"
-            class="com.e1c.v8codestyle.md.check.FunctionalOptionPrivilegedGetModeCheck">
+            class="com.e1c.v8codestyle.md.functionoption.check.FunctionalOptionPrivilegedGetModeCheck">
       </check>
    </extension>
    
