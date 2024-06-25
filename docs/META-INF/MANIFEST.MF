@@ -5,5 +5,5 @@ Bundle-SymbolicName: com.e1c.v8codestyle.docs;singleton:=true
 Bundle-Version: 0.7.0.qualifier
 Bundle-Vendor: %providerName
 Automatic-Module-Name: com.e1c.v8codestyle.docs
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: plugin

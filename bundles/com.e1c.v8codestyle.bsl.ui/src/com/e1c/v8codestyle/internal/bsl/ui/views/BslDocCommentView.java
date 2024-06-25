@@ -14,7 +14,7 @@ package com.e1c.v8codestyle.internal.bsl.ui.views;
 
 import java.text.MessageFormat;
 
-import javax.inject.Inject;
+import com.google.inject.Inject;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;

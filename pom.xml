@@ -58,8 +58,13 @@
                 <extraRequirements>
                   <requirement>
                     <type>eclipse-plugin</type>
-                    <id>org.eclipse.equinox.ds</id>
+                    <id>org.apache.felix.scr</id>
                     <versionRange>0.0.0</versionRange>
+                  </requirement>
+                  <requirement>
+                    <type>eclipse-plugin</type>
+                    <id>org.apache.aries.spifly.dynamic.bundle</id>
+                    <versionRange>1.3.7</versionRange>
                   </requirement>
                 </extraRequirements>
               </dependency-resolution>
@@ -68,5 +73,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
 </project>

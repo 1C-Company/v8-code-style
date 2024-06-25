@@ -82,7 +82,7 @@ public class TempTableHasIndex
             return;
         }
 
-        if (selectQuery.getIndexes() == null || selectQuery.getIndexes().isEmpty())
+        if (selectQuery.getIndexSets().isEmpty())
         {
             AbstractQuerySchemaTable table = selectQuery.getPlacementTable();
             String excludeTableNamePattern = parameters.getString(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN);

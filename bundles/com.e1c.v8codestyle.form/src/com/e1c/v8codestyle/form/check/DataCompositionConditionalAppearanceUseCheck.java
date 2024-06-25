@@ -47,7 +47,6 @@ import com.google.inject.Inject;
 public class DataCompositionConditionalAppearanceUseCheck
     extends BasicCheck
 {
-
     private static final String CHECK_ID = "data-composition-conditional-appearance-use"; //$NON-NLS-1$
 
     private final IBmModelManager bmModelManager;
@@ -78,9 +77,13 @@ public class DataCompositionConditionalAppearanceUseCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
-            .extension(new StandardCheckExtension(710, getCheckId(), CorePlugin.PLUGIN_ID))
-            .topObject(DATA_COMPOSITION_SETTINGS)
+            .extension(new StandardCheckExtension(710, getCheckId(), CorePlugin.PLUGIN_ID));
+
+        builder.topObject(DATA_COMPOSITION_SETTINGS)
             .containment(DATA_COMPOSITION_CONDITIONAL_APPEARANCE)
+            .features(DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
+
+        builder.topObject(DATA_COMPOSITION_CONDITIONAL_APPEARANCE)
             .features(DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
     }
 
@@ -104,7 +107,6 @@ public class DataCompositionConditionalAppearanceUseCheck
         }
 
         EObject eObject = dcca;
-
         DynamicListExtInfo dl = manager.getOwner(eObject, DynamicListExtInfo.class);
         if (dl != null)
         {
@@ -114,9 +116,8 @@ public class DataCompositionConditionalAppearanceUseCheck
                 return;
             }
 
-            resultAcceptor.addIssue(
-                MessageFormat.format(
-                    Messages.DataCompositionConditionalAppearanceUseCheck_Form_attribute, formAttribute.getName()),
+            resultAcceptor.addIssue(MessageFormat
+                .format(Messages.DataCompositionConditionalAppearanceUseCheck_Form_attribute, formAttribute.getName()),
                 dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
 
         }
@@ -128,12 +129,8 @@ public class DataCompositionConditionalAppearanceUseCheck
                 return;
             }
 
-            resultAcceptor.addIssue(
-                MessageFormat.format(
-                    Messages.DataCompositionConditionalAppearanceUseCheck_Form, form.getMdForm().getName()),
-                dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
-
+            resultAcceptor.addIssue(MessageFormat.format(Messages.DataCompositionConditionalAppearanceUseCheck_Form,
+                form.getMdForm().getName()), dcca, DATA_COMPOSITION_CONDITIONAL_APPEARANCE__ITEMS);
         }
-
     }
 }

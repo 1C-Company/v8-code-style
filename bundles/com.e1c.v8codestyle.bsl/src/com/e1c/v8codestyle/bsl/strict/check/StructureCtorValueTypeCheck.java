@@ -18,6 +18,7 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STRING_LITERAL__LIN
 import java.text.MessageFormat;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
 import com._1c.g5.v8.bm.core.IBmTransaction;
@@ -28,6 +29,8 @@ import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8Project;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.dt.core.api.naming.INamingService;
@@ -55,12 +58,16 @@ public class StructureCtorValueTypeCheck
      * @param resourceLookup the resource lookup service, cannot be {@code null}.
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
      */
     @Inject
     public StructureCtorValueTypeCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager)
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override
