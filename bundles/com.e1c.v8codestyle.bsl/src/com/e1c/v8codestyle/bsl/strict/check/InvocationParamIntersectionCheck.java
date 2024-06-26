@@ -126,8 +126,6 @@ public class InvocationParamIntersectionCheck
 
     //@formatter:on
 
-    private final IV8ProjectManager v8ProjectManager;
-
     private final ExportMethodTypeProvider exportMethodTypeProvider;
 
     /**
@@ -136,17 +134,18 @@ public class InvocationParamIntersectionCheck
      * @param resourceLookup the resource lookup service, cannot be {@code null}.
      * @param bslPreferences the BSL preferences service, cannot be {@code null}.
      * @param qualifiedNameConverter the qualified name converter service, cannot be {@code null}.
-     * @param v8ProjectManager the v 8 project manager service, cannot be {@code null}.
      * @param exportMethodTypeProvider the export method type provider service, cannot be {@code null}.
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
      */
     @Inject
     public InvocationParamIntersectionCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
-        IQualifiedNameConverter qualifiedNameConverter, IV8ProjectManager v8ProjectManager,
-        ExportMethodTypeProvider exportMethodTypeProvider, INamingService namingService, IBmModelManager bmModelManager)
+        IQualifiedNameConverter qualifiedNameConverter, ExportMethodTypeProvider exportMethodTypeProvider,
+        INamingService namingService, IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager);
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
         this.exportMethodTypeProvider = exportMethodTypeProvider;
-        this.v8ProjectManager = v8ProjectManager;
     }
 
     @Override
@@ -295,7 +294,7 @@ public class InvocationParamIntersectionCheck
                         new BmOperationContext(namingService, bmModelManager, bmTransaction);
                     targetTypes = docComment.get()
                         .computeParameterTypes(parameter.getName(), typeScope, scopeProvider, qualifiedNameConverter,
-                            commentProvider, oldFormatComment, method, typeComputationContext);
+                            commentProvider, v8ProjectManager, oldFormatComment, method, typeComputationContext);
                 }
 
                 if (targetTypes.isEmpty())
@@ -462,7 +461,7 @@ public class InvocationParamIntersectionCheck
                 // if parameter declared in doc-comment then check only declared types
                 targetTypes = docComment.get()
                     .computeParameterTypes(paramName, typeScope, scopeProvider, qualifiedNameConverter, commentProvider,
-                        oldFormatComment, method, typeComputationContext);
+                        v8ProjectManager, oldFormatComment, method, typeComputationContext);
             }
             else
             {

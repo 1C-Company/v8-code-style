@@ -81,9 +81,6 @@ public class OpenBslDocCommentViewFix
     @Override
     protected TextEdit fixIssue(XtextResource state, IXtextBslModuleFixModel model) throws BadLocationException
     {
-        IXtextInteractiveBslModuleFixModel interactiveModel = (IXtextInteractiveBslModuleFixModel)model;
-
-        Integer offset = model.getIssue().getOffset() + 1;
         Display display = PlatformUI.getWorkbench().getDisplay();
         if (display.isDisposed())
         {
@@ -101,13 +98,18 @@ public class OpenBslDocCommentViewFix
             }
         });
 
+        IXtextInteractiveBslModuleFixModel interactiveModel = (IXtextInteractiveBslModuleFixModel)model;
+        Integer offset = model.getIssue().getOffset() + 1;
         ITextViewer viewer = BslQuickFixUtil.getTextViewer(interactiveModel.getModificationContext());
         if (viewer != null && !display.isDisposed())
         {
             display.asyncExec(() -> {
-                viewer.revealRange(offset, 1);
-                viewer.getTextWidget().setFocus();
-                viewer.setSelectedRange(offset, 1);
+                if (viewer.getDocument() != null)
+                {
+                    viewer.revealRange(offset, 1);
+                    viewer.getTextWidget().setFocus();
+                    viewer.setSelectedRange(offset, 1);
+                }
             });
         }
         return null;

@@ -237,6 +237,10 @@
           id="com.e1c.v8codestyle.bsl.ui.commands.addStrictTypesAnnotationCommand"
           name="%command.enableStrictTypes.name">
     </command>
+    <command
+          id="com.e1c.v8codestyle.bsl.ui.commands.formatDocCommentCommand"
+          name="%command.formatDocComment.name">
+    </command>
  </extension>
  <extension
        point="org.eclipse.ui.menus">
@@ -330,6 +334,16 @@
                 </reference>
              </visibleWhen>
           </command>
+          <command
+                commandId="com.e1c.v8codestyle.bsl.ui.commands.formatDocCommentCommand"
+                style="push">
+             <visibleWhen
+                   checkEnabled="false">
+                <reference
+                      definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.editable">
+                </reference>
+             </visibleWhen>
+          </command>
        </menu>
     </menuContribution>
  </extension>
@@ -338,6 +352,14 @@
     <handler
           class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ui.handlers.AddStrictTypeAnnotationModuleEditorHandler"
           commandId="com.e1c.v8codestyle.bsl.ui.commands.addStrictTypesAnnotationCommand">
+       <activeWhen>
+          <reference
+                definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.editable">
+          </reference></activeWhen>
+    </handler>
+    <handler
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ui.handlers.FormatDocCommentModuleEditorHandler"
+          commandId="com.e1c.v8codestyle.bsl.ui.commands.formatDocCommentCommand">
        <activeWhen>
           <reference
                 definitionId="com._1c.g5.v8.dt.bsl.Bsl.Editor.editable">
@@ -367,6 +389,12 @@
     <fix
           class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.ServerExecutionSafeModeFix">
     </fix>
+ </extension>
+ <extension
+       point="com._1c.g5.v8.dt.bsl.ui.bslModuleTextInsertInfoService">
+    <bslModuleTextInsertInfoService
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.internal.bsl.ui.services.BslModuleRegionsInfoService">
+    </bslModuleTextInsertInfoService>
  </extension>
 
 </plugin>
