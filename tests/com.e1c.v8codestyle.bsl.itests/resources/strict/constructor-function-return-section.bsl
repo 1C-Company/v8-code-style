@@ -41,5 +41,15 @@ Function CorrectCheckForCommonModule() Export
 	return new Structure("Key1, Key2", 10, CommonModule);
 EndFunction
 
+// Returns:
+//  Structure - complaint:
+// * Ref - CatalogRef -
+Function CorrectCheckForTypeSets() Export
+	EmptyRef = Catalogs.Catalog1.EmptyRef();
+	Str = Новый Structure;
+	Str.Вставить("Ref", EmptyRef);
+	Возврат Str;
+EndFunction
+
 
 
