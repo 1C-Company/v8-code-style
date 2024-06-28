@@ -14,8 +14,6 @@ package com.e1c.v8codestyle.internal.bsl.ui.views;
 
 import java.text.MessageFormat;
 
-import com.google.inject.Inject;
-
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -32,8 +30,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.xtext.resource.EObjectAtOffsetHelper;
 
@@ -67,9 +65,6 @@ public class BslDocCommentView
      * The ID of the view as specified by the extension.
      */
     public static final String ID = "com.e1c.v8codestyle.bsl.ui.views.BslDocCommentView"; //$NON-NLS-1$
-
-    @Inject
-    private IWorkbench workbench;
 
     private TreeViewer viewer;
 
@@ -254,7 +249,7 @@ public class BslDocCommentView
             {
                 imageKey = ISharedImages.IMG_OBJ_FOLDER;
             }
-            return workbench.getSharedImages().getImage(imageKey);
+            return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
         }
     }
 

@@ -387,8 +387,8 @@ public class CommonModuleStrictTypesTest
 
         Module module = updateAndGetModule(checkId);
 
-        List<Function> finctions = EcoreUtil2.eAllOfType(module, Function.class);
-        assertEquals(4, finctions.size());
+        List<Function> functions = EcoreUtil2.eAllOfType(module, Function.class);
+        assertEquals(5, functions.size());
 
         List<Marker> markers = getMarters(checkId, module);
 

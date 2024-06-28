@@ -48,6 +48,7 @@ import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
+import com._1c.g5.v8.dt.bsl.util.BslUtil;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -183,10 +184,7 @@ public class FunctionCtorReturnSectionCheck
 
         Set<String> checkTypes = getCheckTypes(parameters);
 
-        Set<String> computedReturnTypeNames = computedReturnTypes.stream()
-            .map(McoreUtil::getTypeName)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toSet());
+        Collection<String> computedReturnTypeNames = BslUtil.computeTypeNames(computedReturnTypes, method);
 
         if (isUserDataTypes(computedReturnTypeNames, checkTypes))
         {
@@ -269,11 +267,8 @@ public class FunctionCtorReturnSectionCheck
         {
             String propertyName = useRussianScript ? declaredProperty.getNameRu() : declaredProperty.getName();
             declaredProertyNames.add(propertyName);
-            List<String> declaredType = declaredProperty.getTypes()
-                .stream()
-                .map(McoreUtil::getTypeName)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+            Collection<String> declaredType =
+                com._1c.g5.v8.dt.bsl.util.BslUtil.computeTypeNames(declaredProperty.getTypes(), function);
             if (declaredType.isEmpty())
             {
                 continue;
@@ -287,7 +282,7 @@ public class FunctionCtorReturnSectionCheck
                 .collect(Collectors.toList());
 
             List<TypeItem> missingTypes = types.stream().filter(t -> {
-                String typeName = McoreUtil.getTypeName(t);
+                String typeName = McoreUtil.getTypeCategory(t);
                 if (typeName != null)
                 {
                     if (!declaredType.contains(typeName))
