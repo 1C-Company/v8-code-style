@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:CommonModule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="f1815d4c-0a30-481f-b1ce-717e600819cf" extendedConfigurationObject="e8efe1eb-adb4-4724-9474-768aff51ed2d">
+  <name>ОбщийМодуль1</name>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:CommonModuleExtension">
+    <extendedConfigurationObject>Checked</extendedConfigurationObject>
+    <global>Checked</global>
+    <clientManagedApplication>Checked</clientManagedApplication>
+    <server>Checked</server>
+    <externalConnection>Checked</externalConnection>
+    <serverCall>Checked</serverCall>
+    <clientOrdinaryApplication>Checked</clientOrdinaryApplication>
+  </extension>
+  <clientManagedApplication>true</clientManagedApplication>
+</mdclass:CommonModule>

@@ -17,39 +17,38 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.STRING_LITERAL__LIN
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.resource.IEObjectDescription;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.scoping.IScopeProvider;
 
-import com._1c.g5.v8.bm.core.IBmTransaction;
-import com._1c.g5.v8.bm.integration.IBmModel;
-import com._1c.g5.v8.dt.bsl.model.BslIndexPackage;
+import com._1c.g5.v8.dt.bsl.model.BslFactory;
+import com._1c.g5.v8.dt.bsl.model.BslPackage;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
+import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
+import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.MethodsScopeSpec;
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.ModuleContextDefIndex;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
-import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.common.StringUtils;
-import com._1c.g5.v8.dt.core.platform.IBmModelManager;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.mcore.ContextDef;
 import com._1c.g5.v8.dt.mcore.DerivedProperty;
 import com._1c.g5.v8.dt.mcore.Environmental;
-import com._1c.g5.v8.dt.mcore.Method;
 import com._1c.g5.v8.dt.mcore.Property;
+import com._1c.g5.v8.dt.mcore.Type;
+import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
-import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
-import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -70,8 +69,6 @@ public class NotifyDescriptionToServerProcedureCheck
 {
     private static final String CHECK_ID = "notify-description-to-server-procedure"; //$NON-NLS-1$
 
-    private static final String BSL = "bsl"; //$NON-NLS-1$
-
     private static final String THIS_OBJECT = "ThisObject"; //$NON-NLS-1$
 
     private static final String THIS_OBJECT_RU = "ЭтотОбъект"; //$NON-NLS-1$
@@ -81,32 +78,21 @@ public class NotifyDescriptionToServerProcedureCheck
 
     private final DynamicFeatureAccessComputer dynamicFeatureAccessComputer;
 
-    private final ExportMethodProvider exportMethodProvider;
-
-    private final IResourceLookup resourceLookup;
-
-    private final INamingService namingService;
-
-    private final IBmModelManager bmModelManager;
-
+    private final IScopeProvider scopeProvider;
 
     /**
      * Instantiates a new notify description to server procedure check.
      *
      * @param dynamicFeatureAccessComputer the dynamic feature access computer service, cannot be {@code null}
-     * @param exportMethodProvider the export method provider service, cannot be {@code null}
+     * @param scopeProvider provides actual local methods, cannot be {@code null}
      */
     @Inject
     public NotifyDescriptionToServerProcedureCheck(DynamicFeatureAccessComputer dynamicFeatureAccessComputer,
-        ExportMethodProvider exportMethodProvider, IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager)
+        IScopeProvider scopeProvider)
     {
         super();
         this.dynamicFeatureAccessComputer = dynamicFeatureAccessComputer;
-        this.exportMethodProvider = exportMethodProvider;
-        this.resourceLookup = resourceLookup;
-        this.namingService = namingService;
-        this.bmModelManager = bmModelManager;
+        this.scopeProvider = scopeProvider;
     }
 
     @Override
@@ -142,33 +128,13 @@ public class NotifyDescriptionToServerProcedureCheck
         }
 
         StringLiteral param = (StringLiteral)osc.getParams().get(0);
-        final String methodName = getCalledProcedureName(param);
+        String methodName = getCalledProcedureName(param);
         if (monitor.isCanceled() || StringUtils.isBlank(methodName))
         {
             return;
         }
 
-        String contextDefUriAsString = getBslModuleUri(osc);
-
-        if (monitor.isCanceled() || contextDefUriAsString == null)
-        {
-            return;
-        }
-
-        URI contextDefUri = URI.createURI(contextDefUriAsString, true);
-
-        IDtProject project = resourceLookup.getDtProject(contextDefUri);
-        String contextDefIndexFqn = namingService.getDependentObjectFqnAsString(contextDefUri,
-            BslIndexPackage.Literals.MODULE_CONTEXT_DEF_INDEX);
-        IBmModel model = bmModelManager.getModel(project);
-        IBmTransaction bmTransaction = model.getEngine().getCurrentTransaction();
-        ModuleContextDefIndex index = (ModuleContextDefIndex)bmTransaction.getTopObjectByFqn(contextDefIndexFqn);
-        if (index == null)
-        {
-            return;
-        }
-
-        Collection<Method> methods = exportMethodProvider.getMockMethods(index.getContextDef(), methodName, osc);
+        Collection<Environmental> methods = getMethods(methodName, osc, monitor);
         if (methods.isEmpty())
         {
             resultAceptor.addIssue(
@@ -177,7 +143,7 @@ public class NotifyDescriptionToServerProcedureCheck
         }
         else
         {
-            for (Method method : methods)
+            for (Environmental method : methods)
             {
                 Environments calleeEnv = method.environments();
                 if (calleeEnv.containsAny(Environments.MNG_CLIENTS))
@@ -193,6 +159,75 @@ public class NotifyDescriptionToServerProcedureCheck
 
     }
 
+    private Collection<Environmental> getMethods(String methodName, OperatorStyleCreator osc, IProgressMonitor monitor)
+    {
+        List<Expression> params = osc.getParams();
+        if (params.size() > 1)
+        {
+            Expression moduleParam = params.get(1);
+            if (moduleParam instanceof FeatureAccess featureAccess)
+            {
+                if (featureAccess instanceof StaticFeatureAccess
+                    && (THIS_OBJECT_RU.equals(featureAccess.getName()) || THIS_OBJECT.equals(featureAccess.getName())))
+                {
+                    Module module = EcoreUtil2.getContainerOfType(featureAccess, Module.class);
+                    MethodsScopeSpec spec = BslFactory.eINSTANCE.createMethodsScopeSpec();
+                    spec.setModule(module);
+                    spec.setOnlyModuleItems(true);
+                    spec.setEnvironments(Environments.ALL_CLIENTS);
+                    IScope methodScope =
+                        scopeProvider.getScope(spec, BslPackage.Literals.METHODS_SCOPE_SPEC__METHOD_REF);
+                    return StreamSupport
+                        .stream(methodScope.getElements(QualifiedName.create(methodName)).spliterator(), false)
+                        .map(IEObjectDescription::getEObjectOrProxy)
+                        .filter(Method.class::isInstance)
+                        .map(Method.class::cast)
+                        .filter(Method::isExport)
+                        .map(Environmental.class::cast)
+                        .toList();
+                }
+                else
+                {
+                    Environmental environmental = EcoreUtil2.getContainerOfType(featureAccess, Environmental.class);
+                    List<FeatureEntry> entries = featureAccess instanceof StaticFeatureAccess
+                        ? ((StaticFeatureAccess)featureAccess).getFeatureEntries() : dynamicFeatureAccessComputer
+                            .getLastObject((DynamicFeatureAccess)featureAccess, environmental.environments());
+                    for (FeatureEntry entry : entries)
+                    {
+                        if (entry.getFeature() instanceof DerivedProperty derivedProperty
+                            && derivedProperty.getSource() instanceof CommonModule)
+                        {
+                            List<TypeItem> types = derivedProperty.getTypes();
+                            if (types != null && types.size() == 1 && types.get(0) instanceof Type)
+                            {
+                                return ((Type)types.get(0)).getContextDef()
+                                    .allMethods()
+                                    .stream()
+                                    .filter(Environmental.class::isInstance)
+                                    .filter(item -> methodName.equalsIgnoreCase(item.getName()))
+                                    .map(Environmental.class::cast)
+                                    .toList();
+                            }
+                        }
+                        else if (entry.getFeature() instanceof Property property
+                            && THIS_OBJECT.equals(property.getName())
+                            && property.eContainer() instanceof ContextDef contextDef)
+                        {
+                            return contextDef.allMethods()
+                                .stream()
+                                .filter(Environmental.class::isInstance)
+                                .filter(item -> methodName.equalsIgnoreCase(item.getName()))
+                                .map(Environmental.class::cast)
+                                .toList();
+                        }
+                    }
+                }
+            }
+        }
+
+        return List.of();
+    }
+
     private String getCalledProcedureName(Expression param)
     {
         if (param instanceof StringLiteral)
@@ -205,104 +240,4 @@ public class NotifyDescriptionToServerProcedureCheck
         }
         return null;
     }
-
-    private String getBslModuleUri(OperatorStyleCreator osc)
-    {
-        List<Expression> params = osc.getParams();
-
-        if (params.size() > 1)
-        {
-            Expression moduleParam = params.get(1);
-            if (moduleParam instanceof StaticFeatureAccess)
-            {
-                return getBslModuleUri((StaticFeatureAccess)moduleParam);
-            }
-            else if (moduleParam instanceof DynamicFeatureAccess)
-            {
-                return getBslModuleUri((DynamicFeatureAccess)moduleParam);
-            }
-        }
-
-        return null;
-    }
-
-    private String getBslModuleUri(StaticFeatureAccess object)
-    {
-        URI uri = null;
-        if (object.getName().equals(THIS_OBJECT) || object.getName().equals(THIS_OBJECT_RU))
-        {
-            uri = EcoreUtil.getURI(object);
-        }
-        else
-        {
-            uri = getCommonModuleUri(object);
-        }
-        return constructBslUri(uri);
-    }
-
-    private String getBslModuleUri(DynamicFeatureAccess object)
-    {
-        URI uri = getCommonModuleUri(object);
-
-        return constructBslUri(uri);
-    }
-
-    private String constructBslUri(URI uri)
-    {
-        if (uri == null)
-        {
-            return null;
-        }
-        return uri.trimFragment().trimFileExtension().appendFileExtension(BSL).toString();
-    }
-
-    private URI getCommonModuleUri(DynamicFeatureAccess object)
-    {
-        Environmental environmental = EcoreUtil2.getContainerOfType(object, Environmental.class);
-
-        List<FeatureEntry> features = dynamicFeatureAccessComputer.getLastObject(object, environmental.environments());
-        for (FeatureEntry featureEntry : features)
-        {
-            EObject feature = featureEntry.getFeature();
-            if (feature instanceof Property && ((Property)feature).getName().equals(THIS_OBJECT))
-            {
-                Expression staticFeatureAccess = object.getSource();
-                if (staticFeatureAccess instanceof StaticFeatureAccess)
-                {
-                    return getCommonModuleUri((StaticFeatureAccess)staticFeatureAccess);
-                }
-            }
-            else if (feature instanceof Module)
-            {
-                return EcoreUtil.getURI(feature);
-            }
-            else if (feature instanceof CommonModule)
-            {
-                EObject module = (EObject)feature.eGet(MdClassPackage.Literals.COMMON_MODULE__MODULE, false);
-                if (module != null)
-                {
-                    return EcoreUtil.getURI(module);
-                }
-            }
-        }
-        return null;
-    }
-
-    private URI getCommonModuleUri(StaticFeatureAccess object)
-    {
-        for (FeatureEntry entry : object.getFeatureEntries())
-        {
-            EObject f = entry.getFeature();
-            if (f instanceof DerivedProperty)
-            {
-                EObject source = ((DerivedProperty)f).getSource();
-                if (source instanceof CommonModule)
-                {
-                    return EcoreUtil.getURI((EObject)source.eGet(MdClassPackage.Literals.COMMON_MODULE__MODULE, false));
-                }
-            }
-        }
-        return null;
-    }
-
 }
