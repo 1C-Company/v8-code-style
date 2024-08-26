@@ -22,7 +22,7 @@ import org.eclipse.xtext.nodemodel.INode;
 import com.e1c.v8codestyle.internal.bsl.ui.UiPlugin;
 
 /**
- * Provides offset and suffixes information of module region
+ * Provides offsets and suffixes information of module region
  *
  * @author Kuznetsov Nikita
  */
@@ -31,6 +31,8 @@ public final class BslModuleOffsets
     private int startOffset;
     private int endOffset;
     private int insertOffset;
+
+    private boolean needReplace;
 
     private Map<String, BslModuleOffsets> suffixes;
 
@@ -87,6 +89,24 @@ public final class BslModuleOffsets
     public int getBeforeEndOffset()
     {
         return insertOffset;
+    }
+
+    /**
+     * Is need to replace existing module region
+     *
+     * @return <code>true</code> if need to replace existing region, <code>false</code> otherwise
+     */
+    public boolean needReplace()
+    {
+        return needReplace;
+    }
+
+    /**
+     * Sets necessity of replacing existing module region
+     */
+    public void setNeedReplace()
+    {
+        needReplace = true;
     }
 
     /**

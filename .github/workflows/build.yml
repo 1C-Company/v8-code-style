@@ -28,10 +28,16 @@ jobs:
     - uses: actions/checkout@v2
       if: ${{ !inputs.analyze }}
 
-    - name: Set up JDK 11
-      uses: actions/setup-java@v1
+#  - name: Set up JDK 17
+#     uses: actions/setup-java@v1
+#     with:
+#       java-version: 17
+#       java-package: jdk+fx
+
+    - name: Set up Maven 3.9.6
+      uses: s4u/setup-maven-action@v1.12.0
       with:
-        java-version: 11
+        java-version: 17
         java-package: jdk+fx
 
     - name: Free disk space
@@ -41,15 +47,6 @@ jobs:
         sudo apt clean
         # docker rmi $(docker image ls -aq) || true
         df -h
-
-    - name: Cache maven repo
-      uses: actions/cache@v2
-      if: github.event_name == 'push' || github.event_name == 'pull_request' || github.event_name == 'pull_request_target'
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-latest-${{ hashFiles('**/pom.xml') }}-${{ hashFiles('targets/default/default.target') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-latest-
 
     - name: Build with Maven
       working-directory: ./

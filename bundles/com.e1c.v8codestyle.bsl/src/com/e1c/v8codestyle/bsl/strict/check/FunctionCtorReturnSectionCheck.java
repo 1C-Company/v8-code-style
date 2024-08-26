@@ -29,6 +29,7 @@ import java.util.stream.StreamSupport;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
@@ -47,6 +48,7 @@ import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
+import com._1c.g5.v8.dt.bsl.util.BslUtil;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -96,10 +98,6 @@ public class FunctionCtorReturnSectionCheck
 
     private final BslMultiLineCommentDocumentationProvider commentProvider;
 
-    private final IResourceLookup resourceLookup;
-
-    private final IV8ProjectManager v8ProjectManager;
-
     private final IBslPreferences bslPreferences;
 
     /**
@@ -113,22 +111,23 @@ public class FunctionCtorReturnSectionCheck
      * @param dynamicComputer the dynamic computer service, cannot be {@code null}.
      * @param scopeProvider the scope provider service, cannot be {@code null}.
      * @param commentProvider the comment provider service, cannot be {@code null}.
+     * @param namingService service for getting names of EDT object and resources, cannot be <code>null</code>
+     * @param bmModelManager service for getting instance of Bm Model by {@link EObject}, cannot be <code>null</code>
+     * @param v8ProjectManager {@link IV8ProjectManager} for getting {@link IV8Project} by {@link EObject}, cannot be <code>null</code>
      */
     @Inject
-    public FunctionCtorReturnSectionCheck(IResourceLookup resourceLookup, IV8ProjectManager v8ProjectManager,
+    public FunctionCtorReturnSectionCheck(IResourceLookup resourceLookup,
         IQualifiedNameConverter qualifiedNameConverter, IBslPreferences bslPreferences, TypesComputer typesComputer,
         DynamicFeatureAccessComputer dynamicComputer, IScopeProvider scopeProvider,
         BslMultiLineCommentDocumentationProvider commentProvider, INamingService namingService,
-        IBmModelManager bmModelManager)
+        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
-        super(resourceLookup, namingService, bmModelManager);
+        super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
         this.typesComputer = typesComputer;
         this.dynamicComputer = dynamicComputer;
         this.scopeProvider = scopeProvider;
         this.commentProvider = commentProvider;
         this.qualifiedNameConverter = qualifiedNameConverter;
-        this.resourceLookup = resourceLookup;
-        this.v8ProjectManager = v8ProjectManager;
         this.bslPreferences = bslPreferences;
     }
 
@@ -181,14 +180,11 @@ public class FunctionCtorReturnSectionCheck
         boolean oldFormat = props.oldCommentFormat();
 
         Collection<TypeItem> computedReturnTypes = root.computeReturnTypes(typeScope, scopeProvider,
-            qualifiedNameConverter, commentProvider, oldFormat, method, context);
+            qualifiedNameConverter, commentProvider, v8ProjectManager, oldFormat, method, context);
 
         Set<String> checkTypes = getCheckTypes(parameters);
 
-        Set<String> computedReturnTypeNames = computedReturnTypes.stream()
-            .map(McoreUtil::getTypeName)
-            .filter(Objects::nonNull)
-            .collect(Collectors.toSet());
+        Collection<String> computedReturnTypeNames = BslUtil.computeTypeNames(computedReturnTypes, method);
 
         if (isUserDataTypes(computedReturnTypeNames, checkTypes))
         {
@@ -271,11 +267,8 @@ public class FunctionCtorReturnSectionCheck
         {
             String propertyName = useRussianScript ? declaredProperty.getNameRu() : declaredProperty.getName();
             declaredProertyNames.add(propertyName);
-            List<String> declaredType = declaredProperty.getTypes()
-                .stream()
-                .map(McoreUtil::getTypeName)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+            Collection<String> declaredType =
+                com._1c.g5.v8.dt.bsl.util.BslUtil.computeTypeNames(declaredProperty.getTypes(), function);
             if (declaredType.isEmpty())
             {
                 continue;
@@ -289,7 +282,7 @@ public class FunctionCtorReturnSectionCheck
                 .collect(Collectors.toList());
 
             List<TypeItem> missingTypes = types.stream().filter(t -> {
-                String typeName = McoreUtil.getTypeName(t);
+                String typeName = McoreUtil.getTypeCategory(t);
                 if (typeName != null)
                 {
                     if (!declaredType.contains(typeName))

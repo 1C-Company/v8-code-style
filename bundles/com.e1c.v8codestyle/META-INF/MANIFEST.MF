@@ -7,19 +7,18 @@ Bundle-Activator: com.e1c.v8codestyle.internal.CorePlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.18.0,4.0.0)",
- org.eclipse.core.resources;bundle-version="[3.14.0,4.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+ org.eclipse.core.resources;bundle-version="[3.14.0,4.0.0)",
+ com.google.inject;bundle-version="[7.0.0,8.0.0)"
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: com.e1c.v8codestyle
 Bundle-ActivationPolicy: lazy
-Import-Package: com._1c.g5.v8.bm.core;version="[8.0.0,9.0.0)",
+Import-Package: com._1c.g5.v8.bm.core;version="[9.0.0,10.0.0)",
  com._1c.g5.v8.dt.common;version="[6.0.0,7.0.0)",
  com._1c.g5.wiring;version="[2.2.0,3.0.0)",
  com._1c.g5.wiring.binder;version="[1.1.0,2.0.0)",
  com.e1c.g5.v8.dt.check;version="[2.0.0,3.0.0)",
  com.e1c.g5.v8.dt.check.components;version="[2.0.0,3.0.0)",
  com.e1c.g5.v8.dt.check.ext;version="1.0.0",
- com.e1c.g5.v8.dt.check.settings;version="1.0.0",
- com.google.inject;version="[5.0.1,6.0.0)",
- com.google.inject.binder;version="[5.0.1,6.0.0)"
+ com.e1c.g5.v8.dt.check.settings;version="1.0.0"
 Export-Package: com.e1c.v8codestyle;version="0.7.0",
  com.e1c.v8codestyle.check;version="0.7.0"
