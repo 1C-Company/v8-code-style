@@ -15,7 +15,7 @@ jobs:
     name: Build
     # This build will run on master,release/* push, local PR and PR from forks without label Analyze
     if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.event.repository.full_name  || !contains(github.event.pull_request.labels.*.name, 'Analyze')
-    uses: 1C-company/v8-code-style/.github/workflows/build.yml@edt-2024-1
+    uses: 1C-company/v8-code-style/.github/workflows/build.yml@master
     with:
       analyze: ${{ github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.event.repository.full_name }}
     secrets:
