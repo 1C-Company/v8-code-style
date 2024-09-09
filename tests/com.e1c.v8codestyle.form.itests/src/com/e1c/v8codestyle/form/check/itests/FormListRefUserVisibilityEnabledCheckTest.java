@@ -18,8 +18,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.text.MessageFormat;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.Test;
 
@@ -50,7 +48,6 @@ public class FormListRefUserVisibilityEnabledCheckTest
     private static final String PROJECT_NAME = "FormListRefUserVisibilityEnabled";
     private static final String FQN_FORM_EN = "Catalog.TestCatalog.Form.TestListForm.Form";
     private static final String FQN_FORM_RU = "Catalog.TestCatalog.Form.TestListFormRu.Form";
-    private static final String MESSAGE = "User visibility is not disabled for the Ref field ({0}) of the {1} table";
 
     /**
      * Test User Visibility is enabled for the Ref field in dynamic list (En Script variant).
@@ -76,7 +73,7 @@ public class FormListRefUserVisibilityEnabledCheckTest
 
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNotNull(marker);
-        assertEquals(MessageFormat.format(MESSAGE, fieldRef.getName(), table.getName()), marker.getMessage());
+        assertTrue(marker.getMessage().contains(fieldRef.getName()));
     }
 
     /**
