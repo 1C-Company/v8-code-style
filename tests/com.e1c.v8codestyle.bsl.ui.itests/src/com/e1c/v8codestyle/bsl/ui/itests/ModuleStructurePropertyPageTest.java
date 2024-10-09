@@ -24,24 +24,18 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -88,7 +82,6 @@ public class ModuleStructurePropertyPageTest
     @Before
     public void setUp() throws CoreException
     {
-
         project = testingWorkspace.getProject(PROJECT_NAME);
 
         if (!project.exists() || !project.isAccessible())
@@ -163,7 +156,7 @@ public class ModuleStructurePropertyPageTest
         applyButton.notifyListeners(SWT.Selection, new Event());
         waitEventSetnd(dialog);
 
-        Button buttonOpen = getButtonByName(page, "Open template");
+        Button buttonOpen = getOpenButtonControl(page);
         assertNotNull(buttonOpen);
 
         viewer.setSelection(new StructuredSelection(ModuleType.FORM_MODULE));
@@ -248,40 +241,16 @@ public class ModuleStructurePropertyPageTest
         return (CheckboxTableViewer)field.get(page);
     }
 
-    private Button getButtonByName(ModuleStructurePropertyPage page, String name) throws Exception
-    {
-
-        Composite top = getTopControl(page);
-        assertNotNull(top);
-        Queue<Control> toCheck = new LinkedList<>();
-        toCheck.add(top);
-
-        while (!toCheck.isEmpty())
-        {
-            Control control = toCheck.poll();
-            if (control instanceof Button && name.equalsIgnoreCase(((Button)control).getText()))
-            {
-                return (Button)control;
-            }
-            else if (control instanceof Composite)
-            {
-                toCheck.addAll(List.of(((Composite)control).getChildren()));
-            }
-        }
-
-        return null;
-    }
-
-    private Composite getTopControl(ModuleStructurePropertyPage page) throws Exception
-    {
-        Field field = DialogPage.class.getDeclaredField("control");
-        field.setAccessible(true);
-        return (Composite)field.get(page);
-    }
-
     private Button getApplyButtonControl(ModuleStructurePropertyPage page) throws Exception
     {
         Field field = PreferencePage.class.getDeclaredField("applyButton");
+        field.setAccessible(true);
+        return (Button)field.get(page);
+    }
+
+    private Button getOpenButtonControl(ModuleStructurePropertyPage page) throws Exception
+    {
+        Field field = page.getClass().getDeclaredField("openButton");
         field.setAccessible(true);
         return (Button)field.get(page);
     }

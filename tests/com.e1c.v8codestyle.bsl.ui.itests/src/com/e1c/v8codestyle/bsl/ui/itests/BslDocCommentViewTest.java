@@ -16,8 +16,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -34,6 +38,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.intro.IIntroPart;
+import org.eclipse.xtext.util.StringInputStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -250,7 +255,12 @@ public class BslDocCommentViewTest
     private void updateModule(String pathToResource) throws Exception
     {
         IFile file = project.getFile(COMMON_MODULE_FILE_NAME);
-        try (InputStream in = getClass().getResourceAsStream(pathToResource))
+
+        try (InputStream inputStream = getClass().getResourceAsStream(pathToResource);
+            InputStream in = new StringInputStream(
+                new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).lines()
+                    .collect(Collectors.joining("\n")),
+                StandardCharsets.UTF_8.name()))
         {
             if (file.exists())
             {

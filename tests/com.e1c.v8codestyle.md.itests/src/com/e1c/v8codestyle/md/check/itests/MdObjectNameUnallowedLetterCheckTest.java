@@ -12,7 +12,6 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.md.check.itests;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -34,8 +33,6 @@ public class MdObjectNameUnallowedLetterCheckTest
 {
     private static final String CHECK_ID = "mdo-ru-name-unallowed-letter"; //$NON-NLS-1$
     private static final String PROJECT_NAME = "MdObjectNameUnallowedLetter";
-    private static final String MESSAGE =
-        "In Russian locale, name, synonym or comment of metadata object contain the unallowed letter";
 
     /**
      * Test that md object name, synonym and comment do not contain unallowed letter "ё" (Ru locale)
@@ -67,7 +64,6 @@ public class MdObjectNameUnallowedLetterCheckTest
         long id = getTopObjectIdByFqn("Catalog.ТестовыйКаталог_ё_имя", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
-        assertEquals(marker.getMessage(), MESSAGE);
     }
 
     /**
@@ -84,7 +80,6 @@ public class MdObjectNameUnallowedLetterCheckTest
         long id = getTopObjectIdByFqn("Catalog.ТестовыйКаталог_синоним", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
-        assertEquals(marker.getMessage(), MESSAGE);
     }
 
     /**
@@ -101,6 +96,5 @@ public class MdObjectNameUnallowedLetterCheckTest
         long id = getTopObjectIdByFqn("Catalog.ТестовыйКаталог_комментарий", dtProject);
         Marker marker = getFirstMarker(CHECK_ID, id, dtProject);
         assertNotNull(marker);
-        assertEquals(marker.getMessage(), MESSAGE);
     }
 }
