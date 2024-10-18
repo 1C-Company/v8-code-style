@@ -29,9 +29,6 @@ import com.e1c.v8codestyle.bsl.check.IsInRoleCheck;
 public class IsInRoleCheckTest
     extends AbstractSingleModuleTestBase
 {
-
-    private static final String USING_IS_IN_ROLE_METHOD = "Use the AccessRight() function instead of IsInRole()";
-
     public IsInRoleCheckTest()
     {
         super(IsInRoleCheck.class);
@@ -50,6 +47,6 @@ public class IsInRoleCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals(USING_IS_IN_ROLE_METHOD, marker.getMessage());
+        assertEquals(Messages.IsInRoleCheck_Use_AccessRight_instead_IsInRole, marker.getMessage());
     }
 }

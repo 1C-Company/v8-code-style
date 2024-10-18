@@ -22,8 +22,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.MethodTooManyPramsCheck;
 
 /**
@@ -53,25 +53,25 @@ public class MethodTooManyPramsCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(12, markers.size());
 
-        Set<String> errorLines = new HashSet<>();
+        Set<Integer> errorLines = new HashSet<>();
         for (Marker marker : markers)
         {
-            String line = marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY);
+            Integer line = marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
             switch (line)
             {
             // Noncompliant1
-            case "7":
-            case "8":
-            case "9":
-            case "10":
-            case "11":
-            case "12":
-            case "13":
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 13:
                 // Noncompliant2
-            case "24":
+            case 24:
                 // Noncompliant3: 29, 30, 31 - not error yet
                 // Noncompliant4
-            case "40":
+            case 40:
                 errorLines.add(line);
                 break;
 

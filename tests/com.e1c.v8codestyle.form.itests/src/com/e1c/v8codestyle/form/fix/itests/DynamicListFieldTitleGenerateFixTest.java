@@ -41,16 +41,13 @@ public class DynamicListFieldTitleGenerateFixTest
 {
     private static final String CHECK_ID = "form-dynamic-list-item-title";
 
-    private static final String FIX_DESCRIPTION_PATTERN =
-        "Generate default title for dynamic list field \\(8\\.3\\.19\\+\\)";
-
     private static final String PROJECT_NAME = "FormDynamicListItemTitle";
 
     private static final String FQN_FORM = "Catalog.Products.Form.ListForm.Form";
 
     public DynamicListFieldTitleGenerateFixTest()
     {
-        super(FIX_DESCRIPTION_PATTERN);
+        super(Messages.DynamicListFieldTitleGenerateFix_Default_title);
     }
 
     @Test

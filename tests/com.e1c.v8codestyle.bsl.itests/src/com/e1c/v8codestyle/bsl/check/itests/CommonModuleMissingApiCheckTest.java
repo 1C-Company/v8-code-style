@@ -17,8 +17,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.CommonModuleMissingApiCheck;
 
 /**
@@ -42,7 +42,7 @@ public class CommonModuleMissingApiCheckTest
         Marker marker = getModuleFirstMarker();
         assertNotNull(marker);
 
-        assertEquals("2", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
 }

@@ -19,8 +19,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.ReadingAttributesFromDataBaseCheck;
 
 /**
@@ -61,7 +61,7 @@ public class ReadingAttributesFromDataBaseCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
 
-        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(3), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class ReadingAttributesFromDataBaseCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
 
-        assertEquals("8", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(8), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test

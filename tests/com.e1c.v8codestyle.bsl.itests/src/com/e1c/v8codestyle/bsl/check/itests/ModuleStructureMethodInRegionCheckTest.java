@@ -24,8 +24,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
@@ -90,7 +90,7 @@ public class ModuleStructureMethodInRegionCheckTest
         List<Marker> markers = getMarkers(COMMON_MODULE_NO_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("1", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(1), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ModuleStructureMethodInRegionCheckTest
         List<Marker> markers = getMarkers(COMMON_MODULE_AFTER_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("5", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(5), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -108,7 +108,7 @@ public class ModuleStructureMethodInRegionCheckTest
         List<Marker> markers = getMarkers(CATALOG_MODULE_MANAGER_EVENT_OUT_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("10", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(10), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -117,7 +117,7 @@ public class ModuleStructureMethodInRegionCheckTest
         List<Marker> markers = getMarkers(COMMON_MODULE_EXPORT_IN_NON_INTERFACE_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(3), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -126,7 +126,7 @@ public class ModuleStructureMethodInRegionCheckTest
         List<Marker> markers = getMarkers(COMMON_MODULE_IN_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(3), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -142,7 +142,7 @@ public class ModuleStructureMethodInRegionCheckTest
         List<Marker> markers = getMarkers(FORM_MODULE_OUT_OF_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("2", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(2), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -151,7 +151,7 @@ public class ModuleStructureMethodInRegionCheckTest
         List<Marker> markers = getMarkers(COMMAND_MODULE_OUT_OF_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(3), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -181,7 +181,7 @@ public class ModuleStructureMethodInRegionCheckTest
         List<Marker> markers = getMarkers(COMMON_MODULE_OUT_OF_MULTI_REGION_NONCOMPLIENT_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("6", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(6), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test

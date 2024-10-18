@@ -19,9 +19,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -43,8 +42,8 @@ import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.bsl.strict.check.DocCommentFieldTypeCheck;
 import com.e1c.v8codestyle.bsl.strict.check.DynamicFeatureAccessMethodNotFoundCheck;
@@ -127,13 +126,13 @@ public class CommonModuleStrictTypesTest
 
         Marker marker = markers.get(0);
 
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
 
         marker = markers.get(1);
 
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
 
     }
 
@@ -159,11 +158,11 @@ public class CommonModuleStrictTypesTest
 
         String uriToProblem = EcoreUtil.getURI(variables.get(0)).toString();
         Marker marker = markers.get(0);
-        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(4), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
 
         marker = markers.get(1);
-        assertEquals("22", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(22), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -190,8 +189,8 @@ public class CommonModuleStrictTypesTest
 
         Marker marker = markers.get(0);
 
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
 
     }
 
@@ -217,8 +216,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(methods.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(3), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
 
     }
 
@@ -244,8 +243,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(methods.get(0).getFormalParams().get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("3", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(3), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
     }
 
     /**
@@ -270,8 +269,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(dynamicMethods.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
 
     }
 
@@ -297,8 +296,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(dynamicProperties.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
     }
 
     /**
@@ -323,8 +322,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(statements.get(0)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(6), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
 
     }
 
@@ -347,7 +346,7 @@ public class CommonModuleStrictTypesTest
         assertEquals(1, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(6), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
 
     }
 
@@ -370,7 +369,7 @@ public class CommonModuleStrictTypesTest
         assertEquals(1, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(6), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
 
     }
 
@@ -393,17 +392,12 @@ public class CommonModuleStrictTypesTest
         List<Marker> markers = getMarters(checkId, module);
 
         assertEquals(3, markers.size());
-
-        Marker marker = markers.get(0);
-        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        // different key
-        marker = markers.get(1);
-        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
-        // missing type
-        marker = markers.get(2);
-        assertEquals("29", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(9, 9, 29), errorLines);
     }
 
     /**
@@ -430,8 +424,8 @@ public class CommonModuleStrictTypesTest
         String uriToProblem = EcoreUtil.getURI(statements.get(2)).toString();
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(uriToProblem, marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(uriToProblem, marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM));
 
     }
 
@@ -453,13 +447,12 @@ public class CommonModuleStrictTypesTest
         List<Marker> markers = getMarters(checkId, module);
 
         assertEquals(3, markers.size());
-
-        Set<String> lines = new HashSet<>();
-        for(Marker marker: markers)
-        {
-            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        }
-        assertEquals(Set.of("10", "12", "13"), lines);
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(10, 12, 13), errorLines);
     }
 
     /**
@@ -480,13 +473,12 @@ public class CommonModuleStrictTypesTest
         List<Marker> markers = getMarters(checkId, module);
 
         assertEquals(2, markers.size());
-
-        Set<String> lines = new HashSet<>();
-        for (Marker marker : markers)
-        {
-            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        }
-        assertEquals(Set.of("9", "17"), lines);
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(9, 17), errorLines);
     }
 
     /**
@@ -509,7 +501,7 @@ public class CommonModuleStrictTypesTest
         assertEquals(1, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
 
     }
 
@@ -533,7 +525,7 @@ public class CommonModuleStrictTypesTest
         assertEquals(1, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("5", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
 
     }
 
@@ -557,7 +549,7 @@ public class CommonModuleStrictTypesTest
         assertEquals(1, markers.size());
 
         Marker marker = markers.get(0);
-        assertEquals("9", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(9), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -601,15 +593,12 @@ public class CommonModuleStrictTypesTest
         List<Marker> markers = getMarters(checkId, module);
 
         assertEquals(3, markers.size());
-
-        Set<String> lines = new HashSet<>();
-
-        for (Marker m : markers)
-        {
-            lines.add(m.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        }
-
-        assertEquals(Set.of("19", "20", "21"), lines);
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(19, 20, 21), errorLines);
     }
 
     /**
@@ -633,15 +622,12 @@ public class CommonModuleStrictTypesTest
         List<Marker> markers = getMarters(checkId, module);
 
         assertEquals(2, markers.size());
-
-        Set<String> lines = new HashSet<>();
-
-        for (Marker m : markers)
-        {
-            lines.add(m.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        }
-
-        assertEquals(Set.of("18", "19"), lines);
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(18, 19), errorLines);
     }
 
     /**
@@ -662,13 +648,12 @@ public class CommonModuleStrictTypesTest
         List<Marker> markers = getMarters(checkId, module);
 
         assertEquals(10, markers.size());
-
-        Set<String> lines = new HashSet<>();
-        for (Marker marker : markers)
-        {
-            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        }
-        assertEquals(Set.of("7", "8", "9", "10", "36", "38", "39", "47", "49", "50"), lines);
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(7, 8, 9, 10, 36, 38, 39, 47, 49, 50), errorLines);
     }
 
     private IDtProject getProject()

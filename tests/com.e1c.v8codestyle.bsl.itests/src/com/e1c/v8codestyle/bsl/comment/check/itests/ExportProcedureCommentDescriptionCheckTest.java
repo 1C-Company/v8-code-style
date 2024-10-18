@@ -21,8 +21,8 @@ import java.util.List;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
 import com.e1c.v8codestyle.bsl.comment.check.ExportProcedureCommentDescriptionCheck;
 
@@ -71,7 +71,7 @@ public class ExportProcedureCommentDescriptionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("14", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(14), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
         assertEquals(MessageFormat.format(MESSAGE, EXPORT_FUNCTION_NAME), marker.getMessage());
     }
 }

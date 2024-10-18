@@ -40,7 +40,6 @@ public class InvocationFormEventHandlerCheckTest
 {
 
     private static final String CHECK_ID = "invocation-form-event-handler";
-    private static final String INV_FORM_EVENT_HANDLER_CHECK = "Program invocation of form event handler";
     private static final String PROJECT_NAME = "InvocationFormEventHandler";
     private static final String FQN_CATALOG_PRODUCTS_FORM = "Catalog.Products.Form.ItemForm.Form";
     private static final String FQN_CATALOG_PRODUCTS_FORM_ITEM = "Catalog.Products.Form.ItemForm1.Form";
@@ -73,7 +72,8 @@ public class InvocationFormEventHandlerCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getLeft(), dtProject);
         assertNotNull(marker);
-        assertEquals(INV_FORM_EVENT_HANDLER_CHECK, marker.getMessage());
+        assertEquals(Messages.InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_result,
+            marker.getMessage());
     }
 
     @Test
@@ -97,7 +97,8 @@ public class InvocationFormEventHandlerCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getLeft(), dtProject);
         assertNotNull(marker);
-        assertEquals(INV_FORM_EVENT_HANDLER_CHECK, marker.getMessage());
+        assertEquals(Messages.InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_result,
+            marker.getMessage());
     }
 
     @Test
@@ -121,6 +122,7 @@ public class InvocationFormEventHandlerCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, statement.getLeft(), dtProject);
         assertNotNull(marker);
-        assertEquals(INV_FORM_EVENT_HANDLER_CHECK, marker.getMessage());
+        assertEquals(Messages.InvocationFormEventHandlerCheck_Program_invocation_of_form_event_handler_result,
+            marker.getMessage());
     }
 }

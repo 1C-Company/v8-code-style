@@ -22,11 +22,13 @@ import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.Job;
 import org.junit.Before;
 import org.junit.Ignore;
 
@@ -181,16 +183,6 @@ public class AbstractSingleModuleTestBase
     {
         IProject project = getProject().getWorkspaceProject();
         IFile file = project.getFile(getModuleFileName());
-        boolean[] wasChanged = new boolean[1];
-        IResourceChangeListener listener = event -> {
-            if (event.getResource() == file
-                || event.getDelta() != null && event.getDelta().findMember(file.getFullPath()) != null)
-            {
-                wasChanged[0] = true;
-            }
-        };
-        project.getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE);
-
         try (InputStream in = getClass().getResourceAsStream(pathToResource))
         {
             if (file.exists())
@@ -202,15 +194,22 @@ public class AbstractSingleModuleTestBase
                 file.create(in, true, new NullProgressMonitor());
             }
         }
-        for (int i = 0; !wasChanged[0] && i < 4; i++)
+        testingWorkspace.buildWorkspace();
+        // As well as AUTO_BUILD-family job is being scheduled synchronously
+        // So all we need is to wait for auto-build job is being finished
+        // And also a little protection from direct file changes (without Eclipse
+        // resource subsystem)
+        project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+        try
         {
-            Thread.sleep(500);
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_MANUAL_BUILD, null);
         }
-        testingWorkspace.waitForBuildCompletion();
-        project.getWorkspace().removeResourceChangeListener(listener);
+        catch (OperationCanceledException | InterruptedException e)
+        {
+            throw new IllegalStateException("Cannot update file:" + file.toString(), e); //$NON-NLS-1$
+        }
         waitForDD(getProject());
-        //after fixing the problem in EDT - delete it
-        Thread.sleep(5000);
     }
 
     /**

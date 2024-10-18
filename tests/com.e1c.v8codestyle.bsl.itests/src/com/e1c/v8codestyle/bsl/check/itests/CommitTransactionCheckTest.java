@@ -46,7 +46,7 @@ public class CommitTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("Commit transaction must be in a try-catch", marker.getMessage());
+        assertEquals(Messages.CommitTransactionCheck_Commit_transaction_must_be_in_try_catch, marker.getMessage());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class CommitTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("There is no begin transaction for commit transaction", marker.getMessage());
+        assertEquals(Messages.CommitTransactionCheck_No_begin_transaction_for_commit_transaction, marker.getMessage());
     }
 
     @Test
@@ -68,7 +68,8 @@ public class CommitTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("There is no rollback transaction for begin transaction", marker.getMessage());
+        assertEquals(Messages.CommitTransactionCheck_No_rollback_transaction_for_begin_transaction,
+            marker.getMessage());
     }
 
     @Test
@@ -79,7 +80,7 @@ public class CommitTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("There should be no executable code between commit transaction and exception",
+        assertEquals(Messages.CommitTransactionCheck_Should_be_no_executable_code_between_commit_and_exception,
             marker.getMessage());
     }
 

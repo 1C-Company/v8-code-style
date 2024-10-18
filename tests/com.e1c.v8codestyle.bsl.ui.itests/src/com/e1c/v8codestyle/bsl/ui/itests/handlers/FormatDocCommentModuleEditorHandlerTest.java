@@ -143,7 +143,8 @@ public class FormatDocCommentModuleEditorHandlerTest
         command.executeWithChecks(executionEvent);
 
         expected = getResourceText(FOLDER_RESOURCE + "doc-comment-format-result.bsl");
-        assertEquals(expected, bslEditor.getDocument().get());
+        String actual = bslEditor.getDocument().get();
+        assertEquals("Whole content:" + System.lineSeparator() + actual, expected, actual);
     }
 
     private String getResourceText(String pathToResource) throws Exception

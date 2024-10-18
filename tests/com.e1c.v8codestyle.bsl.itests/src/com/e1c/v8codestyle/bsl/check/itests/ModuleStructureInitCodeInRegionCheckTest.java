@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.ModuleStructureInitCodeInRegionCheck;
 
@@ -60,7 +60,7 @@ public class ModuleStructureInitCodeInRegionCheckTest
         List<Marker> markers = getMarkers(CATALOG_WRONG_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("20", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(20), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class ModuleStructureInitCodeInRegionCheckTest
         List<Marker> markers = getMarkers(CATALOG_OUT_OF_REGION_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("31", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(31), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     private List<Marker> getMarkers(String moduleFileName)

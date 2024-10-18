@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.DeprecatedProcedureOutsideDeprecatedRegionCheck;
 
 /**
@@ -32,9 +32,7 @@ import com.e1c.v8codestyle.bsl.check.DeprecatedProcedureOutsideDeprecatedRegionC
 public class DeprecatedProcedureOutsideDeprecatedRegionCheckTest
     extends AbstractSingleModuleTestBase
 {
-    private static final String MESSAGE =
-        "The deprecated procedure (function) {0} should be placed in the Deprecated region of the Public region in a common module area";
-    private static final String DEPRECATED_PROCEDURE_NAME = "\"DeprecatedProcedure\"";
+    private static final String DEPRECATED_PROCEDURE_NAME = "DeprecatedProcedure";
 
     public DeprecatedProcedureOutsideDeprecatedRegionCheckTest()
     {
@@ -110,7 +108,9 @@ public class DeprecatedProcedureOutsideDeprecatedRegionCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
-        assertEquals("4", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(MessageFormat.format(MESSAGE, DEPRECATED_PROCEDURE_NAME), markers.get(0).getMessage());
+        assertEquals(Integer.valueOf(4), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(MessageFormat.format(
+            Messages.DeprecatedProcedureOutsideDeprecatedRegionCheck_Deprecated_function_out_of_deprecated_area,
+            DEPRECATED_PROCEDURE_NAME), markers.get(0).getMessage());
     }
 }

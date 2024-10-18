@@ -42,10 +42,6 @@ public class ExportMethodInCommandFormModuleCheckTest
 {
 
     private static final String CHECK_ID = "export-method-in-command-form-module";
-    private static final String MESSAGE =
-        "Do not embed export procedures and functions in modules of commands and forms. "
-            + "You cannot address such modules from external code, "
-            + "so embedded export procedures and functions become dysfunctional.";
     private static final String PROJECT_NAME = "ExportMethodInCommandFormModuleCheck";
     private static final String FQN_CATALOG = "Catalog.Products";
     private static final String FQN_CATALOG_FORM = "Catalog.Products.Form.ItemForm.Form";
@@ -75,7 +71,8 @@ public class ExportMethodInCommandFormModuleCheckTest
         Method noncompliantMethod = methods.get(0);
         Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
         assertNotNull(marker);
-        assertEquals(MESSAGE, marker.getMessage());
+        assertEquals(Messages.ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result,
+            marker.getMessage());
     }
 
     @Test
@@ -95,7 +92,8 @@ public class ExportMethodInCommandFormModuleCheckTest
         Method noncompliantMethod = methods.get(0);
         Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
         assertNotNull(marker);
-        assertEquals(MESSAGE, marker.getMessage());
+        assertEquals(Messages.ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result,
+            marker.getMessage());
     }
 
     @Test
@@ -137,7 +135,8 @@ public class ExportMethodInCommandFormModuleCheckTest
         Method noncompliantMethod = methods.get(0);
         Marker marker = getFirstMarker(CHECK_ID, noncompliantMethod, dtProject);
         assertNotNull(marker);
-        assertEquals(MESSAGE, marker.getMessage());
+        assertEquals(Messages.ExportMethodInCommandModule_Do_not_emded_export_method_in_modules_of_command_result,
+            marker.getMessage());
     }
 
     @Test

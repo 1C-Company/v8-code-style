@@ -96,13 +96,13 @@ public class TempTableHasIndexTest
         EObject selectQuery = querySchema.getQueries().get(1);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
 
-        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, null, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
-        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, null, new NullProgressMonitor());
 
         assertFalse(qlResultAcceptor.getMarkers().isEmpty());
 
@@ -131,14 +131,14 @@ public class TempTableHasIndexTest
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
-        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, null, new NullProgressMonitor());
 
         assertFalse(qlResultAcceptor.getMarkers().isEmpty());
 
         qlResultAcceptor.getMarkers().clear();
         TestingCheckParameters newParameters =
             new TestingCheckParameters(Map.of(PARAMETER_EXCLUDE_TABLE_NAME_PATTERN, "", PARAMETER_MAX_TOP, 110000));
-        check.check(selectQuery, resultAcceptor, newParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, newParameters, null, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
@@ -160,13 +160,13 @@ public class TempTableHasIndexTest
         EObject selectQuery = querySchema.getQueries().get(1);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
 
-        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, null, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
 
         selectQuery = querySchema.getQueries().get(0);
         assertTrue(selectQuery instanceof QuerySchemaSelectQuery);
-        check.check(selectQuery, resultAcceptor, defaultParameters, new NullProgressMonitor());
+        check.check(selectQuery, resultAcceptor, defaultParameters, null, new NullProgressMonitor());
 
         assertTrue(qlResultAcceptor.getMarkers().isEmpty());
     }

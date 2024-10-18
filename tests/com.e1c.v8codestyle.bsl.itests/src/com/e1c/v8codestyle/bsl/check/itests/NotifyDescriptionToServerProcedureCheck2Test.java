@@ -15,11 +15,12 @@ package com.e1c.v8codestyle.bsl.check.itests;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.NotifyDescriptionToServerProcedureCheck;
 
 /**
@@ -48,18 +49,12 @@ public class NotifyDescriptionToServerProcedureCheck2Test
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(4, markers.size());
-
-        Marker marker = markers.get(0);
-        assertEquals("6", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
-        marker = markers.get(1);
-        assertEquals("8", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
-        marker = markers.get(2);
-        assertEquals("18", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-
-        marker = markers.get(3);
-        assertEquals("20", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(6, 8, 18, 20), errorLines);
     }
 
 }

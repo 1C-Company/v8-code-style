@@ -46,7 +46,7 @@ public class RollbackTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("Rollback transaction must be in a try-catch", marker.getMessage());
+        assertEquals(Messages.RollbackTransactionCheck_Rollback_transaction_must_be_in_try_catch, marker.getMessage());
     }
 
     @Test
@@ -57,7 +57,8 @@ public class RollbackTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("There is no begin transaction for rollback transaction", marker.getMessage());
+        assertEquals(Messages.RollbackTransactionCheck_No_begin_transaction_for_rollback_transaction,
+            marker.getMessage());
     }
 
     @Test
@@ -68,7 +69,8 @@ public class RollbackTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("There is no commit transaction for begin transaction", marker.getMessage());
+        assertEquals(Messages.RollbackTransactionCheck_No_commit_transaction_for_begin_transaction,
+            marker.getMessage());
     }
 
     @Test
@@ -79,7 +81,7 @@ public class RollbackTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("There should be no executable code between exception and rollback transaction",
+        assertEquals(Messages.RollbackTransactionCheck_Should_be_no_executable_code_between_exception_and_rollback,
             marker.getMessage());
     }
 }

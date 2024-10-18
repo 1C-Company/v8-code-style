@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.ExportProcedureMissingCommentCheck;
 
 /**
@@ -32,8 +32,7 @@ import com.e1c.v8codestyle.bsl.check.ExportProcedureMissingCommentCheck;
 public class ExportProcedureMissingCommentCheckTest
     extends AbstractSingleModuleTestBase
 {
-    private static final String MESSAGE = "Export procedure (function) {0} should be described by adding comment";
-    private static final String EXPORT_PROCEDURE_NAME = "\"ExportProcedureWithoutComment\"";
+    private static final String EXPORT_PROCEDURE_NAME = "ExportProcedureWithoutComment";
 
     public ExportProcedureMissingCommentCheckTest()
     {
@@ -66,8 +65,9 @@ public class ExportProcedureMissingCommentCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
-        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals(MessageFormat.format(MESSAGE, EXPORT_PROCEDURE_NAME), markers.get(0).getMessage());
+        assertEquals(Integer.valueOf(3), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(MessageFormat.format(Messages.ExportProcedureMissingCommentCheck_Export_procedure_missing_comment,
+            EXPORT_PROCEDURE_NAME), markers.get(0).getMessage());
     }
 
     /**

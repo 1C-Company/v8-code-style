@@ -29,8 +29,8 @@ import org.junit.Test;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
 import com.e1c.v8codestyle.bsl.check.QueryInLoopCheck;
@@ -141,7 +141,7 @@ public class QueryInLoopCheckTest
 
         for (Marker marker : markers)
         {
-            String uriToProblem = marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY);
+            String uriToProblem = marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM);
             assertTrue(uriErrors.contains(uriToProblem));
             uriErrors.remove(uriToProblem);
         }
