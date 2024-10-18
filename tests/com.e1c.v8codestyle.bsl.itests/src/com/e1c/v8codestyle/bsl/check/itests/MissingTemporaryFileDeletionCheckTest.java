@@ -16,15 +16,15 @@ package com.e1c.v8codestyle.bsl.check.itests;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.check.settings.ICheckParameterSettings;
 import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
@@ -47,8 +47,6 @@ public class MissingTemporaryFileDeletionCheckTest
     private static final String TEST_CUSTOM_DELETE_FILE_METHODS_PARAM_LEVEL2 =
         "Справочники.Товары.МоеУдалениеФайла,Catalog.Goods.MyFileDeletion"; //$NON-NLS-1$
 
-    private static final String MESSAGE = "Missing temporary file deletion after use."; //$NON-NLS-1$
-
     public MissingTemporaryFileDeletionCheckTest()
     {
         super(MissingTemporaryFileDeletionCheck.class);
@@ -67,13 +65,14 @@ public class MissingTemporaryFileDeletionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(3, markers.size());
 
-        Set<String> lines = new HashSet<>();
+        Set<Integer> lines = new LinkedHashSet<>();
         for (Marker marker : markers)
         {
-            assertEquals(MESSAGE, marker.getMessage());
-            lines.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+            assertEquals(Messages.MissingTemporaryFileDeletionCheck_Missing_Temporary_File_Deletion,
+                marker.getMessage());
+            lines.add(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
         }
-        assertEquals(Set.of("3", "12", "22"), lines);
+        assertEquals(Set.of(3, 12, 22), lines);
     }
 
     /**
