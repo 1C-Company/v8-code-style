@@ -32,6 +32,7 @@ import com._1c.g5.v8.dt.form.model.FormItem;
 import com._1c.g5.v8.dt.form.model.FormItemContainer;
 import com._1c.g5.v8.dt.form.model.FormPackage;
 import com._1c.g5.v8.dt.form.service.FormItemInformationService;
+import com._1c.g5.v8.dt.mcore.Event;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -48,7 +49,7 @@ import com.google.inject.Inject;
  * @author Manaev Konstantin
  */
 public class FormItemsSingleEventHandlerCheck
-    extends BasicCheck
+    extends BasicCheck<EObject>
 {
 
     private static final String CHECK_ID = "form-items-single-event-handler"; //$NON-NLS-1$
@@ -74,12 +75,12 @@ public class FormItemsSingleEventHandlerCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        if (object instanceof Form)
+        if (object instanceof Form form)
         {
-            IV8Project project = v8ProjectManager.getProject((EObject)object);
-            ScriptVariant variant = project == null ? ScriptVariant.ENGLISH : project.getScriptVariant();
+            IV8Project v8project = v8ProjectManager.getProject((EObject)object);
+            ScriptVariant variant = v8project == null ? ScriptVariant.ENGLISH : v8project.getScriptVariant();
             Map<String, String> handlers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-            checkEObjectEventHandlers((EObject)object, handlers, variant, resultAceptor, monitor);
+            checkEObjectEventHandlers(form, handlers, variant, resultAceptor, monitor);
         }
     }
 
@@ -137,19 +138,27 @@ public class FormItemsSingleEventHandlerCheck
             {
                 return;
             }
-            EventHandler event = eventIterator.next();
-            String handlerName =
-                variant == ScriptVariant.ENGLISH ? event.getEvent().getName() : event.getEvent().getNameRu();
-            if (handlers.containsKey(event.getName()))
+            EventHandler eventHandler = eventIterator.next();
+            Event event = eventHandler.getEvent();
+            if (event.eIsProxy())
+            {
+                continue;
+            }
+            String handlerName = eventHandler.getName();
+            String eventName = variant == ScriptVariant.ENGLISH ? event.getName() : event.getNameRu();
+
+            if (handlers.containsKey(handlerName))
             {
                 resultAceptor.addIssue(MessageFormat.format(
                     Messages.FormItemsSingleEventHandlerCheck_the_handler_is_already_assigned_to_event, handlerName,
-                    handlers.get(event.getName())), event, FormPackage.Literals.EVENT_HANDLER__NAME);
+                    handlers.get(handlerName)), eventHandler, FormPackage.Literals.EVENT_HANDLER__NAME);
             }
             else
             {
-                handlers.put(event.getName(), MessageFormat
-                    .format(Messages.FormItemsSingleEventHandlerCheck_itemName_dot_eventName, itemName, handlerName));
+                handlers.put(handlerName,
+                    eventName != null ? MessageFormat
+                        .format(Messages.FormItemsSingleEventHandlerCheck_itemName_dot_eventName, itemName, eventName)
+                        : itemName);
             }
         }
     }
