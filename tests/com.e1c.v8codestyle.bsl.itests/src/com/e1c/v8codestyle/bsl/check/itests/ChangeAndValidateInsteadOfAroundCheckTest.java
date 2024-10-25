@@ -110,5 +110,7 @@ public class ChangeAndValidateInsteadOfAroundCheckTest
         }
 
         assertEquals(0, uriErrors.size());
+
+        cleanUpProject(dtProject.getWorkspaceProject());
     }
 }

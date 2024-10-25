@@ -16,6 +16,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,8 +36,12 @@ import org.junit.Ignore;
 
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.core.lifecycle.ProjectStopType;
+import com._1c.g5.v8.dt.core.lifecycle.ServiceLifecycleJob;
+import com._1c.g5.v8.dt.core.lifecycle.WorkspaceProjectStopRequest;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.testing.TestingProjectLifecycleSupport;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.ICheck;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
@@ -284,5 +290,73 @@ public class AbstractSingleModuleTestBase
             check = BslPlugin.getDefault().getInjector().getInstance(checkClass);
         }
         return check;
+    }
+
+    /**
+     * Delete project in the workspace.
+     * @param project deleted project, cannot be <code>null</code>
+     * @throws CoreException if workspace clean up error occurred
+     */
+    protected void cleanUpProject(IProject project) throws CoreException
+    {
+        // First of all we need to stop all DT projects to perform the most effective
+        // cleanup, without stray dependent projects restarts and so on
+        Collection<WorkspaceProjectStopRequest> stopRequests = new ArrayList<>();
+
+        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        if (dtProject != null)
+        {
+            stopRequests.add(new WorkspaceProjectStopRequest(project, ProjectStopType.DELETE));
+        }
+
+        // Stopping projects in the right order
+        orchestrator.stopWorkspaceProjects(stopRequests, new NullProgressMonitor());
+
+        // Delete projects physically
+
+        try
+        {
+            project.delete(false, true, null);
+            TestingProjectLifecycleSupport.waitForProjectStop(project);
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace(System.err);
+            //nop
+        }
+
+        // Checking if there are critical failures during the shutdown of the project
+        try
+        {
+            // Force closing services that failed during the normal close
+            if (dtProject != null && orchestrator.isStarted(dtProject))
+            {
+                orchestrator.stopProject(dtProject, ProjectStopType.DELETE);
+                TestingProjectLifecycleSupport.waitForProjectStop(project);
+            }
+        }
+        catch (Throwable e)
+        {
+            //nop
+        }
+        try
+        {
+            testingWorkspace.getWorkspaceRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace(System.err);
+        }
+
+        try
+        {
+            Job.getJobManager().join(ServiceLifecycleJob.FAMILY, new NullProgressMonitor());
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_MANUAL_BUILD, null);
+        }
+        catch (OperationCanceledException | InterruptedException e)
+        {
+            // Nothing
+        }
     }
 }
