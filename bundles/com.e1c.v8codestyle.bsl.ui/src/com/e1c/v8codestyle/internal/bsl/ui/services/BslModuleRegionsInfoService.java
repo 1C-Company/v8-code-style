@@ -107,8 +107,7 @@ public class BslModuleRegionsInfoService
         {
             regionName = suffix.isEmpty() ? declaredRegionName : (declaredRegionName + suffix);
         }
-        int flags = calculateFlags(project, regionOffsets, offset);
-        return new BslModuleRegionsInfo(resourceURI, offset, clearOffset, clearLength, flags, regionName);
+        return new BslModuleRegionsInfo(resourceURI, offset, clearOffset, clearLength, regionName);
     }
 
     @Override
@@ -130,11 +129,6 @@ public class BslModuleRegionsInfoService
                 String endRegion = proposals.getEndRegionPropStr();
                 String space = proposals.getSpacePropStr();
                 StringBuilder builder = new StringBuilder();
-                int flags = moduleRegionInformation.getRegionFlags();
-                boolean hasRegionBefore = (flags
-                    & BslModuleRegionsInfo.REGION_FLAG_HAS_REGION_BEFORE) == BslModuleRegionsInfo.REGION_FLAG_HAS_REGION_BEFORE;
-                boolean hasRegionAfter = (flags
-                    & BslModuleRegionsInfo.REGION_FLAG_HAS_REGION_AFTER) == BslModuleRegionsInfo.REGION_FLAG_HAS_REGION_AFTER;
                 if (moduleTextInsertInfo.getPosition() != 0)
                 {
                     builder.append(lineSeparator);
@@ -142,7 +136,7 @@ public class BslModuleRegionsInfoService
                 builder.append(beginRegion).append(space).append(regionName);
                 builder.append(content);
                 builder.append(endRegion);
-                if (moduleTextInsertInfo.getPosition() == 0 || (hasRegionAfter && !hasRegionBefore))
+                if (moduleTextInsertInfo.getPosition() == 0)
                 {
                     builder.append(lineSeparator);
                 }
@@ -244,23 +238,6 @@ public class BslModuleRegionsInfoService
             return getNewRegionOffset(regionOffsets, declaredRegionName, suffix, defaultOffset, scriptVariant);
         }
         return offset;
-    }
-
-    private int calculateFlags(IV8Project project, Map<String, BslModuleOffsets> regionOffsets, int offset)
-    {
-        int flags = 0;
-        for (BslModuleOffsets offsets : regionOffsets.values())
-        {
-            if (offsets.getEndOffset() <= offset)
-            {
-                flags |= BslModuleRegionsInfo.REGION_FLAG_HAS_REGION_BEFORE;
-            }
-            if (offsets.getStartOffset() >= offset)
-            {
-                flags |= BslModuleRegionsInfo.REGION_FLAG_HAS_REGION_AFTER;
-            }
-        }
-        return flags;
     }
 
     private boolean isRegionExists(Map<String, BslModuleOffsets> regionOffsets, String declaredRegionName,
