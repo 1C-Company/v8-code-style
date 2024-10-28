@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -200,7 +201,8 @@ public class AbstractSingleModuleTestBase
                 file.create(in, true, new NullProgressMonitor());
             }
         }
-        testingWorkspace.buildWorkspace();
+        ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+
         // As well as AUTO_BUILD-family job is being scheduled synchronously
         // So all we need is to wait for auto-build job is being finished
         // And also a little protection from direct file changes (without Eclipse
