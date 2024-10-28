@@ -16,24 +16,33 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceChangeEvent;
-import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.jobs.Job;
 import org.junit.Before;
 import org.junit.Ignore;
 
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.core.lifecycle.ProjectStopType;
+import com._1c.g5.v8.dt.core.lifecycle.ServiceLifecycleJob;
+import com._1c.g5.v8.dt.core.lifecycle.WorkspaceProjectStopRequest;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.testing.TestingProjectLifecycleSupport;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.check.ICheck;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
@@ -181,16 +190,6 @@ public class AbstractSingleModuleTestBase
     {
         IProject project = getProject().getWorkspaceProject();
         IFile file = project.getFile(getModuleFileName());
-        boolean[] wasChanged = new boolean[1];
-        IResourceChangeListener listener = event -> {
-            if (event.getResource() == file
-                || event.getDelta() != null && event.getDelta().findMember(file.getFullPath()) != null)
-            {
-                wasChanged[0] = true;
-            }
-        };
-        project.getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE);
-
         try (InputStream in = getClass().getResourceAsStream(pathToResource))
         {
             if (file.exists())
@@ -202,15 +201,23 @@ public class AbstractSingleModuleTestBase
                 file.create(in, true, new NullProgressMonitor());
             }
         }
-        for (int i = 0; !wasChanged[0] && i < 4; i++)
+        ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+
+        // As well as AUTO_BUILD-family job is being scheduled synchronously
+        // So all we need is to wait for auto-build job is being finished
+        // And also a little protection from direct file changes (without Eclipse
+        // resource subsystem)
+        project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+        try
         {
-            Thread.sleep(500);
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_MANUAL_BUILD, null);
         }
-        testingWorkspace.waitForBuildCompletion();
-        project.getWorkspace().removeResourceChangeListener(listener);
+        catch (OperationCanceledException | InterruptedException e)
+        {
+            throw new IllegalStateException("Cannot update file:" + file.toString(), e); //$NON-NLS-1$
+        }
         waitForDD(getProject());
-        //after fixing the problem in EDT - delete it
-        Thread.sleep(5000);
     }
 
     /**
@@ -285,5 +292,73 @@ public class AbstractSingleModuleTestBase
             check = BslPlugin.getDefault().getInjector().getInstance(checkClass);
         }
         return check;
+    }
+
+    /**
+     * Delete project in the workspace.
+     * @param project deleted project, cannot be <code>null</code>
+     * @throws CoreException if workspace clean up error occurred
+     */
+    protected void cleanUpProject(IProject project) throws CoreException
+    {
+        // First of all we need to stop all DT projects to perform the most effective
+        // cleanup, without stray dependent projects restarts and so on
+        Collection<WorkspaceProjectStopRequest> stopRequests = new ArrayList<>();
+
+        IDtProject dtProject = dtProjectManager.getDtProject(project);
+        if (dtProject != null)
+        {
+            stopRequests.add(new WorkspaceProjectStopRequest(project, ProjectStopType.DELETE));
+        }
+
+        // Stopping projects in the right order
+        orchestrator.stopWorkspaceProjects(stopRequests, new NullProgressMonitor());
+
+        // Delete projects physically
+
+        try
+        {
+            project.delete(false, true, null);
+            TestingProjectLifecycleSupport.waitForProjectStop(project);
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace(System.err);
+            //nop
+        }
+
+        // Checking if there are critical failures during the shutdown of the project
+        try
+        {
+            // Force closing services that failed during the normal close
+            if (dtProject != null && orchestrator.isStarted(dtProject))
+            {
+                orchestrator.stopProject(dtProject, ProjectStopType.DELETE);
+                TestingProjectLifecycleSupport.waitForProjectStop(project);
+            }
+        }
+        catch (Throwable e)
+        {
+            //nop
+        }
+        try
+        {
+            testingWorkspace.getWorkspaceRoot().refreshLocal(IResource.DEPTH_INFINITE, null);
+        }
+        catch (Throwable e)
+        {
+            e.printStackTrace(System.err);
+        }
+
+        try
+        {
+            Job.getJobManager().join(ServiceLifecycleJob.FAMILY, new NullProgressMonitor());
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_BUILD, null);
+            Job.getJobManager().join(ResourcesPlugin.FAMILY_MANUAL_BUILD, null);
+        }
+        catch (OperationCanceledException | InterruptedException e)
+        {
+            // Nothing
+        }
     }
 }

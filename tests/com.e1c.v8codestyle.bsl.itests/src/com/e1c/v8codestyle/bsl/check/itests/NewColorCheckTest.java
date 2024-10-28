@@ -30,10 +30,6 @@ import com.e1c.v8codestyle.bsl.check.NewColorCheck;
 public class NewColorCheckTest
     extends AbstractSingleModuleTestBase
 {
-
-    private static final String NEW_COLOR =
-        "To change the design, you should use style elements, and not set specific values directly in the controls";
-
     public NewColorCheckTest()
     {
         super(NewColorCheck.class);
@@ -47,7 +43,7 @@ public class NewColorCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals(NEW_COLOR, marker.getMessage());
+        assertEquals(Messages.NewColorCheck_Use_style_elements, marker.getMessage());
     }
 
     @Test
@@ -58,7 +54,7 @@ public class NewColorCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals(NEW_COLOR, marker.getMessage());
+        assertEquals(Messages.NewColorCheck_Use_style_elements, marker.getMessage());
     }
 
     @Test

@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.ModuleStructureTopRegionCheck;
 
 /**
@@ -33,21 +33,12 @@ public class ModuleStructureTopRegionCheckTest
     extends AbstractSingleModuleTestBase
 {
 
-    private static final String REGION_HAS_THE_WRONG_ORDER = "Region has the wrong order";
-    private static final String REGION_HAS_DUPLICATE = "Region has duplicate";
-
     private static final String CATALOG_FORM_MODULE_FILE_NAME = "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
     private static final String CHECK_ID = "module-structure-top-region"; //$NON-NLS-1$
 
     public ModuleStructureTopRegionCheckTest()
     {
         super(ModuleStructureTopRegionCheck.class);
-    }
-
-    @Override
-    protected String getTestConfigurationName()
-    {
-        return "ModuleStructureTopRegionCheck";
     }
 
     /**
@@ -76,7 +67,7 @@ public class ModuleStructureTopRegionCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
-        assertEquals("12", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(12), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -92,7 +83,7 @@ public class ModuleStructureTopRegionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("18", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(18), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -122,7 +113,7 @@ public class ModuleStructureTopRegionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("4", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(4), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -138,7 +129,7 @@ public class ModuleStructureTopRegionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("10", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(10), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -153,8 +144,8 @@ public class ModuleStructureTopRegionCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
-        assertEquals(REGION_HAS_DUPLICATE, markers.get(0).getMessage());
-        assertEquals(REGION_HAS_DUPLICATE, markers.get(1).getMessage());
+        assertEquals(Messages.ModuleStructureTopRegionCheck_Region_has_duplicate, markers.get(0).getMessage());
+        assertEquals(Messages.ModuleStructureTopRegionCheck_Region_has_duplicate, markers.get(1).getMessage());
     }
 
     /**
@@ -169,8 +160,8 @@ public class ModuleStructureTopRegionCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
-        assertEquals(REGION_HAS_THE_WRONG_ORDER, markers.get(0).getMessage());
-        assertEquals(REGION_HAS_THE_WRONG_ORDER, markers.get(1).getMessage());
+        assertEquals(Messages.ModuleStructureTopRegionCheck_Region_has_the_wrong_order, markers.get(0).getMessage());
+        assertEquals(Messages.ModuleStructureTopRegionCheck_Region_has_the_wrong_order, markers.get(1).getMessage());
     }
 
     /**
@@ -183,5 +174,11 @@ public class ModuleStructureTopRegionCheckTest
     {
         Marker marker = getFirstMarker(CHECK_ID, CATALOG_FORM_MODULE_FILE_NAME, getProject());
         assertNull(marker);
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return "ModuleStructureTopRegionCheck";
     }
 }

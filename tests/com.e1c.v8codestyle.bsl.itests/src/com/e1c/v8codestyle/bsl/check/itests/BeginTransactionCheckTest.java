@@ -47,7 +47,7 @@ public class BeginTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("The try operator was not found after calling begin transaction", marker.getMessage());
+        assertEquals(Messages.BeginTransactionCheck_Try_was_not_found_after_calling_begin, marker.getMessage());
     }
 
     @Test
@@ -58,6 +58,7 @@ public class BeginTransactionCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals("There should be no executable code between begin transaction and try", marker.getMessage());
+        assertEquals(Messages.BeginTransactionCheck_Executable_code_between_begin_transaction_and_try,
+            marker.getMessage());
     }
 }

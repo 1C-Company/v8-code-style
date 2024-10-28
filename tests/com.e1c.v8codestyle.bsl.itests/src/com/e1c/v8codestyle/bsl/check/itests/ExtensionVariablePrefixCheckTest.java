@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.ExtensionVariablePrefixCheck;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
@@ -101,7 +101,7 @@ public class ExtensionVariablePrefixCheckTest
     {
         List<Marker> markers = getMarkers(CATALOG_FORM_MODULE_FILE_NAME);
         assertFalse(markers.isEmpty());
-        assertEquals("1", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(1), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     private List<Marker> getMarkers(String moduleFileName)

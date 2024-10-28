@@ -1,16 +1,14 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.UseGotoOperatorCheck;
 
 /**
@@ -40,16 +38,12 @@ public class UseGotoOperatorCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
-        
-        Set<String> testMarkersList = Set.of("3", "5");
-        Set<String> projectMarkersList = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        
-        for (Marker marker : markers)
-        {
-            projectMarkersList.add(marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        }
-        
-        assertTrue(testMarkersList.equals(projectMarkersList));
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(3, 5), errorLines);
 
     }
 

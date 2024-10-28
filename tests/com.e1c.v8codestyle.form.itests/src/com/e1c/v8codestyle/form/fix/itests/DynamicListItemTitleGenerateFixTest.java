@@ -38,15 +38,13 @@ public class DynamicListItemTitleGenerateFixTest
 
     private static final String CHECK_ID = "form-dynamic-list-item-title";
 
-    private static final String FIX_DESCRIPTION_PATTERN = "Generate title \".+\" for dynamic list form item \".+\"";
-
     private static final String PROJECT_NAME = "FormDynamicListItemTitle";
 
     private static final String FQN_FORM = "Catalog.Products.Form.ListForm.Form";
 
     public DynamicListItemTitleGenerateFixTest()
     {
-        super(FIX_DESCRIPTION_PATTERN);
+        super(Messages.DynamicListItemTitleGenerateFix_title);
     }
 
     @Test
