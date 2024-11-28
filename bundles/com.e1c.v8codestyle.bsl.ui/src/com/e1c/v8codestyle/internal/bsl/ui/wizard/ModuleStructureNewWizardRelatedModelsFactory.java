@@ -35,6 +35,8 @@ import com._1c.g5.v8.dt.common.PreferenceUtils;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.filesystem.IQualifiedNameFilePathConverter;
 import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
+import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.metadata.mdclass.ReturnValuesReuse;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.ui.wizards.IDtNewWizardContext;
 import com.e1c.v8codestyle.bsl.IModuleStructureProvider;
@@ -85,15 +87,22 @@ public class ModuleStructureNewWizardRelatedModelsFactory
             {
                 formToAddModule = (AbstractForm)model;
             }
-            else if (model instanceof Module)
+            else if (model instanceof Module module)
             {
                 formToAddModule = null;
-                Module module = (Module)model;
                 IFile bslFile = getModuleFile(module);
                 if (bslFile != null)
                 {
                     ModuleType type = BslUtil.computeModuleType(module, qualifiedNameFilePathConverter);
-                    createOrUpdateModule(bslFile, type, context);
+                    if (type == ModuleType.COMMON_MODULE && context.getModel() instanceof CommonModule commonModule)
+                    {
+                        createOrUpdateModule(bslFile, ModuleType.COMMON_MODULE,
+                            commonModule.getReturnValuesReuse() != ReturnValuesReuse.DONT_USE, context);
+                    }
+                    else
+                    {
+                        createOrUpdateModule(bslFile, type, false, context);
+                    }
                 }
             }
         }
@@ -103,7 +112,7 @@ public class ModuleStructureNewWizardRelatedModelsFactory
             IFile bslFile = getModuleFile(formToAddModule, project);
             if (bslFile != null)
             {
-                createOrUpdateModule(bslFile, ModuleType.FORM_MODULE, context);
+                createOrUpdateModule(bslFile, ModuleType.FORM_MODULE, false, context);
 
                 EObject module = createBslProxyModule(bslFile);
                 createdModels.add(module);
@@ -111,11 +120,12 @@ public class ModuleStructureNewWizardRelatedModelsFactory
         }
     }
 
-    private void createOrUpdateModule(IFile bslFile, ModuleType type, IDtNewWizardContext<EObject> context)
+    private void createOrUpdateModule(IFile bslFile, ModuleType type, boolean reusableModule,
+        IDtNewWizardContext<EObject> context)
     {
         ScriptVariant script = context.getV8project().getScriptVariant();
         Supplier<InputStream> content =
-            moduleStructureProvider.getModuleStructureTemplate(bslFile.getProject(), type, script);
+            moduleStructureProvider.getModuleStructureTemplate(bslFile.getProject(), type, reusableModule, script);
         if (content == null)
         {
             return;
@@ -178,5 +188,4 @@ public class ModuleStructureNewWizardRelatedModelsFactory
             UiPlugin.log(status);
         }
     }
-
 }
