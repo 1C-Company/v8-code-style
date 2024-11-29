@@ -195,7 +195,8 @@ public class ModuleStructurePropertyPage
             return;
         }
         ScriptVariant script = v8Project.getScriptVariant();
-        Supplier<InputStream> content = moduleStructureProvider.getModuleStructureTemplate(getProject(), type, script);
+        Supplier<InputStream> content =
+            moduleStructureProvider.getModuleStructureTemplate(getProject(), type, false, script);
         if (content == null)
         {
             return;

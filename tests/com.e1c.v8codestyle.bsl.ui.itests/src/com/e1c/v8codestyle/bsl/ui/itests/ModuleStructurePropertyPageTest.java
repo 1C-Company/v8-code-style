@@ -69,8 +69,7 @@ public class ModuleStructurePropertyPageTest
 
     private static final String EDTOR_TITLE = "/" + PROJECT_NAME + "/" + SETTINGS_TEMPLATES_COMMON_MODULE_BSL;
 
-    private static final String PROPERTY_PAGE_ID =
-        "com.e1c.v8codestyle.bsl.ui.properties.moduleStructurePropertyPage";
+    private static final String PROPERTY_PAGE_ID = "com.e1c.v8codestyle.bsl.ui.properties.moduleStructurePropertyPage";
 
     @Rule
     public TestingWorkspace testingWorkspace = new TestingWorkspace(true, false);
@@ -130,13 +129,14 @@ public class ModuleStructurePropertyPageTest
     {
 
         IModuleStructureProvider moduleStructureProvider = ServiceAccess.get(IModuleStructureProvider.class);
-        Supplier<InputStream> templateProvider = moduleStructureProvider.getModuleStructureTemplate(project,
-            ModuleType.COMMON_MODULE, null);
+        Supplier<InputStream> templateProvider =
+            moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE, false, null);
         assertNull(templateProvider);
-        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, null, ScriptVariant.ENGLISH);
+        templateProvider =
+            moduleStructureProvider.getModuleStructureTemplate(project, null, false, ScriptVariant.ENGLISH);
         assertNull(templateProvider);
-        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project,
-            ModuleType.COMMON_MODULE, ScriptVariant.ENGLISH);
+        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE, false,
+            ScriptVariant.ENGLISH);
         assertNotNull(templateProvider);
 
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
@@ -166,7 +166,6 @@ public class ModuleStructurePropertyPageTest
         viewer.setSelection(new StructuredSelection(ModuleType.COMMON_MODULE));
         waitEventSetnd(dialog);
         assertTrue(buttonOpen.isEnabled());
-
 
         buttonOpen.notifyListeners(SWT.Selection, new Event());
         assertNull(dialog.getShell());
@@ -199,7 +198,7 @@ public class ModuleStructurePropertyPageTest
             file.setContents(in, true, true, new NullProgressMonitor());
         }
 
-        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE,
+        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE, false,
             ScriptVariant.ENGLISH);
 
         try (InputStream template = templateProvider.get();
