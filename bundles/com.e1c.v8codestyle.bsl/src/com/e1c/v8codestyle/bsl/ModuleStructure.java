@@ -27,6 +27,7 @@ public enum ModuleStructure
 {
 
     BOT_MODULE(ModuleStructureSection.EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
+    WEB_SOCKET_CLIENT_MODULE(ModuleStructureSection.EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
     COMMAND_MODULE(ModuleStructureSection.EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
     COMMON_MODULE(ModuleStructureSection.PUBLIC, ModuleStructureSection.INTERNAL, ModuleStructureSection.PRIVATE),
     EXTERNAL_CONN_MODULE(ModuleStructureSection.EVENT_HANDLERS, ModuleStructureSection.PRIVATE),
@@ -93,6 +94,8 @@ public enum ModuleStructure
             return VALUE_MANAGER_MODULE.getSections();
         case WEB_SERVICE_MODULE:
             return WEB_SERVICE_MODULE.getSections();
+        case WEB_SOCKET_CLIENT_MODULE:
+            return WEB_SOCKET_CLIENT_MODULE.getSections();
 
         default:
             break;
