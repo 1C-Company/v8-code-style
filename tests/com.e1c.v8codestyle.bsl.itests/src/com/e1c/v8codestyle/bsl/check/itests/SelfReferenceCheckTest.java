@@ -24,8 +24,8 @@ import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
 import com.e1c.v8codestyle.bsl.check.SelfReferenceCheck;
@@ -71,11 +71,12 @@ public class SelfReferenceCheckTest
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
         assertEquals(4, markers.size());
-
-        assertEquals("6", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("6", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("10", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("10", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(6, 6, 10, 10), errorLines);
     }
 
     /**
@@ -88,10 +89,12 @@ public class SelfReferenceCheckTest
     {
         List<Marker> markers = getMarkers(FORM_MODULE_FILE_NAME);
         assertEquals(3, markers.size());
-
-        assertEquals("11", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("12", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("13", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(11, 12, 13), errorLines);
 
         IDtProject dtProject = getProject();
         IProject project = dtProject.getWorkspaceProject();
@@ -101,17 +104,12 @@ public class SelfReferenceCheckTest
 
         List<Marker> markersAfterSettingsChange = getMarkers(FORM_MODULE_FILE_NAME);
         assertEquals(5, markersAfterSettingsChange.size());
-
-        assertEquals("11",
-            markersAfterSettingsChange.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("11",
-            markersAfterSettingsChange.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("12",
-            markersAfterSettingsChange.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("12",
-            markersAfterSettingsChange.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("13",
-            markersAfterSettingsChange.get(4).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        errorLines = markersAfterSettingsChange.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(11, 11, 12, 12, 13), errorLines);
     }
 
     /**
@@ -124,11 +122,12 @@ public class SelfReferenceCheckTest
     {
         List<Marker> markers = getMarkers(OBJECT_MODULE_FILE_NAME);
         assertEquals(4, markers.size());
-
-        assertEquals("8", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("8", markers.get(1).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("9", markers.get(2).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
-        assertEquals("9", markers.get(3).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(8, 8, 9, 9), errorLines);
 
         IDtProject dtProject = getProject();
         IProject project = dtProject.getWorkspaceProject();
@@ -145,14 +144,11 @@ public class SelfReferenceCheckTest
         String moduleId = Path.ROOT.append(getTestConfigurationName()).append(moduleFileName).toString();
         List<Marker> markers = List.of(markerManager.getMarkers(getProject().getWorkspaceProject(), moduleId));
 
-        String chekcId = getCheckId();
+        String checkId = getCheckId();
 
-        assertNotNull(chekcId);
+        assertNotNull(checkId);
         return markers.stream()
-            .filter(marker -> chekcId.equals(getCheckIdFromMarker(marker, getProject())))
-            .sorted((marker1, marker2) -> marker1.getExtraInfo()
-                .get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY)
-                .compareTo(marker2.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY)))
+            .filter(marker -> checkId.equals(getCheckIdFromMarker(marker, getProject())))
             .collect(Collectors.toList());
     }
 

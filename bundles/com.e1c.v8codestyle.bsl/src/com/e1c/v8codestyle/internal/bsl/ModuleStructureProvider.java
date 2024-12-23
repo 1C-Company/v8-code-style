@@ -53,6 +53,8 @@ public class ModuleStructureProvider
 
     private static final String FOLDER_EN = "/templates/en/"; //$NON-NLS-1$
 
+    private static final String REUSABLE_SUFFIX = "_reusable"; //$NON-NLS-1$
+
     private static final IPath FOLDER_SETTINGS = new org.eclipse.core.runtime.Path(".settings/templates"); //$NON-NLS-1$
 
     @Override
@@ -68,9 +70,8 @@ public class ModuleStructureProvider
 
     @Override
     public Supplier<InputStream> getModuleStructureTemplate(IProject project, ModuleType moduleType,
-        ScriptVariant script)
+        boolean reusableModule, ScriptVariant script)
     {
-
         if (moduleType == null || script == null)
         {
             return null;
@@ -78,6 +79,10 @@ public class ModuleStructureProvider
 
         StringBuilder sb = new StringBuilder();
         sb.append(moduleType.getName().toLowerCase());
+        if (reusableModule)
+        {
+            sb.append(REUSABLE_SUFFIX);
+        }
         sb.append("."); //$NON-NLS-1$
         sb.append(BSL_FILE_EXTENSION);
 

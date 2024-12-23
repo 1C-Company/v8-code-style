@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.preference.PreferenceDialog;
+import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -75,6 +76,8 @@ public class ModuleStructurePropertyPage
     private Button createStructureButton;
 
     private Button createStrictTypesButton;
+
+    private Button openButton;
 
     private CheckboxTableViewer checkBoxViewer;
 
@@ -192,7 +195,8 @@ public class ModuleStructurePropertyPage
             return;
         }
         ScriptVariant script = v8Project.getScriptVariant();
-        Supplier<InputStream> content = moduleStructureProvider.getModuleStructureTemplate(getProject(), type, script);
+        Supplier<InputStream> content =
+            moduleStructureProvider.getModuleStructureTemplate(getProject(), type, false, script);
         if (content == null)
         {
             return;
@@ -292,7 +296,7 @@ public class ModuleStructurePropertyPage
         checkBoxViewer.setInput(ModuleType.VALUES);
 
         Composite buttonPanel = createDefaultComposite(composite);
-        Button openButton = new Button(buttonPanel, SWT.PUSH);
+        openButton = new Button(buttonPanel, SWT.PUSH);
         openButton.setText(Messages.ModuleStructurePropertyPage_Open_template);
         openButton.setToolTipText(Messages.ModuleStructurePropertyPage_Open_template_tooltip);
         openButton.setEnabled(false);

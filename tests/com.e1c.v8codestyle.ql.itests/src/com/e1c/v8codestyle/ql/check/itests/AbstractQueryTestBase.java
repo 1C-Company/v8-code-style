@@ -69,7 +69,7 @@ public class AbstractQueryTestBase
 
     private Class<? extends ICheck> checkClass;
 
-    private ICheck check;
+    private ICheck<?> check;
 
     private ICheckDefinition definition;
 
@@ -161,7 +161,7 @@ public class AbstractQueryTestBase
      *
      * @return the check instance, cannot return {@code null}.
      */
-    private ICheck getCheckInstance() throws Exception
+    private ICheck<?> getCheckInstance() throws Exception
     {
         if (check == null)
         {
@@ -216,7 +216,7 @@ public class AbstractQueryTestBase
 
         ICheckParameters checkParametes = getCheckParameters();
 
-        ICheck validator = getCheckInstance();
+        ICheck<?> validator = getCheckInstance();
         if (!(validator instanceof QlBasicDelegateCheck))
         {
             throw new IllegalStateException("Check should be QlBasicDelegateCheck class, but was: " + validator);
@@ -230,7 +230,7 @@ public class AbstractQueryTestBase
             EObject child = iterator.next();
             if (filter.isApplicable(child))
             {
-                validator.check(child, resultAcceptor, checkParametes, monitor);
+                validator.check(child, resultAcceptor, checkParametes, null, monitor);
             }
         }
     }

@@ -22,8 +22,8 @@ import org.eclipse.core.resources.IProject;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.core.platform.IDtProject;
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.check.settings.CheckUid;
 import com.e1c.g5.v8.dt.check.settings.ICheckSettings;
 import com.e1c.v8codestyle.bsl.check.CodeAfterAsyncCallCheck;
@@ -57,7 +57,7 @@ public class CodeAfterAsyncCallCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
         assertNotNull(marker);
-        assertEquals("7", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(7), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class CodeAfterAsyncCallCheckTest
 
         Marker marker = getFirstMarker(CHECK_ID, getModuleId(), getProject());
         assertNotNull(marker);
-        assertEquals("8", marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(8), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     private void setParameterValue(Boolean value)

@@ -136,10 +136,7 @@ public class BslModuleRegionsInfoService
                 builder.append(beginRegion).append(space).append(regionName);
                 builder.append(content);
                 builder.append(endRegion);
-                if (moduleTextInsertInfo.getPosition() == 0)
-                {
-                    builder.append(lineSeparator);
-                }
+                builder.append(lineSeparator);
                 return builder.toString();
             }
         }

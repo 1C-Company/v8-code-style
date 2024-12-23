@@ -24,24 +24,18 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.function.Supplier;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
@@ -75,8 +69,7 @@ public class ModuleStructurePropertyPageTest
 
     private static final String EDTOR_TITLE = "/" + PROJECT_NAME + "/" + SETTINGS_TEMPLATES_COMMON_MODULE_BSL;
 
-    private static final String PROPERTY_PAGE_ID =
-        "com.e1c.v8codestyle.bsl.ui.properties.moduleStructurePropertyPage";
+    private static final String PROPERTY_PAGE_ID = "com.e1c.v8codestyle.bsl.ui.properties.moduleStructurePropertyPage";
 
     @Rule
     public TestingWorkspace testingWorkspace = new TestingWorkspace(true, false);
@@ -88,7 +81,6 @@ public class ModuleStructurePropertyPageTest
     @Before
     public void setUp() throws CoreException
     {
-
         project = testingWorkspace.getProject(PROJECT_NAME);
 
         if (!project.exists() || !project.isAccessible())
@@ -137,13 +129,14 @@ public class ModuleStructurePropertyPageTest
     {
 
         IModuleStructureProvider moduleStructureProvider = ServiceAccess.get(IModuleStructureProvider.class);
-        Supplier<InputStream> templateProvider = moduleStructureProvider.getModuleStructureTemplate(project,
-            ModuleType.COMMON_MODULE, null);
+        Supplier<InputStream> templateProvider =
+            moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE, false, null);
         assertNull(templateProvider);
-        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, null, ScriptVariant.ENGLISH);
+        templateProvider =
+            moduleStructureProvider.getModuleStructureTemplate(project, null, false, ScriptVariant.ENGLISH);
         assertNull(templateProvider);
-        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project,
-            ModuleType.COMMON_MODULE, ScriptVariant.ENGLISH);
+        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE, false,
+            ScriptVariant.ENGLISH);
         assertNotNull(templateProvider);
 
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
@@ -163,7 +156,7 @@ public class ModuleStructurePropertyPageTest
         applyButton.notifyListeners(SWT.Selection, new Event());
         waitEventSetnd(dialog);
 
-        Button buttonOpen = getButtonByName(page, "Open template");
+        Button buttonOpen = getOpenButtonControl(page);
         assertNotNull(buttonOpen);
 
         viewer.setSelection(new StructuredSelection(ModuleType.FORM_MODULE));
@@ -173,7 +166,6 @@ public class ModuleStructurePropertyPageTest
         viewer.setSelection(new StructuredSelection(ModuleType.COMMON_MODULE));
         waitEventSetnd(dialog);
         assertTrue(buttonOpen.isEnabled());
-
 
         buttonOpen.notifyListeners(SWT.Selection, new Event());
         assertNull(dialog.getShell());
@@ -206,7 +198,7 @@ public class ModuleStructurePropertyPageTest
             file.setContents(in, true, true, new NullProgressMonitor());
         }
 
-        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE,
+        templateProvider = moduleStructureProvider.getModuleStructureTemplate(project, ModuleType.COMMON_MODULE, false,
             ScriptVariant.ENGLISH);
 
         try (InputStream template = templateProvider.get();
@@ -248,40 +240,16 @@ public class ModuleStructurePropertyPageTest
         return (CheckboxTableViewer)field.get(page);
     }
 
-    private Button getButtonByName(ModuleStructurePropertyPage page, String name) throws Exception
-    {
-
-        Composite top = getTopControl(page);
-        assertNotNull(top);
-        Queue<Control> toCheck = new LinkedList<>();
-        toCheck.add(top);
-
-        while (!toCheck.isEmpty())
-        {
-            Control control = toCheck.poll();
-            if (control instanceof Button && name.equalsIgnoreCase(((Button)control).getText()))
-            {
-                return (Button)control;
-            }
-            else if (control instanceof Composite)
-            {
-                toCheck.addAll(List.of(((Composite)control).getChildren()));
-            }
-        }
-
-        return null;
-    }
-
-    private Composite getTopControl(ModuleStructurePropertyPage page) throws Exception
-    {
-        Field field = DialogPage.class.getDeclaredField("control");
-        field.setAccessible(true);
-        return (Composite)field.get(page);
-    }
-
     private Button getApplyButtonControl(ModuleStructurePropertyPage page) throws Exception
     {
         Field field = PreferencePage.class.getDeclaredField("applyButton");
+        field.setAccessible(true);
+        return (Button)field.get(page);
+    }
+
+    private Button getOpenButtonControl(ModuleStructurePropertyPage page) throws Exception
+    {
+        Field field = page.getClass().getDeclaredField("openButton");
         field.setAccessible(true);
         return (Button)field.get(page);
     }

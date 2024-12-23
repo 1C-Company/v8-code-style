@@ -12,6 +12,8 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.form.fix.itests;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.Collection;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -68,6 +70,7 @@ public abstract class FormFixTestBase
             }
         }
 
+        assertNotNull("No fix variant for fix description: " + fixDescriptionPattern, variantDescr);
         fixManager.selectFixVariant(variantDescr, handle);
         fixManager.executeFix(handle, new NullProgressMonitor());
         fixManager.finishFix(handle);

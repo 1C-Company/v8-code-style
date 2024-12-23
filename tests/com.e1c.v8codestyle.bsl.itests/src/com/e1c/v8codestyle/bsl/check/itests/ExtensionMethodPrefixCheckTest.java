@@ -23,8 +23,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.ExtensionMethodPrefixCheck;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
@@ -79,7 +79,7 @@ public class ExtensionMethodPrefixCheckTest
         List<Marker> markers = getMarkers(COMMON_MODULE_FILE_NAME);
         assertEquals(1, markers.size());
 
-        assertEquals("3", markers.get(0).getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_LINE_KEY));
+        assertEquals(Integer.valueOf(3), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     @Test

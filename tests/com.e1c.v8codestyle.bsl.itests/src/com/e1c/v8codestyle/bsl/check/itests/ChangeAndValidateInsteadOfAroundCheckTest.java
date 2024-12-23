@@ -31,8 +31,8 @@ import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.Pragma;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
-import com._1c.g5.v8.dt.validation.marker.IExtraInfoKeys;
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.ChangeAndValidateInsteadOfAroundCheck;
 
 /**
@@ -104,11 +104,13 @@ public class ChangeAndValidateInsteadOfAroundCheckTest
                 continue;
             }
 
-            String uriToProblem = marker.getExtraInfo().get(IExtraInfoKeys.TEXT_EXTRA_INFO_URI_TO_PROBLEM_KEY);
+            String uriToProblem = marker.getExtraInfo().get(StandardExtraInfo.TEXT_URI_TO_PROBLEM);
             assertTrue(uriErrors.contains(uriToProblem));
             uriErrors.remove(uriToProblem);
         }
 
         assertEquals(0, uriErrors.size());
+
+        cleanUpProject(dtProject.getWorkspaceProject());
     }
 }

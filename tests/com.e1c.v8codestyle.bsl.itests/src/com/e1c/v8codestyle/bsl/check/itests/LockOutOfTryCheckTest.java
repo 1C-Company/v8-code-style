@@ -30,12 +30,8 @@ public class LockOutOfTryCheckTest
     extends AbstractSingleModuleTestBase
 {
 
-    private static final String LOCK_OUT_OF_TRY = "Method Lock() out of try block";
-
     /**
      * Test {@link LockOutOfTryCheck}.
-     *
-     * @param checkClass
      */
     public LockOutOfTryCheckTest()
     {
@@ -50,7 +46,7 @@ public class LockOutOfTryCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals(LOCK_OUT_OF_TRY, marker.getMessage());
+        assertEquals(Messages.LockOutOfTry_Method_lock_out_of_try, marker.getMessage());
     }
 
     @Test
@@ -61,6 +57,6 @@ public class LockOutOfTryCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals(LOCK_OUT_OF_TRY, marker.getMessage());
+        assertEquals(Messages.LockOutOfTry_Method_lock_out_of_try, marker.getMessage());
     }
 }
