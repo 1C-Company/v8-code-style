@@ -54,11 +54,13 @@ public interface IModuleStructureProvider
      *
      * @param project the project, cannot be {@code null}.
      * @param moduleType the module type, cannot be {@code null}.
+     * @param reusableModule module is reusable common module.
      * @param script the script, cannot be {@code null}.
      * @return the module structure template supplier of input stream, may return {@code null} if there is no template
      * for such module type and script variant.
      */
-    Supplier<InputStream> getModuleStructureTemplate(IProject project, ModuleType moduleType, ScriptVariant script);
+    Supplier<InputStream> getModuleStructureTemplate(IProject project, ModuleType moduleType, boolean reusableModule,
+        ScriptVariant script);
 
     /**
      * Gets the module structure top regions in order of as they should be in module.

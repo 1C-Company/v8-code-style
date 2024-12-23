@@ -53,7 +53,7 @@ jobs:
       run: |
         Xvfb :5 -screen 0 1280x1024x8 -fbdir /tmp &
         export DISPLAY=:5
-        mvn clean verify -PSDK,find-bugs -Dtycho.localArtifacts=ignore -Dtycho.p2.httptransport.type=JavaUrl -X -B -V 1C
+        mvn clean verify -PSDK,find-bugs -Dtycho.localArtifacts=ignore -Dtycho.p2.httptransport.type=JavaUrl -B -V
 
     - name: Cache SonarCloud packages
       uses: actions/cache@v2
