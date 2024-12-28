@@ -49,6 +49,7 @@ createModuleStructure=false
 - `http_service_module.bsl` - для модуля http-сервиса
 - `integration_service_module.bsl` - для модуля сервиса интеграции
 - `bot_module.bsl` - для модуля бота
+- `web_socket_client_module.bsl` - для модуля webSoket-клиента
 
 ## См. также
 

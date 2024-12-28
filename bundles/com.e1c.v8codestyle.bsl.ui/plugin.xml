@@ -66,6 +66,7 @@
              <modelClass eClass="IntegrationService" />
              <modelClass eClass="ExchangePlan" />
              <modelClass eClass="WebService" />
+             <modelClass eClass="WebSocketClient" />
              <modelClass eClass="HTTPService" />
              <modelClass eClass="Constant" />
              <modelClass eClass="Document" />
@@ -146,6 +147,7 @@
              <modelClass eClass="IntegrationService" />
              <modelClass eClass="ExchangePlan" />
              <modelClass eClass="WebService" />
+             <modelClass eClass="WebSocketClient" />
              <modelClass eClass="HTTPService" />
              <modelClass eClass="Constant" />
              <modelClass eClass="Document" />
