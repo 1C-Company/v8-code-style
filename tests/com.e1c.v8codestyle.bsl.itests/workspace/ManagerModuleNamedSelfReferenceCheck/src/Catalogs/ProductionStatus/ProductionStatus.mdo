@@ -7,14 +7,14 @@
     <listType typeId="8720b617-2689-4d03-bb9a-ba7bf139c16e" valueTypeId="1feedc4e-0dc9-4b58-bd01-c3faab1d5529"/>
     <managerType typeId="2544c98a-3054-4404-ae06-aa637b707cc5" valueTypeId="62031592-69bd-4694-87cb-0c9edebb5026"/>
   </producedTypes>
-  <name>Catalog</name>
+  <name>ProductionStatus</name>
   <synonym>
     <key>en</key>
-    <value>Catalog</value>
+    <value>Production status</value>
   </synonym>
   <useStandardCommands>true</useStandardCommands>
-  <inputByString>Catalog.Catalog.StandardAttribute.Code</inputByString>
-  <inputByString>Catalog.Catalog.StandardAttribute.Description</inputByString>
+  <inputByString>Catalog.ProductionStatus.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.ProductionStatus.StandardAttribute.Description</inputByString>
   <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
   <createOnInput>Use</createOnInput>
   <dataLockControlMode>Managed</dataLockControlMode>
