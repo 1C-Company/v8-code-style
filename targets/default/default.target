@@ -20,7 +20,7 @@
 
 <!-- EDT -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2024.2/"/>
+<repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2025.1/"/>
 <unit id="com._1c.g5.v8.dt.rcp" version="0.0.0"/>
 <unit id="com._1c.g5.v8.dt.thirdparty.feature.group" version="0.0.0"/>
 </location>

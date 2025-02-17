@@ -42,6 +42,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Return
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Section;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
+import com._1c.g5.v8.dt.bsl.documentation.comment.TagPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TextPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
@@ -289,6 +290,14 @@ public class BslDocCommentSelectionListener
             LinkPart section = (LinkPart)object;
             if (section.getLineNumber() == line && section.getOffset() < offset
                 && section.getLinkTextOffset() + section.getLinkText().length() > offset)
+            {
+                return section;
+            }
+        }
+        else if (object instanceof TagPart section)
+        {
+            if (section.getLineNumber() == line && section.getOffset() < offset
+                && section.getOffset() + section.getContent().length() > offset)
             {
                 return section;
             }

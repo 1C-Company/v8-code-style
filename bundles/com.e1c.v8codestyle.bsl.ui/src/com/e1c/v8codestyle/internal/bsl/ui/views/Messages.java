@@ -32,6 +32,7 @@ final class Messages
     public static String BslDocCommentView_Text;
     public static String BslDocCommentView_Type;
     public static String BslDocCommentView_Types;
+    public static String BslDocCommentView_Tag;
     static
     {
         // initialize resource bundle
