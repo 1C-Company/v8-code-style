@@ -33,6 +33,7 @@ public final class SharedImages
     public static final String IMG_OBJ16_TYPE_SECTION = UiPlugin.PLUGIN_ID + T_OBJ16 + "type_section.png"; //$NON-NLS-1$
     public static final String IMG_OBJ16_PARAMETERS_SECTION = UiPlugin.PLUGIN_ID + T_OBJ16 + "parameters_section.png"; //$NON-NLS-1$
     public static final String IMG_OBJ16_DESCRIPTION = UiPlugin.PLUGIN_ID + T_OBJ16 + "description.png"; //$NON-NLS-1$
+    public static final String IMG_OBJ16_TAG = UiPlugin.PLUGIN_ID + T_OBJ16 + "atsign.png"; //$NON-NLS-1$
 
     private static final String ICONS_PATH = "/icons"; //$NON-NLS-1$
 
@@ -51,6 +52,7 @@ public final class SharedImages
         reg.put(IMG_OBJ16_PARAMETERS_SECTION,
             createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_PARAMETERS_SECTION)));
         reg.put(IMG_OBJ16_DESCRIPTION, createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_DESCRIPTION)));
+        reg.put(IMG_OBJ16_TAG, createImageDescriptorFromKey(DtThemeUtil.getIconPath(IMG_OBJ16_TAG)));
     }
 
     private static ImageDescriptor createImageDescriptorFromKey(String key)

@@ -230,6 +230,10 @@ public class BslDocCommentView
             {
                 return UiPlugin.getDefault().getImage(SharedImages.IMG_OBJ16_TEXT);
             }
+            else if (obj instanceof TagPart)
+            {
+                return UiPlugin.getDefault().getImage(SharedImages.IMG_OBJ16_TAG);
+            }
             else if (obj instanceof FieldDefinition)
             {
                 return UiPlugin.getDefault().getImage(SharedImages.IMG_OBJ16_FIELD);
