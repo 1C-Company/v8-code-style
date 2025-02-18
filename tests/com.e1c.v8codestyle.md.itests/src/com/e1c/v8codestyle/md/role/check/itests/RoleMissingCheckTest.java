@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Test;
 
@@ -50,17 +50,10 @@ public class RoleMissingCheckTest
         IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME_ROLES_MISSING);
         assertNotNull(dtProject);
 
-        var project = dtProject.getWorkspaceProject();
-        assertNotNull(project);
+        var configuration = getTopObjectByFqn("Configuration", dtProject);
+        var markers = getMarkersByCheckIds(Collections.singleton(CHECK_ID), configuration, dtProject);
 
-        Long id = getTopObjectIdByFqn("Configuration", dtProject);
-
-        var markerCount = Arrays.stream(markerManager.getMarkers(project, id))
-            .filter(marker -> id.equals(marker.getSourceObjectId())
-                && CHECK_ID.equals(getCheckIdFromMarker(marker, dtProject)))
-            .count();
-
-        assertEquals(3, markerCount);
+        assertEquals(3, markers.size());
     }
 
     /**
