@@ -43,6 +43,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Return
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Section;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
+import com._1c.g5.v8.dt.bsl.documentation.comment.TagPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TextPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
@@ -181,6 +182,10 @@ public class BslDocCommentView
             {
                 return MessageFormat.format(Messages.BslDocCommentView_Link, ((LinkPart)obj).getLinkText());
             }
+            else if (obj instanceof TagPart tagPart)
+            {
+                return MessageFormat.format(Messages.BslDocCommentView_Tag, tagPart.getContent());
+            }
             else if (obj instanceof ParametersSection)
             {
                 return Messages.BslDocCommentView_Parameters;
@@ -224,6 +229,10 @@ public class BslDocCommentView
             else if (obj instanceof TextPart)
             {
                 return UiPlugin.getDefault().getImage(SharedImages.IMG_OBJ16_TEXT);
+            }
+            else if (obj instanceof TagPart)
+            {
+                return UiPlugin.getDefault().getImage(SharedImages.IMG_OBJ16_TAG);
             }
             else if (obj instanceof FieldDefinition)
             {
