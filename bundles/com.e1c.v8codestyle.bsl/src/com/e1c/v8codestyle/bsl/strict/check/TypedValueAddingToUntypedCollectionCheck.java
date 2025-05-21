@@ -136,7 +136,7 @@ public class TypedValueAddingToUntypedCollectionCheck
             return;
         }
 
-        Collection<TypeItem> actualTypes = getActualCollectionTypes(fa, expectedCollectionTypes);
+        Collection<TypeItem> actualTypes = getActualCollectionTypes(fa, expectedCollectionTypes, monitor);
 
         if (!actualTypes.isEmpty() && isActualCollectionItemTypeEmpty(actualTypes))
         {
@@ -155,7 +155,7 @@ public class TypedValueAddingToUntypedCollectionCheck
 
         Invocation inv = BslUtil.getInvocation(fa);
 
-        if (!(inv.getMethodAccess() instanceof DynamicFeatureAccess))
+        if (inv == null || !(inv.getMethodAccess() instanceof DynamicFeatureAccess))
         {
             return expectedTypes;
         }
@@ -188,14 +188,26 @@ public class TypedValueAddingToUntypedCollectionCheck
         return expectedTypes;
     }
 
-    private Collection<TypeItem> getActualCollectionTypes(FeatureAccess fa, Collection<TypeItem> expectedTypes)
+    private Collection<TypeItem> getActualCollectionTypes(FeatureAccess fa, Collection<TypeItem> expectedTypes, IProgressMonitor monitor)
     {
         Collection<TypeItem> actualTypes = new ArrayList<>();
-        Invocation inv = BslUtil.getInvocation(fa);
+        if (monitor.isCanceled())
+        {
+            return actualTypes;
+        }
+        Invocation invocation = BslUtil.getInvocation(fa);
+        if (invocation == null)
+        {
+            return actualTypes;
+        }
 
         for (TypeItem type : expectedTypes)
         {
-            type = (TypeItem)EcoreUtil.resolve(type, inv);
+            if (monitor.isCanceled())
+            {
+                break;
+            }
+            type = (TypeItem)EcoreUtil.resolve(type, invocation);
 
             if (type.getName().equals(IEObjectTypeNames.VALUE_LIST))
             {
