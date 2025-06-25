@@ -453,7 +453,7 @@ final class Messages
     public static String IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration;
 
     public static String IsInRoleMethodRoleExistCheck_title;
-    
+
     public static String ModuleUndefinedVariableCheck_Title;
     public static String ModuleUndefinedVariableCheck_Description;
     public static String ModuleUndefinedVariable_msg;
@@ -483,6 +483,9 @@ final class Messages
     public static String VariableNameInvalidCheck_variable_name_is_invalid;
     public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
     public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
+
+    public static String StringLiteralTypeAnnotationCheck_title;
+    public static String StringLiteralTypeAnnotationCheck_incorrect_annotation_location;
 
     static
     {

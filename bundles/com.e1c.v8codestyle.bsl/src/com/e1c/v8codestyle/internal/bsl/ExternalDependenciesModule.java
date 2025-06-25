@@ -36,6 +36,7 @@ import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com._1c.g5.v8.dt.bsl.resource.ExportMethodProvider;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.bsl.services.BslGrammarAccess;
+import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.IStringLiteralTypeComputer;
 import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
 import com._1c.g5.v8.dt.core.naming.ITopObjectFqnGenerator;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
@@ -76,12 +77,14 @@ class ExternalDependenciesModule
         bind(INamingService.class).toService();
         bind(ITopObjectFqnGenerator.class).toService();
 
+
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
 
         URI uri = URI.createURI("*.bsl"); //$NON-NLS-1$
         final IResourceServiceProvider rsp = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(uri);
 
+        bind(IStringLiteralTypeComputer.class).toProvider(() -> rsp.get(IStringLiteralTypeComputer.class));
         bind(IResourceDescription.Manager.class).toProvider(() -> rsp.get(IResourceDescription.Manager.class));
         bind(BslEventsService.class).toProvider(() -> rsp.get(BslEventsService.class));
         bind(TypesComputer.class).toProvider(() -> rsp.get(TypesComputer.class));
