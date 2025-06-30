@@ -4,7 +4,9 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -70,7 +72,7 @@ public class StringLiteralTypeAnnotationCheck
         builder.title(Messages.StringLiteralTypeAnnotationCheck_title)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.ERROR)
+            .issueType(IssueType.WARNING)
             .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module();
     }
@@ -111,11 +113,11 @@ public class StringLiteralTypeAnnotationCheck
 
         List<INode> invalidAnnotations = getInvalidAnnotations(monitor, moduleStringLiterals, moduleAnnotations);
 
-        addIssues(resultAceptor, monitor, module, invalidAnnotations);
+        addIssues(resultAceptor, module, invalidAnnotations, monitor);
     }
 
-    private void addIssues(ResultAcceptor resultAceptor, IProgressMonitor monitor, Module module,
-        List<INode> invalidAnnotations)
+    private void addIssues(ResultAcceptor resultAceptor, Module module, List<INode> invalidAnnotations,
+        IProgressMonitor monitor)
     {
         for (INode annotation : invalidAnnotations)
         {
@@ -146,7 +148,7 @@ public class StringLiteralTypeAnnotationCheck
     {
         List<INode> invalidAnnotations = new ArrayList<>();
 
-        List<INode> correctAnnotations = new ArrayList<>();
+        Set<INode> correctAnnotations = new HashSet<>();
         for (StringLiteral literal : moduleStringLiterals)
         {
             if (monitor.isCanceled())
@@ -154,10 +156,9 @@ public class StringLiteralTypeAnnotationCheck
 
             EObject literalParent = findLiteralParent(literal);
 
-            List<INode> rightLines = new ArrayList<>();
             if (literalParent != null)
             {
-                rightLines = TypeUtil.getCommentLinesFromRight(literalParent)
+                List<INode> rightLines = TypeUtil.getCommentLinesFromRight(literalParent)
                     .stream()
                     .filter(node -> isAnnotation(node.getText()))
                     .toList();

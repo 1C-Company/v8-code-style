@@ -30,11 +30,6 @@ public class StringLiteralTypeAnnotationCheckTest
 
     private static final String MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
 
-    public StringLiteralTypeAnnotationCheckTest()
-    {
-        super(StringLiteralTypeAnnotationCheck.class);
-    }
-
     @Override
     protected String getTestConfigurationName()
     {
@@ -45,6 +40,11 @@ public class StringLiteralTypeAnnotationCheckTest
     protected String getModuleFileName()
     {
         return MODULE_FILE_NAME;
+    }
+
+    public StringLiteralTypeAnnotationCheckTest()
+    {
+        super(StringLiteralTypeAnnotationCheck.class);
     }
 
     /**
