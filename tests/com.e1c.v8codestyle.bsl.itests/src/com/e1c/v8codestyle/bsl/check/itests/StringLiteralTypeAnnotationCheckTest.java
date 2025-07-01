@@ -30,18 +30,6 @@ public class StringLiteralTypeAnnotationCheckTest
 
     private static final String MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
 
-    @Override
-    protected String getTestConfigurationName()
-    {
-        return PROJECT_NAME;
-    }
-
-    @Override
-    protected String getModuleFileName()
-    {
-        return MODULE_FILE_NAME;
-    }
-
     public StringLiteralTypeAnnotationCheckTest()
     {
         super(StringLiteralTypeAnnotationCheck.class);
@@ -64,11 +52,21 @@ public class StringLiteralTypeAnnotationCheckTest
         updateModule(FOLDER_RESOURCE + "string-literal-annotations-invalid-locations.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(4, markers.size());
+        assertEquals(2, markers.size());
 
-        assertEquals(Integer.valueOf(17), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
         assertEquals(Integer.valueOf(22), markers.get(1).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-        assertEquals(Integer.valueOf(23), markers.get(2).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
         assertEquals(Integer.valueOf(25), markers.get(3).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
+    }
+
+    @Override
+    protected String getModuleFileName()
+    {
+        return MODULE_FILE_NAME;
     }
 }

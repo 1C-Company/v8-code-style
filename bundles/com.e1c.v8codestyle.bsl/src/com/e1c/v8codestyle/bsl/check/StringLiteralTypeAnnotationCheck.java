@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -14,6 +15,7 @@ import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
+import org.eclipse.xtext.util.Triple;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslCommentUtils;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
@@ -49,7 +51,7 @@ import com.google.inject.Inject;
  *
  */
 public class StringLiteralTypeAnnotationCheck
-    extends BasicCheck
+    extends BasicCheck<Void>
 {
     private static final String CHECK_ID = "string-literal-type-annotation-invalid-place"; //$NON-NLS-1$
 
@@ -59,7 +61,7 @@ public class StringLiteralTypeAnnotationCheck
     @Inject
     private IStringLiteralTypeComputer typeComputer;
 
-    private List<String> annotations = null;
+    private final AtomicReference<List<String>> annotations = new AtomicReference<>();
 
     @Override
     public String getCheckId()
@@ -70,7 +72,7 @@ public class StringLiteralTypeAnnotationCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.StringLiteralTypeAnnotationCheck_title)
+        builder.title(Messages.StringLiteralTypeAnnotationCheck_Title)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.WARNING)
@@ -105,7 +107,7 @@ public class StringLiteralTypeAnnotationCheck
                 {
                     moduleStringLiterals.add(literal);
                 }
-                if (child.isHidden() && BslCommentUtils.isCommentNode(child) && isAnnotation(child.getText()))
+                if (child.isHidden() && BslCommentUtils.isCommentNode(child) && isAllowAnnotation(child.getText()))
                 {
                     moduleAnnotations.add(child);
                 }
@@ -138,7 +140,7 @@ public class StringLiteralTypeAnnotationCheck
             DirectLocation directLocation = new DirectLocation(offset, length, annotation.getStartLine(), module);
             BslDirectLocationIssue directLocationIssue =
                 new BslDirectLocationIssue(
-                    Messages.StringLiteralTypeAnnotationCheck_incorrect_annotation_location, directLocation);
+                    Messages.StringLiteralTypeAnnotationCheck_Incorrect_annotation_location, directLocation);
 
             resultAceptor.addIssue(directLocationIssue);
         }
@@ -161,7 +163,7 @@ public class StringLiteralTypeAnnotationCheck
             {
                 List<INode> rightLines = TypeUtil.getCommentLinesFromRight(literalParent)
                     .stream()
-                    .filter(node -> isAnnotation(node.getText()))
+                    .filter(node -> isAllowAnnotation(node.getText()))
                     .toList();
                 correctAnnotations.addAll(rightLines);
             }
@@ -209,23 +211,30 @@ public class StringLiteralTypeAnnotationCheck
         return null;
     }
 
-    private boolean isAnnotation(String text)
+    private boolean isAllowAnnotation(String text)
     {
-        String comment =
-            text.trim().replaceFirst(BslCommentUtils.START_COMMENT_TAG_BSL, StringUtils.EMPTY).trim().toLowerCase();
-
-        if (annotations == null)
-            annotations = typeComputer.allTypes()
-                .stream()
-                .filter(LiteralType::allowAnnotation)
-                .map(type -> String.format("@%s", type.getName()).toLowerCase()) //$NON-NLS-1$
-                .toList();
-
-        for (String annotation : annotations)
+        List<Triple<String, Integer, String>> commentAnnotations = TypeUtil.parseHeaderAnnotations(text);
+        for (Triple<String, Integer, String> commentAnnotation : commentAnnotations)
         {
-            if (comment.startsWith(annotation))
+            if (getAllowAnnotations().contains(commentAnnotation.getFirst().toLowerCase()))
                 return true;
         }
         return false;
+    }
+
+    private List<String> getAllowAnnotations()
+    {
+        List<String> list = annotations.get();
+        if (list == null)
+        {
+            list = typeComputer.allTypes()
+                .stream()
+                .filter(LiteralType::allowAnnotation)
+                .map(type -> type.getName().toLowerCase())
+                .toList();
+            if (!annotations.compareAndSet(null, list))
+                list = annotations.get();
+        }
+        return list;
     }
 }
