@@ -26,6 +26,7 @@ import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.BslBuiltInLanguagePreferences;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.IStringLiteralTypeComputer;
+import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.LiteralType;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.TypeUtil;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -216,6 +217,7 @@ public class StringLiteralTypeAnnotationCheck
         if (annotations == null)
             annotations = typeComputer.allTypes()
                 .stream()
+                .filter(LiteralType::allowAnnotation)
                 .map(type -> String.format("@%s", type.getName()).toLowerCase()) //$NON-NLS-1$
                 .toList();
 
