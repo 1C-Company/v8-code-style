@@ -17,7 +17,7 @@ import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.StringLiteralTypeAnnotationCheck;
 
 /**
- * A class for testing {@code StringLiteralTypeAnnotationCheck}
+ * A class for testing {@link StringLiteralTypeAnnotationCheck}
  *
  * @author Babin Nikolay
  *

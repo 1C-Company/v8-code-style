@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -61,7 +62,7 @@ public class StringLiteralTypeAnnotationCheck
     @Inject
     private IStringLiteralTypeComputer typeComputer;
 
-    private final AtomicReference<List<String>> annotations = new AtomicReference<>();
+    private final AtomicReference<Set<String>> annotations = new AtomicReference<>();
 
     @Override
     public String getCheckId()
@@ -140,7 +141,8 @@ public class StringLiteralTypeAnnotationCheck
             DirectLocation directLocation = new DirectLocation(offset, length, annotation.getStartLine(), module);
             BslDirectLocationIssue directLocationIssue =
                 new BslDirectLocationIssue(
-                    Messages.StringLiteralTypeAnnotationCheck_Incorrect_annotation_location, directLocation);
+                    Messages.StringLiteralTypeAnnotationCheck_Incorrect_annotation_location, directLocation,
+                    StringUtils.EMPTY);
 
             resultAceptor.addIssue(directLocationIssue);
         }
@@ -222,19 +224,19 @@ public class StringLiteralTypeAnnotationCheck
         return false;
     }
 
-    private List<String> getAllowAnnotations()
+    private Set<String> getAllowAnnotations()
     {
-        List<String> list = annotations.get();
-        if (list == null)
+        Set<String> allowAnnotations = annotations.get();
+        if (allowAnnotations == null)
         {
-            list = typeComputer.allTypes()
+            allowAnnotations = typeComputer.allTypes()
                 .stream()
                 .filter(LiteralType::allowAnnotation)
                 .map(type -> type.getName().toLowerCase())
-                .toList();
-            if (!annotations.compareAndSet(null, list))
-                list = annotations.get();
+                .collect(Collectors.toSet());
+            if (!annotations.compareAndSet(null, allowAnnotations))
+                allowAnnotations = annotations.get();
         }
-        return list;
+        return allowAnnotations;
     }
 }

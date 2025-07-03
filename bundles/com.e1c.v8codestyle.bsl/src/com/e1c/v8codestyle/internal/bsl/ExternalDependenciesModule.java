@@ -77,7 +77,6 @@ class ExternalDependenciesModule
         bind(INamingService.class).toService();
         bind(ITopObjectFqnGenerator.class).toService();
 
-
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
 
