@@ -48,6 +48,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ReturnSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
+import com._1c.g5.v8.dt.bsl.documentation.comment.TagPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TextPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
@@ -179,35 +180,50 @@ public class BslDocCommentViewTest
         assertEquals(3, typePart.getLineNumber());
         assertEquals("Structure", typePart.getTypeName());
 
-        selectText(bslEditor, 169, 0, view);
+        selectText(bslEditor, 226, 0, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof ReturnSection);
         ReturnSection returnPart = (ReturnSection)first;
-        assertEquals(0, returnPart.getLineNumber());
+        assertEquals(1, returnPart.getLineNumber());
 
-        selectText(bslEditor, 187, 1, view);
+        selectText(bslEditor, 245, 1, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof LinkPart);
         LinkPart linkPart = (LinkPart)first;
-        assertEquals(1, linkPart.getLineNumber());
+        assertEquals(2, linkPart.getLineNumber());
         assertEquals("Test", linkPart.getLinkText());
         assertEquals("See Test", linkPart.getInitialContent());
 
-        selectText(bslEditor, 192, 1, view);
+        selectText(bslEditor, 250, 1, view);
         first = getViewerSelection((BslDocCommentView)view);
         assertTrue(first instanceof LinkPart);
         linkPart = (LinkPart)first;
-        assertEquals(1, linkPart.getLineNumber());
+        assertEquals(2, linkPart.getLineNumber());
         assertEquals("Test", linkPart.getLinkText());
         assertEquals("See Test", linkPart.getInitialContent());
 
-        selectText(bslEditor, 243, 1, view);
+        selectText(bslEditor, 283, 1, view);
         TreeViewer viewer = getViewer((BslDocCommentView)view);
         ITreeSelection selection = viewer.getStructuredSelection();
         assertTrue(selection.isEmpty());
         Object input = viewer.getInput();
         assertTrue(input instanceof BslDocumentationComment);
 
+        selectText(bslEditor, 107, 1, view);
+        first = getViewerSelection((BslDocCommentView)view);
+        assertTrue(first instanceof TagPart);
+        TagPart tagPart = (TagPart)first;
+        assertEquals(5, tagPart.getLineNumber());
+        assertEquals("tag1", tagPart.getTagName());
+        assertEquals(1, tagPart.getParameters().size());
+
+        selectText(bslEditor, 195, 1, view);
+        first = getViewerSelection((BslDocCommentView)view);
+        assertTrue(first instanceof TagPart);
+        tagPart = (TagPart)first;
+        assertEquals(0, tagPart.getLineNumber());
+        assertEquals("tag2", tagPart.getTagName());
+        assertEquals(1, tagPart.getParameters().size());
     }
 
     private Object getViewerSelection(BslDocCommentView view) throws Exception

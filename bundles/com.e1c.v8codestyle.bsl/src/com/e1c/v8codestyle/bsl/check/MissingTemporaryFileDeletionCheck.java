@@ -97,9 +97,8 @@ public class MissingTemporaryFileDeletionCheck
                 return;
             }
             Expression tempFile = statement.getLeft();
-            String tempFileName = getFullFeatureAccessName(tempFile);
-
-            if (!monitor.isCanceled() && tempFileName != null && checkFileCloses(sfa, parameters, tempFileName))
+            String tempFileName = getFullFeatureAccessName(tempFile, monitor);
+            if (tempFileName == null || checkFileCloses(sfa, parameters, tempFileName, monitor))
             {
                 return;
             }
@@ -108,7 +107,8 @@ public class MissingTemporaryFileDeletionCheck
         }
     }
 
-    private boolean checkFileCloses(StaticFeatureAccess sfa, ICheckParameters parameters, String tempFileName)
+    private boolean checkFileCloses(StaticFeatureAccess sfa, ICheckParameters parameters, String tempFileName,
+        IProgressMonitor monitor)
     {
         List<String> deleteFileMethods = getDeleteFileMethods(parameters);
 
@@ -118,12 +118,16 @@ public class MissingTemporaryFileDeletionCheck
             boolean isTempFileOpened = false;
             for (FeatureAccess blockFa : EcoreUtil2.eAllOfType(block, FeatureAccess.class))
             {
-                String featureName = getFullFeatureAccessName(blockFa);
+                if (monitor.isCanceled())
+                {
+                    return false;
+                }
+                String featureName = getFullFeatureAccessName(blockFa, monitor);
 
                 if (featureName != null && (isTempFileMethod(featureName) || isTempFileOpened))
                 {
                     isTempFileOpened = true;
-                    if (deleteFileMethods.contains(featureName) && checkParameterInList(blockFa, tempFileName))
+                    if (deleteFileMethods.contains(featureName) && checkParameterInList(blockFa, tempFileName, monitor))
                     {
                         return true;
                     }
@@ -146,28 +150,40 @@ public class MissingTemporaryFileDeletionCheck
         return METHOD_NAME.equalsIgnoreCase(methodName) || METHOD_NAME_RU.equalsIgnoreCase(methodName);
     }
 
-    private boolean checkParameterInList(FeatureAccess featureAccess, String parameterName)
+    private boolean checkParameterInList(FeatureAccess featureAccess, String parameterName, IProgressMonitor monitor)
     {
         Invocation deleteInvocation = BslUtil.getInvocation(featureAccess);
+        if (deleteInvocation == null)
+        {
+            return false;
+        }
         List<Expression> deleteParameters = deleteInvocation.getParams();
         for (Expression parameter : deleteParameters)
         {
+            if (monitor.isCanceled())
+            {
+                return false;
+            }
             if (parameter instanceof FeatureAccess)
             {
-                String faParameterName = getFullFeatureAccessName(parameter);
+                String faParameterName = getFullFeatureAccessName(parameter, monitor);
                 return faParameterName != null && faParameterName.equals(parameterName);
             }
         }
         return false;
     }
 
-    private String getFullFeatureAccessName(Expression tempFile)
+    private String getFullFeatureAccessName(Expression tempFile, IProgressMonitor monitor)
     {
         StringBuilder builder = new StringBuilder();
         Expression expression = tempFile;
 
         while (expression instanceof DynamicFeatureAccess)
         {
+            if (monitor.isCanceled())
+            {
+                return null;
+            }
             DynamicFeatureAccess dynamicFeatureAccess = (DynamicFeatureAccess)expression;
             builder.insert(0, dynamicFeatureAccess.getName());
             builder.insert(0, DOT);
@@ -181,6 +197,5 @@ public class MissingTemporaryFileDeletionCheck
         }
         return null;
     }
-
 
 }

@@ -100,7 +100,7 @@ public class MultilineDescriptionEndsOnDotCheck
             .orElse(null);
         //@formatter:on
 
-        if (lastPart == null || startLine == lastPart.getLineNumber())
+        if (lastPart == null || startLine == lastPart.getLineNumber() || isParentExampleSection(root, lastPart))
         {
             return;
         }
@@ -119,5 +119,11 @@ public class MultilineDescriptionEndsOnDotCheck
         resultAceptor.addIssue(Messages.MultilineDescriptionEndsOnDotCheck_Method_comment_doesnt_ends_on_dot,
             lastPart.getLineNumber(), lastPart.getOffset(), lastPart.getText().length());
 
+    }
+
+    private boolean isParentExampleSection(BslDocumentationComment root, TextPart lastPart)
+    {
+        return root.getExampleSection() != null
+            && root.getExampleSection().getDescription().getParts().contains(lastPart);
     }
 }
