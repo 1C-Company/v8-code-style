@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021, 1C-Soft LLC and others.
+ * Copyright (C) 2021-2025, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -409,6 +409,7 @@ public class SortService
             for (EReference feature : CONFIGURATION.getEAllReferences())
             {
                 if (!feature.isMany() || feature.equals(MdClassPackage.Literals.CONFIGURATION__CONTENT)
+                    || feature.equals(MdClassPackage.Literals.CONFIGURATION__ADDITIONAL_FULL_TEXT_SEARCH_DICTIONARIES)
                     || !feature.getEType().isInstance(mdObject))
                 {
                     continue;
