@@ -57,4 +57,5 @@ Import-Package: com._1c.g5.v8.bm.core;version="[9.0.0,10.0.0)",
  com.e1c.v8codestyle;version="[0.7.0,0.8.0)",
  com.e1c.v8codestyle.check;version="[0.7.0,0.8.0)"
 Export-Package: com.e1c.v8codestyle.bsl;version="0.7.0",
+ com.e1c.v8codestyle.bsl.comment;version="0.7.0",
  com.e1c.v8codestyle.bsl.strict;version="0.7.0"
