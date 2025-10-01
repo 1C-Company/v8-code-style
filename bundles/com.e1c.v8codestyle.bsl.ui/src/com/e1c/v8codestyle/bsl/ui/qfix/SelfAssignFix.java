@@ -12,8 +12,6 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.ui.qfix;
 
-import java.util.Objects;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.DeleteEdit;
@@ -57,7 +55,7 @@ public class SelfAssignFix
 
         INode node = NodeModelUtils.findActualNodeFor(eobject);
 
-        if (Objects.isNull(eobject))
+        if (node.getTotalOffset() != 0)
         {
             return null;
         }
