@@ -289,6 +289,10 @@ final class Messages
     public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_title;
 
+    public static String SelfAssignCheck_Title;
+    public static String SelfAssignCheck_Description;
+    public static String SelfAssignCheck_SelfAssignIssue;
+
     public static String SelfReferenceCheck_check_object_module;
 
     public static String SelfReferenceCheck_check_only_existing_form_properties;
@@ -453,7 +457,7 @@ final class Messages
     public static String IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration;
 
     public static String IsInRoleMethodRoleExistCheck_title;
-    
+
     public static String ModuleUndefinedVariableCheck_Title;
     public static String ModuleUndefinedVariableCheck_Description;
     public static String ModuleUndefinedVariable_msg;

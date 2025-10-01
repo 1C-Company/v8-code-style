@@ -26,6 +26,8 @@ final class Messages
     public static String ConsecutiveEmptyLinesFix_Details;
     public static String RemoveExportFix_Remove_export_keyword_des;
     public static String RemoveExportFix_Remove_export_keyword_det;
+
+
     static
     {
         // initialize resource bundle
