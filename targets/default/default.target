@@ -11,7 +11,7 @@
 <?pde version="3.8"?><target name="1C:EDT Ruby Platform" sequenceNumber="1">
 <locations>
     
-<!-- EDT -->
+<!-- 1C:EDT Docs -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2024.2/"/>
 <unit id="com.e1c.g5.v8.dt.javadocs" version="0.0.0"/>
