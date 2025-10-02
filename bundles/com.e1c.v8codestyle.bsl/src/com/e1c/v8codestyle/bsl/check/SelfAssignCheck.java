@@ -67,12 +67,9 @@ public class SelfAssignCheck
         if (statement.getLeft() instanceof StaticFeatureAccess left
             && statement.getRight() instanceof StaticFeatureAccess right)
         {
-            if (!Objects.isNull(left) && !Objects.isNull(right))
+            if (Objects.equals(left.getName().toLowerCase(), right.getName().toLowerCase()))
             {
-                if (Objects.equals(left.getName().toLowerCase(), right.getName().toLowerCase()))
-                {
-                    resultAceptor.addIssue(Messages.SelfAssignCheck_SelfAssignIssue);
-                }
+                resultAceptor.addIssue(Messages.SelfAssignCheck_SelfAssignIssue);
             }
         }
     }
