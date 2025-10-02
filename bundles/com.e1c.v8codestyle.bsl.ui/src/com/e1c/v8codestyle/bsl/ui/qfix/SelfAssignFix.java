@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2022, 1C-Soft LLC and others.
+ * Copyright (C) 2025, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -55,7 +55,7 @@ public class SelfAssignFix
 
         INode node = NodeModelUtils.findActualNodeFor(eobject);
 
-        if (node.getTotalOffset() != 0)
+        if (node == null)
         {
             return null;
         }
