@@ -31,7 +31,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  *
  *  @author Ivan Sergeev
  */
-@QuickFix(checkId = "self-assign", supplierId = BslPlugin.PLUGIN_ID)
+@QuickFix(checkId = "self-assign", supplierId = "com.e1c.v8codestyle.bsl")
 public class SelfAssignFix
     extends SingleVariantXtextBslModuleFix
 {
