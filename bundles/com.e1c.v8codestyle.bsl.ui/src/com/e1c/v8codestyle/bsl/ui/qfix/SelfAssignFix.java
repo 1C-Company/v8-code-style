@@ -24,7 +24,6 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
 import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
-import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
  * Remove self assigne variable
