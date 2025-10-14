@@ -29,7 +29,7 @@ import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
- * Check that variable is self assign.
+ * Checks that variable is self assign.
  *  
  *  @author Ivan Sergeev
  */
@@ -69,7 +69,7 @@ public class SelfAssignCheck
         {
             if (Objects.equals(left.getName().toLowerCase(), right.getName().toLowerCase()))
             {
-                resultAceptor.addIssue(Messages.SelfAssignCheck_SelfAssignIssue);
+                resultAceptor.addIssue(Messages.SelfAssignCheck_Self_assign_issue);
             }
         }
     }
