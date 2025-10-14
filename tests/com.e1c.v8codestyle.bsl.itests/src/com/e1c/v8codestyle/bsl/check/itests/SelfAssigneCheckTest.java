@@ -28,17 +28,17 @@ import com.e1c.v8codestyle.bsl.check.SelfAssignCheck;
  *
  * @author Ivan Sergeev
  */
-public class SelfAssigneCheckTest
+public class SelfAssignCheckTest
     extends AbstractSingleModuleTestBase
 {
 
-    public SelfAssigneCheckTest()
+    public SelfAssignCheckTest()
     {
         super(SelfAssignCheck.class);
     }
 
     /**
-     * Test varible self assigne.
+     * Test variable self assign.
      *
      * @throws Exception the exception
      */
@@ -86,7 +86,7 @@ public class SelfAssigneCheckTest
     }
 
     /**
-     * Test varible no self assigne.
+     * Test variable no self assign.
      *
      * @throws Exception the exception
      */
