@@ -291,7 +291,7 @@ final class Messages
 
     public static String SelfAssignCheck_Title;
     public static String SelfAssignCheck_Description;
-    public static String SelfAssignCheck_SelfAssignIssue;
+    public static String SelfAssignCheck_Self_assign_issue;
 
     public static String SelfReferenceCheck_check_object_module;
 
