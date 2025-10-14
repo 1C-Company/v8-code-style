@@ -26,7 +26,7 @@ import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
 
 /**
- * Remove self assigne variable
+ * Removes self assigne variable
  *
  *  @author Ivan Sergeev
  */
