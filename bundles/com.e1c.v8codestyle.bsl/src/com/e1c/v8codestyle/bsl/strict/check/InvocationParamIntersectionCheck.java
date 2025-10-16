@@ -189,7 +189,7 @@ public class InvocationParamIntersectionCheck
         }
 
         EObject source = getSourceMethod(fa);
-        if (source instanceof Method)
+        if (source instanceof Method && source.eResource() != null)
         {
             boolean allowDynamicTypesCheck = parameters.getBoolean(PARAM_ALLOW_DYNAMIC_TYPES_CHECK);
             checkParamTypesIntersect(inv, (Method)source, allowDynamicTypesCheck, resultAceptor, bmTransaction,
