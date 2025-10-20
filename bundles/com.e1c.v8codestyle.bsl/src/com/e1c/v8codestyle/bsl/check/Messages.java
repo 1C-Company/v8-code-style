@@ -289,10 +289,6 @@ final class Messages
     public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_title;
 
-    public static String SelfAssignCheck_Title;
-    public static String SelfAssignCheck_Description;
-    public static String SelfAssignCheck_Self_assign_issue;
-
     public static String SemicolonMissingCheck_Description;
     public static String SemicolonMissingCheck_Title;
     public static String SemicolonMissingCheck_Issue;
