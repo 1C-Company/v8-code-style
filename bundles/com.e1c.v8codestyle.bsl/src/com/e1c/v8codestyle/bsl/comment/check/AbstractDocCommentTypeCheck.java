@@ -26,6 +26,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TextPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
+import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.LinkContainsTypeDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Function;
@@ -147,7 +148,7 @@ public abstract class AbstractDocCommentTypeCheck
         {
             for (TypeDefinition typeDef : typeSection.getTypeDefinitions())
             {
-                if (StringUtils.isNotEmpty(typeDef.getTypeName()))
+                if (typeDef instanceof LinkContainsTypeDefinition || StringUtils.isNotEmpty(typeDef.getTypeName()))
                 {
                     return false;
                 }
