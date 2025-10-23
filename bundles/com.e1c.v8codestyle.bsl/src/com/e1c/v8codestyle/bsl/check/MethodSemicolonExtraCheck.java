@@ -69,6 +69,10 @@ public class MethodSemicolonExtraCheck
     {
         Method method = (Method)object;
         List<Statement> allItems = BslUtil.allStatements(method);
+        if (allItems.isEmpty())
+        {
+            return;
+        }
         INode node = NodeModelUtils.findActualNodeFor(allItems.get(0));
 
         if (allItems.get(0) instanceof EmptyStatement)
