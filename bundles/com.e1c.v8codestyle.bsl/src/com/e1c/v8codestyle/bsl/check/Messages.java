@@ -311,6 +311,10 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
+	
+	public static String NotSupportGotoOperatorWebCheck_Title;
+    public static String NotSupportGotoOperatorWebCheck_Description;
+    public static String NotSupportGotoOperatorWebCheck_Issue;
 
     public static String NewColorCheck_Use_style_elements;
 
