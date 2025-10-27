@@ -58,6 +58,6 @@ public class SemicolonMissingFix
         {
             return null;
         }
-        return new ReplaceEdit(node.getTotalOffset(), node.getTotalLength(), node.getText() + ";"); //$NON-NLS-1$
+        return new InsertEdit(node.getEndOffset(), ";"); //$NON-NLS-1$
     }
 }
