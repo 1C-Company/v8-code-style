@@ -58,7 +58,10 @@ public class MethodSemicolonExtraFix
         }
 
         List<Statement> allItems = BslUtil.allStatements(eobject);
-
+        if (allItems.isEmpty())
+        {
+            return null;
+        }
         INode node = NodeModelUtils.findActualNodeFor(allItems.get(0));
 
         int size = allItems.size();
