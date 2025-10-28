@@ -141,7 +141,8 @@ public class NotSupportGotoOperatorWebCheck
             {
                 return;
             }
-            if (node.getText().toLowerCase().contains("Перейти".toLowerCase())) //$NON-NLS-1$
+            if (node.getText().toLowerCase().contains("Перейти".toLowerCase()) //$NON-NLS-1$
+                | node.getText().toLowerCase().contains("GoTo".toLowerCase())) //$NON-NLS-1$
             {
                 if (!node.getText().toLowerCase().contains("НЕ ВебКлиент".toLowerCase()) //$NON-NLS-1$
                     & !node.getText().toLowerCase().contains("NOT WebClient".toLowerCase())) //$NON-NLS-1$
