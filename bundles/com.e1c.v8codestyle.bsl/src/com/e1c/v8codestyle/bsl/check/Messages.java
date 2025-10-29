@@ -290,7 +290,9 @@ final class Messages
     public static String QueryInLoop_title;
 
     public static String SemicolonMissingCheck_Description;
+    
     public static String SemicolonMissingCheck_Title;
+    
     public static String SemicolonMissingCheck_Issue;
 
     public static String SelfReferenceCheck_check_object_module;
@@ -399,7 +401,9 @@ final class Messages
     public static String MethodTooManyPramsCheck_title;
 
     public static String MethodSemicolonExtraCheck_Description;
+    
     public static String MethodSemicolonExtraCheck_Title;
+    
     public static String MethodSemicolonExtraCheck_Issue;
 
     public static String MissingTemporaryFileDeletionCheck_Delete_File_Methods;
