@@ -289,6 +289,10 @@ final class Messages
     public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_title;
 
+    public static String SelfAssignCheck_Title;
+    public static String SelfAssignCheck_Description;
+    public static String SelfAssignCheck_Self_assign_issue;
+
     public static String SelfReferenceCheck_check_object_module;
 
     public static String SelfReferenceCheck_check_only_existing_form_properties;
