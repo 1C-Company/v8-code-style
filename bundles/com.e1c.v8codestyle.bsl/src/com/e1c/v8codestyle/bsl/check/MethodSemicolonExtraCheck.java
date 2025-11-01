@@ -13,7 +13,6 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
-import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.util.List;
 
@@ -25,8 +24,11 @@ import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
+import com.e1c.g5.v8.dt.check.BslDirectLocationIssue;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
+import com.e1c.g5.v8.dt.check.DirectLocation;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
+import com.e1c.g5.v8.dt.check.Issue;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
@@ -73,11 +75,10 @@ public class MethodSemicolonExtraCheck
         {
             return;
         }
-        INode node = NodeModelUtils.findActualNodeFor(allItems.get(0));
 
         if (allItems.get(0) instanceof EmptyStatement)
         {
-            node = NodeModelUtils.findActualNodeFor(allItems.get(0));
+            INode node = NodeModelUtils.findActualNodeFor(allItems.get(0));
 
             if (node == null)
             {
@@ -89,23 +90,26 @@ public class MethodSemicolonExtraCheck
             {
                 return;
             }
-
             String checkText = checkNode.getText();
-
+            INode checkNodeNext = checkNode.getNextSibling();
             if (checkText.contains(";")) //$NON-NLS-1$
             {
-                resultAceptor.addIssue(Messages.MethodSemicolonExtraCheck_Issue, NAMED_ELEMENT__NAME);
-            }
-            INode checkNodeNext = checkNode.getNextSibling();
 
-            if (checkNodeNext == null)
-            {
-                return;
+                DirectLocation directLocation = new DirectLocation(checkNode.getOffset(), checkNode.getLength(),
+                    checkNode.getStartLine(), allItems.get(0));
+
+                Issue issue = new BslDirectLocationIssue(Messages.MethodSemicolonExtraCheck_Issue, directLocation);
+
+                resultAceptor.addIssue(issue);
             }
-            String checkNextText = checkNodeNext.getText();
-            if (checkNextText.contains(";")) //$NON-NLS-1$
+            else if (checkNodeNext.getText().contains(";") && !(checkNodeNext == null)) //$NON-NLS-1$
             {
-                resultAceptor.addIssue(Messages.MethodSemicolonExtraCheck_Issue, NAMED_ELEMENT__NAME);
+                DirectLocation directLocation = new DirectLocation(checkNodeNext.getOffset(), checkNodeNext.getLength(),
+                    checkNodeNext.getStartLine(), allItems.get(0));
+
+                Issue issue = new BslDirectLocationIssue(Messages.MethodSemicolonExtraCheck_Issue, directLocation);
+
+                resultAceptor.addIssue(issue);
             }
         }
     }
