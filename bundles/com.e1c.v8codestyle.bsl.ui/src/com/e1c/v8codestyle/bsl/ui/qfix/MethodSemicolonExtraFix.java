@@ -12,8 +12,6 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.ui.qfix;
 
-import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.DeleteEdit;
@@ -23,9 +21,6 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
-import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Statement;
-import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
 import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
@@ -52,42 +47,32 @@ public class MethodSemicolonExtraFix
     protected TextEdit fixIssue(XtextResource state, IXtextBslModuleFixModel model) throws BadLocationException
     {
         EObject eobject = model.getElement();
-        if (!(eobject instanceof Method))
+
+        if (!(eobject instanceof EmptyStatement))
         {
             return null;
         }
 
-        List<Statement> allItems = BslUtil.allStatements(eobject);
-        if (allItems.isEmpty())
+        INode node = NodeModelUtils.findActualNodeFor(eobject);
+
+        if (node == null)
         {
             return null;
         }
-        INode node = NodeModelUtils.findActualNodeFor(allItems.get(0));
-
-        int size = allItems.size();
-
-        for (int i = 0; i < size; i++)
+        INode checkNode = node.getNextSibling();
+        if (checkNode == null)
         {
-            if (allItems.get(i) instanceof EmptyStatement)
-            {
-                node = NodeModelUtils.findActualNodeFor(allItems.get(i));
-
-                if (node == null)
-                {
-                    return null;
-                }
-                INode checkNode = node.getNextSibling();
-                String checkText = checkNode.getText();
-                INode checkNextNode = checkNode.getNextSibling();
-                if (checkText.contains(";")) //$NON-NLS-1$
-                {
-                    return new DeleteEdit(checkNode.getTotalOffset(), checkNode.getTotalLength());
-                }
-                else if (checkNextNode.getText().contains(";")) //$NON-NLS-1$
-                {
-                    return new DeleteEdit(checkNextNode.getTotalOffset(), checkNextNode.getTotalLength());
-                }
-            }
+            return null;
+        }
+        String checkText = checkNode.getText();
+        INode checkNextNode = checkNode.getNextSibling();
+        if (checkText.contains(";")) //$NON-NLS-1$
+        {
+            return new DeleteEdit(checkNode.getTotalOffset(), checkNode.getTotalLength());
+        }
+        else if (checkNextNode.getText().contains(";") && !(checkNextNode == null)) //$NON-NLS-1$
+        {
+            return new DeleteEdit(checkNextNode.getTotalOffset(), checkNextNode.getTotalLength());
         }
         return null;
     }
