@@ -14,7 +14,7 @@ package com.e1c.v8codestyle.bsl.ui.qfix;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
