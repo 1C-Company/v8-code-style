@@ -15,23 +15,14 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.GOTO_STATEMENT;
 
-import java.util.List;
-
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.nodemodel.ICompositeNode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
+import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.GotoStatement;
-import com._1c.g5.v8.dt.bsl.model.IfPreprocessor;
-import com._1c.g5.v8.dt.bsl.model.IfPreprocessorDeclareStatement;
-import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.ModuleType;
-import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
-import com._1c.g5.v8.dt.mcore.util.Environments;
+import com._1c.g5.v8.dt.mcore.Environmental;
+import com._1c.g5.v8.dt.mcore.util.Environment;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -39,6 +30,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * The check Goto operator in client code
@@ -50,6 +42,9 @@ public class NotSupportGotoOperatorWebCheck
 {
 
     private static final String CHECK_ID = "not-support-goto-operator"; //$NON-NLS-1$
+
+    @Inject
+    private IBslPreferences bslPreferences;
 
     public NotSupportGotoOperatorWebCheck()
     {
@@ -83,69 +78,10 @@ public class NotSupportGotoOperatorWebCheck
         if (object instanceof GotoStatement)
         {
             EObject eObject = (EObject)object;
-            Module module = EcoreUtil2.getContainerOfType(eObject, Module.class);
-            Method method = EcoreUtil2.getContainerOfType(eObject, Method.class);
-            String pragmas = method.getPragmas().get(0).getSymbol();
-
-            if (module.getModuleType() == ModuleType.COMMON_MODULE)
+            Environmental envir = EcoreUtil2.getContainerOfType(eObject, Environmental.class);
+            if (bslPreferences.getLoadEnvs(eObject).contains(Environment.WEB_CLIENT))
             {
-                if (module.environments().containsAll(Environments.ORDINARY_CLIENTS))
-                {
-                    resultAcceptor.addIssue(Messages.NotSupportGotoOperatorWebCheck_Issue, object);
-                }
-            }
-            else if (pragmas.toLowerCase().contains("AtClient".toLowerCase()) //$NON-NLS-1$
-                || pragmas.toLowerCase().contains("НаКлиенте".toLowerCase())) //$NON-NLS-1$
-            {
-                List<IfPreprocessor> allItems = BslUtil.getAllIfPreprocessorsFromBlock(method);
-                if (allItems.isEmpty())
-                {
-                    resultAcceptor.addIssue(Messages.NotSupportGotoOperatorWebCheck_Issue, object);
-                    return;
-                }
-                for (IfPreprocessor ifPreprocessor : allItems)
-                {
-                    if (ifPreprocessor instanceof IfPreprocessorDeclareStatement)
-                    {
-                        ICompositeNode node = NodeModelUtils.findActualNodeFor(ifPreprocessor);
-                        if (node == null)
-                        {
-                            return;
-                        }
-                        if (node.getText().toLowerCase().contains("Перейти".toLowerCase())) //$NON-NLS-1$
-                        {
-                            checkPreprocessorIf(ifPreprocessor, resultAcceptor, object);
-                        }
-                        else
-                        {
-                            resultAcceptor.addIssue(Messages.NotSupportGotoOperatorWebCheck_Issue, object);
-                        }
-                    }
-                    else
-                    {
-                        resultAcceptor.addIssue(Messages.NotSupportGotoOperatorWebCheck_Issue, object);
-                    }
-                }
-
-            }
-        }
-    }
-
-    protected void checkPreprocessorIf(IfPreprocessor ifPreprocessor, ResultAcceptor resultAcceptor, Object object)
-    {
-        EList<EObject> listStatement = ifPreprocessor.eContents();
-        for (EObject eObject : listStatement)
-        {
-            ICompositeNode node = NodeModelUtils.findActualNodeFor(eObject);
-            if (node == null)
-            {
-                return;
-            }
-            if (node.getText().toLowerCase().contains("Перейти".toLowerCase()) //$NON-NLS-1$
-                | node.getText().toLowerCase().contains("GoTo".toLowerCase())) //$NON-NLS-1$
-            {
-                if (!node.getText().toLowerCase().contains("НЕ ВебКлиент".toLowerCase()) //$NON-NLS-1$
-                    & !node.getText().toLowerCase().contains("NOT WebClient".toLowerCase())) //$NON-NLS-1$
+                if (envir.environments().contains(Environment.WEB_CLIENT))
                 {
                     resultAcceptor.addIssue(Messages.NotSupportGotoOperatorWebCheck_Issue, object);
                 }
