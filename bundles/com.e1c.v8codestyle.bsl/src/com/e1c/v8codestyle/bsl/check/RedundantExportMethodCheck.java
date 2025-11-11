@@ -12,7 +12,6 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 import static org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider.PERSISTED_DESCRIPTIONS;
 
 import java.text.MessageFormat;
@@ -54,10 +53,7 @@ import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
-import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
-import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
-import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.ModuleStructureSection;
 import com.google.inject.Inject;
 
@@ -114,7 +110,8 @@ public final class RedundantExportMethodCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.RedundantExportCheck_Escess_title)
+        //TODO Переделать реализацию проверки в рамках задачи #314
+        /* builder.title(Messages.RedundantExportCheck_Escess_title)
             .description(Messages.RedundantExportCheck_Excess_description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
@@ -122,11 +119,10 @@ public final class RedundantExportMethodCheck
             .disable()
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.MANAGER_MODULE, ModuleType.COMMON_MODULE,
                 ModuleType.OBJECT_MODULE))
-            //.extension(new StandardCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
             .checkedObjectType(METHOD)
             .parameter(PARAMETER_EXCLUDE_REGION_LIST, String.class, DEFAULT_EXCLUDE_REGION_NAME_LIST,
-                Messages.RedundantExportCheck_Exclude_title);
+                Messages.RedundantExportCheck_Exclude_title);*/
 
     }
 
