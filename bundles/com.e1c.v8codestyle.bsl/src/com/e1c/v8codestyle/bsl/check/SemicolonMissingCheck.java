@@ -91,21 +91,18 @@ public class SemicolonMissingCheck2
             node = NodeModelUtils.findActualNodeFor(statement);
             if (!(statement instanceof EmptyStatement))
             {
-                if (statement instanceof Statement)
+                if (node == null)
                 {
-                    if (node == null)
-                    {
-                        return;
-                    }
-                    INode checkNode = node.getNextSibling();
-                    if (checkNode == null)
-                    {
-                        return;
-                    }
-                    if (!checkNode.getText().contains(";")) //$NON-NLS-1$
-                    {
-                        resolveAddIssue(node, statement, resultAceptor);
-                    }
+                    continue;
+                }
+                INode checkNode = node.getNextSibling();
+                if (checkNode == null)
+                {
+                    continue;
+                }
+                if (!checkNode.getText().contains(";")) //$NON-NLS-1$
+                {
+                    resolveAddIssue(node, statement, resultAceptor);
                 }
                 if (!statement.eContents().isEmpty())
                 {
@@ -127,7 +124,7 @@ public class SemicolonMissingCheck2
             INode node = NodeModelUtils.findActualNodeFor(eObject);
             if (node == null)
             {
-                return;
+                continue;
             }
             String nodeText = node.getText();
             if (!(eObject instanceof Statement))
@@ -140,7 +137,7 @@ public class SemicolonMissingCheck2
 
                     if (lastNode == null)
                     {
-                        return;
+                        continue;
                     }
 
                     String checkText = lastNode.getText();
