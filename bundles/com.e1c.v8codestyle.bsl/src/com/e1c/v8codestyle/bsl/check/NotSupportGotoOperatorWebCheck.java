@@ -40,7 +40,7 @@ public class NotSupportGotoOperatorWebCheck
     extends AbstractModuleStructureCheck
 {
 
-    private static final String CHECK_ID = "not-support-goto-operator"; //$NON-NLS-1$
+    private static final String CHECK_ID = "not-support-goto-operator-webclient"; //$NON-NLS-1$
 
     @Inject
     private IBslPreferences bslPreferences;
