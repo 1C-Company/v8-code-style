@@ -48,7 +48,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  *
  *  @author Ivan Sergeev
  */
-public class SemicolonMissingCheck2
+public class SemicolonMissingCheck
     extends AbstractModuleStructureCheck
 {
     private static final String CHECK_ID = "semicolon-missing"; //$NON-NLS-1$
