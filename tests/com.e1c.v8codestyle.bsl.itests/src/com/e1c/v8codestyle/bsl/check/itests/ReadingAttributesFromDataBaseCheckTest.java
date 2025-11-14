@@ -102,4 +102,13 @@ public class ReadingAttributesFromDataBaseCheckTest
         assertTrue(markers.isEmpty());
     }
 
+    @Test
+    public void testReadPropertyEnumRefType() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "read-single-property-enum-ref-type.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
 }

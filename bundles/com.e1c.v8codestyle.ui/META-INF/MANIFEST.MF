@@ -19,7 +19,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-17
 Automatic-Module-Name: com.e1c.v8codestyle.ui
 Bundle-ActivationPolicy: lazy
 Import-Package: com._1c.g5.v8.dt.common;version="[6.4.0,7.0.0)",
- com._1c.g5.v8.dt.core.platform;version="[11.0.0,12.0.0)",
+ com._1c.g5.v8.dt.core.platform;version="[12.0.0,13.0.0)",
  com._1c.g5.v8.dt.ui.wizards;version="[9.0.0,10.0.0)",
  com._1c.g5.wiring;version="[2.2.0,3.0.0)",
  com._1c.g5.wiring.binder;version="[1.1.0,2.0.0)",
