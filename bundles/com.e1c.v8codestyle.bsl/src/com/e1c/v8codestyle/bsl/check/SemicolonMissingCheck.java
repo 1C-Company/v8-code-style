@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.nodemodel.BidiTreeIterator;
 import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
@@ -88,25 +89,42 @@ public class SemicolonMissingCheck
         }
         for (Statement statement : allItems)
         {
-            node = NodeModelUtils.findActualNodeFor(statement);
-            if (!(statement instanceof EmptyStatement))
+            if (statement.eContainingFeature().isMany() && statement.eContainer() != null
+                && statement.eContainer().eGet(statement.eContainingFeature()) instanceof List<?> statementCollection)
             {
-                if (node == null)
+                if (!statementCollection.isEmpty()
+                    && statementCollection.get(statementCollection.size() - 1) == statement)
                 {
-                    continue;
-                }
-                INode checkNode = node.getNextSibling();
-                if (checkNode == null)
-                {
-                    continue;
-                }
-                if (!checkNode.getText().contains(";")) //$NON-NLS-1$
-                {
-                    resolveAddIssue(node, statement, resultAceptor);
-                }
-                if (!statement.eContents().isEmpty())
-                {
-                    checkSemicolon(statement.eContents(), resultAceptor);
+                    if (!(statement instanceof EmptyStatement))
+                    {
+                        node = NodeModelUtils.findActualNodeFor(statement);
+                        if (node == null)
+                        {
+                            continue;
+                        }
+                        INode checkNode = node.getNextSibling();
+                        if (checkNode == null)
+                        {
+                            continue;
+                        }
+                        if (!checkNode.getText().contains(";")) //$NON-NLS-1$
+                        {
+                            INode checkNextNode = checkNode.getNextSibling();
+                            if (checkNextNode == null)
+                            {
+                                resolveAddIssue(node, statement, resultAceptor);
+                                continue;
+                            }
+                            if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
+                            {
+                                resolveAddIssue(node, statement, resultAceptor);
+                            }
+                        }
+                        if (!statement.eContents().isEmpty())
+                        {
+                            checkSemicolon(statement.eContents(), resultAceptor);
+                        }
+                    }
                 }
             }
         }
@@ -118,10 +136,13 @@ public class SemicolonMissingCheck
         {
             return;
         }
+        INode node = null;
+        INode checkNode = null;
+        INode checkNextNode = null;
 
         for (EObject eObject : eObjects)
         {
-            INode node = NodeModelUtils.findActualNodeFor(eObject);
+            node = NodeModelUtils.findActualNodeFor(eObject);
             if (node == null)
             {
                 continue;
@@ -131,9 +152,9 @@ public class SemicolonMissingCheck
             {
                 if (eObject instanceof Conditional)
                 {
-                    LinkedList<ILeafNode> allLeafNodes = new LinkedList<>();
-                    node.getLeafNodes().forEach(allLeafNodes::add);
-                    ILeafNode lastNode = allLeafNodes.pollLast();
+                    BidiTreeIterator<INode> treeIterator = null;
+                    treeIterator = node.getAsTreeIterable().reverse().iterator();
+                    INode lastNode = treeIterator.next();
 
                     if (lastNode == null)
                     {
@@ -164,27 +185,36 @@ public class SemicolonMissingCheck
             }
             else if (eObject instanceof SimpleStatement)
             {
-                INode checkNode = node.getNextSibling();
+                checkNode = node.getNextSibling();
                 if (checkNode == null)
                 {
                     if (!nodeText.contains(";") && !nodeText.isEmpty()) //$NON-NLS-1$
                     {
                         resolveAddIssue(node, eObject, resultAceptor);
                     }
-                    return;
+                    continue;
                 }
                 if (!checkNode.getText().contains(";")) //$NON-NLS-1$
                 {
-                    resolveAddIssue(node, eObject, resultAceptor);
+                    checkNextNode = checkNode.getNextSibling();
+                    if (checkNextNode == null)
+                    {
+                        resolveAddIssue(node, eObject, resultAceptor);
+                        continue;
+                    }
+                    if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
+                    {
+                        resolveAddIssue(node, eObject, resultAceptor);
+                    }
                 }
             }
-            else if (eObject instanceof IfStatement | eObject instanceof ForStatement)
+            else if (eObject instanceof IfStatement || eObject instanceof ForStatement)
             {
-                INode checkNode = node.getNextSibling();
+                checkNode = node.getNextSibling();
                 if (checkNode == null)
                 {
                     resolveAddIssue(node, eObject, resultAceptor);
-                    return;
+                    continue;
                 }
                 if (!checkNode.getText().contains(";")) //$NON-NLS-1$
                 {
@@ -194,18 +224,27 @@ public class SemicolonMissingCheck
             }
             else if (eObject instanceof Statement & !(eObject instanceof EmptyStatement))
             {
-                INode checkNode = node.getNextSibling();
+                checkNode = node.getNextSibling();
                 if (checkNode == null)
                 {
                     if (eObject instanceof ReturnStatement)
                     {
                         resolveAddIssue(node, eObject, resultAceptor);
                     }
-                    return;
+                    continue;
                 }
                 if (!checkNode.getText().contains(";")) //$NON-NLS-1$
                 {
-                    resolveAddIssue(node, eObject, resultAceptor);
+                    checkNextNode = checkNode.getNextSibling();
+                    if (checkNextNode == null)
+                    {
+                        resolveAddIssue(node, eObject, resultAceptor);
+                        continue;
+                    }
+                    if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
+                    {
+                        resolveAddIssue(node, eObject, resultAceptor);
+                    }
                 }
                 if (!eObject.eContents().isEmpty())
                 {
@@ -217,14 +256,14 @@ public class SemicolonMissingCheck
 
     private void resolveAddIssue(INode node, EObject eObject, ResultAcceptor resultAceptor)
     {
+        if (eObject instanceof SimpleStatement || eObject instanceof ReturnStatement)
+        {
+            resultAceptor.addIssue(Messages.SemicolonMissingCheck_Issue, eObject);
+            return;
+        }
         LinkedList<ILeafNode> allLeafNodes = new LinkedList<>();
         node.getLeafNodes().forEach(allLeafNodes::add);
         ILeafNode lastNode = allLeafNodes.pollLast();
-
-        if (eObject instanceof SimpleStatement | eObject instanceof ReturnStatement)
-        {
-            resultAceptor.addIssue(Messages.SemicolonMissingCheck_Issue, eObject);
-        }
 
         if (lastNode == null)
         {
