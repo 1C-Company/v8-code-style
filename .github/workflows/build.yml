@@ -68,7 +68,7 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 17
-        java-package: jdk
+        java-package: jdk+fx
 
     - name: Sonar scan
       # Do not start Sonar-scanning for forks without label, and pass fork PR number directly
