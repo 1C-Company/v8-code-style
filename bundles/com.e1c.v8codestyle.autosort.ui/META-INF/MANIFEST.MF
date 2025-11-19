@@ -16,8 +16,8 @@ Automatic-Module-Name: com.e1c.v8codestyle.autosort.ui
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Import-Package: com._1c.g5.v8.dt.common;version="[6.0.0,7.0.0)",
- com._1c.g5.v8.dt.core.lifecycle;version="[9.0.0,10.0.0)",
- com._1c.g5.v8.dt.core.platform;version="[11.0.0,12.0.0)",
+ com._1c.g5.v8.dt.core.lifecycle;version="[10.0.0,11.0.0)",
+ com._1c.g5.v8.dt.core.platform;version="[12.0.0,13.0.0)",
  com._1c.g5.v8.dt.lifecycle;version="[3.0.0,4.0.0)",
  com._1c.g5.v8.dt.md.sort;version="[1.0.0,2.0.0)",
  com._1c.g5.v8.dt.metadata.mdclass;version="[11.0.0,12.0.0)",
