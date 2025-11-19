@@ -289,6 +289,10 @@ final class Messages
     public static String QueryInLoop_Loop_has_query;
     public static String QueryInLoop_title;
 
+    public static String SelfAssignCheck_Title;
+    public static String SelfAssignCheck_Description;
+    public static String SelfAssignCheck_Self_assign_issue;
+
     public static String SelfReferenceCheck_check_object_module;
 
     public static String SelfReferenceCheck_check_only_existing_form_properties;
@@ -311,6 +315,10 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
+	
+	public static String NotSupportGotoOperatorWebCheck_Title;
+    public static String NotSupportGotoOperatorWebCheck_Description;
+    public static String NotSupportGotoOperatorWebCheck_Issue;
 
     public static String NewColorCheck_Use_style_elements;
 
@@ -453,7 +461,7 @@ final class Messages
     public static String IsInRoleMethodRoleExistCheck_Role_named_not_exists_in_configuration;
 
     public static String IsInRoleMethodRoleExistCheck_title;
-    
+
     public static String ModuleUndefinedVariableCheck_Title;
     public static String ModuleUndefinedVariableCheck_Description;
     public static String ModuleUndefinedVariable_msg;
@@ -483,6 +491,9 @@ final class Messages
     public static String VariableNameInvalidCheck_variable_name_is_invalid;
     public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
     public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
+
+    public static String StringLiteralTypeAnnotationCheck_Title;
+    public static String StringLiteralTypeAnnotationCheck_Incorrect_annotation_location;
 
     static
     {
