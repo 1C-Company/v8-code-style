@@ -102,7 +102,7 @@ public class MethodSemicolonExtraCheck
 
                 resultAceptor.addIssue(issue);
             }
-            else if (checkNodeNext.getText().contains(";") && !(checkNodeNext == null)) //$NON-NLS-1$
+            else if (checkNodeNext.getText().contains(";") && checkNodeNext != null) //$NON-NLS-1$
             {
                 DirectLocation directLocation = new DirectLocation(checkNodeNext.getOffset(), checkNodeNext.getLength(),
                     checkNodeNext.getStartLine(), allItems.get(0));

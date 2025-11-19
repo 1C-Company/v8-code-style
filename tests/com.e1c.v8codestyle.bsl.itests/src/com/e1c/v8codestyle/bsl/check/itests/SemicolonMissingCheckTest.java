@@ -54,20 +54,53 @@ public class SemicolonMissingCheckTest
     }
 
     /**
-     * Test statement after another statement.
+     * Test statement missing semicolon.
      *
      * @throws Exception the exception
      */
     @Test
-    public void testStatementAfter() throws Exception
+    public void testReturnStatementMissingSemicolon() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "missing-semicolon-statement-after.bsl");
+        updateModule(FOLDER_RESOURCE + "missing-semicolon-return-statement.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(6), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(7), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
+
+    /**
+     * Test statement in sub statement after another statement.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementSubStatementAfter() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "missing-semicolon-statemen-sub-statement-after.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(7), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test statement in sub statement before another statement.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementSubStatementBefore() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "missing-semicolon-statement-sub-statement-before.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(9), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
 
     /**
      * Test statement before another statement.
@@ -78,6 +111,22 @@ public class SemicolonMissingCheckTest
     public void testStatementBefore() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "missing-semicolon-statement-before.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(7), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test statement in if preprocessor.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementInIfPrepocessor() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "missing-semicolon-statement-if-preprocessor.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
@@ -98,8 +147,39 @@ public class SemicolonMissingCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(6), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(8), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
 
+    /**
+     * Test statement sub statement.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementInIfStatement() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "missing-semicolon-statement-if-ifelse-statement.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(7), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test statement sub statement.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementInElse() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "missing-semicolon-statement-else-ifelse-statement.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(11), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -114,6 +194,33 @@ public class SemicolonMissingCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertTrue(markers.isEmpty());
+    }
 
+    /**
+     * Test statement no missing semicolon.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatemetSemicolonSpace() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "non-missing-semicolon-statement-space.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test statement no missing semicolon.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementSemicolonNextString() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "non-missing-semicolon-statement-next-string.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
     }
 }

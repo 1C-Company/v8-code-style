@@ -1,17 +1,14 @@
-
 #Region Abcd
 
 Procedure Aaaa()
-	
-	Test = 2
 
 	NoTest = 2;
 
-EndProcedure
+	If True Then
 
-Procedure Bbbb()
-	
-	NoTest = 2;
+		Test= Test + 1
+
+	EndIf;
 
 EndProcedure
 

@@ -27,6 +27,7 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.ForStatement;
+import com._1c.g5.v8.dt.bsl.model.IfPreprocessorStatement;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
@@ -75,7 +76,7 @@ public class SemicolonMissingCheck
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
+    protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
         INode node = null;
@@ -89,48 +90,41 @@ public class SemicolonMissingCheck
         }
         for (Statement statement : allItems)
         {
-            if (statement.eContainingFeature().isMany() && statement.eContainer() != null
-                && statement.eContainer().eGet(statement.eContainingFeature()) instanceof List<?> statementCollection)
+            if (!(statement instanceof EmptyStatement))
             {
-                if (!statementCollection.isEmpty()
-                    && statementCollection.get(statementCollection.size() - 1) == statement)
+                node = NodeModelUtils.findActualNodeFor(statement);
+                if (node == null)
                 {
-                    if (!(statement instanceof EmptyStatement))
+                    continue;
+                }
+                INode checkNode = node.getNextSibling();
+                if (checkNode == null)
+                {
+                    resolveAddIssue(node, statement, resultAcceptor);
+                    continue;
+                }
+                if (!checkNode.getText().contains(";")) //$NON-NLS-1$
+                {
+                    INode checkNextNode = checkNode.getNextSibling();
+                    if (checkNextNode == null)
                     {
-                        node = NodeModelUtils.findActualNodeFor(statement);
-                        if (node == null)
-                        {
-                            continue;
-                        }
-                        INode checkNode = node.getNextSibling();
-                        if (checkNode == null)
-                        {
-                            continue;
-                        }
-                        if (!checkNode.getText().contains(";")) //$NON-NLS-1$
-                        {
-                            INode checkNextNode = checkNode.getNextSibling();
-                            if (checkNextNode == null)
-                            {
-                                resolveAddIssue(node, statement, resultAceptor);
-                                continue;
-                            }
-                            if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
-                            {
-                                resolveAddIssue(node, statement, resultAceptor);
-                            }
-                        }
-                        if (!statement.eContents().isEmpty())
-                        {
-                            checkSemicolon(statement.eContents(), resultAceptor);
-                        }
+                        resolveAddIssue(node, statement, resultAcceptor);
+                        continue;
                     }
+                    if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
+                    {
+                        resolveAddIssue(node, statement, resultAcceptor);
+                    }
+                }
+                if (!statement.eContents().isEmpty())
+                {
+                    checkSemicolon(statement.eContents(), resultAcceptor);
                 }
             }
         }
     }
 
-    private void checkSemicolon(List<EObject> eObjects, ResultAcceptor resultAceptor)
+    private void checkSemicolon(List<EObject> eObjects, ResultAcceptor resultAcceptor)
     {
         if (eObjects.isEmpty())
         {
@@ -148,6 +142,7 @@ public class SemicolonMissingCheck
                 continue;
             }
             String nodeText = node.getText();
+
             if (!(eObject instanceof Statement))
             {
                 if (eObject instanceof Conditional)
@@ -160,105 +155,129 @@ public class SemicolonMissingCheck
                     {
                         continue;
                     }
-
                     String checkText = lastNode.getText();
 
                     if (!checkText.contains(";") && !nodeText.isEmpty()) //$NON-NLS-1$
                     {
                         if (checkText.toLowerCase().contains("#EndRegion".toLowerCase()) //$NON-NLS-1$
-                            | checkText.toLowerCase().contains("#КонецОбласти".toLowerCase())) //$NON-NLS-1$
+                            || checkText.toLowerCase().contains("#КонецОбласти".toLowerCase())) //$NON-NLS-1$
                         {
-                            checkSemicolon(eObject.eContents(), resultAceptor);
+                            checkSemicolon(eObject.eContents(), resultAcceptor);
                         }
                         else if (checkText.toLowerCase().contains("#EndIf".toLowerCase()) //$NON-NLS-1$
-                            | checkText.toLowerCase().contains("#КонецЕсли".toLowerCase())) //$NON-NLS-1$
+                            || checkText.toLowerCase().contains("#КонецЕсли".toLowerCase())) //$NON-NLS-1$
                         {
-                            checkSemicolon(eObject.eContents(), resultAceptor);
+                            checkSemicolon(eObject.eContents(), resultAcceptor);
                         }
                         else if (eObject.eContents().isEmpty())
                         {
-                            resolveAddIssue(node, eObject, resultAceptor);
+                            resolveAddIssue(node, eObject, resultAcceptor);
                         }
                     }
                 }
-                checkSemicolon(eObject.eContents(), resultAceptor);
+                checkSemicolon(eObject.eContents(), resultAcceptor);
             }
-            else if (eObject instanceof SimpleStatement)
+            else if (eObject instanceof EmptyStatement)
             {
-                checkNode = node.getNextSibling();
-                if (checkNode == null)
-                {
-                    if (!nodeText.contains(";") && !nodeText.isEmpty()) //$NON-NLS-1$
-                    {
-                        resolveAddIssue(node, eObject, resultAceptor);
-                    }
-                    continue;
-                }
-                if (!checkNode.getText().contains(";")) //$NON-NLS-1$
-                {
-                    checkNextNode = checkNode.getNextSibling();
-                    if (checkNextNode == null)
-                    {
-                        resolveAddIssue(node, eObject, resultAceptor);
-                        continue;
-                    }
-                    if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
-                    {
-                        resolveAddIssue(node, eObject, resultAceptor);
-                    }
-                }
+                continue;
             }
-            else if (eObject instanceof IfStatement || eObject instanceof ForStatement)
+            else if (eObject instanceof IfPreprocessorStatement)
             {
-                checkNode = node.getNextSibling();
-                if (checkNode == null)
-                {
-                    resolveAddIssue(node, eObject, resultAceptor);
-                    continue;
-                }
-                if (!checkNode.getText().contains(";")) //$NON-NLS-1$
-                {
-                    resolveAddIssue(node, eObject, resultAceptor);
-                }
-                checkSemicolon(eObject.eContents(), resultAceptor);
+                checkSemicolon(eObject.eContents(), resultAcceptor);
             }
-            else if (eObject instanceof Statement & !(eObject instanceof EmptyStatement))
+            else if (eObject.eContainingFeature().isMany() && eObject.eContainer() != null
+                && eObject.eContainer().eGet(eObject.eContainingFeature()) instanceof List<?> statementCollection)
             {
-                checkNode = node.getNextSibling();
-                if (checkNode == null)
+                if (!statementCollection.isEmpty()
+                    && statementCollection.get(statementCollection.size() - 1) == eObject)
                 {
-                    if (eObject instanceof ReturnStatement)
+                    if (eObject instanceof SimpleStatement)
                     {
-                        resolveAddIssue(node, eObject, resultAceptor);
+                        checkNode = node.getNextSibling();
+                        if (checkNode == null)
+                        {
+                            if (!nodeText.contains(";") && !nodeText.isEmpty()) //$NON-NLS-1$
+                            {
+                                resolveAddIssue(node, eObject, resultAcceptor);
+                            }
+                            continue;
+                        }
+                        if (!checkNode.getText().contains(";")) //$NON-NLS-1$
+                        {
+                            checkNextNode = checkNode.getNextSibling();
+                            if (checkNextNode == null)
+                            {
+                                resolveAddIssue(node, eObject, resultAcceptor);
+                                continue;
+                            }
+                            if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
+                            {
+                                resolveAddIssue(node, eObject, resultAcceptor);
+                            }
+                        }
                     }
-                    continue;
-                }
-                if (!checkNode.getText().contains(";")) //$NON-NLS-1$
-                {
-                    checkNextNode = checkNode.getNextSibling();
-                    if (checkNextNode == null)
+                    else if (eObject instanceof IfStatement || eObject instanceof ForStatement)
                     {
-                        resolveAddIssue(node, eObject, resultAceptor);
-                        continue;
+                        checkNode = node.getNextSibling();
+                        if (checkNode == null)
+                        {
+                            resolveAddIssue(node, eObject, resultAcceptor);
+                            continue;
+                        }
+                        if (!checkNode.getText().contains(";")) //$NON-NLS-1$
+                        {
+                            checkNextNode = checkNode.getNextSibling();
+                            if (checkNextNode == null)
+                            {
+                                resolveAddIssue(node, eObject, resultAcceptor);
+                                continue;
+                            }
+                            if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
+                            {
+                                resolveAddIssue(node, eObject, resultAcceptor);
+                            }
+                        }
+                        checkSemicolon(eObject.eContents(), resultAcceptor);
                     }
-                    if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
+                    else if (eObject instanceof Statement)
                     {
-                        resolveAddIssue(node, eObject, resultAceptor);
+                        checkNode = node.getNextSibling();
+                        if (checkNode == null)
+                        {
+                            if (eObject instanceof ReturnStatement)
+                            {
+                                resolveAddIssue(node, eObject, resultAcceptor);
+                            }
+                            continue;
+                        }
+                        if (!checkNode.getText().contains(";")) //$NON-NLS-1$
+                        {
+                            checkNextNode = checkNode.getNextSibling();
+                            if (checkNextNode == null)
+                            {
+                                resolveAddIssue(node, eObject, resultAcceptor);
+                                continue;
+                            }
+                            if (!checkNextNode.getText().contains(";")) //$NON-NLS-1$
+                            {
+                                resolveAddIssue(node, eObject, resultAcceptor);
+                            }
+                        }
+                        if (!eObject.eContents().isEmpty())
+                        {
+                            checkSemicolon(eObject.eContents(), resultAcceptor);
+                        }
                     }
-                }
-                if (!eObject.eContents().isEmpty())
-                {
-                    checkSemicolon(eObject.eContents(), resultAceptor);
                 }
             }
         }
     }
 
-    private void resolveAddIssue(INode node, EObject eObject, ResultAcceptor resultAceptor)
+    private static void resolveAddIssue(INode node, EObject eObject, ResultAcceptor resultAcceptor)
     {
         if (eObject instanceof SimpleStatement || eObject instanceof ReturnStatement)
         {
-            resultAceptor.addIssue(Messages.SemicolonMissingCheck_Issue, eObject);
+            resultAcceptor.addIssue(Messages.SemicolonMissingCheck_Issue, eObject);
             return;
         }
         LinkedList<ILeafNode> allLeafNodes = new LinkedList<>();
@@ -274,6 +293,6 @@ public class SemicolonMissingCheck
 
         Issue issue = new BslDirectLocationIssue(Messages.SemicolonMissingCheck_Issue, directLocation);
 
-        resultAceptor.addIssue(issue);
+        resultAcceptor.addIssue(issue);
     }
 }
