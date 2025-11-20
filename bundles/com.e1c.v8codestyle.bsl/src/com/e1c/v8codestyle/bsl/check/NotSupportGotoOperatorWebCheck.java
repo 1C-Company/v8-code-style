@@ -36,12 +36,11 @@ import com.google.inject.Inject;
  * The check Goto operator in client code
  * @author Ivan Sergeev
  */
-
 public class NotSupportGotoOperatorWebCheck
     extends AbstractModuleStructureCheck
 {
 
-    private static final String CHECK_ID = "not-support-goto-operator"; //$NON-NLS-1$
+    private static final String CHECK_ID = "not-support-goto-operator-webclient"; //$NON-NLS-1$
 
     @Inject
     private IBslPreferences bslPreferences;
@@ -81,6 +80,10 @@ public class NotSupportGotoOperatorWebCheck
             Environmental envir = EcoreUtil2.getContainerOfType(eObject, Environmental.class);
             if (bslPreferences.getLoadEnvs(eObject).contains(Environment.WEB_CLIENT))
             {
+                if (envir == null)
+                {
+                    return;
+                }
                 if (envir.environments().contains(Environment.WEB_CLIENT))
                 {
                     resultAcceptor.addIssue(Messages.NotSupportGotoOperatorWebCheck_Issue, object);
