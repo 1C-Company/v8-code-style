@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2025, 1C-Soft LLC and others.
+ * Copyright (C) 2022, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,8 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
-import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -21,8 +20,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -40,6 +39,7 @@ import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.GroupExtInfo;
 import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
+import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -101,7 +101,7 @@ public class ModuleStructureEventFormRegionsCheck
             .extension(new StandardCheckExtension(455, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE))
             .module()
-            .checkedObjectType(MODULE)
+            .checkedObjectType(METHOD)
             .parameter(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN, String.class, PATTERN_EXCLUDE,
                 Messages.ModuleStructureEventFormRegionsCheck_Excluded_method_names)
             .parameter(MULTILEVEL_NESTING_OF_REGIONS, Boolean.class, DEFAULT_CHECK_NESTING_OF_REGIONS,
@@ -109,61 +109,60 @@ public class ModuleStructureEventFormRegionsCheck
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor result, ICheckParameters parameters, IProgressMonitor monitor)
+    protected void check(Object object, ResultAcceptor result, ICheckParameters parameters,
+        IProgressMonitor monitor)
     {
         if (monitor.isCanceled())
         {
             return;
         }
 
-        Module module = (Module)object;
-        IV8Project project = v8ProjectManager.getProject(module);
+        Method method = (Method)object;
+        IV8Project project = v8ProjectManager.getProject(method);
         ScriptVariant scriptVariant = project.getScriptVariant();
+        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
         if (module == null)
         {
             return;
         }
-        EList<Method> methods = module.allMethods();
-        Map<CaseInsensitiveString, List<EObject>> eventHandlers = bslEventsService.getEventHandlersContainer(module);
-        for (Method method : methods)
+
+        String methodName = method.getName();
+        if (methodName == null)
         {
-            String methodName = method.getName();
-            if (methodName == null)
-            {
-                continue;
-            }
-
-            String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
-            if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(methodName, excludeNamePattern))
-            {
-                continue;
-            }
-
-            boolean multilevel = parameters.getBoolean(MULTILEVEL_NESTING_OF_REGIONS);
-
-            Optional<RegionPreprocessor> region =
-                multilevel ? getTopParentRegion(method) : getFirstParentRegion(method);
-            if (region.isEmpty())
-            {
-                continue;
-            }
-
-            String regionName = region.get().getName();
-            List<EObject> containers = eventHandlers.get(new CaseInsensitiveString(methodName));
-            if (containers == null)
-            {
-                if (isEventHandlerRegion(scriptVariant, regionName))
-                {
-                    addIssueShouldNotBeInRegion(result, methodName, regionName, method);
-                }
-                continue;
-            }
-            check(result, containers, regionName, methodName, scriptVariant, monitor, method);
+            return;
         }
+
+        String excludeNamePattern = parameters.getString(PARAMETER_EXCLUDE_METHOD_NAME_PATTERN);
+        if (!StringUtils.isEmpty(excludeNamePattern) && isExcludeName(methodName, excludeNamePattern))
+        {
+            return;
+        }
+
+        boolean multilevel = parameters.getBoolean(MULTILEVEL_NESTING_OF_REGIONS);
+
+        Optional<RegionPreprocessor> region = multilevel ? getTopParentRegion(method) : getFirstParentRegion(method);
+        if (region.isEmpty())
+        {
+            return;
+        }
+
+        String regionName = region.get().getName();
+        Map<CaseInsensitiveString, List<EObject>> eventHandlers = bslEventsService.getEventHandlersContainer(module);
+        List<EObject> containers = eventHandlers.get(new CaseInsensitiveString(methodName));
+        if (containers == null)
+        {
+            if (isEventHandlerRegion(scriptVariant, regionName))
+            {
+                addIssueShouldNotBeInRegion(result, methodName, regionName);
+            }
+            return;
+        }
+
+        check(result, containers, regionName, methodName, scriptVariant, monitor);
     }
 
     private void check(ResultAcceptor result, List<EObject> containers, String regionName, String methodName,
-        ScriptVariant scriptVariant, IProgressMonitor monitor, EObject method)
+        ScriptVariant scriptVariant, IProgressMonitor monitor)
     {
         for (EObject obj : containers)
         {
@@ -174,33 +173,33 @@ public class ModuleStructureEventFormRegionsCheck
 
             if (obj instanceof FormCommandHandlerContainer)
             {
-                addIssueCommand(result, regionName, methodName, scriptVariant, method);
+                addIssueCommand(result, regionName, methodName, scriptVariant);
             }
             else if (obj instanceof EventHandlerContainer)
             {
                 EventHandlerContainer container = (EventHandlerContainer)obj;
-                check(result, container, regionName, methodName, scriptVariant, method);
+                check(result, container, regionName, methodName, scriptVariant);
             }
         }
     }
 
     private void check(ResultAcceptor result, EventHandlerContainer container, String regionName, String methodName,
-        ScriptVariant scriptVariant, EObject method)
+        ScriptVariant scriptVariant)
     {
 
         EventHandlerContainer object = getContainer(container);
 
         if (object instanceof Table)
         {
-            addIssueTable(result, ((Table)object).getName(), regionName, methodName, scriptVariant, method);
+            addIssueTable(result, ((Table)object).getName(), regionName, methodName, scriptVariant);
         }
         else if (object instanceof FormField || object instanceof DecorationExtInfo || object instanceof GroupExtInfo)
         {
-            addIssueItem(result, regionName, methodName, scriptVariant, method);
+            addIssueItem(result, regionName, methodName, scriptVariant);
         }
         else if (object instanceof Form)
         {
-            addIssueForm(result, regionName, methodName, scriptVariant, method);
+            addIssueForm(result, regionName, methodName, scriptVariant);
         }
     }
 
@@ -235,62 +234,78 @@ public class ModuleStructureEventFormRegionsCheck
     }
 
     private void addIssueCommand(ResultAcceptor result, String regionName, String methodName,
-        ScriptVariant scriptVariant, EObject method)
+        ScriptVariant scriptVariant)
     {
-        if (!ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName))
+        if (!isCommandHandlerRegion(regionName, scriptVariant))
         {
             String defRegionName = ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant);
-            addIssueShouldBeInRegion(result, methodName, defRegionName, method);
+            addIssueShouldBeInRegion(result, methodName, defRegionName);
         }
     }
 
     private void addIssueTable(ResultAcceptor result, String tableName, String regionName, String methodName,
-        ScriptVariant scriptVariant, EObject method)
+        ScriptVariant scriptVariant)
     {
-        if (!(ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant) + tableName)
-            .equalsIgnoreCase(regionName))
+        if (!isTableHandlerRegion(scriptVariant, regionName, tableName))
         {
             String defRegionName =
                 ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant) + tableName;
-            addIssueShouldBeInRegion(result, methodName, defRegionName, method);
+            addIssueShouldBeInRegion(result, methodName, defRegionName);
         }
     }
 
-    private void addIssueForm(ResultAcceptor result, String regionName, String methodName, ScriptVariant scriptVariant,
-        EObject method)
+    private void addIssueForm(ResultAcceptor result, String regionName, String methodName, ScriptVariant scriptVariant)
     {
-        if (!ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName))
+        if (!isFormHandlerRegion(regionName, scriptVariant))
         {
             addIssueShouldBeInRegion(result, methodName,
-                ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant), method);
+                ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant));
         }
     }
 
-    private void addIssueItem(ResultAcceptor result, String regionName, String methodName, ScriptVariant scriptVariant,
-        EObject method)
+    private void addIssueItem(ResultAcceptor result, String regionName, String methodName, ScriptVariant scriptVariant)
     {
-        if (!ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant)
-            .equalsIgnoreCase(regionName))
+        if (!isFormHeaderHandlerRegion(regionName, scriptVariant))
         {
             addIssueShouldBeInRegion(result, methodName,
-                ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant), method);
+                ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant));
         }
     }
 
-    private void addIssueShouldBeInRegion(ResultAcceptor result, String methodName, String defaultRegionName,
-        EObject method)
+    private void addIssueShouldBeInRegion(ResultAcceptor result, String methodName, String defaultRegionName)
     {
         result.addIssue(MessageFormat.format(
             Messages.ModuleStructureEventFormRegionsCheck_Event_method__0__should_be_placed_in_the_region__1,
-            methodName, defaultRegionName), method, NAMED_ELEMENT__NAME);
+            methodName, defaultRegionName), McorePackage.Literals.NAMED_ELEMENT__NAME);
     }
 
-    private void addIssueShouldNotBeInRegion(ResultAcceptor result, String methodName, String regionName,
-        EObject method)
+    private void addIssueShouldNotBeInRegion(ResultAcceptor result, String methodName, String regionName)
     {
         result.addIssue(MessageFormat.format(
             Messages.ModuleStructureEventFormRegionsCheck_Event_method__0__can_not_be_placed_in_the_region__1,
-            methodName, regionName), method, NAMED_ELEMENT__NAME);
+            methodName, regionName), McorePackage.Literals.NAMED_ELEMENT__NAME);
+    }
+
+    private boolean isCommandHandlerRegion(String regionName, ScriptVariant scriptVariant)
+    {
+        return ModuleStructureSection.FORM_COMMAND_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName);
+    }
+
+    private boolean isTableHandlerRegion(ScriptVariant scriptVariant, String regionName, String tableName)
+    {
+        return (ModuleStructureSection.FORM_TABLE_ITEMS_EVENT_HANDLERS.getName(scriptVariant) + tableName)
+            .equalsIgnoreCase(regionName);
+    }
+
+    private boolean isFormHeaderHandlerRegion(String regionName, ScriptVariant scriptVariant)
+    {
+        return ModuleStructureSection.FORM_HEADER_ITEMS_EVENT_HANDLERS.getName(scriptVariant)
+            .equalsIgnoreCase(regionName);
+    }
+
+    private boolean isFormHandlerRegion(String regionName, ScriptVariant scriptVariant)
+    {
+        return ModuleStructureSection.FORM_EVENT_HANDLERS.getName(scriptVariant).equalsIgnoreCase(regionName);
     }
 
     private boolean isEventHandlerRegion(ScriptVariant scriptVariant, String regionName)
@@ -307,4 +322,5 @@ public class ModuleStructureEventFormRegionsCheck
     {
         return StringUtils.isNotEmpty(excludeNamePattern) && name.matches(excludeNamePattern);
     }
+
 }
