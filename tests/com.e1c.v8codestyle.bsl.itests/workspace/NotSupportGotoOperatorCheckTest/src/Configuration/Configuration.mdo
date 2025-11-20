@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="da3da622-85c7-4a68-9cb7-0ee5aa7448e7">
+  <name>StructureModule</name>
+  <synonym>
+    <key>en</key>
+    <value>Structure module</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="11fab9f4-1ac8-4b90-974c-148dd1f1ee29"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="23524e35-34a7-4bc8-94d1-c314704aad64"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="bf5898bf-f470-4416-bbdf-78425a7ed95d"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="b1d7c42c-2468-422c-aae9-22ca0f17d470"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="95b2fb6a-d0b0-4bba-933f-f25846ff134c"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="212dac74-8939-4083-bd96-464aef7f5c0a"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="536422e3-5396-4bae-99a5-bdb058bfc993"/>
+  <configurationExtensionCompatibilityMode>8.3.20</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.20</compatibilityMode>
+  <languages uuid="52ec6aa9-b177-434c-b409-1c456749c996">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <commonModules>CommonModule.CommonModule</commonModules>
+  <eventSubscriptions>EventSubscription.EventSubscription</eventSubscriptions>
+  <catalogs>Catalog.CatalogInRegion</catalogs>
+  <catalogs>Catalog.CatalogInRegionWrongMethod</catalogs>
+  <catalogs>Catalog.CatalogInWrongRegion</catalogs>
+</mdclass:Configuration>
