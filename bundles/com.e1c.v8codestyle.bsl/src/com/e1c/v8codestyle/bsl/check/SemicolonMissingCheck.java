@@ -130,23 +130,19 @@ public class SemicolonMissingCheck
         {
             return;
         }
-        INode node = null;
-        INode checkNode = null;
-        INode checkNextNode = null;
 
         for (EObject eObject : eObjects)
         {
-            node = NodeModelUtils.findActualNodeFor(eObject);
-            if (node == null)
-            {
-                continue;
-            }
-            String nodeText = node.getText();
-
             if (!(eObject instanceof Statement))
             {
                 if (eObject instanceof Conditional)
                 {
+                    INode node = NodeModelUtils.findActualNodeFor(eObject);
+                    if (node == null)
+                    {
+                        continue;
+                    }
+                    String nodeText = node.getText();
                     BidiTreeIterator<INode> treeIterator = null;
                     treeIterator = node.getAsTreeIterable().reverse().iterator();
                     INode lastNode = treeIterator.next();
@@ -191,9 +187,15 @@ public class SemicolonMissingCheck
                 if (!statementCollection.isEmpty()
                     && statementCollection.get(statementCollection.size() - 1) == eObject)
                 {
+                    INode node = NodeModelUtils.findActualNodeFor(eObject);
+                    if (node == null)
+                    {
+                        continue;
+                    }
+                    String nodeText = node.getText();
                     if (eObject instanceof SimpleStatement)
                     {
-                        checkNode = node.getNextSibling();
+                        INode checkNode = node.getNextSibling();
                         if (checkNode == null)
                         {
                             if (!nodeText.contains(";") && !nodeText.isEmpty()) //$NON-NLS-1$
@@ -204,7 +206,7 @@ public class SemicolonMissingCheck
                         }
                         if (!checkNode.getText().contains(";")) //$NON-NLS-1$
                         {
-                            checkNextNode = checkNode.getNextSibling();
+                            INode checkNextNode = checkNode.getNextSibling();
                             if (checkNextNode == null)
                             {
                                 resolveAddIssue(node, eObject, resultAcceptor);
@@ -218,7 +220,7 @@ public class SemicolonMissingCheck
                     }
                     else if (eObject instanceof IfStatement || eObject instanceof ForStatement)
                     {
-                        checkNode = node.getNextSibling();
+                        INode checkNode = node.getNextSibling();
                         if (checkNode == null)
                         {
                             resolveAddIssue(node, eObject, resultAcceptor);
@@ -226,7 +228,7 @@ public class SemicolonMissingCheck
                         }
                         if (!checkNode.getText().contains(";")) //$NON-NLS-1$
                         {
-                            checkNextNode = checkNode.getNextSibling();
+                            INode checkNextNode = checkNode.getNextSibling();
                             if (checkNextNode == null)
                             {
                                 resolveAddIssue(node, eObject, resultAcceptor);
@@ -241,7 +243,7 @@ public class SemicolonMissingCheck
                     }
                     else if (eObject instanceof Statement)
                     {
-                        checkNode = node.getNextSibling();
+                        INode checkNode = node.getNextSibling();
                         if (checkNode == null)
                         {
                             if (eObject instanceof ReturnStatement)
@@ -252,7 +254,7 @@ public class SemicolonMissingCheck
                         }
                         if (!checkNode.getText().contains(";")) //$NON-NLS-1$
                         {
-                            checkNextNode = checkNode.getNextSibling();
+                            INode checkNextNode = checkNode.getNextSibling();
                             if (checkNextNode == null)
                             {
                                 resolveAddIssue(node, eObject, resultAcceptor);
