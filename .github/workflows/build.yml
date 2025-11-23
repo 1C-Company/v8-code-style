@@ -28,11 +28,12 @@ jobs:
     - uses: actions/checkout@v4
       if: ${{ !inputs.analyze }}
 
-#  - name: Set up JDK 17
-#     uses: actions/setup-java@v1
-#     with:
-#       java-version: 17
-#       java-package: jdk+fx
+    - name: Set up JDK 17
+      uses: actions/setup-java@v5
+      with:
+       distribution: 'zulu'
+       java-version: 17
+       java-package: jdk+fx
 
     - name: Set up Maven 3.9.6
       uses: s4u/setup-maven-action@v1.12.0
@@ -63,12 +64,12 @@ jobs:
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
   
-    - name: Set up JDK 17
-      if: inputs.analyze
-      uses: actions/setup-java@v1
-      with:
-        java-version: 17
-        java-package: jdk+fx
+#    - name: Set up JDK 17
+#      if: inputs.analyze
+#      uses: actions/setup-java@v1
+#      with:
+#        java-version: 17
+#        java-package: jdk+fx
 
     - name: Sonar scan
       # Do not start Sonar-scanning for forks without label, and pass fork PR number directly
