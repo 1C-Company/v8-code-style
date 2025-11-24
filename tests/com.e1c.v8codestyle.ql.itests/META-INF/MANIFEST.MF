@@ -9,9 +9,9 @@ Automatic-Module-Name: com.e1c.v8codestyle.ql.itests
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: fragment
 Import-Package: com._1c.g5.v8.bm.integration;version="[11.0.0,12.0.0)",
- com._1c.g5.v8.dt.core.platform;version="[11.0.0,12.0.0)",
+ com._1c.g5.v8.dt.core.platform;version="[12.0.0,13.0.0)",
  com._1c.g5.v8.dt.dcs.util;version="[16.0.0,17.0.0)",
- com._1c.g5.v8.dt.form.model;version="[12.0.0,13.0.0)",
+ com._1c.g5.v8.dt.form.model;version="[13.0.0,14.0.0)",
  com._1c.g5.v8.dt.mcore;version="[7.0.0,8.0.0)",
  com._1c.g5.v8.dt.testing;version="[3.0.0,4.0.0)",
  com._1c.g5.v8.dt.validation.marker;version="[9.0.0,10.0.0)",

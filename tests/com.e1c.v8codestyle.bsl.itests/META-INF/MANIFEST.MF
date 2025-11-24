@@ -8,10 +8,10 @@ Fragment-Host: com.e1c.v8codestyle.bsl;bundle-version="[0.7.0,0.8.0)"
 Automatic-Module-Name: com.e1c.v8codestyle.md.itests
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: fragment
-Import-Package: com._1c.g5.v8.dt.core.lifecycle;version="[9.2.0,10.0.0)",
+Import-Package: com._1c.g5.v8.dt.core.lifecycle;version="[10.0.0,11.0.0)",
  com._1c.g5.v8.dt.core.naming;version="[7.0.0,8.0.0)",
- com._1c.g5.v8.dt.core.platform;version="[11.0.0,12.0.0)",
- com._1c.g5.v8.dt.form.model;version="[12.0.0,13.0.0)",
+ com._1c.g5.v8.dt.core.platform;version="[12.0.0,13.0.0)",
+ com._1c.g5.v8.dt.form.model;version="[13.0.0,14.0.0)",
  com._1c.g5.v8.dt.md.naming;version="[5.1.0,6.0.0)",
  com._1c.g5.v8.dt.testing;version="[3.1.0,4.0.0)",
  com._1c.g5.v8.dt.validation.marker;version="[9.0.0,10.0.0)",

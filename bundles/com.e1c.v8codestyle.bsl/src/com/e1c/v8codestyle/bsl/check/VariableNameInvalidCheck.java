@@ -82,6 +82,12 @@ public class VariableNameInvalidCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
+        Variable variable = (Variable)object;
+        //if name of variable is null therefore syntax error
+        if (variable.getName() == null)
+        {
+            return;
+        }
 
         int minLength = parameters.getInt(MIN_NAME_LENGTH_PARAM_NAME);
         if (minLength <= 0)
@@ -89,7 +95,6 @@ public class VariableNameInvalidCheck
             minLength = MIN_NAME_LENGTH_DEFAULT;
         }
 
-        Variable variable = (Variable)object;
         if (variable.eContainer() instanceof StaticFeatureAccess && isForStatementAccessVariable(variable))
         {
             return;

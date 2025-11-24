@@ -20,19 +20,20 @@ jobs:
       PR_REF: "${{ github.event_name == 'pull_request_target' && format('refs/pull/{0}/merge', github.event.pull_request.number) || '' }}"
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       if: inputs.analyze
       with:
         fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
         ref: ${{ env.PR_REF }}
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       if: ${{ !inputs.analyze }}
 
-#  - name: Set up JDK 17
-#     uses: actions/setup-java@v1
-#     with:
-#       java-version: 17
-#       java-package: jdk+fx
+    - name: Set up JDK 17
+      uses: actions/setup-java@v5
+      with:
+       distribution: 'zulu'
+       java-version: 17
+       java-package: jdk+fx
 
     - name: Set up Maven 3.9.6
       uses: s4u/setup-maven-action@v1.12.0
@@ -56,19 +57,19 @@ jobs:
         mvn clean verify -PSDK,find-bugs -Dtycho.localArtifacts=ignore -Dtycho.p2.httptransport.type=JavaUrl -B -V
 
     - name: Cache SonarCloud packages
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       if: inputs.analyze
       with:
         path: ~/.sonar/cache
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
   
-    - name: Set up JDK 17
-      if: inputs.analyze
-      uses: actions/setup-java@v1
-      with:
-        java-version: 17
-        java-package: jdk
+#    - name: Set up JDK 17
+#      if: inputs.analyze
+#      uses: actions/setup-java@v1
+#      with:
+#        java-version: 17
+#        java-package: jdk+fx
 
     - name: Sonar scan
       # Do not start Sonar-scanning for forks without label, and pass fork PR number directly
