@@ -31,10 +31,17 @@ import com.e1c.v8codestyle.bsl.check.NotSupportGotoOperatorWebCheck;
 public class NotSupportGotoOperatorCheckTest
     extends AbstractSingleModuleTestBase
 {
+    private static final String PROJECT_NAME = "NotSupportGotoOperatorCheckTest";
 
     public NotSupportGotoOperatorCheckTest()
     {
         super(NotSupportGotoOperatorWebCheck.class);
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
     }
 
     /**
@@ -46,6 +53,7 @@ public class NotSupportGotoOperatorCheckTest
     public void testNotSupportGoToOperator() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "not-support-goto-operator.bsl");
+
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
