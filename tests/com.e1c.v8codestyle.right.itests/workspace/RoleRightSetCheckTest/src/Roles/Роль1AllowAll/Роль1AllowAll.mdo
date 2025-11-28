@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Role xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="70359104-a02c-44b0-99d1-fe896c21b32a">
+  <name>Роль1AllowAll</name>
+  <synonym>
+    <key>ru</key>
+    <value>Роль1 allow all</value>
+  </synonym>
+</mdclass:Role>

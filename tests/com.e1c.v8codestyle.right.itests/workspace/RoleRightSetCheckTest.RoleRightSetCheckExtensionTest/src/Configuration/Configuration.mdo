@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" xmlns:mdclassExtension="http://g5.1c.ru/v8/dt/metadata/mdclass/extension" uuid="24876c18-25a8-48c3-a78d-444012ad00c8">
+  <name>RoleRightSetCheckExtensionTest</name>
+  <synonym>
+    <key>ru</key>
+    <value>Role right set check extension test</value>
+  </synonym>
+  <objectBelonging>Adopted</objectBelonging>
+  <extension xsi:type="mdclassExtension:ConfigurationExtension">
+    <defaultRunMode>Checked</defaultRunMode>
+    <usePurposes>Checked</usePurposes>
+    <commandInterface>Extended</commandInterface>
+    <mainSectionCommandInterface>Extended</mainSectionCommandInterface>
+    <defaultLanguage>Checked</defaultLanguage>
+    <interfaceCompatibilityMode>Checked</interfaceCompatibilityMode>
+    <compatibilityMode>Checked</compatibilityMode>
+    <defaultStyle>Extended</defaultStyle>
+    <defaultRoles>Extended</defaultRoles>
+  </extension>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="22a6d2f8-97ab-4c17-aad5-25f33ba1be7b"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="b8e507d3-51f9-4335-a795-3e5d919f4816"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="39e2123c-7648-4618-acf1-4cd928747cc5"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="75bbcada-b272-4165-82e9-00249200efe0"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="8f512a86-1ca6-41bc-93e0-34201815227c"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="b801de59-5310-48d9-ab46-de7ff4d99ecc"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="540a2fe3-933f-4b67-821d-d78f9b8a4ce2"/>
+  <keepMappingToExtendedConfigurationObjectsByIDs>true</keepMappingToExtendedConfigurationObjectsByIDs>
+  <namePrefix>Расш1_</namePrefix>
+  <configurationExtensionCompatibilityMode>8.5.1</configurationExtensionCompatibilityMode>
+  <configurationExtensionPurpose>Customization</configurationExtensionPurpose>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <scriptVariant>Russian</scriptVariant>
+  <defaultRoles>Role.Расш1_ОсновнаяРоль</defaultRoles>
+  <defaultLanguage>Language.Русский</defaultLanguage>
+  <compatibilityMode>8.5.1</compatibilityMode>
+  <languages uuid="62ab7f89-11ea-4f32-b505-b1e5013908ad" extendedConfigurationObject="d46adc3f-7518-45d7-88fe-477752c605b7">
+    <name>Русский</name>
+    <objectBelonging>Adopted</objectBelonging>
+    <extension xsi:type="mdclassExtension:LanguageExtension">
+      <extendedConfigurationObject>Checked</extendedConfigurationObject>
+      <languageCode>Checked</languageCode>
+    </extension>
+    <languageCode>ru</languageCode>
+  </languages>
+  <roles>Role.Расш1_ОсновнаяРоль</roles>
+  <roles>Role.Расш1_Роль1AllowAll</roles>
+  <roles>Role.Расш1_Роль2DisableAll</roles>
+  <roles>Role.Роль1AllowAll</roles>
+  <roles>Role.Роль2DisableAll</roles>
+  <catalogs>Catalog.MainCatalog1</catalogs>
+  <catalogs>Catalog.Расш1_Справочник2</catalogs>
+</mdclass:Configuration>
