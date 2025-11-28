@@ -374,6 +374,8 @@
     <fix class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.SelfAssignFix"/>
     <fix class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.UndefinedFunctionFix"/>
     <fix class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.UndefinedVariableFix"/>
+    <fix class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.MethodSemicolonExtraFix"/>
+    <fix class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.SemicolonMissingFix"/>
     <fix
           class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.SelfReferenceFix">
     </fix>
