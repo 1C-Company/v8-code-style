@@ -65,6 +65,9 @@ final class Messages
     public static String UndefinedVariableFix_title;
     public static String UndefinedVariableFix_desc;
 
+    public static String SelfAssignFix_Description;
+    public static String SelfAssignFix_Details;
+
     static
     {
         // initialize resource bundle

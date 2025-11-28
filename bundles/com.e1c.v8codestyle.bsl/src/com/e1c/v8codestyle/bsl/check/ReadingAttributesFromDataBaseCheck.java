@@ -45,7 +45,7 @@ import com.google.inject.Inject;
  * @author Artem Iliukhin
  */
 public class ReadingAttributesFromDataBaseCheck
-    extends BasicCheck
+    extends BasicCheck<Object>
 {
 
     private static final String CHECK_ID = "reading-attribute-from-database"; //$NON-NLS-1$
@@ -62,7 +62,8 @@ public class ReadingAttributesFromDataBaseCheck
         IEObjectTypeNames.BOOLEAN,
         IEObjectTypeNames.DATE,
         IEObjectTypeNames.VALUE_STORAGE,
-        IEObjectTypeNames.UUID
+        IEObjectTypeNames.UUID,
+        IEObjectTypeNames.ENUM_REF
         );
     //@formatter:on
 
@@ -180,7 +181,6 @@ public class ReadingAttributesFromDataBaseCheck
         case IEObjectTypeNames.ACCUMULATION_REGISTER_REF:
         case IEObjectTypeNames.DOCUMENT_REF:
         case IEObjectTypeNames.DOCUMENT_JOURNAL_REF:
-        case IEObjectTypeNames.ENUM_REF:
         case IEObjectTypeNames.INFORMATION_REGISTER_REF:
         case IEObjectTypeNames.ACCOUNTING_REGISTER_REF:
         case IEObjectTypeNames.CALCULATION_REGISTER_REF:
