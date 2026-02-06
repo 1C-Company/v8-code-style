@@ -7,14 +7,23 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.junit.Test;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
+import com._1c.g5.v8.bm.integration.AbstractBmTask;
+import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.BslBuiltInLanguagePreferences;
+import com._1c.g5.v8.dt.core.operations.ProjectPipelineJob;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
+import com._1c.g5.v8.dt.core.platform.IWorkspaceOrchestrator;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.StringLiteralTypeAnnotationCheck;
+import com.google.inject.Inject;
 
 /**
  * A class for testing {@link StringLiteralTypeAnnotationCheck}
@@ -29,6 +38,15 @@ public class StringLiteralTypeAnnotationCheckTest
     private static final String PROJECT_NAME = "CommonModule";
 
     private static final String MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
+
+    @Inject
+    private IBmModelManager modelManager;
+
+    @Inject
+    private IWorkspaceOrchestrator workspaceOrchestrator;
+
+    @Inject
+    private IDtProjectManager dtProjectManager;
 
     public StringLiteralTypeAnnotationCheckTest()
     {
@@ -50,6 +68,28 @@ public class StringLiteralTypeAnnotationCheckTest
         preferences.flush();
 
         updateModule(FOLDER_RESOURCE + "string-literal-annotations-invalid-locations.bsl");
+
+        var dtProject = dtProjectManager.getDtProject(project.getWorkspaceProject());
+        IBmModel model = modelManager.getModel(project.getWorkspaceProject());
+
+        Object waitHandle = workspaceOrchestrator.beginExclusiveOperation("Build-waiting", //$NON-NLS-1$
+            List.of(dtProject), ProjectPipelineJob.BEFORE_BUILD_DD);
+
+        try
+        {
+            model.execute(new AbstractBmTask<Void>()
+            {
+                @Override
+                public Void execute(IBmTransaction transaction, IProgressMonitor progressMonitor)
+                {
+                    return null;
+                }
+            });
+        }
+        finally
+        {
+            workspaceOrchestrator.endOperation(waitHandle);
+        }
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());

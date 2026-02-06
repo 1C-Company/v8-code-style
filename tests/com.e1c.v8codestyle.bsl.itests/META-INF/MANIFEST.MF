@@ -10,6 +10,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Localization: fragment
 Import-Package: com._1c.g5.v8.dt.core.lifecycle;version="[10.0.0,11.0.0)",
  com._1c.g5.v8.dt.core.naming;version="[7.0.0,8.0.0)",
+ com._1c.g5.v8.dt.core.operations;version="[5.0.0,6.0.0)",
  com._1c.g5.v8.dt.core.platform;version="[12.0.0,13.0.0)",
  com._1c.g5.v8.dt.form.model;version="[13.0.0,14.0.0)",
  com._1c.g5.v8.dt.md.naming;version="[5.1.0,6.0.0)",
