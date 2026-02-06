@@ -7,7 +7,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IncrementalProjectBuilder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.junit.Test;
 
@@ -17,7 +20,6 @@ import com._1c.g5.v8.bm.integration.IBmModel;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.BslBuiltInLanguagePreferences;
 import com._1c.g5.v8.dt.core.operations.ProjectPipelineJob;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
-import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
 import com._1c.g5.v8.dt.core.platform.IWorkspaceOrchestrator;
 import com._1c.g5.v8.dt.validation.marker.Marker;
@@ -61,19 +63,22 @@ public class StringLiteralTypeAnnotationCheckTest
     @Test
     public void testInvalidAnnotationsLocationsMarkers() throws Exception
     {
-        IDtProject project = getProject();
-
-        IEclipsePreferences preferences = BslBuiltInLanguagePreferences.getPreferences(project.getWorkspaceProject());
+        IEclipsePreferences preferences =
+            BslBuiltInLanguagePreferences.getPreferences(getProject().getWorkspaceProject());
         preferences.putBoolean(BslBuiltInLanguagePreferences.APPLY_TAGS_TO_ENTIRE_EXPRESSION, true);
         preferences.flush();
 
         updateModule(FOLDER_RESOURCE + "string-literal-annotations-invalid-locations.bsl");
+        setCheckEnable(true);
 
-        var dtProject = dtProjectManager.getDtProject(project.getWorkspaceProject());
-        IBmModel model = modelManager.getModel(project.getWorkspaceProject());
+        ResourcesPlugin.getWorkspace().run((monitor) -> {
+            getProject().getWorkspaceProject().build(IncrementalProjectBuilder.CLEAN_BUILD, monitor);
+        }, new NullProgressMonitor());
+
+        IBmModel model = modelManager.getModel(getProject());
 
         Object waitHandle = workspaceOrchestrator.beginExclusiveOperation("Build-waiting", //$NON-NLS-1$
-            List.of(dtProject), ProjectPipelineJob.BEFORE_BUILD_DD);
+            List.of(getProject()), ProjectPipelineJob.BEFORE_BUILD_DD);
 
         try
         {
