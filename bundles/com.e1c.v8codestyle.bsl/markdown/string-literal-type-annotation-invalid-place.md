@@ -6,8 +6,8 @@
 
 Procedure NewProcedure(XDTOObject)
       
-    If True //     @fqn    
-    Then //     @fqn
+    If True // @fqn    
+    Then // @fqn
     
         Value = "";  
     ElseIf False
@@ -33,7 +33,7 @@ Procedure NewProcedure(XDTOObject)
       
     If True Then 
     
-        Value = ""; //     @fqn  
+        Value = ""; // @fqn  
     ElseIf False
       
     Then 
