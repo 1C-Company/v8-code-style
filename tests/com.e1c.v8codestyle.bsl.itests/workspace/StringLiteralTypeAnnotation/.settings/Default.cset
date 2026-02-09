@@ -1,0 +1,764 @@
+{
+  "version": 1,
+  "settings": {
+    "md-standard-attribute-synonym-empty": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-handler-for-existance": {
+      "enabled": false
+    },
+    "bsl-legacy-check-label-names-are-unique": {
+      "enabled": false
+    },
+    "bsl-legacy-check-dynamic-feature-access-for-unknown-left-part": {
+      "enabled": false
+    },
+    "md-legacy-check-missing-assignments": {
+      "enabled": false
+    },
+    "right-configuration-extensions-administration": {
+      "enabled": false
+    },
+    "common-module-name-client-cached": {
+      "enabled": false
+    },
+    "dynamic-access-method-not-found": {
+      "enabled": false
+    },
+    "bsl-legacy-check-continue-statement": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-join-incoming-connections-count": {
+      "enabled": false
+    },
+    "use-goto-operator": {
+      "enabled": false
+    },
+    "bsl-legacy-check-break-statement": {
+      "enabled": false
+    },
+    "right-interactive-clear-deletion-mark-predefined-data": {
+      "enabled": false
+    },
+    "bsl-legacy-check-variable-names-are-unique-method": {
+      "enabled": false
+    },
+    "method-param-value-type": {
+      "enabled": false
+    },
+    "doc-comment-field-type-strict": {
+      "enabled": false
+    },
+    "bsl-legacy-check-form-attribute-property-assign": {
+      "enabled": false
+    },
+    "md-legacy-check-unique-md-object-name": {
+      "enabled": false
+    },
+    "method-too-many-params": {
+      "enabled": false
+    },
+    "md-ext-legacy-check-adopted-md-object-source-exists": {
+      "enabled": false
+    },
+    "doc-comment-return-section-type": {
+      "enabled": false
+    },
+    "right-interactive-set-deletion-mark-predefined-data": {
+      "enabled": false
+    },
+    "module-structure-event-regions": {
+      "enabled": false
+    },
+    "right-update-database-configuration": {
+      "enabled": false
+    },
+    "bsl-legacy-check-await-expression": {
+      "enabled": false
+    },
+    "module-structure-var-in-region": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-cycles": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-split-outgoing-connections-count": {
+      "enabled": false
+    },
+    "right-start-web-client": {
+      "enabled": false
+    },
+    "right-interactive-open-external-data-processors": {
+      "enabled": false
+    },
+    "new-color": {
+      "enabled": false
+    },
+    "form-item-visible-settings-by-roles": {
+      "enabled": false
+    },
+    "ql-constants-in-binary-operation": {
+      "enabled": false
+    },
+    "self-assign": {
+      "enabled": false
+    },
+    "data-exchange-load": {
+      "enabled": false
+    },
+    "common-module-type": {
+      "enabled": false
+    },
+    "bsl-legacy-check-async-method": {
+      "enabled": false
+    },
+    "module-unused-local-variable": {
+      "enabled": false
+    },
+    "bsl-legacy-check-dynamic-feature-access": {
+      "enabled": false
+    },
+    "common-module-name-cached": {
+      "enabled": false
+    },
+    "right-view-event-log": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-split-to-join-connections": {
+      "enabled": false
+    },
+    "mdo-name-length": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-switch-event-handler": {
+      "enabled": false
+    },
+    "functional-option-privileged-get-mode": {
+      "enabled": false
+    },
+    "documentation-comment-hub": {
+      "enabled": false
+    },
+    "missing-temporary-file-deletion": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-start-point-existence": {
+      "enabled": false
+    },
+    "typed-value-adding-to-untyped-collection": {
+      "enabled": false
+    },
+    "method-isinrole-role-exist": {
+      "enabled": false
+    },
+    "right-start-external-connection": {
+      "enabled": false
+    },
+    "doc-comment-use-minus": {
+      "enabled": false
+    },
+    "property-return-type": {
+      "enabled": false
+    },
+    "optional-form-parameter-access": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-condition-outgoing-lines": {
+      "enabled": false
+    },
+    "common-module-missing-api": {
+      "enabled": false
+    },
+    "mdo-ru-name-unallowed-letter": {
+      "enabled": false
+    },
+    "right-exclusive-mode": {
+      "enabled": false
+    },
+    "module-unused-method": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-path-to-completion": {
+      "enabled": false
+    },
+    "form-commands-single-action-handler": {
+      "enabled": false
+    },
+    "right-interactive-open-external-reports": {
+      "enabled": false
+    },
+    "bsl-legacy-check-the-same-global-element-name-for-module-variable": {
+      "enabled": false
+    },
+    "md-ext-legacy-check-adopted-md-object-properties-matching": {
+      "enabled": false
+    },
+    "configuration-data-lock-mode": {
+      "enabled": false
+    },
+    "bsl-legacy-check-mobile-standalone-server-availability": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-sub-bp-points": {
+      "enabled": false
+    },
+    "binary-data-storage-location-use-field-type": {
+      "enabled": false
+    },
+    "md-legacy-check-scheduled-job-method": {
+      "enabled": false
+    },
+    "md-object-attribute-comment-incorrect-type": {
+      "enabled": false
+    },
+    "form-list-ref-use-always-flag-disabled": {
+      "enabled": false
+    },
+    "bsl-legacy-check-library-module": {
+      "enabled": false
+    },
+    "subsystem-synonym-too-long": {
+      "enabled": false
+    },
+    "extension-md-object-prefix": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-several-split-outgoing-to-one-point": {
+      "enabled": false
+    },
+    "doc-comment-export-procedure-description-section": {
+      "enabled": false
+    },
+    "lock-out-of-try": {
+      "enabled": false
+    },
+    "db-object-ref-non-ref-type": {
+      "enabled": false
+    },
+    "md-legacy-check-dimension-type": {
+      "enabled": false
+    },
+    "structure-consructor-value-type": {
+      "enabled": false
+    },
+    "doc-comment-parameter-in-description-suggestion": {
+      "enabled": false
+    },
+    "doc-comment-complex-type-with-link": {
+      "enabled": false
+    },
+    "doc-comment-export-function-return-section": {
+      "enabled": false
+    },
+    "doc-comment-parameter-section": {
+      "enabled": false
+    },
+    "extension-method-prefix": {
+      "enabled": false
+    },
+    "bsl-legacy-check-deprecated-method": {
+      "enabled": false
+    },
+    "empty-except-statement": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-switch-outgoing-lines": {
+      "enabled": false
+    },
+    "form-module-missing-pragma": {
+      "enabled": false
+    },
+    "additional-indexes-check": {
+      "enabled": false
+    },
+    "module-structure-top-region": {
+      "enabled": false
+    },
+    "ql-camel-case-string-literal": {
+      "enabled": false
+    },
+    "db-object-max-number-length": {
+      "enabled": false
+    },
+    "bsl-legacy-check-return-statement": {
+      "enabled": false
+    },
+    "module-accessibility-at-client": {
+      "enabled": false
+    },
+    "doc-comment-field-type": {
+      "enabled": false
+    },
+    "server-execution-safe-mode": {
+      "enabled": false
+    },
+    "ql-join-to-sub-query": {
+      "enabled": false
+    },
+    "form-ql-hub": {
+      "enabled": false
+    },
+    "using-isinrole": {
+      "enabled": false
+    },
+    "md-legacy-check-type-description-types": {
+      "enabled": false
+    },
+    "bsl-legacy-check-expression-type": {
+      "enabled": false
+    },
+    "md-legacy-check-commom-picture-unique-name": {
+      "enabled": false
+    },
+    "module-attachable-event-handler-name": {
+      "enabled": false
+    },
+    "md-legacy-check-sequence-dimension": {
+      "enabled": false
+    },
+    "invocation-form-event-handler": {
+      "enabled": false
+    },
+    "right-start-automation": {
+      "enabled": false
+    },
+    "md-legacy-check-name-in-data-source-field": {
+      "enabled": false
+    },
+    "common-module-name-client": {
+      "enabled": false
+    },
+    "bsl-legacy-check-date-literal": {
+      "enabled": false
+    },
+    "md-legacy-check-name-in-data-source-dimensiontable": {
+      "enabled": false
+    },
+    "bsl-legacy-validate-order-of-module-part": {
+      "enabled": false
+    },
+    "md-legacy-check-style-item-uniq-name": {
+      "enabled": false
+    },
+    "bsl-legacy-check-raise-statement": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-point-connection-to-completion": {
+      "enabled": false
+    },
+    "line-number-length": {
+      "enabled": false
+    },
+    "form-module-pragma": {
+      "enabled": false
+    },
+    "variable-value-type": {
+      "enabled": false
+    },
+    "common-module-name-global-client": {
+      "enabled": false
+    },
+    "right-start-thin-client": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-addressing-attributes-values-existance": {
+      "enabled": false
+    },
+    "query-in-loop": {
+      "enabled": false
+    },
+    "structure-consructor-too-many-keys": {
+      "enabled": false
+    },
+    "form-list-field-ref-not-added": {
+      "enabled": false
+    },
+    "module-self-reference": {
+      "enabled": false
+    },
+    "dcs-ql-hub": {
+      "enabled": false
+    },
+    "right-save-user-data": {
+      "enabled": false
+    },
+    "deprecated-procedure-outside-deprecated-region": {
+      "enabled": false
+    },
+    "right-administration": {
+      "enabled": false
+    },
+    "use-non-recommended-method": {
+      "enabled": false
+    },
+    "module-region-empty": {
+      "enabled": false
+    },
+    "mdo-scheduled-job-description": {
+      "enabled": false
+    },
+    "bsl-legacy-check-type-environments": {
+      "enabled": false
+    },
+    "new-font": {
+      "enabled": false
+    },
+    "using-form-data-to-value": {
+      "enabled": false
+    },
+    "bsl-legacy-check-is-appropriate-ctor": {
+      "enabled": false
+    },
+    "module-empty-method": {
+      "enabled": false
+    },
+    "bsl-legacy-check-region-preprocessor": {
+      "enabled": false
+    },
+    "right-data-administration": {
+      "enabled": false
+    },
+    "change-and-validate-instead-of-around": {
+      "enabled": false
+    },
+    "bsl-legacy-check-static-feature-access-for-unknown-left-part": {
+      "enabled": false
+    },
+    "form-legacy-check-event-handler": {
+      "enabled": false
+    },
+    "constructor-function-return-section": {
+      "enabled": false
+    },
+    "bsl-legacy-check-pragma-for-unused-method": {
+      "enabled": false
+    },
+    "bsl-legacy-check-string-literal": {
+      "enabled": false
+    },
+    "bsl-legacy-check-for-each-statetement-collection": {
+      "enabled": false
+    },
+    "role-right-has-rls": {
+      "enabled": false
+    },
+    "md-legacy-check-name-in-data-source-cube": {
+      "enabled": false
+    },
+    "scheduled-job-periodicity-too-short": {
+      "enabled": false
+    },
+    "doc-comment-ref-link": {
+      "enabled": false
+    },
+    "md-legacy-check-table": {
+      "enabled": false
+    },
+    "reference-value-resolving": {
+      "enabled": false
+    },
+    "right-start-thick-client": {
+      "enabled": false
+    },
+    "bsl-legacy-check-simple-statement": {
+      "enabled": false
+    },
+    "bsl-legacy-check-variable-names-are-unique-module": {
+      "enabled": false
+    },
+    "md-ext-legacy-check-common-module": {
+      "enabled": false
+    },
+    "object-module-export-variable": {
+      "enabled": false
+    },
+    "md-ext-legacy-check-configuration": {
+      "enabled": false
+    },
+    "reference-value-resolving-non-critical": {
+      "enabled": false
+    },
+    "bsl-variable-name-invalid": {
+      "enabled": false
+    },
+    "md-legacy-check-choice-parameter-link": {
+      "enabled": false
+    },
+    "doc-comment-collection-item-type": {
+      "enabled": false
+    },
+    "right-delete": {
+      "enabled": false
+    },
+    "extension-variable-prefix": {
+      "enabled": false
+    },
+    "common-module-name-global": {
+      "enabled": false
+    },
+    "notify-description-to-server-procedure": {
+      "enabled": false
+    },
+    "xdto-package-extension-package-namespace-features-state": {
+      "enabled": false
+    },
+    "md-legacy-check-name-in-data-source-table": {
+      "enabled": false
+    },
+    "right-interactive-delete-predefined-data": {
+      "enabled": false
+    },
+    "module-structure-init-code-in-region": {
+      "enabled": false
+    },
+    "form-legacy-check-command-handler": {
+      "enabled": false
+    },
+    "right-interactive-delete-marked-predefined-data": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-line-target-existence": {
+      "enabled": false
+    },
+    "bsl-legacy-check-module-extension": {
+      "enabled": false
+    },
+    "bsl-legacy-check-method-names-are-unique": {
+      "enabled": false
+    },
+    "bsl-legacy-check-returning-type-for-environment": {
+      "enabled": false
+    },
+    "unsafe-password-ib-storage": {
+      "enabled": false
+    },
+    "bsl-legacy-validate-order-of-method-part": {
+      "enabled": false
+    },
+    "bsl-legacy-check-event-handler-statement": {
+      "enabled": false
+    },
+    "manager-module-named-self-reference": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-incoming-to-join-connections": {
+      "enabled": false
+    },
+    "common-module-name-client-server": {
+      "enabled": false
+    },
+    "export-procedure-missing-comment": {
+      "enabled": false
+    },
+    "doc-comment-procedure-return-section": {
+      "enabled": false
+    },
+    "public-method-caching": {
+      "enabled": false
+    },
+    "bsl-canonical-pragma": {
+      "enabled": false
+    },
+    "bsl-legacy-check-for-empty-method-environments": {
+      "enabled": false
+    },
+    "md-legacy-check-commom-module-name": {
+      "enabled": false
+    },
+    "ql-temp-table-index": {
+      "enabled": false
+    },
+    "bsl-legacy-check-execute-statement": {
+      "enabled": false
+    },
+    "bsl-legacy-check-pragma": {
+      "enabled": false
+    },
+    "doc-comment-redundant-parameter-section": {
+      "enabled": false
+    },
+    "string-literal-type-annotation-invalid-place": {
+      "severity": "CRITICAL"
+    },
+    "bsl-legacy-check-goto-statement": {
+      "enabled": false
+    },
+    "right-interactive-delete": {
+      "enabled": false
+    },
+    "event-heandler-boolean-param": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-point-incoming-line-existence": {
+      "enabled": false
+    },
+    "ql-like-expression-with-field": {
+      "enabled": false
+    },
+    "input-field-list-choice-mode": {
+      "enabled": false
+    },
+    "form-legacy-check-type-description-types": {
+      "enabled": false
+    },
+    "bsl-legacy-check-local-variables-not-exported": {
+      "enabled": false
+    },
+    "form-self-reference": {
+      "enabled": false
+    },
+    "form-legacy-emf-check": {
+      "enabled": false
+    },
+    "doc-comment-field-name": {
+      "enabled": false
+    },
+    "doc-comment-field-in-description-suggestion": {
+      "enabled": false
+    },
+    "not-support-goto-operator-webclient": {
+      "enabled": false
+    },
+    "right-active-users": {
+      "enabled": false
+    },
+    "md-legacy-emf-check": {
+      "enabled": false
+    },
+    "md-legacy-check-subsystem": {
+      "enabled": false
+    },
+    "data-composition-conditional-appearance-use": {
+      "enabled": false
+    },
+    "right-output-to-printer-file-clipboard": {
+      "enabled": false
+    },
+    "md-legacy-check-ws-reference": {
+      "enabled": false
+    },
+    "right-all-functions-mode": {
+      "enabled": false
+    },
+    "register-resource-precision": {
+      "enabled": false
+    },
+    "bsl-legacy-check-static-feature-access": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-for-condition-event-handler": {
+      "enabled": false
+    },
+    "common-module-name-server-call": {
+      "enabled": false
+    },
+    "bsl-legacy-check-type-in-operator-new": {
+      "enabled": false
+    },
+    "common-module-named-self-reference": {
+      "enabled": false
+    },
+    "module-structure-method-in-regions": {
+      "enabled": false
+    },
+    "ql-virtual-table-filters": {
+      "enabled": false
+    },
+    "bsl-legacy-check-number-literal-expression": {
+      "enabled": false
+    },
+    "common-module-name-server-call-cached": {
+      "enabled": false
+    },
+    "doc-comment-type": {
+      "enabled": false
+    },
+    "method-optional-parameter-before-required": {
+      "enabled": false
+    },
+    "md-legacy-check-name-in-data-source-resource": {
+      "enabled": false
+    },
+    "form-dynamic-list-item-title": {
+      "enabled": false
+    },
+    "reading-attribute-from-database": {
+      "enabled": false
+    },
+    "bsl-legacy-check-method-annotations": {
+      "enabled": false
+    },
+    "bsl-nstr-string-literal-format": {
+      "enabled": false
+    },
+    "bsl-legacy-check-if-preprocessor-part-environments": {
+      "enabled": false
+    },
+    "ql-cast-to-max-number": {
+      "enabled": false
+    },
+    "bsl-legacy-check-preprocessors-lines": {
+      "enabled": false
+    },
+    "function-return-value-type": {
+      "enabled": false
+    },
+    "common-module-name-full-access": {
+      "enabled": false
+    },
+    "structure-key-modification": {
+      "enabled": false
+    },
+    "unknown-form-parameter-access": {
+      "enabled": false
+    },
+    "invocation-parameter-type-intersect": {
+      "enabled": false
+    },
+    "md-object-attribute-comment-not-exist": {
+      "enabled": false
+    },
+    "md-legacy-check-event-subscription-handler": {
+      "enabled": false
+    },
+    "graphical-scheme-legacy-check-switch-item": {
+      "enabled": false
+    },
+    "ql-using-for-update": {
+      "enabled": false
+    },
+    "export-method-in-command-form-module": {
+      "enabled": false
+    },
+    "db-object-anyref-type": {
+      "enabled": false
+    },
+    "md-list-object-presentation": {
+      "enabled": false
+    },
+    "form-list-ref-user-visibility-enabled": {
+      "enabled": false
+    },
+    "bsl-legacy-check-method-for-statements-after-return": {
+      "enabled": false
+    },
+    "module-structure-form-event-regions": {
+      "enabled": false
+    },
+    "form-items-single-event-handler": {
+      "enabled": false
+    },
+    "md-ext-legacy-check-extended-configuration-object": {
+      "enabled": false
+    },
+    "document-post-in-privileged-mode": {
+      "enabled": false
+    },
+    "configuration-standalone-content": {
+      "enabled": false
+    },
+    "statement-type-change": {
+      "enabled": false
+    }
+  }
+}
