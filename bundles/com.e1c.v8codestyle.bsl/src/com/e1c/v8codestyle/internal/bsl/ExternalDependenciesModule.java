@@ -41,7 +41,6 @@ import com._1c.g5.v8.dt.bsl.typesystem.ExportMethodTypeProvider;
 import com._1c.g5.v8.dt.core.naming.ITopObjectFqnGenerator;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
-import com._1c.g5.v8.dt.core.platform.IDtProjectManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.core.platform.IWorkspaceOrchestrator;
@@ -79,7 +78,6 @@ class ExternalDependenciesModule
         bind(INamingService.class).toService();
         bind(ITopObjectFqnGenerator.class).toService();
         bind(IWorkspaceOrchestrator.class).toService();
-        bind(IDtProjectManager.class).toService();
 
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
