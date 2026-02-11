@@ -43,7 +43,6 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
-import com._1c.g5.v8.dt.core.platform.IWorkspaceOrchestrator;
 import com._1c.g5.v8.dt.platform.version.IRuntimeVersionSupport;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 import com.e1c.g5.dt.core.api.naming.INamingService;
@@ -77,7 +76,6 @@ class ExternalDependenciesModule
         bind(IBmModelManager.class).toService();
         bind(INamingService.class).toService();
         bind(ITopObjectFqnGenerator.class).toService();
-        bind(IWorkspaceOrchestrator.class).toService();
 
         bind(ICheckRepository.class).toService();
         bind(IFixRepository.class).toService();
