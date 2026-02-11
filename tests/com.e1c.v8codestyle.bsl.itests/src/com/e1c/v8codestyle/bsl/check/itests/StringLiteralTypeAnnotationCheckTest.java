@@ -60,9 +60,11 @@ public class StringLiteralTypeAnnotationCheckTest
     public void testInvalidAnnotationsLocationsMarkers() throws Exception
     {
         List<Marker> markers = getModuleMarkers();
-        assertEquals(2, markers.size());
+        assertEquals(4, markers.size());
 
-        assertEquals(Integer.valueOf(22), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-        assertEquals(Integer.valueOf(25), markers.get(1).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(5), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(10), markers.get(1).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(11), markers.get(2).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(13), markers.get(3).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 }

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -28,8 +26,6 @@ import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.BslBuiltInLanguagePreferences;
-import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.IStringLiteralTypeComputer;
-import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.LiteralType;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.TypeUtil;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -58,11 +54,6 @@ public class StringLiteralTypeAnnotationCheck
 
     @Inject
     private IV8ProjectManager projectManager;
-
-    @Inject
-    private IStringLiteralTypeComputer typeComputer;
-
-    private final AtomicReference<Set<String>> annotations = new AtomicReference<>();
 
     @Override
     public String getCheckId()
@@ -216,27 +207,6 @@ public class StringLiteralTypeAnnotationCheck
     private boolean isAllowAnnotation(String text)
     {
         List<Triple<String, Integer, String>> commentAnnotations = TypeUtil.parseHeaderAnnotations(text);
-        for (Triple<String, Integer, String> commentAnnotation : commentAnnotations)
-        {
-            if (getAllowAnnotations().contains(commentAnnotation.getFirst().toLowerCase()))
-                return true;
-        }
-        return false;
-    }
-
-    private Set<String> getAllowAnnotations()
-    {
-        Set<String> allowAnnotations = annotations.get();
-        if (allowAnnotations == null)
-        {
-            allowAnnotations = typeComputer.allTypes()
-                .stream()
-                .filter(LiteralType::allowAnnotation)
-                .map(type -> type.getName().toLowerCase())
-                .collect(Collectors.toSet());
-            if (!annotations.compareAndSet(null, allowAnnotations))
-                allowAnnotations = annotations.get();
-        }
-        return allowAnnotations;
+        return !commentAnnotations.isEmpty();
     }
 }
