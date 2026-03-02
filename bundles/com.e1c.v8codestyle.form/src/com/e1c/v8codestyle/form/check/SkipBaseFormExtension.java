@@ -33,7 +33,13 @@ public class SkipBaseFormExtension
         return (IBmObject object, ICheckParameters parameters) -> !isBaseForm((Form)object);
     }
 
-    private static boolean isBaseForm(Form form)
+    /**
+     * Returns whether the given form is a base form.
+     *
+     * @param form form to test, may be {@code null}.
+     * @return whether the given form is a base form.
+     */
+    public static boolean isBaseForm(Form form)
     {
         return form != null && form.getMdForm().getObjectBelonging() == ObjectBelonging.ADOPTED
             && form.getExtensionForm() != null && !form.getExtensionForm().eIsProxy()

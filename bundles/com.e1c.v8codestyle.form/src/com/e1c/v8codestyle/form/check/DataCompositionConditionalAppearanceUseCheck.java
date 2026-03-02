@@ -124,7 +124,7 @@ public class DataCompositionConditionalAppearanceUseCheck
         else
         {
             Form form = manager.getOwner(eObject, Form.class);
-            if (monitor.isCanceled() || form == null)
+            if (monitor.isCanceled() || form == null || SkipBaseFormExtension.isBaseForm(form))
             {
                 return;
             }
