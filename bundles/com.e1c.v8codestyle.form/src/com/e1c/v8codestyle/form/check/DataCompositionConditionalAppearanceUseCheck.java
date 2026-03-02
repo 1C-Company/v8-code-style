@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2023, 1C-Soft LLC and others.
+ * Copyright (C) 2023-2026, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -124,7 +124,7 @@ public class DataCompositionConditionalAppearanceUseCheck
         else
         {
             Form form = manager.getOwner(eObject, Form.class);
-            if (monitor.isCanceled() || form == null)
+            if (monitor.isCanceled() || form == null || SkipBaseFormExtension.isBaseForm(form))
             {
                 return;
             }

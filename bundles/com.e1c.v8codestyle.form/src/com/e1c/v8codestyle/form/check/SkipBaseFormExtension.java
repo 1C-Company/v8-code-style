@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2022, 1C-Soft LLC and others.
+ * Copyright (C) 2022-2026, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,7 +33,13 @@ public class SkipBaseFormExtension
         return (IBmObject object, ICheckParameters parameters) -> !isBaseForm((Form)object);
     }
 
-    private static boolean isBaseForm(Form form)
+    /**
+     * Returns whether the given form is a base form.
+     *
+     * @param form form to test, may be {@code null}.
+     * @return whether the given form is a base form.
+     */
+    public static boolean isBaseForm(Form form)
     {
         return form != null && form.getMdForm().getObjectBelonging() == ObjectBelonging.ADOPTED
             && form.getExtensionForm() != null && !form.getExtensionForm().eIsProxy()
