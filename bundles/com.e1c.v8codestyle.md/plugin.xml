@@ -14,126 +14,134 @@
  -->
 
 <plugin>
-   <extension
-         point="com.e1c.g5.v8.dt.check.checks">
-      <category
+    <extension
+        point="com.e1c.g5.v8.dt.check.checks">
+        <category
             category="com.e1c.v8codestyle"
             description="%category.md.description"
             id="com.e1c.v8codestyle.md"
             title="%category.md.title">
-      </category>
-      <check
+        </category>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.configuration.check.ConfigurationDataLock">
-      </check>
-      <check
+        </check>
+        <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.configuration.check.RestrictCommonModuleServerCallCheck">
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdObjectNameLength">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameClient">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameClientServer">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameGlobal">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleType">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdListObjectPresentationCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.scheduledjob.check.MdScheduledJobDescriptionCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdStandardAttributeSynonymEmpty">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.scheduledjob.check.MdScheduledJobPeriodicityCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.register.check.RegisterResourcePrecisionCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameServerCallCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameCachedCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameClientCachedCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameServerCallCachedCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.DbObjectRefNonRefTypesCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.DbObjectAnyRefTypeCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.DbObjectMaxNumberLengthCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.UnsafePasswordStorageCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.subsystem.check.SubsystemSynonymTooLongCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNameGlobalClientCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNamePrivilegedCheck">
-      </check>
-      <check
+        </check>
+                <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.commonmodule.check.CommonModuleNamePrivilegedCheck2">
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.ExtensionMdObjectNamePrefixCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.internal.md.ExecutableExtensionFactory:com.e1c.v8codestyle.md.check.MdObjectNameUnallowedLetterCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.document.check.DocumentPostInPrivilegedModeCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.MdObjectAttributeCommentCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.check.MdObjectAttributeCommentNotExistCheck">
-      </check>
-      <check
+        </check>
+        <check
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.functionoption.check.FunctionalOptionPrivilegedGetModeCheck">
-      </check>
-   </extension>
-   
+        </check>
+    </extension>
+
 </plugin>
