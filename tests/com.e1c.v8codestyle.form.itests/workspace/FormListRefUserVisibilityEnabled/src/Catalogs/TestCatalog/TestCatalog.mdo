@@ -53,4 +53,22 @@
     <usePurposes>PersonalComputer</usePurposes>
     <usePurposes>MobileDevice</usePurposes>
   </forms>
+  <forms uuid="b7d4e7be-7f3a-49a3-9afa-60e32f350c04">
+    <name>TestTableForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Test table form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+  <forms uuid="7982315e-5cf7-46df-995d-4ca25bd931ca">
+    <name>TestTableFormRu</name>
+    <synonym>
+      <key>en</key>
+      <value>Test table form ru</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
 </mdclass:Catalog>

@@ -49,6 +49,9 @@ public class FormListRefUserVisibilityEnabledCheckTest
     private static final String FQN_FORM_EN = "Catalog.TestCatalog.Form.TestListForm.Form";
     private static final String FQN_FORM_RU = "Catalog.TestCatalog.Form.TestListFormRu.Form";
 
+    private static final String TABLE_FQN_FORM_EN = "Catalog.TestCatalog.Form.TestTableForm.Form";
+    private static final String TABLE_FQN_FORM_RU = "Catalog.TestCatalog.Form.TestTableFormRu.Form";
+
     /**
      * Test User Visibility is enabled for the Ref field in dynamic list (En Script variant).
      *
@@ -193,6 +196,56 @@ public class FormListRefUserVisibilityEnabledCheckTest
 
         IBmObject object = getTopObjectByFqn(FQN_FORM_RU, dtProject);
         assertTrue(object instanceof Form);
+
+        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+        assertNull(marker);
+    }
+
+    /**
+     * Test User Visibility is enabled for the Ref field in dynamic list (En Script variant).
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testUserVisibilityEnabledForRefNotInDynList() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject object = getTopObjectByFqn(TABLE_FQN_FORM_EN, dtProject);
+        assertTrue(object instanceof Form);
+
+        Form form = (Form)object;
+        FormItem item = form.getItems().get(0);
+        assertTrue(item instanceof Table);
+
+        Table table = (Table)item;
+        assertEquals("TableRef", table.getItems().get(0).getName());
+
+        Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
+        assertNull(marker);
+    }
+
+    /**
+     * Test User Visibility is enabled for the Ref field in dynamic list (Ru Script variant).
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testUserVisibilityEnabledForRefNotInDynListRu() throws Exception
+    {
+        IDtProject dtProject = openProjectAndWaitForValidationFinish(PROJECT_NAME);
+        assertNotNull(dtProject);
+
+        IBmObject object = getTopObjectByFqn(TABLE_FQN_FORM_RU, dtProject);
+        assertTrue(object instanceof Form);
+
+        Form form = (Form)object;
+        FormItem item = form.getItems().get(0);
+        assertTrue(item instanceof Table);
+
+        Table table = (Table)item;
+        assertEquals("ТаблицаСсылка", table.getItems().get(0).getName());
 
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), dtProject);
         assertNull(marker);
