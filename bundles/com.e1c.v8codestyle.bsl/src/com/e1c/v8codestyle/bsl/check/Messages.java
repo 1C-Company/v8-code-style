@@ -109,6 +109,12 @@ final class Messages
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
 
+    public static String CommonModuleServerCallCheck_Description;
+
+    public static String CommonModuleServerCallCheck_Title;
+
+    public static String CommonModuleServerCallCheck_Issue;
+
     public static String ConsecutiveEmptyLines_Description;
 
     public static String ConsecutiveEmptyLines_Parameter_title;
@@ -315,7 +321,7 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Maximum_structure_constructor_keys;
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
-	
+
 	public static String NotSupportGotoOperatorWebCheck_Title;
     public static String NotSupportGotoOperatorWebCheck_Description;
     public static String NotSupportGotoOperatorWebCheck_Issue;
