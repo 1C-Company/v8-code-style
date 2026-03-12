@@ -187,7 +187,7 @@ public class DynamicListItemTitleCheck
     private String getDefaultLanguageCode(EObject context)
     {
         IV8Project project = v8ProjectManager.getProject(context);
-        if (project.getDefaultLanguage() == null && project instanceof IDependentProject)
+        if (project.getDefaultLanguage() == null && project instanceof IDependentProject && ((IDependentProject)project).getParent() != null)
         {
             return ((IDependentProject)project).getParent().getDefaultLanguage().getLanguageCode();
         }
