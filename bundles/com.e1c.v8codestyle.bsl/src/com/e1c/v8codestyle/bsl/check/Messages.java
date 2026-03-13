@@ -109,6 +109,12 @@ final class Messages
 
     public static String CommonModuleNamedSelfReferenceCheck_title;
 
+    public static String CommonModuleServerCallCheck_Description;
+
+    public static String CommonModuleServerCallCheck_Title;
+
+    public static String CommonModuleServerCallCheck_Issue;
+
     public static String ConsecutiveEmptyLines_Description;
 
     public static String ConsecutiveEmptyLines_Parameter_title;
