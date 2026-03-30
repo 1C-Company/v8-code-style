@@ -335,7 +335,8 @@ public class SortService
             for (Notification notification : notifications)
             {
                 if (notification.getEventType() == Notification.ADD || notification.getEventType() == Notification.MOVE
-                    || notification.getEventType() == Notification.REMOVE)
+                    || notification.getEventType() == Notification.REMOVE
+                    || notification.getEventType() == Notification.REMOVE_MANY)
                 {
                     Object notifier = notification.getNotifier();
                     Object value = notification.getNewValue();
