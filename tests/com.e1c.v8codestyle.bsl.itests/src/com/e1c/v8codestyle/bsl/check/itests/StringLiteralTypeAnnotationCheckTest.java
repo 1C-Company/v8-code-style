@@ -62,9 +62,9 @@ public class StringLiteralTypeAnnotationCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(4, markers.size());
 
-        assertEquals(Integer.valueOf(5), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-        assertEquals(Integer.valueOf(10), markers.get(1).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-        assertEquals(Integer.valueOf(11), markers.get(2).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-        assertEquals(Integer.valueOf(13), markers.get(3).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(7), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(12), markers.get(1).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(13), markers.get(2).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(15), markers.get(3).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 }

@@ -10,13 +10,14 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.ICompositeNode;
 import org.eclipse.xtext.nodemodel.ILeafNode;
 import org.eclipse.xtext.nodemodel.INode;
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
-import org.eclipse.xtext.util.Triple;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslCommentUtils;
+import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
@@ -26,6 +27,8 @@ import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.BslBuiltInLanguagePreferences;
+import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.IStringLiteralTypeComputer;
+import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.LiteralType;
 import com._1c.g5.v8.dt.bsl.stringliteral.contenttypes.TypeUtil;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -54,6 +57,9 @@ public class StringLiteralTypeAnnotationCheck
 
     @Inject
     private IV8ProjectManager projectManager;
+
+    @Inject
+    private IStringLiteralTypeComputer typeComputer;
 
     @Override
     public String getCheckId()
@@ -99,7 +105,8 @@ public class StringLiteralTypeAnnotationCheck
                 {
                     moduleStringLiterals.add(literal);
                 }
-                if (child.isHidden() && BslCommentUtils.isCommentNode(child) && isAllowAnnotation(child.getText()))
+                if (child.isHidden() && BslCommentUtils.isCommentNode(child) && isAllowAnnotation(child.getText())
+                    && hasStatement(child))
                 {
                     moduleAnnotations.add(child);
                 }
@@ -206,7 +213,46 @@ public class StringLiteralTypeAnnotationCheck
 
     private boolean isAllowAnnotation(String text)
     {
-        List<Triple<String, Integer, String>> commentAnnotations = TypeUtil.parseHeaderAnnotations(text);
-        return !commentAnnotations.isEmpty();
+        List<String> commentAnnotations =
+            TypeUtil.parseHeaderAnnotations(text).stream().map(triple -> triple.getFirst()).toList();
+        if (commentAnnotations.isEmpty())
+            return false;
+
+        for (String typeName : commentAnnotations)
+        {
+            LiteralType type = typeComputer.getType(typeName);
+            if (type == null)
+                return false;
+        }
+        return true;
+    }
+
+    private boolean hasStatement(ILeafNode node)
+    {
+        if (!node.isHidden() || !BslCommentUtils.isCommentNode(node))
+        {
+            return false;
+        }
+
+        final int currentLine = node.getStartLine();
+
+        EObject semantic = NodeModelUtils.findActualSemanticObjectFor(node);
+        Block block = EcoreUtil2.getContainerOfType(semantic, Block.class);
+        INode parent = NodeModelUtils.findActualNodeFor(block);
+        if (parent != null)
+        {
+            for (ILeafNode child : parent.getLeafNodes())
+            {
+                if (child.getEndLine() != currentLine)
+                    continue;
+                if (child.getEndLine() > currentLine)
+                    break;
+
+                EObject obj = child.getSemanticElement();
+                return obj != null;
+            }
+        }
+
+        return false;
     }
 }
