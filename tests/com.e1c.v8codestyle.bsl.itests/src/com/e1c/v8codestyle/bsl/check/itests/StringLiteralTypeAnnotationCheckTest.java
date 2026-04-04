@@ -59,6 +59,7 @@ public class StringLiteralTypeAnnotationCheckTest
     @Test
     public void testInvalidAnnotationsLocationsMarkers() throws Exception
     {
+        testingWorkspace.waitForBuildCompletion();
         List<Marker> markers = getModuleMarkers();
         assertEquals(4, markers.size());
 
