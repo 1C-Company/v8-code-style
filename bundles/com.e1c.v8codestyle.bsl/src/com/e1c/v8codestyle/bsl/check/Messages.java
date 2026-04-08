@@ -492,9 +492,6 @@ final class Messages
     public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
     public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
 
-    public static String StringLiteralTypeAnnotationCheck_Title;
-    public static String StringLiteralTypeAnnotationCheck_Incorrect_annotation_location;
-
     static
     {
         // initialize resource bundle
