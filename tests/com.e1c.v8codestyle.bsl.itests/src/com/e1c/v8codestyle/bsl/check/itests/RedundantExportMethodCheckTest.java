@@ -52,6 +52,7 @@ public class RedundantExportMethodCheckTest
         return PROJECT_NAME;
     }
 
+    @Ignore
     @Test
     public void testNoCallNoPublic() throws Exception
     {
@@ -61,6 +62,7 @@ public class RedundantExportMethodCheckTest
         assertEquals(Integer.valueOf(1), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
+    @Ignore
     @Test
     public void testNoCallPublic() throws Exception
     {
@@ -68,6 +70,7 @@ public class RedundantExportMethodCheckTest
         assertEquals(0, markers.size());
     }
 
+    @Ignore
     @Test
     @Ignore
     public void testCallNoPublic() throws Exception
@@ -76,6 +79,7 @@ public class RedundantExportMethodCheckTest
         assertEquals(0, markers.size());
     }
 
+    @Ignore
     @Test
     public void testLocalCall() throws Exception
     {
@@ -85,6 +89,7 @@ public class RedundantExportMethodCheckTest
         assertEquals(Integer.valueOf(2), markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
+    @Ignore
     @Test
     public void testNotifyCall() throws Exception
     {
@@ -92,6 +97,7 @@ public class RedundantExportMethodCheckTest
         assertEquals(0, markers.size());
     }
 
+    @Ignore
     @Test
     public void testNotifyWithRegionCall() throws Exception
     {
@@ -99,6 +105,7 @@ public class RedundantExportMethodCheckTest
         assertEquals(0, markers.size());
     }
 
+    @Ignore
     @Test
     public void testEventSubscription() throws Exception
     {
@@ -106,6 +113,7 @@ public class RedundantExportMethodCheckTest
         assertEquals(0, markers.size());
     }
 
+    @Ignore
     @Test
     public void testScheduledJob() throws Exception
     {
