@@ -32,3 +32,4 @@
 | [scheduled-job-periodicity-too-short](../../bundles/com.e1c.v8codestyle.md/markdown/ru/scheduled-job-periodicity-too-short.md) | Периодичность выполнения регламентного задания меньше одной минуты. |
 | [subsystem-synonym-too-long](../../bundles/com.e1c.v8codestyle.md/markdown/ru/subsystem-synonym-too-long.md) | Длина названия раздела превышает 35 символов |
 | [unsafe-password-ib-storage](../../bundles/com.e1c.v8codestyle.md/markdown/ru/unsafe-password-ib-storage.md) | Небезопасное хранение паролей в информационной базе |
+| [role-missing](../../bundles/com.e1c.v8codestyle.md/markdown/ru/role-missing.md) | Отсутствует обязательная роль |

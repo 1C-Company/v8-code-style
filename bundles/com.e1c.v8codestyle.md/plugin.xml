@@ -134,6 +134,10 @@
             category="com.e1c.v8codestyle.md"
             class="com.e1c.v8codestyle.md.functionoption.check.FunctionalOptionPrivilegedGetModeCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.md"
+            class="com.e1c.v8codestyle.md.role.check.RoleMissingCheck">
+      </check>
    </extension>
    
 </plugin>
