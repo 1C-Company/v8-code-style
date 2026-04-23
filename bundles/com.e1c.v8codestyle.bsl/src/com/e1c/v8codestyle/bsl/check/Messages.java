@@ -39,6 +39,12 @@ final class Messages
 
     public static String AccessibilityAtClientInObjectModuleCheck_title;
 
+    public static String ApplicationLaunchSecurityCheck_Title;
+
+    public static String ApplicationLaunchSecurityCheck_Description;
+
+    public static String ApplicationLaunchSecurityCheck_Issue;
+
     public static String CachedPublicCheck_Description;
 
     public static String CachedPublicCheck_Issue;
