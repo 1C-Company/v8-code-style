@@ -44,7 +44,7 @@ public class StructureCtorTooManyKeysCheckTest
     @Test
     public void testStructureConstructorKeys() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "structure-consructor-too-many-keys.bsl");
+        updateModule(FOLDER_RESOURCE + "structure-constructor-too-many-keys.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
