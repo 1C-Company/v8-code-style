@@ -62,6 +62,10 @@ final class Messages
 
     public static String ServerExecutionSafeModeFix_details;
 
+    public static String RestrictionExecuteExternalCodeFix_Description;
+
+    public static String RestrictionExecuteExternalCodeFix_Details;
+
     public static String UndefinedMethodFix_func_title;
     public static String UndefinedMethodFix_func_desc;
     public static String UndefinedMethodFix_proc_title;
