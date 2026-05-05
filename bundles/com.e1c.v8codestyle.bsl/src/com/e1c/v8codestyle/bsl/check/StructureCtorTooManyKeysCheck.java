@@ -41,7 +41,7 @@ public class StructureCtorTooManyKeysCheck
     extends BasicCheck
 {
 
-    private static final String CHECK_ID = "structure-consructor-too-many-keys"; //$NON-NLS-1$
+    private static final String CHECK_ID = "structure-constructor-too-many-keys"; //$NON-NLS-1$
 
     private static final String PARAM_MAX_STRUCTURE_KEYS = "maxKeys"; //$NON-NLS-1$
 
