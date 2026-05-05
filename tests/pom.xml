@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
    Copyright (c) 2020 1C-Soft LLC
    This program and the accompanying materials are made available under
@@ -7,22 +7,16 @@
    SPDX-License-Identifier: EPL-2.0
    Contributors:
        1C-Soft LLC - initial API and implementation
--->
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
   <parent>
     <groupId>com.e1c.v8codestyle</groupId>
     <artifactId>parent</artifactId>
-    <version>0.7.0-SNAPSHOT</version>
+    <version>0.8.0-SNAPSHOT</version>
   </parent>
-
   <artifactId>tests</artifactId>
   <packaging>pom</packaging>
   <name>Tests</name>
-
   <modules>
     <module>com.e1c.v8codestyle.md.itests</module>
     <module>com.e1c.v8codestyle.form.itests</module>
@@ -32,7 +26,6 @@
     <module>com.e1c.v8codestyle.ql.itests</module>
     <module>com.e1c.v8codestyle.right.itests</module>
   </modules>
-
   <profiles>
     <profile>
       <id>macosx</id>
@@ -55,7 +48,7 @@
         </os>
       </activation>
       <properties>
-        <ui.test.vmargs></ui.test.vmargs>
+        <ui.test.vmargs/>
       </properties>
     </profile>
     <profile>
@@ -65,12 +58,10 @@
       </properties>
     </profile>
   </profiles>
-
   <properties>
     <tycho-surefire-plugin.vmargs>-Xms80m -Xmx2g -Dosgi.module.lock.timeout=24 --add-modules=ALL-SYSTEM --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=java.management/com.sun.jmx.mbeanserver=ALL-UNNAMED --add-opens=jdk.internal.jvmstat/sun.jvmstat.monitor=ALL-UNNAMED --add-opens=java.base/sun.reflect.generics.reflectiveObjects=ALL-UNNAMED --add-opens=jdk.management/com.sun.management.internal=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.ref=ALL-UNNAMED -DenvironmentChecker.disable=true</tycho-surefire-plugin.vmargs>
-    <debug.vmargs></debug.vmargs>
+    <debug.vmargs/>
   </properties>
-
   <build>
     <plugins>
       <plugin>
@@ -81,7 +72,7 @@
             <artifact>
               <groupId>com.e1c.v8codestyle</groupId>
               <artifactId>default</artifactId>
-              <version>0.7.0-SNAPSHOT</version>
+              <version>0.8.0-SNAPSHOT</version>
             </artifact>
           </target>
           <dependency-resolution>
@@ -96,12 +87,12 @@
                 <id>com._1c.g5.v8.dt.platform.support_v8.3.19.feature</id>
                 <versionRange>0.0.0</versionRange>
               </requirement>
-			  <requirement>
+              <requirement>
                 <type>eclipse-feature</type>
                 <id>com._1c.g5.v8.dt.platform.support_v8.3.23.feature</id>
                 <versionRange>0.0.0</versionRange>
               </requirement>
-			  <requirement>
+              <requirement>
                 <type>eclipse-feature</type>
                 <id>com._1c.g5.v8.dt.platform.support_v8.5.1.feature</id>
                 <versionRange>0.0.0</versionRange>
@@ -147,7 +138,7 @@
             <configuration>
               <target>
                 <!-- Delete aut from tests -->
-                <delete dir="${project.build.directory}/work" />
+                <delete dir="${project.build.directory}/work"/>
               </target>
             </configuration>
             <goals>
@@ -156,12 +147,11 @@
           </execution>
         </executions>
       </plugin>
-	  <plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>native2ascii-maven-plugin</artifactId>
       </plugin>
     </plugins>
-
     <pluginManagement>
       <plugins>
         <plugin>
@@ -178,5 +168,4 @@
       </plugins>
     </pluginManagement>
   </build>
-
 </project>

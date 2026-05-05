@@ -16,13 +16,13 @@
   <parent>
     <groupId>com.e1c.v8codestyle</groupId>
     <artifactId>bom</artifactId>
-    <version>0.7.0-SNAPSHOT</version>
+    <version>0.8.0-SNAPSHOT</version>
     <relativePath>./bom/pom.xml</relativePath>
   </parent>
 
   <groupId>com.e1c.v8codestyle</groupId>
   <artifactId>parent</artifactId>
-  <version>0.7.0-SNAPSHOT</version>
+  <version>0.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>1C:Code style V8</name>
@@ -59,6 +59,11 @@
                   <requirement>
                     <type>eclipse-plugin</type>
                     <id>org.apache.felix.scr</id>
+                    <versionRange>0.0.0</versionRange>
+                  </requirement>
+                  <requirement>
+                    <type>eclipse-plugin</type>
+                    <id>org.eclipse.swt.svg</id>
                     <versionRange>0.0.0</versionRange>
                   </requirement>
                   <requirement>

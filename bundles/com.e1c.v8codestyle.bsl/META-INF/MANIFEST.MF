@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.e1c.v8codestyle.bsl;singleton:=true
-Bundle-Version: 0.7.0.qualifier
+Bundle-Version: 0.8.0.qualifier
 Bundle-Activator: com.e1c.v8codestyle.internal.bsl.BslPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -12,10 +12,10 @@ Require-Bundle: org.eclipse.core.resources;bundle-version="[3.13.0,4.0.0)",
  org.eclipse.text;bundle-version="[3.8.100,4.0.0)",
  org.eclipse.xtext;bundle-version="[2.17.0,3.0.0)",
  org.eclipse.xtext.builder;bundle-version="[2.18.0,3.0.0)",
- org.eclipse.jdt.annotation;bundle-version="[2.2.0,3.0.0)";resolution:=optional,
- com.e1c.g5.v8.dt.check,
+ org.eclipse.jdt.annotation;bundle-version="[2.2.0,3.0.0)";resolution:=optional
+ com.e1c.g5.v8.dt.check;bundle-version="[6.0.101,7.0.0)",
  com._1c.g5.v8.bm.core;bundle-version="[9.0.0,10.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-25
 Automatic-Module-Name: com.e1c.v8codestyle.bsl
 Bundle-ActivationPolicy: lazy
 Import-Package: com._1c.g5.v8.bm.core;version="[9.0.0,10.0.0)",
@@ -58,7 +58,7 @@ Import-Package: com._1c.g5.v8.bm.core;version="[9.0.0,10.0.0)",
  com.e1c.g5.v8.dt.check.qfix;version="[4.0.0,5.0.0)",
  com.e1c.g5.v8.dt.check.qfix.components;version="[1.0.0,2.0.0)",
  com.e1c.g5.v8.dt.check.settings;version="[4.0.0,5.0.0)",
- com.e1c.v8codestyle;version="[0.7.0,0.8.0)",
- com.e1c.v8codestyle.check;version="[0.7.0,0.8.0)"
-Export-Package: com.e1c.v8codestyle.bsl;version="0.7.0",
- com.e1c.v8codestyle.bsl.strict;version="0.7.0"
+ com.e1c.v8codestyle;version="[0.8.0,0.9.0)",
+ com.e1c.v8codestyle.check;version="[0.8.0,0.9.0)"
+Export-Package: com.e1c.v8codestyle.bsl;version="0.8.0",
+ com.e1c.v8codestyle.bsl.strict;version="0.8.0"

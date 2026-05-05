@@ -13,7 +13,8 @@
 
 <!-- EDT -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2023.3/"/>
+<!-- <repository id="dt_repository" location="https://edt.1c.ru/downloads/releases/ruby/2026.2/"/> -->
+<repository id="dt_repository" location="http://boreas.dept07/artifactory/edt-distr-releases/p2/2026.2.0.152/repo.zip!"/>
 <unit id="com._1c.g5.aef.feature.feature.group" version="0.0.0"/>
 <unit id="com._1c.g5.commons.feature.group" version="0.0.0"/>
 <unit id="com._1c.g5.edt.license.feature.group" version="0.0.0"/>
@@ -126,18 +127,23 @@
 
 <!-- LIBS -->
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
-<unit id="org.mockito" version="0.0.0"/>
+<unit id="org.mockito.mockito-core" version="0.0.0"/>
 <unit id="org.objenesis" version="0.0.0"/>
 <unit id="net.bytebuddy.byte-buddy" version="0.0.0"/>
 <unit id="net.bytebuddy.byte-buddy-agent" version="0.0.0"/>
 <unit id="com.google.protobuf" version="0.0.0"/>
-<unit id="org.apache.xalan.source" version="2.7.2.v20201124-1837"/>
-<unit id="org.apache.batik.script.source" version="1.14.0.v20210324-0332"/>
-<unit id="org.apache.batik.codec.source" version="1.14.0.v20210324-0332"/>
-<unit id="org.apache.batik.ext.source" version="1.14.0.v20210324-0332"/>
-<unit id="org.apache.batik.transcoder.source" version="1.14.0.v20210324-0332"/>
 <unit id="javax.servlet.source" version="3.1.0.v201410161800"/>
-<repository location="https://download.eclipse.org/tools/orbit/downloads/drops/R20211213173813/repository/"/>
+<unit id="org.apache.commons.commons-logging" version="0.0.0"/>
+<unit id="org.apache.xmlgraphics" version="0.0.0"/>
+<unit id="com.github.weisj.jsvg" version="0.0.0"/>
+<unit id="org.tukaani.xz" version="1.11.0"/>
+<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.38.0/"/>
+</location>
+
+<!-- SVG -->
+<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.orbit.maven.org.apache.batik.feature.group" version="4.38.0"/>
+<repository location="https://download.eclipse.org/tools/orbit/simrel/orbit-aggregation/release/4.38.0/"/>
 </location>
 
 <!-- Eclipse -->
@@ -152,8 +158,8 @@
 <unit id="org.eclipse.epp.mpc.help.ui" version="0.0.0"/>
 <unit id="org.eclipse.search.core" version="0.0.0"/>
 
-<unit id="com.google.guava" version="32.1.3.jre"/>
-<unit id="com.google.guava.failureaccess" version="1.0.2"/>
+<unit id="com.google.guava" version="33.5.0.jre"/>
+<unit id="com.google.guava.failureaccess" version="1.0.3"/>
 <unit id="com.google.inject.assistedinject" version="7.0.0"/>
 <unit id="com.google.inject" version="7.0.0"/>
 <unit id="jakarta.inject.jakarta.inject-api" version="1.0.5"/>
@@ -177,7 +183,10 @@
 <unit id="org.sat4j.core" version="2.3.6.v20201214"/>
 <unit id="org.sat4j.pb" version="2.3.6.v20201214"/>
 
-<repository id="eclipse_repository" location="https://download.eclipse.org/releases/2023-12/"/>
+<unit id="org.osgi.service.http.whiteboard" version="0.0.0"/>
+<unit id="org.eclipse.equinox.http.service.api" version="0.0.0"/>
+
+<repository id="eclipse_repository" location="https://download.eclipse.org/releases/2025-12/"/>
 </location>
 
 <!-- XText Tools: https://github.com/OLibutzki/xtext.tools -->

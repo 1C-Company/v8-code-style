@@ -21,7 +21,6 @@ import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
 import com._1c.g5.v8.bm.core.IBmTransaction;
@@ -35,7 +34,6 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
-import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
@@ -135,11 +133,16 @@ public abstract class AbstractDynamicFeatureAccessTypeCheck
         {
             return;
         }
+        Environments actualEnvs = getActualEnvironments(fa);
+        if (actualEnvs.isEmpty())
+        {
+            return;
+        }
 
         boolean isMethod = BslUtil.getInvocation(fa) != null;
         if (isMethod == isCheckDfaMethod()
-            && (isMethod && isEmptySource(fa) || !isMethod && isEmptyTypes(fa, bmTransaction)) && !monitor.isCanceled()
-            && !isSkipSourceType(fa, parameters, monitor))
+            && (isMethod && isEmptySource(fa, actualEnvs) || !isMethod && isEmptyTypes(fa, actualEnvs, bmTransaction))
+            && !monitor.isCanceled() && !isSkipSourceType(fa, actualEnvs, parameters, monitor))
         {
             String message = getErrorMessage(fa);
 
@@ -147,24 +150,14 @@ public abstract class AbstractDynamicFeatureAccessTypeCheck
         }
     }
 
-    private boolean isEmptySource(DynamicFeatureAccess object)
+    private boolean isEmptySource(DynamicFeatureAccess object, Environments actualEnvs)
     {
-        Environmental envs = EcoreUtil2.getContainerOfType(object, Environmental.class);
-        if (envs == null)
-        {
-            return true;
-        }
-
-        Environments actualEnvs = bslPreferences.getLoadEnvs(object).intersect(envs.environments());
-        if (actualEnvs.isEmpty())
-        {
-            return true;
-        }
         List<FeatureEntry> objects = dynamicFeatureAccessComputer.getLastObject(object, actualEnvs);
         return objects.isEmpty();
     }
 
-    private boolean isSkipSourceType(DynamicFeatureAccess fa, ICheckParameters parameters, IProgressMonitor monitor)
+    private boolean isSkipSourceType(DynamicFeatureAccess fa, Environments actualEnvs, ICheckParameters parameters,
+        IProgressMonitor monitor)
     {
         String typesString = parameters.getString(PARAMETER_SKIP_SOURCE_TYPES);
         if (StringUtils.isBlank(typesString))
@@ -179,18 +172,6 @@ public abstract class AbstractDynamicFeatureAccessTypeCheck
             return false;
         }
         Expression source = fa.getSource();
-
-        Environmental envs = EcoreUtil2.getContainerOfType(source, Environmental.class);
-        if (monitor.isCanceled() || envs == null)
-        {
-            return false;
-        }
-
-        Environments actualEnvs = bslPreferences.getLoadEnvs(source).intersect(envs.environments());
-        if (monitor.isCanceled() || actualEnvs.isEmpty())
-        {
-            return false;
-        }
 
         List<TypeItem> types = computeTypes(source, actualEnvs);
         return !monitor.isCanceled() && !types.isEmpty() && types.stream().anyMatch(t -> {

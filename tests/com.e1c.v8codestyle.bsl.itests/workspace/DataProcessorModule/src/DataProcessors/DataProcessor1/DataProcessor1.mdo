@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:DataProcessor xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="35c23da3-0209-41d9-80e3-450efee39e22">
+  <producedTypes>
+    <objectType typeId="d9dce939-dbec-49dd-a020-5906fc3204cf" valueTypeId="65f8d531-54e2-42ae-9ba8-0f6c3c1d94dd"/>
+    <managerType typeId="7e0e4bf2-151e-40aa-85ee-9d6921cc3567" valueTypeId="b510bd08-a239-4deb-9df7-3d3324bc0043"/>
+  </producedTypes>
+  <name>DataProcessor1</name>
+  <synonym>
+    <key>ru</key>
+    <value>Data processor1</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+</mdclass:DataProcessor>

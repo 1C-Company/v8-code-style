@@ -131,18 +131,26 @@ public class VariableTypeCheck
     private void checkVariable(Variable variable, EObject checkObject, ResultAcceptor resultAceptor,
         IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
+        Environments actualEnvs;
         if (variable instanceof Environmental)
         {
             //checks only variables with selected validation Environments
-            Environments actualEnvs =
-                bslPreferences.getLoadEnvs(checkObject).intersect(((Environmental)variable).environments());
+            actualEnvs = getActualEnvironments(variable);
+            if (actualEnvs.isEmpty())
+            {
+                return;
+            }
+        }
+        else
+        {
+            actualEnvs = getActualEnvironments(checkObject);
             if (actualEnvs.isEmpty())
             {
                 return;
             }
         }
 
-        if (checkObject != null && variable != null && isEmptyTypes(checkObject, bmTransaction)
+        if (checkObject != null && variable != null && isEmptyTypes(checkObject, actualEnvs, bmTransaction)
             && !monitor.isCanceled())
         {
             String message =

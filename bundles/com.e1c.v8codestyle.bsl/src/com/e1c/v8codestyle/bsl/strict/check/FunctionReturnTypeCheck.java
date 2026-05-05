@@ -24,6 +24,7 @@ import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.McorePackage;
+import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -85,12 +86,17 @@ public class FunctionReturnTypeCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
-        if (monitor.isCanceled() || !(object instanceof EObject))
+        if (monitor.isCanceled() || !(object instanceof EObject eObject))
+        {
+            return;
+        }
+        Environments actualEnvs = getActualEnvironments(eObject);
+        if (actualEnvs.isEmpty())
         {
             return;
         }
 
-        if (isEmptyTypes((EObject)object, bmTransaction))
+        if (isEmptyTypes((EObject)object, actualEnvs, bmTransaction))
         {
             resultAceptor.addIssue(Messages.FunctionReturnTypeCheck_Function_has_no_return_value_type,
                 McorePackage.Literals.NAMED_ELEMENT__NAME);

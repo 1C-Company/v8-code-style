@@ -18,37 +18,36 @@
 
   <groupId>com.e1c.v8codestyle</groupId>
   <artifactId>bom</artifactId>
-  <version>0.7.0-SNAPSHOT</version>
+  <version>0.8.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>BOM</name>
 
   <prerequisites>
-    <maven>3.9.4</maven>
+    <maven>3.9.9</maven>
   </prerequisites>
 
   <properties>
-    <tycho.version>4.0.5</tycho.version>
-    <tycho.extras.version>4.0.5</tycho.extras.version>
+    <tycho.version>5.0.2</tycho.version>
     <markdown-page-generator.version>2.3.1</markdown-page-generator.version>
     <!-- Override this property in each project -->
     <markdown.page.generator.html.file.path>${project.basedir}</markdown.page.generator.html.file.path>
     
-    <spotbugs.maven.plugin.version>4.8.3.1</spotbugs.maven.plugin.version>
+    <spotbugs.maven.plugin.version>4.9.8.0</spotbugs.maven.plugin.version>
     <maven.checkstyle.plugin.version>3.1.1</maven.checkstyle.plugin.version>
     <checkstyle.version>8.29</checkstyle.version>
     <checkstyle.header.file>java.header</checkstyle.header.file>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.release>17</maven.compiler.release>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>25</maven.compiler.target>
+    <maven.compiler.release>25</maven.compiler.release>
 
     <maven.build.timestamp.format>'v'yyyyMMdd-HHmm</maven.build.timestamp.format>
     <qualifier>${maven.build.timestamp}</qualifier>
 
-    <eclipse.p2.latest>http://download.eclipse.org/releases/2022-03/</eclipse.p2.latest>
+    <eclipse.p2.latest>http://download.eclipse.org/releases/2025-12/</eclipse.p2.latest>
 
     <p2repo.archive.skip>false</p2repo.archive.skip>
     <org.jacoco.version>0.8.8</org.jacoco.version>
@@ -88,7 +87,7 @@
     <!-- Source files should not have any duplicated blocks -->
     <sonar.cpd.exclusions>**/*Plugin.java,/tests/**/*</sonar.cpd.exclusions>
 
-    <eclipse.jarsigner.plugin.version>1.1.2_p3</eclipse.jarsigner.plugin.version>
+    <eclipse.jarsigner.plugin.version>1.1.2_p6-SNAPSHOT</eclipse.jarsigner.plugin.version>
   </properties>
 
   <build>
@@ -99,14 +98,12 @@
           <artifactId>target-platform-configuration</artifactId>
           <version>${tycho.version}</version>
           <configuration>
-            <resolver>p2</resolver>
-            <executionEnvironment>JavaSE-17</executionEnvironment>
-            <includePackedArtifacts>false</includePackedArtifacts>
+            <executionEnvironment>JavaSE-25</executionEnvironment>
             <target>
               <artifact>
                 <groupId>com.e1c.v8codestyle</groupId>
                 <artifactId>default</artifactId>
-                <version>0.7.0-SNAPSHOT</version>
+                <version>0.8.0-SNAPSHOT</version>
               </artifact>
             </target>
             <environments>
@@ -159,12 +156,22 @@
           <artifactId>tycho-source-plugin</artifactId>
           <version>${tycho.version}</version>
           <configuration>
+            <includeBinaryFeature>false</includeBinaryFeature>
             <archive>
               <addMavenDescriptor>false</addMavenDescriptor>
             </archive>
           </configuration>
           <executions>
             <execution>
+              <id>feature-source</id>
+              <phase>package</phase>
+              <goals>
+                <goal>feature-source</goal>
+              </goals>
+            </execution>
+            <execution>
+              <id>plugin-source</id>
+              <phase>package</phase>
               <goals>
                 <goal>plugin-source</goal>
               </goals>
@@ -208,9 +215,9 @@
           </configuration>
         </plugin>
         <plugin>
-          <groupId>org.eclipse.tycho.extras</groupId>
-          <artifactId>tycho-eclipserun-plugin</artifactId>
-          <version>${tycho.extras.version}</version>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-eclipse-plugin</artifactId>
+          <version>${tycho.version}</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

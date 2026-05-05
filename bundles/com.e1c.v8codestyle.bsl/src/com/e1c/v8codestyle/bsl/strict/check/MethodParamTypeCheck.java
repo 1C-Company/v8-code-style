@@ -28,6 +28,7 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -96,7 +97,13 @@ public class MethodParamTypeCheck
 
         FormalParam param = (FormalParam)object;
 
-        if (isEmptyTypes(param, bmTransaction))
+        Environments actualEnvs = getActualEnvironments(param);
+        if (actualEnvs.isEmpty())
+        {
+            return;
+        }
+
+        if (isEmptyTypes(param, actualEnvs, bmTransaction))
         {
             String message =
                 MessageFormat.format(Messages.MethodParamTypeCheck_Method_param_N_has_no_value_type, param.getName());

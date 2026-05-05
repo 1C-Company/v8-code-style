@@ -39,6 +39,7 @@
 
 | Версия | 1C:EDT | JDT для разработки | P2-репозиторий |
 |--------|--------|--------------------|----------------|
+| 0.8.0  | 2026.2 | 2025-12 | [p2-link](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2026.2/0.8.0/repo/), [p2-zip](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2026.2/0.8.0/repo.zip) |
 | 0.7.0  | 2023.3 | 2022-03 | [p2-link](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2023.3/0.7.0/repo/), [p2-zip](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2023.3/0.7.0/repo.zip) |
 | 0.6.0  | 2023.2 | 2022-03 | [p2-link](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2023.2/0.6.0/repo/), [p2-zip](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2023.2/0.6.0/repo.zip) |
 | 0.5.0  | 2023.1 | 2022-03 | [p2-link](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2023.1/0.5.0/repo/), [p2-zip](https://edt.1c.ru/downloads/releases/plugins/v8-code-style/edt-2023.1/0.5.0/repo.zip) |
