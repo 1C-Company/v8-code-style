@@ -16,6 +16,8 @@ package com.e1c.v8codestyle.form.check;
 import static com._1c.g5.v8.dt.dcs.model.schema.DcsPackage.Literals.DATA_COMPOSITION_SCHEMA;
 import static com._1c.g5.v8.dt.dcs.model.schema.DcsPackage.Literals.DATA_COMPOSITION_SCHEMA__SETTINGS_VARIANTS;
 
+import java.util.Set;
+
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
@@ -40,6 +42,10 @@ public class DataCompositionNameVariantDefaultCheck
     extends BasicCheck<Object>
 {
     private static final String CHECK_ID = "data-composition-variant-name-default"; //$NON-NLS-1$
+    private static final String VARIANT_NAME = "Report variant name"; //$NON-NLS-1$
+    private static final String DELIMITER = ","; //$NON-NLS-1$
+    private static final Set<String> DEFAULT_NAME_LIST = Set.of("Основной", "Default"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final String DEFAULT_NAME = String.join(DELIMITER, DEFAULT_NAME_LIST);
 
     @Inject
     public DataCompositionNameVariantDefaultCheck()
@@ -62,6 +68,8 @@ public class DataCompositionNameVariantDefaultCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(674, getCheckId(), CorePlugin.PLUGIN_ID))
+            .parameter(VARIANT_NAME, String.class, DEFAULT_NAME,
+                Messages.DataCompositionNameVariantDefault_Parametr_Title)
             .topObject(DATA_COMPOSITION_SCHEMA)
             .features(DATA_COMPOSITION_SCHEMA__SETTINGS_VARIANTS);
     }
@@ -83,7 +91,7 @@ public class DataCompositionNameVariantDefaultCheck
             String name = settingsVariant.getName();
             Presentation presentation = settingsVariant.getPresentation();
             EMap<String, String> presentationValue = presentation.getLocalValue().getContent();
-            if (name.equalsIgnoreCase("Основной") || name.equalsIgnoreCase("Default")) //$NON-NLS-1$ //$NON-NLS-2$
+            if (parameters.getString(VARIANT_NAME).toLowerCase().contains(name.toLowerCase()))
             {
                 if (presentationValue.isEmpty())
                 {
@@ -91,7 +99,7 @@ public class DataCompositionNameVariantDefaultCheck
                     continue;
                 }
                 String presentationName = presentationValue.get(0).getValue();
-                if (presentationName.equalsIgnoreCase("Основной") || presentationName.equalsIgnoreCase("Default")) //$NON-NLS-1$//$NON-NLS-2$
+                if (parameters.getString(VARIANT_NAME).toLowerCase().contains(presentationName.toLowerCase()))
                 {
                     resultAcceptor.addIssue(Messages.DataCompositionNameVariantDefault_Issue);
                 }
@@ -105,7 +113,7 @@ public class DataCompositionNameVariantDefaultCheck
                 else
                 {
                     String presentationName = presentationValue.get(0).getValue();
-                    if (presentationName.equalsIgnoreCase("Основной") || presentationName.equalsIgnoreCase("Default")) //$NON-NLS-1$//$NON-NLS-2$
+                    if (parameters.getString(VARIANT_NAME).toLowerCase().contains(presentationName.toLowerCase()))
                     {
                         resultAcceptor.addIssue(Messages.DataCompositionNameVariantDefault_Issue);
                     }

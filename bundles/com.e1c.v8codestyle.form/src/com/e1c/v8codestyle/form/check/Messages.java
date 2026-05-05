@@ -30,6 +30,7 @@ final class Messages
     public static String DataCompositionNameVariantDefault_Description;
     public static String DataCompositionNameVariantDefault_Issue;
     public static String DataCompositionNameVariantDefault_Title;
+    public static String DataCompositionNameVariantDefault_Parametr_Title;
     public static String DynamicListItemTitleCheck_Description;
     public static String DynamicListItemTitleCheck_message;
     public static String DynamicListItemTitleCheck_title;
