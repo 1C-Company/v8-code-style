@@ -15,7 +15,7 @@ EndProcedure
 
 Procedure Suppressed(Parameters) Export
 	
-	//@skip-check structure-consructor-too-many-keys
+	//@skip-check structure-constructor-too-many-keys
 	Parameters = new Structure("Key1, Key2, 
 		| Key3, Key4");
 	

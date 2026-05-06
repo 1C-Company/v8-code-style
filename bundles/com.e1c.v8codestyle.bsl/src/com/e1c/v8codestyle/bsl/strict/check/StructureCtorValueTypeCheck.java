@@ -51,7 +51,7 @@ public class StructureCtorValueTypeCheck
     extends AbstractTypeCheck
 {
 
-    private static final String CHECK_ID = "structure-consructor-value-type"; //$NON-NLS-1$
+    private static final String CHECK_ID = "structure-constructor-value-type"; //$NON-NLS-1$
 
     /**
      * Instantiates a new structure constructor value type check.

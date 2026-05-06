@@ -9,7 +9,7 @@
 194=right-interactive-clear-deletion-mark-predefined-data
 195=right-interactive-delete-marked-predefined-data
 280=empty-except-statement
-293=structure-consructor-too-many-keys
+293=structure-constructor-too-many-keys
 381=mdo-name-length
 419=role-right-has-rls
 433=module-unused-local-variable

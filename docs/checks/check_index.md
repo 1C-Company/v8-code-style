@@ -158,8 +158,8 @@
 | [scheduled-job-periodicity-too-short](../../bundles/com.e1c.v8codestyle.md/markdown/ru/scheduled-job-periodicity-too-short.md) | Периодичность выполнения регламентного задания меньше одной минуты. |
 | [server-execution-safe-mode](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/server-execution-safe-mode.md) | Отсутствует включение безопасного режима перед вызовом метода "Выполнить" или "Вычислить" |
 | [statement-type-change](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/statement-type-change.md) | Утверждение меняет тип |
-| [structure-consructor-too-many-keys](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-too-many-keys.md) | Конструктор структуры содержит слишком много ключей |
-| [structure-consructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-consructor-value-type.md) | Типизация значений в конструкторе структуры |
+| [structure-constructor-too-many-keys](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-constructor-too-many-keys.md) | Конструктор структуры содержит слишком много ключей |
+| [structure-constructor-value-type](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/structure-constructor-value-type.md) | Типизация значений в конструкторе структуры |
 | [subsystem-synonym-too-long](../../bundles/com.e1c.v8codestyle.md/markdown/ru/subsystem-synonym-too-long.md) | Длина названия раздела превышает 35 символов |
 | [typed-value-adding-to-untyped-collection](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/typed-value-adding-to-untyped-collection.md) | Добавление типизированного значения в не типизированную коллекцию |
 | [unknown-form-parameter-access](../../bundles/com.e1c.v8codestyle.bsl/markdown/ru/unknown-form-parameter-access.md) | Обращение к несуществующему параметру формы |

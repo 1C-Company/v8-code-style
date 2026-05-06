@@ -44,7 +44,7 @@ public class RemoveStrictTypesAnnotationFix
     {
         return Set.of("property-return-type", "doc-comment-field-type-strict", "dynamic-access-method-not-found", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             "constructor-function-return-section", "function-return-value-type", "invocation-parameter-type-intersect", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            "method-param-value-type", "statement-type-change", "structure-consructor-value-type", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            "method-param-value-type", "statement-type-change", "structure-constructor-value-type", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             "variable-value-type"); //$NON-NLS-1$
     }
 
