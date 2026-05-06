@@ -111,7 +111,7 @@ public class CommonModuleStrictTypesTest
     public void testStructureCtorValueTypeCheck() throws Exception
     {
 
-        String checkId = "structure-consructor-value-type";
+        String checkId = "structure-constructor-value-type";
 
         Module module = updateAndGetModule(checkId);
 
