@@ -370,12 +370,6 @@ final class Messages
 
     public static String NstrStringLiteralFormatCheck_title;
 
-    public static String RestrictionExecuteEvalServerCheck_Description;
-
-    public static String RestrictionExecuteEvalServerCheck_Issue;
-
-    public static String RestrictionExecuteEvalServerCheck_Title;
-
     public static String RegionEmptyCheck_description;
 
     public static String RegionEmptyCheck_Region_is_empty;

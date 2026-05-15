@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2022, 1C-Soft LLC and others.
+ * Copyright (C) 2026, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -22,6 +22,7 @@ import java.util.Optional;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
 import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
@@ -376,10 +377,35 @@ public class ServerExecutionSafeModeCheck
 
     private boolean isEval(EObject eObject)
     {
-        if (eObject instanceof Invocation)
+        if (eObject instanceof Invocation invocation)
         {
-            String name = ((Invocation)eObject).getMethodAccess().getName();
-            return EVAL_RU.equalsIgnoreCase(name) || EVAL.equalsIgnoreCase(name);
+            String name = invocation.getMethodAccess().getName();
+            String text = NodeModelUtils.findActualNodeFor(invocation).getText();
+            int index = -1;
+            int indexRu = text.indexOf(EVAL_RU);
+            int indexEn = text.indexOf(EVAL);
+            String prevText = ""; //$NON-NLS-1$
+            if (indexRu != -1)
+            {
+                index = indexRu;
+            }
+            else if (indexEn != -1)
+            {
+                index = indexEn;
+            }
+            if (index != -1)
+            {
+                prevText = text.substring(0, index);
+            }
+
+            if (EVAL_RU.equalsIgnoreCase(name) || EVAL.equalsIgnoreCase(name))
+            {
+                if (prevText.contains(".")) //$NON-NLS-1$
+                {
+                    return false;
+                }
+                return true;
+            }
         }
         return false;
     }
