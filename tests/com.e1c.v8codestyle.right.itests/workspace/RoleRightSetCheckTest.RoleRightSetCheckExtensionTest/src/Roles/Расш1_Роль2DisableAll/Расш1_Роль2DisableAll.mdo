@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Role xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="cb3c0977-d715-48cb-84b9-8ab961e90611">
+  <name>Расш1_Роль2DisableAll</name>
+  <synonym>
+    <key>ru</key>
+    <value>Роль2 disable all</value>
+  </synonym>
+</mdclass:Role>

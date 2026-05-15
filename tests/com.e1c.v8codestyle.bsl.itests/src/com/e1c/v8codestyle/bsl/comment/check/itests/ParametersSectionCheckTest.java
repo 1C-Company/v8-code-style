@@ -137,4 +137,24 @@ public class ParametersSectionCheckTest
             .collect(Collectors.toList());
         assertEquals(List.of(6, 11, 16, 28), errorLines);
     }
+
+    /**
+     * Test the documentation comment parameter section through one or many inherit link parts.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testCheckParametersDescriptionThroughLink() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-parameter-section-inherit-doc.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(3, markers.size());
+        List<Integer> errorLines = markers.stream()
+            .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
+            .map(Integer.class::cast)
+            .sorted()
+            .collect(Collectors.toList());
+        assertEquals(List.of(24, 36, 48), errorLines);
+    }
 }

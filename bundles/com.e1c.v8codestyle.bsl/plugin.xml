@@ -198,6 +198,10 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.LinkPartSpaceCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.TypeDefinitionCheck">
       </check>
       <check
@@ -353,6 +357,10 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.ExtensionMethodVisibleModeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.DeprecatedProcedureOutsideDeprecatedRegionCheck">
       </check>
       <check
@@ -393,7 +401,15 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.MethodSemicolonExtraCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.NotSupportGotoOperatorWebCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.bsl.check.SemicolonMissingCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -401,7 +417,7 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.StringLiteralTypeAnnotationCheck">
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.DontUseModalityModeCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"

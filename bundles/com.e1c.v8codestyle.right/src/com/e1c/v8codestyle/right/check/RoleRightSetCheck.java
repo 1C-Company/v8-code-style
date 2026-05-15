@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,12 +55,15 @@ import com._1c.g5.v8.dt.bm.index.rights.IBmRightsIndexProvider;
 import com._1c.g5.v8.dt.bm.index.rights.IRightsDescription;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IExtensionProject;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.NamedElement;
 import com._1c.g5.v8.dt.md.MdUtil;
+import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 import com._1c.g5.v8.dt.metadata.mdclass.MdObject;
+import com._1c.g5.v8.dt.metadata.mdclass.ObjectBelonging;
 import com._1c.g5.v8.dt.metadata.mdclass.Role;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
 import com._1c.g5.v8.dt.rights.IRightInfosService;
@@ -100,7 +104,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
  *
  */
 public abstract class RoleRightSetCheck
-    extends BasicCheck
+    extends BasicCheck<Object>
 {
 
     protected static final String EXCLUDE_OBJECT_NAME_PATTERN_PARAMETER_NAME = "excludeObjectNamePattern"; //$NON-NLS-1$
@@ -164,13 +168,18 @@ public abstract class RoleRightSetCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
+        if (!(object instanceof EObject eObject))
+        {
+            return;
+        }
+        IV8Project v8Project = v8ProjectManager.getProject(eObject);
         if (object instanceof RoleDescription)
         {
-            check((RoleDescription)object, resultAceptor, parameters, monitor);
+            check((RoleDescription)eObject, resultAceptor, parameters, v8Project, monitor);
         }
         else if (object instanceof ObjectRight)
         {
-            check((ObjectRight)object, resultAceptor, parameters, monitor);
+            check((ObjectRight)eObject, resultAceptor, parameters, v8Project, monitor);
         }
     }
 
@@ -195,13 +204,13 @@ public abstract class RoleRightSetCheck
      * Creates formated issue message for the right and the MD object.
      *
      * @param mdObject the MD object that has forbidden right, cannot be {@code null}.
+     * @param v8Project the v8-project, cannot be {@code null}
      * @return the formatted issue message that right set for the object, cannot return {@code null}.
      */
-    protected String getIssueMessage(MdObject mdObject)
+    protected String getIssueMessage(MdObject mdObject, IV8Project v8Project)
     {
-        IV8Project project = mdObject == null ? null : v8ProjectManager.getProject(mdObject);
-        String rightName = getRightName(project);
-        String mdObjectName = getMdObjectName(mdObject, project);
+        String rightName = getRightName(v8Project);
+        String mdObjectName = getMdObjectName(mdObject, v8Project);
         return MessageFormat.format(Messages.RoleRightSetCheck_Role_right__0__set_for__1, rightName, mdObjectName);
     }
 
@@ -216,7 +225,7 @@ public abstract class RoleRightSetCheck
     }
 
     private void check(RoleDescription object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IV8Project v8Project, IProgressMonitor monitor)
     {
         if (!object.isSetForNewObjects())
         {
@@ -224,6 +233,9 @@ public abstract class RoleRightSetCheck
         }
 
         Collection<MdObject> mdObjects = getDefaultObjectsWithRight(object, monitor);
+
+        IBmModel model = bmModelManager.getModel(object);
+        Role role = RightsModelUtil.getOwner(object, model);
 
         List<ObjectRights> rights = object.getRights();
         for (MdObject mdObject : mdObjects)
@@ -241,8 +253,12 @@ public abstract class RoleRightSetCheck
                     continue;
                 }
             }
-            String message = getIssueMessage(mdObject);
             ObjectRights objectRights = RightsModelUtil.filterObjectRightsByEObject(mdObject, rights);
+            if (skipCheck(mdObject, v8Project, role, objectRights))
+            {
+                continue;
+            }
+            String message = getIssueMessage(mdObject, v8Project);
             if (objectRights == null)
             {
                 resultAceptor.addIssue(message, ROLE_DESCRIPTION__RIGHTS);
@@ -256,7 +272,7 @@ public abstract class RoleRightSetCheck
     }
 
     private void check(ObjectRight object, ResultAcceptor resultAceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IV8Project v8Project, IProgressMonitor monitor)
     {
         Right right = object.getRight();
 
@@ -296,7 +312,7 @@ public abstract class RoleRightSetCheck
             }
         }
 
-        String message = getIssueMessage(mdObject);
+        String message = getIssueMessage(mdObject, v8Project);
         resultAceptor.addIssue(message, OBJECT_RIGHT__RIGHT);
     }
 
@@ -427,6 +443,53 @@ public abstract class RoleRightSetCheck
         Set<Right> rights = rightInfosService.getEClassRights(context, eClass);
         Set<String> rightNames = rights.stream().map(NamedElement::getName).collect(Collectors.toSet());
         return rightNames.contains(getRightName().getName());
+    }
+
+    private boolean skipCheck(MdObject mdObject, IV8Project v8Project, Role role, ObjectRights objectRights)
+    {
+        // Role always 'Allow all except... ' (role.isSetForNewObjects() == true)
+        if (v8Project instanceof IExtensionProject extensionProject)
+        {
+            // Extension role cannot contain configuration rights.
+            if (mdObject instanceof Configuration)
+            {
+                return true;
+            }
+
+            Configuration extensionConfiguration = extensionProject.getConfiguration();
+            List<Role> defaultRoles = extensionConfiguration.getDefaultRoles();
+            boolean isAdoptedObject = RightsModelUtil.isAdoptedMdObject(mdObject);
+
+            // Default native extension role cannot contain adopted object rights.
+            if (role.getObjectBelonging() == ObjectBelonging.NATIVE && defaultRoles.contains(role) && isAdoptedObject)
+            {
+                return true;
+            }
+
+            RightValue rightValue = null;
+            if (objectRights != null)
+            {
+                rightValue = objectRights.getRights()
+                    .stream()
+                    .filter(Objects::nonNull)
+                    .filter(objectRight -> getRightName().getName().equals(objectRight.getRight().getName()))
+                    .findFirst()
+                    .map(ObjectRight::getValue)
+                    .orElse(null);
+            }
+
+            if (rightValue == null)
+            {
+                rightValue = RightsModelUtil.getDefaultRightValue(mdObject, role);
+            }
+
+            if (!RightsModelUtil.getBooleanRightValue(rightValue))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

@@ -35,7 +35,8 @@ public class RightExclusiveMode
     extends RoleRightSetCheck
 {
 
-    private static final List<String> NAMES_DEFAULT = List.of("ПолныеПрава", "FullAccess"); //$NON-NLS-1$ //$NON-NLS-2$
+    private static final List<String> NAMES_DEFAULT =
+        List.of("ПолныеПрава", "FullAccess", "АдминистраторСистемы ", "SystemAdministrator"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     private static final String CHECK_ID = "right-exclusive-mode"; //$NON-NLS-1$
 

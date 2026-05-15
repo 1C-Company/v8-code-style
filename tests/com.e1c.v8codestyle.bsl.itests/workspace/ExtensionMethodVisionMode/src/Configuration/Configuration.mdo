@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="4a6a7808-16c9-491a-8a27-f4e96e75178d">
+  <name>ExtensionMethodVisibleCheck</name>
+  <synonym>
+    <key>en</key>
+    <value>Extension method visible check</value>
+  </synonym>
+  <containedObjects classId="9cd510cd-abfc-11d4-9434-004095e12fc7" objectId="0cb1082b-b2e6-40f9-bfbe-335d29c06a71"/>
+  <containedObjects classId="9fcd25a0-4822-11d4-9414-008048da11f9" objectId="dea065f2-c85f-46de-ba09-a622cb0e2b10"/>
+  <containedObjects classId="e3687481-0a87-462c-a166-9f34594f9bba" objectId="b84977a1-e188-46dc-9b22-04a548b72790"/>
+  <containedObjects classId="9de14907-ec23-4a07-96f0-85521cb6b53b" objectId="eb379a37-4d32-457c-89bf-f61062859b39"/>
+  <containedObjects classId="51f2d5d8-ea4d-4064-8892-82951750031e" objectId="a0e40ab6-fdf6-4e10-a412-e91eab010707"/>
+  <containedObjects classId="e68182ea-4237-4383-967f-90c1e3370bc7" objectId="86cebcc4-50d9-49a6-8128-64e7a6f18018"/>
+  <containedObjects classId="fb282519-d103-4dd3-bc12-cb271d631dfc" objectId="0aa231ec-d50e-430f-a099-58009a25e93a"/>
+  <configurationExtensionCompatibilityMode>8.3.19</configurationExtensionCompatibilityMode>
+  <defaultRunMode>ManagedApplication</defaultRunMode>
+  <usePurposes>PersonalComputer</usePurposes>
+  <usedMobileApplicationFunctionalities>
+    <functionality>
+      <use>true</use>
+    </functionality>
+    <functionality>
+      <functionality>OSBackup</functionality>
+      <use>true</use>
+    </functionality>
+  </usedMobileApplicationFunctionalities>
+  <defaultLanguage>Language.English</defaultLanguage>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <objectAutonumerationMode>NotAutoFree</objectAutonumerationMode>
+  <modalityUseMode>DontUse</modalityUseMode>
+  <synchronousPlatformExtensionAndAddInCallUseMode>DontUse</synchronousPlatformExtensionAndAddInCallUseMode>
+  <compatibilityMode>8.3.19</compatibilityMode>
+  <languages uuid="bc8940e7-dc04-46de-b171-999ea182115a">
+    <name>English</name>
+    <synonym>
+      <key>en</key>
+      <value>English</value>
+    </synonym>
+    <languageCode>en</languageCode>
+  </languages>
+  <commonModules>CommonModule.CommonModule</commonModules>
+  <commonModules>CommonModule.CompliantCommonModule</commonModules>
+</mdclass:Configuration>

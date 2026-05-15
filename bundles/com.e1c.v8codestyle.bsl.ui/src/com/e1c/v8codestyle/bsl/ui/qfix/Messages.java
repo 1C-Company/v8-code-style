@@ -32,6 +32,10 @@ final class Messages
 
     public static String CommonModuleNamedSelfReferenceFix_details;
 
+    public static String ExtensionMethodVisibleModeFix_Description;
+
+    public static String ExtensionMethodVisibleModeFix_Details;
+
     public static String FormSelfReferenceOutdatedFix_description;
 
     public static String FormSelfReferenceOutdatedFix_details;
@@ -43,6 +47,12 @@ final class Messages
     public static String OpenBslDocCommentViewFix_Description;
 
     public static String OpenBslDocCommentViewFix_Details;
+
+    public static String MethodSemicolonExtraFix_Details;
+    public static String MethodSemicolonExtraFix_Description;
+
+    public static String SemicolonMissingFix_Details;
+    public static String SemicolonMissingFix_Description;
 
     public static String SelfReferenceFix_description;
 
@@ -61,6 +71,9 @@ final class Messages
 
     public static String SelfAssignFix_Description;
     public static String SelfAssignFix_Details;
+
+    public static String LinkPartSpaceFix_Description;
+    public static String LinkPartSpaceFix_Details;
 
     static
     {

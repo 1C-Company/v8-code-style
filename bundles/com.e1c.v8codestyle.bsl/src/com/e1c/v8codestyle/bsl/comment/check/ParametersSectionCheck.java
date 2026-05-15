@@ -68,6 +68,8 @@ public class ParametersSectionCheck
 
     private static final String PARAMETER_PARMA_SECT_FOR_EXPORT = "requireParameterSectionOnlyForExport"; //$NON-NLS-1$
 
+    private static final int MAX_INHERIT_COMMENT_DEPTH = 5;
+
     private final IBslPreferences bslPreferences;
 
     private final IScopeProvider scopeProvider;
@@ -164,17 +166,7 @@ public class ParametersSectionCheck
 
         }
 
-        BslDocumentationComment docComment = null;
-
-        if (isInheritedFromLink(object))
-        {
-            LinkPart linkPart = getSingleLinkPart(object.getDescription());
-            IProject project = resourceLookup.getProject(object.getModule());
-            DocumentationCommentProperties props = bslPreferences.getDocumentCommentProperties(project);
-
-            docComment = BslCommentUtils.getLinkPartCommentContent(linkPart, scopeProvider, commentProvider,
-                props.oldCommentFormat(), object.getMethod(), v8ProjectManager, typeComputationContext);
-        }
+        BslDocumentationComment docComment = getRealDocComment(object, typeComputationContext, 0);
         if (docComment == null)
         {
             docComment = object;
@@ -184,6 +176,26 @@ public class ParametersSectionCheck
             getAbsentParameterDefinition(object.getMethod(), docComment.getParametersSection());
 
         addIssues(object.getMethod(), parameterNames, resultAceptor);
+    }
+
+    private BslDocumentationComment getRealDocComment(BslDocumentationComment object,
+        BmOperationContext typeComputationContext, int depth)
+    {
+        LinkPart linkPart = getInheritedLinkPart(object);
+        if (linkPart != null)
+        {
+            IProject project = resourceLookup.getProject(object.getModule());
+            DocumentationCommentProperties props = bslPreferences.getDocumentCommentProperties(project);
+            BslDocumentationComment docComment =
+                BslCommentUtils.getLinkPartCommentContent(linkPart, scopeProvider, commentProvider,
+                props.oldCommentFormat(), object.getMethod(), v8ProjectManager, typeComputationContext);
+
+            if (docComment != null && docComment != object && depth < MAX_INHERIT_COMMENT_DEPTH)
+            {
+                return getRealDocComment(docComment, typeComputationContext, ++depth);
+            }
+        }
+        return object;
     }
 
     private Set<String> getAbsentParameterDefinition(Method method, ParametersSection parameterSection)
@@ -227,9 +239,17 @@ public class ParametersSectionCheck
         }
     }
 
-    private boolean isInheritedFromLink(BslDocumentationComment docComment)
+    private LinkPart getInheritedLinkPart(BslDocumentationComment docComment)
     {
-        return docComment.getReturnSection() == null && docComment.getParametersSection() == null
-            && getSingleLinkPart(docComment.getDescription()) != null;
+        LinkPart link = null;
+        if (docComment.getReturnSection() == null && docComment.getParametersSection() == null
+            && (link = getSingleLinkPart(docComment.getDescription())) != null)
+        {
+            return link;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

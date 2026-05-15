@@ -73,6 +73,9 @@ final class Messages
     public static String RefLinkPartCheck_description;
     public static String RefLinkPartCheck_Link_referenced_to_unexisting_object;
     public static String RefLinkPartCheck_title;
+    public static String LinkPartSpaceCheck_Description;
+    public static String LinkPartSpaceCheck_Issue;
+    public static String LinkPartSpaceCheck_Title;
     public static String TypeDefinitionCheck_description;
     public static String TypeDefinitionCheck_title;
     public static String TypeDefinitionCheck_Unkown_type_M_specified;

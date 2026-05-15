@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2021, 1C-Soft LLC and others.
+ * Copyright (C) 2025, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -12,7 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 
 import java.text.MessageFormat;
 import java.util.HashMap;
@@ -23,21 +23,25 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.contextdef.IBslModuleContextDefService;
 import com._1c.g5.v8.dt.bsl.model.BinaryExpression;
 import com._1c.g5.v8.dt.bsl.model.BinaryOperation;
 import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
+import com._1c.g5.v8.dt.bsl.model.Conditional;
+import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
+import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
+import com._1c.g5.v8.dt.common.Pair;
 import com._1c.g5.v8.dt.form.model.FormExtInfo;
 import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
 import com._1c.g5.v8.dt.mcore.Event;
@@ -49,7 +53,6 @@ import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
-import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
@@ -63,7 +66,7 @@ import com.google.inject.Inject;
  * @author Victor Golubev
  */
 public class EventHandlerBooleanParamCheck
-    extends BasicCheck
+    extends AbstractModuleStructureCheck
 {
     private static final String DELIMITER = ","; //$NON-NLS-1$
 
@@ -117,7 +120,7 @@ public class EventHandlerBooleanParamCheck
             .issueType(IssueType.WARNING)
             .extension(new StandardCheckExtension(686, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(SIMPLE_STATEMENT)
+            .checkedObjectType(MODULE)
             .parameter(PARAM_CHECK_EVENT_ONLY, Boolean.class, DEFAULT_CHECK_EVENT_ONLY,
                 Messages.EventHandlerBooleanParamCheck_Check_only_in_event_handlers)
             .parameter(PARAM_PARAMS_TO_TRUE, String.class, String.join(DELIMITER, DEFAULT_PARAMS_TO_TRUE),
@@ -130,9 +133,83 @@ public class EventHandlerBooleanParamCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        SimpleStatement statement = (SimpleStatement)object;
-        Expression left = statement.getLeft();
-        Expression right = statement.getRight();
+        Module module = (Module)object;
+        if (module == null)
+        {
+            return;
+        }
+        Map<CaseInsensitiveString, List<EObject>> eventHandlersMod = bslEventsService.getEventHandlers(module);
+        Map<CaseInsensitiveString, List<EObject>> eventHandlersContainerMod =
+            bslEventsService.getEventHandlersContainer(module);
+        Map<CaseInsensitiveString, Event> eventHandlers = getAllModuleEvents(module);
+        boolean checkEventOnly = parameters.getBoolean(PARAM_CHECK_EVENT_ONLY);
+        for (Method method : module.allMethods())
+        {
+            Pair<Event, Integer> eventWithShiftParamIndex =
+                getActualEvent(eventHandlersMod, eventHandlersContainerMod, eventHandlers, module, method);
+            if (eventWithShiftParamIndex.first == null && checkEventOnly)
+            {
+                continue;
+            }
+            EList<Statement> statements = method.allStatements();
+            if (statements == null)
+            {
+                continue;
+            }
+            for (EObject statement : statements)
+            {
+                if (statement instanceof EmptyStatement)
+                {
+                    continue;
+                }
+                else if (statement instanceof SimpleStatement)
+                {
+                    checkSimpleStatement(statement, resultAceptor, parameters, monitor, module, method,
+                        eventWithShiftParamIndex);
+                }
+                else if (statement instanceof Statement)
+                {
+                    checkStatement(statement, resultAceptor, parameters, monitor, module, method, eventWithShiftParamIndex);
+                }
+            }
+        }
+    }
+
+    private void checkStatement(EObject statement, ResultAcceptor resultAceptor, ICheckParameters parameters,
+        IProgressMonitor monitor, Module module, Method method, Pair<Event, Integer> eventWithParamIndex)
+    {
+        if (statement instanceof SimpleStatement)
+        {
+            checkSimpleStatement(statement, resultAceptor, parameters, monitor, module, method, eventWithParamIndex);
+        }
+        else if (statement instanceof EmptyStatement)
+        {
+            return;
+        }
+        else if (statement instanceof Conditional || statement instanceof Statement)
+        {
+            EList<EObject> listStatement = statement.eContents();
+            if (listStatement == null)
+            {
+                return;
+            }
+            for (EObject eObject : listStatement)
+            {
+                if (eObject instanceof EmptyStatement)
+                {
+                    continue;
+                }
+                checkStatement(eObject, resultAceptor, parameters, monitor, module, method, eventWithParamIndex);
+            }
+        }
+    }
+
+    private void checkSimpleStatement(EObject statement, ResultAcceptor resultAceptor, ICheckParameters parameters,
+        IProgressMonitor monitor, Module module, Method method, Pair<Event, Integer> eventWithParamIndex)
+    {
+        SimpleStatement simpleStatement = (SimpleStatement)statement;
+        Expression left = simpleStatement.getLeft();
+        Expression right = simpleStatement.getRight();
         if (!(left instanceof StaticFeatureAccess))
         {
             return;
@@ -149,9 +226,7 @@ public class EventHandlerBooleanParamCheck
         {
             return;
         }
-
         FormalParam param = (FormalParam)stat.getFeatureEntries().get(0).getFeature();
-
         // Fast check by name and boolean literal
         if (right instanceof BooleanLiteral
             && (paramsToTrue.contains(param.getName()) && ((BooleanLiteral)right).isIsTrue()
@@ -161,8 +236,7 @@ public class EventHandlerBooleanParamCheck
         }
 
         boolean valueToCheckAssignment = paramsToTrue.contains(paramName);
-        Parameter eventParameter = getEventBooleanParameter(param, monitor);
-
+        Parameter eventParameter = getEventBooleanParameter(param, monitor, module, method, eventWithParamIndex);
         if (eventParameter != null)
         {
             if (paramsToTrue.contains(eventParameter.getNameRu()) || paramsToTrue.contains(eventParameter.getName()))
@@ -189,7 +263,6 @@ public class EventHandlerBooleanParamCheck
         {
             return;
         }
-
         // check right expression
         if (!isCorrectBooleanExpression(right, paramName, valueToCheckAssignment, monitor))
         {
@@ -208,65 +281,34 @@ public class EventHandlerBooleanParamCheck
         }
     }
 
-    private Parameter getEventBooleanParameter(FormalParam param, IProgressMonitor monitor)
+    private Parameter getEventBooleanParameter(FormalParam param, IProgressMonitor monitor, Module module,
+        Method method, Pair<Event, Integer> eventWithParamIndex)
     {
-        Method method = EcoreUtil2.getContainerOfType(param, Method.class);
+
         if (monitor.isCanceled() || method == null || method.getFormalParams().isEmpty())
         {
             return null;
         }
 
-        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
         if (monitor.isCanceled() || !isCorrectModule(module))
         {
             return null;
         }
 
-        List<FormalParam> params = method.getFormalParams();
-        int index = params.indexOf(param);
-
-        Map<CaseInsensitiveString, Event> eventHandlers = getAllModuleEvents(module);
-        String name = method.getName();
-        if (name == null)
+        if (method.getName() == null)
         {
             return null;
         }
-        CaseInsensitiveString methodName = new CaseInsensitiveString(name);
-        Event event = eventHandlers.get(methodName);
-        if (event == null && isCorrectModuleForCustomHandlers(module))
-        {
-            // Get event for Form Item event handlers or common module event subscription
-            List<EObject> enventHandlers = bslEventsService.getEventHandlers(module).get(methodName);
-            if (enventHandlers != null && !enventHandlers.isEmpty())
-            {
-                if (index > 0)
-                {
-                    List<EObject> containers = bslEventsService.getEventHandlersContainer(module).get(methodName);
-                    if (containers == null
-                        || containers.stream().noneMatch(e -> e instanceof AbstractForm || e instanceof FormExtInfo))
-                    {
-                        // shift because Form Item (or event subscription) Event doesn't contains first parameter "Item"
-                        --index;
-                    }
-                }
-
-                for (EObject handler : enventHandlers)
-                {
-                    if (handler instanceof Event)
-                    {
-                        event = (Event)handler;
-                        break;
-                    }
-                }
-            }
-        }
-        if (monitor.isCanceled() || event == null || event.getParamSet().isEmpty())
+        if (monitor.isCanceled() || eventWithParamIndex.first == null
+            || eventWithParamIndex.first.getParamSet().isEmpty())
         {
             return null;
         }
 
         // get actual parameter name in case it renamed, but still boolean
-        ParamSet paramSet = event.actualParamSet(params.size());
+        ParamSet paramSet = eventWithParamIndex.first.actualParamSet(method.getFormalParams().size());
+        int index = method.getFormalParams().indexOf(param);
+        index += index > 0 ? eventWithParamIndex.second : 0;
         if (paramSet != null)
         {
             List<Parameter> eventParameters = paramSet.getParams();
@@ -280,6 +322,40 @@ public class EventHandlerBooleanParamCheck
             }
         }
         return null;
+    }
+
+    private Pair<Event, Integer> getActualEvent(Map<CaseInsensitiveString, List<EObject>> eventHandlersMod,
+        Map<CaseInsensitiveString, List<EObject>> eventHandlersContainerMod,
+        Map<CaseInsensitiveString, Event> eventHandlers, Module module, Method method)
+    {
+        int diff = 0;
+        CaseInsensitiveString methodName = new CaseInsensitiveString(method.getName());
+        Event event = eventHandlers.get(methodName);
+        if (event == null && isCorrectModuleForCustomHandlers(module))
+        {
+            // Get event for Form Item event handlers or common module event subscription
+            List<EObject> enventHandlers = eventHandlersMod.get(methodName);
+            if (enventHandlers != null && !enventHandlers.isEmpty())
+            {
+                List<EObject> containers = eventHandlersContainerMod.get(methodName);
+                if (containers == null
+                    || containers.stream().noneMatch(e -> e instanceof AbstractForm || e instanceof FormExtInfo))
+                {
+                    // shift because Form Item (or event subscription) Event doesn't contains first parameter "Item"
+                    diff = -1;
+                }
+
+                for (EObject handler : enventHandlers)
+                {
+                    if (handler instanceof Event)
+                    {
+                        event = (Event)handler;
+                        break;
+                    }
+                }
+            }
+        }
+        return Pair.newPair(event, diff);
     }
 
     private boolean isCorrectBooleanExpression(Expression expr, String paramName, boolean checkState,
@@ -319,7 +395,6 @@ public class EventHandlerBooleanParamCheck
         {
             operation = BinaryOperation.OR;
         }
-
         else
         {
             operation = BinaryOperation.AND;
@@ -366,7 +441,6 @@ public class EventHandlerBooleanParamCheck
 
     private Map<CaseInsensitiveString, Event> getAllModuleEvents(Module module)
     {
-
         Map<CaseInsensitiveString, Event> result = new HashMap<>();
         if (module.getModuleType() == ModuleType.FORM_MODULE)
         {
@@ -401,5 +475,4 @@ public class EventHandlerBooleanParamCheck
         ModuleType type = module.getModuleType();
         return type == ModuleType.FORM_MODULE || type == ModuleType.COMMON_MODULE;
     }
-
 }

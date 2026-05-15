@@ -32,6 +32,7 @@ import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
+import com._1c.g5.v8.dt.bsl.model.ImplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.MethodsScopeSpec;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -39,6 +40,7 @@ import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
+import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.mcore.ContextDef;
 import com._1c.g5.v8.dt.mcore.DerivedProperty;
@@ -73,6 +75,10 @@ public class NotifyDescriptionToServerProcedureCheck
 
     private static final String THIS_OBJECT_RU = "ЭтотОбъект"; //$NON-NLS-1$
 
+    private static final String THIS_FORM = "ThisForm"; //$NON-NLS-1$
+
+    private static final String THIS_FORM_RU = "ЭтаФорма"; //$NON-NLS-1$
+
     private static final String NOTIFICATION_OLD = "NotifyDescription"; //$NON-NLS-1$
     private static final String NOTIFICATION = "CallbackDescription"; //$NON-NLS-1$
 
@@ -80,19 +86,23 @@ public class NotifyDescriptionToServerProcedureCheck
 
     private final IScopeProvider scopeProvider;
 
+    private final TypesComputer typesComputer;
+
     /**
      * Instantiates a new notify description to server procedure check.
      *
      * @param dynamicFeatureAccessComputer the dynamic feature access computer service, cannot be {@code null}
      * @param scopeProvider provides actual local methods, cannot be {@code null}
+     * @param typesComputer for computing types by Built-In language model elements, cannot be {@code null}
      */
     @Inject
     public NotifyDescriptionToServerProcedureCheck(DynamicFeatureAccessComputer dynamicFeatureAccessComputer,
-        IScopeProvider scopeProvider)
+        IScopeProvider scopeProvider, TypesComputer typesComputer)
     {
         super();
         this.dynamicFeatureAccessComputer = dynamicFeatureAccessComputer;
         this.scopeProvider = scopeProvider;
+        this.typesComputer = typesComputer;
     }
 
     @Override
@@ -168,7 +178,8 @@ public class NotifyDescriptionToServerProcedureCheck
             if (moduleParam instanceof FeatureAccess featureAccess)
             {
                 if (featureAccess instanceof StaticFeatureAccess
-                    && (THIS_OBJECT_RU.equals(featureAccess.getName()) || THIS_OBJECT.equals(featureAccess.getName())))
+                    && (THIS_OBJECT_RU.equals(featureAccess.getName()) || THIS_OBJECT.equals(featureAccess.getName())
+                        || THIS_FORM_RU.equals(featureAccess.getName()) || THIS_FORM.equals(featureAccess.getName())))
                 {
                     Module module = EcoreUtil2.getContainerOfType(featureAccess, Module.class);
                     MethodsScopeSpec spec = BslFactory.eINSTANCE.createMethodsScopeSpec();
@@ -219,6 +230,22 @@ public class NotifyDescriptionToServerProcedureCheck
                                 .filter(item -> methodName.equalsIgnoreCase(item.getName()))
                                 .map(Environmental.class::cast)
                                 .toList();
+                        }
+                        else if (entry.getFeature() instanceof ImplicitVariable implicitVariable)
+                        {
+                            List<TypeItem> types =
+                                typesComputer.computeTypes(featureAccess, environmental.environments());
+                            if (types != null && types.size() == 1 && types.get(0) instanceof Type type
+                                && "CommonModule".equals(McoreUtil.getTypeCategory(type))) //$NON-NLS-1$
+                            {
+                                return type.getContextDef()
+                                    .allMethods()
+                                    .stream()
+                                    .filter(Environmental.class::isInstance)
+                                    .filter(item -> methodName.equalsIgnoreCase(item.getName()))
+                                    .map(Environmental.class::cast)
+                                    .toList();
+                            }
                         }
                     }
                 }

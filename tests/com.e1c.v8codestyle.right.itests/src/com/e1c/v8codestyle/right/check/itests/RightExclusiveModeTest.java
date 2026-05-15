@@ -49,9 +49,14 @@ public class RightExclusiveModeTest
     }
 
     @Test
-    public void testSystemAdministratorRoleIncorrect() throws Exception
+    public void testSystemAdministratorRoleCorrect() throws Exception
     {
-        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, "SystemAdministrator");
+        checkRoleCorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, "SystemAdministrator");
     }
 
+    @Test
+    public void testAdministratorRoleIncorrect() throws Exception
+    {
+        checkRoleIncorrect(CHECK_ID, PROJECT_NAME, ROLE_FQN, CONFIGURATION_FQN, STANDARD_ROLE, "Administration");
+    }
 }

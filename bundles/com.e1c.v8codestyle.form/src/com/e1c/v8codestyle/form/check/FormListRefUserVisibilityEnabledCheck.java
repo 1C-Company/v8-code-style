@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
+import com._1c.g5.v8.dt.form.model.DynamicListTableExtInfo;
 import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.metadata.mdclass.AdjustableBoolean;
@@ -82,7 +83,7 @@ public class FormListRefUserVisibilityEnabledCheck
             && isRefPath(((FormField)adjBoolean.eContainer()).getDataPath()))
         {
             Table table = EcoreUtil2.getContainerOfType(adjBoolean, Table.class);
-            if (table == null)
+            if (table == null || !(table.getExtInfo() instanceof DynamicListTableExtInfo))
             {
                 return;
             }
