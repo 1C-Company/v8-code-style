@@ -22,7 +22,6 @@ import java.util.Optional;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
 import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
@@ -34,6 +33,7 @@ import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
+import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.util.Environment;
@@ -380,31 +380,12 @@ public class ServerExecutionSafeModeCheck
         if (eObject instanceof Invocation invocation)
         {
             String name = invocation.getMethodAccess().getName();
-            String text = NodeModelUtils.findActualNodeFor(invocation).getText();
-            int index = -1;
-            int indexRu = text.indexOf(EVAL_RU);
-            int indexEn = text.indexOf(EVAL);
-            String prevText = ""; //$NON-NLS-1$
-            if (indexRu != -1)
+            if (invocation.getMethodAccess() instanceof StaticFeatureAccess)
             {
-                index = indexRu;
-            }
-            else if (indexEn != -1)
-            {
-                index = indexEn;
-            }
-            if (index != -1)
-            {
-                prevText = text.substring(0, index);
-            }
-
-            if (EVAL_RU.equalsIgnoreCase(name) || EVAL.equalsIgnoreCase(name))
-            {
-                if (prevText.contains(".")) //$NON-NLS-1$
+                if (EVAL_RU.equalsIgnoreCase(name) || EVAL.equalsIgnoreCase(name))
                 {
-                    return false;
+                    return true;
                 }
-                return true;
             }
         }
         return false;
