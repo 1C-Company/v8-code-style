@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2022, 1C-Soft LLC and others.
+ * Copyright (C) 2026, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -33,6 +33,7 @@ import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
+import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.util.Environment;
@@ -376,10 +377,16 @@ public class ServerExecutionSafeModeCheck
 
     private boolean isEval(EObject eObject)
     {
-        if (eObject instanceof Invocation)
+        if (eObject instanceof Invocation invocation)
         {
-            String name = ((Invocation)eObject).getMethodAccess().getName();
-            return EVAL_RU.equalsIgnoreCase(name) || EVAL.equalsIgnoreCase(name);
+            String name = invocation.getMethodAccess().getName();
+            if (invocation.getMethodAccess() instanceof StaticFeatureAccess)
+            {
+                if (EVAL_RU.equalsIgnoreCase(name) || EVAL.equalsIgnoreCase(name))
+                {
+                    return true;
+                }
+            }
         }
         return false;
     }
