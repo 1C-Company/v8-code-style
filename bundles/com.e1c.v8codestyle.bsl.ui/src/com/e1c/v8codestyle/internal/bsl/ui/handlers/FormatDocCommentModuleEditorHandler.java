@@ -43,7 +43,6 @@ import org.eclipse.xtext.util.concurrent.CancelableUnitOfWork;
 import com._1c.g5.ides.ui.texteditor.xtext.embedded.EmbeddedEditorBuffer;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslCommentUtils;
-import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocCommentSerializer;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Description;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
@@ -62,6 +61,7 @@ import com._1c.g5.v8.dt.core.platform.IV8Project;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.lcore.nodemodel.util.CustomNodeModelUtils;
 import com._1c.g5.v8.dt.lcore.ui.texteditor.IndentTextEditorProvider;
+import com.e1c.v8codestyle.bsl.comment.BslDocCommentSerializer;
 import com.e1c.v8codestyle.internal.bsl.ui.UiPlugin;
 import com.google.inject.Inject;
 
