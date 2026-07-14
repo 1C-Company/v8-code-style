@@ -113,7 +113,7 @@ public class DontUseModalityModeCheck
     {
         Invocation invocation = (Invocation)object;
         Configuration configuration = configurationProvider.getConfiguration(invocation);
-        if (configuration.getModalityUseMode() == ModalityUseMode.DONT_USE)
+        if (configuration != null && configuration.getModalityUseMode() == ModalityUseMode.DONT_USE)
         {
             FeatureAccess featureAccess = invocation.getMethodAccess();
             String name = featureAccess.getName();

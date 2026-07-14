@@ -169,7 +169,10 @@ public class SemicolonMissingCheck
                         }
                     }
                 }
-                checkSemicolon(eObject.eContents(), resultAcceptor);
+                if (eObject != null)
+                {
+                    checkSemicolon(eObject.eContents(), resultAcceptor);
+                }
             }
             else if (eObject instanceof EmptyStatement)
             {
