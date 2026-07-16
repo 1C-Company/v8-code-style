@@ -172,7 +172,7 @@ public class ModuleStructureEventFormRegionsCheck
                 return;
             }
 
-            if (obj instanceof FormCommandHandlerContainer)
+            if (!(obj instanceof FormCommandHandlerContainer)) {return;}
             {
                 addIssueCommand(result, regionName, methodName, scriptVariant, method);
             }

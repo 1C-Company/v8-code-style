@@ -52,7 +52,7 @@ public class JoinToSubQuery
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MAJOR)
             .issueType(IssueType.PERFORMANCE)
-            .extension(new StandardCheckExtension(655, getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(private static final int ISSUE_WEIGHT = 655;, getCheckId(), CorePlugin.PLUGIN_ID))
             .delegate(QuerySchemaQuerySourceJoin.class);
     }
 
