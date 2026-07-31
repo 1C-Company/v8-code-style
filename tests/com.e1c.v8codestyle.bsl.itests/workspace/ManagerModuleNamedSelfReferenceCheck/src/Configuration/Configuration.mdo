@@ -38,5 +38,6 @@
     </synonym>
     <languageCode>en</languageCode>
   </languages>
-  <catalogs>Catalog.Catalog</catalogs>
+  <catalogs>Catalog.ProductionStatus</catalogs>
+  <enums>Enum.ProductionStatus</enums>
 </mdclass:Configuration>

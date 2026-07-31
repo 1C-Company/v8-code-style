@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2022, 1C-Soft LLC and others.
+ * Copyright (C) 2023, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -14,9 +14,17 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.DYNAMIC_FEATURE_ACCESS;
 
+import java.util.Map;
+
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EReference;
 import org.eclipse.xtext.EcoreUtil2;
-import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.naming.IQualifiedNameConverter;
+import org.eclipse.xtext.resource.IEObjectDescription;
+import org.eclipse.xtext.scoping.IScope;
+import org.eclipse.xtext.scoping.IScopeProvider;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
@@ -24,8 +32,9 @@ import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
-import com._1c.g5.v8.dt.common.StringUtils;
+import com._1c.g5.v8.dt.core.naming.ITopObjectFqnGenerator;
 import com._1c.g5.v8.dt.lcore.util.CaseInsensitiveString;
+import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -33,12 +42,14 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
 /**
- * CHeck self reference by name in manager modules.
+ * Check self reference by name in manager modules.
  *
  * @author Maxim Galios
+ * @author Vadim Goncharov
  *
  */
 public class ManagerModuleNamedSelfReferenceCheck
@@ -46,12 +57,42 @@ public class ManagerModuleNamedSelfReferenceCheck
 {
     private static final String CHECK_ID = "manager-module-named-self-reference"; //$NON-NLS-1$
 
-    private final IQualifiedNameProvider bslQualifiedNameProvider;
+    private final IScopeProvider scopeProvider;
+
+    private final IQualifiedNameConverter qualifiedNameConverter;
+
+    private final ITopObjectFqnGenerator topObjectFqnGenerator;
+
+    private static final Map<EReference, EClass> MANAGERS_FOR_MDOBJECT = new ImmutableMap.Builder<EReference, EClass>()
+        .put(MdClassPackage.Literals.CONFIGURATION__CATALOGS, MdClassPackage.Literals.CATALOG)
+        .put(MdClassPackage.Literals.CONFIGURATION__DOCUMENTS, MdClassPackage.Literals.DOCUMENT)
+        .put(MdClassPackage.Literals.CONFIGURATION__DOCUMENT_JOURNALS, MdClassPackage.Literals.DOCUMENT_JOURNAL)
+        .put(MdClassPackage.Literals.CONFIGURATION__ENUMS, MdClassPackage.Literals.ENUM)
+        .put(MdClassPackage.Literals.CONFIGURATION__REPORTS, MdClassPackage.Literals.REPORT)
+        .put(MdClassPackage.Literals.CONFIGURATION__DATA_PROCESSORS, MdClassPackage.Literals.DATA_PROCESSOR)
+        .put(MdClassPackage.Literals.CONFIGURATION__CHARTS_OF_CHARACTERISTIC_TYPES,
+            MdClassPackage.Literals.CHART_OF_CHARACTERISTIC_TYPES)
+        .put(MdClassPackage.Literals.CONFIGURATION__CHARTS_OF_ACCOUNTS, MdClassPackage.Literals.CHART_OF_ACCOUNTS)
+        .put(MdClassPackage.Literals.CONFIGURATION__CHARTS_OF_CALCULATION_TYPES,
+            MdClassPackage.Literals.CHART_OF_CALCULATION_TYPES)
+        .put(MdClassPackage.Literals.CONFIGURATION__INFORMATION_REGISTERS, MdClassPackage.Literals.INFORMATION_REGISTER)
+        .put(MdClassPackage.Literals.CONFIGURATION__ACCUMULATION_REGISTERS,
+            MdClassPackage.Literals.ACCUMULATION_REGISTER)
+        .put(MdClassPackage.Literals.CONFIGURATION__ACCOUNTING_REGISTERS, MdClassPackage.Literals.ACCOUNTING_REGISTER)
+        .put(MdClassPackage.Literals.CONFIGURATION__CALCULATION_REGISTERS, MdClassPackage.Literals.CALCULATION_REGISTER)
+        .put(MdClassPackage.Literals.CONFIGURATION__BUSINESS_PROCESSES, MdClassPackage.Literals.BUSINESS_PROCESS)
+        .put(MdClassPackage.Literals.CONFIGURATION__TASKS, MdClassPackage.Literals.TASK)
+        .put(MdClassPackage.Literals.CONFIGURATION__EXCHANGE_PLANS, MdClassPackage.Literals.EXCHANGE_PLAN)
+        .put(MdClassPackage.Literals.CONFIGURATION__EXTERNAL_DATA_SOURCES, MdClassPackage.Literals.EXTERNAL_DATA_SOURCE)
+        .build();
 
     @Inject
-    public ManagerModuleNamedSelfReferenceCheck(IQualifiedNameProvider bslQualifiedNameProvider)
+    public ManagerModuleNamedSelfReferenceCheck(IScopeProvider scopeProvider,
+        IQualifiedNameConverter qualifiedNameConverter, ITopObjectFqnGenerator topObjectFqnGenerator)
     {
-        this.bslQualifiedNameProvider = bslQualifiedNameProvider;
+        this.scopeProvider = scopeProvider;
+        this.qualifiedNameConverter = qualifiedNameConverter;
+        this.topObjectFqnGenerator = topObjectFqnGenerator;
     }
 
     @Override
@@ -69,6 +110,7 @@ public class ManagerModuleNamedSelfReferenceCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(467, getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.MANAGER_MODULE))
             .module()
             .checkedObjectType(DYNAMIC_FEATURE_ACCESS);
     }
@@ -80,8 +122,7 @@ public class ManagerModuleNamedSelfReferenceCheck
         Expression featureAccessSource = ((DynamicFeatureAccess)object).getSource();
         Module module = EcoreUtil2.getContainerOfType(featureAccessSource, Module.class);
 
-        if (monitor.isCanceled() || !(featureAccessSource instanceof DynamicFeatureAccess)
-            || module.getModuleType() != ModuleType.MANAGER_MODULE)
+        if (monitor.isCanceled() || !(featureAccessSource instanceof DynamicFeatureAccess))
         {
             return;
         }
@@ -96,22 +137,43 @@ public class ManagerModuleNamedSelfReferenceCheck
 
         StaticFeatureAccess managerType = (StaticFeatureAccess)managerTypeExpression;
 
-        if (isManagerTypeValid(managerType) && isReferenceExcessive(source, module))
+        EReference eRef = getConfigurationMdObjectRef(managerType);
+        if (monitor.isCanceled() || eRef == null)
+        {
+            return;
+        }
+
+        IEObjectDescription objectDesc = getObjectFromScope(source, eRef);
+        if (monitor.isCanceled() || objectDesc == null)
+        {
+            return;
+        }
+
+        EObject eObject = objectDesc.getEObjectOrProxy();
+        if (!monitor.isCanceled() && eObject.equals(module.getOwner()))
         {
             resultAceptor.addIssue(Messages.ManagerModuleNamedSelfReferenceCheck_issue, source);
         }
     }
 
-    private boolean isManagerTypeValid(StaticFeatureAccess managerType)
+    private EReference getConfigurationMdObjectRef(StaticFeatureAccess managerType)
     {
+        EReference result = null;
         CaseInsensitiveString managerTypeName = new CaseInsensitiveString(managerType.getName());
-        return LinkPart.MD_OBJECT_MANAGERS.containsKey(managerTypeName)
-            || LinkPart.MD_OBJECT_MANAGERS_RU.containsKey(managerTypeName);
+        result = LinkPart.MD_OBJECT_MANAGERS.get(managerTypeName);
+        if (result == null)
+        {
+            result = LinkPart.MD_OBJECT_MANAGERS_RU.get(managerTypeName);
+        }
+        return result;
     }
 
-    private boolean isReferenceExcessive(DynamicFeatureAccess source, Module module)
+    private IEObjectDescription getObjectFromScope(DynamicFeatureAccess source, EReference reference)
     {
-        return StringUtils.equals(bslQualifiedNameProvider.getFullyQualifiedName(module).getSegment(1),
-            source.getName());
+        IScope scope = scopeProvider.getScope(source, reference);
+        String fqn =
+            topObjectFqnGenerator.generateStandaloneObjectFqn(MANAGERS_FOR_MDOBJECT.get(reference), source.getName());
+        return scope.getSingleElement(qualifiedNameConverter.toQualifiedName(fqn));
     }
+
 }

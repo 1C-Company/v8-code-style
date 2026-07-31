@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2022, 1C-Soft LLC and others.
+ * Copyright (C) 2023, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -35,7 +35,7 @@ public class ManagerModuleNamedSelfReferenceCheckTest
 {
     private static final String PROJECT_NAME = "ManagerModuleNamedSelfReferenceCheck";
 
-    private static final String MANAGER_MODULE_FILE_NAME = "/src/Catalogs/Catalog/ManagerModule.bsl";
+    private static final String MANAGER_MODULE_FILE_NAME = "/src/Catalogs/ProductionStatus/ManagerModule.bsl";
 
     public ManagerModuleNamedSelfReferenceCheckTest()
     {
