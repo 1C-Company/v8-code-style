@@ -35,7 +35,7 @@ import com.google.common.base.CharMatcher;
  *  @author Artem Samohvalov
  */
 public class WebServiceNameCheck
-    extends BasicCheck
+    extends BasicCheck<Object>
 {
 
     @Override
@@ -62,11 +62,6 @@ public class WebServiceNameCheck
         IProgressMonitor monitor)
     {
         WebService webService = (WebService)object;
-
-        if (webService == null)
-        {
-            return;
-        }
 
         onlyEnglishLettersCheck(webService, resultAcceptor);
         containsCheckedLiteralsCheck(webService, resultAcceptor);
