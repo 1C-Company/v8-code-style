@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:WebService xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="acd9de93-cd02-4968-90ec-217fd654885b">
+  <name>ValidName2</name>
+  <synonym>
+    <key>en</key>
+    <value>Valid Name2</value>
+  </synonym>
+  <namespace>9</namespace>
+  <descriptorFileName>ws2.1cws</descriptorFileName>
+  <reuseSessions>AutoUse</reuseSessions>
+  <sessionMaxAge>20</sessionMaxAge>
+  <operations uuid="414f224a-36a9-4e4b-8b29-7c57d9aedbb3">
+    <name>Operation</name>
+    <synonym>
+      <key>ru</key>
+      <value>Operation</value>
+    </synonym>
+    <xdtoReturningValueType>
+      <name>string</name>
+      <nsUri>http://www.w3.org/2001/XMLSchema</nsUri>
+    </xdtoReturningValueType>
+    <parameters uuid="af64bdc4-79a2-4b15-a88d-613b4b71de00">
+      <name>Параметр</name>
+      <synonym>
+        <key>en</key>
+        <value>Параметр</value>
+      </synonym>
+    </parameters>
+  </operations>
+</mdclass:WebService>
