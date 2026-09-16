@@ -28,13 +28,13 @@ import com.e1c.v8codestyle.form.check.MoneyStringDataCompositionCheck;
  *
  * @author Ivan Sergeev
  */
-public class DataCompositionNameVariantDefaultCheckTest
+public class MoneyStringDataCompositionCheckTest
     extends CheckTestBase
 {
 
     private static final String CHECK_ID = "money-string-localization-data-composition"; //$NON-NLS-1$
 
-    private static final String PROJECT_NAME = "ReportVariantName";
+    private static final String PROJECT_NAME = "MoneyStringLocalization";
 
     private static final String FQN_DL1 = "Report.TestReport.Template.MainDataCompositionSchema.Template";
 

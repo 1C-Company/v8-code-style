@@ -92,77 +92,101 @@ public class MoneyStringLocalizationCheck
     protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        Module formModule = (Module)object;
-        if (ModuleType.FORM_MODULE != formModule.getModuleType())
+        Module module = (Module)object;
+        if (ModuleType.FORM_MODULE == module.getModuleType())
         {
-            return;
-        }
-        Form form = (Form)formModule.getOwner();
-        List<FormAttribute> attributes = form.getAttributes();
-        List<Method> methods = BslUtil.allMethods(formModule);
-        for (FormAttribute attribute : attributes)
-        {
-            List<TypeItem> types = attribute.getValueType().getTypes();
-            for (TypeItem type : types)
+            Form form = (Form)module.getOwner();
+            List<FormAttribute> attributes = form.getAttributes();
+            List<Method> methods = BslUtil.allMethods(module);
+            for (FormAttribute attribute : attributes)
             {
-                if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
+                List<TypeItem> types = attribute.getValueType().getTypes();
+                for (TypeItem type : types)
                 {
-                    for (Method method : methods)
+                    if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
                     {
-                        List<Statement> statements = method.allStatements();
-                        if (!statements.isEmpty())
+                        for (Method method : methods)
                         {
-                            Statement statement = searchStatements(statements, attribute.getName(), parameters);
-                            if (statement instanceof SimpleStatement simpleState)
+                            List<Statement> statements = method.allStatements();
+                            if (!statements.isEmpty())
                             {
-                                if (simpleState.getRight() instanceof Invocation right)
+                                Statement statement = searchStatements(statements, attribute.getName(), parameters);
+                                if (statement instanceof SimpleStatement simpleState)
                                 {
-                                    String name = right.getMethodAccess().getName();
-                                    if (!MONEYFIELD_TYPE_DESCKRIPRION.equalsIgnoreCase(name))
+                                    if (simpleState.getRight() instanceof Invocation right)
+                                    {
+                                        String name = right.getMethodAccess().getName();
+                                        if (!MONEYFIELD_TYPE_DESCKRIPRION.equalsIgnoreCase(name))
+                                        {
+                                            resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue,
+                                                statement);
+                                        }
+                                    }
+                                    else if (simpleState.getRight() instanceof OperatorStyleCreator)
+                                    {
+                                        resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
+                                    }
+                                    else if (simpleState.getRight() instanceof NumberLiteral)
                                     {
                                         resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
                                     }
                                 }
-                                else if (simpleState.getRight() instanceof OperatorStyleCreator)
+                            }
+                        }
+                    }
+                    else if ("ValueTable".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
+                    {
+                        List<FormAttributeColumn> columns = attribute.getColumns();
+                        for (FormAttributeColumn column : columns)
+                        {
+                            List<TypeItem> typesColumn = column.getValueType().getTypes();
+                            String colName = column.getName();
+                            for (TypeItem typeColumn : typesColumn)
+                            {
+                                if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(typeColumn))) //$NON-NLS-1$
                                 {
-                                    resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
-                                }
-                                else if (simpleState.getRight() instanceof NumberLiteral)
-                                {
-                                    resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
+                                    for (Method method : methods)
+                                    {
+                                        List<Statement> statements = method.allStatements();
+                                        Statement statement = searchStatements(statements, colName, parameters);
+                                        if (statement instanceof SimpleStatement simpleState)
+                                        {
+                                            if (simpleState.getRight() instanceof Invocation right)
+                                            {
+                                                String name = right.getMethodAccess().getName();
+                                                if (!MONEYFIELD_TYPE_DESCKRIPRION.equalsIgnoreCase(name))
+                                                {
+                                                    resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue,
+                                                        statement);
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-                else if ("ValueTable".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
+            }
+        }
+        else
+        {
+            List<Method> methods = module.allMethods();
+            String names = parameters.getString(MONEY_STRING_NAME);
+            String[] namesList = names.split(DELIMITER);
+            for (Method method : methods)
+            {
+                List<Statement> statements = method.allStatements();
+                if (!statements.isEmpty())
                 {
-                    List<FormAttributeColumn> columns = attribute.getColumns();
-                    for (FormAttributeColumn column : columns)
+                    for (String name : namesList)
                     {
-                        List<TypeItem> typesColumn = column.getValueType().getTypes();
-                        String colName = column.getName();
-                        for (TypeItem typeColumn : typesColumn)
+                        Statement statement = searchStatements(statements, name, parameters);
+                        if (statement instanceof SimpleStatement simpleState)
                         {
-                            if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(typeColumn))) //$NON-NLS-1$
+                            if (simpleState.getRight() instanceof NumberLiteral)
                             {
-                                for (Method method : methods)
-                                {
-                                    List<Statement> statements = method.allStatements();
-                                    Statement statement = searchStatements(statements, colName, parameters);
-                                    if (statement instanceof SimpleStatement simpleState)
-                                    {
-                                        if (simpleState.getRight() instanceof Invocation right)
-                                        {
-                                            String name = right.getMethodAccess().getName();
-                                            if (!MONEYFIELD_TYPE_DESCKRIPRION.equalsIgnoreCase(name))
-                                            {
-                                                resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue,
-                                                    statement);
-                                            }
-                                        }
-                                    }
-                                }
+                                resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
                             }
                         }
                     }
