@@ -77,7 +77,7 @@ public class SecuritySoftwareCallCheck
         SimpleStatement statement = (SimpleStatement)object;
         if (statement.getRight() instanceof OperatorStyleCreator right)
         {
-            if (McoreUtil.getTypeName(right.getType()).equalsIgnoreCase("comobject")) //$NON-NLS-1$
+            if ("comobject".equalsIgnoreCase(McoreUtil.getTypeName(right.getType()))) //$NON-NLS-1$
             {
                 if (!right.getParams().isEmpty())
                 {
