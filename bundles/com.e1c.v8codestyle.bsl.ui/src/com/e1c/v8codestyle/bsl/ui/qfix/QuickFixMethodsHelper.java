@@ -49,9 +49,24 @@ public final class QuickFixMethodsHelper
     static void createMethod(IXtextInteractiveBslModuleFixModel model, boolean isFunc) throws BadLocationException
     {
         EObject element = model.getElement();
-
         String methodName = getMethodName(((StaticFeatureAccess)element).getName());
-        String directiveName = ""; //$NON-NLS-1$
+        createMethod(model, methodName, isFunc, false, ""); //$NON-NLS-1$
+    }
+
+    /**
+     * Creates method and writes it to module
+     *
+     * @param model the xtext BSL quick fix model, cannot be {@code null}
+     * @param methodName the name of the method with (), example = "myFunctionName()", cannot be {@code null}
+     * @param isFunc indicates whether the method is function or procedure
+     * @param isExport indicates method Export or not
+     * @param directiveName the name of directive, example = "OnClient", can be {@code null}
+     * @throws BadLocationException
+     */
+    static void createMethod(IXtextInteractiveBslModuleFixModel model, String methodName, boolean isFunc,
+        boolean isExport, String directiveName) throws BadLocationException
+    {
+        EObject element = model.getElement();
 
         //up to Method class
         Method method = EcoreUtil2.getContainerOfType(element, Method.class);
@@ -68,7 +83,7 @@ public final class QuickFixMethodsHelper
             if (indent.isPresent())
             {
                 String func = createMethod(model, indent.get(), directiveName, methodName, methodKeywordType,
-                    methodEndKeywordType);
+                    methodEndKeywordType, isExport);
 
                 // Write method to module
                 IXtextDocument document = (IXtextDocument)model.getDocument();
@@ -116,7 +131,7 @@ public final class QuickFixMethodsHelper
         return BslProposalProvider.getTypeEndMethodName(model.getBslGrammar(), isFunc, isRussion);
     }
 
-    private static String getMethodName(String name)
+    static String getMethodName(String name)
     {
         StringBuilder builder = new StringBuilder();
 
@@ -127,7 +142,7 @@ public final class QuickFixMethodsHelper
     }
 
     private static String createMethod(IXtextInteractiveBslModuleFixModel model, String indent, String directive,
-        String methodName, String methodKeyword, String methodEndKeyword)
+        String methodName, String methodKeyword, String methodEndKeyword, boolean isExport)
     {
         String lineSeparator = model.getLineSeparator();
         String commentContent = Strings.repeat(lineSeparator, 2);
@@ -143,7 +158,11 @@ public final class QuickFixMethodsHelper
             builder.append(indent).append('&').append(directive).append(lineSeparator);
         }
         builder.append(indent).append(methodKeyword).append(' ');
-        builder.append(methodName);
+        builder.append(methodName).append(' ');
+        if (isExport)
+        {
+            builder.append(getExportKeyword(model));
+        }
         builder.append(lineSeparator).append(todoComment).append(lineSeparator);
         builder.append(indent).append(methodEndKeyword);
         return builder.toString();
@@ -165,7 +184,7 @@ public final class QuickFixMethodsHelper
         }
         int posUse = model.getIssue().getOffset();
 
-        int nameLen = ((StaticFeatureAccess)model.getElement()).getName().length();
+        int nameLen = getModelNameLength(model);
         createLinkedModeModel(model, posDec, posUse, nameLen, groupParams);
     }
 
@@ -223,6 +242,22 @@ public final class QuickFixMethodsHelper
         {
             model.selectAndRevealForLinkedModeModel(posUse, length);
         }
+    }
+
+    private static String getExportKeyword(IXtextBslModuleFixModel model)
+    {
+        return BslProposalProvider.getExportLiteralName(model.getBslGrammar(),
+            model.getScriptVariant() == ScriptVariant.RUSSIAN);
+    }
+
+    private static int getModelNameLength(IXtextInteractiveBslModuleFixModel model)
+    {
+        EObject element = model.getElement();
+        if (element instanceof StaticFeatureAccess staticFeatureAccessElement)
+        {
+            return staticFeatureAccessElement.getName().length();
+        }
+        return NodeModelUtils.getNode(element).getText().length();
     }
 
     private QuickFixMethodsHelper()
