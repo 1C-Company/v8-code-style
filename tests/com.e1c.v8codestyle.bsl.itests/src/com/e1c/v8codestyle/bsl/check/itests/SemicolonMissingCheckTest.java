@@ -182,6 +182,22 @@ public class SemicolonMissingCheckTest
     }
 
     /**
+     * Test statement sub statement.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementInWhile() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "missing-semicolon-statement-while-statement.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(6), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
      * Test statement no missing semicolon.
      *
      * @throws Exception the exception
@@ -218,6 +234,34 @@ public class SemicolonMissingCheckTest
     public void testStatementSemicolonNextString() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "non-missing-semicolon-statement-next-string.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test statement no missing semicolon.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementRegionInElseBlock() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "non-missing-semicolon-statement-region-in-else-block.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test statement no missing semicolon.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testStatementRegionInWhileAndElseBlock() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "non-missing-semicolon-in-loop-with-directive.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertTrue(markers.isEmpty());
