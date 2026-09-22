@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2024, 1C-Soft LLC and others.
+ * Copyright (C) 2026, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -27,6 +28,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
+import com._1c.g5.v8.dt.common.StringUtils;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8Project;
@@ -53,7 +55,11 @@ public class ReturnSectionFieldInNonCollectionCheck
 {
     private static final String CHECK_ID = "doc-comment-return-section-field-in-non-collection"; //$NON-NLS-1$
 
-    private static final Set<String> ALLOWED_COLLECTION_TYPES = Set.of(
+    private static final String PARAMETER_COLLECTION_TYPES = "collectionTypes"; //$NON-NLS-1$
+
+    private static final String TYPE_DELIMITER = ","; //$NON-NLS-1$
+
+    private static final String DEFAULT_COLLECTION_TYPES = String.join(TYPE_DELIMITER, Set.of(
         "структура", //$NON-NLS-1$
         "structure", //$NON-NLS-1$
         "соответствие", //$NON-NLS-1$
@@ -62,7 +68,7 @@ public class ReturnSectionFieldInNonCollectionCheck
         "valuetable", //$NON-NLS-1$
         "деревозначений", //$NON-NLS-1$
         "valuetree" //$NON-NLS-1$
-    );
+    ));
 
     /**
      * Constructs an instance
@@ -95,6 +101,8 @@ public class ReturnSectionFieldInNonCollectionCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new CommonSenseCheckExtension(getCheckId(), BslPlugin.PLUGIN_ID))
             .delegate(ReturnSection.class);
+        builder.parameter(PARAMETER_COLLECTION_TYPES, String.class, DEFAULT_COLLECTION_TYPES,
+            Messages.ReturnSectionFieldInNonCollectionCheck_Collection_types);
     }
 
     @Override
@@ -102,6 +110,28 @@ public class ReturnSectionFieldInNonCollectionCheck
         DocumentationCommentResultAcceptor resultAceptor, ICheckParameters parameters,
         BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
+        String parameterCollectionTypes = parameters.getString(PARAMETER_COLLECTION_TYPES);
+        if (StringUtils.isBlank(parameterCollectionTypes))
+        {
+            return;
+        }
+
+        Set<String> allowedCollectionTypes = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        String[] paramTypes = parameterCollectionTypes.split(TYPE_DELIMITER);
+        for (String type : paramTypes)
+        {
+            String trimmed = type.trim();
+            if (!trimmed.isEmpty())
+            {
+                allowedCollectionTypes.add(trimmed.toLowerCase(Locale.ROOT));
+            }
+        }
+
+        if (allowedCollectionTypes.isEmpty())
+        {
+            return;
+        }
+
         ReturnSection returnSection = (ReturnSection)object;
 
         for (TypeSection typeSection : returnSection.getReturnTypes())
@@ -127,7 +157,7 @@ public class ReturnSectionFieldInNonCollectionCheck
                 }
 
                 String typeName = typeDef.getTypeName();
-                if (typeName != null && ALLOWED_COLLECTION_TYPES.contains(typeName.toLowerCase(Locale.ROOT)))
+                if (typeName != null && allowedCollectionTypes.contains(typeName.toLowerCase(Locale.ROOT)))
                 {
                     continue;
                 }

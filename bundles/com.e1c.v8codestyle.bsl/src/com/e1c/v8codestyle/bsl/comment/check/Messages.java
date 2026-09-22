@@ -68,6 +68,7 @@ final class Messages
     public static String ReturnSectionFieldInNonCollectionCheck_description;
     public static String ReturnSectionFieldInNonCollectionCheck_Field_only_allowed_for_collection_type_M;
     public static String ReturnSectionFieldInNonCollectionCheck_title;
+    public static String ReturnSectionFieldInNonCollectionCheck_Collection_types;
     public static String ParametersSectionCheck_title;
     public static String ProcedureReturnSectionCheck_description;
     public static String ProcedureReturnSectionCheck_Procedure_should_has_no_return_section;
