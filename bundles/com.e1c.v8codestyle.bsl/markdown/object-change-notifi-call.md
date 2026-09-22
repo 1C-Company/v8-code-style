@@ -9,6 +9,8 @@ The check verifies notification calls within the context of a single handler.
 &AtClient
 Procedure AfterWrite(WriteParameters)
 
+// some code ...
+
 EndProcedure
 ```
 
