@@ -26,6 +26,10 @@ final class Messages
     public static String DynamicListFieldTitleGenerateFix_title;
     public static String DynamicListItemTitleGenerateFix_Default_title;
     public static String DynamicListItemTitleGenerateFix_title;
+    public static String HierarchicalListInitialTreeDisplayFix_description;
+    public static String HierarchicalListInitialTreeDisplayFix_details;
+    
+    
     static
     {
         // initialize resource bundle
