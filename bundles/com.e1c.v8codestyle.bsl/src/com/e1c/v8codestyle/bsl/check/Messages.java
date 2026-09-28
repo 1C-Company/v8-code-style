@@ -165,6 +165,12 @@ final class Messages
 
     public static String ExtensionMethodVisibleModeCheck_Title;
 
+    public static String FindRowServerCheck_Description;
+
+    public static String FindRowServerCheck_Title;
+
+    public static String FindRowServerCheck_Issue;
+
     public static String ReadingAttributesFromDataBaseCheck_Message;
 
     public static String ReadingAttributesFromDataBaseCheck_Description;
