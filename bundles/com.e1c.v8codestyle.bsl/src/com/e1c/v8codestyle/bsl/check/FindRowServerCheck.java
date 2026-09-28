@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2025, 1C-Soft LLC and others.
+ * Copyright (C) 2026, 1C-Soft LLC and others.
  *
  * This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License 2.0
@@ -30,7 +30,7 @@ import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
- * Checks that variable is self assign.
+ * Check the FindRows function is called only on the server.
  *
  *  @author Ivan Sergeev
  */
