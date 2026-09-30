@@ -46,14 +46,14 @@ import com.google.inject.Inject;
  * 
  * @author Artem Samohvalov
  */
-public class IndentsInCommnetSectionCheck
+public class IndentsInCommentSectionCheck
     extends DocumentationCommentBasicDelegateCheck
 {
     private static final String COMMENT_BLOCK = "//"; //$NON-NLS-1$
     private static final int TABULATION_SPACE_COUNT = 4;
 
     @Inject
-    public IndentsInCommnetSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
+    public IndentsInCommentSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
         IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
     {
         super(resourceLookup, namingService, bmModelManager, v8ProjectManager);

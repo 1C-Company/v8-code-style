@@ -56,7 +56,7 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
     extends BasicCheck<Object>
 {
     private static final String OVERRIDABLE_STRING = "overridable"; //$NON-NLS-1$
-    private static final String OVERRIDABLE_STRING_RU = "переопределяемый"; //$NON-NLS-1$    
+    private static final String OVERRIDABLE_STRING_RU = "переопределяемый"; //$NON-NLS-1$
 
     private static final String LOCALIZATION_STRING = "localization"; //$NON-NLS-1$
     private static final String LOCALIZATION_STRING_RU = "локализация"; //$NON-NLS-1$ 

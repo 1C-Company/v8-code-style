@@ -21,20 +21,20 @@ import org.junit.Test;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
-import com.e1c.v8codestyle.bsl.comment.check.IndentsInCommnetSectionCheck;
+import com.e1c.v8codestyle.bsl.comment.check.IndentsInCommentSectionCheck;
 
 /**
- * Test for {@link IndentsInCommnetSectionCheck}
+ * Test for {@link IndentsInCommentSectionCheck}
  * 
  * @author Artem Samohvalov
  */
-public class IndentsInCommnetSectionCheckTest
+public class IndentsInCommentSectionCheckTest
     extends AbstractSingleModuleTestBase
 {
 
-    public IndentsInCommnetSectionCheckTest()
+    public IndentsInCommentSectionCheckTest()
     {
-        super(IndentsInCommnetSectionCheck.class);
+        super(IndentsInCommentSectionCheck.class);
     }
 
     /**
