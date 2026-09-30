@@ -32,4 +32,4 @@ EndFunction
 
 ## See Also
 
-[Description of Procedures and Functions, sec. 5.2.2](https://its.1c.ru/db/v8std#content:453:hdoc)
+[Description of Procedures and Functions, sec. 5.2.2](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Code_conventions/Module_formatting/Describing_procedures_and_functions/?language=en)

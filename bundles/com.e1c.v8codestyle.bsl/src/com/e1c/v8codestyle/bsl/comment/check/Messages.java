@@ -84,6 +84,11 @@ final class Messages
     public static String DocCommentConstructorReferenceCheck_Description;
     public static String DocCommentConstructorReferenceCheck_Issue;
 
+    public static String IndentsInCommnetSectionCheck_Title;
+    public static String IndentsInCommnetSectionCheck_Description;
+    public static String IndentsInCommnetSectionCheck_IssueManyTabs;
+    public static String IndentsInCommnetSectionCheck_IssueFewTabs;
+
     static
     {
         // initialize resource bundle

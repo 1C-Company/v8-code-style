@@ -95,10 +95,7 @@ public class DocCommentConstructorReferenceCheck
         DocumentationCommentResultAcceptor resultAcceptor, ICheckParameters parameters,
         BmOperationContext typeComputationContext, IProgressMonitor monitor)
     {
-        if (!(object instanceof ParametersSection parametersSection))
-        {
-            return;
-        }
+        ParametersSection parametersSection = (ParametersSection)object;
 
         Map<String, TypeDefinition> checkedVariableMap = new HashMap<>();
         for (FieldDefinition fieldDefinition : parametersSection.getParameterDefinitions())
@@ -121,6 +118,7 @@ public class DocCommentConstructorReferenceCheck
         if (parametersSection.getParent() instanceof BslDocumentationComment bslDocumentationComment)
         {
             var optionalKey = findPropertyCallKey(checkedVariableMap, bslDocumentationComment.getMethod());
+
             if (optionalKey.isPresent())
             {
                 TypeDefinition typeDefinition = checkedVariableMap.get(optionalKey.get());
