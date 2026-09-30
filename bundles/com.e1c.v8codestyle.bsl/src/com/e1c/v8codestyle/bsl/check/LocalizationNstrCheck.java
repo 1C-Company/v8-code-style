@@ -26,14 +26,15 @@ import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.Expression;
-import com._1c.g5.v8.dt.bsl.model.ForStatement;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
+import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
+import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -80,6 +81,7 @@ public class LocalizationNstrCheck
 
     private static final String DEFAULT_MESSAGES_NUMBER_ZERO =
         String.join(DELIMITER, IMMUTABLE_MAP_NUMBER_ZERO_MESSAGES);
+
     @Override
     public String getCheckId()
     {
@@ -112,8 +114,7 @@ public class LocalizationNstrCheck
         Invocation invocation = (Invocation)object;
         if (!parameters.getString(MESSAGE_NAME)
             .toLowerCase()
-            .contains(invocation.getMethodAccess().getName().toLowerCase())
-            || invocation.getParams().isEmpty())
+            .contains(invocation.getMethodAccess().getName().toLowerCase()) || invocation.getParams().isEmpty())
         {
             return;
         }
@@ -204,7 +205,7 @@ public class LocalizationNstrCheck
         {
             if (statement instanceof SimpleStatement simpState)
             {
-                collectFromSimpleState(simpState, names);
+                collectFromSimpleState(simpState, names, statements);
             }
             else if (statement instanceof IfStatement ifStatement)
             {
@@ -215,23 +216,49 @@ public class LocalizationNstrCheck
                     collectNstrAssignedNamesRec(conditional.getStatements(), names);
                 }
             }
-            else if (statement instanceof ForStatement forStatement)
+            else if (statement instanceof LoopStatement loopStatement)
             {
-                collectNstrAssignedNamesRec(forStatement.getStatements(), names);
+                collectNstrAssignedNamesRec(loopStatement.getStatements(), names);
+            }
+            else if (statement instanceof TryExceptStatement tryStatement)
+            {
+                collectNstrAssignedNamesRec(tryStatement.getTryStatements(), names);
             }
         }
     }
 
-    private void collectFromSimpleState(SimpleStatement statement, Set<String> names)
+    private void collectFromSimpleState(SimpleStatement statement, Set<String> names, List<Statement> statements)
     {
         if (statement.getLeft() instanceof StaticFeatureAccess left
             && statement.getRight() instanceof Invocation invocation)
         {
             String nameInv = invocation.getMethodAccess().getName();
             boolean isNstr = NSTR_RU.equalsIgnoreCase(nameInv) || NSTR.equalsIgnoreCase(nameInv);
-
             if (!isNstr && !invocation.getParams().isEmpty())
             {
+                if (nameInv.equalsIgnoreCase("СтрШаблон")) //$NON-NLS-1$
+                {
+                    if (invocation.getParams().get(0) instanceof StaticFeatureAccess sfa)
+                    {
+                        for (Statement statementInlist : statements)
+                        {
+                            if (statementInlist instanceof SimpleStatement simpState)
+                            {
+                                if (simpState.getLeft() instanceof StaticFeatureAccess stataicFeature
+                                    && stataicFeature.getName().equalsIgnoreCase(sfa.getName()))
+                                {
+                                    if (simpState.getRight() instanceof Invocation invocationFind
+                                        && (NSTR_RU.equalsIgnoreCase(invocationFind.getMethodAccess().getName())
+                                            || NSTR.equalsIgnoreCase(invocationFind.getMethodAccess().getName())))
+                                    {
+                                        names.add(left.getName().toLowerCase());
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 for (Expression param : invocation.getParams())
                 {
                     if (param instanceof Invocation inv)
@@ -239,13 +266,12 @@ public class LocalizationNstrCheck
                         String invName = inv.getMethodAccess().getName();
                         if (NSTR_RU.equalsIgnoreCase(invName) || NSTR.equalsIgnoreCase(invName))
                         {
-                            isNstr = true;
+                            names.add(left.getName().toLowerCase());
                             break;
                         }
                     }
                 }
             }
-
             if (isNstr)
             {
                 names.add(left.getName().toLowerCase());

@@ -15,17 +15,23 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
-import com._1c.g5.v8.dt.bsl.model.ForStatement;
+import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
+import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
@@ -33,6 +39,7 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
+import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.DataPathReferredObject;
 import com._1c.g5.v8.dt.form.model.Form;
@@ -40,6 +47,10 @@ import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormAttributeColumn;
 import com._1c.g5.v8.dt.form.model.FormField;
 import com._1c.g5.v8.dt.form.model.FormItem;
+import com._1c.g5.v8.dt.form.model.FormVisualEntity;
+import com._1c.g5.v8.dt.form.model.Table;
+import com._1c.g5.v8.dt.form.service.item.FormItemVisitor;
+import com._1c.g5.v8.dt.form.service.item.IFormItemCommand;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -58,10 +69,6 @@ public class LocalizationFormNstrCheck
     extends AbstractModuleStructureCheck
 {
     private static final String CHECK_ID = "nstr-form-localization"; //$NON-NLS-1$
-
-    private static final String NSTR = "NStr"; //$NON-NLS-1$
-
-    private static final String NSTR_RU = "НСтр"; //$NON-NLS-1$
 
     private static final String STRING_TEXT = "String"; //$NON-NLS-1$
 
@@ -94,28 +101,78 @@ public class LocalizationFormNstrCheck
             return;
         }
         Form form = (Form)formModule.getOwner();
-        List<FormAttribute> attributes = form.getAttributes();
         List<Method> methods = formModule.allMethods();
-        List<FormItem> fields = form.getItems();
+
+        List<FormAttribute> allAttribute = form.getAttributes();
+
         List<FormAttribute> displayedAttribute = new ArrayList<>();
-        for (FormItem formItem : fields)
+
+        final List<FormField> visibleFields = new ArrayList<>();
+        IFormItemCommand collectCommand = new IFormItemCommand()
         {
-            if (formItem instanceof FormField formField)
+            @Override
+            public void execute(FormVisualEntity fve)
             {
-                AbstractDataPath data = formField.getDataPath();
-                if (data == null)
+                if (fve instanceof FormField formField)
                 {
-                    continue;
+                    if (formField.isVisible())
+                    {
+                        formField.getType();
+                        AbstractDataPath data = formField.getDataPath();
+                        if (data == null)
+                        {
+                            return;
+                        }
+                        List<DataPathReferredObject> refObjects = data.getObjects();
+                        if (refObjects == null)
+                        {
+                            return;
+                        }
+                        visibleFields.add(formField);
+                    }
                 }
-                List<DataPathReferredObject> refObjects = data.getObjects();
-                if (refObjects == null)
+                else if (fve instanceof Table table)
                 {
-                    continue;
+                    AbstractDataPath data = table.getDataPath();
+                    if (data == null)
+                    {
+                        return;
+                    }
+                    List<FormItem> tableItems = table.getItems();
+                    for (FormItem formItemTable : tableItems)
+                    {
+                        if (formItemTable instanceof FormField formFieldTable)
+                        {
+                            if (formFieldTable.isVisible())
+                            {
+                                visibleFields.add(formFieldTable);
+                            }
+                        }
+                    }
                 }
-                displayedAttribute.addAll(findAttribute(refObjects));
             }
+        };
+
+        FormItemVisitor visitor = new FormItemVisitor(collectCommand);
+        visitor.visit(form);
+
+        for (FormField formField : visibleFields)
+        {
+            AbstractDataPath data = formField.getDataPath();
+            if (data == null)
+            {
+                continue;
+            }
+            List<DataPathReferredObject> refObjects = data.getObjects();
+            if (refObjects == null)
+            {
+                continue;
+            }
+            displayedAttribute.addAll(findAttribute(refObjects));
         }
+
         Map<Method, Map<String, Statement>> assignmentsByMethod = new HashMap<>();
+        Set<Statement> reportedStatements = Collections.newSetFromMap(new IdentityHashMap<>());
         for (Method method : methods)
         {
             assignmentsByMethod.put(method, collectAssignments(method.allStatements()));
@@ -123,12 +180,14 @@ public class LocalizationFormNstrCheck
 
         for (FormAttribute attribute : displayedAttribute)
         {
+            visitor.visit(attribute);
             List<TypeItem> types = attribute.getValueType().getTypes();
             for (TypeItem type : types)
             {
                 if (STRING_TEXT.equalsIgnoreCase(McoreUtil.getTypeName(type)))
                 {
-                    checkAttributeName(attribute.getName(), methods, assignmentsByMethod, resultAceptor);
+                    checkAttributeName(attribute.getName(), methods, assignmentsByMethod, allAttribute,
+                        resultAceptor, reportedStatements);
                 }
                 else if ("ValueTable".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
                 {
@@ -140,7 +199,8 @@ public class LocalizationFormNstrCheck
                         {
                             if (STRING_TEXT.equalsIgnoreCase(McoreUtil.getTypeName(typeColumn)))
                             {
-                                checkAttributeName(column.getName(), methods, assignmentsByMethod, resultAceptor);
+                                checkAttributeName(column.getName(), methods, assignmentsByMethod, allAttribute,
+                                    resultAceptor, reportedStatements);
                             }
                         }
                     }
@@ -150,22 +210,27 @@ public class LocalizationFormNstrCheck
     }
 
     private void checkAttributeName(String name, List<Method> methods,
-        Map<Method, Map<String, Statement>> assignmentsByMethod, ResultAcceptor resultAceptor)
+        Map<Method, Map<String, Statement>> assignmentsByMethod, List<FormAttribute> allAttribute,
+        ResultAcceptor resultAceptor, Set<Statement> reportedStatements)
     {
         String key = name.toLowerCase();
         for (Method method : methods)
         {
             Map<String, Statement> assignments = assignmentsByMethod.get(method);
             Statement statement = assignments.get(key);
-            if (statement != null && checkStatement(statement, assignments))
+            if (statement != null && checkStatement(statement, assignments, allAttribute))
             {
-                SimpleStatement simp = (SimpleStatement)statement;
-                resultAceptor.addIssue(Messages.LocalizationNstrCheck_Issue, statement);
+                if (reportedStatements.add(statement))
+                {
+                    resultAceptor.addIssue(Messages.LocalizationNstrCheck_Issue, statement);
+                }
             }
         }
+        return false;
     }
 
-    private boolean checkStatement(Statement statement, Map<String, Statement> methodAssignments)
+    private boolean checkStatement(Statement statement, Map<String, Statement> methodAssignments,
+        List<FormAttribute> allAttribute)
     {
         if (statement instanceof SimpleStatement simpleStat)
         {
@@ -182,23 +247,48 @@ public class LocalizationFormNstrCheck
             {
                 if (!checkSfa(sfa.getName(), methodAssignments))
                 {
+                    for (FormAttribute attribute : allAttribute)
+                    {
+                        if (attribute.getName().equalsIgnoreCase(sfa.getName()))
+                        {
+                            return false;
+                        }
+                    }
+                    Method method = EcoreUtil2.getContainerOfType(statement, Method.class);
+                    List<FormalParam> params = method.getFormalParams();
+                    for (FormalParam formalParam : params)
+                    {
+                        if (formalParam.getName().equalsIgnoreCase(sfa.getName()))
+                        {
+                            return false;
+                        }
+                    }
+                    List<Statement> statemetsMethod = method.getStatements();
+                    Map<String, Statement> assignmentsByMethod = new HashMap<>();
+                    assignmentsByMethod.putAll(collectAssignments(statemetsMethod));
+                    if (assignmentsByMethod.keySet().contains(sfa.getName().toLowerCase()))
+                    {
+                        Statement findStatement = assignmentsByMethod.get(sfa.getName().toLowerCase());
+                        if (findStatement instanceof SimpleStatement simState)
+                        {
+                            return checkStatement(simState, methodAssignments, allAttribute);
+                        }
+                    }
                     return true;
                 }
             }
             else if (simpleStat.getRight() instanceof Invocation invocationRight)
             {
+                NodeModelUtils.findActualNodeFor(statement).getText();
                 if (!invocationRight.getParams().isEmpty()
                     && invocationRight.getParams().get(0) instanceof Invocation invocationParam)
                 {
-                    String name = invocationParam.getMethodAccess().getName();
-                    if (!(NSTR_RU.equalsIgnoreCase(name) || NSTR.equalsIgnoreCase(name)))
-                    {
-                        return true;
-                    }
+                    return false;
                 }
             }
         }
         return false;
+
     }
 
     private List<FormAttribute> findAttribute(List<DataPathReferredObject> refObjects)
@@ -245,9 +335,13 @@ public class LocalizationFormNstrCheck
                     collectAssignments(conditional.getStatements(), names);
                 }
             }
-            else if (statement instanceof ForStatement forStatement)
+            else if (statement instanceof LoopStatement loopStatement)
             {
-                collectAssignments(forStatement.getStatements(), names);
+                collectAssignments(loopStatement.getStatements(), names);
+            }
+            else if (statement instanceof TryExceptStatement tryStatement)
+            {
+                collectAssignments(tryStatement.getTryStatements(), names);
             }
         }
     }
@@ -257,8 +351,7 @@ public class LocalizationFormNstrCheck
         Statement statement = methodAssignments.get(name.toLowerCase());
         if (statement instanceof SimpleStatement simpState && simpState.getRight() instanceof Invocation invocation)
         {
-            String nameInv = invocation.getMethodAccess().getName();
-            return NSTR_RU.equalsIgnoreCase(nameInv) || NSTR.equalsIgnoreCase(nameInv);
+            return true;
         }
         return false;
     }
