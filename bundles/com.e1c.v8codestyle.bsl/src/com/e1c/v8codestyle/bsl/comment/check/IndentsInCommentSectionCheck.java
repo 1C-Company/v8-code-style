@@ -273,9 +273,20 @@ public class IndentsInCommentSectionCheck
             if (part.getLineNumber() != parentLineNumber)
             {
                 int descriptionPartIndent = getIndentByLineNumber(commentTextLines, part.getLineNumber());
-                if (descriptionPartIndent <= parentIndent || (oneLevel
-                    ? targetDescriptionPartIndent != -1 && descriptionPartIndent != targetDescriptionPartIndent
-                    : targetDescriptionPartIndent != -1 && descriptionPartIndent < targetDescriptionPartIndent))
+                boolean invalidIndent = descriptionPartIndent <= parentIndent;
+
+                if (!invalidIndent && targetDescriptionPartIndent != -1)
+                {
+                    if (oneLevel)
+                    {
+                        invalidIndent = descriptionPartIndent != targetDescriptionPartIndent;
+                    }
+                    else
+                    {
+                        invalidIndent = descriptionPartIndent < targetDescriptionPartIndent;
+                    }
+                }
+                if (invalidIndent)
                 {
                     addIssue(resultAcceptor, part.getLineNumber(), part.getOffset(),
                         targetDescriptionPartIndent == -1 ? true : targetDescriptionPartIndent > descriptionPartIndent);
