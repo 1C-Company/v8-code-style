@@ -69,6 +69,10 @@ public class FindRowServerCheck
             if ("НайтиСтроки".equalsIgnoreCase(name) || "FindRows".equalsIgnoreCase(name)) //$NON-NLS-1$ //$NON-NLS-2$
             {
                 Method method = EcoreUtil2.getContainerOfType(invocation, Method.class);
+                if (method == null)
+                {
+                    return;
+                }
                 Environments envi = method.getEnvironments();
                 if (!envi.contains(Environment.SERVER))
                 {
