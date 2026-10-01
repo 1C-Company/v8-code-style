@@ -226,7 +226,6 @@ public class LocalizationFormNstrCheck
                 }
             }
         }
-        return false;
     }
 
     private boolean checkStatement(Statement statement, Map<String, Statement> methodAssignments,
