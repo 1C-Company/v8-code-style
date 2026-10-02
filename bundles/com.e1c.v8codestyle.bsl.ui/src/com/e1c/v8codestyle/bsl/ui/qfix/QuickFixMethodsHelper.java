@@ -25,6 +25,7 @@ import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.bsl.ui.contentassist.BslProposalProvider;
 import com._1c.g5.v8.dt.bsl.ui.quickfix.BslQuickFixUtil;
 import com._1c.g5.v8.dt.metadata.mdclass.ScriptVariant;
@@ -182,7 +183,12 @@ public final class QuickFixMethodsHelper
         {
             posDec += indent.length() + 1 + directiveName.length() + lineSeparator.length();
         }
+
         int posUse = model.getIssue().getOffset();
+        if (model.getElement() instanceof StringLiteral)
+        {
+            ++posUse; // without " in begin
+        }
 
         int nameLen = getModelNameLength(model);
         createLinkedModeModel(model, posDec, posUse, nameLen, groupParams);
@@ -255,9 +261,13 @@ public final class QuickFixMethodsHelper
         EObject element = model.getElement();
         if (element instanceof StaticFeatureAccess staticFeatureAccessElement)
         {
-            return staticFeatureAccessElement.getName().length();
+            return staticFeatureAccessElement.getName().trim().length();
         }
-        return NodeModelUtils.getNode(element).getText().length();
+        if (element instanceof StringLiteral stringLiteral && !stringLiteral.getLines().isEmpty())
+        {
+            return stringLiteral.lines(true).getFirst().length();
+        }
+        return NodeModelUtils.getNode(element).getText().trim().length();
     }
 
     private QuickFixMethodsHelper()

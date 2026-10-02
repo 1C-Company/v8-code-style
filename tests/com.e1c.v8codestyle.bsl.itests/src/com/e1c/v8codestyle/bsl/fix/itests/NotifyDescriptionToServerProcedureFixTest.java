@@ -13,13 +13,17 @@
 package com.e1c.v8codestyle.bsl.fix.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.eclipse.ui.PlatformUI;
 import org.junit.Test;
 
+import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.metadata.mdclass.AbstractForm;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.v8codestyle.bsl.check.NotifyDescriptionToServerProcedureCheck;
 
@@ -46,9 +50,33 @@ public class NotifyDescriptionToServerProcedureFixTest
         Marker marker = markers.get(0);
 
         performFix(marker, Messages.NotifyDescriptionToServerProcedureFix_Description);
-        assertMarkerGone();
+        PlatformUI.getWorkbench().saveAllEditors(false);
 
+        assertMarkerGone();
         assertHasMethod();
+    }
+
+    @Override
+    protected String getModuleFileName()
+    {
+        return "/src/CommonForms/Form/Module.bsl";
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return "CommonForm";
+    }
+
+    @Override
+    protected Module getModule()
+    {
+        IBmObject mdObject = getTopObjectByFqn("CommonForm.Form.Form", getProject());
+        assertTrue(mdObject instanceof AbstractForm);
+        Module module = ((AbstractForm)mdObject).getModule();
+        assertNotNull(module);
+
+        return module;
     }
 
     private void assertHasMethod()
