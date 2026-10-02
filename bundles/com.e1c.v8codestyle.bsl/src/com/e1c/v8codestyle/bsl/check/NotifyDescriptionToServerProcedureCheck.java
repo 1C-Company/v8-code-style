@@ -67,7 +67,7 @@ import com.google.inject.Inject;
  * @author Victor Golubev
  */
 public class NotifyDescriptionToServerProcedureCheck
-    extends BasicCheck
+    extends BasicCheck<Object>
 {
     private static final String CHECK_ID = "notify-description-to-server-procedure"; //$NON-NLS-1$
 
@@ -231,7 +231,7 @@ public class NotifyDescriptionToServerProcedureCheck
                                 .map(Environmental.class::cast)
                                 .toList();
                         }
-                        else if (entry.getFeature() instanceof ImplicitVariable implicitVariable)
+                        else if (entry.getFeature() instanceof ImplicitVariable)
                         {
                             List<TypeItem> types =
                                 typesComputer.computeTypes(featureAccess, environmental.environments());
