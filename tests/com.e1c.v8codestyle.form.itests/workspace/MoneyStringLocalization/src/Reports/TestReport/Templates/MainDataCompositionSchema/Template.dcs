@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataCompositionSchema xmlns="http://v8.1c.ru/8.1/data-composition-system/schema" xmlns:dcscom="http://v8.1c.ru/8.1/data-composition-system/common" xmlns:dcscor="http://v8.1c.ru/8.1/data-composition-system/core" xmlns:dcsset="http://v8.1c.ru/8.1/data-composition-system/settings" xmlns:v8="http://v8.1c.ru/8.1/data/core" xmlns:v8ui="http://v8.1c.ru/8.1/data/ui" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<dataSource>
+		<name>DataSource1</name>
+		<dataSourceType>Local</dataSourceType>
+	</dataSource>
+	<dataSet xsi:type="DataSetQuery">
+		<name>DataSet1</name>
+		<dataSource>DataSource1</dataSource>
+		<query/>
+		<field xsi:type="DataSetFieldField">
+        <dataPath>Сумма</dataPath>
+        <field>Сумма</field>
+        <title xsi:type="v8:LocalStringType">
+        <v8:item>
+        <v8:lang>ru</v8:lang>
+        <v8:content>Сумма</v8:content>
+        </v8:item>
+        </title>
+        <valueType>
+            <v8:TypeId>46a30460-6167-4610-9d31-8fcd558f85f8</v8:TypeId>
+        </valueType>
+        </field>
+	</dataSet>
+</DataCompositionSchema>

@@ -309,6 +309,14 @@ final class Messages
 
     public static String ModuleStructureVariablesInRegionCheck_Title;
 
+    public static String MoneyStringLocalizationCheck_Description;
+
+    public static String MoneyStringLocalizationCheck_Issue;
+
+    public static String MoneyStringLocalizationCheck_Title;
+
+    public static String MoneyStringLocalizationCheck_Parameter;
+
     public static String PasswordStorageSecureCheck_Title;
 
     public static String PasswordStorageSecureCheck_Description;
