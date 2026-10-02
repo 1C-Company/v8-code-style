@@ -48,7 +48,7 @@ import com.google.inject.Inject;
  * Checks that field definitions in the return section of the documentation comment
  * are used only for collection types (Structure/Map/ValueTable/ValueTree).
  *
- * @author 1C-Soft LLC
+ * @author Babin Nikolay
  */
 public class ReturnSectionFieldInNonCollectionCheck
     extends DocumentationCommentBasicDelegateCheck
