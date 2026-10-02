@@ -70,9 +70,9 @@
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="slicer" includeSource="true" type="InstallableUnit">
 <repository id="eclipse_repository" location="https://download.eclipse.org/releases/2025-12/"/>
 <unit id="org.apache.commons.codec" version="0.0.0"/>
-<unit id="org.eclipse.sdk.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.platform.feature.group" version="0.0.0"/>
-<unit id="org.eclipse.pde.feature.group" version="0.0.0"/>
+<unit id="org.eclipse.jdt" version="0.0.0"/>
+<unit id="org.eclipse.jdt.core.compiler.batch" version="0.0.0"/>
+<unit id="org.eclipse.jdt.annotation" version="0.0.0"/>
 <unit id="org.eclipse.orbit.xml-apis-ext" version="0.0.0"/>
 <unit id="org.osgi.service.http.whiteboard" version="0.0.0"/>
 <unit id="org.eclipse.equinox.http.service.api" version="0.0.0"/>
