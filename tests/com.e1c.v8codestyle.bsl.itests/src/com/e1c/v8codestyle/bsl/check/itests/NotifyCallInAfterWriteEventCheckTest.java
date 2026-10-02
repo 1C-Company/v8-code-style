@@ -12,6 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check.itests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -21,22 +22,23 @@ import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.v8codestyle.bsl.check.ObjectChangeNotifyCallCheck;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
+import com.e1c.v8codestyle.bsl.check.NotifyCallInAfterWriteEventCheck;
 
 /**
- * Test for {@link ObjectChangeNotifyCallCheck}
+ * Test for {@link NotifyCallInAfterWriteEventCheck}
  * 
  * @author Artem Samohvalov
  */
-public class ObjectChangeNotifyCallCheckTest
+public class NotifyCallInAfterWriteEventCheckTest
     extends AbstractSingleModuleTestBase
 {
     private static final String PROJECT_NAME = "ObjectChangeNotifyCallCheckTest";
     private static final String MODULE_FILE_NAME = "/src/Catalogs/TestCatalog/Forms/ItemForm/Module.bsl";
 
-    public ObjectChangeNotifyCallCheckTest()
+    public NotifyCallInAfterWriteEventCheckTest()
     {
-        super(ObjectChangeNotifyCallCheck.class);
+        super(NotifyCallInAfterWriteEventCheck.class);
     }
 
     /**
@@ -51,6 +53,9 @@ public class ObjectChangeNotifyCallCheckTest
 
         List<Marker> markers = getModuleMarkers();
         assertFalse(markers.isEmpty());
+
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**

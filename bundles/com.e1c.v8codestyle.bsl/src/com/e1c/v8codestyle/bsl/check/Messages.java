@@ -546,10 +546,13 @@ final class Messages
     public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
     public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
 
-    public static String ObjectChangeNotifiCallCheck_Title;
-    public static String ObjectChangeNotifiCallCheck_Description;
-    public static String ObjectChangeNotifiCallCheck_InEventHandlerIssue;
-    public static String ObjectChangeNotifiCallCheck_InServerCallIssue;
+    public static String NotifyCallInAfterWriteEventCheck_Title;
+    public static String NotifyCallInAfterWriteEventCheck_Description;
+    public static String NotifyCallInAfterWriteEventCheck_Issue;
+
+    public static String NotifyCallAfterObjectChange_Title;
+    public static String NotifyCallAfterObjectChange_Description;
+    public static String NotifyCallAfterObjectChange_Issue;
 
     static
     {

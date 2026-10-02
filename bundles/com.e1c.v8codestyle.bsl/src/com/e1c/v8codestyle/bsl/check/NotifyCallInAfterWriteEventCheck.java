@@ -26,6 +26,7 @@ import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
+import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.mcore.Event;
@@ -43,18 +44,18 @@ import com.google.inject.Inject;
  * 
  * @author Artem Samohvalov
  */
-public class ObjectChangeNotifyCallCheck
+public class NotifyCallInAfterWriteEventCheck
     extends AbstractModuleStructureCheck
 {
     private static final String CHECKED_EVENT = "AfterWrite"; //$NON-NLS-1$
 
-    private static final String NOTIFI_METHOD_NAME = "Notify"; //$NON-NLS-1$
-    private static final String NOTIFI_METHOD_NAME_RU = "Оповестить"; //$NON-NLS-1$
+    private static final String NOTIFY_METHOD_NAME = "Notify"; //$NON-NLS-1$
+    private static final String NOTIFY_METHOD_NAME_RU = "Оповестить"; //$NON-NLS-1$
 
     private final BslEventsService bslEventsService;
 
     @Inject
-    public ObjectChangeNotifyCallCheck(BslEventsService bslEventsService)
+    public NotifyCallInAfterWriteEventCheck(BslEventsService bslEventsService)
     {
         this.bslEventsService = bslEventsService;
     }
@@ -62,14 +63,14 @@ public class ObjectChangeNotifyCallCheck
     @Override
     public String getCheckId()
     {
-        return "object-change-notifi-call"; //$NON-NLS-1$
+        return "notify-call-in-after-write-event"; //$NON-NLS-1$
     }
 
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.ObjectChangeNotifiCallCheck_Title)
-            .description(Messages.ObjectChangeNotifiCallCheck_Description)
+        builder.title(Messages.NotifyCallInAfterWriteEventCheck_Title)
+            .description(Messages.NotifyCallInAfterWriteEventCheck_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
@@ -90,9 +91,9 @@ public class ObjectChangeNotifyCallCheck
             var handlerList = findCheckedHandlersByModule(module);
             for (Method method : handlerList) // loop for all handlers of the AfterWrite event
             {
-                if (!hasNotifiCall(method))
+                if (!hasNotifyCall(method))
                 {
-                    resultAcceptor.addIssue(Messages.ObjectChangeNotifiCallCheck_InEventHandlerIssue, method,
+                    resultAcceptor.addIssue(Messages.NotifyCallInAfterWriteEventCheck_Issue, method,
                         NAMED_ELEMENT__NAME);
                 }
             }
@@ -122,7 +123,7 @@ public class ObjectChangeNotifyCallCheck
             .toList();
     }
 
-    private boolean hasNotifiCall(Method method)
+    private boolean hasNotifyCall(Method method)
     {
         TreeIterator<EObject> it = EcoreUtil.getAllContents(method, true);
 
@@ -130,9 +131,10 @@ public class ObjectChangeNotifyCallCheck
         {
             EObject element = it.next();
             if (element instanceof SimpleStatement simpleStatement
-                && simpleStatement.getLeft() instanceof Invocation invocation && invocation.getMethodAccess() != null
-                && (NOTIFI_METHOD_NAME_RU.equalsIgnoreCase(invocation.getMethodAccess().getName())
-                    || NOTIFI_METHOD_NAME.equalsIgnoreCase(invocation.getMethodAccess().getName())))
+                && simpleStatement.getLeft() instanceof Invocation invocation
+                && invocation.getMethodAccess() instanceof StaticFeatureAccess staticAccess
+                && (NOTIFY_METHOD_NAME_RU.equalsIgnoreCase(staticAccess.getName())
+                    || NOTIFY_METHOD_NAME.equalsIgnoreCase(staticAccess.getName())))
             {
                 return true;
             }
