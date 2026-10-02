@@ -49,7 +49,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 /**
  * Checks definition type variable.
  *
- *  @author Ivan Sergeev
+ * @author Ivan Sergeev
  */
 public class DefinitionTypeVariableCheck
     extends AbstractModuleStructureCheck
@@ -59,6 +59,8 @@ public class DefinitionTypeVariableCheck
     private static final String TYPE = "Type"; //$NON-NLS-1$
 
     private static final String TYPE_RU = "Тип"; //$NON-NLS-1$
+
+    private static final String METADATA_LOWER = "метаданны"; //$NON-NLS-1$
 
     @Override
     public String getCheckId()
@@ -144,6 +146,11 @@ public class DefinitionTypeVariableCheck
                 {
                     return true;
                 }
+                List<Statement> exceptStatement = tryStatement.getExceptStatements();
+                if (checkSfa(name, exceptStatement))
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -157,8 +164,7 @@ public class DefinitionTypeVariableCheck
             {
                 if (statement.getRight() instanceof Invocation invocation)
                 {
-                    String nameInv = invocation.getMethodAccess().getName();
-                    if (TYPE_RU.equalsIgnoreCase(nameInv) || TYPE.equalsIgnoreCase(nameInv))
+                    if (isTypeMethod(invocation))
                     {
                         return true;
                     }
@@ -169,8 +175,7 @@ public class DefinitionTypeVariableCheck
                         {
                             if (param instanceof Invocation inv)
                             {
-                                String invName = inv.getMethodAccess().getName();
-                                if (TYPE_RU.equalsIgnoreCase(invName) || TYPE.equalsIgnoreCase(invName))
+                                if (isTypeMethod(inv))
                                 {
                                     return true;
                                 }
@@ -192,13 +197,18 @@ public class DefinitionTypeVariableCheck
             if (expressionLeft instanceof DynamicFeatureAccess dynamicFeatureAccess
                 && dynamicFeatureAccess.getSource() instanceof Invocation invocation)
             {
-                if (checkName(invocation)
-                    && !NodeModelUtils.findActualNodeFor(expressionRight).getText().toLowerCase().contains("метаданны"))
+                ICompositeNode rightNode = NodeModelUtils.findActualNodeFor(expressionRight);
+                if (checkName(invocation) && rightNode != null
+                    && !rightNode.getText().toLowerCase().contains(METADATA_LOWER))
                 {
                     if (binaryExp.getRight() instanceof StaticFeatureAccess sfa)
                     {
                         String sfaName = sfa.getName();
                         Method method = EcoreUtil2.getContainerOfType(statement, Method.class);
+                        if (method == null)
+                        {
+                            return false;
+                        }
                         List<Statement> statements = method.allStatements();
                         if (!checkSfa(sfaName, statements))
                         {
@@ -207,8 +217,7 @@ public class DefinitionTypeVariableCheck
                     }
                     else if (binaryExp.getRight() instanceof Invocation inv)
                     {
-                        if (!TYPE_RU.equalsIgnoreCase(inv.getMethodAccess().getName())
-                            || !TYPE.equalsIgnoreCase(inv.getMethodAccess().getName()))
+                        if (!isTypeMethod(inv))
                         {
                             return true;
                         }
@@ -233,7 +242,13 @@ public class DefinitionTypeVariableCheck
         return false;
     }
 
-    private void addIssue(ResultAcceptor resultAceptor, Statement statement)
+    private boolean isTypeMethod(Invocation invocation)
+    {
+        String name = invocation.getMethodAccess().getName();
+        return TYPE_RU.equalsIgnoreCase(name) || TYPE.equalsIgnoreCase(name);
+    }
+
+    private void addIssue(ResultAcceptor resultAcceptor, Statement statement)
     {
         ICompositeNode node = NodeModelUtils.findActualNodeFor(statement);
         if (node == null)
@@ -259,7 +274,7 @@ public class DefinitionTypeVariableCheck
             DirectLocation directLocation =
                 new DirectLocation(node.getOffset(), firstLine.length(), node.getStartLine(), statement);
             Issue issue = new BslDirectLocationIssue(Messages.DefinitionTypeVariableCheck_Issue, directLocation);
-            resultAceptor.addIssue(issue);
+            resultAcceptor.addIssue(issue);
         }
     }
 }
