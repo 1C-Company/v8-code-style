@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.ui.PlatformUI;
 import org.junit.Test;
 
@@ -86,7 +87,10 @@ public class OverridableModuleOnlyExportMethodsFixTest
     private void assertMethodExport()
     {
         Module module = getModule();
-        assertTrue(module.allMethods().stream().allMatch(Method::isExport));
+        EList<Method> methods = module.allMethods();
+
+        assertEquals(1, methods.size());
+        assertTrue(methods.get(0).isExport());
     }
 
 }

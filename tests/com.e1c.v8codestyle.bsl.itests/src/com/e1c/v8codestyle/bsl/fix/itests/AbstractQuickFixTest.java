@@ -36,7 +36,7 @@ import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
 public abstract class AbstractQuickFixTest
     extends AbstractSingleModuleTestBase
 {
-    private IFixManager fixManager = ServiceAccess.get(IFixManager.class);
+    private final IFixManager fixManager = ServiceAccess.get(IFixManager.class);
 
     /**
      * @param checkClass, cannot be {@code null}
