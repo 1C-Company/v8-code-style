@@ -26,16 +26,15 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import com._1c.g5.v8.dt.bsl.common.Symbols;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.Pragma;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.form.model.Form;
+import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -58,26 +57,6 @@ public class NotifyCallAfterObjectChangeCheck
 
     private static final Set<String> OBJECT_CHANGE_METHOD_NAMES =
         Set.of("записать", "write", "удалить", "delete", "установитьпометкуудаления", "setdeletionmark"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
-
-    //@formatter:off
-    private static final Set<String> ON_CLIENT_SET = Set.of(
-        Symbols.AT_CLIENT_RUS.toLowerCase(), 
-        Symbols.AT_CLIENT_INTNL.toLowerCase(),
-        Symbols.AT_CLIENT_AT_SERVER_RUS.toLowerCase(), 
-        Symbols.AT_CLIENT_AT_SERVER_INTNL.toLowerCase(), 
-        Symbols.AT_CLIENT_AT_SERVER_NO_CONTEXT_RUS.toLowerCase(), 
-        Symbols.AT_CLIENT_AT_SERVER_NO_CONTEXT_INTNL.toLowerCase());
-    //@formatter:on
-
-    //@formatter:off
-    private static final Set<String> ON_SERVER_SET = Set.of(
-        Symbols.AT_SERVER_RUS.toLowerCase(),
-        Symbols.AT_SERVER_INTNL.toLowerCase(),
-        Symbols.AT_CLIENT_AT_SERVER_RUS.toLowerCase(), 
-        Symbols.AT_CLIENT_AT_SERVER_INTNL.toLowerCase(), 
-        Symbols.AT_CLIENT_AT_SERVER_NO_CONTEXT_RUS.toLowerCase(),
-        Symbols.AT_CLIENT_AT_SERVER_NO_CONTEXT_INTNL.toLowerCase());
-    //@formatter:on
 
     @Override
     public String getCheckId()
@@ -149,32 +128,14 @@ public class NotifyCallAfterObjectChangeCheck
 
     private boolean isMethodExecutedOnClient(Method method)
     {
-        return hasDirectiveInMethod(method, ON_CLIENT_SET);
+        Environments environments = method.environments();
+        return environments.containsAny(Environments.ALL_CLIENTS);
     }
 
     private boolean isMethodExecutedOnServer(Method method)
     {
-        return hasDirectiveInMethod(method, ON_SERVER_SET);
-    }
-
-    private boolean hasDirectiveInMethod(Method method, Set<String> lowerDirectiveSet)
-    {
-        for (Pragma pragma : method.getPragmas())
-        {
-            if (pragma.getSymbol() == null)
-            {
-                continue;
-            }
-
-            String directiveName = pragma.getSymbol().toLowerCase(); // without &
-
-            if (lowerDirectiveSet.contains(directiveName))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        Environments environments = method.environments();
+        return environments.containsAny(Environments.ALL_SERVERS);
     }
 
     private Set<Method> getAllServerMethodCalledBy(Method method)

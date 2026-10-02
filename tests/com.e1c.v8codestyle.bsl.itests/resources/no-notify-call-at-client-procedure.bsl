@@ -5,6 +5,7 @@ Procedure AfterWrite()
 
 EndProcedure
 
+&AtClient
 Procedure ServerProcedure()
 
     Write();

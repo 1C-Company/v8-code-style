@@ -164,7 +164,7 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testMethodWithoutServerDirective() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "method-without-server-directive.bsl");
+        updateModule(FOLDER_RESOURCE + "no-notify-call-at-client-procedure.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertTrue(markers.isEmpty());
