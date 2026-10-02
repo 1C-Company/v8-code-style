@@ -19,10 +19,12 @@ import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.mcore.util.Environment;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
+import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
@@ -35,7 +37,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  *  @author Ivan Sergeev
  */
 public class FindRowServerCheck
-    extends AbstractModuleStructureCheck
+    extends BasicCheck<Object>
 {
     private static final String CHECK_ID = "find-rows-server"; //$NON-NLS-1$
 
@@ -55,12 +57,13 @@ public class FindRowServerCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(628, getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(INVOCATION);
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
+    protected void check(Object object, ResultAcceptor resultAcсeptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
         if (object instanceof Invocation invocation)
@@ -76,7 +79,7 @@ public class FindRowServerCheck
                 Environments envi = method.getEnvironments();
                 if (!envi.contains(Environment.SERVER))
                 {
-                    resultAceptor.addIssue(Messages.FindRowServerCheck_Issue);
+                    resultAcсeptor.addIssue(Messages.FindRowServerCheck_Issue);
                 }
             }
         }
