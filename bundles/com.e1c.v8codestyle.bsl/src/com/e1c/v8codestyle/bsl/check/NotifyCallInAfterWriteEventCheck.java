@@ -80,7 +80,7 @@ public class NotifyCallInAfterWriteEventCheck
 
         if (module.getOwner() instanceof Form form)
         {
-            List<Method> checkedHandlers = findCheckedHandlersByForm(form);
+            List<Method> checkedHandlers = findCheckedHandlersByForm(form, module);
             for (Method method : checkedHandlers) // loop for all handlers of the AfterWrite event
             {
                 if (!hasNotifyCall(method))
@@ -92,7 +92,7 @@ public class NotifyCallInAfterWriteEventCheck
         }
     }
 
-    private List<Method> findCheckedHandlersByForm(Form form)
+    private List<Method> findCheckedHandlersByForm(Form form, Module module)
     {
         if (form.getExtInfo() == null)
         {
@@ -117,8 +117,7 @@ public class NotifyCallInAfterWriteEventCheck
             return List.of();
         }
 
-        return form.getModule()
-            .allMethods()
+        return module.allMethods()
             .stream()
             .filter(method -> checkedHandlerNames.contains(method.getName().toLowerCase()))
             .toList();
