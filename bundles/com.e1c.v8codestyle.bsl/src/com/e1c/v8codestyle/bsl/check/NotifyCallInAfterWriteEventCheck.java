@@ -16,6 +16,8 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -27,9 +29,8 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
-import com._1c.g5.v8.dt.bsl.resource.BslEventsService;
+import com._1c.g5.v8.dt.form.model.EventHandler;
 import com._1c.g5.v8.dt.form.model.Form;
-import com._1c.g5.v8.dt.mcore.Event;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
@@ -37,7 +38,6 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
-import com.google.inject.Inject;
 
 /**
  * The Check finds the AfterWrite event handler and adds a issue if the handler doesn't contain a call to Notify()
@@ -51,14 +51,6 @@ public class NotifyCallInAfterWriteEventCheck
 
     private static final String NOTIFY_METHOD_NAME = "Notify"; //$NON-NLS-1$
     private static final String NOTIFY_METHOD_NAME_RU = "Оповестить"; //$NON-NLS-1$
-
-    private final BslEventsService bslEventsService;
-
-    @Inject
-    public NotifyCallInAfterWriteEventCheck(BslEventsService bslEventsService)
-    {
-        this.bslEventsService = bslEventsService;
-    }
 
     @Override
     public String getCheckId()
@@ -86,10 +78,10 @@ public class NotifyCallInAfterWriteEventCheck
     {
         Module module = (Module)object;
 
-        if (module.getOwner() instanceof Form)
+        if (module.getOwner() instanceof Form form)
         {
-            var handlerList = findCheckedHandlersByModule(module);
-            for (Method method : handlerList) // loop for all handlers of the AfterWrite event
+            List<Method> checkedHandlers = findCheckedHandlersByForm(form);
+            for (Method method : checkedHandlers) // loop for all handlers of the AfterWrite event
             {
                 if (!hasNotifyCall(method))
                 {
@@ -100,26 +92,35 @@ public class NotifyCallInAfterWriteEventCheck
         }
     }
 
-    private List<Method> findCheckedHandlersByModule(Module module)
+    private List<Method> findCheckedHandlersByForm(Form form)
     {
-        var eventMap = bslEventsService.getEventHandlers(module);
-        var methodList = module.allMethods();
-
-        if (eventMap.isEmpty() || methodList.isEmpty())
+        if (form.getExtInfo() == null)
         {
             return List.of();
         }
 
-        List<String> methodNames = eventMap.entrySet()
-            .stream()
-            .filter(entry -> entry.getValue()
-                .stream()
-                .anyMatch(object -> object instanceof Event event && CHECKED_EVENT.equalsIgnoreCase(event.getName())))
-            .map(entry -> entry.getKey().getString())
-            .toList();
+        List<EventHandler> handlers = form.getExtInfo().getHandlers();
+        if (handlers.isEmpty())
+        {
+            return List.of();
+        }
 
-        return methodList.stream()
-            .filter(method -> methodNames.stream().anyMatch(name -> name.equalsIgnoreCase(method.getName())))
+        Set<String> checkedHandlerNames = handlers.stream()
+            .filter(handler -> handler.getEvent().getName() != null)
+            .filter(handler -> handler.getEvent().getName().equalsIgnoreCase(CHECKED_EVENT))
+            .map(EventHandler::getName)
+            .map(String::toLowerCase)
+            .collect(Collectors.toSet());
+
+        if (checkedHandlerNames.isEmpty())
+        {
+            return List.of();
+        }
+
+        return form.getModule()
+            .allMethods()
+            .stream()
+            .filter(method -> checkedHandlerNames.contains(method.getName().toLowerCase()))
             .toList();
     }
 
