@@ -43,12 +43,12 @@ import com._1c.g5.v8.dt.bsl.model.WhileStatement;
 import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 
 /**
- * Abstract AST visitor for the BSL language model that performs full recursive traversal.
+ * Abstract Block processor for the BSL language model that performs full recursive traversal.
  * Subclasses can override any method to process specific statements or expressions.
  *
  * @author Artem Samohvalov
  */
-public abstract class BlockReferencesProcessor
+public abstract class AbstractBlockProcessor
 {
     protected final Block block;
 
@@ -56,7 +56,7 @@ public abstract class BlockReferencesProcessor
      * Initialize with {@link Block}
      * @param block processing {@link Block}, cannot be <code>null</code>
      */
-    public BlockReferencesProcessor(Block block)
+    public AbstractBlockProcessor(Block block)
     {
         this.block = block;
     }

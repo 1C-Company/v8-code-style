@@ -23,7 +23,7 @@ import com._1c.g5.v8.dt.bsl.model.Invocation;
  * @author Artem Samohvalov
  */
 public class MethodCallProcessor
-    extends BlockReferencesProcessor
+    extends AbstractBlockProcessor
 {
     private final Consumer<Invocation> callBack;
 
