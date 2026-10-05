@@ -16,17 +16,13 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.text.MessageFormat;
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
-import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -40,6 +36,7 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.MethodCallProcessor;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
@@ -140,58 +137,27 @@ public class NotifyCallAfterObjectChangeCheck
 
     private Set<Method> getAllServerMethodCalledBy(Method method)
     {
-        TreeIterator<EObject> it = EcoreUtil.getAllContents(method, true);
-
-        Set<Method> methods = new HashSet<>();
-        while (it.hasNext())
-        {
-            EObject object = it.next();
-
-            if (object instanceof Invocation invocation)
-            {
-                var optionalMethod = getMethodByInvocation(invocation);
-                if (optionalMethod.isPresent() && isMethodExecutedOnServer(optionalMethod.get()))
-                {
-                    methods.add(optionalMethod.get());
-                }
-            }
-        }
-
-        return methods;
-    }
-
-    private Optional<Method> getMethodByInvocation(Invocation invocation)
-    {
-        if (invocation.getMethodAccess() instanceof StaticFeatureAccess staticAccess
-            && !staticAccess.getFeatureEntries().isEmpty())
-        {
-            FeatureEntry entry = staticAccess.getFeatureEntries().get(0);
-            EObject object = entry.getFeature();
-            if (object instanceof Method method)
-            {
-                return Optional.of(method);
-            }
-        }
-
-        return Optional.empty();
+        //@formatter:off
+        return method.getCallees()
+            .stream()
+            .filter(this::isMethodExecutedOnServer)
+            .collect(Collectors.toSet());
+        //@formatter:on
     }
 
     private boolean isMethodChangedObject(Method method)
     {
-        TreeIterator<EObject> it = EcoreUtil.getAllContents(method, true);
-
-        while (it.hasNext())
-        {
-            EObject object = it.next();
-
-            if (object instanceof Invocation invocation
-                && invocation.getMethodAccess() instanceof StaticFeatureAccess staticAccsess
+        AtomicBoolean res = new AtomicBoolean(false);
+        MethodCallProcessor callProcessor = new MethodCallProcessor(method, (Invocation invocation) -> {
+            if (invocation.getMethodAccess() instanceof StaticFeatureAccess staticAccsess
                 && OBJECT_CHANGE_METHOD_NAMES.contains(staticAccsess.getName().toLowerCase()))
             {
-                return true;
+                res.set(true);
             }
-        }
+        });
 
-        return false;
+        callProcessor.process();
+
+        return res.get();
     }
 }
