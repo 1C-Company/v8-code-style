@@ -32,9 +32,9 @@ import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
 public class MixedTabsAndSpacesInCommentCheckFix
     extends SingleVariantXtextBslModuleFix
 {
-    private static final int COMMENT_PREFIX_LENGTH = 2;
     private static final int TABULATION_SPACE_COUNT = 4;
     private static final String TABULATION_SPACE = " ".repeat(TABULATION_SPACE_COUNT); //$NON-NLS-1$
+    private static final String COMMENT_PREFIX = "//"; //$NON-NLS-1$
 
     @Override
     protected void configureFix(FixConfigurer configurer)
@@ -53,17 +53,20 @@ public class MixedTabsAndSpacesInCommentCheckFix
         IRegion lineInfo = document.getLineInformation(lineNumber);
         String line = document.get(lineInfo.getOffset(), lineInfo.getLength());
 
+        if (!line.startsWith(COMMENT_PREFIX))
+            return null;
+
         String newIndent = getNormalizedIndent(line);
         int oldIndentLength = getIndentLength(line);
 
-        return new ReplaceEdit(lineInfo.getOffset() + COMMENT_PREFIX_LENGTH, oldIndentLength, newIndent);
+        return new ReplaceEdit(lineInfo.getOffset() + COMMENT_PREFIX.length(), oldIndentLength, newIndent);
     }
 
     private String getNormalizedIndent(String line)
     {
         StringBuilder indent = new StringBuilder();
 
-        for (int i = COMMENT_PREFIX_LENGTH; i < line.length(); ++i)
+        for (int i = COMMENT_PREFIX.length(); i < line.length(); ++i)
         {
             char c = line.charAt(i);
 
@@ -87,13 +90,13 @@ public class MixedTabsAndSpacesInCommentCheckFix
 
     private int getIndentLength(String line)
     {
-        int i = COMMENT_PREFIX_LENGTH;
+        int i = COMMENT_PREFIX.length();
 
         while (i < line.length() && (line.charAt(i) == ' ' || line.charAt(i) == '\t'))
         {
             ++i;
         }
 
-        return i - COMMENT_PREFIX_LENGTH;
+        return i - COMMENT_PREFIX.length();
     }
 }

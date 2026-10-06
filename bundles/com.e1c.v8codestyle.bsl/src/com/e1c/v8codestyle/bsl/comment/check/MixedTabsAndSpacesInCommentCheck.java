@@ -33,7 +33,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
 
 /**
- * The check finds mixed tab and space in doc comment section
+ * The check finds mixed tabs and spaces in doc comment section
  * 
  * @author Artem Samohvalov
  */

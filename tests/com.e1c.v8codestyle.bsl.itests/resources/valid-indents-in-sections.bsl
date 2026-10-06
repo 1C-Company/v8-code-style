@@ -40,3 +40,21 @@ Function Some(Param1, Param2)
 	Return "";
 
 EndFunction
+
+//		Some
+// Returns:
+//  String - Some
+Function Some(Param1, Param2)
+
+	Return "";
+
+EndFunction
+
+//  Some
+// Returns:
+//  String - Some
+Function Some(Param1, Param2)
+
+	Return "";
+
+EndFunction
