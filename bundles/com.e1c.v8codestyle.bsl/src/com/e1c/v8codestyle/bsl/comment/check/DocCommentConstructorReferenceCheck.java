@@ -101,9 +101,8 @@ public class DocCommentConstructorReferenceCheck
         for (FieldDefinition fieldDefinition : parametersSection.getParameterDefinitions())
         {
             // if in parameters checked type
-            Optional<TypeDefinition> typeOptional = getTypeNamesFromField(fieldDefinition).stream()
-                .filter(td -> isCheckedType(td, resultAcceptor))
-                .findFirst();
+            Optional<TypeDefinition> typeOptional =
+                getTypeNamesFromField(fieldDefinition).stream().filter(td -> isCheckedType(td)).findFirst();
             if (typeOptional.isPresent())
             {
                 checkedVariableMap.put(fieldDefinition.getName().toLowerCase(), typeOptional.get());
@@ -136,7 +135,7 @@ public class DocCommentConstructorReferenceCheck
             .toList();
     }
 
-    private boolean isCheckedType(TypeDefinition typeDefinition, DocumentationCommentResultAcceptor resultAcceptor)
+    private boolean isCheckedType(TypeDefinition typeDefinition)
     {
         String typeName = typeDefinition.getTypeName();
         // contains without case sense

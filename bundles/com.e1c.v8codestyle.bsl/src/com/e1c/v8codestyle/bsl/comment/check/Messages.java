@@ -84,10 +84,10 @@ final class Messages
     public static String DocCommentConstructorReferenceCheck_Description;
     public static String DocCommentConstructorReferenceCheck_Issue;
 
-    public static String IndentsInCommnetSectionCheck_Title;
-    public static String IndentsInCommnetSectionCheck_Description;
-    public static String IndentsInCommnetSectionCheck_IssueManyTabs;
-    public static String IndentsInCommnetSectionCheck_IssueFewTabs;
+    public static String IndentsInCommentSectionCheck_Title;
+    public static String IndentsInCommentSectionCheck_Description;
+    public static String IndentsInCommentSectionCheck_IssueManyTabs;
+    public static String IndentsInCommentSectionCheck_IssueFewTabs;
 
     public static String MixedTabsAndSpacesInComment_Title;
     public static String MixedTabsAndSpacesInComment_Description;

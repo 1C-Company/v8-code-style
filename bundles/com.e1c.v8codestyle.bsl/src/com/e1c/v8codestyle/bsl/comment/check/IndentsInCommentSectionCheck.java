@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.comment.check;
 
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -64,8 +65,8 @@ public class IndentsInCommentSectionCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.IndentsInCommnetSectionCheck_Title)
-            .description(Messages.IndentsInCommnetSectionCheck_Description)
+        builder.title(Messages.IndentsInCommentSectionCheck_Title)
+            .description(Messages.IndentsInCommentSectionCheck_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
@@ -106,31 +107,10 @@ public class IndentsInCommentSectionCheck
             return;
         }
 
-        int parametersIndent = getIndentByLineNumber(commentTextLines, parametersSection.getLineNumber());
-        int targetParameterIndent = -1;
+        int parentIndent = getIndentByLineNumber(commentTextLines, parametersSection.getLineNumber());
 
-        List<FieldDefinition> fieldDefinitionList = parametersSection.getParameterDefinitions();
-        for (FieldDefinition fieldDefinition : fieldDefinitionList)
-        {
-            int lineNumber = fieldDefinition.getLineNumber();
-            int offset = fieldDefinition.getOffset();
-
-            int fieldIndent = getIndentByLineNumber(commentTextLines, fieldDefinition.getLineNumber());
-            // if indent not valid
-            if (fieldIndent <= parametersIndent
-                || (targetParameterIndent == -1 ? false : fieldIndent != targetParameterIndent))
-            {
-                addIssue(resultAcceptor, lineNumber, offset,
-                    targetParameterIndent == -1 ? true : targetParameterIndent > fieldIndent);
-            }
-            else
-            {
-                targetParameterIndent = fieldIndent;
-            }
-
-            checkDescriptionsParts(getDescriptionParts(fieldDefinition.getTypeSections()), commentTextLines,
-                resultAcceptor, lineNumber, fieldIndent, true);
-        }
+        checkIndentedItems(parentIndent, parametersSection.getParameterDefinitions(),
+            field -> getDescriptionParts(((FieldDefinition)field).getTypeSections()), commentTextLines, resultAcceptor);
     }
 
     private void checkReturnsSection(ReturnSection returnsSection, List<String> commentTextLines,
@@ -141,30 +121,36 @@ public class IndentsInCommentSectionCheck
             return;
         }
 
-        int parametersIndent = getIndentByLineNumber(commentTextLines, returnsSection.getLineNumber());
-        int targetParameterIndent = -1;
+        int parentIndent = getIndentByLineNumber(commentTextLines, returnsSection.getLineNumber());
 
-        List<TypeSection> typeSectionList = returnsSection.getReturnTypes();
-        for (TypeSection typeSection : typeSectionList)
+        checkIndentedItems(parentIndent, returnsSection.getReturnTypes(),
+            type -> ((TypeSection)type).getDescription().getParts(), commentTextLines, resultAcceptor);
+    }
+
+    private void checkIndentedItems(int parentIndent, List<? extends IDescriptionPart> items,
+        Function<IDescriptionPart, List<IDescriptionPart>> descriptionParts, List<String> commentTextLines,
+        DocumentationCommentResultAcceptor resultAcceptor)
+    {
+        int targetIndent = -1;
+
+        for (IDescriptionPart item : items)
         {
-            int lineNumber = typeSection.getLineNumber();
-            int offset = typeSection.getOffset();
+            int lineNumber = item.getLineNumber();
+            int offset = item.getOffset();
+            int itemIndent = getIndentByLineNumber(commentTextLines, lineNumber);
 
-            int fieldIndent = getIndentByLineNumber(commentTextLines, typeSection.getLineNumber());
-            // if indent not valid
-            if (fieldIndent <= parametersIndent
-                || (targetParameterIndent == -1 ? false : fieldIndent != targetParameterIndent))
+            if (itemIndent <= parentIndent || (targetIndent != -1 && itemIndent != targetIndent))
             {
-                addIssue(resultAcceptor, lineNumber, offset,
-                    targetParameterIndent == -1 ? true : targetParameterIndent > fieldIndent);
+                boolean needMore = targetIndent == -1 || targetIndent > itemIndent;
+                addIssue(resultAcceptor, lineNumber, offset, needMore);
             }
             else
             {
-                targetParameterIndent = fieldIndent;
+                targetIndent = itemIndent;
             }
 
-            checkDescriptionsParts(typeSection.getDescription().getParts(), commentTextLines, resultAcceptor,
-                lineNumber, fieldIndent, true);
+            checkDescriptionsParts(descriptionParts.apply(item), commentTextLines, resultAcceptor, lineNumber,
+                itemIndent, true);
         }
     }
 
@@ -205,8 +191,8 @@ public class IndentsInCommentSectionCheck
     private void addIssue(DocumentationCommentResultAcceptor resultAcceptor, int lineNumber, int offset,
         boolean needMoreTabs)
     {
-        String message = needMoreTabs ? Messages.IndentsInCommnetSectionCheck_IssueFewTabs
-            : Messages.IndentsInCommnetSectionCheck_IssueManyTabs;
+        String message = needMoreTabs ? Messages.IndentsInCommentSectionCheck_IssueFewTabs
+            : Messages.IndentsInCommentSectionCheck_IssueManyTabs;
 
         resultAcceptor.addIssue(message, lineNumber, COMMENT_PREFIX.length(),
             Math.max(offset - COMMENT_PREFIX.length(), 1));
