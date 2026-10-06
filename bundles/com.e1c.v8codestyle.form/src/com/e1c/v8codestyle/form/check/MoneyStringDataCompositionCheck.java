@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 
+import com._1c.g5.v8.dt.dcs.model.core.LocalString;
 import com._1c.g5.v8.dt.dcs.model.core.Presentation;
 import com._1c.g5.v8.dt.dcs.model.schema.DataCompositionSchema;
 import com._1c.g5.v8.dt.dcs.model.schema.DataSet;
@@ -80,7 +81,7 @@ public class MoneyStringDataCompositionCheck
             .issueType(IssueType.UI_STYLE)
             .extension(new StandardCheckExtension(674, getCheckId(), CorePlugin.PLUGIN_ID))
             .parameter(MONEY_STRING_NAME, String.class, DEFAULT_NAMES,
-                Messages.MoneyStringDataCompositionCheck_Parametr)
+                Messages.MoneyStringDataCompositionCheck_Parameter)
             .topObject(DATA_COMPOSITION_SCHEMA)
             .features(DATA_COMPOSITION_SCHEMA__DATA_SETS)
             .features(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__TITLE)
@@ -92,6 +93,8 @@ public class MoneyStringDataCompositionCheck
         IProgressMonitor monitor)
     {
         DataCompositionSchema dcs = (DataCompositionSchema)object;
+        String namesParametr = parameters.getString(MONEY_STRING_NAME);
+        String[] names = namesParametr.split(DELIMITER);
         EList<DataSet> dataSets = dcs.getDataSets();
         for (DataSet dataSet : dataSets)
         {
@@ -103,8 +106,6 @@ public class MoneyStringDataCompositionCheck
                 {
                     continue;
                 }
-                String namesParametr = parameters.getString(MONEY_STRING_NAME);
-                String[] names = namesParametr.split(DELIMITER);
                 for (String name : names)
                 {
                     if (name.equalsIgnoreCase(findName))
@@ -124,7 +125,12 @@ public class MoneyStringDataCompositionCheck
         Object obj = field.eGet(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__TITLE);
         if (obj instanceof Presentation presentation)
         {
-            EMap<String, String> values = presentation.getLocalValue().getContent();
+            LocalString locString = presentation.getLocalValue();
+            if (locString == null)
+            {
+                return null;
+            }
+            EMap<String, String> values = locString.getContent();
             for (Entry<String, String> entry : values)
             {
                 return entry.getValue();
@@ -133,12 +139,12 @@ public class MoneyStringDataCompositionCheck
         return null;
     }
 
-    private Boolean typeCheck(DataSetField field)
+    private boolean typeCheck(DataSetField field)
     {
         TypeDescription obj = (TypeDescription)field.eGet(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__VALUE_TYPE);
         if (obj == null)
         {
-            return null;
+            return true;
         }
         EList<TypeItem> types = obj.getTypes();
         Object qualifiers = obj.eGet(McorePackage.Literals.TYPE_DESCRIPTION__NUMBER_QUALIFIERS);

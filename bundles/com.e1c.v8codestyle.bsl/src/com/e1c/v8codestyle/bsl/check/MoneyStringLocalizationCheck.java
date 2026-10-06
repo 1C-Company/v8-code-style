@@ -16,7 +16,9 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -62,7 +64,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 public class MoneyStringLocalizationCheck
     extends AbstractModuleStructureCheck
 {
-    private static final String MONEYFIELD_TYPE_DESCKRIPRION = "ОписаниеТипаДенежногоПоля"; //$NON-NLS-1$
+    private static final String MONEYFIELD_TYPE_DESCRIPTION = "ОписаниеТипаДенежногоПоля"; //$NON-NLS-1$
 
     private static final String CHECK_ID = "money-string-localization"; //$NON-NLS-1$
 
@@ -97,13 +99,12 @@ public class MoneyStringLocalizationCheck
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
+    protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
         Module module = (Module)object;
         String rawNames = parameters.getString(MONEY_STRING_NAME);
         List<String> moneyNames = List.of(rawNames.split(DELIMITER));
-        String rawNamesLower = rawNames.toLowerCase();
         if (ModuleType.FORM_MODULE == module.getModuleType())
         {
             Form form = (Form)module.getOwner();
@@ -141,7 +142,7 @@ public class MoneyStringLocalizationCheck
                 {
                     if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
                     {
-                        checkStatements(methods, methodStatements, attribute.getName(), moneyNames, resultAceptor);
+                        checkStatements(methods, methodStatements, attribute.getName(), moneyNames, resultAcceptor);
                     }
                     else if ("ValueTable".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
                     {
@@ -154,7 +155,7 @@ public class MoneyStringLocalizationCheck
                             {
                                 if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(typeColumn))) //$NON-NLS-1$
                                 {
-                                    checkStatements(methods, methodStatements, colName, moneyNames, resultAceptor);
+                                    checkStatements(methods, methodStatements, colName, moneyNames, resultAcceptor);
                                 }
                             }
                         }
@@ -184,7 +185,7 @@ public class MoneyStringLocalizationCheck
     }
 
     private void checkStatements(List<Method> methods, Map<Method, List<Statement>> methodStatements, String name,
-        List<String> moneyNames, ResultAcceptor resultAceptor)
+        List<String> moneyNames, ResultAcceptor resultAcceptor)
     {
         for (Method method : methods)
         {
@@ -199,19 +200,18 @@ public class MoneyStringLocalizationCheck
                 if (simpleState.getRight() instanceof Invocation right)
                 {
                     String invocationName = right.getMethodAccess().getName();
-                    //NodeModelUtils.findActualNodeFor(statement).getText()
-                    if (!MONEYFIELD_TYPE_DESCKRIPRION.equalsIgnoreCase(invocationName))
+                    if (!MONEYFIELD_TYPE_DESCRIPTION.equalsIgnoreCase(invocationName))
                     {
-                        resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
+                        resultAcceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
                     }
                 }
                 else if (simpleState.getRight() instanceof OperatorStyleCreator)
                 {
-                    resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
+                    resultAcceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
                 }
                 else if (simpleState.getRight() instanceof NumberLiteral)
                 {
-                    resultAceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
+                    resultAcceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
                 }
             }
         }
@@ -219,6 +219,15 @@ public class MoneyStringLocalizationCheck
 
     private Statement searchStatements(List<Statement> statements, String name)
     {
+        return searchStatements(statements, name, new HashSet<>());
+    }
+
+    private Statement searchStatements(List<Statement> statements, String name, Set<String> visitedNames)
+    {
+        if (!visitedNames.add(name.toLowerCase(Locale.ROOT)))
+        {
+            return null;
+        }
         for (Statement statement : statements)
         {
             if (statement instanceof SimpleStatement simp)
@@ -238,13 +247,12 @@ public class MoneyStringLocalizationCheck
                                     continue;
                                 }
                                 if (checkName.equalsIgnoreCase(name)
-                                        && invocation.getParams().get(1) instanceof StaticFeatureAccess sfa
-                                        && !MONEYFIELD_TYPE_DESCKRIPRION.equalsIgnoreCase(sfa.getName())
-                                        && !name.equalsIgnoreCase(sfa.getName()))
-                                    {
-                                        return searchStatements(statements, sfa.getName());
-                                    }
-
+                                    && invocation.getParams().get(1) instanceof StaticFeatureAccess sfa
+                                    && !MONEYFIELD_TYPE_DESCRIPTION.equalsIgnoreCase(sfa.getName())
+                                    && !name.equalsIgnoreCase(sfa.getName()))
+                                {
+                                    return searchStatements(statements, sfa.getName(), visitedNames);
+                                }
                             }
                         }
                     }
@@ -252,10 +260,9 @@ public class MoneyStringLocalizationCheck
                 else if (simp.getLeft() instanceof StaticFeatureAccess findSfa)
                 {
                     if (name.equalsIgnoreCase(findSfa.getName()))
-                        {
-                            return statement;
-                        }
-
+                    {
+                        return statement;
+                    }
                 }
             }
             else if (statement instanceof IfStatement ifStatement)

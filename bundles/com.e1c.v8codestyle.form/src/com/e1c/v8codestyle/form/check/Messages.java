@@ -34,7 +34,7 @@ final class Messages
     public static String MoneyStringDataCompositionCheck_Description;
     public static String MoneyStringDataCompositionCheck_Issue;
     public static String MoneyStringDataCompositionCheck_Title;
-    public static String MoneyStringDataCompositionCheck_Parametr;
+    public static String MoneyStringDataCompositionCheck_Parameter;
     public static String DynamicListItemTitleCheck_Description;
     public static String DynamicListItemTitleCheck_message;
     public static String DynamicListItemTitleCheck_title;
