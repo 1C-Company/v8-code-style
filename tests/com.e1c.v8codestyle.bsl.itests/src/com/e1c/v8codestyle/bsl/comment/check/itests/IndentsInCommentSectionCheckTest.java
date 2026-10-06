@@ -12,6 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.comment.check.itests;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -66,7 +67,7 @@ public class IndentsInCommentSectionCheckTest
 
         List<Marker> markers = getModuleMarkers();
 
-        assertTrue(markers.size() == 5);
+        assertEquals(5, markers.size());
 
         for (Marker marker : markers)
         {
@@ -88,7 +89,7 @@ public class IndentsInCommentSectionCheckTest
 
         List<Marker> markers = getModuleMarkers();
 
-        assertTrue(markers.size() == 3);
+        assertEquals(3, markers.size());
 
         for (Marker marker : markers)
         {
@@ -110,7 +111,7 @@ public class IndentsInCommentSectionCheckTest
 
         List<Marker> markers = getModuleMarkers();
 
-        assertTrue(markers.size() == 4);
+        assertEquals(4, markers.size());
 
         for (Marker marker : markers)
         {
@@ -132,7 +133,7 @@ public class IndentsInCommentSectionCheckTest
 
         List<Marker> markers = getModuleMarkers();
 
-        assertTrue(markers.size() == 2);
+        assertEquals(2, markers.size());
 
         for (Marker marker : markers)
         {
@@ -154,7 +155,7 @@ public class IndentsInCommentSectionCheckTest
 
         List<Marker> markers = getModuleMarkers();
 
-        assertTrue(markers.size() == 3);
+        assertEquals(3, markers.size());
 
         for (Marker marker : markers)
         {
@@ -176,7 +177,7 @@ public class IndentsInCommentSectionCheckTest
 
         List<Marker> markers = getModuleMarkers();
 
-        assertTrue(markers.size() == 3);
+        assertEquals(3, markers.size());
 
         for (Marker marker : markers)
         {

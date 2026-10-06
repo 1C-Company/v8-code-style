@@ -89,6 +89,10 @@ final class Messages
     public static String IndentsInCommnetSectionCheck_IssueManyTabs;
     public static String IndentsInCommnetSectionCheck_IssueFewTabs;
 
+    public static String MixedTabsAndSpacesInComment_Title;
+    public static String MixedTabsAndSpacesInComment_Description;
+    public static String MixedTabsAndSpacesInComment_Issue;
+
     static
     {
         // initialize resource bundle

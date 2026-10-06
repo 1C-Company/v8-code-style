@@ -12,12 +12,9 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.comment.check;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.xtext.nodemodel.INode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
@@ -26,7 +23,6 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Sectio
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
-import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -49,7 +45,7 @@ import com.google.inject.Inject;
 public class IndentsInCommentSectionCheck
     extends DocumentationCommentBasicDelegateCheck
 {
-    private static final String COMMENT_BLOCK = "//"; //$NON-NLS-1$
+    private static final String COMMENT_PREFIX = "//"; //$NON-NLS-1$
     private static final int TABULATION_SPACE_COUNT = 4;
 
     @Inject
@@ -84,9 +80,7 @@ public class IndentsInCommentSectionCheck
     {
         BslDocumentationComment documentationComment = (BslDocumentationComment)object;
 
-        Method method = documentationComment.getMethod();
-
-        List<String> commentTextLines = getCommentTextLines(method);
+        List<String> commentTextLines = DocumentationCommentLines.get(documentationComment.getMethod());
 
         if (commentTextLines.isEmpty())
         {
@@ -197,33 +191,6 @@ public class IndentsInCommentSectionCheck
             sectionIndent, false);
     }
 
-    /**
-     * Gets the comment text lines without "//".
-     *
-     * @param method the method
-     * @return the comment text lines
-     */
-    private List<String> getCommentTextLines(Method method)
-    {
-        INode node = NodeModelUtils.findActualNodeFor(method);
-        if (node == null)
-        {
-            return List.of();
-        }
-
-        List<String> result = new ArrayList<>();
-        String lines[] = node.getText().split("\\r?\\n"); //$NON-NLS-1$
-        for (String line : lines)
-        {
-            if (line.isBlank() || !line.startsWith(COMMENT_BLOCK))
-                continue;
-
-            String comment = line.substring(2); // add string without "//" on start
-            result.add(comment);
-        }
-        return result;
-    }
-
     private int getIndentByLineNumber(List<String> lines, int lineNumber)
     {
         if (lines.size() <= lineNumber)
@@ -241,8 +208,8 @@ public class IndentsInCommentSectionCheck
         String message = needMoreTabs ? Messages.IndentsInCommnetSectionCheck_IssueFewTabs
             : Messages.IndentsInCommnetSectionCheck_IssueManyTabs;
 
-        resultAcceptor.addIssue(message, lineNumber, COMMENT_BLOCK.length(),
-            Math.max(offset - COMMENT_BLOCK.length(), 1));
+        resultAcceptor.addIssue(message, lineNumber, COMMENT_PREFIX.length(),
+            Math.max(offset - COMMENT_PREFIX.length(), 1));
     }
 
     private List<IDescriptionPart> getDescriptionParts(List<TypeSection> typeSection)
