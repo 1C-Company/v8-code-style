@@ -227,6 +227,12 @@ final class Messages
 
     public static String ExtensionMethodPrefixCheck_Title;
 
+    public static String EmptyQueryResultCheck_Title;
+
+    public static String EmptyQueryResultCheck_Description;
+
+    public static String EmptyQueryResultCheck_Issue;
+
     public static String ManagerModuleNamedSelfReferenceCheck_description;
 
     public static String ManagerModuleNamedSelfReferenceCheck_issue;
