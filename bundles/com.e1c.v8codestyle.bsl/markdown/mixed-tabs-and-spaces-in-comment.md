@@ -27,7 +27,7 @@ EndProcedure
 //   Parameter1 – Type1 - description
 //		This line contains two tab characters in its indentation
 //   Parameter2 – Type2 - description
-//		 Second line
+//		Second line
 Procedure Correct(Parameter1, Parameter2)
 	
 EndProcedure

@@ -1,3 +1,15 @@
+/*******************************************************************************
+ * Copyright (C) 2026, 1C-Soft LLC and others.
+ *
+ * This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License 2.0
+ * which is available at https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     1C-Soft LLC - initial API and implementation
+ *******************************************************************************/
 package com.e1c.v8codestyle.bsl.ui.qfix;
 
 import org.eclipse.jface.text.BadLocationException;
@@ -61,6 +73,7 @@ public class MixedTabsAndSpacesInCommentCheckFix
             }
             else if (c == '\t')
             {
+                // it's recommended to use only spaces
                 indent.append(TABULATION_SPACE);
             }
             else

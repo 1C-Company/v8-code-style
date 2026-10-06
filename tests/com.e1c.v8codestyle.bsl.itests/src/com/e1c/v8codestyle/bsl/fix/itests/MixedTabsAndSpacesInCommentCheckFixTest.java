@@ -76,14 +76,14 @@ public class MixedTabsAndSpacesInCommentCheckFixTest
     {
         String line = getStringByLineNumber(lineNumber);
         assertFalse(line.isEmpty());
-        assertTrue(line.matches("^//\\s*\\t.*"));
+        assertTrue(line.contains("\t"));
     }
 
     private void assertNoTabs(int lineNumber)
     {
         String line = getStringByLineNumber(lineNumber);
         assertFalse(line.isEmpty());
-        assertFalse(line.matches("^//\\s*\\t.*"));
+        assertFalse(line.contains("\t"));
     }
 
     private String getStringByLineNumber(int lineNumber)

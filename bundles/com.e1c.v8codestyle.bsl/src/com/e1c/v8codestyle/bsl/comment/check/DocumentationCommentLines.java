@@ -21,7 +21,7 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import com._1c.g5.v8.dt.bsl.model.Method;
 
 /**
- * 
+ * The documentation comment line getter
  * 
  * @author Artem Samohvalov
  */
@@ -51,7 +51,7 @@ public class DocumentationCommentLines
      * The method gets doc string comment and return it
      * indexes in return list is line numbers of a method
      * 
-     * @param method
+     * @param text
      * @return all doc comment lines without "//"
      */
     public static List<String> get(String text)
@@ -60,10 +60,12 @@ public class DocumentationCommentLines
 
         for (String line : text.split("\\r?\\n")) //$NON-NLS-1$
         {
-            if (!line.startsWith(COMMENT_PREFIX))
-            {
+            if (line.isBlank())
                 continue;
-            }
+
+            // if doc comment ends
+            if (!line.startsWith(COMMENT_PREFIX))
+                break;
 
             result.add(line.substring(COMMENT_PREFIX.length()));
         }
