@@ -71,7 +71,7 @@ public class EmptyQueryResultCheckTest
     }
 
     @Test
-    public void testIncorrectCheckQueryResultTryCath() throws Exception
+    public void testIncorrectCheckQueryResultTryExcept() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "empty-query-result-incorrect4.bsl");
 

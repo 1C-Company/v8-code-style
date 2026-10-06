@@ -5,7 +5,7 @@ Function Test()
     QueryResult = Query.Execute();
     QuerySelect = QueryResult.Select();
     
-    for 1 to 5 do
+    for a = 1 to 5 do
     If QuerySelect.Next() Then
        return true;
     else 
