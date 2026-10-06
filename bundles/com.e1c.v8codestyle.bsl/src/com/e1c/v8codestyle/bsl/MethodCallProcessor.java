@@ -27,6 +27,12 @@ public class MethodCallProcessor
 {
     private final Consumer<Invocation> callBack;
 
+    /**
+     * Instantiates a new method call processor.
+     *
+     * @param block the block, never be {@code null}
+     * @param callBack the call back, never be {@code null}
+     */
     public MethodCallProcessor(Block block, Consumer<Invocation> callBack)
     {
         super(block);
@@ -34,6 +40,11 @@ public class MethodCallProcessor
         this.callBack = callBack;
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param invocation the invocation, never be {@code null}
+     */
     @Override
     protected void doProcessInternal(Invocation invocation)
     {
