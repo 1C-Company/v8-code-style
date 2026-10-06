@@ -235,6 +235,8 @@ final class Messages
 
     public static String LocalizationNstrCheck_Parameter_Title;
 
+    public static String LocalizationNstrCheck_Parameter_Invocation_Name;
+
     public static String LocalizationNstrCheck_Parameter_Title_One;
 
     public static String LocalizationNstrCheck_Parameter_Title_Zero;
