@@ -101,14 +101,14 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
     {
         Module module = (Module)object;
 
-        if (!(module.getOwner() instanceof CommonModule))
+        if (!(module.getOwner() instanceof CommonModule commonModule))
         {
             return;
         }
 
         // if not overridable and not localization module
-        if (!hasPrefix(LOCALIZATION_STRING, LOCALIZATION_STRING_RU, module)
-            && !hasPrefix(OVERRIDABLE_STRING, OVERRIDABLE_STRING_RU, module))
+        if (!hasPrefix(LOCALIZATION_STRING, LOCALIZATION_STRING_RU, commonModule)
+            && !hasPrefix(OVERRIDABLE_STRING, OVERRIDABLE_STRING_RU, commonModule))
         {
             List<RegionPreprocessor> regions = findCheckedRegions(module);
 
@@ -124,11 +124,10 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
         }
     }
 
-    private boolean hasPrefix(String prefix, String prefixRu, Module module)
+    private boolean hasPrefix(String prefix, String prefixRu, CommonModule commonModule)
     {
-        return module.getOwner() instanceof CommonModule commonModule
-            && (commonModule.getName().toLowerCase().endsWith(prefixRu)
-                || commonModule.getName().toLowerCase().endsWith(prefix));
+        return (commonModule.getName().toLowerCase().endsWith(prefixRu)
+            || commonModule.getName().toLowerCase().endsWith(prefix));
     }
 
     private List<RegionPreprocessor> findCheckedRegions(Module module)

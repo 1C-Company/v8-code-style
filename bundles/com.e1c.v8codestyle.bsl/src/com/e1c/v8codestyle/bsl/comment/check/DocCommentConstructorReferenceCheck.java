@@ -61,9 +61,12 @@ public class DocCommentConstructorReferenceCheck
 {
     //@formatter:off
     private static final Set<String> CHECKED_TYPE_NAMES = Set.of(
-        IEObjectTypeNames.STRUCTURE, IEObjectTypeNames.STRUCTURE_RU,
-        IEObjectTypeNames.VALUE_TABLE, IEObjectTypeNames.VALUE_TABLE_RU,
-        IEObjectTypeNames.VALUE_TREE, IEObjectTypeNames.VALUE_TREE_RU);
+        IEObjectTypeNames.STRUCTURE.toLowerCase(), 
+        IEObjectTypeNames.STRUCTURE_RU.toLowerCase(),
+        IEObjectTypeNames.VALUE_TABLE.toLowerCase(), 
+        IEObjectTypeNames.VALUE_TABLE_RU.toLowerCase(),
+        IEObjectTypeNames.VALUE_TREE.toLowerCase(), 
+        IEObjectTypeNames.VALUE_TREE_RU.toLowerCase());
     //@formatter:on
 
     @Inject
@@ -140,7 +143,7 @@ public class DocCommentConstructorReferenceCheck
     {
         String typeName = typeDefinition.getTypeName();
         // contains without case sense
-        return typeName != null && CHECKED_TYPE_NAMES.stream().anyMatch(typeName::equalsIgnoreCase);
+        return typeName != null && CHECKED_TYPE_NAMES.contains(typeName.toLowerCase());
     }
 
     private Optional<String> findPropertyCallKey(Map<String, TypeDefinition> checkedVariableMap, Method method)
