@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Report xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f6b3e4ca-5d8a-4e3b-9f29-7cad2e8a3f56">
+  <producedTypes>
+    <objectType typeId="2b2f04c8-02b9-43f9-b01f-9774dcae9a44" valueTypeId="46f4bdc1-b36d-4cdf-b008-e2dc88318699"/>
+    <managerType typeId="fa00c82b-23c4-4e17-bb98-712fe2e9a901" valueTypeId="18c251ce-dc01-47ee-a889-b558e5c66a76"/>
+  </producedTypes>
+  <name>TestReport</name>
+  <synonym>
+    <key>en</key>
+    <value>test report</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <mainDataCompositionSchema>Report.TestReport.Template.MainDataCompositionSchema</mainDataCompositionSchema>
+  <templates uuid="a7c4f5db-6e9b-4f4c-8a3a-8dbe3f9b4a67">
+    <name>MainDataCompositionSchema</name>
+    <synonym>
+      <key>en</key>
+      <value>Main data composition schema</value>
+    </synonym>
+    <templateType>DataCompositionSchema</templateType>
+  </templates>
+  <templates uuid="b8d5a6ec-7fac-4a5d-9b4b-9ecf4a0c5b78">
+    <name>MainDataCompositionSchema2</name>
+    <synonym>
+      <key>en</key>
+      <value>Main data composition schema 2</value>
+    </synonym>
+    <templateType>DataCompositionSchema</templateType>
+  </templates>
+</mdclass:Report>
