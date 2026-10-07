@@ -2,7 +2,7 @@
 
 Function Construct()
 
-	Return new Struct;
+	Return new Structure;
 	
 EndFunction
 

@@ -17,17 +17,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
+import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.IndexAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
@@ -45,6 +45,7 @@ import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.AbstractBlockProcessor;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
@@ -75,7 +76,7 @@ public class DocCommentConstructorReferenceCheck
     @Override
     public String getCheckId()
     {
-        return "doc-comment-constructor-reference-check"; //$NON-NLS-1$
+        return "doc-comment-constructor-reference"; //$NON-NLS-1$
     }
 
     @Override
@@ -144,35 +145,12 @@ public class DocCommentConstructorReferenceCheck
 
     private Optional<String> findPropertyCallKey(Map<String, TypeDefinition> checkedVariableMap, Method method)
     {
-        TreeIterator<EObject> it = EcoreUtil.getAllContents(method, true);
+        BlockProcessor blockProcessor =
+            new BlockProcessor(method, (staticAccess) -> isCheckedVariable(staticAccess, checkedVariableMap));
 
-        while (it.hasNext())
-        {
-            EObject element = it.next();
+        blockProcessor.process();
 
-            if (element instanceof Invocation invocation // if method call
-                && invocation.getMethodAccess() instanceof DynamicFeatureAccess dynamicAccess // if .
-                && dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
-                && isCheckedVariable(staticAccess, checkedVariableMap))
-            {
-                return Optional.of(staticAccess.getName().toLowerCase());
-            }
-
-            if (element instanceof DynamicFeatureAccess dynamicAccess // if .
-                && dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
-                && isCheckedVariable(staticAccess, checkedVariableMap))
-            {
-                return Optional.of(staticAccess.getName().toLowerCase());
-            }
-
-            if (element instanceof IndexAccess indexAccess // if []
-                && indexAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
-                && isCheckedVariable(staticAccess, checkedVariableMap))
-            {
-                return Optional.of(staticAccess.getName().toLowerCase());
-            }
-        }
-        return Optional.empty();
+        return blockProcessor.getResult();
     }
 
     private boolean isCheckedVariable(StaticFeatureAccess staticAccess, Map<String, TypeDefinition> checkedVariableMap)
@@ -188,5 +166,61 @@ public class DocCommentConstructorReferenceCheck
             }
         }
         return false;
+    }
+
+    private static class BlockProcessor
+        extends AbstractBlockProcessor
+    {
+        private final Predicate<StaticFeatureAccess> callBack;
+        private Optional<String> result = Optional.empty();
+
+        BlockProcessor(Block block, Predicate<StaticFeatureAccess> callBack)
+        {
+            super(block);
+
+            this.callBack = callBack;
+        }
+
+        Optional<String> getResult()
+        {
+            return result;
+        }
+
+        @Override
+        protected void doProcessInternal(Invocation invocation)
+        {
+            if (invocation.getMethodAccess() instanceof DynamicFeatureAccess dynamicAccess // if .
+                && dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
+                && callBack.test(staticAccess))
+            {
+                result = Optional.of(staticAccess.getName().toLowerCase());
+            }
+
+            super.doProcessInternal(invocation);
+        }
+
+        @Override
+        protected void doProcessInternal(DynamicFeatureAccess dynamicAccess)
+        {
+            if (dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
+                && callBack.test(staticAccess))
+            {
+                result = Optional.of(staticAccess.getName().toLowerCase());
+            }
+
+            super.doProcessInternal(dynamicAccess);
+        }
+
+        @Override
+        protected void doProcessInternal(IndexAccess indexAccess)
+        {
+            if (indexAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
+                && callBack.test(staticAccess))
+            {
+                result = Optional.of(staticAccess.getName().toLowerCase());
+            }
+
+            super.doProcessInternal(indexAccess);
+        }
     }
 }

@@ -8,7 +8,7 @@ Function Construct()
 	
 	Else
 	
-		Return new Struct;
+		Return new Structure;
 
 	Endif;
 	

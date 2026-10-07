@@ -15,9 +15,8 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -26,13 +25,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Function;
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
+import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
 import com._1c.g5.v8.dt.bsl.model.RegionPreprocessor;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
+import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.bsl.resource.TypesComputer;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.util.Environments;
@@ -109,17 +110,16 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
         if (!hasPrefix(LOCALIZATION_STRING, LOCALIZATION_STRING_RU, module)
             && !hasPrefix(OVERRIDABLE_STRING, OVERRIDABLE_STRING_RU, module))
         {
-            var regionOptional = findRegionByName(API_NAME, API_NAME_RU, module);
-            if (regionOptional.isEmpty())
-            {
-                return; // don't have program interface region
-            }
+            List<RegionPreprocessor> regions = findCheckedRegions(module);
 
-            // if no construct function
-            if (!getAllFunctionsInRegion(regionOptional.get()).stream().anyMatch(this::isConstructFunction))
+            for (RegionPreprocessor region : regions)
             {
-                resultAcceptor.addIssue(Messages.ProgramInterfaceConstructFunctionExistence_Issue, regionOptional.get(),
-                    NAMED_ELEMENT__NAME);
+                // if no construct function
+                if (!containsConstructorInRegion(region, module))
+                {
+                    resultAcceptor.addIssue(Messages.ProgramInterfaceConstructFunctionExistence_Issue, region,
+                        NAMED_ELEMENT__NAME);
+                }
             }
         }
     }
@@ -131,36 +131,40 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
                 || commonModule.getName().toLowerCase().endsWith(prefix));
     }
 
-    private Optional<RegionPreprocessor> findRegionByName(String name, String nameRu, Module module)
+    private List<RegionPreprocessor> findCheckedRegions(Module module)
     {
-        for (DeclareStatement statement : module.getDeclareStatements())
-        {
-            if (statement instanceof RegionPreprocessor region
-                && (nameRu.equalsIgnoreCase(region.getName()) || name.equalsIgnoreCase(region.getName())))
-            {
-                return Optional.of(region);
-            }
-        }
-        return Optional.empty();
+        return BslUtil.getAllRegionPreprocessors(module)
+            .stream()
+            .filter(Objects::nonNull)
+            .filter(
+                region -> API_NAME_RU.equalsIgnoreCase(region.getName()) || API_NAME.equalsIgnoreCase(region.getName()))
+            .toList();
     }
 
-    private List<Function> getAllFunctionsInRegion(RegionPreprocessor region)
+    private boolean containsConstructorInRegion(RegionPreprocessor region, Module module)
     {
-        List<Function> functions = new ArrayList<>();
-
-        TreeIterator<EObject> iterator = EcoreUtil.getAllContents(region, true);
-
-        while (iterator.hasNext())
+        for (Method method : module.allMethods())
         {
-            EObject element = iterator.next();
-
-            if (element instanceof Function function)
+            if (!(method instanceof Function function))
             {
-                functions.add(function);
+                continue;
+            }
+            if (!isInRegion(function, region))
+            {
+                continue;
+            }
+            if (isConstructFunction(function))
+            {
+                return true;
             }
         }
+        return false;
+    }
 
-        return functions;
+    private boolean isInRegion(EObject object, RegionPreprocessor region)
+    {
+        PreprocessorItem item = region.getItem();
+        return item != null && EcoreUtil.isAncestor(item, object);
     }
 
     /**
@@ -183,6 +187,7 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
             if (element instanceof ReturnStatement returnStatement)
             {
                 if (returnStatement.getExpression() instanceof OperatorStyleCreator operatorStyleCreator
+                    && operatorStyleCreator.getType().getName() != null
                     && CHECKED_RETURN_TYPES.contains(operatorStyleCreator.getType().getName()))
                 {
                     return true;
@@ -195,7 +200,7 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
 
                     if (environments != null && typesComputer.compute(featureAccess, environments)
                         .stream()
-                        .anyMatch(type -> CHECKED_RETURN_TYPES.contains(type.getName())))
+                        .anyMatch(type -> type.getName() != null && CHECKED_RETURN_TYPES.contains(type.getName())))
                     {
                         return true;
                     }

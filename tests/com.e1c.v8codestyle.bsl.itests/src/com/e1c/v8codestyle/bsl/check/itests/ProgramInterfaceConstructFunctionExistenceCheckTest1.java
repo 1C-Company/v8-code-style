@@ -59,6 +59,7 @@ public class ProgramInterfaceConstructFunctionExistenceCheckTest1
      */
     @Test
     public void testReturnValueTree() throws Exception
+
     {
         updateModule(FOLDER_RESOURCE + "program-interface-function-return-value-tree.bsl");
 
@@ -105,6 +106,42 @@ public class ProgramInterfaceConstructFunctionExistenceCheckTest1
     public void testNoConstruct() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "program-interface-no-construct-function.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+
+        assertEquals(Integer.valueOf(1), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test error 
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNestedNoConstruct() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "program-interface-nested-no-construct-function.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test error 
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNestedNoConstruct2() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "program-interface-nested-no-construct-function2.bsl");
 
         List<Marker> markers = getModuleMarkers();
 
