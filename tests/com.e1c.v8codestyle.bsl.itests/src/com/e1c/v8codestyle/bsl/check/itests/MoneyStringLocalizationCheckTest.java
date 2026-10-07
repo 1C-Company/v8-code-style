@@ -14,10 +14,18 @@ package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
+import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
+import com._1c.g5.v8.dt.bsl.model.Statement;
+import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.MoneyStringLocalizationCheck;
@@ -49,7 +57,9 @@ public class MoneyStringLocalizationCheckTest
     {
         IBmObject object = getTopObjectByFqn(LOCALIZATION_NOT_USED, getProject());
         assertNotNull(object);
-        Marker marker = getFirstMarker(CHECK_ID, object.bmGetId(), getProject());
+        assertTrue(object instanceof Form);
+        SimpleStatement statement = getFirstStatement((Form)object);
+        Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
         assertNotNull(marker);
     }
 
@@ -58,7 +68,21 @@ public class MoneyStringLocalizationCheckTest
     {
         IBmObject object = getTopObjectByFqn(LOCALIZATION_USED, getProject());
         assertNotNull(object);
-        Marker marker = getFirstMarker(CHECK_ID, object.bmGetId(), getProject());
+        assertTrue(object instanceof Form);
+        SimpleStatement statement = getFirstStatement((Form)object);
+        Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
         assertNull(marker);
+    }
+
+    private SimpleStatement getFirstStatement(Form form)
+    {
+        Module module = form.getModule();
+        assertNotNull(module);
+        List<Method> methods = module.allMethods();
+        assertNotNull(methods);
+        Method method = methods.get(0);
+        List<Statement> statements = method.allStatements();
+        assertNotNull(statements);
+        return (SimpleStatement)statements.get(0);
     }
 }

@@ -14,11 +14,13 @@ package com.e1c.v8codestyle.form.check.itests;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
+import com._1c.g5.v8.dt.dcs.model.schema.DataCompositionSchema;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
 import com.e1c.v8codestyle.form.check.MoneyStringDataCompositionCheck;
@@ -41,23 +43,25 @@ public class MoneyStringDataCompositionCheckTest
     private static final String FQN_DL2 = "Report.TestReport.Template.MainDataCompositionSchema2.Template";
 
     @Test
-    public void testNameVariantDefault() throws Exception
+    public void testMoneyStringLocalizationIncorrect() throws Exception
     {
         IDtProject project = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(project);
         IBmObject object = getTopObjectByFqn(FQN_DL1, project);
         assertNotNull(object);
+        assertTrue(object instanceof DataCompositionSchema);
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), project);
         assertNotNull(marker);
     }
+
     @Test
-    public void testNameVariantNonDefault() throws Exception
+    public void testMoneyStringLocalizationCorrect() throws Exception
     {
         IDtProject project = openProjectAndWaitForValidationFinish(PROJECT_NAME);
         assertNotNull(project);
-        IBmObject object =
-            getTopObjectByFqn(FQN_DL2, project);
+        IBmObject object = getTopObjectByFqn(FQN_DL2, project);
         assertNotNull(object);
+        assertTrue(object instanceof DataCompositionSchema);
         Marker marker = getFirstNestedMarker(CHECK_ID, object.bmGetId(), project);
         assertNull(marker);
     }

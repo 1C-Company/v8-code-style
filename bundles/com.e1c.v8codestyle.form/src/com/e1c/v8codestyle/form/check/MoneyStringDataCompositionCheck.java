@@ -83,9 +83,7 @@ public class MoneyStringDataCompositionCheck
             .parameter(MONEY_STRING_NAME, String.class, DEFAULT_NAMES,
                 Messages.MoneyStringDataCompositionCheck_Parameter)
             .topObject(DATA_COMPOSITION_SCHEMA)
-            .features(DATA_COMPOSITION_SCHEMA__DATA_SETS)
-            .features(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__TITLE)
-            .features(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__VALUE_TYPE);
+            .features(DATA_COMPOSITION_SCHEMA__DATA_SETS);
     }
 
     @Override

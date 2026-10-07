@@ -21,10 +21,10 @@ import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.g5.v8.dt.testing.check.CheckTestBase;
-import com.e1c.v8codestyle.form.check.MoneyStringDataCompositionCheck;
+import com.e1c.v8codestyle.form.check.DataCompositionNameVariantDefaultCheck;
 
 /**
- * Test {@link MoneyStringDataCompositionCheck}.
+ * Test {@link DataCompositionNameVariantDefaultCheck} data coposition schema variant name.
  *
  * @author Ivan Sergeev
  */
@@ -32,7 +32,7 @@ public class DataCompositionNameVariantDefaultCheckTest
     extends CheckTestBase
 {
 
-    private static final String CHECK_ID = "money-string-localization-data-composition"; //$NON-NLS-1$
+    private static final String CHECK_ID = "data-composition-variant-name-default"; //$NON-NLS-1$
 
     private static final String PROJECT_NAME = "ReportVariantName";
 
