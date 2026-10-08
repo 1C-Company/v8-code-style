@@ -255,7 +255,7 @@ public class NotifyDescriptionToServerProcedureCheck
                 }
 
                 // this is just a variable
-                // methods cannon be reliably determined, skip the check
+                // methods cannot be reliably determined, skip the check
                 if (featureAccess instanceof StaticFeatureAccess staticAccess && isVariable(staticAccess))
                 {
                     return null;
@@ -281,12 +281,13 @@ public class NotifyDescriptionToServerProcedureCheck
 
     private boolean isVariable(StaticFeatureAccess staticAccess)
     {
-        if (!staticAccess.getFeatureEntries().isEmpty())
+        for (FeatureEntry entry : staticAccess.getFeatureEntries())
         {
-            FeatureEntry entry = staticAccess.getFeatureEntries().get(0);
-            EObject object = entry.getFeature();
-
-            return object instanceof Variable;
+            EObject feature = entry.getFeature();
+            if (feature instanceof Variable)
+            {
+                return true;
+            }
         }
         return false;
     }
