@@ -67,7 +67,9 @@ public class ReturnSectionFieldInNonCollectionCheck
         "таблицазначений", //$NON-NLS-1$
         "valuetable", //$NON-NLS-1$
         "деревозначений", //$NON-NLS-1$
-        "valuetree" //$NON-NLS-1$
+        "valuetree", //$NON-NLS-1$
+        "данныеформыдерево", //$NON-NLS-1$
+        "formdatatree" //$NON-NLS-1$
     ));
 
     /**
