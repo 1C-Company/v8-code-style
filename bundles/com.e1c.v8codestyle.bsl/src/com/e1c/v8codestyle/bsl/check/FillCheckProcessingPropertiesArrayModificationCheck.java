@@ -22,15 +22,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.EcoreUtil2;
 
+import com._1c.g5.v8.dt.bsl.model.BslContextDefMockMethod;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.Expression;
+import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Function;
 import com._1c.g5.v8.dt.bsl.model.IndexAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
@@ -38,8 +44,10 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ReturnStatement;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
-import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.Variable;
+import com._1c.g5.v8.dt.mcore.DerivedProperty;
+import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -60,15 +68,17 @@ import com.google.common.base.Strings;
 public class FillCheckProcessingPropertiesArrayModificationCheck
     extends BasicCheck<Object>
 {
-    private static final String CHECKED_METHOD_NAME = "FillCheckProcessing"; //$NON-NLS-1$
-    private static final String CHECKED_METHOD_NAME_RU = "ОбработкаПроверкиЗаполнения"; //$NON-NLS-1$
+    private static final String CHECKED_METHOD_NAME = "fillcheckprocessing"; //$NON-NLS-1$
+    private static final String CHECKED_METHOD_NAME_RU = "обработкапроверкизаполнения"; //$NON-NLS-1$
 
-    private static final String EXCEPT_METHOD_NAME = "DeleteUncheckedAttributesFromArray"; //$NON-NLS-1$
-    private static final String EXCEPT_METHOD_NAME_RU = "УдалитьНепроверяемыеРеквизитыИзМассива"; //$NON-NLS-1$
+    private static final String EXCEPT_METHOD_NAME = "deleteuncheckedattributesfromarray"; //$NON-NLS-1$
+    private static final String EXCEPT_METHOD_NAME_RU = "удалитьнепроверяемыереквизитыизмассива"; //$NON-NLS-1$
 
     private static final Set<String> CHECK_ADD_METHOD_CALLS =
         Set.of("add", "добавить", "insert", "вставить", "set", "установить"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
     private static final Set<String> CHECK_DELETE_METHOD_CALLS = Set.of("delete", "удалить", "clear", "очистить"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+
+    private static final int MAX_DEPTH = 20;
 
     @Override
     public String getCheckId()
@@ -79,8 +89,8 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
     @Override
     protected void configureCheck(CheckConfigurer builder)
     {
-        builder.title(Messages.FillCheckProcessingPropertiesArrayModificationCheck_title)
-            .description(Messages.FillCheckProcessingPropertiesArrayModificationCheck_description)
+        builder.title(Messages.FillCheckProcessingPropertiesArrayModificationCheck_Title)
+            .description(Messages.FillCheckProcessingPropertiesArrayModificationCheck_Description)
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
@@ -95,51 +105,134 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
         IProgressMonitor monitor)
     {
         Method method = (Method)object;
+        String methodNameLower = method.getName().toLowerCase();
 
-        if (CHECKED_METHOD_NAME_RU.equalsIgnoreCase(method.getName()) || CHECKED_METHOD_NAME.equalsIgnoreCase(method.getName()))
+        if (!CHECKED_METHOD_NAME.equals(methodNameLower) && !CHECKED_METHOD_NAME_RU.equals(methodNameLower))
         {
-            if (method.getFormalParams().size() != 2)
-                return; // incorrect FillCheckProcessing
-
-            CheckContext context = new CheckContext();
-            context.resultAcceptor = resultAcceptor;
-            context.currentMethod = method;
-            context.currentMethodName = method.getName().toLowerCase();
-
-            String checkedAttributesName = Strings.nullToEmpty(method.getFormalParams().get(1).getName()).toLowerCase(); // get target variable, always on second position
-            Set<String> variableSet = new HashSet<>();
-            variableSet.add(checkedAttributesName);
-            context.targetVariableDeque.push(variableSet);
-
-            Module module = EcoreUtil2.getContainerOfType(method, Module.class);
-            context.allGlobalVariableNames = module.allDeclareStatements()
-                .stream()
-                .flatMap(st -> st.getVariables().stream())
-                .map(var -> var.getName().toLowerCase())
-                .collect(Collectors.toSet());
-
-            iterationByMethod(context);
+            return;
         }
+
+        if (method.getFormalParams().size() != 2)
+        {
+            return; // incorrect signature of FillCheckProcessing
+        }
+
+        CheckContext context = new CheckContext();
+        context.resultAcceptor = resultAcceptor;
+        context.currentMethod = method;
+        context.currentMethodName = methodNameLower;
+        context.startMethod = method;
+
+        String checkedAttributesName = Strings.nullToEmpty(method.getFormalParams().get(1).getName()).toLowerCase(); // get target variable, always on second position
+        Set<String> variableSet = new HashSet<>();
+        variableSet.add(checkedAttributesName);
+        context.targetVariableDeque.push(variableSet);
+
+        iterationByMethod(context, 0);
     }
 
-    private void iterationByMethod(CheckContext context)
+    private void iterationByMethod(CheckContext context, int depth)
     {
-        TreeIterator<EObject> it = EcoreUtil.getAllContents(context.currentMethod, true); // for parse all stmts
+        if (depth > MAX_DEPTH || context.currentMethod == null)
+        {
+            return;
+        }
 
+        TreeIterator<EObject> it = EcoreUtil.getAllContents(context.currentMethod, true);
         while (it.hasNext())
         {
             EObject element = it.next();
+
             if (element instanceof ReturnStatement returnStatement)
             {
-                processReturnValue(context, returnStatement);
+                processReturnValue(context, returnStatement, depth);
                 if (context.isLastReturnTarget)
                     return; // find target return
             }
             else if (element instanceof SimpleStatement simpleStatement)
             {
-                processVariable(context, simpleStatement);
-                processMethodCall(context, simpleStatement);
+                processAssignment(context, simpleStatement, depth);
                 processIndexAccess(context, simpleStatement);
+            }
+            else if (element instanceof Invocation invocation)
+            {
+                processInvocation(context, invocation, depth);
+            }
+        }
+    }
+
+    /**
+     * Unified Invocation handling:
+     * - method call on target variable => report issue if Add/Delete
+     * - call that receives target as argument => dive into that method
+     * - call whose result is later treated as target (handled from assignment side)
+     */
+    private void processInvocation(CheckContext context, Invocation invocation, int depth)
+    {
+        if (invocation.getMethodAccess() instanceof DynamicFeatureAccess dynamicAccess) // if access from '.' => this is method call
+        {
+            if (dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess) // if source is variable 
+            {
+                if (isModule(staticAccess))
+                {
+                    // CommonModule.Method(...) – may receive target as argument
+                    goToMethod(context, invocation, false, depth);
+
+                    if (context.hadModification && isStartMethod(context))
+                    {
+                        setIssueByInvocation(context, invocation);
+                        context.hadModification = false;
+                    }
+                }
+                else
+                {
+                    String varName = staticAccess.getName().toLowerCase();
+                    if (containsInVariableDeque(context, varName) && !setModification(context, dynamicAccess.getName()))
+                    {
+                        setIssueByMethodName(context, dynamicAccess.getName(), invocation);
+                    }
+                }
+            }
+            // for - SomeMethod(Target).Delete(); don't work for - SomeMethod(Target).SomeMethod().Delete()
+            else if (dynamicAccess.getSource() instanceof Invocation subInvocation)
+            {
+                goToMethod(context, subInvocation, true, depth);
+                if (context.isLastReturnTarget && !setModification(context, dynamicAccess.getName()))
+                {
+                    setIssueByMethodName(context, dynamicAccess.getName(), invocation);
+                }
+
+                if (context.hadModification && isStartMethod(context))
+                {
+                    setIssueByInvocation(context, invocation);
+                    context.hadModification = false;
+                }
+            }
+        }
+        else
+        {
+            // plain Method(...)
+            StaticFeatureAccess assignmentLeft = null;
+            boolean onlyFunction = false;
+
+            if (invocation.eContainer() instanceof SimpleStatement ss && ss.getRight() == invocation
+                && ss.getLeft() instanceof StaticFeatureAccess left && isVariable(left))
+            {
+                // left = Call(...)
+                assignmentLeft = left;
+                onlyFunction = true;
+            }
+
+            goToMethod(context, invocation, onlyFunction, depth);
+
+            if (assignmentLeft != null && context.isLastReturnTarget)
+            {
+                addToVariableDeque(context, assignmentLeft.getName().toLowerCase());
+            }
+            if (context.hadModification && isStartMethod(context))
+            {
+                setIssueByInvocation(context, invocation);
+                context.hadModification = false;
             }
         }
     }
@@ -156,98 +249,40 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
      * 
      * @param simpleStatement
      */
-    private void processVariable(CheckContext context, SimpleStatement simpleStatement)
+    private void processAssignment(CheckContext context, SimpleStatement simpleStatement, int depth)
     {
-        if (simpleStatement.getRight() != null
-            && simpleStatement.getLeft() instanceof StaticFeatureAccess leftStatement) // this is the var name
+        if (simpleStatement.getRight() == null
+            || !(simpleStatement.getLeft() instanceof StaticFeatureAccess leftStatement) || !isVariable(leftStatement))
         {
-            String lowerCaseLeftVarName = leftStatement.getName().toLowerCase();
-            if (simpleStatement.getRight() instanceof StaticFeatureAccess rightStatement) // this is the assignable value
-            {
-                String lowerCaseRightVarName = rightStatement.getName().toLowerCase();
-                // remove if target = some_not_target
-                if (containsInTargets(context, lowerCaseLeftVarName)
-                    && !containsInTargets(context, lowerCaseRightVarName))
-                {
-                    removeFromVariableDeque(context, lowerCaseLeftVarName);
-                    return;
-                }
+            return;
+        }
 
-                // add if some_not_target = target
-                if (containsInTargets(context, lowerCaseRightVarName))
-                {
-                    if (context.allGlobalVariableNames.contains(lowerCaseLeftVarName))
-                    {
-                        context.targetGlobalVariables.add(lowerCaseLeftVarName);
-                        return;
-                    }
-                    // set new target variable name
-                    addToVariableDeque(context, lowerCaseLeftVarName);
-                }
-            }
-            else if (containsInVariableDeque(context, lowerCaseLeftVarName)) // delete if target = some_expr
+        String leftName = leftStatement.getName().toLowerCase();
+
+        if (simpleStatement.getRight() instanceof StaticFeatureAccess rightStatement && isVariable(rightStatement)) // this is the assignable value
+        {
+            String rightVarName = rightStatement.getName().toLowerCase();
+
+            // target = something_else => stop tracking left
+            if (containsInVariableDeque(context, leftName) && !containsInVariableDeque(context, rightVarName))
             {
-                removeFromVariableDeque(context, lowerCaseLeftVarName);
+                removeFromVariableDeque(context, leftName);
+                return;
             }
-            else if (context.targetGlobalVariables.contains(lowerCaseLeftVarName)) // delete if glob_target = some_expr
+
+            // something = target => start tracking right
+            if (containsInVariableDeque(context, rightVarName))
             {
-                context.targetGlobalVariables.remove(lowerCaseLeftVarName);
+                addToVariableDeque(context, leftName);
             }
-            else if (simpleStatement.getRight() instanceof Invocation invocationExpression
-                && invocationExpression.getMethodAccess() instanceof StaticFeatureAccess) // common method call on the right
-            {
-                goToMethod(context, invocationExpression, true);
-                if (context.isLastReturnTarget)
-                {
-                    addToVariableDeque(context, lowerCaseLeftVarName);
-                }
-            }
+        }
+        else if (containsInVariableDeque(context, leftName))
+        {
+            // target = something_else => stop tracking left
+            removeFromVariableDeque(context, leftName);
         }
     }
 
-    /**
-     * the method searches for the calls being checked (Delete, Add) and add the issue
-     * 
-     * example: SomeTargetVariable.Delete() // error
-     * 
-     * @param simpleStatement
-     * @param resultAcceptor
-     */
-    private void processMethodCall(CheckContext context, SimpleStatement simpleStatement)
-    {
-        if (simpleStatement.getLeft() instanceof Invocation invocationExpression)
-        {
-            if (invocationExpression.getMethodAccess() instanceof DynamicFeatureAccess dynamicAccess) // if access from '.' => this is method call
-            {
-                // for - var1.Delete()
-                if (dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess) // if source is variable 
-                {
-                    String lowerVariableName = staticAccess.getName().toLowerCase();
-                    if (containsInVariableDeque(context, lowerVariableName)
-                        || context.targetGlobalVariables.contains(lowerVariableName)) // if target variable
-                    {
-                        setIssueByMethodName(context, dynamicAccess.getName(), simpleStatement);
-                    }
-                }
-                // for - SomeMethod().Delete(); don't work for - SomeMethod().SomeMethod().Delete()
-                else if (dynamicAccess.getSource() instanceof Invocation subMethodInvocation
-                    && invocationExpression.getMethodAccess() instanceof DynamicFeatureAccess subDynamicAccess) // method call
-                {
-                    goToMethod(context, subMethodInvocation, true);
-                    if (context.isLastReturnTarget)
-                    {
-                        setIssueByMethodName(context, subDynamicAccess.getName(), simpleStatement);
-                    }
-                }
-            }
-            else
-            {
-                // common method call
-                goToMethod(context, invocationExpression, false);
-            }
-        }
-    }
-    
     /**
      * the method searches for an assignment to the target by index
      * 
@@ -261,9 +296,15 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
         if (simpleStatement.getRight() != null // if some expr on the right: some = some_expr
             && simpleStatement.getLeft() instanceof IndexAccess indexAccess // if index access: some[0] = some_expr
             && indexAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable: variable[0] = some_expr
-            && containsInTargets(context, staticAccess.getName().toLowerCase())) // if target variable: target[0] = some_expr
+            && containsInVariableDeque(context, staticAccess.getName().toLowerCase())) // if target variable: target[0] = some_expr
         {
-            context.resultAcceptor.addIssue(Messages.FillCheckProcessingPropertiesArrayModificationCheck_index_set_issue, simpleStatement);
+            if (!isStartMethod(context))
+            {
+                context.hadModification = true;
+                return;
+            }
+            context.resultAcceptor.addIssue(Messages.FillCheckProcessingPropertiesArrayModificationCheck_IndexSetIssue,
+                simpleStatement);
         }
     }
 
@@ -272,21 +313,17 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
      * 
      * @param returnStatement
      */
-    private void processReturnValue(CheckContext context, ReturnStatement returnStatement)
+    private void processReturnValue(CheckContext context, ReturnStatement returnStatement, int depth)
     {
         if (returnStatement.getExpression() instanceof StaticFeatureAccess staticAccess)
         {
-            String lowerVariableName = staticAccess.getName().toLowerCase();
-            if (context.targetGlobalVariables.contains(lowerVariableName)
-                || containsInVariableDeque(context, lowerVariableName))
-            {
-                context.isLastReturnTarget = true;
-                return;
-            }
+            context.isLastReturnTarget = containsInVariableDeque(context, staticAccess.getName().toLowerCase());
+            return;
         }
+
         if (returnStatement.getExpression() instanceof Invocation invocationExpression)
         {
-            goToMethod(context, invocationExpression, false);
+            goToMethod(context, invocationExpression, false, depth);
             return;
         }
 
@@ -300,49 +337,53 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
      * 
      * @param simpleStatement
      */
-    private void goToMethod(CheckContext context, Invocation invocationExpression, boolean onlyFunction)
+    private void goToMethod(CheckContext context, Invocation invocation, boolean onlyFunction, int depth)
     {
-        String methodName = invocationExpression.getMethodAccess().getName();
-        if (!methodName.equalsIgnoreCase(context.currentMethodName)) // if not recursion
+        String methodName = invocation.getMethodAccess().getName();
+        if (methodName.equalsIgnoreCase(context.currentMethodName))
         {
-            var optionalMethod = findMethodByName(context, methodName);
-            if (optionalMethod.isPresent()) // if method name exists in module
+            return; // direct recursion guard
+        }
+
+        Optional<Method> optionalMethod = getMethodByInvocation(context, invocation);
+        if (optionalMethod.isEmpty()) // if method name not exists for some reason
+        {
+            return;
+        }
+
+        Method targetMethod = optionalMethod.get();
+        if (onlyFunction && !(targetMethod instanceof Function)) // if is not function
+            return;
+
+        List<Integer> targetPositions = new ArrayList<>();
+        EList<Expression> params = invocation.getParams();
+
+        for (int i = 0; i < params.size(); ++i)
+        {
+            if (params.get(i) instanceof StaticFeatureAccess sfa
+                && containsInVariableDeque(context, sfa.getName().toLowerCase()))
             {
-                if (onlyFunction && !(optionalMethod.get() instanceof Function)) // if is not function
-                    return;
-
-                List<Integer> targetVariablePositions = new ArrayList<>();
-                var params = invocationExpression.getParams();
-
-                for (int i = 0; i < params.size(); ++i)
-                {
-                    if (params.get(i) instanceof StaticFeatureAccess sfa)
-                    {
-                        if (containsInVariableDeque(context, sfa.getName().toLowerCase()))
-                        {
-                            targetVariablePositions.add(i);
-                        }
-                    }
-                }
-
-                // if args has a target variable
-                // or there is a global target variable here
-                if (targetVariablePositions.size() > 0 || !context.targetGlobalVariables.isEmpty())
-                {
-                    context.isLastReturnTarget = false;
-
-                    Method lastMethod = context.currentMethod;
-
-                    changeCurrentMethod(context, optionalMethod.get());
-                    updateTargetVariablesForMethod(context, targetVariablePositions);
-                    iterationByMethod(context);
-                    // method ends
-
-                    context.targetVariableDeque.pop(); // method ends, targets don't needs
-                    changeCurrentMethod(context, lastMethod);
-                }
+                targetPositions.add(i);
             }
         }
+
+        // if args hasn't a target variable
+        if (targetPositions.isEmpty())
+        {
+            return;
+        }
+
+        context.isLastReturnTarget = false;
+        Method lastMethod = context.currentMethod;
+
+        changeCurrentMethod(context, targetMethod);
+        updateTargetVariablesForMethod(context, targetPositions);
+
+        iterationByMethod(context, depth + 1);
+        // method ends
+
+        context.targetVariableDeque.pop(); // method ends, targets don't needs
+        changeCurrentMethod(context, lastMethod);
     }
 
     private void changeCurrentMethod(CheckContext context, Method method)
@@ -360,7 +401,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
      */
     private void updateTargetVariablesForMethod(CheckContext context, List<Integer> targetPositions)
     {
-        var argumentList = context.currentMethod.getFormalParams();
+        EList<FormalParam> argumentList = context.currentMethod.getFormalParams();
 
         Set<String> targetSet = new HashSet<>();
         for (int i = 0; i < argumentList.size(); ++i)
@@ -374,20 +415,35 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
         context.targetVariableDeque.push(targetSet);
     }
 
-    private void setIssueByMethodName(CheckContext context, String methodName, Statement statement)
+    private void setIssueByMethodName(CheckContext context, String methodName, EObject location)
     {
         String lowerMethodName = methodName.toLowerCase();
+
         if (CHECK_ADD_METHOD_CALLS.contains(lowerMethodName))
         {
-            String message = MessageFormat.format(Messages.FillCheckProcessingPropertiesArrayModificationCheck_add_issue, methodName);
-            context.resultAcceptor.addIssue(message, statement);
+            String message =
+                MessageFormat.format(Messages.FillCheckProcessingPropertiesArrayModificationCheck_AddIssue, methodName);
+            context.resultAcceptor.addIssue(message, location);
         }
         else if (CHECK_DELETE_METHOD_CALLS.contains(lowerMethodName)
-            && !context.currentMethodName.equalsIgnoreCase(EXCEPT_METHOD_NAME_RU)
-            && !context.currentMethodName.equalsIgnoreCase(EXCEPT_METHOD_NAME))
+            && !EXCEPT_METHOD_NAME_RU.equals(context.currentMethodName)
+            && !EXCEPT_METHOD_NAME.equals(context.currentMethodName))
         {
-            String message = MessageFormat.format(Messages.FillCheckProcessingPropertiesArrayModificationCheck_delete_issue, methodName);
-            context.resultAcceptor.addIssue(message, statement);
+            String message = MessageFormat
+                .format(Messages.FillCheckProcessingPropertiesArrayModificationCheck_DeleteIssue, methodName);
+            context.resultAcceptor.addIssue(message, location);
+        }
+    }
+
+    private void setIssueByInvocation(CheckContext context, Invocation invocation)
+    {
+        String calledMethodName = invocation.getMethodAccess() == null ? null : invocation.getMethodAccess().getName();
+        if (calledMethodName != null)
+        {
+            String message = MessageFormat.format(
+                Messages.FillCheckProcessingPropertiesArrayModificationCheck_CalledMethodChangeArrayIssue,
+                calledMethodName);
+            context.resultAcceptor.addIssue(message, invocation);
         }
     }
 
@@ -395,13 +451,6 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
     {
         return !context.targetVariableDeque.isEmpty()
             && context.targetVariableDeque.peek().contains(lowerCaseVariableName);
-    }
-
-    private boolean containsInTargets(CheckContext context, String lowerCaseVariableName)
-    {
-        return (!context.targetVariableDeque.isEmpty()
-            && (context.targetVariableDeque.peek().contains(lowerCaseVariableName)))
-            || context.targetGlobalVariables.contains(lowerCaseVariableName);
     }
 
     private void addToVariableDeque(CheckContext context, String lowerCaseVariableName)
@@ -420,10 +469,108 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
         }
     }
 
-    private Optional<Method> findMethodByName(CheckContext context, String methodName)
+    private boolean isStartMethod(CheckContext context)
     {
-        Module module = EcoreUtil2.getContainerOfType(context.currentMethod, Module.class);
-        return module.allMethods().stream().filter(m -> m.getName().equalsIgnoreCase(methodName)).findAny();
+        return context.currentMethod.equals(context.startMethod);
+    }
+
+    private Optional<Method> getMethodByInvocation(CheckContext context, Invocation invocation)
+    {
+        if (invocation.getMethodAccess() instanceof StaticFeatureAccess staticAccess
+            && !staticAccess.getFeatureEntries().isEmpty())
+        {
+            EObject feature = staticAccess.getFeatureEntries().get(0).getFeature();
+            if (feature instanceof Method method)
+            {
+                return Optional.of(method);
+            }
+        }
+        else if (invocation.getMethodAccess() instanceof DynamicFeatureAccess dynamicAccess
+            && !dynamicAccess.getFeatureEntries().isEmpty())
+        {
+            EObject feature = dynamicAccess.getFeatureEntries().get(0).getFeature();
+            if (feature instanceof Method method)
+            {
+                return Optional.of(method);
+            }
+            if (feature instanceof BslContextDefMockMethod mockMethod)
+            {
+                Module module = EcoreUtil2.getContainerOfType(context.currentMethod, Module.class);
+                if (module != null && module.eResource() != null)
+                {
+                    return getMethodByUriAndName(mockMethod.getSourceUri(), mockMethod.getName(),
+                        module.eResource().getResourceSet());
+                }
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private boolean isVariable(StaticFeatureAccess staticAccess)
+    {
+        if (staticAccess.getFeatureEntries().isEmpty())
+        {
+            return false;
+        }
+        return staticAccess.getFeatureEntries().get(0).getFeature() instanceof Variable;
+    }
+
+    private boolean setModification(CheckContext context, String methodName)
+    {
+        if (!isStartMethod(context))
+        {
+            String lower = methodName.toLowerCase();
+            if (CHECK_ADD_METHOD_CALLS.contains(lower) || (CHECK_DELETE_METHOD_CALLS.contains(lower)
+                && !EXCEPT_METHOD_NAME_RU.equals(context.currentMethodName)
+                && !EXCEPT_METHOD_NAME.equals(context.currentMethodName)))
+            {
+                context.hadModification = true;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean isModule(StaticFeatureAccess staticAccess)
+    {
+        if (staticAccess.getFeatureEntries().isEmpty())
+        {
+            return false;
+        }
+        EObject feature = staticAccess.getFeatureEntries().get(0).getFeature();
+        if (feature instanceof Module)
+        {
+            return true;
+        }
+        if (feature instanceof DerivedProperty derivedProperty)
+        {
+            return derivedProperty.getSource() instanceof CommonModule;
+        }
+        return false;
+    }
+
+    public Optional<Method> getMethodByUriAndName(URI targetModuleUri, String methodName, ResourceSet resourceSet)
+    {
+        Resource resource = resourceSet.getResource(targetModuleUri, true);
+
+        if (resource == null || resource.getContents().isEmpty()
+            || !(resource.getContents().get(0) instanceof Module targetModule))
+        {
+            return Optional.empty();
+        }
+
+        String lowerName = methodName.toLowerCase();
+        for (Method method : targetModule.allMethods())
+        {
+            if (method.getName().toLowerCase().equals(lowerName))
+            {
+                return Optional.of(method);
+            }
+        }
+
+        return Optional.empty();
     }
 
     private static class CheckContext
@@ -432,12 +579,14 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
         // go to method push set
         // return from the method pop set
         final Deque<Set<String>> targetVariableDeque = new ArrayDeque<>();
-        final Set<String> targetGlobalVariables = new HashSet<>();
 
-        Set<String> allGlobalVariableNames;
+        Method startMethod;
+
         ResultAcceptor resultAcceptor;
         Method currentMethod;
         String currentMethodName; // in lower case (for optimization)
+
         boolean isLastReturnTarget = false;
+        boolean hadModification = false;
     }
 }

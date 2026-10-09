@@ -364,7 +364,7 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
 
-	public static String NotSupportGotoOperatorWebCheck_Title;
+    public static String NotSupportGotoOperatorWebCheck_Title;
     public static String NotSupportGotoOperatorWebCheck_Description;
     public static String NotSupportGotoOperatorWebCheck_Issue;
 
@@ -545,12 +545,13 @@ final class Messages
     public static String VariableNameInvalidCheck_variable_name_is_invalid;
     public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
     public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
-    
-    public static String FillCheckProcessingPropertiesArrayModificationCheck_title;
-    public static String FillCheckProcessingPropertiesArrayModificationCheck_description;
-    public static String FillCheckProcessingPropertiesArrayModificationCheck_delete_issue;
-    public static String FillCheckProcessingPropertiesArrayModificationCheck_add_issue;
-    public static String FillCheckProcessingPropertiesArrayModificationCheck_index_set_issue;
+
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_Title;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_Description;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_DeleteIssue;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_AddIssue;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_IndexSetIssue;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_CalledMethodChangeArrayIssue;
 
     static
     {

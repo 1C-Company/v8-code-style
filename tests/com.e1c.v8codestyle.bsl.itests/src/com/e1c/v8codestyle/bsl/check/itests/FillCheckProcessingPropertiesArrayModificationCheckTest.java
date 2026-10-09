@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -127,7 +128,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
 
-        assertEquals(Integer.valueOf(14), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -212,7 +213,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
 
-        assertEquals(Integer.valueOf(10), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -229,41 +230,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
 
-        assertEquals(Integer.valueOf(10), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-    }
-
-    /**
-     * Test add element to global reference variable
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testAddElementToGlobalRef() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "check-attributes-add-element-global-ref-in-method.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
-        Marker marker = markers.get(0);
-
-        assertEquals(Integer.valueOf(15), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-    }
-
-    /**
-     * Test delete element from method return global reference
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testDeleteElementByMethodGlobalRefReturn() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "check-attributes-delete-element-by-method-global-ref-return.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertEquals(1, markers.size());
-        Marker marker = markers.get(0);
-
-        assertEquals(Integer.valueOf(8), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -299,7 +266,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
 
         assertEquals(Integer.valueOf(7), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
-    
+
     /**
      * Test insert element
      *
@@ -316,7 +283,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
 
         assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
-    
+
     /**
      * Test set element
      *
@@ -333,7 +300,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
 
         assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
-    
+
     /**
      * Test clear element
      *
@@ -350,7 +317,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
 
         assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
-    
+
     /**
      * Test [] element
      *
@@ -366,5 +333,59 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
         Marker marker = markers.get(0);
 
         assertEquals(Integer.valueOf(5), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test add element in If AddElToTargetAndReturnBool(CheckedAttributes) Then ...
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testAddElementInIfSubMethod() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "check-attributes-add-element-in-if-submethod.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+
+        assertEquals(Integer.valueOf(6), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test add element assignment statement
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testAddElementInAssignmentStatment() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "check-attributes-add-element-in-assignment-stetment.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+
+        assertEquals(Integer.valueOf(9), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test add element in submethod two times
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testAddElementInRecallMethod() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "check-attributes-add-element-with-recall-method.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(2, markers.size());
+
+        int num = markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
+        int num2 = markers.get(1).getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
+
+        assertTrue(num == 5 || num == 7);
+        assertTrue(num2 == 5 || num2 == 7);
     }
 }
