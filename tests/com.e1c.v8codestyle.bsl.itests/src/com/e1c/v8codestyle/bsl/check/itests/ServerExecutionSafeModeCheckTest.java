@@ -88,7 +88,6 @@ public class ServerExecutionSafeModeCheckTest
      * @throws Exception
      */
     @Test
-//    @Ignore("https://github.com/1C-Company/v8-code-style/issues/1377")
     public void testCommonModuleServerCall() throws Exception
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_SERVER_CALL_FILE_NAME);

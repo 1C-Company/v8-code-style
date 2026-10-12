@@ -36,6 +36,7 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
+import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.util.Environment;
 import com._1c.g5.v8.dt.mcore.util.Environments;
@@ -383,9 +384,13 @@ public class ServerExecutionSafeModeCheck
         {
             return ((BooleanLiteral)param).isIsTrue();
         }
+        if (isVariable(param) || param instanceof Invocation)
+        {
+            // an unknown variable/methodcall, leave it as if it returns True
+            return true;
+        }
 
-        // an unknown expression, leave it as if it returns True
-        return true;
+        return false;
     }
 
     private boolean isExecute(EObject eObject)
@@ -407,5 +412,14 @@ public class ServerExecutionSafeModeCheck
             }
         }
         return false;
+    }
+
+    private boolean isVariable(EObject object)
+    {
+        if (!(object instanceof StaticFeatureAccess staticAccess) || staticAccess.getFeatureEntries().isEmpty())
+        {
+            return false;
+        }
+        return staticAccess.getFeatureEntries().get(0).getFeature() instanceof Variable;
     }
 }
