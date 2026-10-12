@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.Path;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.Marker;
@@ -42,6 +41,9 @@ public class ServerExecutionSafeModeCheckTest
         "/src/CommonModules/CommonModuleServerCall/Module.bsl";
 
     private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModule/Module.bsl";
+
+    private static final String UNKNOWN_EXPRESSION_COMMON_MODULE_FILE_NAME =
+        "/src/CommonModules/UnknownExpressionCommonModule/Module.bsl";
 
     private static final String FORM_MODULE_FILE_NAME = "/src/CommonForms/Form/Module.bsl";
 
@@ -69,12 +71,24 @@ public class ServerExecutionSafeModeCheckTest
     }
 
     /**
+     * Test that warning is not shown without Server in Environment
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testUnknownExpressionCommonModule() throws Exception
+    {
+        List<Marker> markers = getMarkers(UNKNOWN_EXPRESSION_COMMON_MODULE_FILE_NAME);
+        assertEquals(0, markers.size());
+    }
+
+    /**
      * Test safe mode is enabled before Execute/Выполнить and Eval/Вычислить in common module
      *
      * @throws Exception
      */
     @Test
-    @Ignore("https://github.com/1C-Company/v8-code-style/issues/1377")
+//    @Ignore("https://github.com/1C-Company/v8-code-style/issues/1377")
     public void testCommonModuleServerCall() throws Exception
     {
         List<Marker> markers = getMarkers(COMMON_MODULE_SERVER_CALL_FILE_NAME);
