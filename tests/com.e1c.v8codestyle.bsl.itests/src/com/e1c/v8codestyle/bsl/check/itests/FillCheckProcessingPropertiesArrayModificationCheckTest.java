@@ -15,7 +15,9 @@ package com.e1c.v8codestyle.bsl.check.itests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -34,6 +36,21 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
     public FillCheckProcessingPropertiesArrayModificationCheckTest()
     {
         super(FillCheckProcessingPropertiesArrayModificationCheck.class);
+    }
+
+    /**
+     * Test no error.
+     * multiple correct patterns in one module:
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testCorrectMultipleMethods() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "check-attributes-correct-multiple-methods.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(0, markers.size());
     }
 
     /**
@@ -387,5 +404,27 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
 
         assertTrue(num == 5 || num == 7);
         assertTrue(num2 == 5 || num2 == 7);
+    }
+
+    /**
+     * Test errors in multiple methods:
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testErrorsMultipleMethods() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "check-attributes-errors-multiple-methods.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(4, markers.size());
+
+        Set<Integer> expectedLines = Set.of(6, 9, 12, 15);
+        Set<Integer> actualLines = new HashSet<>();
+        for (Marker marker : markers)
+        {
+            actualLines.add(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        }
+        assertEquals(expectedLines, actualLines);
     }
 }
