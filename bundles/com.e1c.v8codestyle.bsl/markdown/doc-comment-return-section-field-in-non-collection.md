@@ -1,4 +1,6 @@
 # The return value section of the documentation comment contains correct collection types
+# If a return parameter is described as a collection, but the parameter type itself is not a collection, 
+# this is considered an error.
 
 ## Noncompliant Code Example
 

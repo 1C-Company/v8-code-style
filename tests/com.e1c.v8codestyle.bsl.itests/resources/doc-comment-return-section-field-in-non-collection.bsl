@@ -56,3 +56,10 @@ EndFunction
 Function NonComplaint4(Parameters) Export
 
 EndFunction
+
+// Returns:
+//  Array of String::
+//  *Field1 - description
+Function NonComplaint5(Parameters) Export
+
+EndFunction

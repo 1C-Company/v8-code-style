@@ -49,12 +49,15 @@ public class ReturnSectionFieldInNonCollectionCheckTest
         updateModule(FOLDER_RESOURCE + "doc-comment-return-section-field-in-non-collection.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(4, markers.size());
+        assertEquals(5, markers.size());
         List<Integer> errorLines = markers.stream()
             .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
             .map(Integer.class::cast)
             .sorted()
             .collect(Collectors.toList());
-        assertEquals(List.of(32, 40, 47, 54), errorLines);
+        assertEquals(List.of(32, 40, 47, 54, 61), errorLines);
+
+        // Check Array of String: case
+        assertEquals(1155, (int)markers.get(4).getExtraInfo().get(StandardExtraInfo.TEXT_OFFSET));
     }
 }

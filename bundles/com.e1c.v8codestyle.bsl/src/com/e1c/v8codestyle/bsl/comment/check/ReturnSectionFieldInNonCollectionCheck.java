@@ -125,7 +125,7 @@ public class ReturnSectionFieldInNonCollectionCheck
             String trimmed = type.trim();
             if (!trimmed.isEmpty())
             {
-                allowedCollectionTypes.add(trimmed.toLowerCase(Locale.ROOT));
+                allowedCollectionTypes.add(trimmed.toLowerCase());
             }
         }
 
@@ -150,28 +150,40 @@ public class ReturnSectionFieldInNonCollectionCheck
                     return;
                 }
 
-                List<FieldDefinition> fields = new ArrayList<>();
-                collectFieldDefinitions(typeDef, fields);
-
-                if (fields.isEmpty())
-                {
-                    continue;
-                }
-
-                String typeName = typeDef.getTypeName();
-                if (typeName != null && allowedCollectionTypes.contains(typeName.toLowerCase(Locale.ROOT)))
-                {
-                    continue;
-                }
-
-                String message = MessageFormat.format(
-                    Messages.ReturnSectionFieldInNonCollectionCheck_Field_only_allowed_for_collection_type_M,
-                    typeName);
-
-                resultAceptor.addIssue(message, typeDef.getLineNumber(), typeDef.getNameOffset(),
-                    typeName == null ? 0 : typeName.length());
+                checkTypeDef(resultAceptor, allowedCollectionTypes, typeDef);
             }
         }
+    }
+
+    private void checkTypeDef(DocumentationCommentResultAcceptor resultAceptor, Set<String> allowedCollectionTypes,
+        TypeDefinition typeDef)
+    {
+        List<FieldDefinition> fields = new ArrayList<>();
+        if (!typeDef.getContainTypes().isEmpty())
+        {
+            typeDef.getContainTypes().forEach(type -> checkTypeDef(resultAceptor, allowedCollectionTypes, type));
+            return;
+        }
+
+        collectFieldDefinitions(typeDef, fields);
+
+        if (fields.isEmpty())
+        {
+            return;
+        }
+
+        String typeName = typeDef.getTypeName();
+        if (typeName != null && allowedCollectionTypes.contains(typeName.toLowerCase(Locale.ROOT)))
+        {
+            return;
+        }
+
+        String message = MessageFormat.format(
+            Messages.ReturnSectionFieldInNonCollectionCheck_Field_only_allowed_for_collection_type_M,
+            typeName);
+
+        resultAceptor.addIssue(message, typeDef.getLineNumber(), typeDef.getNameOffset(),
+            typeName == null ? 0 : typeName.length());
     }
 
     private static void collectFieldDefinitions(TypeDefinition typeDef, List<FieldDefinition> out)
