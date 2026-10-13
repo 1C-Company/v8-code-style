@@ -41,11 +41,11 @@ public class BackgroundJobExecuteCallCheck
 {
     private final IConfigurationProvider configurationProvider;
 
-    private final String TARGET_METHOD_NAME = "Execute"; //$NON-NLS-1$
-    private final String TARGET_METHOD_NAME_RU = "Выполнить"; //$NON-NLS-1$
+    private static final String TARGET_METHOD_NAME = "Execute"; //$NON-NLS-1$
+    private static final String TARGET_METHOD_NAME_RU = "Выполнить"; //$NON-NLS-1$
 
-    private final String TARGET_MODULE_NAME = "ФоновыеЗадания"; //$NON-NLS-1$
-    private final String TARGET_MODULE_NAME_RU = "BackgroundJobs"; //$NON-NLS-1$
+    private static final String TARGET_MODULE_NAME = "BackgroundJobs"; //$NON-NLS-1$
+    private static final String TARGET_MODULE_NAME_RU = "ФоновыеЗадания"; //$NON-NLS-1$
 
     @Inject
     public BackgroundJobExecuteCallCheck(IConfigurationProvider configurationProvider)
