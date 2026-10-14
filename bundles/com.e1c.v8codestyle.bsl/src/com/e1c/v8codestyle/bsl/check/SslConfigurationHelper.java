@@ -12,9 +12,6 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
 
 /**
@@ -24,10 +21,8 @@ import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
  */
 public class SslConfigurationHelper
 {
-    private static final String STANDART_SUBSYSTEM_NAME = "StandardSubsystems"; //$NON-NLS-1$
-    private static final String STANDART_SUBSYSTEM_NAME_RU = "СтандартныеПодсистемы"; //$NON-NLS-1$
-
-    private static final Map<Configuration, Boolean> configurationMap = new HashMap<>();
+    private static final String STANDARD_SUBSYSTEM_NAME = "StandardSubsystems"; //$NON-NLS-1$
+    private static final String STANDARD_SUBSYSTEM_NAME_RU = "СтандартныеПодсистемы"; //$NON-NLS-1$
 
     /**
      * Checks for SSL.
@@ -42,20 +37,10 @@ public class SslConfigurationHelper
             return false;
         }
 
-        Boolean hasSSL = configurationMap.get(configuration);
-        if (hasSSL != null) // if configuration found in map
-        {
-            return hasSSL;
-        }
-
-        hasSSL = configuration.getSubsystems()
+        return configuration.getSubsystems()
             .stream()
-            .anyMatch(subsystem -> subsystem.getName().equalsIgnoreCase(STANDART_SUBSYSTEM_NAME_RU)
-                || subsystem.getName().equalsIgnoreCase(STANDART_SUBSYSTEM_NAME));
-
-        configurationMap.put(configuration, hasSSL);
-
-        return hasSSL;
+            .anyMatch(subsystem -> subsystem.getName().equalsIgnoreCase(STANDARD_SUBSYSTEM_NAME_RU)
+                || subsystem.getName().equalsIgnoreCase(STANDARD_SUBSYSTEM_NAME));
     }
 
     private SslConfigurationHelper()
