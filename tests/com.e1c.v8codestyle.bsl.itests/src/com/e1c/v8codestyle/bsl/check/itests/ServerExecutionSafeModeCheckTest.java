@@ -71,7 +71,8 @@ public class ServerExecutionSafeModeCheckTest
     }
 
     /**
-     * Test that warning is not shown without Server in Environment
+     * Test that warning is not shown when the safe mode argument cannot be
+     * resolved statically (variable, method call or compound expression)
      *
      * @throws Exception
      */
