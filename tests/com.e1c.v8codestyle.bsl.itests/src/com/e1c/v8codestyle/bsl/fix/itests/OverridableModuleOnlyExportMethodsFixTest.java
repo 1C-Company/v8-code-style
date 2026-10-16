@@ -18,6 +18,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.ui.PlatformUI;
 import org.junit.Test;
@@ -56,6 +58,8 @@ public class OverridableModuleOnlyExportMethodsFixTest
 
         performFix(marker, Messages.OverridableModuleOnlyExportMethodsFixTest_Description);
         PlatformUI.getWorkbench().saveAllEditors(false);
+        testingWorkspace.getWorkspaceRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+        testingWorkspace.waitForBuildCompletion();
 
         assertMarkerGone();
         assertMethodExport();
