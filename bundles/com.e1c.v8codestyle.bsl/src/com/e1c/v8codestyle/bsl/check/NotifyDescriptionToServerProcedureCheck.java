@@ -33,7 +33,6 @@ import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
-import com._1c.g5.v8.dt.bsl.model.ImplicitVariable;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.MethodsScopeSpec;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -237,7 +236,7 @@ public class NotifyDescriptionToServerProcedureCheck
                             .map(Environmental.class::cast)
                             .toList();
                     }
-                    else if (entry.getFeature() instanceof ImplicitVariable)
+                    else if (entry.getFeature() instanceof Variable)
                     {
                         List<TypeItem> types = typesComputer.computeTypes(featureAccess, environmental.environments());
                         if (types != null && types.size() == 1 && types.get(0) instanceof Type type
@@ -256,8 +255,11 @@ public class NotifyDescriptionToServerProcedureCheck
 
                 // this is just a variable
                 // methods cannot be reliably determined, skip the check
-                if (featureAccess instanceof StaticFeatureAccess staticAccess && isVariable(staticAccess))
+                if (featureAccess instanceof DynamicFeatureAccess dynamicAccess
+                    && dynamicAccess.getSource() instanceof StaticFeatureAccess source && isVariable(source)
+                    || (featureAccess instanceof StaticFeatureAccess staticAccess && isVariable(staticAccess)))
                 {
+
                     return null;
                 }
             }
