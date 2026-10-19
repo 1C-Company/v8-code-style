@@ -32,9 +32,25 @@ public class FindRowServerCheckTest
     extends AbstractSingleModuleTestBase
 {
 
+    private static final String PROJECT_NAME = "FindRowServerCheckTest";
+
+    private static final String FORM_MODULE_FILE_NAME = "/src/Catalogs/Catalog/Forms/ItemForm/Module.bsl";
+
     public FindRowServerCheckTest()
     {
         super(FindRowServerCheck.class);
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
+    }
+
+    @Override
+    protected String getModuleFileName()
+    {
+        return FORM_MODULE_FILE_NAME;
     }
 
     @Test
