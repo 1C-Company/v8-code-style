@@ -377,20 +377,12 @@ public class EmptyQueryResultCheck
 
     private boolean isNext(String name)
     {
-        if (NEXT_RU.equalsIgnoreCase(name) || NEXT.equalsIgnoreCase(name))
-        {
-            return true;
-        }
-        return false;
+        return NEXT_RU.equalsIgnoreCase(name) || NEXT.equalsIgnoreCase(name);
     }
 
     private boolean isSelect(String checkText)
     {
-        if (SELECT_RU.equalsIgnoreCase(checkText) || SELECT.equalsIgnoreCase(checkText))
-        {
-            return true;
-        }
-        return false;
+        return SELECT_RU.equalsIgnoreCase(checkText) || SELECT.equalsIgnoreCase(checkText);
     }
 
     private String getInvocationName(Invocation inv)
