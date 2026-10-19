@@ -33,6 +33,7 @@ import com._1c.g5.v8.dt.form.model.EventHandler;
 import com._1c.g5.v8.dt.form.model.Form;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
+import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
@@ -45,7 +46,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  * @author Artem Samohvalov
  */
 public class NotifyCallInAfterWriteEventCheck
-    extends AbstractModuleStructureCheck
+    extends BasicCheck<Object>
 {
     private static final String CHECKED_EVENT = "AfterWrite"; //$NON-NLS-1$
 
@@ -106,10 +107,8 @@ public class NotifyCallInAfterWriteEventCheck
         }
 
         Set<String> checkedHandlerNames = handlers.stream()
-            .filter(handler -> handler.getEvent().getName() != null)
-            .filter(handler -> handler.getEvent().getName().equalsIgnoreCase(CHECKED_EVENT))
-            .map(EventHandler::getName)
-            .map(String::toLowerCase)
+            .filter(h -> h.getEvent() != null && CHECKED_EVENT.equalsIgnoreCase(h.getEvent().getName()))
+            .map(h -> h.getName().toLowerCase())
             .collect(Collectors.toSet());
 
         if (checkedHandlerNames.isEmpty())

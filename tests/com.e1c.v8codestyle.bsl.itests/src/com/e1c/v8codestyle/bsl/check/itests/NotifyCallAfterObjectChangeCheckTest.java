@@ -61,6 +61,42 @@ public class NotifyCallAfterObjectChangeCheckTest
 
     /**
      * Test error
+     * Test no notify call and object variable write.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNoNotifyCallAndObjectVariableWrite() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "no-notify-call-object-variable-write.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertFalse(markers.isEmpty());
+
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test error
+     * Test no notify call and object variable write in submethod.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNoNotifyCallAndObjectVariableWriteInSubmethod() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "notify-call-object-variable-write-in-submethod.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertFalse(markers.isEmpty());
+
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test error
      * Test no notify call and object delete.
      *
      * @throws Exception the exception
@@ -105,6 +141,20 @@ public class NotifyCallAfterObjectChangeCheckTest
     public void testNotifyCallAndObjectWrite() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "notify-call-object-write.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test notify call and object variable write.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNotifyCallAndObjectVariableWrite() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "notify-call-object-variable-write.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertTrue(markers.isEmpty());

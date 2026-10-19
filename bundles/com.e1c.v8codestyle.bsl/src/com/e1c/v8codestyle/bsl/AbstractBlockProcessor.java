@@ -50,11 +50,13 @@ import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
  */
 public abstract class AbstractBlockProcessor
 {
+
     protected final Block block;
 
     /**
-     * Initialize with {@link Block}
-     * @param block processing {@link Block}, cannot be <code>null</code>
+     * Initialize with {@link Block}.
+     *
+     * @param block processing {@link Block}, cannot be {@code null}
      */
     public AbstractBlockProcessor(Block block)
     {
@@ -62,13 +64,18 @@ public abstract class AbstractBlockProcessor
     }
 
     /**
-     * Start processing for all statements in {@link Block}
+     * Start processing for all statements in {@link Block}.
      */
     public void process()
     {
         doProcessInternal(block.allStatements());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stats the stats, cannot be {@code null}
+     */
     protected void doProcessInternal(List<? extends Statement> stats)
     {
         for (Statement stat : stats)
@@ -77,6 +84,11 @@ public abstract class AbstractBlockProcessor
         }
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(Statement stat)
     {
         if (stat instanceof SimpleStatement)
@@ -105,12 +117,22 @@ public abstract class AbstractBlockProcessor
             doProcessInternal((AwaitStatement)stat);
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(SimpleStatement stat)
     {
         doProcessInternal(stat.getLeft());
         doProcessInternal(stat.getRight());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(IfStatement stat)
     {
         doProcessInternal(stat.getIfPart());
@@ -121,12 +143,22 @@ public abstract class AbstractBlockProcessor
         doProcessInternal(stat.getElseStatements());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(WhileStatement stat)
     {
         doProcessInternal(stat.getPredicate());
         doProcessInternal(stat.getStatements());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(ForToStatement stat)
     {
         doProcessInternal(stat.getInitializer());
@@ -135,6 +167,11 @@ public abstract class AbstractBlockProcessor
         doProcessInternal(stat.getStatements());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(ForEachStatement stat)
     {
         doProcessInternal(stat.getCollection());
@@ -142,17 +179,32 @@ public abstract class AbstractBlockProcessor
         doProcessInternal(stat.getStatements());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(TryExceptStatement stat)
     {
         doProcessInternal(stat.getTryStatements());
         doProcessInternal(stat.getExceptStatements());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(ReturnStatement stat)
     {
         doProcessInternal(stat.getExpression());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(RaiseStatement stat)
     {
         for (Expression expr : stat.getExpressions())
@@ -161,11 +213,21 @@ public abstract class AbstractBlockProcessor
         }
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(LabeledStatement stat)
     {
         doProcessInternal(stat.getStatement());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(Preprocessor stat)
     {
         List<PreprocessorItem> allItems = BslUtil.getAllPreprocessorItems(stat);
@@ -177,15 +239,30 @@ public abstract class AbstractBlockProcessor
         }
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(GotoStatement stat)
     {
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param stat the stat, cannot be {@code null}
+     */
     protected void doProcessInternal(AwaitStatement stat)
     {
         doProcessInternal(stat.getExpression());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param cond the cond, cannot be {@code null}
+     */
     protected void doProcessInternal(Conditional cond)
     {
         if (cond == null)
@@ -194,6 +271,11 @@ public abstract class AbstractBlockProcessor
         doProcessInternal(cond.getStatements());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(Expression expr)
     {
         if (expr instanceof BinaryExpression)
@@ -214,22 +296,42 @@ public abstract class AbstractBlockProcessor
             doProcessInternal((OperatorStyleCreator)expr);
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(BinaryExpression expr)
     {
         doProcessInternal(expr.getLeft());
         doProcessInternal(expr.getRight());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(UnaryExpression expr)
     {
         doProcessInternal(expr.getOperand());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(DynamicFeatureAccess expr)
     {
         doProcessInternal(expr.getSource());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(Invocation expr)
     {
         doProcessInternal(expr.getMethodAccess());
@@ -239,23 +341,43 @@ public abstract class AbstractBlockProcessor
         }
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(IndexAccess expr)
     {
         doProcessInternal(expr.getSource());
         doProcessInternal(expr.getIndex());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(FunctionStyleCreator expr)
     {
         doProcessInternal(expr.getTypeNameExpression());
         doProcessInternal(expr.getParamsExpression());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(AwaitExpression expr)
     {
         doProcessInternal(expr.getExpression());
     }
 
+    /**
+     * Do process internal.
+     *
+     * @param expr the expr, cannot be {@code null}
+     */
     protected void doProcessInternal(OperatorStyleCreator expr)
     {
         for (Expression param : expr.getParams())

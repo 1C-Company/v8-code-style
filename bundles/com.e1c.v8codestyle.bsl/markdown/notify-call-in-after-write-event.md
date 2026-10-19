@@ -3,7 +3,7 @@
 In an object form, the AfterWrite event must contain a call to the Notify procedure, specifically Notify("Write_xxx").
 The check verifies notification calls within the context of a single handler.
 
-## Correct
+## Incorrect
 
 ```bsl
 &AtClient
@@ -14,7 +14,7 @@ Procedure AfterWrite(WriteParameters)
 EndProcedure
 ```
 
-## Incorrect
+## Correct
 
 ```bsl
 &AtClient
