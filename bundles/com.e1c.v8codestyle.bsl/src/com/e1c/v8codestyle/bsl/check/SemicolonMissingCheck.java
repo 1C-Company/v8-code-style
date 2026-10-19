@@ -269,7 +269,7 @@ public class SemicolonMissingCheck
                     resolveAddIssue(node, eObject, resultAcceptor);
                     return;
                 }
-                if (!checkNextNode.getText().contains(charSemicolon))
+                if (!checkNextNode.getText().contains(charSemicolon) && !checkNode.getText().isBlank())
                 {
                     resolveAddIssue(node, eObject, resultAcceptor);
                 }
