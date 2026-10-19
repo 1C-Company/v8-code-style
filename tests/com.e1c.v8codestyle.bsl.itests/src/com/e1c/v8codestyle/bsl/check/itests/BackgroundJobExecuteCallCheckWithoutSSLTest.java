@@ -27,10 +27,10 @@ import com.e1c.v8codestyle.bsl.check.BackgroundJobExecuteCallCheck;
  * 
  * @author Artem Samohvalov
  */
-public class BackgroundJobExecuteCallCheckTest2
+public class BackgroundJobExecuteCallCheckWithoutSSLTest
     extends AbstractSingleModuleTestBase
 {
-    public BackgroundJobExecuteCallCheckTest2()
+    public BackgroundJobExecuteCallCheckWithoutSSLTest()
     {
         super(BackgroundJobExecuteCallCheck.class);
     }

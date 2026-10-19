@@ -12,7 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check;
 
-import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
+import com._1c.g5.v8.bm.core.IBmTransaction;
 
 /**
  * The helper for SSL (Standard Subsystems Library) configurations
@@ -21,26 +21,22 @@ import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
  */
 public class SslConfigurationHelper
 {
-    private static final String STANDARD_SUBSYSTEM_NAME = "StandardSubsystems"; //$NON-NLS-1$
-    private static final String STANDARD_SUBSYSTEM_NAME_RU = "СтандартныеПодсистемы"; //$NON-NLS-1$
 
     /**
      * Checks for SSL.
      *
-     * @param configuration the configuration, can be {@code null}
+     * @param bmTransaction the bm transaction, cannot be {@code null}
      * @return true, if successful
      */
-    public static boolean hasSSL(Configuration configuration)
+    public static boolean hasSSL(IBmTransaction bmTransaction)
     {
-        if (configuration == null)
-        {
-            return false;
-        }
+        return hasTopObject(bmTransaction, "Subsystem.СтандартныеПодсистемы") //$NON-NLS-1$
+            || hasTopObject(bmTransaction, "Subsystem.StandardSubsystems"); //$NON-NLS-1$
+    }
 
-        return configuration.getSubsystems()
-            .stream()
-            .anyMatch(subsystem -> subsystem.getName().equalsIgnoreCase(STANDARD_SUBSYSTEM_NAME_RU)
-                || subsystem.getName().equalsIgnoreCase(STANDARD_SUBSYSTEM_NAME));
+    private static boolean hasTopObject(IBmTransaction bmTransaction, String fqn)
+    {
+        return bmTransaction.getTopObjectByFqn(fqn) != null;
     }
 
     private SslConfigurationHelper()

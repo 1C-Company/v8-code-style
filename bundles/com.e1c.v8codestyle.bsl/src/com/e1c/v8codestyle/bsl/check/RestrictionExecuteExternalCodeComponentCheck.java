@@ -21,7 +21,6 @@ import java.util.Set;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
-import com._1c.g5.v8.bm.core.IBmObject;
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
@@ -103,14 +102,9 @@ public class RestrictionExecuteExternalCodeComponentCheck
             List<String> ComponentNames = Arrays.asList(components.split(DELIMITER));
             for (String componentName : ComponentNames)
             {
-                if (componentName.equalsIgnoreCase(name))
+                if (componentName.equalsIgnoreCase(name) && SslConfigurationHelper.hasSSL(bmTransaction))
                 {
-                    IBmObject bmObject = bmTransaction.getTopObjectByFqn("Subsystem.СтандартныеПодсистемы"); //$NON-NLS-1$
-                    IBmObject bmObjectEn = bmTransaction.getTopObjectByFqn("Subsystem.StandardSubsystems");//$NON-NLS-1$
-                    if (bmObject != null || bmObjectEn != null)
-                    {
-                        resultAceptor.addIssue(Messages.RestrictionExecuteExternalCodeCheck_Issue, invocation);
-                    }
+                    resultAceptor.addIssue(Messages.RestrictionExecuteExternalCodeCheck_Issue, invocation);
                 }
             }
         }

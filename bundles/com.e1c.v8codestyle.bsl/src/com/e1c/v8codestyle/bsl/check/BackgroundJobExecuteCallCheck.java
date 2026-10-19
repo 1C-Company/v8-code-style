@@ -15,18 +15,23 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
+import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
-import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
-import com._1c.g5.v8.dt.metadata.mdclass.Configuration;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
-import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.strict.check.AbstractTypeCheck;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
@@ -37,10 +42,8 @@ import com.google.inject.Inject;
  * @author Artem Samohvalov
  */
 public class BackgroundJobExecuteCallCheck
-    extends BasicCheck<Object>
+    extends AbstractTypeCheck
 {
-    private final IConfigurationProvider configurationProvider;
-
     private static final String TARGET_METHOD_NAME = "Execute"; //$NON-NLS-1$
     private static final String TARGET_METHOD_NAME_RU = "Выполнить"; //$NON-NLS-1$
 
@@ -48,9 +51,11 @@ public class BackgroundJobExecuteCallCheck
     private static final String TARGET_MODULE_NAME_RU = "ФоновыеЗадания"; //$NON-NLS-1$
 
     @Inject
-    public BackgroundJobExecuteCallCheck(IConfigurationProvider configurationProvider)
+    public BackgroundJobExecuteCallCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
-        this.configurationProvider = configurationProvider;
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override
@@ -75,7 +80,7 @@ public class BackgroundJobExecuteCallCheck
 
     @Override
     protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IBmTransaction bmTransaction, IProgressMonitor progressMonitor)
     {
         Invocation invocation = (Invocation)object;
 
@@ -83,9 +88,7 @@ public class BackgroundJobExecuteCallCheck
             && dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess
             && isCheckedCall(staticAccess.getName(), dynamicAccess.getName()))
         {
-            Configuration configuration = configurationProvider.getConfiguration(invocation);
-
-            if (SslConfigurationHelper.hasSSL(configuration))
+            if (SslConfigurationHelper.hasSSL(bmTransaction))
             {
                 resultAcceptor.addIssue(Messages.BackgroundJobExecuteCallCheck_Issue, invocation);
             }
