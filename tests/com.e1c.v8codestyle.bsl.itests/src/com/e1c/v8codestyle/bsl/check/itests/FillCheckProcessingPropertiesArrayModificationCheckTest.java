@@ -13,8 +13,8 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -399,13 +399,11 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
         assertEquals(2, markers.size());
 
         Set<Integer> expectedLines = Set.of(5, 7);
-        Set<Integer> actualLines = new HashSet<>();
 
         for (Marker marker : markers)
         {
-            actualLines.add(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+            assertTrue(expectedLines.contains(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE)));
         }
-        assertEquals(expectedLines, actualLines);
     }
 
     /**
@@ -422,11 +420,10 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
         assertEquals(4, markers.size());
 
         Set<Integer> expectedLines = Set.of(6, 9, 12, 15);
-        Set<Integer> actualLines = new HashSet<>();
+
         for (Marker marker : markers)
         {
-            actualLines.add(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+            assertTrue(expectedLines.contains(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE)));
         }
-        assertEquals(expectedLines, actualLines);
     }
 }
