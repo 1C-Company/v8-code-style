@@ -69,7 +69,7 @@ public abstract class AbstractQuickFixTest
             }
         }
 
-        assertNotNull(variantDescr);
+        assertNotNull(fixDescription, variantDescr);
 
         fixManager.selectFixVariant(variantDescr, handle);
         fixManager.executeFix(handle, new NullProgressMonitor());
