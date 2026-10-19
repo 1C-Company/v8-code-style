@@ -24,6 +24,7 @@ import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import com._1c.g5.v8.dt.bsl.model.BooleanLiteral;
 import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
+import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.LoopStatement;
@@ -86,7 +87,7 @@ public class EmptyQueryResultCheck
     }
 
     @Override
-    protected void check(Object object, ResultAcceptor resultAceptor, ICheckParameters parameters,
+    protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
         SimpleStatement statement = (SimpleStatement)object;
@@ -126,11 +127,11 @@ public class EmptyQueryResultCheck
                     {
                         return;
                     }
-                    Statement findIf = searchCheckQueryResult(
-                        statements.subList(indexSelectStatement, statements.size()), sfaName);
+                    Statement findIf =
+                        searchCheckQueryResult(statements.subList(indexSelectStatement, statements.size()), sfaName);
                     if (findIf instanceof IfStatement ifStatement)
                     {
-                        addIssue(resultAceptor, ifStatement);
+                        addIssue(resultAcceptor, ifStatement);
                     }
                 }
                 else
@@ -139,7 +140,7 @@ public class EmptyQueryResultCheck
                     Statement findIf = searchCheckQueryResult(statements.subList(index, statements.size()), name);
                     if (findIf instanceof IfStatement ifStatement)
                     {
-                        addIssue(resultAceptor, ifStatement);
+                        addIssue(resultAcceptor, ifStatement);
                     }
                 }
             }
@@ -160,15 +161,12 @@ public class EmptyQueryResultCheck
                         return null;
                     }
                     String textInv = node.getText();
-                    String nameInv = inv.getMethodAccess().getName();
-                    if (SELECT_RU.equalsIgnoreCase(nameInv) || SELECT.equalsIgnoreCase(nameInv))
+                    String nameInv = getInvocationName(inv);
+                    if (isSelect(nameInv) && textInv.contains(name))
                     {
-                        if (textInv.contains(name))
+                        if (simpState.getLeft() instanceof StaticFeatureAccess)
                         {
-                            if (simpState.getLeft() instanceof StaticFeatureAccess)
-                            {
-                                return statement;
-                            }
+                            return statement;
                         }
                     }
                 }
@@ -195,11 +193,11 @@ public class EmptyQueryResultCheck
 
     private Statement searchCheckQueryResult(List<Statement> statements, String name)
     {
-        for (Statement statement : statements)
+        if (name == null)
         {
-            if (statement instanceof IfStatement ifStatement)
+            for (Statement statement : statements)
             {
-                if (name == null)
+                if (statement instanceof IfStatement ifStatement)
                 {
                     if (ifStatement.getIfPart().getPredicate() instanceof Invocation inv)
                     {
@@ -209,33 +207,26 @@ public class EmptyQueryResultCheck
                             return null;
                         }
                         String text = node.getText().toLowerCase();
+                        String nameInv = getInvocationName(inv);
                         if ((text.contains(SELECT_RU.toLowerCase()) || text.contains(SELECT.toLowerCase()))
-                            && (NEXT_RU.equalsIgnoreCase(inv.getMethodAccess().getName())
-                                || NEXT.equalsIgnoreCase(inv.getMethodAccess().getName())))
+                            && isNext(nameInv))
                         {
                             List<Statement> ifStatements = ifStatement.getIfPart().getStatements();
-                            for (Statement ifStatementIn : ifStatements)
+                            Statement foundReturn = findReturnStatement(ifStatements, ifStatement);
+                            if (foundReturn != null)
                             {
-                                if (ifStatementIn instanceof EmptyStatement)
-                                {
-                                    continue;
-                                }
-                                else if (ifStatementIn instanceof ReturnStatement returnStatement)
-                                {
-                                    if (returnStatement.getExpression() instanceof BooleanLiteral)
-                                    {
-                                        return ifStatement;
-                                    }
-                                }
-                                else if (!(ifStatementIn instanceof ReturnStatement))
-                                {
-                                    return null;
-                                }
+                                return foundReturn;
                             }
                         }
                     }
                 }
-                else
+            }
+        }
+        else
+        {
+            for (Statement statement : statements)
+            {
+                if (statement instanceof IfStatement ifStatement)
                 {
                     if (ifStatement.getIfPart().getPredicate() instanceof Invocation inv)
                     {
@@ -244,28 +235,14 @@ public class EmptyQueryResultCheck
                         {
                             return null;
                         }
-                        if (node.getText().toLowerCase().contains(name.toLowerCase())
-                            && (NEXT_RU.equalsIgnoreCase(inv.getMethodAccess().getName())
-                                || NEXT.equalsIgnoreCase(inv.getMethodAccess().getName())))
+                        String nameInv = getInvocationName(inv);
+                        if (node.getText().toLowerCase().contains(name.toLowerCase()) && isNext(nameInv))
                         {
                             List<Statement> ifStatements = ifStatement.getIfPart().getStatements();
-                            for (Statement ifStatementIn : ifStatements)
+                            Statement foundReturn = findReturnStatement(ifStatements, ifStatement);
+                            if (foundReturn != null)
                             {
-                                if (ifStatementIn instanceof EmptyStatement)
-                                {
-                                    continue;
-                                }
-                                else if (ifStatementIn instanceof ReturnStatement returnStatement)
-                                {
-                                    if (returnStatement.getExpression() instanceof BooleanLiteral)
-                                    {
-                                        return ifStatement;
-                                    }
-                                }
-                                else if (!(ifStatementIn instanceof ReturnStatement))
-                                {
-                                    return null;
-                                }
+                                return foundReturn;
                             }
                         }
                     }
@@ -275,37 +252,29 @@ public class EmptyQueryResultCheck
                         return stat;
                     }
                 }
-            }
-            else if (statement instanceof LoopStatement forStatement)
-            {
-                if (name == null)
+                else if (statement instanceof LoopStatement forStatement)
                 {
-                    return null;
-                }
-                Statement stat = searchForStatement(forStatement, name);
-                if (stat != null)
-                {
-                    return stat;
-                }
-            }
-            else if (statement instanceof TryExceptStatement tryExceptStatement)
-            {
-                if (name == null)
-                {
-                    return null;
-                }
-                List<Statement> tryStatements = tryExceptStatement.getTryStatements();
-                Statement stat = searchSelectStatement(tryStatements, name);
-                if (stat != null)
-                {
-                    return stat;
-                }
-                else
-                {
-                    Statement tryStatment = searchCheckQueryResult(tryStatements, name);
-                    if (tryStatment != null)
+                    Statement stat = searchForStatement(forStatement, name);
+                    if (stat != null)
                     {
-                        return tryStatment;
+                        return stat;
+                    }
+                }
+                else if (statement instanceof TryExceptStatement tryExceptStatement)
+                {
+                    List<Statement> tryStatements = tryExceptStatement.getTryStatements();
+                    Statement stat = searchSelectStatement(tryStatements, name);
+                    if (stat != null)
+                    {
+                        return stat;
+                    }
+                    else
+                    {
+                        Statement tryStatment = searchCheckQueryResult(tryStatements, name);
+                        if (tryStatment != null)
+                        {
+                            return tryStatment;
+                        }
                     }
                 }
             }
@@ -383,7 +352,54 @@ public class EmptyQueryResultCheck
         return null;
     }
 
-    private void addIssue(ResultAcceptor resultAceptor, Statement statement)
+    private Statement findReturnStatement(List<Statement> ifStatements, IfStatement ifStatement)
+    {
+        for (Statement ifStatementIn : ifStatements)
+        {
+            if (ifStatementIn instanceof EmptyStatement)
+            {
+                continue;
+            }
+            else if (ifStatementIn instanceof ReturnStatement returnStatement)
+            {
+                if (returnStatement.getExpression() instanceof BooleanLiteral)
+                {
+                    return ifStatement;
+                }
+            }
+            else if (!(ifStatementIn instanceof ReturnStatement))
+            {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    private boolean isNext(String name)
+    {
+        if (NEXT_RU.equalsIgnoreCase(name) || NEXT.equalsIgnoreCase(name))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isSelect(String checkText)
+    {
+        if (SELECT_RU.equalsIgnoreCase(checkText) || SELECT.equalsIgnoreCase(checkText))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private String getInvocationName(Invocation inv)
+    {
+        FeatureAccess featureAccess = inv.getMethodAccess();
+        return featureAccess == null ? null : featureAccess.getName();
+    }
+
+    private void addIssue(ResultAcceptor resultAcceptor, Statement statement)
     {
         ICompositeNode node = NodeModelUtils.findActualNodeFor(statement);
         if (node == null)
@@ -409,7 +425,7 @@ public class EmptyQueryResultCheck
             DirectLocation directLocation =
                 new DirectLocation(node.getOffset(), firstLine.length(), node.getStartLine(), statement);
             Issue issue = new BslDirectLocationIssue(Messages.EmptyQueryResultCheck_Issue, directLocation);
-            resultAceptor.addIssue(issue);
+            resultAcceptor.addIssue(issue);
         }
     }
 }
