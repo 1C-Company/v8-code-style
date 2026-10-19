@@ -59,11 +59,11 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.common.base.Strings;
 
 /**
- * 	check array modification in FillCheckProcessing()
- *  check find the modifications of the CheckedAttributes array
- *  and set issue for that
+ * Check array modification in FillCheckProcessing()
+ * check find the modifications of the CheckedAttributes array
+ * and set issue for that
  *
- *  @author Artem Samohvalov
+ * @author Artem Samohvalov
  */
 public class FillCheckProcessingPropertiesArrayModificationCheck
     extends BasicCheck<Object>
@@ -96,6 +96,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
             .issueType(IssueType.CODE_STYLE)
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(463, getCheckId(), BslPlugin.PLUGIN_ID))
+            .disable()
             .module()
             .checkedObjectType(METHOD);
     }
@@ -131,6 +132,12 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
         iterationByMethod(context, 0);
     }
 
+    /**
+     * Iteration by method.
+     *
+     * @param context the context
+     * @param depth the depth
+     */
     private void iterationByMethod(CheckContext context, int depth)
     {
         if (depth > MAX_DEPTH || context.currentMethod == null)
@@ -151,7 +158,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
             }
             else if (element instanceof SimpleStatement simpleStatement)
             {
-                processAssignment(context, simpleStatement, depth);
+                processAssignment(context, simpleStatement);
                 processIndexAccess(context, simpleStatement);
             }
             else if (element instanceof Invocation invocation)
@@ -165,7 +172,11 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
      * Unified Invocation handling:
      * - method call on target variable => report issue if Add/Delete
      * - call that receives target as argument => dive into that method
-     * - call whose result is later treated as target (handled from assignment side)
+     * - call whose result is later treated as target (handled from assignment side).
+     *
+     * @param context the context
+     * @param invocation the invocation
+     * @param depth the depth
      */
     private void processInvocation(CheckContext context, Invocation invocation, int depth)
     {
@@ -246,10 +257,11 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
      *                    MyVar.Delete(); // error
      * and:               MyVar = FillCheckProcessingRetFunc();
      *                    MyVar.Delete();
-     * 
-     * @param simpleStatement
+     *
+     * @param context the context
+     * @param simpleStatement the simple statement
      */
-    private void processAssignment(CheckContext context, SimpleStatement simpleStatement, int depth)
+    private void processAssignment(CheckContext context, SimpleStatement simpleStatement)
     {
         if (simpleStatement.getRight() == null
             || !(simpleStatement.getLeft() instanceof StaticFeatureAccess leftStatement) || !isVariable(leftStatement))
@@ -286,10 +298,10 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
     /**
      * the method searches for an assignment to the target by index
      * 
-     * example: target_var[1] = "new" // error
-     * 
-     * @param simpleStatement
-     * @param resultAcceptor
+     * example: target_var[1] = "new" // error.
+     *
+     * @param context the context
+     * @param simpleStatement the simple statement
      */
     private void processIndexAccess(CheckContext context, SimpleStatement simpleStatement)
     {
@@ -309,9 +321,11 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
     }
 
     /**
-     * need for tracking: MyVar = ReturnTarget(); // this is target
-     * 
-     * @param returnStatement
+     * need for tracking: MyVar = ReturnTarget(); // this is target.
+     *
+     * @param context the context
+     * @param returnStatement the return statement
+     * @param depth the depth
      */
     private void processReturnValue(CheckContext context, ReturnStatement returnStatement, int depth)
     {
@@ -333,9 +347,12 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
     /**
      * go to method 
      * if method has FillCheckProcessing (or it reference) in arguments
-     *      or some global var has target reference
-     * 
-     * @param simpleStatement
+     *      or some global var has target reference.
+     *
+     * @param context the context
+     * @param invocation the invocation
+     * @param onlyFunction the only function
+     * @param depth the depth
      */
     private void goToMethod(CheckContext context, Invocation invocation, boolean onlyFunction, int depth)
     {
@@ -395,9 +412,10 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
     /**
      * situation:
      * method call      -> CallMethod(MyTargetValue, 123, MySecondTargetValue, "hello") => target is 0 and 2
-     * method signature -> CallMethod(A, B, C, D) => A and C is target variables
-     * 
-     * @param targetPositions
+     * method signature -> CallMethod(A, B, C, D) => A and C is target variables.
+     *
+     * @param context the context
+     * @param targetPositions the target positions
      */
     private void updateTargetVariablesForMethod(CheckContext context, List<Integer> targetPositions)
     {
@@ -498,8 +516,12 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
                 Module module = EcoreUtil2.getContainerOfType(context.currentMethod, Module.class);
                 if (module != null && module.eResource() != null)
                 {
-                    return getMethodByUriAndName(mockMethod.getSourceUri(), mockMethod.getName(),
-                        module.eResource().getResourceSet());
+                    URI moduleURI = mockMethod.getSourceUri();
+                    if (moduleURI != null)
+                    {
+                        return getMethodByUriAndName(moduleURI, mockMethod.getName(),
+                            module.eResource().getResourceSet());
+                    }
                 }
             }
         }
@@ -551,7 +573,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheck
         return false;
     }
 
-    public Optional<Method> getMethodByUriAndName(URI targetModuleUri, String methodName, ResourceSet resourceSet)
+    private Optional<Method> getMethodByUriAndName(URI targetModuleUri, String methodName, ResourceSet resourceSet)
     {
         Resource resource = resourceSet.getResource(targetModuleUri, true);
 

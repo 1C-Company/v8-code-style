@@ -13,7 +13,6 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -377,7 +376,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
     @Test
     public void testAddElementInAssignmentStatment() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "check-attributes-add-element-in-assignment-stetment.bsl");
+        updateModule(FOLDER_RESOURCE + "check-attributes-add-element-in-assignment-statement.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(1, markers.size());
@@ -399,11 +398,14 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest
         List<Marker> markers = getModuleMarkers();
         assertEquals(2, markers.size());
 
-        int num = markers.get(0).getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
-        int num2 = markers.get(1).getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
+        Set<Integer> expectedLines = Set.of(5, 7);
+        Set<Integer> actualLines = new HashSet<>();
 
-        assertTrue(num == 5 || num == 7);
-        assertTrue(num2 == 5 || num2 == 7);
+        for (Marker marker : markers)
+        {
+            actualLines.add(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        }
+        assertEquals(expectedLines, actualLines);
     }
 
     /**

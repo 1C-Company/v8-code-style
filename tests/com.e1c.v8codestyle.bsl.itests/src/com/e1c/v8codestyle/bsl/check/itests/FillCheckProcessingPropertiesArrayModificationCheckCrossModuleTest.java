@@ -37,7 +37,7 @@ import com.e1c.v8codestyle.bsl.check.FillCheckProcessingPropertiesArrayModificat
  *
  *  @author Artem Samohvalov
  */
-public class FillCheckProcessingPropertiesArrayModificationCheckTest2
+public class FillCheckProcessingPropertiesArrayModificationCheckCrossModuleTest
     extends SingleProjectReadOnlyCheckTestBase
 {
     private static final String FQN = "CommonModule.CommonModule";
@@ -56,7 +56,7 @@ public class FillCheckProcessingPropertiesArrayModificationCheckTest2
      * @throws Exception the exception
      */
     @Test
-    public void testDataExchangeLoad() throws Exception
+    public void testError() throws Exception
     {
         IBmObject mdObject = getTopObjectByFqn(FQN, getProject());
         assertTrue(mdObject instanceof CommonModule);

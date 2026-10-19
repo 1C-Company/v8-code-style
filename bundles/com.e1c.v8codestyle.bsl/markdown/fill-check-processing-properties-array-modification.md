@@ -1,13 +1,13 @@
 # Fill Check Processing Event Handler
 
-Using modifiable methods directly on the CheckedAttributes array within the FillCheckProcessing event handler is prohibited; you must use the SSL method CommonUse.RemoveUncheckedAttributesFromArray() or its custom equivalent that ensures safe element removal according to the official 1C template.
+Using modifiable methods directly on the CheckedAttributes array within the FillCheckProcessing event handler is prohibited; you must use the SSL method CommonUse.DeleteUncheckedAttributesFromArray() or its custom equivalent that ensures safe element removal according to the official 1C template.
 
 ## Incorrect
 
 ```bsl
 Procedure FillCheckProcessing(Cancel, CheckedAttributes)
     If LegalIndividualEntity <> Enums.LegalIndividualEntity.IndividualEntity Then
-        UncheckedAttributes.Delete("IndividualEntrepreneur");
+        CheckedAttributes.Delete("IndividualEntrepreneur");
     EndIf;
 EndProcedure;
 ```
@@ -19,10 +19,10 @@ Procedure FillCheckProcessing(Cancel, CheckedAttributes)
     If LegalIndividualEntity <> Enums.LegalIndividualEntity.IndividualEntity Then
         UncheckedAttributes.Add("IndividualEntrepreneur");
     EndIf;
-    RemoveUncheckedAttributesFromArray(CheckedAttributes, UncheckedAttributes);
+    DeleteUncheckedAttributesFromArray(CheckedAttributes, UncheckedAttributes);
 EndProcedure;
 
-Procedure RemoveUncheckedAttributesFromArray(AttributesArray, UncheckedAttributesArray) Export
+Procedure DeleteUncheckedAttributesFromArray(AttributesArray, UncheckedAttributesArray) Export
     For Each ArrayItem From UncheckedAttributesArray Do
         IndexNumber = AttributesArray.Find(ArrayItem);
         If IndexNumber <> Undefined Then
