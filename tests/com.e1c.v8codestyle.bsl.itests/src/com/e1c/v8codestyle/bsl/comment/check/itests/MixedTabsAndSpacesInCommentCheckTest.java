@@ -65,15 +65,17 @@ public class MixedTabsAndSpacesInCommentCheckTest
     {
         updateModule(FOLDER_RESOURCE + "mixed-tab-and-spaces-in-doc-comment.bsl");
 
+        List<Integer> errorLines = List.of(3, 11, 17, 27, 37, 45);
+
         List<Marker> markers = getModuleMarkers();
 
-        assertEquals(9, markers.size());
+        assertEquals(errorLines.size(), markers.size());
 
         for (Marker marker : markers)
         {
             int val = marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
-            assertTrue(val == 3 || val == 4 || val == 11 || val == 17 || val == 27 || val == 37 || val == 38
-                || val == 45 || val == 46);
+
+            assertTrue(errorLines.contains(val));
         }
     }
 }

@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.check.itests;
+package com.e1c.v8codestyle.bsl.comment.check.itests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
+import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
 import com.e1c.v8codestyle.bsl.comment.check.DocCommentConstructorReferenceCheck;
 
 /**

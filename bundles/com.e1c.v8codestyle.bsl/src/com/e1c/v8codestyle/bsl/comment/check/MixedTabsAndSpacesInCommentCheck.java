@@ -17,7 +17,9 @@ import java.util.List;
 import org.eclipse.core.runtime.IProgressMonitor;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
+import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -28,6 +30,7 @@ import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.DocumentationCommentIndentsHelper;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
@@ -40,13 +43,16 @@ import com.google.inject.Inject;
 public class MixedTabsAndSpacesInCommentCheck
     extends DocumentationCommentBasicDelegateCheck
 {
-    private static final int COMMENT_PREFIX_LENGTH = 2;
+    private final BslMultiLineCommentDocumentationProvider commentProvider;
 
     @Inject
-    public MixedTabsAndSpacesInCommentCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
+    public MixedTabsAndSpacesInCommentCheck(BslMultiLineCommentDocumentationProvider commentProvider,
+        IResourceLookup resourceLookup, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
         super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
+
+        this.commentProvider = commentProvider;
     }
 
     @Override
@@ -74,55 +80,22 @@ public class MixedTabsAndSpacesInCommentCheck
     {
         BslDocumentationComment documentationComment = (BslDocumentationComment)descriptionPart;
 
-        List<String> lines = DocumentationCommentLines.get(documentationComment.getMethod());
-
-        for (int i = 0; i < lines.size(); ++i)
+        Method method = documentationComment.getMethod();
+        if (method == null)
         {
-            if (isMixedTabAndSpaces(lines.get(i)))
-            {
-                int offset = getIndentCount(lines.get(i));
-                resultAcceptor.addIssue(Messages.MixedTabsAndSpacesInComment_Issue, i, COMMENT_PREFIX_LENGTH,
-                    Math.max(offset, 1));
-            }
-        }
-    }
-
-    private boolean isMixedTabAndSpaces(String line)
-    {
-        if (line.isEmpty())
-        {
-            return false;
+            return;
         }
 
-        char first = line.charAt(0);
-
-        for (int i = 1; i < line.length(); ++i)
+        List<String> lines = commentProvider.getCommentLines(method);
+        List<Integer> mixedLines = DocumentationCommentIndentsHelper.findMixedLines(lines, true);
+        if (mixedLines.isEmpty())
         {
-            char current = line.charAt(i);
-
-            if (current != ' ' && current != '\t')
-            {
-                break;
-            }
-
-            if (current != first)
-            {
-                return true;
-            }
+            return;
         }
 
-        return false;
-    }
-
-    private int getIndentCount(String line)
-    {
-        for (int i = 0; i < line.length(); ++i)
-        {
-            if (!Character.isWhitespace(line.charAt(i)))
-            {
-                return i;
-            }
-        }
-        return 0;
+        int lineNumber = mixedLines.get(0);
+        int indentLength = DocumentationCommentIndentsHelper.getIndentLength(lines.get(lineNumber));
+        resultAcceptor.addIssue(Messages.MixedTabsAndSpacesInComment_Issue, lineNumber,
+            DocumentationCommentIndentsHelper.COMMENT_PREFIX_LENGTH, indentLength);
     }
 }

@@ -56,6 +56,28 @@ public class IndentsInCommentSectionCheckTest
 
     /**
      * Test error
+     * Test no valid indents in sections.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNoValidIndentsInSections() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "no-valid-indents-in-sections.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+
+        assertEquals(4, markers.size());
+
+        for (Marker marker : markers)
+        {
+            int val = marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
+            assertTrue(val == 3 || val == 10 || val == 20 || val == 26);
+        }
+    }
+
+    /**
+     * Test error
      * Test no indents in param section.
      *
      * @throws Exception the exception
@@ -122,7 +144,7 @@ public class IndentsInCommentSectionCheckTest
 
     /**
      * Test error
-     * Test no indents in example section.
+     * Test no indents in return section.
      *
      * @throws Exception the exception
      */
@@ -166,7 +188,7 @@ public class IndentsInCommentSectionCheckTest
 
     /**
      * Test error
-     * Test no indents in return section.
+     * Test no indents in example section.
      *
      * @throws Exception the exception
      */

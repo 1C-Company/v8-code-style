@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.comment.check;
 
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.function.Function;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -21,9 +22,11 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ReturnSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Section;
+import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -34,6 +37,7 @@ import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.DocumentationCommentIndentsHelper;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 import com.google.inject.Inject;
@@ -46,14 +50,16 @@ import com.google.inject.Inject;
 public class IndentsInCommentSectionCheck
     extends DocumentationCommentBasicDelegateCheck
 {
-    private static final String COMMENT_PREFIX = "//"; //$NON-NLS-1$
-    private static final int TABULATION_SPACE_COUNT = 4;
+    private final BslMultiLineCommentDocumentationProvider commentProvider;
 
     @Inject
-    public IndentsInCommentSectionCheck(IResourceLookup resourceLookup, INamingService namingService,
-        IBmModelManager bmModelManager, IV8ProjectManager v8ProjectManager)
+    public IndentsInCommentSectionCheck(BslMultiLineCommentDocumentationProvider commentProvider,
+        IResourceLookup resourceLookup, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
     {
         super(resourceLookup, namingService, bmModelManager, v8ProjectManager);
+
+        this.commentProvider = commentProvider;
     }
 
     @Override
@@ -81,7 +87,13 @@ public class IndentsInCommentSectionCheck
     {
         BslDocumentationComment documentationComment = (BslDocumentationComment)object;
 
-        List<String> commentTextLines = DocumentationCommentLines.get(documentationComment.getMethod());
+        Method method = documentationComment.getMethod();
+        if (method == null)
+        {
+            return;
+        }
+
+        List<String> commentTextLines = commentProvider.getCommentLines(method);
 
         if (commentTextLines.isEmpty())
         {
@@ -107,9 +119,13 @@ public class IndentsInCommentSectionCheck
             return;
         }
 
-        int parentIndent = getIndentByLineNumber(commentTextLines, parametersSection.getLineNumber());
+        OptionalInt parentIndent = getIndentByLineNumber(commentTextLines, parametersSection.getLineNumber());
+        if (parentIndent.isEmpty())
+        {
+            return;
+        }
 
-        checkIndentedItems(parentIndent, parametersSection.getParameterDefinitions(),
+        checkIndentedItems(parentIndent.getAsInt(), parametersSection.getParameterDefinitions(),
             field -> getDescriptionParts(((FieldDefinition)field).getTypeSections()), commentTextLines, resultAcceptor);
     }
 
@@ -121,9 +137,13 @@ public class IndentsInCommentSectionCheck
             return;
         }
 
-        int parentIndent = getIndentByLineNumber(commentTextLines, returnsSection.getLineNumber());
+        OptionalInt parentIndent = getIndentByLineNumber(commentTextLines, returnsSection.getLineNumber());
+        if (parentIndent.isEmpty())
+        {
+            return;
+        }
 
-        checkIndentedItems(parentIndent, returnsSection.getReturnTypes(),
+        checkIndentedItems(parentIndent.getAsInt(), returnsSection.getReturnTypes(),
             type -> ((TypeSection)type).getDescription().getParts(), commentTextLines, resultAcceptor);
     }
 
@@ -137,20 +157,27 @@ public class IndentsInCommentSectionCheck
         {
             int lineNumber = item.getLineNumber();
             int offset = item.getOffset();
-            int itemIndent = getIndentByLineNumber(commentTextLines, lineNumber);
 
-            if (itemIndent <= parentIndent || (targetIndent != -1 && itemIndent != targetIndent))
+            OptionalInt itemIndent = getIndentByLineNumber(commentTextLines, lineNumber);
+            if (itemIndent.isEmpty())
             {
-                boolean needMore = targetIndent == -1 || targetIndent > itemIndent;
+                continue;
+            }
+
+            int indent = itemIndent.getAsInt();
+
+            if (indent <= parentIndent || (targetIndent != -1 && indent != targetIndent))
+            {
+                boolean needMore = targetIndent == -1 || targetIndent > indent;
                 addIssue(resultAcceptor, lineNumber, offset, needMore);
             }
             else
             {
-                targetIndent = itemIndent;
+                targetIndent = indent;
             }
 
-            checkDescriptionsParts(descriptionParts.apply(item), commentTextLines, resultAcceptor, lineNumber,
-                itemIndent, true);
+            checkDescriptionsParts(descriptionParts.apply(item), commentTextLines, resultAcceptor, lineNumber, indent,
+                true);
         }
     }
 
@@ -170,22 +197,24 @@ public class IndentsInCommentSectionCheck
             return;
         }
 
-        int sectionIndent = getIndentByLineNumber(commentTextLines, section.getLineNumber());
-        int sectionLineNumber = section.getLineNumber();
-
-        checkDescriptionsParts(section.getDescription().getParts(), commentTextLines, resultAcceptor, sectionLineNumber,
-            sectionIndent, false);
-    }
-
-    private int getIndentByLineNumber(List<String> lines, int lineNumber)
-    {
-        if (lines.size() <= lineNumber)
+        OptionalInt sectionIndent = getIndentByLineNumber(commentTextLines, section.getLineNumber());
+        if (sectionIndent.isEmpty())
         {
-            return -1;
+            return;
         }
 
-        String line = lines.get(lineNumber);
-        return getIndentCount(line);
+        checkDescriptionsParts(section.getDescription().getParts(), commentTextLines, resultAcceptor,
+            section.getLineNumber(), sectionIndent.getAsInt(), false);
+    }
+
+    private OptionalInt getIndentByLineNumber(List<String> lines, int lineNumber)
+    {
+        if (lineNumber < 0 || lines.size() <= lineNumber)
+        {
+            return OptionalInt.empty();
+        }
+
+        return OptionalInt.of(DocumentationCommentIndentsHelper.getIndentWidth((lines.get(lineNumber))));
     }
 
     private void addIssue(DocumentationCommentResultAcceptor resultAcceptor, int lineNumber, int offset,
@@ -194,8 +223,8 @@ public class IndentsInCommentSectionCheck
         String message = needMoreTabs ? Messages.IndentsInCommentSectionCheck_IssueFewTabs
             : Messages.IndentsInCommentSectionCheck_IssueManyTabs;
 
-        resultAcceptor.addIssue(message, lineNumber, COMMENT_PREFIX.length(),
-            Math.max(offset - COMMENT_PREFIX.length(), 1));
+        resultAcceptor.addIssue(message, lineNumber, DocumentationCommentIndentsHelper.COMMENT_PREFIX_LENGTH,
+            Math.max(offset - DocumentationCommentIndentsHelper.COMMENT_PREFIX_LENGTH, 1));
     }
 
     private List<IDescriptionPart> getDescriptionParts(List<TypeSection> typeSection)
@@ -215,74 +244,46 @@ public class IndentsInCommentSectionCheck
      * @param resultAcceptor the result acceptor
      * @param parentLineNumber the parent line number
      * @param parentIndent the parent indent
-     * @param oneLevel indents on description pars can be only on one level
+     * @param oneLevel indents on description parts can be only on one level
      */
     private void checkDescriptionsParts(List<IDescriptionPart> descriptionParts, List<String> commentTextLines,
         DocumentationCommentResultAcceptor resultAcceptor, int parentLineNumber, int parentIndent, boolean oneLevel)
     {
         int targetDescriptionPartIndent = -1;
+
         for (IDescriptionPart part : descriptionParts)
         {
-            if (part.getLineNumber() != parentLineNumber)
+            if (part.getLineNumber() == parentLineNumber)
             {
-                int descriptionPartIndent = getIndentByLineNumber(commentTextLines, part.getLineNumber());
-                boolean invalidIndent = descriptionPartIndent <= parentIndent;
+                continue;
+            }
 
-                if (!invalidIndent && targetDescriptionPartIndent != -1)
-                {
-                    if (oneLevel)
-                    {
-                        invalidIndent = descriptionPartIndent != targetDescriptionPartIndent;
-                    }
-                    else
-                    {
-                        invalidIndent = descriptionPartIndent < targetDescriptionPartIndent;
-                    }
-                }
-                if (invalidIndent)
-                {
-                    addIssue(resultAcceptor, part.getLineNumber(), part.getOffset(),
-                        targetDescriptionPartIndent == -1 ? true : targetDescriptionPartIndent > descriptionPartIndent);
-                    continue;
-                }
+            OptionalInt partIndent = getIndentByLineNumber(commentTextLines, part.getLineNumber());
+            if (partIndent.isEmpty())
+            {
+                continue;
+            }
 
-                if (oneLevel)
-                    targetDescriptionPartIndent = descriptionPartIndent;
+            int descriptionPartIndent = partIndent.getAsInt();
+            boolean invalidIndent = descriptionPartIndent <= parentIndent;
 
-                else if (targetDescriptionPartIndent == -1)
-                    targetDescriptionPartIndent = descriptionPartIndent;
+            if (!invalidIndent && targetDescriptionPartIndent != -1)
+            {
+                invalidIndent = oneLevel ? descriptionPartIndent != targetDescriptionPartIndent
+                    : descriptionPartIndent < targetDescriptionPartIndent;
+            }
+
+            if (invalidIndent)
+            {
+                addIssue(resultAcceptor, part.getLineNumber(), part.getOffset(),
+                    targetDescriptionPartIndent == -1 || targetDescriptionPartIndent > descriptionPartIndent);
+                continue;
+            }
+
+            if (oneLevel || targetDescriptionPartIndent == -1)
+            {
+                targetDescriptionPartIndent = descriptionPartIndent;
             }
         }
-    }
-
-    /**
-     * get indent count
-     * 
-     * @param line
-     * @return count of spaces, tab = space * TABULATION_SPACE_COUNT
-     */
-    private int getIndentCount(String line)
-    {
-        int indent = 0;
-
-        for (int i = 0; i < line.length(); ++i)
-        {
-            char c = line.charAt(i);
-
-            if (c == ' ')
-            {
-                ++indent;
-            }
-            else if (c == '\t')
-            {
-                indent += TABULATION_SPACE_COUNT;
-            }
-            else
-            {
-                break;
-            }
-        }
-
-        return indent;
     }
 }

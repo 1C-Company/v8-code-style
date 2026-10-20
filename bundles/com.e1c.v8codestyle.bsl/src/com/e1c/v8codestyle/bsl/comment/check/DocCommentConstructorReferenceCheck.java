@@ -120,7 +120,7 @@ public class DocCommentConstructorReferenceCheck
 
         if (parametersSection.getParent() instanceof BslDocumentationComment bslDocumentationComment)
         {
-            var optionalKey = findPropertyCallKey(checkedVariableMap, bslDocumentationComment.getMethod());
+            Optional<String> optionalKey = findPropertyCallKey(checkedVariableMap, bslDocumentationComment.getMethod());
 
             if (optionalKey.isPresent())
             {

@@ -20,7 +20,7 @@ The Example and Call Options sections are exceptions to this rule: the second an
 //   Parameter2 – Type2 - a new context starts here.
 //		 Second line
 //			Third line (error)
-//   	 Parameter3 – Type2 - a new context starts here. (error)
+//   	 Parameter3 – Type3 - a new context starts here. (error)
 //
 Procedure Incorrect(Parameter1, Parameter2, Parameter3)
 	
@@ -41,7 +41,7 @@ EndProcedure
 //   Parameter2 – Type2 - a new context starts here.
 //		 Second line
 //		 Third line
-//   Parameter3 – Type2 - a new context starts here.
+//   Parameter3 – Type3 - a new context starts here.
 //
 Procedure Correct(Parameter1, Parameter2)
 	

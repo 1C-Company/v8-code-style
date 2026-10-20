@@ -14,7 +14,6 @@ package com.e1c.v8codestyle.bsl.fix.itests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -43,17 +42,14 @@ public class MixedTabsAndSpacesInCommentCheckFixTest
     @Test
     public void testApplyFix() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "fix-mixed-tabs-and-spaces-in-comment.bsl");
+        updateModule(FOLDER_RESOURCE + "mixed-tab-and-spaces-in-doc-comment.bsl");
+
+        List<Integer> errorLines = List.of(3, 4, 11, 17, 27, 37, 38, 45, 46);
 
         List<Marker> markers = getModuleMarkers();
         assertEquals(6, markers.size());
 
-        assertHasTabs(1);
-        assertHasTabs(8);
-        assertHasTabs(16);
-        assertHasTabs(24);
-        assertHasTabs(31);
-        assertHasTabs(38);
+        errorLines.forEach(val -> assertHasTabs(val, true));
 
         for (int i = 0; i < markers.size(); ++i)
         {
@@ -64,26 +60,14 @@ public class MixedTabsAndSpacesInCommentCheckFixTest
 
         assertMarkerGone();
 
-        assertNoTabs(1);
-        assertNoTabs(8);
-        assertNoTabs(16);
-        assertNoTabs(24);
-        assertNoTabs(31);
-        assertNoTabs(38);
+        errorLines.forEach(val -> assertHasTabs(val, false));
     }
 
-    private void assertHasTabs(int lineNumber)
+    private void assertHasTabs(int lineNumber, boolean has)
     {
         String line = getStringByLineNumber(lineNumber);
         assertFalse(line.isEmpty());
-        assertTrue(line.contains("\t"));
-    }
-
-    private void assertNoTabs(int lineNumber)
-    {
-        String line = getStringByLineNumber(lineNumber);
-        assertFalse(line.isEmpty());
-        assertFalse(line.contains("\t"));
+        assertEquals(has, line.contains("\t"));
     }
 
     private String getStringByLineNumber(int lineNumber)
