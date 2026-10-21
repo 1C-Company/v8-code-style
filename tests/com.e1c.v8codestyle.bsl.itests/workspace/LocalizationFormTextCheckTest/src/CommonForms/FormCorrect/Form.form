@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:form="http://g5.1c.ru/v8/dt/form">
   <items xsi:type="form:FormField">
-    <name>Password</name>
+    <name>Тест</name>
     <id>1</id>
     <visible>true</visible>
     <enabled>true</enabled>
@@ -9,7 +9,7 @@
       <common>true</common>
     </userVisible>
     <dataPath xsi:type="form:DataPath">
-      <segments>Password</segments>
+      <segments>Тест</segments>
     </dataPath>
     <extendedTooltip>
       <name>PasswordExtendedTooltip</name>

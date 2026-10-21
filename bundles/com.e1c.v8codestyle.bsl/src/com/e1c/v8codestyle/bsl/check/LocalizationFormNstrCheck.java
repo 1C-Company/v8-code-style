@@ -25,38 +25,41 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.bsl.model.Conditional;
-import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
+import com._1c.g5.v8.dt.bsl.model.DeclareStatement;
+import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
+import com._1c.g5.v8.dt.bsl.model.Expression;
+import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
-import com._1c.g5.v8.dt.bsl.model.IfStatement;
-import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.LoopStatement;
+import com._1c.g5.v8.dt.bsl.model.IndexAccess;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
-import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
-import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
+import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
+import com._1c.g5.v8.dt.form.model.DataItem;
 import com._1c.g5.v8.dt.form.model.DataPathReferredObject;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormAttributeColumn;
 import com._1c.g5.v8.dt.form.model.FormField;
-import com._1c.g5.v8.dt.form.model.FormItem;
-import com._1c.g5.v8.dt.form.model.FormVisualEntity;
+import com._1c.g5.v8.dt.form.model.Group;
 import com._1c.g5.v8.dt.form.model.ManagedFormFieldType;
 import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.form.service.item.FormItemVisitor;
 import com._1c.g5.v8.dt.form.service.item.IFormItemCommand;
+import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
+import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
@@ -68,13 +71,18 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  *  @author Ivan Sergeev
  */
 public class LocalizationFormNstrCheck
-    extends AbstractModuleStructureCheck
+    extends BasicCheck<Object>
 {
     private static final String CHECK_ID = "nstr-form-localization"; //$NON-NLS-1$
 
-    private static final String STRING_TEXT = "String"; //$NON-NLS-1$
+    private static final String STRING_TYPE_NAME = "String"; //$NON-NLS-1$
 
-    private static final String VALUE_TABLE = "ValueTable"; //$NON-NLS-1$
+    private record DisplayedStrings(Set<String> attributes, Map<String, Set<String>> columns) {
+        boolean isEmpty()
+        {
+            return attributes.isEmpty() && columns.isEmpty();
+        }
+    }
 
     @Override
     public String getCheckId()
@@ -91,6 +99,7 @@ public class LocalizationFormNstrCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(761, getCheckId(), BslPlugin.PLUGIN_ID))
+            .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE))
             .module()
             .checkedObjectType(MODULE);
     }
@@ -100,307 +109,297 @@ public class LocalizationFormNstrCheck
         IProgressMonitor monitor)
     {
         Module formModule = (Module)object;
-        if (ModuleType.FORM_MODULE != formModule.getModuleType())
+        if (ModuleType.FORM_MODULE != formModule.getModuleType() || !(formModule.getOwner() instanceof Form form))
         {
             return;
         }
-        if (formModule.getOwner() instanceof Form form)
+
+        DisplayedStrings displayed = collectDisplayedStrings(form);
+        if (displayed.isEmpty())
         {
-            List<Method> methods = formModule.allMethods();
+            return;
+        }
 
-            List<FormAttribute> allAttribute = form.getAttributes();
-
-            Set<FormAttribute> displayedAttribute = new LinkedHashSet<>();
-
-            final List<FormField> visibleFields = new ArrayList<>();
-            IFormItemCommand collectCommand = new IFormItemCommand()
+        Set<SimpleStatement> reported = Collections.newSetFromMap(new IdentityHashMap<>());
+        for (Method method : formModule.allMethods())
+        {
+            if (monitor.isCanceled())
             {
-                @Override
-                public void execute(FormVisualEntity fve)
-                {
-                    if (fve instanceof FormField formField)
-                    {
-                        if (formField.isVisible())
-                        {
-                            AbstractDataPath data = formField.getDataPath();
-                            if (data == null)
-                            {
-                                return;
-                            }
-                            List<DataPathReferredObject> refObjects = data.getObjects();
-                            if (refObjects == null)
-                            {
-                                return;
-                            }
-                            visibleFields.add(formField);
-                        }
-                    }
-                    else if (fve instanceof Table table)
-                    {
-                        AbstractDataPath data = table.getDataPath();
-                        if (data == null)
-                        {
-                            return;
-                        }
-                        List<DataPathReferredObject> refObjects = data.getObjects();
-                        if (refObjects == null)
-                        {
-                            return;
-                        }
-                        List<FormItem> tableItems = table.getItems();
-                        for (FormItem formItemTable : tableItems)
-                        {
-                            if (formItemTable instanceof FormField formFieldTable)
-                            {
-                                if (formFieldTable.isVisible())
-                                {
-                                    visibleFields.add(formFieldTable);
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
-            FormItemVisitor visitor = new FormItemVisitor(collectCommand);
-            visitor.visit(form);
-
-            for (FormField formField : visibleFields)
-            {
-                if (ManagedFormFieldType.INPUT_FIELD == formField.getType()
-                    || ManagedFormFieldType.LABEL_FIELD == formField.getType())
-                {
-                    AbstractDataPath data = formField.getDataPath();
-                    if (data == null)
-                    {
-                        continue;
-                    }
-                    List<DataPathReferredObject> refObjects = data.getObjects();
-                    if (refObjects == null)
-                    {
-                        continue;
-                    }
-                    displayedAttribute.addAll(findAttribute(refObjects));
-                }
+                return;
             }
-
-            Map<Method, Map<String, Statement>> assignmentsByMethod = new HashMap<>();
-            Set<Statement> reportedStatements = Collections.newSetFromMap(new IdentityHashMap<>());
-            for (Method method : methods)
-            {
-                assignmentsByMethod.put(method, collectAssignments(method.allStatements()));
-            }
-
-            for (FormAttribute attribute : displayedAttribute)
-            {
-                visitor.visit(attribute);
-                if (attribute.getValueType() == null)
-                {
-                    continue;
-                }
-                List<TypeItem> types = attribute.getValueType().getTypes();
-                if (types == null || types.isEmpty())
-                {
-                    continue;
-                }
-                for (TypeItem type : types)
-                {
-                    if (STRING_TEXT.equalsIgnoreCase(McoreUtil.getTypeName(type)))
-                    {
-                        checkAttributeName(attribute.getName(), methods, assignmentsByMethod, allAttribute,
-                            resultAcceptor, reportedStatements);
-                    }
-                    else if (VALUE_TABLE.equalsIgnoreCase(McoreUtil.getTypeName(type)))
-                    {
-                        List<FormAttributeColumn> columns = attribute.getColumns();
-                        if (columns == null)
-                        {
-                            continue;
-                        }
-                        for (FormAttributeColumn column : columns)
-                        {
-                            if (column.getValueType() == null)
-                            {
-                                continue;
-                            }
-                            List<TypeItem> typesColumn = column.getValueType().getTypes();
-                            if (typesColumn == null || typesColumn.isEmpty())
-                            {
-                                continue;
-                            }
-                            for (TypeItem typeColumn : typesColumn)
-                            {
-                                if (STRING_TEXT.equalsIgnoreCase(McoreUtil.getTypeName(typeColumn)))
-                                {
-                                    checkAttributeName(column.getName(), methods, assignmentsByMethod, allAttribute,
-                                        resultAcceptor, reportedStatements);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            checkMethod(method, displayed, resultAcceptor, reported, monitor);
         }
     }
 
-    private void checkAttributeName(String name, List<Method> methods,
-        Map<Method, Map<String, Statement>> assignmentsByMethod, List<FormAttribute> allAttribute,
-        ResultAcceptor resultAcceptor, Set<Statement> reportedStatements)
+    private DisplayedStrings collectDisplayedStrings(Form form)
     {
-        String key = name.toLowerCase();
-        for (Method method : methods)
+        Set<String> attributes = new HashSet<>();
+        Map<String, Set<String>> columns = new HashMap<>();
+
+        for (FormField field : collectVisibleFields(form))
         {
-            Map<String, Statement> assignments = assignmentsByMethod.get(method);
-            Statement statement = assignments.get(key);
-            if (statement != null && checkStatement(statement, assignments, allAttribute))
-            {
-                if (reportedStatements.add(statement))
-                {
-                    resultAcceptor.addIssue(Messages.LocalizationNstrCheck_Issue, statement);
-                }
-            }
-        }
-    }
-
-    private boolean checkStatement(Statement statement, Map<String, Statement> methodAssignments,
-        List<FormAttribute> allAttribute)
-    {
-        return checkStatement(statement, methodAssignments, allAttribute, new HashSet<>());
-    }
-
-    private boolean checkStatement(Statement statement, Map<String, Statement> methodAssignments,
-        List<FormAttribute> allAttribute, Set<String> visitedNames)
-    {
-        if (statement instanceof SimpleStatement simpleStat)
-        {
-            if (simpleStat.getRight() instanceof StringLiteral stringLiteral)
-            {
-                if (!stringLiteral.getLines().isEmpty())
-                {
-                    String text = stringLiteral.getLines().get(0);
-                    String clean = text.replace("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
-                    if (!clean.isEmpty())
-                    {
-                        return true;
-                    }
-                }
-            }
-            else if (simpleStat.getRight() instanceof StaticFeatureAccess sfa)
-            {
-                if (!checkSfa(sfa.getName(), methodAssignments))
-                {
-                    for (FormAttribute attribute : allAttribute)
-                    {
-                        if (attribute.getName().equalsIgnoreCase(sfa.getName()))
-                        {
-                            return false;
-                        }
-                    }
-                    Method method = EcoreUtil2.getContainerOfType(statement, Method.class);
-                    if (method == null)
-                    {
-                        return false;
-                    }
-                    List<FormalParam> params = method.getFormalParams();
-                    for (FormalParam formalParam : params)
-                    {
-                        if (formalParam.getName().equalsIgnoreCase(sfa.getName()))
-                        {
-                            return false;
-                        }
-                    }
-                    if (!visitedNames.add(sfa.getName().toLowerCase()))
-                    {
-                        return false;
-                    }
-                    List<Statement> statementsMethod = method.getStatements();
-                    Map<String, Statement> assignmentsByMethod = new HashMap<>();
-                    assignmentsByMethod.putAll(collectAssignments(statementsMethod));
-                    if (assignmentsByMethod.containsKey(sfa.getName().toLowerCase()))
-                    {
-                        Statement findStatement = assignmentsByMethod.get(sfa.getName().toLowerCase());
-                        if (findStatement instanceof SimpleStatement simState)
-                        {
-                            return checkStatement(simState, methodAssignments, allAttribute, visitedNames);
-                        }
-                    }
-                    return true;
-                }
-            }
-            else if (simpleStat.getRight() instanceof Invocation invocationRight)
-            {
-                if (!invocationRight.getParams().isEmpty() && invocationRight.getParams().get(0) instanceof Invocation)
-                {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-
-    private List<FormAttribute> findAttribute(List<DataPathReferredObject> refObjects)
-    {
-        List<FormAttribute> formAttributes = new ArrayList<>();
-        for (DataPathReferredObject dataPathReferredObject : refObjects)
-        {
-            if (dataPathReferredObject.getObject() instanceof FormAttribute formAttribute)
-            {
-                formAttributes.add(formAttribute);
-            }
-        }
-        return formAttributes;
-    }
-
-    private Map<String, Statement> collectAssignments(List<Statement> statements)
-    {
-        Map<String, Statement> result = new HashMap<>();
-        collectAssignments(statements, result);
-        return result;
-    }
-
-    private void collectAssignments(List<Statement> statements, Map<String, Statement> names)
-    {
-        for (Statement statement : statements)
-        {
-            if (statement instanceof EmptyStatement)
+            if (ManagedFormFieldType.INPUT_FIELD != field.getType()
+                && ManagedFormFieldType.LABEL_FIELD != field.getType())
             {
                 continue;
             }
-            else if (statement instanceof SimpleStatement simp)
+            EObject target = getDataPathTarget(field);
+            if (target instanceof FormAttribute attribute)
             {
-                if (simp.getLeft() instanceof StaticFeatureAccess left)
+                if (hasStringType(attribute.getValueType()))
                 {
-                    names.putIfAbsent(left.getName().toLowerCase(), simp);
+                    attributes.add(lower(attribute.getName()));
                 }
             }
-            else if (statement instanceof IfStatement ifStatement)
+            else if (target instanceof FormAttributeColumn column && column.eContainer() instanceof FormAttribute table
+                && hasStringType(column.getValueType()))
             {
-                collectAssignments(ifStatement.getIfPart().getStatements(), names);
-                collectAssignments(ifStatement.getElseStatements(), names);
-                for (Conditional conditional : ifStatement.getElsIfParts())
+                String tableName = lower(table.getName());
+                Set<String> tableColumns = columns.get(tableName);
+                if (tableColumns == null)
                 {
-                    collectAssignments(conditional.getStatements(), names);
+                    tableColumns = new HashSet<>();
+                    columns.put(tableName, tableColumns);
+                }
+                tableColumns.add(lower(column.getName()));
+            }
+        }
+        return new DisplayedStrings(attributes, columns);
+    }
+
+    private Set<FormField> collectVisibleFields(Form form)
+    {
+        Set<FormField> result = new LinkedHashSet<>();
+        IFormItemCommand command = entity -> {
+            if (entity instanceof FormField field)
+            {
+                if (isEffectivelyVisible(field))
+                {
+                    result.add(field);
                 }
             }
-            else if (statement instanceof LoopStatement loopStatement)
+            else if (entity instanceof Table table && isEffectivelyVisible(table))
             {
-                collectAssignments(loopStatement.getStatements(), names);
+                for (FormField field : EcoreUtil2.getAllContentsOfType(table, FormField.class))
+                {
+                    if (isEffectivelyVisible(field))
+                    {
+                        result.add(field);
+                    }
+                }
             }
-            else if (statement instanceof TryExceptStatement tryStatement)
+        };
+        new FormItemVisitor(command).visit(form);
+        return result;
+    }
+
+    private EObject getDataPathTarget(FormField field)
+    {
+        AbstractDataPath path = field.getDataPath();
+        if (path == null)
+        {
+            return null;
+        }
+        List<DataPathReferredObject> objects = path.getObjects();
+        if (objects == null || objects.isEmpty())
+        {
+            return null;
+        }
+        return objects.get(objects.size() - 1).getObject();
+    }
+
+    private boolean hasStringType(TypeDescription description)
+    {
+        if (description == null)
+        {
+            return false;
+        }
+        for (TypeItem type : description.getTypes())
+        {
+            if (STRING_TYPE_NAME.equalsIgnoreCase(McoreUtil.getTypeName(type)))
             {
-                collectAssignments(tryStatement.getTryStatements(), names);
-                collectAssignments(tryStatement.getExceptStatements(), names);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void checkMethod(Method method, DisplayedStrings displayed, ResultAcceptor resultAcceptor,
+        Set<SimpleStatement> reported, IProgressMonitor monitor)
+    {
+        List<SimpleStatement> statements = EcoreUtil2.getAllContentsOfType(method, SimpleStatement.class);
+        Set<String> localNames = collectLocalNames(method);
+        Map<String, List<SimpleStatement>> assignments = collectAssignments(statements);
+
+        for (SimpleStatement statement : statements)
+        {
+            if (monitor.isCanceled())
+            {
+                return;
+            }
+            if (!isAssignmentToDisplayedString(statement, displayed, localNames))
+            {
+                continue;
+            }
+            if (isUnlocalizedString(statement.getRight(), assignments, new HashSet<>()) && reported.add(statement))
+            {
+                resultAcceptor.addIssue(Messages.LocalizationNstrCheck_Issue, statement);
             }
         }
     }
 
-    private boolean checkSfa(String name, Map<String, Statement> methodAssignments)
+    private Set<String> collectLocalNames(Method method)
     {
-        Statement statement = methodAssignments.get(name.toLowerCase());
-        if (statement instanceof SimpleStatement simpState && simpState.getRight() instanceof Invocation)
+        Set<String> names = new HashSet<>();
+        for (FormalParam param : method.getFormalParams())
         {
-            return true;
+            names.add(lower(param.getName()));
+        }
+        for (DeclareStatement declare : EcoreUtil2.getAllContentsOfType(method, DeclareStatement.class))
+        {
+            for (ExplicitVariable variable : declare.getVariables())
+            {
+                names.add(lower(variable.getName()));
+            }
+        }
+        return names;
+    }
+
+    private Map<String, List<SimpleStatement>> collectAssignments(List<SimpleStatement> statements)
+    {
+        Map<String, List<SimpleStatement>> result = new HashMap<>();
+        for (SimpleStatement statement : statements)
+        {
+            if (statement.getLeft() instanceof StaticFeatureAccess left)
+            {
+                String name = lower(left.getName());
+                if (name == null)
+                {
+                    continue;
+                }
+                List<SimpleStatement> statementsForName = result.get(name);
+                if (statementsForName == null)
+                {
+                    statementsForName = new ArrayList<>();
+                    result.put(name, statementsForName);
+                }
+                statementsForName.add(statement);
+            }
+        }
+        return result;
+    }
+
+    private static boolean isEffectivelyVisible(EObject entity)
+    {
+        for (EObject current = entity; current != null && !(current instanceof Form); current = current.eContainer())
+        {
+            if ((current instanceof DataItem item && !item.isVisible())
+                || (current instanceof Group group && !group.isVisible()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isAssignmentToDisplayedString(SimpleStatement statement, DisplayedStrings displayed,
+        Set<String> localNames)
+    {
+        Expression left = statement.getLeft();
+        if (left instanceof StaticFeatureAccess sfa)
+        {
+            String name = lower(sfa.getName());
+            return displayed.attributes().contains(name) && !localNames.contains(name) && !resolvesToVariable(sfa);
+        }
+        if (left instanceof DynamicFeatureAccess dfa)
+        {
+            String table = getTableAttributeName(dfa.getSource(), localNames);
+            if (table == null)
+            {
+                return false;
+            }
+            Set<String> columns = displayed.columns().get(table);
+            return columns != null && columns.contains(lower(dfa.getName()));
         }
         return false;
+    }
+
+    private String getTableAttributeName(Expression source, Set<String> localNames)
+    {
+        if (source instanceof IndexAccess indexAccess)
+        {
+            return getTableAttributeName(indexAccess.getSource(), localNames);
+        }
+        if (source instanceof StaticFeatureAccess sfa)
+        {
+            String name = lower(sfa.getName());
+            if (!localNames.contains(name) && !resolvesToVariable(sfa))
+            {
+                return name;
+            }
+        }
+        return null;
+    }
+
+    private boolean resolvesToVariable(StaticFeatureAccess access)
+    {
+        for (FeatureEntry entry : access.getFeatureEntries())
+        {
+            if (entry.getFeature() instanceof Variable)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isUnlocalizedString(Expression expression, Map<String, List<SimpleStatement>> assignments,
+        Set<String> visitedNames)
+    {
+        if (expression instanceof StringLiteral literal)
+        {
+            return containsText(literal);
+        }
+        if (expression instanceof StaticFeatureAccess sfa)
+        {
+            String name = lower(sfa.getName());
+            if (!visitedNames.add(name))
+            {
+                return false;
+            }
+            List<SimpleStatement> variableAssignments = assignments.get(name);
+            if (variableAssignments == null)
+            {
+                return false;
+            }
+            for (SimpleStatement assignment : variableAssignments)
+            {
+                if (isUnlocalizedString(assignment.getRight(), assignments, visitedNames))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean containsText(StringLiteral literal)
+    {
+        for (String line : literal.getLines())
+        {
+            for (int i = 0; i < line.length(); i++)
+            {
+                if (Character.isLetter(line.charAt(i)))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static String lower(String name)
+    {
+        return name == null ? null : name.toLowerCase();
     }
 }

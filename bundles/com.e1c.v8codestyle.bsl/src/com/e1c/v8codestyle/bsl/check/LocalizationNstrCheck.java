@@ -25,14 +25,11 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.BinaryExpression;
-import com._1c.g5.v8.dt.bsl.model.Conditional;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
 import com._1c.g5.v8.dt.bsl.model.Function;
-import com._1c.g5.v8.dt.bsl.model.IfStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.LoopStatement;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
@@ -40,7 +37,6 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
-import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -80,7 +76,7 @@ public class LocalizationNstrCheck
     private static final Set<String> IMMUTABLE_MAP_NUMBER_ONE_MESSAGES =
         Set.of("ПоказатьПредупреждение", "ShowMessageBox", "ПоказатьВопрос", "ShowQueryBox"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
-    private static final Set<String> IMMUTABLE_MAP_NUMBER_ZERO_MESSAGES = Set.of("сообщение", "Сообщить", "Message", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private static final Set<String> IMMUTABLE_MAP_NUMBER_ZERO_MESSAGES = Set.of("Сообщение", "Сообщить", "Message", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         "ПоказатьОповещениеПользователя", "ShowUsernotification", "Состояние", "Status"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     private static final Set<String> STR_INVOCATION =
@@ -150,6 +146,10 @@ public class LocalizationNstrCheck
             else if (expression instanceof StaticFeatureAccess sfa)
             {
                 String name = sfa.getName();
+                if (name == null)
+                {
+                    return;
+                }
                 Method method = EcoreUtil2.getContainerOfType(invocation, Method.class);
                 if (method == null)
                 {
@@ -211,47 +211,22 @@ public class LocalizationNstrCheck
     private boolean checkSfa(String name, Method method, String[] invNames)
     {
         Set<String> assignedNames =
-            nstrAssignedNamesCache.computeIfAbsent(method, m -> collectNstrAssignedNames(m.allStatements(), invNames));
+            nstrAssignedNamesCache.computeIfAbsent(method, m -> collectNstrAssignedNames(m, invNames));
         return assignedNames.contains(name.toLowerCase());
     }
 
-    private Set<String> collectNstrAssignedNames(List<Statement> statements, String[] invNames)
+    private Set<String> collectNstrAssignedNames(Method method, String[] invNames)
     {
+        List<SimpleStatement> statements = EcoreUtil2.getAllContentsOfType(method, SimpleStatement.class);
         Set<String> names = new HashSet<>();
-        collectNstrAssignedNamesRec(statements, names, invNames);
+        for (SimpleStatement statement : statements)
+        {
+            collectFromSimpleState(statement, names, statements, invNames);
+        }
         return names;
     }
 
-    private void collectNstrAssignedNamesRec(List<Statement> statements, Set<String> names, String[] invNames)
-    {
-        for (Statement statement : statements)
-        {
-            if (statement instanceof SimpleStatement simpState)
-            {
-                collectFromSimpleState(simpState, names, statements, invNames);
-            }
-            else if (statement instanceof IfStatement ifStatement)
-            {
-                collectNstrAssignedNamesRec(ifStatement.getIfPart().getStatements(), names, invNames);
-                collectNstrAssignedNamesRec(ifStatement.getElseStatements(), names, invNames);
-                for (Conditional conditional : ifStatement.getElsIfParts())
-                {
-                    collectNstrAssignedNamesRec(conditional.getStatements(), names, invNames);
-                }
-            }
-            else if (statement instanceof LoopStatement loopStatement)
-            {
-                collectNstrAssignedNamesRec(loopStatement.getStatements(), names, invNames);
-            }
-            else if (statement instanceof TryExceptStatement tryStatement)
-            {
-                collectNstrAssignedNamesRec(tryStatement.getTryStatements(), names, invNames);
-                collectNstrAssignedNamesRec(tryStatement.getExceptStatements(), names, invNames);
-            }
-        }
-    }
-
-    private void collectFromSimpleState(SimpleStatement statement, Set<String> names, List<Statement> statements,
+    private void collectFromSimpleState(SimpleStatement statement, Set<String> names, List<SimpleStatement> statements,
         String[] invNames)
     {
         Module module = EcoreUtil2.getContainerOfType(statement, Module.class);
@@ -272,27 +247,24 @@ public class LocalizationNstrCheck
                     {
                         if (invocation.getParams().get(0) instanceof StaticFeatureAccess sfa)
                         {
-                            for (Statement statementInlist : statements)
+                            for (SimpleStatement statementInlist : statements)
                             {
-                                if (statementInlist instanceof SimpleStatement simpState)
+                                if (statementInlist.getLeft() instanceof StaticFeatureAccess staticFeature
+                                    && staticFeature.getName().equalsIgnoreCase(sfa.getName()))
                                 {
-                                    if (simpState.getLeft() instanceof StaticFeatureAccess staticFeature
-                                        && staticFeature.getName().equalsIgnoreCase(sfa.getName()))
+                                    if (statementInlist.getRight() instanceof Invocation invocationFind
+                                        && (checkNstr(invocationFind.getMethodAccess().getName())))
                                     {
-                                        if (simpState.getRight() instanceof Invocation invocationFind
-                                            && (checkNstr(invocationFind.getMethodAccess().getName())))
+                                        names.add(left.getName().toLowerCase());
+                                        break;
+                                    }
+                                    else if (statementInlist.getRight() instanceof StaticFeatureAccess rightSfa)
+                                    {
+                                        if (isForm(module))
                                         {
-                                            names.add(left.getName().toLowerCase());
-                                            break;
-                                        }
-                                        else if (simpState.getRight() instanceof StaticFeatureAccess rightSfa)
-                                        {
-                                            if (isForm(module))
+                                            if (isAttribute(module, rightSfa.getName()))
                                             {
-                                                if (isAttribute(module, rightSfa.getName()))
-                                                {
-                                                    names.add(left.getName().toLowerCase());
-                                                }
+                                                names.add(left.getName().toLowerCase());
                                             }
                                         }
                                     }
