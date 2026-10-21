@@ -1,6 +1,7 @@
 # Reference to a Constructor Function
 
-For parameters of Structure, ValueTable, and ValueTree types, the type description must include a reference to the function that returns this structure, table, or tree (e.g., a reference to its constructor function).The validation lint tool considers it an error to specify generic Structure/ValueTable/ValueTree types if the method body accesses specific properties or keys of that variable.
+For parameters of Structure, ValueTable, and ValueTree types, the type description must include a reference to the function that returns this structure, table, or tree (e.g., a reference to its constructor function).
+The validation lint tool considers it an error to specify generic Structure/ValueTable/ValueTree types if the method body changed specific properties or keys of that variable.
 
 ## Incorrect
 
@@ -28,6 +29,16 @@ Function AcceptStructure(UserStructure)
 
 EndFunction
 
+// Structure acceptance, also correct
+// Parameters:
+// 		UserStructure - Structure:
+//        * Name - String - name of person
+//        * Age - Number - age of person
+Function AcceptStructure2(UserStructure) 
+
+	UserStructure.Insert("Name", "Value");
+
+EndFunction
 ```
 
 ## See Also

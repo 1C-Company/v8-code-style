@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.comment.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class DocCommentConstructorReferenceCheckTest
         updateModule(FOLDER_RESOURCE + "doc-comment-constructor-reference-in-params-struct.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(0, markers.size());
+        assertTrue(markers.isEmpty());
     }
 
     /**
@@ -60,7 +61,7 @@ public class DocCommentConstructorReferenceCheckTest
         updateModule(FOLDER_RESOURCE + "doc-comment-constructor-no-reference-in-params-struct-no-call.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(0, markers.size());
+        assertTrue(markers.isEmpty());
     }
 
     /**
@@ -109,5 +110,52 @@ public class DocCommentConstructorReferenceCheckTest
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
         assertEquals(Integer.valueOf(3), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test no error. Structure, value tree and value table are not modified.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNoModificationInParams() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-constructor-no-modification-in-params.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test no error. Structure, value tree and value table are not modified.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testModificationAndDescriptionInParams() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-constructor-modification-and-description-in-params.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test error. The structure is modified by an assignment, not by the Insert method.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNoRefWithModifiedParams() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-constructor-no-reference-in-params-modified.bsl");
+
+        List<Integer> errorLines = List.of(3, 12, 22, 31, 32, 33, 44, 45, 46, 57, 58, 59, 69);
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(errorLines.size(), markers.size());
+
+        assertTrue(markers.stream()
+            .allMatch(marker -> errorLines.contains(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))));
     }
 }

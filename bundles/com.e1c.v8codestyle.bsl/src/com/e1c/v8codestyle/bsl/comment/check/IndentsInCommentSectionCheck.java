@@ -214,7 +214,7 @@ public class IndentsInCommentSectionCheck
             return OptionalInt.empty();
         }
 
-        return OptionalInt.of(DocumentationCommentIndentsHelper.getIndentWidth((lines.get(lineNumber))));
+        return OptionalInt.of(DocumentationCommentIndentsHelper.getIndentWidth(lines.get(lineNumber)));
     }
 
     private void addIssue(DocumentationCommentResultAcceptor resultAcceptor, int lineNumber, int offset,

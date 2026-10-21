@@ -28,10 +28,10 @@ import com.e1c.v8codestyle.bsl.check.ProgramInterfaceConstructFunctionExistenceC
  * 
  * @author Artem Samohvalov
  */
-public class ProgramInterfaceConstructFunctionExistenceCheckTest1
+public class ProgramInterfaceConstructFunctionExistenceCheckTest
     extends AbstractSingleModuleTestBase
 {
-    public ProgramInterfaceConstructFunctionExistenceCheckTest1()
+    public ProgramInterfaceConstructFunctionExistenceCheckTest()
     {
         super(ProgramInterfaceConstructFunctionExistenceCheck.class);
     }

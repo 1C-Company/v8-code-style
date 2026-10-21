@@ -24,8 +24,8 @@ public final class DocumentationCommentIndentsHelper
 {
     public static final String COMMENT_PREFIX = "//"; //$NON-NLS-1$
     public static final int COMMENT_PREFIX_LENGTH = COMMENT_PREFIX.length();
-    public static final int TABULATION_SPACE_COUNT = 4;
 
+    private static final int TABULATION_SPACE_COUNT = 4;
     private static final String TABULATION_SPACE = " ".repeat(TABULATION_SPACE_COUNT); //$NON-NLS-1$
 
     /**

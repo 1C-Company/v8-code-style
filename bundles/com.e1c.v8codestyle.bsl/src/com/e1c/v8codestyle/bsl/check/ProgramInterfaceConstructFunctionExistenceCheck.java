@@ -27,7 +27,6 @@ import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Function;
-import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.PreprocessorItem;
@@ -107,15 +106,16 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
         }
 
         // if not overridable and not localization module
-        if (!hasPrefix(LOCALIZATION_STRING, LOCALIZATION_STRING_RU, commonModule)
-            && !hasPrefix(OVERRIDABLE_STRING, OVERRIDABLE_STRING_RU, commonModule))
+        if (!hasPostfix(LOCALIZATION_STRING, LOCALIZATION_STRING_RU, commonModule)
+            && !hasPostfix(OVERRIDABLE_STRING, OVERRIDABLE_STRING_RU, commonModule))
         {
             List<RegionPreprocessor> regions = findCheckedRegions(module);
+            List<Function> constructFunctions = findConstructFunctions(module);
 
             for (RegionPreprocessor region : regions)
             {
                 // if no construct function
-                if (!containsConstructorInRegion(region, module))
+                if (constructFunctions.stream().noneMatch(function -> isInRegion(function, region)))
                 {
                     resultAcceptor.addIssue(Messages.ProgramInterfaceConstructFunctionExistence_Issue, region,
                         NAMED_ELEMENT__NAME);
@@ -124,10 +124,10 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
         }
     }
 
-    private boolean hasPrefix(String prefix, String prefixRu, CommonModule commonModule)
+    private boolean hasPostfix(String postfix, String postfixRu, CommonModule commonModule)
     {
-        return (commonModule.getName().toLowerCase().endsWith(prefixRu)
-            || commonModule.getName().toLowerCase().endsWith(prefix));
+        return (commonModule.getName().toLowerCase().endsWith(postfixRu)
+            || commonModule.getName().toLowerCase().endsWith(postfix));
     }
 
     private List<RegionPreprocessor> findCheckedRegions(Module module)
@@ -140,24 +140,14 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
             .toList();
     }
 
-    private boolean containsConstructorInRegion(RegionPreprocessor region, Module module)
+    private List<Function> findConstructFunctions(Module module)
     {
-        for (Method method : module.allMethods())
-        {
-            if (!(method instanceof Function function))
-            {
-                continue;
-            }
-            if (!isInRegion(function, region))
-            {
-                continue;
-            }
-            if (isConstructFunction(function))
-            {
-                return true;
-            }
-        }
-        return false;
+        return module.allMethods()
+            .stream()
+            .filter(Function.class::isInstance)
+            .map(Function.class::cast)
+            .filter(this::isConstructFunction)
+            .toList();
     }
 
     private boolean isInRegion(EObject object, RegionPreprocessor region)
@@ -170,8 +160,6 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
      * Checks if is construct function.
      * if return type contains in CHECKED_RETURN_TYPES
      * 
-     * don't work if => return SomeFunctionReturnStruct();
-     *
      * @param function the function
      * @return true, if is construct function
      */
@@ -186,7 +174,7 @@ public class ProgramInterfaceConstructFunctionExistenceCheck
             if (element instanceof ReturnStatement returnStatement)
             {
                 if (returnStatement.getExpression() instanceof OperatorStyleCreator operatorStyleCreator
-                    && operatorStyleCreator.getType().getName() != null
+                    && operatorStyleCreator.getType() != null
                     && CHECKED_RETURN_TYPES.contains(operatorStyleCreator.getType().getName()))
                 {
                     return true;

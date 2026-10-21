@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.comment.check;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,15 +24,19 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
+import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Description;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
+import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
 import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.IndexAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
+import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
@@ -52,7 +57,7 @@ import com.google.inject.Inject;
 
 /**
  * The Check finds Structure/ValueTree/ValueTable type in parameter section
- * And if has property access to Structure/ValueTree/ValueTable comment must refer to constructor-function
+ * And if has property is changed to Structure/ValueTree/ValueTable the comment should refer to the constructor-function
  * 
  * @author Artem Samohvalov
  */
@@ -105,8 +110,9 @@ public class DocCommentConstructorReferenceCheck
         for (FieldDefinition fieldDefinition : parametersSection.getParameterDefinitions())
         {
             // if in parameters checked type
-            Optional<TypeDefinition> typeOptional =
-                getTypeNamesFromField(fieldDefinition).stream().filter(td -> isCheckedType(td)).findFirst();
+            Optional<TypeDefinition> typeOptional = getTypeNamesFromField(fieldDefinition).stream()
+                .filter(td -> isCheckedType(td) && !hasDescriptionExtension(td))
+                .findFirst();
             if (typeOptional.isPresent())
             {
                 checkedVariableMap.put(fieldDefinition.getName().toLowerCase(), typeOptional.get());
@@ -120,11 +126,11 @@ public class DocCommentConstructorReferenceCheck
 
         if (parametersSection.getParent() instanceof BslDocumentationComment bslDocumentationComment)
         {
-            Optional<String> optionalKey = findPropertyCallKey(checkedVariableMap, bslDocumentationComment.getMethod());
+            Set<String> keys = findPropertyCallKeys(checkedVariableMap, bslDocumentationComment.getMethod());
 
-            if (optionalKey.isPresent())
+            for (String key : keys)
             {
-                TypeDefinition typeDefinition = checkedVariableMap.get(optionalKey.get());
+                TypeDefinition typeDefinition = checkedVariableMap.get(key);
                 resultAcceptor.addIssue(Messages.DocCommentConstructorReferenceCheck_Issue,
                     typeDefinition.getLineNumber(), typeDefinition.getOffset(), typeDefinition.getTypeName().length());
             }
@@ -142,11 +148,21 @@ public class DocCommentConstructorReferenceCheck
     private boolean isCheckedType(TypeDefinition typeDefinition)
     {
         String typeName = typeDefinition.getTypeName();
-        // contains without case sense
         return typeName != null && CHECKED_TYPE_NAMES.contains(typeName.toLowerCase());
     }
 
-    private Optional<String> findPropertyCallKey(Map<String, TypeDefinition> checkedVariableMap, Method method)
+    private boolean hasDescriptionExtension(TypeDefinition typeDefinition)
+    {
+        if (!(typeDefinition.getParent() instanceof TypeSection typeSection))
+        {
+            return false;
+        }
+
+        Description description = typeSection.getSourceExtensionDescription();
+        return description != null && !description.getParts().isEmpty();
+    }
+
+    private Set<String> findPropertyCallKeys(Map<String, TypeDefinition> checkedVariableMap, Method method)
     {
         BlockProcessor blockProcessor =
             new BlockProcessor(method, (staticAccess) -> isCheckedVariable(staticAccess, checkedVariableMap));
@@ -165,7 +181,10 @@ public class DocCommentConstructorReferenceCheck
             if (feature instanceof Variable)
             {
                 String name = staticAccess.getName();
-                return name != null && checkedVariableMap.containsKey(name.toLowerCase());
+                if (name != null && checkedVariableMap.containsKey(name.toLowerCase()))
+                {
+                    return true;
+                }
             }
         }
         return false;
@@ -175,7 +194,7 @@ public class DocCommentConstructorReferenceCheck
         extends AbstractBlockProcessor
     {
         private final Predicate<StaticFeatureAccess> callBack;
-        private Optional<String> result = Optional.empty();
+        private final Set<String> result = new HashSet<>();
 
         BlockProcessor(Block block, Predicate<StaticFeatureAccess> callBack)
         {
@@ -184,46 +203,46 @@ public class DocCommentConstructorReferenceCheck
             this.callBack = callBack;
         }
 
-        Optional<String> getResult()
+        Set<String> getResult()
         {
             return result;
         }
 
         @Override
-        protected void doProcessInternal(Invocation invocation)
+        protected void doProcessInternal(SimpleStatement simpleStatement)
         {
-            if (invocation.getMethodAccess() instanceof DynamicFeatureAccess dynamicAccess // if .
-                && dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
-                && callBack.test(staticAccess))
+            Expression left = simpleStatement.getLeft();
+
+            if (left instanceof Invocation invocation)
             {
-                result = Optional.of(staticAccess.getName().toLowerCase());
+                addResult(invocation.getMethodAccess());
+            }
+            else if (left instanceof DynamicFeatureAccess || left instanceof IndexAccess)
+            {
+                addResult(left);
             }
 
-            super.doProcessInternal(invocation);
+            super.doProcessInternal(simpleStatement);
         }
 
-        @Override
-        protected void doProcessInternal(DynamicFeatureAccess dynamicAccess)
+        private void addResult(EObject source)
         {
-            if (dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
-                && callBack.test(staticAccess))
+            while (source instanceof DynamicFeatureAccess || source instanceof IndexAccess)
             {
-                result = Optional.of(staticAccess.getName().toLowerCase());
+                if (source instanceof DynamicFeatureAccess dynamicAccess)
+                {
+                    source = dynamicAccess.getSource();
+                }
+                else
+                {
+                    source = ((IndexAccess)source).getSource();
+                }
             }
 
-            super.doProcessInternal(dynamicAccess);
-        }
-
-        @Override
-        protected void doProcessInternal(IndexAccess indexAccess)
-        {
-            if (indexAccess.getSource() instanceof StaticFeatureAccess staticAccess // if variable
-                && callBack.test(staticAccess))
+            if (source instanceof StaticFeatureAccess staticAccess && callBack.test(staticAccess))
             {
-                result = Optional.of(staticAccess.getName().toLowerCase());
+                result.add(staticAccess.getName().toLowerCase());
             }
-
-            super.doProcessInternal(indexAccess);
         }
     }
 }

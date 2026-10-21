@@ -23,17 +23,17 @@ import com.e1c.v8codestyle.bsl.check.ProgramInterfaceConstructFunctionExistenceC
 
 /**
  * The test for @link {ProgramInterfaceConstructFunctionExistenceCheck}
- * Test on overridable common module
+ * Test on localization common module
  * 
  * @author Artem Samohvalov
  */
-public class ProgramInterfaceConstructFunctionExistenceCheckTest2
+public class ProgramInterfaceConstructFunctionExistenceCheckLocalizationTest
     extends AbstractSingleModuleTestBase
 {
-    private static final String PROJECT_NAME = "CommonModuleOverridable";
-    private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModuleOverridable/Module.bsl";
+    private static final String PROJECT_NAME = "CommonModuleLocalization";
+    private static final String COMMON_MODULE_FILE_NAME = "/src/CommonModules/CommonModuleLocalization/Module.bsl";
 
-    public ProgramInterfaceConstructFunctionExistenceCheckTest2()
+    public ProgramInterfaceConstructFunctionExistenceCheckLocalizationTest()
     {
         super(ProgramInterfaceConstructFunctionExistenceCheck.class);
     }
