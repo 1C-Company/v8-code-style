@@ -11,18 +11,6 @@ Procedure Some()
 
 EndProcedure
 
-Procedure Some2()
-
-	Var A = 1;
-
-	If 1 = 1 Then
-		A = 10;
-	Endif;
-
-	B = A;
-
-EndProcedure
-
 Procedure Some3(A)
 
 	If 1 = 1 Then
@@ -79,7 +67,16 @@ Procedure Some7(Array)
 
 EndProcedure
 
-Procedure Test(U)
+Procedure Some8(Array)
+
+	A = 1;
+	For Each Item In Array Do
+		A = Item;
+	EndDo;
+
+EndProcedure
+
+Procedure Some9(U)
 
 	If U Then
 		A = 1;

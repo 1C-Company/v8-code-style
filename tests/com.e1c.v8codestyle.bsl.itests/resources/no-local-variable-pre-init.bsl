@@ -78,3 +78,14 @@ Procedure Some6(U)
 
 EndProcedure
 
+Procedure Some7(Array)
+
+	For Each Item In Array Do
+		If Item = 1 Then
+			A = Item;
+		EndIf;
+		
+		B = A;
+	EndDo;
+
+EndProcedure

@@ -13,32 +13,30 @@
 
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.SIMPLE_STATEMENT;
 
 import java.text.MessageFormat;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.nodemodel.INode;
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 
-import com._1c.g5.v8.dt.bsl.common.VariableProcessor;
 import com._1c.g5.v8.dt.bsl.model.ExplicitVariable;
+import com._1c.g5.v8.dt.bsl.model.ForStatement;
 import com._1c.g5.v8.dt.bsl.model.FormalParam;
-import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Statement;
+import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
+import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
-import com._1c.g5.v8.dt.bsl.resource.DynamicFeatureAccessComputer;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
+import com.e1c.g5.v8.dt.check.components.BasicCheck;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
-import com.google.inject.Inject;
 
 /**
  * Check for local variable preinitialization.
@@ -47,15 +45,8 @@ import com.google.inject.Inject;
  * @author Artem Samohvalov
  */
 public class LocalVariablePreinitializationCheck
-    extends AbstractModuleStructureCheck
+    extends BasicCheck<Object>
 {
-    private final DynamicFeatureAccessComputer dynamicComputer;
-
-    @Inject
-    public LocalVariablePreinitializationCheck(DynamicFeatureAccessComputer dynamicComputer)
-    {
-        this.dynamicComputer = dynamicComputer;
-    }
 
     @Override
     public String getCheckId()
@@ -74,103 +65,97 @@ public class LocalVariablePreinitializationCheck
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(new StandardCheckExtension(494, getCheckId(), BslPlugin.PLUGIN_ID))
             .module()
-            .checkedObjectType(METHOD);
+            .checkedObjectType(SIMPLE_STATEMENT);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IProgressMonitor monitor)
     {
-        Method method = (Method)object;
+        SimpleStatement simpleStatement = (SimpleStatement)object;
 
-        VariableProcessor processor = new VariableProcessor(method.allStatements(), dynamicComputer);
-        processor.process();
-
-        Map<Variable, List<INode>> changes = processor.variablesForChangeValue();
-        Map<Variable, List<INode>> reads = processor.variablesForReadValue();
-
-        // for each read variable
-        for (Map.Entry<Variable, List<INode>> entry : reads.entrySet())
+        if (simpleStatement.getLeft() instanceof StaticFeatureAccess left
+            && simpleStatement.getRight() instanceof StaticFeatureAccess right)
         {
-            if (monitor.isCanceled())
-                return;
+            Optional<Variable> optionalLeft = getVariable(left);
+            Variable variable = getVariable(right).orElse(null);
 
-            Variable variable = entry.getKey();
-
-            // if var is method parameter or explicit variable (Var A = 1;)
-            // don't need to check init level
-            if (variable instanceof FormalParam || variable instanceof ExplicitVariable)
-                continue;
-
-            List<INode> changeNodes = changes.get(variable);
-            if (changeNodes == null)
-                continue;
-
-            for (INode readNode : entry.getValue())
+            if (optionalLeft.isEmpty() || variable == null)
             {
-                if (monitor.isCanceled())
-                    return;
-
-                if (isPreinitialized(readNode, changeNodes))
-                    continue;
-
-                EObject readAccess = readNode.getSemanticElement();
-                if (readAccess != null)
-                {
-                    String message =
-                        MessageFormat.format(Messages.LocalVariablePreinitializationCheck_Issue, variable.getName());
-                    resultAcceptor.addIssue(message, readAccess);
-                }
+                return;
             }
+
+            if (isInitialized(simpleStatement, variable))
+            {
+                return;
+            }
+
+            String message = MessageFormat.format(Messages.LocalVariablePreinitializationCheck_Issue, right.getName());
+            resultAcceptor.addIssue(message, simpleStatement);
         }
     }
 
-    private static boolean isPreinitialized(INode readNode, List<INode> changeNodes)
+    private boolean isInitialized(SimpleStatement statement, Variable variable)
     {
-        EObject readAccess = readNode.getSemanticElement();
-        if (readAccess == null)
+        INode readNode = NodeModelUtils.findActualNodeFor(statement);
+        if (readNode == null)
         {
             return false;
         }
 
-        for (INode changeNode : changeNodes)
+        int readOffset = readNode.getOffset();
+        for (EObject container = statement.eContainer(); container != null; container = container.eContainer())
         {
-            if (changeNode.getOffset() < readNode.getOffset()) // required readNode bellow changeNode
+            if (container instanceof ForStatement forStatement)
             {
-                EObject variableAccess = changeNode.getSemanticElement();
-                if (variableAccess == null)
-                    continue;
+                StaticFeatureAccess loopStaticAccess = forStatement.getVariableAccess(); // here a forstatement init variable
+                Optional<Variable> loopVariable = getVariable(loopStaticAccess);
+                if (loopVariable.isPresent() && variable == loopVariable.get())
+                {
+                    return true;
+                }
+            }
 
-                EObject scope = getScopeContainer(variableAccess);
-                if (scope == null)
-                    continue;
-
-                if (isInScopeOrAbove(readAccess, scope)) // if this this readNode in init scope or higher
+            for (EObject child : container.eContents())
+            {
+                if (child instanceof SimpleStatement candidate && candidate != statement
+                    && candidate.getLeft() instanceof StaticFeatureAccess candidateLeft
+                    && getVariable(candidateLeft).orElse(null) == variable && isBefore(candidate, readOffset))
                 {
                     return true;
                 }
             }
         }
+
         return false;
     }
 
-    private static EObject getScopeContainer(EObject variableAccess)
+    private static boolean isBefore(EObject object, int offset)
     {
-        Statement statement = EcoreUtil2.getContainerOfType(variableAccess, Statement.class);
-        return statement == null ? null : statement.eContainer();
+        INode node = NodeModelUtils.findActualNodeFor(object);
+        return node != null && node.getOffset() < offset;
     }
 
-    private static boolean isInScopeOrAbove(EObject readAccess, EObject scope)
+    /**
+     * Checks if is variable.
+     * But not method parameter and not explicit variable
+     *
+     * @param staticAccess the static access
+     * @return true, if is variable
+     */
+    private Optional<Variable> getVariable(StaticFeatureAccess staticAccess)
     {
-        for (EObject container =
-            EcoreUtil2.getContainerOfType(readAccess, Statement.class); container != null; container =
-                container.eContainer())
+        if (staticAccess == null)
         {
-            if (container == scope)
-            {
-                return true;
-            }
+            return Optional.empty();
         }
-        return false;
+
+        return staticAccess.getFeatureEntries()
+            .stream()
+            .map(entry -> entry.getFeature())
+            .filter(feature -> feature instanceof Variable
+                && !(feature instanceof FormalParam || feature instanceof ExplicitVariable))
+            .map(Variable.class::cast)
+            .findFirst();
     }
 }

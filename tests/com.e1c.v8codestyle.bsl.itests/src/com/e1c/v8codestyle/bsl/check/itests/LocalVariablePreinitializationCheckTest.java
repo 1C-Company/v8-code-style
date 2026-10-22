@@ -64,13 +64,15 @@ public class LocalVariablePreinitializationCheckTest
     {
         updateModule(FOLDER_RESOURCE + "no-local-variable-pre-init.bsl");
 
+        List<Integer> errorLines = List.of(7, 19, 30, 42, 53, 59, 65, 77, 88);
+
         List<Marker> markers = getModuleMarkers();
-        assertEquals(8, markers.size());
+        assertEquals(errorLines.size(), markers.size());
 
         for (Marker marker : markers)
         {
             int val = marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
-            assertTrue(List.of(7, 19, 30, 42, 53, 59, 65, 77).contains(val));
+            assertTrue(errorLines.contains(val));
         }
     }
 }
