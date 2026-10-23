@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl.check;
+package com.e1c.v8codestyle.bsl;
 
 import com._1c.g5.v8.bm.core.IBmTransaction;
 

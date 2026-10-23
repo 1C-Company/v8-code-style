@@ -19,9 +19,7 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
-import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -31,9 +29,11 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.SslConfigurationHelper;
 import com.e1c.v8codestyle.bsl.strict.check.AbstractTypeCheck;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.e1c.v8codestyle.internal.bsl.MethodAccessHelper;
 import com.google.inject.Inject;
 
 /**
@@ -84,20 +84,10 @@ public class BackgroundJobExecuteCallCheck
     {
         Invocation invocation = (Invocation)object;
 
-        if (invocation.getMethodAccess() instanceof DynamicFeatureAccess dynamicAccess
-            && dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess
-            && isCheckedCall(staticAccess.getName(), dynamicAccess.getName()))
+        if (MethodAccessHelper.isNameMatching(invocation, TARGET_METHOD_NAME_RU, TARGET_METHOD_NAME,
+            TARGET_MODULE_NAME_RU, TARGET_MODULE_NAME) && SslConfigurationHelper.hasSSL(bmTransaction))
         {
-            if (SslConfigurationHelper.hasSSL(bmTransaction))
-            {
-                resultAcceptor.addIssue(Messages.BackgroundJobExecuteCallCheck_Issue, invocation);
-            }
+            resultAcceptor.addIssue(Messages.BackgroundJobExecuteCallCheck_Issue, invocation);
         }
-    }
-
-    private boolean isCheckedCall(String moduleName, String methodName)
-    {
-        return (methodName.equalsIgnoreCase(TARGET_METHOD_NAME_RU) || methodName.equalsIgnoreCase(TARGET_METHOD_NAME))
-            && (moduleName.equalsIgnoreCase(TARGET_MODULE_NAME_RU) || moduleName.equalsIgnoreCase(TARGET_MODULE_NAME));
     }
 }
