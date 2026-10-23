@@ -30,7 +30,6 @@ import com._1c.g5.v8.dt.dcs.model.core.Presentation;
 import com._1c.g5.v8.dt.dcs.model.schema.DataCompositionSchema;
 import com._1c.g5.v8.dt.dcs.model.schema.DataSet;
 import com._1c.g5.v8.dt.dcs.model.schema.DataSetField;
-import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.NumberQualifiers;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
@@ -159,7 +158,7 @@ public class MoneyStringDataCompositionCheck
         {
             return false;
         }
-        Object qualifiers = obj.eGet(McorePackage.Literals.TYPE_DESCRIPTION__NUMBER_QUALIFIERS);
+        NumberQualifiers qualifiers = obj.getNumberQualifiers();
         for (TypeItem typeItem : types)
         {
             if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(typeItem))) //$NON-NLS-1$
