@@ -69,6 +69,14 @@ final class Messages
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_description;
     public static String UnsafePasswordStorageCheck_Avoid_storing_password_in_infobase_error;
+
+    public static String WebServiceNameCheck_title;
+    public static String WebServiceNameCheck_description;
+    public static String WebServiceNameCheck_only_english_issue;
+    public static String WebServiceNameCheck_service_substr_issue;
+    public static String WebServiceNameCheck_only_english_param_issue;
+    public static String WebServiceNameCheck_only_english_operation_issue;
+
     static
     {
         // initialize resource bundle

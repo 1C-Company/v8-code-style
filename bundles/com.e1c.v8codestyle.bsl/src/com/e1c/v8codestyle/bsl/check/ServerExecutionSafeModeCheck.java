@@ -51,10 +51,9 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  * Check if safe mode is enabled before Execute or Eval
  *
  * @author Maxim Galios
- *
  */
 public class ServerExecutionSafeModeCheck
-    extends BasicCheck
+    extends BasicCheck<Object>
 {
 
     private static final String CHECK_ID = "server-execution-safe-mode"; //$NON-NLS-1$
@@ -339,8 +338,7 @@ public class ServerExecutionSafeModeCheck
         String name = invocation.getMethodAccess().getName();
         List<Expression> params = invocation.getParams();
 
-        return (SAFE_MODE_RU.equalsIgnoreCase(name) || SAFE_MODE.equalsIgnoreCase(name)) && params.size() == 1
-            && params.get(0) instanceof BooleanLiteral;
+        return (SAFE_MODE_RU.equalsIgnoreCase(name) || SAFE_MODE.equalsIgnoreCase(name)) && params.size() == 1;
     }
 
     private int findExecuteStatementIndex(List<Statement> statements, EObject eObject)
@@ -379,7 +377,15 @@ public class ServerExecutionSafeModeCheck
         Invocation invocation = (Invocation)simpleStatement.getLeft();
 
         List<Expression> params = invocation.getParams();
-        return ((BooleanLiteral)params.get(0)).isIsTrue();
+
+        Expression param = params.get(0);
+        if (param instanceof BooleanLiteral)
+        {
+            return ((BooleanLiteral)param).isIsTrue();
+        }
+        // The argument value cannot be resolved statically, so consider
+        // safe mode as enabled to avoid false positives.
+        return true;
     }
 
     private boolean isExecute(EObject eObject)
