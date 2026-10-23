@@ -14,39 +14,40 @@ package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.xtext.EcoreUtil2;
 
-import com._1c.g5.v8.dt.bsl.model.Conditional;
-import com._1c.g5.v8.dt.bsl.model.IfStatement;
+import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.LoopStatement;
-import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.NumberLiteral;
 import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
-import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
-import com._1c.g5.v8.dt.bsl.model.TryExceptStatement;
-import com._1c.g5.v8.dt.bsl.model.util.BslUtil;
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.DataPathReferredObject;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormAttributeColumn;
 import com._1c.g5.v8.dt.form.model.FormField;
-import com._1c.g5.v8.dt.form.model.FormItem;
-import com._1c.g5.v8.dt.mcore.TypeItem;
+import com._1c.g5.v8.dt.form.model.Table;
+import com._1c.g5.v8.dt.form.service.item.FormItemVisitor;
+import com._1c.g5.v8.dt.form.service.item.IFormItemCommand;
+import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -57,9 +58,11 @@ import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
 
 /**
- * Checks money strings localization.
+ * Checks that numeric money fields displayed on a form (attributes and value table columns
+ * with names like "Сумма", "Цена") get their type description from the money field
+ * type description method instead of being assigned numbers, number creators or arbitrary calls.
  *
- *  @author Ivan Sergeev
+ * @author Ivan Sergeev
  */
 public class MoneyStringLocalizationCheck
     extends AbstractModuleStructureCheck
@@ -70,12 +73,20 @@ public class MoneyStringLocalizationCheck
 
     private static final String MONEY_STRING_NAME = "Money string name"; //$NON-NLS-1$
 
-    private static final Set<String> IMMUTABLE_MAP_MONEY_STRING = Set.of("Сумма", "Цена", "Себестоимость", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+    private static final String TYPE_NUMBER = "Number"; //$NON-NLS-1$
+
+    private static final String TYPE_VALUE_TABLE = "ValueTable"; //$NON-NLS-1$
+
+    private static final String METHOD_ADD = "Добавить"; //$NON-NLS-1$
+
+    private static final String METHOD_INSERT = "Вставить"; //$NON-NLS-1$
+
+    private static final Set<String> DEFAULT_MONEY_STRING_NAMES = Set.of("Сумма", "Цена", "Себестоимость", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
         "СуммаИзлишков", "Amount", "Price", "Cost", "SurplusAmount", "DescriptionTypesAmount"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
     private static final String DELIMITER = ","; //$NON-NLS-1$
 
-    private static final String DEFAULT_NAMES = String.join(DELIMITER, IMMUTABLE_MAP_MONEY_STRING);
+    private static final String DEFAULT_NAMES = String.join(DELIMITER, DEFAULT_MONEY_STRING_NAMES);
 
     @Override
     public String getCheckId()
@@ -103,212 +114,232 @@ public class MoneyStringLocalizationCheck
         IProgressMonitor monitor)
     {
         Module module = (Module)object;
-        String rawNames = parameters.getString(MONEY_STRING_NAME);
-        List<String> moneyNames = List.of(rawNames.split(DELIMITER));
-        if (ModuleType.FORM_MODULE == module.getModuleType())
+        if (ModuleType.FORM_MODULE != module.getModuleType() || !(module.getOwner() instanceof Form form))
         {
-            Form form = (Form)module.getOwner();
-            List<FormItem> fields = form.getItems();
-            List<FormAttribute> displayedAttribute = new ArrayList<>();
-            for (FormItem formItem : fields)
-            {
-                if (formItem instanceof FormField formField)
-                {
-                    AbstractDataPath data = formField.getDataPath();
-                    if (data == null)
-                    {
-                        continue;
-                    }
-                    List<DataPathReferredObject> refObjects = data.getObjects();
-                    if (refObjects == null)
-                    {
-                        continue;
-                    }
-                    displayedAttribute.addAll(findAttribute(refObjects, moneyNames));
-                }
-            }
-            List<Method> methods = BslUtil.allMethods(module);
+            return;
+        }
 
-            Map<Method, List<Statement>> methodStatements = new HashMap<>();
-            for (Method method : methods)
-            {
-                methodStatements.put(method, method.allStatements());
-            }
+        Set<String> moneyNames = parseNames(parameters.getString(MONEY_STRING_NAME));
+        Set<String> fieldNames = collectNumericMoneyFieldNames(form, moneyNames);
+        if (fieldNames.isEmpty())
+        {
+            return;
+        }
+        List<SimpleStatement> statements = EcoreUtil2.getAllContentsOfType(module, SimpleStatement.class);
 
-            for (FormAttribute attribute : displayedAttribute)
+        Set<SimpleStatement> reported = new HashSet<>();
+        for (String name : fieldNames)
+        {
+            if (monitor.isCanceled())
             {
-                List<TypeItem> types = attribute.getValueType().getTypes();
-                for (TypeItem type : types)
+                return;
+            }
+            for (SimpleStatement statement : findAssignments(statements, name))
+            {
+                if (isWrongAssignment(statement) && reported.add(statement))
                 {
-                    if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
-                    {
-                        checkStatements(methods, methodStatements, attribute.getName(), moneyNames, resultAcceptor);
-                    }
-                    else if ("ValueTable".equalsIgnoreCase(McoreUtil.getTypeName(type))) //$NON-NLS-1$
-                    {
-                        List<FormAttributeColumn> columns = attribute.getColumns();
-                        for (FormAttributeColumn column : columns)
-                        {
-                            List<TypeItem> typesColumn = column.getValueType().getTypes();
-                            String colName = column.getName();
-                            for (TypeItem typeColumn : typesColumn)
-                            {
-                                if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(typeColumn))) //$NON-NLS-1$
-                                {
-                                    checkStatements(methods, methodStatements, colName, moneyNames, resultAcceptor);
-                                }
-                            }
-                        }
-                    }
+                    resultAcceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
                 }
             }
         }
     }
 
-    private List<FormAttribute> findAttribute(List<DataPathReferredObject> refObjects, List<String> moneyNames)
+    private static Set<String> parseNames(String rawNames)
     {
-        List<FormAttribute> formAttributes = new ArrayList<>();
-        for (DataPathReferredObject dataPathReferredObject : refObjects)
+        if (rawNames == null)
         {
-            if (dataPathReferredObject.getObject() instanceof FormAttribute formAttribute)
-            {
-                for (String moneyStringName : moneyNames)
-                {
-                    if (moneyStringName.equalsIgnoreCase(formAttribute.getName()))
-                    {
-                        formAttributes.add(formAttribute);
-                    }
-                }
-            }
+            return Set.of();
         }
-        return formAttributes;
+        return Arrays.stream(rawNames.split(DELIMITER))
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .map(s -> s.toLowerCase())
+            .collect(Collectors.toSet());
     }
 
-    private void checkStatements(List<Method> methods, Map<Method, List<Statement>> methodStatements, String name,
-        List<String> moneyNames, ResultAcceptor resultAcceptor)
+    private static Set<FormField> collectFields(Form form)
     {
-        for (Method method : methods)
+        Set<FormField> result = new LinkedHashSet<>();
+        IFormItemCommand command = entity -> {
+            if (entity instanceof FormField field)
+            {
+                result.add(field);
+            }
+            else if (entity instanceof Table table)
+            {
+                result.addAll(EcoreUtil2.getAllContentsOfType(table, FormField.class));
+            }
+        };
+        new FormItemVisitor(command).visit(form);
+        return result;
+    }
+
+    private static Set<String> collectNumericMoneyFieldNames(Form form, Set<String> moneyNames)
+    {
+        Set<FormAttribute> attributes = new LinkedHashSet<>();
+        for (FormField field : collectFields(form))
         {
-            List<Statement> statements = methodStatements.get(method);
-            if (statements == null || statements.isEmpty())
+            AbstractDataPath path = field.getDataPath();
+            if (path == null || path.getObjects() == null)
             {
                 continue;
             }
-            Statement statement = searchStatements(statements, name);
-            if (statement instanceof SimpleStatement simpleState)
+            for (DataPathReferredObject ref : path.getObjects())
             {
-                if (simpleState.getRight() instanceof Invocation right)
+                if (ref.getObject() instanceof FormAttribute attribute)
                 {
-                    String invocationName = right.getMethodAccess().getName();
-                    if (!MONEYFIELD_TYPE_DESCRIPTION.equalsIgnoreCase(invocationName))
-                    {
-                        resultAcceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
-                    }
-                }
-                else if (simpleState.getRight() instanceof OperatorStyleCreator)
-                {
-                    resultAcceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
-                }
-                else if (simpleState.getRight() instanceof NumberLiteral)
-                {
-                    resultAcceptor.addIssue(Messages.MoneyStringLocalizationCheck_Issue, statement);
+                    attributes.add(attribute);
                 }
             }
         }
-    }
 
-    private Statement searchStatements(List<Statement> statements, String name)
-    {
-        return searchStatements(statements, name, new HashSet<>());
-    }
-
-    private Statement searchStatements(List<Statement> statements, String name, Set<String> visitedNames)
-    {
-        if (!visitedNames.add(name.toLowerCase(Locale.ROOT)))
+        Set<String> result = new LinkedHashSet<>();
+        for (FormAttribute attribute : attributes)
         {
-            return null;
-        }
-        for (Statement statement : statements)
-        {
-            if (statement instanceof SimpleStatement simp)
+            TypeDescription type = attribute.getValueType();
+            if (hasType(type, TYPE_VALUE_TABLE))
             {
-                if (simp.getLeft() instanceof Invocation invocation)
+                for (FormAttributeColumn column : attribute.getColumns())
                 {
-                    if ("Добавить".equalsIgnoreCase(invocation.getMethodAccess().getName()) //$NON-NLS-1$
-                        || "Вставить".equalsIgnoreCase(invocation.getMethodAccess().getName())) //$NON-NLS-1$
+                    if (column.getName() != null && moneyNames.contains(column.getName().toLowerCase())
+                        && hasType(column.getValueType(), TYPE_NUMBER))
                     {
-                        if (!invocation.getParams().isEmpty())
+                        result.add(column.getName());
+                    }
+                }
+            }
+            else if (attribute.getName() != null && moneyNames.contains(attribute.getName().toLowerCase())
+                && hasType(type, TYPE_NUMBER))
+            {
+                result.add(attribute.getName());
+            }
+        }
+        return result;
+    }
+
+    private static boolean hasType(TypeDescription description, String typeName)
+    {
+        return description != null
+            && description.getTypes().stream().anyMatch(type -> typeName.equalsIgnoreCase(McoreUtil.getTypeName(type)));
+    }
+
+    private static List<SimpleStatement> findAssignments(List<SimpleStatement> statements, String name)
+    {
+        List<SimpleStatement> result = new ArrayList<>();
+        Set<String> visited = new HashSet<>();
+        Deque<String> queue = new ArrayDeque<>();
+        queue.add(name);
+
+        while (!queue.isEmpty())
+        {
+            String current = queue.poll();
+            if (!visited.add(current.toLowerCase()))
+            {
+                continue;
+            }
+            for (SimpleStatement statement : statements)
+            {
+                Expression left = statement.getLeft();
+                if (isFieldAccess(left, current))
+                {
+                    result.add(statement);
+                }
+                else if (left instanceof Invocation invocation)
+                {
+                    Optional<Expression> value = getFieldValueExpression(invocation, current);
+                    if (value.isPresent())
+                    {
+                        String valueName = getTrackableVariable(value.get(), current);
+                        if (valueName != null)
                         {
-                            if (invocation.getParams().get(0) instanceof StringLiteral strLit)
-                            {
-                                String checkName = strLit.getLines().get(0).replace("\"", ""); //$NON-NLS-1$ //$NON-NLS-2$
-                                if (invocation.getParams().size() <= 1)
-                                {
-                                    continue;
-                                }
-                                if (checkName.equalsIgnoreCase(name)
-                                    && invocation.getParams().get(1) instanceof StaticFeatureAccess sfa
-                                    && !MONEYFIELD_TYPE_DESCRIPTION.equalsIgnoreCase(sfa.getName())
-                                    && !name.equalsIgnoreCase(sfa.getName()))
-                                {
-                                    return searchStatements(statements, sfa.getName(), visitedNames);
-                                }
-                            }
+                            queue.add(valueName);
+                        }
+                        else
+                        {
+                            result.add(statement);
                         }
                     }
                 }
-                else if (simp.getLeft() instanceof StaticFeatureAccess findSfa)
-                {
-                    if (name.equalsIgnoreCase(findSfa.getName()))
-                    {
-                        return statement;
-                    }
-                }
-            }
-            else if (statement instanceof IfStatement ifStatement)
-            {
-                List<Statement> ifStatements = ifStatement.getIfPart().getStatements();
-                Statement stat = searchStatements(ifStatements, name);
-                if (stat != null)
-                {
-                    return stat;
-                }
-                List<Statement> elseStatements = ifStatement.getElseStatements();
-                stat = searchStatements(elseStatements, name);
-                if (stat != null)
-                {
-                    return stat;
-                }
-                List<Conditional> elseIfParts = ifStatement.getElsIfParts();
-                for (Conditional conditional : elseIfParts)
-                {
-                    List<Statement> statementsElsIf = conditional.getStatements();
-                    stat = searchStatements(statementsElsIf, name);
-                    if (stat != null)
-                    {
-                        return stat;
-                    }
-                }
-            }
-            else if (statement instanceof LoopStatement forStatement)
-            {
-                List<Statement> forStatements = forStatement.getStatements();
-                Statement stat = searchStatements(forStatements, name);
-                if (stat != null)
-                {
-                    return stat;
-                }
-            }
-            else if (statement instanceof TryExceptStatement tryExceptStatement)
-            {
-                List<Statement> tryStatements = tryExceptStatement.getTryStatements();
-                Statement stat = searchStatements(tryStatements, name);
-                if (stat != null)
-                {
-                    return stat;
-                }
             }
         }
-        return null;
+        return result;
+    }
+
+    private static boolean isFieldAccess(Expression expression, String name)
+    {
+        if (expression instanceof StaticFeatureAccess staticAccess)
+        {
+            return name.equalsIgnoreCase(staticAccess.getName());
+        }
+        if (expression instanceof DynamicFeatureAccess dynamicAccess)
+        {
+            return name.equalsIgnoreCase(dynamicAccess.getName());
+        }
+        return false;
+    }
+
+    private static Optional<Expression> getFieldValueExpression(Invocation invocation, String name)
+    {
+        if (invocation.getMethodAccess() == null)
+        {
+            return Optional.empty();
+        }
+        String method = invocation.getMethodAccess().getName();
+        if (!METHOD_ADD.equalsIgnoreCase(method) && !METHOD_INSERT.equalsIgnoreCase(method))
+        {
+            return Optional.empty();
+        }
+        List<Expression> params = invocation.getParams();
+        if (params.size() < 2 || !(params.get(0) instanceof StringLiteral key))
+        {
+            return Optional.empty();
+        }
+        List<String> lines = key.getLines();
+        if (lines.isEmpty() || !name.equalsIgnoreCase(lines.get(0).replace("\"", ""))) //$NON-NLS-1$ //$NON-NLS-2$
+        {
+            return Optional.empty();
+        }
+        return Optional.of(params.get(1));
+    }
+
+    private static String getTrackableVariable(Expression expression, String name)
+    {
+        if (!(expression instanceof StaticFeatureAccess value))
+        {
+            return null;
+        }
+        String valueName = value.getName();
+        if (valueName == null || MONEYFIELD_TYPE_DESCRIPTION.equalsIgnoreCase(valueName)
+            || name.equalsIgnoreCase(valueName))
+        {
+            return null;
+        }
+        return valueName;
+    }
+
+    private static boolean isWrongAssignment(SimpleStatement statement)
+    {
+        Expression assigned = getAssignedValue(statement);
+        if (assigned instanceof Invocation invocation)
+        {
+            return invocation.getMethodAccess() != null
+                && !MONEYFIELD_TYPE_DESCRIPTION.equalsIgnoreCase(invocation.getMethodAccess().getName());
+        }
+        return assigned instanceof OperatorStyleCreator || assigned instanceof NumberLiteral;
+    }
+
+    private static Expression getAssignedValue(SimpleStatement statement)
+    {
+        Expression left = statement.getLeft();
+        if (left instanceof Invocation invocation)
+        {
+            List<Expression> params = invocation.getParams();
+            if (params.size() >= 2)
+            {
+                return params.get(1);
+            }
+            return null;
+        }
+        return statement.getRight();
     }
 }

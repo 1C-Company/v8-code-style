@@ -34,6 +34,7 @@ import com._1c.g5.v8.dt.mcore.McorePackage;
 import com._1c.g5.v8.dt.mcore.NumberQualifiers;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
+import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -96,9 +97,17 @@ public class MoneyStringDataCompositionCheck
         EList<DataSet> dataSets = dcs.getDataSets();
         for (DataSet dataSet : dataSets)
         {
+            if (monitor.isCanceled())
+            {
+                return;
+            }
             EList<DataSetField> fields = dataSet.getFields();
             for (DataSetField field : fields)
             {
+                if (monitor.isCanceled())
+                {
+                    return;
+                }
                 String findName = nameValue(field);
                 if (findName == null)
                 {
@@ -112,6 +121,7 @@ public class MoneyStringDataCompositionCheck
                         {
                             resultAcceptor.addIssue(Messages.MoneyStringDataCompositionCheck_Issue, field);
                         }
+                        break;
                     }
                 }
             }
@@ -142,13 +152,17 @@ public class MoneyStringDataCompositionCheck
         TypeDescription obj = (TypeDescription)field.eGet(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__VALUE_TYPE);
         if (obj == null)
         {
-            return true;
+            return false;
         }
         EList<TypeItem> types = obj.getTypes();
+        if (types.isEmpty())
+        {
+            return false;
+        }
         Object qualifiers = obj.eGet(McorePackage.Literals.TYPE_DESCRIPTION__NUMBER_QUALIFIERS);
         for (TypeItem typeItem : types)
         {
-            if ("Number".equalsIgnoreCase(typeItem.getName())) //$NON-NLS-1$
+            if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(typeItem))) //$NON-NLS-1$
             {
                 if (qualifiers instanceof NumberQualifiers numberQual)
                 {
@@ -160,8 +174,8 @@ public class MoneyStringDataCompositionCheck
                     }
                 }
             }
-            else if ("DefinedType.ДенежнаяСуммаЛюбогоЗнака".equalsIgnoreCase(typeItem.getName()) //$NON-NLS-1$
-                || "DefinedType.ДенежнаяСуммаНеотрицательная".equalsIgnoreCase(typeItem.getName())) //$NON-NLS-1$
+            else if ("DefinedType.ДенежнаяСуммаЛюбогоЗнака".equalsIgnoreCase(McoreUtil.getTypeName(typeItem)) //$NON-NLS-1$
+                || "DefinedType.ДенежнаяСуммаНеотрицательная".equalsIgnoreCase(McoreUtil.getTypeName(typeItem))) //$NON-NLS-1$
             {
                 return false;
             }

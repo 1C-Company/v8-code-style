@@ -40,11 +40,25 @@ public class MoneyStringLocalizationCheckTest
 {
     private static final String PROJECT_NAME = "MoneyStringLocalizationCheckTest";
 
-    private static final String LOCALIZATION_NOT_USED = "CommonForm.Form.Form";
+    private static final String FORM_WITH_ISSUES = "CommonForm.Form.Form";
 
-    private static final String LOCALIZATION_USED = "CommonForm.FormCorrect.Form";
+    private static final String FORM_CORRECT = "CommonForm.FormCorrect.Form";
+
+    private static final String VALUE_TABLE_FORM_WITH_ISSUES = "CommonForm.FormValueTable.Form";
+
+    private static final String VALUE_TABLE_FORM_CORRECT = "CommonForm.FormValueTableCorrect.Form";
 
     private static final String CHECK_ID = "money-string-localization";
+
+    private static final String PROCEDURE = "Процедура1";
+
+    private static final String PROCEDURE_INLINE_COLUMN = "ДобавлениеКолонкиИнлайн";
+
+    private static final String PROCEDURE_COLUMN_VARIABLE = "ДобавлениеКолонкиЧерезПеременную";
+
+    private static final String PROCEDURE_QUALIFIED_ACCESS = "ПрисваиваниеПоКвалифицированномуДоступу";
+
+    private static final String PROCEDURE_OTHER_FIELD = "ДругоеПоле";
 
     @Override
     protected String getTestConfigurationName()
@@ -52,37 +66,139 @@ public class MoneyStringLocalizationCheckTest
         return PROJECT_NAME;
     }
 
+    /**
+     * Test number type description assigned to a money form attribute.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testNotUseNstr() throws Exception
+    public void testWrongAssignment() throws Exception
     {
-        IBmObject object = getTopObjectByFqn(LOCALIZATION_NOT_USED, getProject());
-        assertNotNull(object);
-        assertTrue(object instanceof Form);
-        SimpleStatement statement = getFirstStatement((Form)object);
+        SimpleStatement statement = getStatement(FORM_WITH_ISSUES, PROCEDURE, 0);
         Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
         assertNotNull(marker);
     }
 
+    /**
+     * Test money field type description assigned to a money form attribute.
+     *
+     * @throws Exception the exception
+     */
     @Test
-    public void testUseNstr() throws Exception
+    public void testCorrectAssignment() throws Exception
     {
-        IBmObject object = getTopObjectByFqn(LOCALIZATION_USED, getProject());
-        assertNotNull(object);
-        assertTrue(object instanceof Form);
-        SimpleStatement statement = getFirstStatement((Form)object);
+        SimpleStatement statement = getStatement(FORM_CORRECT, PROCEDURE, 0);
         Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
         assertNull(marker);
     }
 
-    private SimpleStatement getFirstStatement(Form form)
+    /**
+     * Test inline number type description of a value table money column.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInlineColumnType() throws Exception
     {
-        Module module = form.getModule();
+        SimpleStatement statement = getStatement(VALUE_TABLE_FORM_WITH_ISSUES, PROCEDURE_INLINE_COLUMN, 0);
+        Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
+        assertNotNull(marker);
+    }
+
+    /**
+     * Test inline money field type description of a value table money column.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInlineColumnTypeCorrect() throws Exception
+    {
+        SimpleStatement statement = getStatement(VALUE_TABLE_FORM_CORRECT, PROCEDURE_INLINE_COLUMN, 0);
+        Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     * Test number type description of a value table money column set from a variable.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testColumnTypeFromVariable() throws Exception
+    {
+        SimpleStatement assignment = getStatement(VALUE_TABLE_FORM_WITH_ISSUES, PROCEDURE_COLUMN_VARIABLE, 0);
+        Marker marker = getFirstMarker(CHECK_ID, assignment, getProject());
+        assertNotNull(marker);
+
+        SimpleStatement columnAdd = getStatement(VALUE_TABLE_FORM_WITH_ISSUES, PROCEDURE_COLUMN_VARIABLE, 1);
+        marker = getFirstMarker(CHECK_ID, columnAdd, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     * Test money field type description of a value table money column set from a variable.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testColumnTypeFromVariableCorrect() throws Exception
+    {
+        SimpleStatement assignment = getStatement(VALUE_TABLE_FORM_CORRECT, PROCEDURE_COLUMN_VARIABLE, 0);
+        Marker marker = getFirstMarker(CHECK_ID, assignment, getProject());
+        assertNull(marker);
+
+        SimpleStatement columnAdd = getStatement(VALUE_TABLE_FORM_CORRECT, PROCEDURE_COLUMN_VARIABLE, 1);
+        marker = getFirstMarker(CHECK_ID, columnAdd, getProject());
+        assertNull(marker);
+    }
+
+    /**
+     * Test number type description assigned to a value table money column by qualified access.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testQualifiedAccessAssignment() throws Exception
+    {
+        SimpleStatement statement = getStatement(VALUE_TABLE_FORM_WITH_ISSUES, PROCEDURE_QUALIFIED_ACCESS, 1);
+        Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
+        assertNotNull(marker);
+    }
+
+    /**
+     * Test non money field is not reported.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testOtherFieldNotReported() throws Exception
+    {
+        SimpleStatement statement = getStatement(VALUE_TABLE_FORM_CORRECT, PROCEDURE_OTHER_FIELD, 0);
+        Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
+        assertNull(marker);
+    }
+
+    private SimpleStatement getStatement(String fqn, String procedure, int index) throws Exception
+    {
+        IBmObject object = getTopObjectByFqn(fqn, getProject());
+        assertNotNull(object);
+        assertTrue(object instanceof Form);
+        Module module = ((Form)object).getModule();
         assertNotNull(module);
-        List<Method> methods = module.allMethods();
-        assertNotNull(methods);
-        Method method = methods.get(0);
+
+        Method method = null;
+        for (Method candidate : module.allMethods())
+        {
+            if (procedure.equalsIgnoreCase(candidate.getName()))
+            {
+                method = candidate;
+                break;
+            }
+        }
+        assertNotNull(method);
+
         List<Statement> statements = method.allStatements();
-        assertNotNull(statements);
-        return (SimpleStatement)statements.get(0);
+        assertTrue(statements.size() > index);
+        return (SimpleStatement)statements.get(index);
     }
 }

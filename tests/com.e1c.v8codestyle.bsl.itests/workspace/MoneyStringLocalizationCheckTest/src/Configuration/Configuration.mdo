@@ -40,4 +40,6 @@
   </languages>
   <commonForms>CommonForm.Form</commonForms>
   <commonForms>CommonForm.FormCorrect</commonForms>
+  <commonForms>CommonForm.FormValueTable</commonForms>
+  <commonForms>CommonForm.FormValueTableCorrect</commonForms>
 </mdclass:Configuration>
