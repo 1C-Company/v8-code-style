@@ -13,7 +13,6 @@
 package com.e1c.v8codestyle.bsl.fix.itests;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
@@ -37,7 +36,7 @@ import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
 public abstract class AbstractQuickFixTest
     extends AbstractSingleModuleTestBase
 {
-    private final IFixManager fixManager = ServiceAccess.get(IFixManager.class);
+    private IFixManager fixManager = ServiceAccess.get(IFixManager.class);
 
     /**
      * @param checkClass, cannot be {@code null}
@@ -61,17 +60,8 @@ public abstract class AbstractQuickFixTest
         FixVariantDescriptor variantDescr = null;
 
         Collection<FixVariantDescriptor> variants = fixManager.getApplicableFixVariants(handle);
-        StringBuilder strBuilder = new StringBuilder();
-        strBuilder.append("FixDescription: ");
-        strBuilder.append(fixDescription);
-        strBuilder.append("; all variants: ");
-
-        assertFalse(variants.isEmpty());
-
         for (FixVariantDescriptor variant : variants)
         {
-            strBuilder.append(variant.getDescription());
-            strBuilder.append(", ");
             if (variant.getDescription().equals(fixDescription))
             {
                 variantDescr = variant;
@@ -79,7 +69,7 @@ public abstract class AbstractQuickFixTest
             }
         }
 
-        assertNotNull(strBuilder.toString(), variantDescr);
+        assertNotNull(variantDescr);
 
         fixManager.selectFixVariant(variantDescr, handle);
         fixManager.executeFix(handle, new NullProgressMonitor());
