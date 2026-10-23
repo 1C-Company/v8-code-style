@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.EMap;
 
 import com._1c.g5.v8.dt.dcs.model.core.LocalString;
 import com._1c.g5.v8.dt.dcs.model.core.Presentation;
@@ -107,6 +106,10 @@ public class MoneyStringDataCompositionCheck
                 {
                     return;
                 }
+                if (!hasRequiredFeatures(field))
+                {
+                    continue;
+                }
                 String findName = nameValue(field);
                 if (findName == null)
                 {
@@ -127,18 +130,22 @@ public class MoneyStringDataCompositionCheck
         }
     }
 
+    private static boolean hasRequiredFeatures(DataSetField field)
+    {
+        return field.eClass().getFeatureID(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__TITLE) >= 0
+            && field.eClass().getFeatureID(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__VALUE_TYPE) >= 0;
+    }
+
     private String nameValue(DataSetField field)
     {
-        Object obj = field.eGet(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__TITLE);
-        if (obj instanceof Presentation presentation)
+        if (field.eGet(DATA_COMPOSITION_SCHEMA_DATA_SET_FIELD__TITLE) instanceof Presentation presentation)
         {
             LocalString locString = presentation.getLocalValue();
             if (locString == null)
             {
                 return null;
             }
-            EMap<String, String> values = locString.getContent();
-            for (Entry<String, String> entry : values)
+            for (Entry<String, String> entry : locString.getContent())
             {
                 return entry.getValue();
             }
