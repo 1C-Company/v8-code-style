@@ -49,7 +49,7 @@ public class OverridableModuleOnlyExportMethodsFix
     protected TextEdit fixIssue(XtextResource resource, IXtextBslModuleFixModel model) throws BadLocationException
     {
         EObject element = model.getElement();
-        System.out.println("### FIX element class = " + (element == null ? "null" : element.getClass().getName())); //$NON-NLS-1$
+        System.out.println("### FIX element class = " + (element == null ? "null" : element.getClass().getName())); //$NON-NLS-1$ //$NON-NLS-2$
         System.out.println("### FIX element = " + element); //$NON-NLS-1$
 
         if (element instanceof Method method)
