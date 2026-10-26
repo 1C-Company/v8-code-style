@@ -18,7 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.eclipse.ui.PlatformUI;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -50,7 +49,6 @@ public class NotifyDescriptionToServerProcedureFixTest
         Marker marker = markers.get(0);
 
         performFix(marker, Messages.NotifyDescriptionToServerProcedureFix_Description);
-        PlatformUI.getWorkbench().saveAllEditors(false);
 
         assertMarkerGone();
         assertHasMethod();

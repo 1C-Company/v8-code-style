@@ -12,13 +12,15 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.fix.itests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.ui.PlatformUI;
 
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.wiring.ServiceAccess;
@@ -60,6 +62,8 @@ public abstract class AbstractQuickFixTest
         FixVariantDescriptor variantDescr = null;
 
         Collection<FixVariantDescriptor> variants = fixManager.getApplicableFixVariants(handle);
+        assertFalse(variants.isEmpty());
+
         for (FixVariantDescriptor variant : variants)
         {
             if (variant.getDescription().equals(fixDescription))
@@ -76,6 +80,8 @@ public abstract class AbstractQuickFixTest
         fixManager.finishFix(handle);
 
         waitForDD(getProject());
+
+        PlatformUI.getWorkbench().saveAllEditors(false);
     }
 
     /**
@@ -85,6 +91,6 @@ public abstract class AbstractQuickFixTest
     {
         waitForDD(getProject());
         List<Marker> markers = getModuleMarkers();
-        assertEquals(0, markers.size());
+        assertTrue(markers.isEmpty());
     }
 }
