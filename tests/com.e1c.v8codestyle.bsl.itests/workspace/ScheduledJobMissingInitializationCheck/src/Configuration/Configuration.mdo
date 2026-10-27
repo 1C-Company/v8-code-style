@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mdclass:Configuration xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="41e0d07d-ece6-42b2-bfbf-686d364ed4fd">
-  <name>ScheduledJobMissingInitializationCheckWithoutSSL</name>
+  <name>ScheduledJobMissingInitializationCheck</name>
   <synonym>
     <key>en</key>
     <value>scheduled job missing initialization check</value>
