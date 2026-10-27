@@ -29,9 +29,9 @@ import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.v8codestyle.bsl.check.OverridableModuleOnlyExportMethodsCheck;
 
 /**
- *  Test for {@link OverridableModuleOnlyExportMethodsFix}
+ * Test for {@link OverridableModuleOnlyExportMethodsFix}
  *
- *  @author Artem Samohvalov
+ * @author Artem Samohvalov
  */
 public class OverridableModuleOnlyExportMethodsFixTest
     extends AbstractQuickFixTest

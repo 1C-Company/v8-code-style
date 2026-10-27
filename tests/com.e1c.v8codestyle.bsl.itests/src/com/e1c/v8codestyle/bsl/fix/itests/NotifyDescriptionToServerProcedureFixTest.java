@@ -27,9 +27,9 @@ import com._1c.g5.v8.dt.validation.marker.Marker;
 import com.e1c.v8codestyle.bsl.check.NotifyDescriptionToServerProcedureCheck;
 
 /**
- *  Tests for NotifyDescriptionToServerProcedureFix fix.
+ * Tests for NotifyDescriptionToServerProcedureFix fix.
  *
- *  @author Artem Samohvalov
+ * @author Artem Samohvalov
  */
 public class NotifyDescriptionToServerProcedureFixTest
     extends AbstractQuickFixTest

@@ -31,9 +31,9 @@ import com.e1c.g5.v8.dt.check.qfix.IFixManager;
 import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
 
 /**
- *  QuickFix helper for tests
+ * QuickFix helper for tests
  *
- *  @author Artem Samohvalov
+ * @author Artem Samohvalov
  */
 public abstract class AbstractQuickFixTest
     extends AbstractSingleModuleTestBase
