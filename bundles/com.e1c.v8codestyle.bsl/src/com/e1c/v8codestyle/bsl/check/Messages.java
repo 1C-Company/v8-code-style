@@ -550,6 +550,10 @@ final class Messages
     public static String BackgroundJobExecuteCallCheck_Description;
     public static String BackgroundJobExecuteCallCheck_Issue;
 
+    public static String ScheduledJobMissingInitializationCheck_Title;
+    public static String ScheduledJobMissingInitializationCheck_Description;
+    public static String ScheduledJobMissingInitializationCheck_Issue;
+
     static
     {
         // initialize resource bundle
