@@ -13,15 +13,12 @@
 
 package com.e1c.v8codestyle.bsl.check;
 
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.CONFIGURATION__COMMON_MODULES;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SCHEDULED_JOB;
-import static com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage.Literals.SCHEDULED_JOB__METHOD_NAME;
-
-import java.util.Optional;
+import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.METHOD;
+import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameConverter;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.scoping.IScope;
@@ -32,6 +29,7 @@ import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
+import com._1c.g5.v8.dt.bsl.model.Procedure;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.common.StringUtils;
@@ -39,10 +37,12 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
+import com._1c.g5.v8.dt.metadata.mdclass.MdClassPackage;
 import com._1c.g5.v8.dt.metadata.mdclass.ScheduledJob;
 import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
+import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.SslConfigurationHelper;
@@ -53,13 +53,16 @@ import com.e1c.v8codestyle.internal.bsl.MethodAccessHelper;
 import com.google.inject.Inject;
 
 /**
- * The check find scheduled job methods and adds issue if it's there no CommonUse.OnStartScheduledJobExecution call on the first statement
- *
+ * Finds common module methods used as scheduled job handlers and adds an issue if the first executable statement
+ * of the method is not a call of the CommonUse.OnStartScheduledJobExecution procedure.
+ * 
  * @author Artem Samohvalov
  */
 public class ScheduledJobMissingInitializationCheck
     extends AbstractTypeCheck
 {
+    private static final String SCHEDULED_JOB_METHOD_NAME_USER_DATA = "methodName"; //$NON-NLS-1$
+
     private static final String TARGET_MODULE_NAME = "CommonUse"; //$NON-NLS-1$
     private static final String TARGET_MODULE_NAME_RU = "ОбщегоНазначения"; //$NON-NLS-1$
 
@@ -89,77 +92,64 @@ public class ScheduledJobMissingInitializationCheck
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.CODE_STYLE)
             .extension(new StandardCheckExtension(539, getCheckId(), BslPlugin.PLUGIN_ID))
-            .topObject(SCHEDULED_JOB)
-            .checkTop()
-            .features(SCHEDULED_JOB__METHOD_NAME);
+            .extension(new ModuleTopObjectNameFilterExtension())
+            .module()
+            .checkedObjectType(METHOD);
     }
 
     @Override
     protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IBmTransaction bmTransaction, IProgressMonitor progressMonitor)
     {
-        ScheduledJob scheduledJob = (ScheduledJob)object;
+        Method method = (Method)object;
+        Module module = EcoreUtil2.getContainerOfType(method, Module.class);
 
-        if (!SslConfigurationHelper.hasSSL(bmTransaction))
+        if (method.isExport() && method instanceof Procedure && module != null
+            && module.getOwner() instanceof CommonModule commonModule && !hasInitCall(method)
+            && SslConfigurationHelper.hasSSL(bmTransaction)
+            && isScheduledJobMethod(method, module, commonModule, progressMonitor))
         {
-            return;
-        }
-
-        Optional<Method> method = getMethodByName(scheduledJob, scheduledJob.getMethodName());
-        if (method.isPresent() && !hasInitCall(method.get()))
-        {
-            resultAcceptor.addIssue(Messages.ScheduledJobMissingInitializationCheck_Issue, SCHEDULED_JOB__METHOD_NAME);
+            resultAcceptor.addIssue(Messages.ScheduledJobMissingInitializationCheck_Issue, method, NAMED_ELEMENT__NAME);
         }
     }
 
-    private Optional<Method> getMethodByName(EObject context, String fullName)
+    private boolean isScheduledJobMethod(Method method, Module module, CommonModule commonModule,
+        IProgressMonitor progressMonitor)
     {
-        if (StringUtils.isBlank(fullName))
+        String moduleName = commonModule.getName();
+        String methodName = method.getName();
+
+        if (StringUtils.isBlank(moduleName) || StringUtils.isBlank(methodName))
         {
-            return Optional.empty();
+            return false;
         }
 
-        String[] parts = fullName.split("\\."); //$NON-NLS-1$
-        if (parts.length < 3)
+        String suffix = "." + moduleName.toLowerCase() + "." + methodName.toLowerCase(); //$NON-NLS-1$ //$NON-NLS-2$
+        IScope jobs = scopeProvider.getScope(module, MdClassPackage.Literals.CONFIGURATION__SCHEDULED_JOBS);
+        for (IEObjectDescription item : jobs.getAllElements())
         {
-            return Optional.empty();
-        }
-        String moduleName = parts[parts.length - 2];
-        String methodName = parts[parts.length - 1];
-
-        return getMethodByNameAndModule(methodName, moduleName, context);
-    }
-
-    private Optional<Method> getMethodByNameAndModule(String methodName, String moduleName, EObject context)
-    {
-        IScope modules = scopeProvider.getScope(context, CONFIGURATION__COMMON_MODULES);
-        for (IEObjectDescription item : modules.getAllElements())
-        {
-            if (!moduleName.equalsIgnoreCase(item.getName().getLastSegment()))
+            if (progressMonitor.isCanceled())
             {
-                continue;
+                return false;
             }
 
-            EObject moduleObject = item.getEObjectOrProxy();
-            if (moduleObject.eIsProxy())
+            String methodPath = item.getUserData(SCHEDULED_JOB_METHOD_NAME_USER_DATA);
+            if (methodPath == null)
             {
-                moduleObject = EcoreUtil.resolve(moduleObject, context);
-            }
-            if (!(moduleObject instanceof CommonModule commonModule))
-            {
-                return Optional.empty();
-            }
-
-            Module bslModule = commonModule.getModule();
-            if (bslModule == null)
-            {
-                return Optional.empty();
+                EObject mdObject = item.getEObjectOrProxy();
+                if (mdObject instanceof ScheduledJob job)
+                {
+                    methodPath = job.getMethodName();
+                }
             }
 
-            return bslModule.allMethods().stream().filter(m -> methodName.equalsIgnoreCase(m.getName())).findFirst();
+            if (methodPath != null && methodPath.toLowerCase().endsWith(suffix))
+            {
+                return true;
+            }
         }
 
-        return Optional.empty();
+        return false;
     }
 
     private boolean hasInitCall(Method method)

@@ -13,12 +13,16 @@
 
 package com.e1c.v8codestyle.bsl.check.itests;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
 import com._1c.g5.v8.dt.validation.marker.Marker;
+import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.ScheduledJobMissingInitializationCheck;
 
 /**
@@ -42,38 +46,13 @@ public class ScheduledJobMissingInitializationCheckTest
      * @throws Exception the exception
      */
     @Test
-    public void testError() throws Exception
+    public void test() throws Exception
     {
-        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobEmptyMethod", getProject());
-        Marker marker = getFirstMarker(getCheckId(), id, getProject());
-        assertNotNull(marker);
-    }
+        List<Marker> markers = getModuleMarkers();
+        Set<Integer> errorLines = Set.of(1, 14);
 
-    /**
-     * Test error.
-     * the init call is not the first statement
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testErrorInitNoFirst() throws Exception
-    {
-        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobSecondPosInitCallMethod", getProject());
-        Marker marker = getFirstMarker(getCheckId(), id, getProject());
-        assertNotNull(marker);
-    }
-
-    /**
-     * Test no error.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testNoError() throws Exception
-    {
-        long id = getTopObjectIdByFqn("ScheduledJob.ScheduledJobInitCallMethod", getProject());
-        Marker marker = getFirstMarker(getCheckId(), id, getProject());
-        assertNull(marker);
+        assertEquals(errorLines.size(), markers.size());
+        markers.forEach(m -> assertTrue(errorLines.contains(m.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))));
     }
 
     @Override

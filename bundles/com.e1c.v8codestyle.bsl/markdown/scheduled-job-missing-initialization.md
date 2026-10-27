@@ -26,6 +26,6 @@ Procedure Correct()
 EndProcedure
 ```
 
-## См.
+## See more
 
-[Стандарт](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Creating_and_modifying_metadata_objects/Scheduled_jobs/Scheduled_jobs_____Starting/?language=en)
+[Standart](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Creating_and_modifying_metadata_objects/Scheduled_jobs/Scheduled_jobs_____Starting/?language=en)
