@@ -49,7 +49,7 @@ public class ScheduledJobMissingInitializationCheckTest
     public void test() throws Exception
     {
         List<Marker> markers = getModuleMarkers();
-        Set<Integer> errorLines = Set.of(1, 14);
+        Set<Integer> errorLines = Set.of(1, 14, 30, 38);
 
         assertEquals(errorLines.size(), markers.size());
         markers.forEach(m -> assertTrue(errorLines.contains(m.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))));

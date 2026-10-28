@@ -16,7 +16,10 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,6 +31,7 @@ import org.eclipse.xtext.scoping.IScope;
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
+import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -35,6 +39,7 @@ import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.Procedure;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
+import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
@@ -120,7 +125,7 @@ public class ScheduledJobMissingInitializationCheck
             return;
         }
 
-        for (Method method : module.allMethods())
+        for (Method method : module.getMethods())
         {
             if (progressMonitor.isCanceled())
             {
@@ -160,10 +165,10 @@ public class ScheduledJobMissingInitializationCheck
 
             if (methodPath != null)
             {
-                String methodName = getMethodName(methodPath, moduleName);
-                if (!"".equals(methodName)) //$NON-NLS-1$
+                Optional<String> methodName = getMethodName(methodPath, moduleName);
+                if (methodName.isPresent())
                 {
-                    result.add(methodName.toLowerCase());
+                    result.add(methodName.get().toLowerCase());
                 }
             }
         }
@@ -173,35 +178,75 @@ public class ScheduledJobMissingInitializationCheck
 
     private boolean hasInitCall(Method method)
     {
+        List<String> declared = new ArrayList<>();
+
         for (Statement statement : method.allStatements())
         {
             if (statement instanceof EmptyStatement)
             {
                 continue;
             }
-            if (statement instanceof SimpleStatement simple && simple.getLeft() instanceof Invocation invocation)
+
+            if (statement instanceof SimpleStatement simple)
             {
-                return MethodAccessHelper.isNameMatching(invocation, TARGET_METHOD_NAME_RU, TARGET_METHOD_NAME,
-                    TARGET_MODULE_NAME_RU, TARGET_MODULE_NAME);
+                if (simple.getLeft() instanceof Invocation invocation)
+                {
+                    return MethodAccessHelper.isNameMatching(invocation, TARGET_METHOD_NAME_RU, TARGET_METHOD_NAME,
+                        TARGET_MODULE_NAME_RU, TARGET_MODULE_NAME) && isDeclaredUsedInParams(declared, invocation);
+                }
+
+                if (simple.getLeft() instanceof StaticFeatureAccess staticAccess && staticAccess.getName() != null)
+                {
+                    declared.add(staticAccess.getName().toLowerCase());
+                    continue;
+                }
             }
+
             return false;
         }
+
         return false;
     }
 
-    private String getMethodName(String string, String moduleName)
+    private Optional<String> getMethodName(String string, String moduleName)
     {
         String[] parts = string.split("\\."); //$NON-NLS-1$
 
-        if (parts.length == 3)
+        if (parts.length >= 2)
         {
-            String currentModuleName = parts[1];
+            String currentModuleName = parts[parts.length - 2];
             if (currentModuleName.equalsIgnoreCase(moduleName))
             {
-                return parts[2];
+                return Optional.of(parts[parts.length - 1]);
             }
         }
 
-        return ""; //$NON-NLS-1$
+        return Optional.empty();
+    }
+
+    private boolean isDeclaredUsedInParams(List<String> declared, Invocation invocation)
+    {
+        for (String variableName : declared)
+        {
+            if (!isVariablePassed(variableName, invocation))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isVariablePassed(String variableName, Invocation invocation)
+    {
+        for (Expression param : invocation.getParams())
+        {
+            if (param instanceof StaticFeatureAccess access && variableName.equalsIgnoreCase(access.getName()))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

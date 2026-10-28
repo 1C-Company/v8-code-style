@@ -44,5 +44,8 @@
   <scheduledJobs>ScheduledJob.ScheduledJobEmptyMethod</scheduledJobs>
   <scheduledJobs>ScheduledJob.ScheduledJobSecondPosInitCallMethod</scheduledJobs>
   <scheduledJobs>ScheduledJob.ScheduledJobInitCallMethod</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobCallInsideIf</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobDeclaredVariableNotPassed</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobVariableToArgs</scheduledJobs>
 
 </mdclass:Configuration>

@@ -5,9 +5,9 @@ If the SSL (Standard Subsystems Library) is used in the configuration, it is rec
 ## Incorrect
 
 ```bsl
-Procedure Incorrect()
+Procedure Incorrect() Export
 	
-	// Missing CommonUse.OnStartExecuteScheduledJob() call
+	// Missing CommonUse.OnStartScheduledJobExecution() call
 	
 	// some code ...
 	
@@ -17,7 +17,7 @@ EndProcedure
 ## Correct
 
 ```bsl
-Procedure Correct()
+Procedure Correct() Export
 	
 	CommonUse.OnStartScheduledJobExecution(Metadata.ScheduledJobs.MyScheduledExchange);
 	
@@ -28,4 +28,4 @@ EndProcedure
 
 ## See more
 
-[Standart](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Creating_and_modifying_metadata_objects/Scheduled_jobs/Scheduled_jobs_____Starting/?language=en)
+[Standard](https://kb.1ci.com/1C_Enterprise_Platform/Guides/Developer_Guides/1C_Enterprise_Development_Standards/Creating_and_modifying_metadata_objects/Scheduled_jobs/Scheduled_jobs_____Starting/?language=en)
