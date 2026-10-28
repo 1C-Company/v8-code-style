@@ -55,6 +55,17 @@ public class OverridableModuleOnlyExportMethodsFixTest
 
         performFix(marker, Messages.OverridableModuleOnlyExportMethodsFixTest_Description);
 
+        Module module = getModule();
+        boolean export = module.allMethods().get(0).isExport();
+        System.out.println("### after fix isExport=" + export);
+
+        List<Marker> markers2 = getModuleMarkers();
+        System.out.println("### markers size=" + markers.size());
+        for (Marker m : markers2)
+        {
+            System.out.println("### marker checkId=" + m.getCheckId() + " message=" + m.getMessage());
+        }
+
         assertMarkerGone();
         assertMethodExport();
     }
