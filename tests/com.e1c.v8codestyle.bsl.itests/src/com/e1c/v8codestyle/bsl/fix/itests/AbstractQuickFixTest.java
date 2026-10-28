@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -57,8 +58,9 @@ public abstract class AbstractQuickFixTest
      * @param marker the found marker in the project, cannot be {@code null}
      * @param fixDescription, cannot be {@code null}
      * @throws CoreException 
+     * @throws InterruptedException 
      */
-    protected void performFix(Marker marker, String fixDescription) throws CoreException
+    protected void performFix(Marker marker, String fixDescription) throws CoreException, InterruptedException
     {
         FixProcessHandle handle = fixManager.prepareFix(marker, getProject());
 
@@ -87,6 +89,8 @@ public abstract class AbstractQuickFixTest
         PlatformUI.getWorkbench().saveAllEditors(false);
         testingWorkspace.getWorkspaceRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
         testingWorkspace.waitForBuildCompletion();
+
+        TimeUnit.SECONDS.sleep(10);
     }
 
     /**
