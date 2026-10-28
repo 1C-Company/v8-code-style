@@ -81,6 +81,8 @@ public class OverridableModuleOnlyExportMethodsCheck
                 }
             }
         }
+
+        System.out.println("### CHECK END"); //$NON-NLS-1$
     }
 
     private boolean isOverridable(Module module)
