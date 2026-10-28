@@ -60,7 +60,6 @@ public class OverridableModuleOnlyExportMethodsFixTest
 
         assertMarkerGone();
         assertMethodExport();
-
     }
 
     @Override
