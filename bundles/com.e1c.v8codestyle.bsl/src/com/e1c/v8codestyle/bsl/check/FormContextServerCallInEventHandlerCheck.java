@@ -102,8 +102,8 @@ public class FormContextServerCallInEventHandlerCheck
         builder.title(Messages.FormContextServerCallInEventHandlerCheck_Title)
             .description(Messages.FormContextServerCallInEventHandlerCheck_Description)
             .complexity(CheckComplexity.NORMAL)
-            .severity(IssueSeverity.MAJOR)
-            .issueType(IssueType.ERROR)
+            .severity(IssueSeverity.CRITICAL)
+            .issueType(IssueType.PERFORMANCE)
             .extension(new StandardCheckExtension(636, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.FORM_MODULE))
             .parameter(EVENT_NAMES, String.class, DEFAULT_NAMES,
@@ -157,7 +157,7 @@ public class FormContextServerCallInEventHandlerCheck
 
     private boolean checkPragmas(Method callMethod)
     {
-        Environments envi = callMethod.getEnvironments();
+        Environments envi = callMethod.environments();
         if (envi.contains(Environment.SERVER))
         {
             Set<String> symbols = new HashSet<>();
@@ -165,8 +165,8 @@ public class FormContextServerCallInEventHandlerCheck
             {
                 symbols.add(pragma.getSymbol().toLowerCase());
             }
-            if (!symbols.contains("насерверебезконтекста") //$NON-NLS-1$
-                && !symbols.contains("atservernocontext")) //$NON-NLS-1$
+            if (!symbols.contains(com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_NO_CONTEXT_RUS.toLowerCase())
+                && !symbols.contains(com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_NO_CONTEXT_INTNL.toLowerCase()))
             {
                 return true;
             }

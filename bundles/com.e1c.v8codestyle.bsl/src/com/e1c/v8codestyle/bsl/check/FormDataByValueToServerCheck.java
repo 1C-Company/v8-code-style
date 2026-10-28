@@ -69,8 +69,8 @@ public class FormDataByValueToServerCheck
     static
     {
         Set<String> pragmas = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        pragmas.add("НаСервере"); //$NON-NLS-1$
-        pragmas.add("AtServer"); //$NON-NLS-1$
+        pragmas.add(com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_RUS);
+        pragmas.add(com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_INTNL);
         CONTEXT_SERVER_PRAGMAS = pragmas;
     }
 

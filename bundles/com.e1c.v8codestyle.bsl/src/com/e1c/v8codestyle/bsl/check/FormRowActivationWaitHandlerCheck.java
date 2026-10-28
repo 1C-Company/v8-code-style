@@ -13,7 +13,6 @@
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.PROCEDURE;
-import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
 import java.util.List;
 import java.util.Set;
@@ -34,6 +33,8 @@ import com._1c.g5.v8.dt.bsl.model.ModuleType;
 import com._1c.g5.v8.dt.bsl.model.Pragma;
 import com._1c.g5.v8.dt.bsl.model.Procedure;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
+import com._1c.g5.v8.dt.mcore.util.Environment;
+import com._1c.g5.v8.dt.mcore.util.Environments;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
@@ -72,16 +73,6 @@ public class FormRowActivationWaitHandlerCheck
         names.add("ПодключитьОбработчикОжидания"); //$NON-NLS-1$
         names.add("AttachIdleHandler"); //$NON-NLS-1$
         ATTACH_IDLE_HANDLERS = names;
-    }
-
-    private static final Set<String> CONTEXT_SERVER_PRAGMAS;
-
-    static
-    {
-        Set<String> names = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        names.add("НаСервере"); //$NON-NLS-1$
-        names.add("AtServer"); //$NON-NLS-1$
-        CONTEXT_SERVER_PRAGMAS = names;
     }
 
     private static final Set<String> COMMANDS_UPDATE_HANDLERS;
@@ -136,8 +127,6 @@ public class FormRowActivationWaitHandlerCheck
                 {
                     return;
                 }
-
-                boolean hasOneTimeIdleHandler = false;
                 for (Invocation invocation : invocations)
                 {
                     if (monitor.isCanceled())
@@ -146,27 +135,13 @@ public class FormRowActivationWaitHandlerCheck
                     }
                     if (isOneTimeIdleHandler(invocation) || isCommandsUpdateHandler(invocation))
                     {
-                        hasOneTimeIdleHandler = true;
-                        break;
-                    }
-                }
-                if (!hasOneTimeIdleHandler)
-                {
-                    resultAceptor.addIssue(Messages.FormRowActivationWaitHandlerCheck_Issue, procedure,
-                        NAMED_ELEMENT__NAME);
-                    return;
-                }
-
-                for (Invocation invocation : invocations)
-                {
-                    if (monitor.isCanceled())
-                    {
-                        return;
+                        continue;
                     }
                     Method calleed = getLocalMethod(invocation.getMethodAccess());
                     if (calleed != null && isContextServerMethod(calleed))
                     {
-                        resultAceptor.addIssue(Messages.FormRowActivationWaitHandlerCheck_ServerCallIssue, invocation);
+                        resultAceptor.addIssue(Messages.FormRowActivationWaitHandlerCheck_Issue, invocation);
+                        break;
                     }
                 }
             }
@@ -225,13 +200,20 @@ public class FormRowActivationWaitHandlerCheck
 
     private boolean isContextServerMethod(Method method)
     {
+        Environments envi = method.environments();
+        if (!envi.contains(Environment.SERVER) || envi.contains(Environment.CLIENT))
+        {
+            return false;
+        }
         for (Pragma pragma : method.getPragmas())
         {
-            if (CONTEXT_SERVER_PRAGMAS.contains(pragma.getSymbol()))
+            String symbol = pragma.getSymbol();
+            if (com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_NO_CONTEXT_RUS.equalsIgnoreCase(symbol)
+                || com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_NO_CONTEXT_INTNL.equalsIgnoreCase(symbol))
             {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 }

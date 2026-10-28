@@ -55,32 +55,6 @@ public class FormRowActivationWaitHandlerCheckTest
     }
 
     /**
-     * The row activation handler has no idle handler.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testNoWaitHandler() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "form-row-activation-wait-handler.bsl");
-
-        assertEquals(List.of(2), getMarkerLines());
-    }
-
-    /**
-     * The row activation handler attaches a not one-time idle handler.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testNotOneTimeWaitHandler() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "form-row-activation-wait-handler-not-one-time.bsl");
-
-        assertEquals(List.of(2), getMarkerLines());
-    }
-
-    /**
      * The row activation handler attaches a one-time idle handler.
      *
      * @throws Exception the exception
