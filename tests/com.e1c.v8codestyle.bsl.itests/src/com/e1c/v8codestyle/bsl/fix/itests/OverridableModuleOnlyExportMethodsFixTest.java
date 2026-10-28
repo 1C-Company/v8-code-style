@@ -55,9 +55,6 @@ public class OverridableModuleOnlyExportMethodsFixTest
 
         performFix(marker, Messages.OverridableModuleOnlyExportMethodsFixTest_Description);
 
-        System.out.println("### after fix, module text:");
-        System.out.println(getModule().allMethods());
-
         assertMarkerGone();
         assertMethodExport();
     }

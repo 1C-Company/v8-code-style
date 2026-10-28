@@ -49,24 +49,15 @@ public class OverridableModuleOnlyExportMethodsFix
     protected TextEdit fixIssue(XtextResource resource, IXtextBslModuleFixModel model) throws BadLocationException
     {
         EObject element = model.getElement();
-        System.out.println("### FIX element class = " + (element == null ? "null" : element.getClass().getName())); //$NON-NLS-1$ //$NON-NLS-2$
-        System.out.println("### FIX element = " + element); //$NON-NLS-1$
 
         if (element instanceof Method method)
         {
             INode node = BslUtil.getMethodSignatureLastNode(method);
-            System.out.println("### FIX signature node = " + node); //$NON-NLS-1$
             if (node != null)
             {
                 String exportKw = getExportKeyword(model);
-                System.out
-                    .println("### FIX insert at " + (node.getOffset() + node.getLength()) + " text=[" + exportKw + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 return new InsertEdit(node.getOffset() + node.getLength(), exportKw);
             }
-        }
-        else
-        {
-            System.out.println("### FIX: element is NOT Method → returning null"); //$NON-NLS-1$
         }
         return null;
     }
