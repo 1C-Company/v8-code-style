@@ -40,5 +40,6 @@
   </languages>
   <commonModules>CommonModule.CommonModule</commonModules>
   <commonModules>CommonModule.CommonModuleServerCall</commonModules>
+  <commonModules>CommonModule.UnknownExpressionCommonModule</commonModules>
   <commonForms>CommonForm.Form</commonForms>
 </mdclass:Configuration>
