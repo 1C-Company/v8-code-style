@@ -18,7 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -90,7 +89,7 @@ public abstract class AbstractQuickFixTest
         testingWorkspace.getWorkspaceRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
         testingWorkspace.waitForBuildCompletion();
 
-        TimeUnit.SECONDS.sleep(10);
+        waitForDD(getProject());
     }
 
     /**
