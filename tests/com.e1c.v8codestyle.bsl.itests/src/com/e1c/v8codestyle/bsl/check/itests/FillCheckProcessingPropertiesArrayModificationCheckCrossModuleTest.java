@@ -12,23 +12,15 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check.itests;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.bsl.model.Invocation;
-import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
-import com._1c.g5.v8.dt.metadata.mdclass.CommonModule;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
-import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.bsl.check.FillCheckProcessingPropertiesArrayModificationCheck;
 
 /**
@@ -38,16 +30,13 @@ import com.e1c.v8codestyle.bsl.check.FillCheckProcessingPropertiesArrayModificat
  *  @author Artem Samohvalov
  */
 public class FillCheckProcessingPropertiesArrayModificationCheckCrossModuleTest
-    extends SingleProjectReadOnlyCheckTestBase
+    extends AbstractSingleModuleTestBase
 {
-    private static final String FQN = "CommonModule.CommonModule";
-    private static final String CHECK_ID = "fill-check-processing-properties-array-modification";
     private static final String PROJECT_NAME = "FillCheckProcessingPropertiesArrayModificationCheck";
 
-    @Override
-    protected String getTestConfigurationName()
+    public FillCheckProcessingPropertiesArrayModificationCheckCrossModuleTest()
     {
-        return PROJECT_NAME;
+        super(FillCheckProcessingPropertiesArrayModificationCheck.class);
     }
 
     /**
@@ -58,27 +47,16 @@ public class FillCheckProcessingPropertiesArrayModificationCheckCrossModuleTest
     @Test
     public void testError() throws Exception
     {
-        IBmObject mdObject = getTopObjectByFqn(FQN, getProject());
-        assertTrue(mdObject instanceof CommonModule);
-        CommonModule commonModule = (CommonModule)mdObject;
-        Module module = commonModule.getModule();
-        assertNotNull(module);
+        List<Marker> markers = getModuleMarkers();
+        Set<Integer> errorLines = Set.of(3, 4);
 
-        Optional<Method> method =
-            module.allMethods().stream().filter(m -> m.getName().equalsIgnoreCase("FillCheckProcessing")).findAny();
-        assertFalse(method.isEmpty());
-
-        assertFalse(method.get().allStatements().isEmpty());
-        Invocation invocation = (Invocation)(((SimpleStatement)method.get().allStatements().get(0)).getLeft());
-        Invocation invocation2 = (Invocation)(((SimpleStatement)method.get().allStatements().get(1)).getLeft());
-
-        Marker marker = getFirstMarker(CHECK_ID, invocation, getProject());
-        Marker marker2 = getFirstMarker(CHECK_ID, invocation2, getProject());
-
-        int val = marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
-        int val2 = marker2.getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
-        assertTrue(val == 3 || val == 4);
-        assertTrue(val2 == 3 || val2 == 4);
+        assertTrue(markers.stream()
+            .allMatch(marker -> errorLines.contains(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))));
     }
 
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
+    }
 }
