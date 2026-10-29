@@ -17,6 +17,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
@@ -24,6 +25,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.ui.PlatformUI;
 
+import com._1c.g5.v8.bm.integration.IBmModel;
+import com._1c.g5.v8.derived.IDerivedDataManager;
+import com._1c.g5.v8.dt.core.operations.ProjectPipelineJob;
+import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.validation.marker.Marker;
 import com._1c.g5.wiring.ServiceAccess;
 import com.e1c.g5.v8.dt.check.ICheck;
@@ -56,8 +61,8 @@ public abstract class AbstractQuickFixTest
      *
      * @param marker the found marker in the project, cannot be {@code null}
      * @param fixDescription, cannot be {@code null}
-     * @throws CoreException 
-     * @throws InterruptedException 
+     * @throws CoreException
+     * @throws InterruptedException
      */
     protected void performFix(Marker marker, String fixDescription) throws CoreException, InterruptedException
     {
@@ -90,6 +95,26 @@ public abstract class AbstractQuickFixTest
         waitForDD(getProject());
     }
 
+    @Override
+    protected void waitForDD(IDtProject project)
+    {
+        IBmModel bmModel = bmModelManager.getModel(project);
+        bmModel.waitAllEnqueuedEventsSent();
+        IDerivedDataManager derivedDataManager = derivedDataManagerProvider.get(project);
+        try
+        {
+            // Simulate short wait to be sure that accumulated DD contexts are being processed and commited to the
+            // pipeline
+            derivedDataManager.waitAllComputations(1000);
+        }
+        catch (InterruptedException e)
+        {
+            // Do noting
+        }
+
+        startWaitDDOperation(project);
+    }
+
     /**
      * The method performs a validity check for the current project
      */
@@ -98,5 +123,12 @@ public abstract class AbstractQuickFixTest
         waitForDD(getProject());
         List<Marker> markers = getModuleMarkers();
         assertTrue(markers.isEmpty());
+    }
+
+    private void startWaitDDOperation(IDtProject project)
+    {
+        Object handle = orchestrator.beginExclusiveOperation("Wait for DD", Collections.singletonList(project), //$NON-NLS-1$
+            ProjectPipelineJob.AFTER_BUILD_DD);
+        orchestrator.endOperation(handle);
     }
 }
