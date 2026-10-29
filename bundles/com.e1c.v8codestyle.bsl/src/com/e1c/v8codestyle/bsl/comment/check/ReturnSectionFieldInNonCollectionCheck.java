@@ -59,18 +59,37 @@ public class ReturnSectionFieldInNonCollectionCheck
 
     private static final String TYPE_DELIMITER = ","; //$NON-NLS-1$
 
+    // @formatter:off
+    @SuppressWarnings("nls")
     private static final String DEFAULT_COLLECTION_TYPES = String.join(TYPE_DELIMITER, Set.of(
-        "структура", //$NON-NLS-1$
-        "structure", //$NON-NLS-1$
-        "соответствие", //$NON-NLS-1$
-        "map", //$NON-NLS-1$
-        "таблицазначений", //$NON-NLS-1$
-        "valuetable", //$NON-NLS-1$
-        "деревозначений", //$NON-NLS-1$
-        "valuetree", //$NON-NLS-1$
-        "данныеформыдерево", //$NON-NLS-1$
-        "formdatatree" //$NON-NLS-1$
+        "структура",
+        "structure",
+        "соответствие",
+        "map",
+        "таблицазначений",
+        "valuetable",
+        "деревозначений",
+        "valuetree",
+        "данныеформыдерево",
+        "formdatatree",
+        "ключизначение",
+        "keyandvalue",
+        "строкатаблицызначений",
+        "valuetablerow",
+        "выборкаизрезультатазапроса",
+        "queryresultselection",
+        "данныеформыструктура",
+        "formdatastructure",
+        "строкадеревазначений",
+        "valuetreerow",
+        "фиксированнаяструктура",
+        "fixedstructure",
+        "фиксированноесоответствие",
+        "fixedmap",
+        "фиксированнаяколлекция",
+        "fixedcollection"
     ));
+    // @formatter:on
 
     /**
      * Constructs an instance
