@@ -38,7 +38,7 @@ import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.mcore.Environmental;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.Environments;
-import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.md.resource.MdTypeUtil;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -199,6 +199,7 @@ public class NotifyCallAfterObjectChangeCheck
         }
 
         List<TypeItem> types = typesComputer.compute(staticAccess, envs);
-        return types.stream().anyMatch(type -> McoreUtil.getTypeCategory(type).contains("Object")); //$NON-NLS-1$
+
+        return types.stream().anyMatch(type -> MdTypeUtil.isMetadataObjectType(type));
     }
 }
