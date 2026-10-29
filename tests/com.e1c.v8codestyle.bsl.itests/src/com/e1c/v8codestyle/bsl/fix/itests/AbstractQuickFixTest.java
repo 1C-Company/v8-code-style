@@ -83,8 +83,6 @@ public abstract class AbstractQuickFixTest
         fixManager.executeFix(handle, new NullProgressMonitor());
         fixManager.finishFix(handle);
 
-        waitForDD(getProject());
-
         PlatformUI.getWorkbench().saveAllEditors(false);
         testingWorkspace.getWorkspaceRoot().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
         testingWorkspace.waitForBuildCompletion();
