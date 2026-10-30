@@ -52,14 +52,13 @@ public abstract class AbstractQuickFixTest
     }
 
     /**
-     * This method perform the fix and modifying the project code
+     * This method perform the fix and modifying the project code.
      *
      * @param marker the found marker in the project, cannot be {@code null}
-     * @param fixDescription, cannot be {@code null}
-     * @throws CoreException 
-     * @throws InterruptedException 
+     * @param fixDescription the fix description
+     * @throws CoreException the core exception, throw by refresh local
      */
-    protected void performFix(Marker marker, String fixDescription) throws CoreException, InterruptedException
+    protected void performFix(Marker marker, String fixDescription) throws CoreException
     {
         FixProcessHandle handle = fixManager.prepareFix(marker, getProject());
 
