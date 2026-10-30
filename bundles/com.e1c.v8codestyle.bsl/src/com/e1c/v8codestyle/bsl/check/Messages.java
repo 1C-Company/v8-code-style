@@ -488,6 +488,8 @@ final class Messages
 
     public static String FormRowActivationWaitHandlerCheck_Issue;
 
+    public static String FormRowActivationWaitHandlerCheck_ItemChangeIssue;
+
     public static String FormRowActivationWaitHandlerCheck_ServerCallIssue;
 
     public static String FormRowActivationWaitHandlerCheck_Title;

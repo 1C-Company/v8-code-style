@@ -14,17 +14,18 @@ package com.e1c.v8codestyle.bsl.fix.itests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Collection;
+import java.util.function.Consumer;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -36,12 +37,7 @@ import com._1c.g5.v8.dt.bsl.model.Pragma;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com._1c.g5.wiring.ServiceAccess;
-import com.e1c.g5.v8.dt.check.qfix.FixProcessHandle;
-import com.e1c.g5.v8.dt.check.qfix.FixVariantDescriptor;
-import com.e1c.g5.v8.dt.check.qfix.IFixManager;
 import com.e1c.v8codestyle.bsl.check.FormContextServerCallInEventHandlerCheck;
-import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
 
 /**
  * Tests for {@code FormContextServerCallInEventHandlerFix} fix.
@@ -49,7 +45,7 @@ import com.e1c.v8codestyle.bsl.check.itests.AbstractSingleModuleTestBase;
  * @author Ivan Sergeev
  */
 public class FormContextServerCallInEventHandlerFixTest
-    extends AbstractSingleModuleTestBase
+    extends AbstractQuickFixTest
 {
     private static final String CHECK_ID = "form-context-server-call-in-event-handler"; //$NON-NLS-1$
 
@@ -60,6 +56,8 @@ public class FormContextServerCallInEventHandlerFixTest
     private static final String FORM_MODULE_FILE_NAME = "/src/CommonForms/Form/Module.bsl"; //$NON-NLS-1$
 
     private static final String SERVER_METHOD = "ПриИзмененииОбразцаНаСервере"; //$NON-NLS-1$
+
+    private static final String FIX_DESCRIPTION = "Changing the directive to an appropriate one"; //$NON-NLS-1$
 
     /**
      * Instantiates a new form context server call in event handler fix test.
@@ -114,7 +112,7 @@ public class FormContextServerCallInEventHandlerFixTest
             assertTrue(hasServerPragma(methodBefore));
             assertFalse(hasServerNoContextPragma(methodBefore));
 
-            applyFix(marker, dtProject);
+            performFix(marker, FIX_DESCRIPTION);
             saveDirtyEditors();
             waitForDD(dtProject);
 
@@ -126,7 +124,7 @@ public class FormContextServerCallInEventHandlerFixTest
             assertTrue(hasServerNoContextPragma(methodAfter));
             assertFalse(hasServerPragma(methodAfter));
 
-            assertNull(findFirstMarker(dtProject));
+            assertMarkerGone();
         }
         finally
         {
@@ -172,64 +170,26 @@ public class FormContextServerCallInEventHandlerFixTest
                 || Symbols.AT_SERVER_INTNL.equalsIgnoreCase(symbol));
     }
 
-    private void applyFix(Marker marker, IDtProject dtProject)
+    private void saveDirtyEditors()
     {
-        IFixManager fixManager = ServiceAccess.get(IFixManager.class);
-        FixProcessHandle handle = fixManager.prepareFix(marker, dtProject);
-
-        Collection<FixVariantDescriptor> variants = fixManager.getApplicableFixVariants(handle);
-        assertFalse(variants.isEmpty());
-        FixVariantDescriptor variant = variants.iterator().next();
-
-        fixManager.selectFixVariant(variant, handle);
-        fixManager.executeFix(handle, new NullProgressMonitor());
-        fixManager.finishFix(handle);
+        runOnAllPages(page -> page.saveAllEditors(false));
     }
 
-    private void saveDirtyEditors() throws ReflectiveOperationException
+    private void closeEditors()
     {
-        runOnAllPages("saveAllEditors"); //$NON-NLS-1$
+        runOnAllPages(page -> page.closeAllEditors(false));
     }
 
-    private void closeEditors() throws ReflectiveOperationException
+    private void runOnAllPages(Consumer<IWorkbenchPage> action)
     {
-        runOnAllPages("closeAllEditors"); //$NON-NLS-1$
-    }
-
-    private void runOnAllPages(String pageMethod) throws ReflectiveOperationException
-    {
-        Class<?> platformUi = Platform.getBundle("org.eclipse.ui").loadClass("org.eclipse.ui.PlatformUI"); //$NON-NLS-1$ //$NON-NLS-2$
-        Object workbench = platformUi.getMethod("getWorkbench").invoke(null); //$NON-NLS-1$
-        Object display = call(workbench, "getDisplay"); //$NON-NLS-1$
-        Runnable runnable = () -> {
-            try
+        PlatformUI.getWorkbench().getDisplay().syncExec(() -> {
+            for (IWorkbenchWindow window : PlatformUI.getWorkbench().getWorkbenchWindows())
             {
-                for (Object window : (Object[])call(workbench, "getWorkbenchWindows")) //$NON-NLS-1$
+                for (IWorkbenchPage page : window.getPages())
                 {
-                    for (Object page : (Object[])call(window, "getPages")) //$NON-NLS-1$
-                    {
-                        call(page, pageMethod, Boolean.FALSE);
-                    }
+                    action.accept(page);
                 }
             }
-            catch (ReflectiveOperationException e)
-            {
-                throw new IllegalStateException(e);
-            }
-        };
-        call(display, "syncExec", runnable); //$NON-NLS-1$
-    }
-
-    private static Object call(Object target, String name, Object... args) throws ReflectiveOperationException
-    {
-        for (java.lang.reflect.Method m : target.getClass().getMethods())
-        {
-            if (m.getName().equals(name) && m.getParameterCount() == args.length)
-            {
-                m.setAccessible(true);
-                return m.invoke(target, args);
-            }
-        }
-        throw new NoSuchMethodException(target.getClass().getName() + "." + name); //$NON-NLS-1$
+        });
     }
 }

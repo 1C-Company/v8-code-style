@@ -1,5 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form:Form xmlns:form="http://g5.1c.ru/v8/dt/form">
+<form:Form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:form="http://g5.1c.ru/v8/dt/form">
+  <items xsi:type="form:FormField">
+    <name>Spreadsheet</name>
+    <id>1</id>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <dataPath xsi:type="form:DataPath">
+      <segments>Spreadsheet</segments>
+    </dataPath>
+    <type>SpreadsheetDocumentField</type>
+    <handlers>
+      <event>OnActivateArea</event>
+      <name>SpreadsheetOnActivateArea</name>
+    </handlers>
+    <contextMenu>
+      <name>SpreadsheetContextMenu</name>
+      <id>3</id>
+      <autoFill>true</autoFill>
+    </contextMenu>
+    <extendedTooltip>
+      <name>SpreadsheetExtendedTooltip</name>
+      <id>4</id>
+      <visible>true</visible>
+      <enabled>true</enabled>
+      <userVisible>
+        <common>true</common>
+      </userVisible>
+      <type>Label</type>
+      <autoMaxWidth>true</autoMaxWidth>
+      <autoMaxHeight>true</autoMaxHeight>
+      <extInfo xsi:type="form:LabelDecorationExtInfo">
+        <horizontalAlign>Left</horizontalAlign>
+      </extInfo>
+    </extendedTooltip>
+    <extInfo xsi:type="form:SpreadsheetDocumentFieldExtInfo">
+      <horizontalScrollBar>true</horizontalScrollBar>
+      <verticalScrollBar>true</verticalScrollBar>
+      <showGroups>true</showGroups>
+      <showHeaders>true</showHeaders>
+      <showGrid>true</showGrid>
+      <horizontalStretch>true</horizontalStretch>
+      <verticalStretch>true</verticalStretch>
+    </extInfo>
+  </items>
+  <items xsi:type="form:Table">
+    <name>Table</name>
+    <id>6</id>
+    <visible>true</visible>
+    <enabled>true</enabled>
+    <userVisible>
+      <common>true</common>
+    </userVisible>
+    <dataPath xsi:type="form:DataPath">
+      <segments>Table</segments>
+    </dataPath>
+    <handlers>
+      <event>OnActivateRow</event>
+      <name>OnActivateRow</name>
+    </handlers>
+    <changeRowSet>true</changeRowSet>
+    <changeRowOrder>true</changeRowOrder>
+    <autoMaxWidth>true</autoMaxWidth>
+    <autoMaxHeight>true</autoMaxHeight>
+    <autoMaxRowsCount>true</autoMaxRowsCount>
+    <selectionMode>MultiRow</selectionMode>
+    <header>true</header>
+    <headerHeight>1</headerHeight>
+    <footerHeight>1</footerHeight>
+    <horizontalScrollBar>AutoUse</horizontalScrollBar>
+    <verticalScrollBar>AutoUse</verticalScrollBar>
+    <horizontalLines>true</horizontalLines>
+    <verticalLines>true</verticalLines>
+    <searchOnInput>Auto</searchOnInput>
+    <initialListView>Auto</initialListView>
+    <horizontalStretch>true</horizontalStretch>
+    <verticalStretch>true</verticalStretch>
+    <fileDragMode>AsFileRef</fileDragMode>
+  </items>
   <autoCommandBar>
     <name>FormCommandBar</name>
     <id>-1</id>

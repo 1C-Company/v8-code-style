@@ -16,7 +16,6 @@ import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.INVOCATION;
 
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
@@ -34,6 +33,7 @@ import com._1c.g5.v8.dt.core.platform.IBmModelManager;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.mcore.TypeItem;
+import com._1c.g5.v8.dt.mcore.util.Environment;
 import com._1c.g5.v8.dt.mcore.util.Environments;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
 import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
@@ -64,15 +64,9 @@ public class FormDataByValueToServerCheck
         IEObjectTypeNames.FORM_DATA_STRUCTURE_AND_COLLECTION, IEObjectTypeNames.FORM_DATA_TREE,
         IEObjectTypeNames.SPREADSHEET_DOCUMENT);
 
-    private static final Set<String> CONTEXT_SERVER_PRAGMAS;
+    private static final Set<String> SERVER_PRAGMAS =
+        Set.of(com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_RUS, com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_INTNL);
 
-    static
-    {
-        Set<String> pragmas = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-        pragmas.add(com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_RUS);
-        pragmas.add(com._1c.g5.v8.dt.bsl.common.Symbols.AT_SERVER_INTNL);
-        CONTEXT_SERVER_PRAGMAS = pragmas;
-    }
 
     /**
      * Instantiates a new form data by value to server check.
@@ -123,7 +117,7 @@ public class FormDataByValueToServerCheck
         }
 
         Environments envs = getActualEnvironments(invocation);
-        if (!envs.containsAny(Environments.MNG_CLIENTS))
+        if (!envs.contains(Environment.THIN_CLIENT))
         {
             return;
         }
@@ -155,7 +149,7 @@ public class FormDataByValueToServerCheck
     {
         for (Pragma pragma : method.getPragmas())
         {
-            if (CONTEXT_SERVER_PRAGMAS.contains(pragma.getSymbol()))
+            if (SERVER_PRAGMAS.contains(pragma.getSymbol()))
             {
                 return true;
             }

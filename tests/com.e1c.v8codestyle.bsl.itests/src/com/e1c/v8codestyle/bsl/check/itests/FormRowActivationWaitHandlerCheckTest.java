@@ -93,6 +93,58 @@ public class FormRowActivationWaitHandlerCheckTest
         assertEquals(List.of(4), getMarkerLines());
     }
 
+    /**
+     * The row activation handler attaches a repeated idle handler.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNotOneTimeWaitHandler() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "form-row-activation-wait-handler-non-one-time.bsl");
+
+        assertEquals(List.of(3), getMarkerLines());
+    }
+
+    /**
+     * The row activation handler changes form item properties directly.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testFormItemChange() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "form-row-activation-wait-handler-item-change.bsl");
+
+        assertEquals(List.of(4), getMarkerLines());
+    }
+
+    /**
+     * The row activation handler changes form item properties through the form self reference.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testFormItemChangeViaThisObject() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "form-row-activation-wait-handler-item-change-this-object.bsl");
+
+        assertEquals(List.of(4), getMarkerLines());
+    }
+
+    /**
+     * The row activation handler changes form item properties accessed by the item name index.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testFormItemChangeViaIndexAccess() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "form-row-activation-wait-handler-item-change-index-access.bsl");
+
+        assertEquals(List.of(4), getMarkerLines());
+    }
+
     private List<Integer> getMarkerLines()
     {
         return getModuleMarkers().stream()
