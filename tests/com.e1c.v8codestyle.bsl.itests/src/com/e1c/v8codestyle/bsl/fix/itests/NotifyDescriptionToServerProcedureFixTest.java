@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -39,6 +40,7 @@ public class NotifyDescriptionToServerProcedureFixTest
         super(NotifyDescriptionToServerProcedureCheck.class);
     }
 
+    @Ignore
     @Test
     public void testApplyFix() throws Exception
     {

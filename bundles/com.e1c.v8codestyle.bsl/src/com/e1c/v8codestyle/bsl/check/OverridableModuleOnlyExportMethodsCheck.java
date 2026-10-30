@@ -77,12 +77,9 @@ public class OverridableModuleOnlyExportMethodsCheck
                             : Messages.OverridableModuleOnlyExportMethodsCheck_Procedure_Issue,
                         method.getName());
                     resultAcceptor.addIssue(message, method, NAMED_ELEMENT__NAME);
-                    System.out.println("### CHECK issue method=" + method.getName() + " isExport=" + method.isExport()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
-
-        System.out.println("### CHECK END"); //$NON-NLS-1$
     }
 
     private boolean isOverridable(Module module)
