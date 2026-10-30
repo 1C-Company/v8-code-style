@@ -563,6 +563,11 @@ final class Messages
     public static String VariableNameInvalidCheck_variable_name_is_invalid;
     public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
     public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
+    
+    public static String OverridableModuleOnlyExportMethodsCheck_Title;
+    public static String OverridableModuleOnlyExportMethodsCheck_Description;
+    public static String OverridableModuleOnlyExportMethodsCheck_Procedure_Issue;
+    public static String OverridableModuleOnlyExportMethodsCheck_Function_Issue;
 
     public static String FillCheckProcessingPropertiesArrayModificationCheck_Title;
     public static String FillCheckProcessingPropertiesArrayModificationCheck_Description;
@@ -570,16 +575,19 @@ final class Messages
     public static String FillCheckProcessingPropertiesArrayModificationCheck_AddIssue;
     public static String FillCheckProcessingPropertiesArrayModificationCheck_IndexSetIssue;
     public static String FillCheckProcessingPropertiesArrayModificationCheck_CalledMethodChangeArrayIssue;
-    
-    public static String OverridableModuleOnlyExportMethodsCheck_Title;
-    public static String OverridableModuleOnlyExportMethodsCheck_Description;
-    public static String OverridableModuleOnlyExportMethodsCheck_Procedure_Issue;
-    public static String OverridableModuleOnlyExportMethodsCheck_Function_Issue;
 
     public static String BackgroundJobExecuteCallCheck_Title;
     public static String BackgroundJobExecuteCallCheck_Description;
     public static String BackgroundJobExecuteCallCheck_Issue;
 
+    public static String NotifyCallInAfterWriteEventCheck_Title;
+    public static String NotifyCallInAfterWriteEventCheck_Description;
+    public static String NotifyCallInAfterWriteEventCheck_Issue;
+
+    public static String NotifyCallAfterObjectChange_Title;
+    public static String NotifyCallAfterObjectChange_Description;
+    public static String NotifyCallAfterObjectChange_Issue;
+        
     static
     {
         // initialize resource bundle
