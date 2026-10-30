@@ -12,6 +12,7 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.ui.qfix;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.text.edits.InsertEdit;
 import org.eclipse.text.edits.TextEdit;
@@ -47,16 +48,17 @@ public class OverridableModuleOnlyExportMethodsFix
     @Override
     protected TextEdit fixIssue(XtextResource resource, IXtextBslModuleFixModel model) throws BadLocationException
     {
-        if (model.getElement() instanceof Method method)
+        EObject element = model.getElement();
+
+        if (element instanceof Method method)
         {
             INode node = BslUtil.getMethodSignatureLastNode(method);
-
             if (node != null)
             {
-                return new InsertEdit(node.getOffset() + node.getLength(), getExportKeyword(model));
+                String exportKw = getExportKeyword(model);
+                return new InsertEdit(node.getOffset() + node.getLength(), exportKw);
             }
         }
-
         return null;
     }
 
