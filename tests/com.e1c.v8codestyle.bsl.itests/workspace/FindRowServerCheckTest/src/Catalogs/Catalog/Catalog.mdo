@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:Catalog xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="20add677-7d88-413e-a19d-5aa5c397ef36">
+  <producedTypes>
+    <objectType typeId="6c11e5e7-68d4-4a9c-9e8b-d4baf7ebc286" valueTypeId="10186fc4-e42f-4e90-9eb7-653bf07b8611"/>
+    <refType typeId="b94e88b7-199e-481e-bdbf-901ac01ba9f0" valueTypeId="71039014-f534-46a9-9af4-22d0baa4ead3"/>
+    <selectionType typeId="867c7349-4db3-4304-a421-22eb449060d3" valueTypeId="3194e7b8-2db5-47b1-b372-ca9bd36e22db"/>
+    <listType typeId="adbf95ac-9356-4f96-8ef7-c1331da08012" valueTypeId="476cf8fc-767b-4a92-acdd-a2a0f136db06"/>
+    <managerType typeId="ac149cfd-3bdb-470f-b066-d4a80c9b1a5b" valueTypeId="4da82fc7-5973-45be-aa32-7d50bdf4082c"/>
+  </producedTypes>
+  <name>Catalog</name>
+  <synonym>
+    <key>en</key>
+    <value>Catalog</value>
+  </synonym>
+  <useStandardCommands>true</useStandardCommands>
+  <inputByString>Catalog.Catalog.StandardAttribute.Code</inputByString>
+  <inputByString>Catalog.Catalog.StandardAttribute.Description</inputByString>
+  <fullTextSearchOnInputByString>DontUse</fullTextSearchOnInputByString>
+  <createOnInput>Use</createOnInput>
+  <dataLockControlMode>Managed</dataLockControlMode>
+  <fullTextSearch>Use</fullTextSearch>
+  <levelCount>2</levelCount>
+  <foldersOnTop>true</foldersOnTop>
+  <codeLength>9</codeLength>
+  <descriptionLength>25</descriptionLength>
+  <codeType>String</codeType>
+  <codeAllowedLength>Variable</codeAllowedLength>
+  <checkUnique>true</checkUnique>
+  <autonumbering>true</autonumbering>
+  <defaultPresentation>AsDescription</defaultPresentation>
+  <editType>InDialog</editType>
+  <choiceMode>BothWays</choiceMode>
+  <defaultObjectForm>Catalog.Catalog.Form.ItemForm</defaultObjectForm>
+  <tabularSections uuid="cce43ccb-ac48-47d4-9acb-df5789e89d74">
+    <producedTypes>
+      <objectType typeId="ac088c8f-aaef-4f86-b15a-b61e0ab2aa14" valueTypeId="ccb06c7b-3fad-4b10-ae00-f810a7379230"/>
+      <rowType typeId="30d3c8d7-aca5-4749-9ee8-23dbfbe30fc5" valueTypeId="3ca52218-62f4-440f-ba50-1ff3a07015c2"/>
+    </producedTypes>
+    <name>Товары</name>
+    <synonym>
+      <key>en</key>
+      <value>Товары</value>
+    </synonym>
+  </tabularSections>
+  <forms uuid="2d65cf62-31d3-47fc-9c19-f171a7b2ea72">
+    <name>ItemForm</name>
+    <synonym>
+      <key>en</key>
+      <value>Item form</value>
+    </synonym>
+    <usePurposes>PersonalComputer</usePurposes>
+    <usePurposes>MobileDevice</usePurposes>
+  </forms>
+</mdclass:Catalog>

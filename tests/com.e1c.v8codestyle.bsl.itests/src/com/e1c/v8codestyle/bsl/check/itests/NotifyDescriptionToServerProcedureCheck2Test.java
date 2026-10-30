@@ -13,6 +13,7 @@
 package com.e1c.v8codestyle.bsl.check.itests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,4 +58,18 @@ public class NotifyDescriptionToServerProcedureCheck2Test
         assertEquals(List.of(6, 8, 18, 20), errorLines);
     }
 
+    /**
+     * No error
+     * Test notify description to common module server procedure.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testCommonModuleModuleIsVariable() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "notify-description-to-server-procedure-model-is-variable.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
 }
