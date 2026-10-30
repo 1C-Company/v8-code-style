@@ -576,6 +576,10 @@ final class Messages
     public static String FillCheckProcessingPropertiesArrayModificationCheck_IndexSetIssue;
     public static String FillCheckProcessingPropertiesArrayModificationCheck_CalledMethodChangeArrayIssue;
 
+    public static String BackgroundJobExecuteCallCheck_Title;
+    public static String BackgroundJobExecuteCallCheck_Description;
+    public static String BackgroundJobExecuteCallCheck_Issue;
+
     public static String NotifyCallInAfterWriteEventCheck_Title;
     public static String NotifyCallInAfterWriteEventCheck_Description;
     public static String NotifyCallInAfterWriteEventCheck_Issue;
