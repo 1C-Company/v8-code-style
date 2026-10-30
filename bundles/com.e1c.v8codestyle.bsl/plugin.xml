@@ -50,6 +50,10 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.EmptyQueryResultCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.QueryInLoopCheck">
       </check>
       <check
@@ -141,6 +145,10 @@
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.TypedValueAddingToUntypedCollectionCheck">
       </check>
       <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.DefinitionTypeVariableCheck">
+      </check>
+      <check
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.StructureKeyModificationCheck">
       </check>
@@ -211,10 +219,14 @@
       <check
             category="com.e1c.v8codestyle.bsl.comment"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.LinkPartSpaceCheck">
-      </check>
+      </check>      
       <check
             category="com.e1c.v8codestyle.bsl.comment"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.TypeDefinitionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FindRowServerCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -450,6 +462,10 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.IndentsInCommentSectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.OverridableModuleOnlyExportMethodsCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"

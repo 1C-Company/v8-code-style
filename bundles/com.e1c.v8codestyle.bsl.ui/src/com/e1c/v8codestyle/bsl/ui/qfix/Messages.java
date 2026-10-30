@@ -79,9 +79,15 @@ final class Messages
     public static String LinkPartSpaceFix_Description;
     public static String LinkPartSpaceFix_Details;
 
+    public static String NotifyDescriptionToServerProcedureFix_Description;
+    public static String NotifyDescriptionToServerProcedureFix_Details;
+    
+    public static String OverridableModuleOnlyExportMethodsFix_Description;
+    public static String OverridableModuleOnlyExportMethodsFix_Details;
+
     public static String MixedTabsAndSpacesInCommentCheckFix_Description;
     public static String MixedTabsAndSpacesInCommentCheckFix_Details;
-
+   
     static
     {
         // initialize resource bundle
