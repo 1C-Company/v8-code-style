@@ -24,9 +24,8 @@ public final class DocumentationCommentIndentsHelper
 {
     public static final String COMMENT_PREFIX = "//"; //$NON-NLS-1$
     public static final int COMMENT_PREFIX_LENGTH = COMMENT_PREFIX.length();
-
-    private static final int TABULATION_SPACE_COUNT = 4;
-    private static final String TABULATION_SPACE = " ".repeat(TABULATION_SPACE_COUNT); //$NON-NLS-1$
+    public static final int TABULATION_SPACE_COUNT = 4;
+    public static final String TABULATION_SPACE = " ".repeat(TABULATION_SPACE_COUNT); //$NON-NLS-1$
 
     /**
      * Checks if is mixed tabs and spaces.
@@ -82,26 +81,6 @@ public final class DocumentationCommentIndentsHelper
         }
 
         return i - COMMENT_PREFIX_LENGTH;
-    }
-
-    /**
-     * Gets the normalized indent.
-     *
-     * @param line the line, cannot be {@code null}
-     * @return the normalized indent, never be {@code null}
-     */
-    public static String getNormalizedIndent(String line)
-    {
-        int length = getIndentLength(line);
-        StringBuilder indent = new StringBuilder();
-
-        for (int i = COMMENT_PREFIX_LENGTH; i < COMMENT_PREFIX_LENGTH + length; ++i)
-        {
-            // it's recommended to use only spaces
-            indent.append(line.charAt(i) == '\t' ? TABULATION_SPACE : ' ');
-        }
-
-        return indent.toString();
     }
 
     /**

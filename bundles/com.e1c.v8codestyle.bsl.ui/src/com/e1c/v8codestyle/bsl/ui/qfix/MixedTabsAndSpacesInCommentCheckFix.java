@@ -16,12 +16,9 @@ import java.util.List;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IRegion;
-import org.eclipse.text.edits.MultiTextEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 import org.eclipse.xtext.nodemodel.INode;
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils;
 import org.eclipse.xtext.resource.XtextResource;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslMultiLineCommentDocumentationProvider;
@@ -63,42 +60,17 @@ public class MixedTabsAndSpacesInCommentCheckFix
         if (!(model.getElement() instanceof Method method))
             return null;
 
-        IDocument document = model.getDocument();
-        List<String> lines = commentProvider.getCommentLines(method);
-
-        INode methodNode = NodeModelUtils.findActualNodeFor(method);
-        if (methodNode == null)
+        List<INode> nodes = commentProvider.getDocumentationNodes(method);
+        if (nodes.isEmpty())
             return null;
 
-        int commentStartLine = document.getLineOfOffset(methodNode.getOffset());
-        while (commentStartLine > 0 && isCommentLine(document, commentStartLine - 1))
-        {
-            --commentStartLine;
-        }
+        IDocument document = model.getDocument();
+        int startOffset = nodes.get(0).getOffset();
+        int endOffset = nodes.get(nodes.size() - 1).getEndOffset();
 
-        List<Integer> mixedLines = DocumentationCommentIndentsHelper.findMixedLines(lines, false);
-        MultiTextEdit textEditResult = new MultiTextEdit();
+        String comment = document.get(startOffset, endOffset - startOffset);
+        String fixedComment = comment.replace("\t", DocumentationCommentIndentsHelper.TABULATION_SPACE); //$NON-NLS-1$
 
-        for (int lineNumber : mixedLines)
-        {
-            IRegion lineInfo = document.getLineInformation(commentStartLine + lineNumber);
-            int offset = lineInfo.getOffset();
-
-            String newIndent = DocumentationCommentIndentsHelper.getNormalizedIndent(lines.get(lineNumber));
-            int oldIndentLength = DocumentationCommentIndentsHelper.getIndentLength(lines.get(lineNumber));
-
-            ReplaceEdit replaceEdit = new ReplaceEdit(
-                offset + DocumentationCommentIndentsHelper.COMMENT_PREFIX_LENGTH, oldIndentLength, newIndent);
-            textEditResult.addChild(replaceEdit);
-        }
-
-        return textEditResult.hasChildren() ? textEditResult : null;
-    }
-
-    private boolean isCommentLine(IDocument document, int lineNumber) throws BadLocationException
-    {
-        IRegion lineInfo = document.getLineInformation(lineNumber);
-        String line = document.get(lineInfo.getOffset(), lineInfo.getLength());
-        return line.startsWith(DocumentationCommentIndentsHelper.COMMENT_PREFIX);
+        return new ReplaceEdit(startOffset, endOffset - startOffset, fixedComment);
     }
 }
