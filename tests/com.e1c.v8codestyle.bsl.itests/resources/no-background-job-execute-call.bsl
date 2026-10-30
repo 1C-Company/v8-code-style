@@ -9,6 +9,6 @@ Procedure Some()
 	SomeService.Execute();
 
 	// Recommended SSL alternative - must not trigger
-	LongActions.ExecuteInBackground("CommonModule.RunLongCalculation", Parameters, ExecutionParameters);
+	TimeConsumingOperations.ExecuteInBackground("CommonModule.RunLongCalculation", Parameters, ExecutionParameters);
 
 EndProcedure
