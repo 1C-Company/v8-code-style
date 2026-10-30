@@ -476,6 +476,30 @@ final class Messages
 
     public static String FormModulePragmaCheck_title;
 
+    public static String FormContextServerCallInEventHandlerCheck_Description;
+
+    public static String FormContextServerCallInEventHandlerCheck_Issue;
+
+    public static String FormContextServerCallInEventHandlerCheck_Title;
+
+    public static String FormContextServerCallInEventHandlerCheck_Parameter;
+
+    public static String FormRowActivationWaitHandlerCheck_Description;
+
+    public static String FormRowActivationWaitHandlerCheck_Issue;
+
+    public static String FormRowActivationWaitHandlerCheck_ItemChangeIssue;
+
+    public static String FormRowActivationWaitHandlerCheck_ServerCallIssue;
+
+    public static String FormRowActivationWaitHandlerCheck_Title;
+
+    public static String FormDataByValueToServerCheck_Description;
+
+    public static String FormDataByValueToServerCheck_Issue;
+
+    public static String FormDataByValueToServerCheck_Title;
+
     public static String NotifyDescriptionToServerProcedureCheck_description;
 
     public static String NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_should_be_export;
