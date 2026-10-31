@@ -79,6 +79,20 @@ final class Messages
     public static String TypeDefinitionCheck_description;
     public static String TypeDefinitionCheck_title;
     public static String TypeDefinitionCheck_Unkown_type_M_specified;
+
+    public static String DocCommentConstructorReferenceCheck_Title;
+    public static String DocCommentConstructorReferenceCheck_Description;
+    public static String DocCommentConstructorReferenceCheck_Issue;
+
+    public static String IndentsInCommentSectionCheck_Title;
+    public static String IndentsInCommentSectionCheck_Description;
+    public static String IndentsInCommentSectionCheck_IssueManyTabs;
+    public static String IndentsInCommentSectionCheck_IssueFewTabs;
+
+    public static String MixedTabsAndSpacesInComment_Title;
+    public static String MixedTabsAndSpacesInComment_Description;
+    public static String MixedTabsAndSpacesInComment_Issue;
+
     static
     {
         // initialize resource bundle

@@ -407,6 +407,9 @@
     <fix
           class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.OverridableModuleOnlyExportMethodsFix">
     </fix>
+    <fix
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.MixedTabsAndSpacesInCommentCheckFix">
+    </fix>
  </extension>
  <extension
        point="com._1c.g5.v8.dt.bsl.ui.bslModuleTextInsertInfoService">

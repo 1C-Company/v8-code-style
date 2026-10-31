@@ -85,6 +85,9 @@ final class Messages
     public static String OverridableModuleOnlyExportMethodsFix_Description;
     public static String OverridableModuleOnlyExportMethodsFix_Details;
 
+    public static String MixedTabsAndSpacesInCommentCheckFix_Description;
+    public static String MixedTabsAndSpacesInCommentCheckFix_Details;
+   
     static
     {
         // initialize resource bundle

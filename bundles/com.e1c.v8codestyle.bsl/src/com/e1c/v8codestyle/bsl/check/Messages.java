@@ -583,7 +583,11 @@ final class Messages
     public static String NotifyCallAfterObjectChange_Title;
     public static String NotifyCallAfterObjectChange_Description;
     public static String NotifyCallAfterObjectChange_Issue;
-        
+
+    public static String ProgramInterfaceConstructFunctionExistence_Title;
+    public static String ProgramInterfaceConstructFunctionExistence_Description;
+    public static String ProgramInterfaceConstructFunctionExistence_Issue;
+
     static
     {
         // initialize resource bundle
