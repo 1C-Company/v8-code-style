@@ -32,7 +32,7 @@ import com._1c.g5.v8.dt.ql.model.MultiPartCommonExpression;
 import com._1c.g5.v8.dt.ql.model.QuerySchemaExpression;
 import com._1c.g5.v8.dt.ql.model.QuerySchemaOperator;
 import com._1c.g5.v8.dt.ql.model.QuerySchemaTable;
-import com._1c.g5.v8.dt.ql.typesystem.IDynamicDbViewFieldComputer;
+import com._1c.g5.v8.dt.ql.typesystem.services.IDynamicDbViewFieldComputer;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
