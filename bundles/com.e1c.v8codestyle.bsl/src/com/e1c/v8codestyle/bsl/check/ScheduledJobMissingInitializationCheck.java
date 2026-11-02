@@ -16,9 +16,7 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,13 +28,14 @@ import org.eclipse.xtext.scoping.IScope;
 
 import com._1c.g5.v8.bm.core.IBmTransaction;
 import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
+import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.Expression;
+import com._1c.g5.v8.dt.bsl.model.IndexAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
 import com._1c.g5.v8.dt.bsl.model.ModuleType;
-import com._1c.g5.v8.dt.bsl.model.Procedure;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.Statement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
@@ -125,15 +124,15 @@ public class ScheduledJobMissingInitializationCheck
             return;
         }
 
-        for (Method method : module.getMethods())
+        for (Method method : module.allMethods())
         {
             if (progressMonitor.isCanceled())
             {
                 return;
             }
 
-            if (method.isExport() && method instanceof Procedure && method.getName() != null
-                && scheduledJobMethodNames.contains(method.getName().toLowerCase()) && !hasInitCall(method))
+            if (method.getName() != null && scheduledJobMethodNames.contains(method.getName().toLowerCase())
+                && !hasInitCall(method))
             {
                 resultAcceptor.addIssue(Messages.ScheduledJobMissingInitializationCheck_Issue, method,
                     NAMED_ELEMENT__NAME);
@@ -178,7 +177,7 @@ public class ScheduledJobMissingInitializationCheck
 
     private boolean hasInitCall(Method method)
     {
-        List<String> declared = new ArrayList<>();
+        Set<String> declared = new HashSet<>();
 
         for (Statement statement : method.allStatements())
         {
@@ -224,29 +223,56 @@ public class ScheduledJobMissingInitializationCheck
         return Optional.empty();
     }
 
-    private boolean isDeclaredUsedInParams(List<String> declared, Invocation invocation)
+    private boolean isDeclaredUsedInParams(Set<String> declared, Invocation invocation)
     {
-        for (String variableName : declared)
+        if (declared.isEmpty())
         {
-            if (!isVariablePassed(variableName, invocation))
-            {
-                return false;
-            }
+            return true;
         }
 
-        return true;
-    }
-
-    private boolean isVariablePassed(String variableName, Invocation invocation)
-    {
+        Set<String> notUsed = new HashSet<>(declared);
         for (Expression param : invocation.getParams())
         {
-            if (param instanceof StaticFeatureAccess access && variableName.equalsIgnoreCase(access.getName()))
+            String name = getBaseVariableName(param);
+            if (name != null)
+            {
+                notUsed.remove(name.toLowerCase());
+            }
+
+            if (notUsed.isEmpty())
             {
                 return true;
             }
         }
 
-        return false;
+        return notUsed.isEmpty();
+    }
+
+    private String getBaseVariableName(Expression expression)
+    {
+        Expression current = expression;
+
+        while (current != null)
+        {
+            if (current instanceof StaticFeatureAccess staticAccess)
+            {
+                return staticAccess.getName();
+            }
+
+            if (current instanceof DynamicFeatureAccess dynamicAccess)
+            {
+                current = dynamicAccess.getSource();
+            }
+            else if (current instanceof IndexAccess indexAccess)
+            {
+                current = indexAccess.getSource();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        return null;
     }
 }

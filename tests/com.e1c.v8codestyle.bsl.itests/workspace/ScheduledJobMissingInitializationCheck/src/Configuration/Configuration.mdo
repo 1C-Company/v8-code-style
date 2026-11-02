@@ -47,6 +47,8 @@
   <scheduledJobs>ScheduledJob.ScheduledJobCallInsideIf</scheduledJobs>
   <scheduledJobs>ScheduledJob.ScheduledJobDeclaredVariableNotPassed</scheduledJobs>
   <scheduledJobs>ScheduledJob.ScheduledJobVariableToArgs</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobDynamicAccess</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobIndexAccess</scheduledJobs>
 
   <subsystems>Subsystem.StandardSubsystems</subsystems>
 

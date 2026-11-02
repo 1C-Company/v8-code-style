@@ -42,3 +42,19 @@ Procedure CallInsideIf() Export // ERROR
 	EndIf;
 
 EndProcedure
+
+Procedure DynamicAccessVariableToArgs() Export
+
+	Some1 = Metadata.ScheduledJobs;
+	Some2 = 1;
+	CommonUse.OnStartScheduledJobExecution(Some1.ScheduledJobEmptyMethod, Some2);
+
+EndProcedure
+
+Procedure IndexAccessVariableToArgs() Export
+
+	Some2 = 1;
+	Some1 = new Array(1, 2);
+	CommonUse.OnStartScheduledJobExecution(Some1[0], Some2);
+
+EndProcedure
