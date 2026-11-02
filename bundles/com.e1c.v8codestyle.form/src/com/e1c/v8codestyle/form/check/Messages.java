@@ -59,6 +59,10 @@ final class Messages
     public static String InputFieldListChoiceMode_description;
     public static String InputFieldListChoiceMode_Form_input_field_the_list_choice_mode_not_set_with_filled_choice_list;
     public static String InputFieldListChoiceMode_title;
+    public static String HierarchicalListInitialTreeDisplay_title;
+    public static String HierarchicalListInitialTreeDisplay_description;
+    public static String HierarchicalListInitialTreeDisplay_issue;
+    
     static
     {
         // initialize resource bundle

@@ -15,17 +15,19 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 
 import java.text.MessageFormat;
-import java.util.Set;
+import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.builder.MonitorBasedCancelIndicator;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
+import org.eclipse.xtext.resource.IReferenceDescription;
 import org.eclipse.xtext.resource.IResourceDescription;
 
 import com._1c.g5.v8.dt.bsl.common.IModuleExtensionService;
@@ -41,7 +43,6 @@ import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.CommonSenseCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
 /**
@@ -102,16 +103,16 @@ public final class ModuleUnusedMethodCheck
         IModuleExtensionService service = IModuleExtensionServiceProvider.INSTANCE.getModuleExtensionService();
         String excludeNamePattern = parameters.getString(EXCLUDE_METHOD_NAME_PATTERN_PARAMETER_NAME);
 
-        Predicate<? super Method> predicate = method -> method.getName() != null && !method.isUsed()
-            && !method.isExport() && !method.isEvent()
-            && service.getSourceMethodNames(method).isEmpty() && !isExcludeName(method.getName(), excludeNamePattern);
+        Predicate<Method> predicate = method -> method.getName() != null && !method.isUsed() && !method.isExport()
+            && !method.isEvent() && service.getSourceMethodNames(method).isEmpty()
+            && !isExcludeName(method.getName(), excludeNamePattern);
 
         // TODO - only full validation first, optimization later
         //@formatter:off
         //if (!((BslResource)module.eResource()).isOnlyMethodReparse())
         //{
-        Set<URI> usedMethods = getUsedMethods(progressMonitor, module.eResource());
-        predicate = predicate.and(method -> !usedMethods.contains(EcoreUtil.getURI((EObject)method)));
+        Resource resource = module.eResource();
+        predicate = predicate.and(method -> isMethodWithoutExternalCallers(method, resource, progressMonitor));
         //}
         //@formatter:on
 
@@ -123,15 +124,30 @@ public final class ModuleUnusedMethodCheck
                 unusedMethod, McorePackage.Literals.NAMED_ELEMENT__NAME));
     }
 
-    private Set<URI> getUsedMethods(IProgressMonitor progressMonitor, Resource resource)
+    private List<URI> getUsedMethods(IProgressMonitor progressMonitor, Resource resource, Method method)
     {
+        URI selfUri = EcoreUtil.getURI(method);
         IResourceDescription descr = resourceDescriptionManager.getResourceDescription(resource);
-        return (descr instanceof BslResourceDescription
-            ? Lists.newArrayList(((BslResourceDescription)descr)
-                .getReferenceDescriptions(new MonitorBasedCancelIndicator(progressMonitor)))
-            : Lists.newArrayList(descr.getReferenceDescriptions())).stream()
-                .map(reference -> reference.getTargetEObjectUri())
-                .collect(Collectors.toSet());
+        Iterable<? extends IReferenceDescription> references = (descr instanceof BslResourceDescription)
+            ? ((BslResourceDescription)descr).getReferenceDescriptions(new MonitorBasedCancelIndicator(progressMonitor))
+            : descr.getReferenceDescriptions();
+        return StreamSupport.stream(references.spliterator(), false)
+            .filter(reference -> selfUri.equals(reference.getTargetEObjectUri()))
+            .map(IReferenceDescription::getSourceEObjectUri)
+            .toList();
+    }
+
+    private boolean isMethodWithoutExternalCallers(Method method, Resource resource, IProgressMonitor progressMonitor)
+    {
+        for (URI caller : getUsedMethods(progressMonitor, resource, method))
+        {
+            EObject callerObj = resource.getEObject(caller.fragment());
+            if (callerObj != null && EcoreUtil2.getContainerOfType(callerObj, Method.class) != method)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     private boolean isExcludeName(String name, String excludeNamePattern)

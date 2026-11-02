@@ -10,110 +10,26 @@
    
     Contributors:
         1C-Soft LLC - initial API and implementation
- -->
-<feature
-      id="com.e1c.v8codestyle.feature"
-      label="%feature.name"
-      version="0.8.0.qualifier"
-      provider-name="%feature.vendor"
-      plugin="com.e1c.v8codestyle"
-      license-feature="org.eclipse.license"
-      license-feature-version="2.0.2.qualifier">
-
-   <description>
+ --><feature id="com.e1c.v8codestyle.feature" label="%feature.name" license-feature="org.eclipse.license" license-feature-version="2.0.2.qualifier" plugin="com.e1c.v8codestyle" provider-name="%feature.vendor" version="0.8.0.qualifier">
+  <description>
       %description
    </description>
-
-   <copyright>
+  <copyright>
       %copyright
    </copyright>
-
-   <license url="%licenseURL">
+  <license url="%licenseURL">
       %license
    </license>
-
-   <plugin
-         id="com.e1c.v8codestyle"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.md"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.form"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.ql"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.autosort"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.autosort.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.docs"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.bsl"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.bsl.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.right"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.md.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="com.e1c.v8codestyle.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
+  <plugin download-size="0" id="com.e1c.v8codestyle" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.md" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.form" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.ql" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.autosort" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.autosort.ui" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.docs" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.bsl" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.bsl.ui" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.right" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.md.ui" install-size="0" unpack="false" version="0.0.0"/>
+  <plugin download-size="0" id="com.e1c.v8codestyle.ui" install-size="0" unpack="false" version="0.0.0"/>
 </feature>
