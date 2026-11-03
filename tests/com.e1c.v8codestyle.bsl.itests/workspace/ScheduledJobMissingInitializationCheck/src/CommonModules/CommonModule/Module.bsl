@@ -58,3 +58,9 @@ Procedure IndexAccessVariableToArgs() Export
 	CommonUse.OnStartScheduledJobExecution(Some1[0], Some2);
 
 EndProcedure
+
+Procedure FirstPosCallPL() Export
+
+	ОбщегоНазначенияБПО.ПриНачалеВыполненияРегламентногоЗадания();
+
+EndProcedure

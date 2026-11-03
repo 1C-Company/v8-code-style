@@ -49,6 +49,7 @@
   <scheduledJobs>ScheduledJob.ScheduledJobVariableToArgs</scheduledJobs>
   <scheduledJobs>ScheduledJob.ScheduledJobDynamicAccess</scheduledJobs>
   <scheduledJobs>ScheduledJob.ScheduledJobIndexAccess</scheduledJobs>
+  <scheduledJobs>ScheduledJob.ScheduledJobCommonUsePL</scheduledJobs>
 
   <subsystems>Subsystem.StandardSubsystems</subsystems>
 

@@ -69,11 +69,14 @@ public class ScheduledJobMissingInitializationCheck
 {
     private static final String SCHEDULED_JOB_METHOD_NAME_USER_DATA = "methodName"; //$NON-NLS-1$
 
-    private static final String TARGET_MODULE_NAME = "CommonUse"; //$NON-NLS-1$
-    private static final String TARGET_MODULE_NAME_RU = "ОбщегоНазначения"; //$NON-NLS-1$
+    private static final String COMMON_USE_NAME = "CommonUse"; //$NON-NLS-1$
+    private static final String COMMON_USE_NAME_RU = "ОбщегоНазначения"; //$NON-NLS-1$
 
-    private static final String TARGET_METHOD_NAME = "OnStartScheduledJobExecution"; //$NON-NLS-1$
-    private static final String TARGET_METHOD_NAME_RU = "ПриНачалеВыполненияРегламентногоЗадания"; //$NON-NLS-1$
+    // no english name
+    private static final String COMMON_USE_PL_NAME_RU = "ОбщегоНазначенияБПО"; //$NON-NLS-1$
+
+    private static final String INIT_METHOD_NAME = "OnStartScheduledJobExecution"; //$NON-NLS-1$
+    private static final String INIT_METHOD_NAME_RU = "ПриНачалеВыполненияРегламентногоЗадания"; //$NON-NLS-1$
 
     @Inject
     public ScheduledJobMissingInitializationCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
@@ -190,8 +193,15 @@ public class ScheduledJobMissingInitializationCheck
             {
                 if (simple.getLeft() instanceof Invocation invocation)
                 {
-                    return MethodAccessHelper.isNameMatching(invocation, TARGET_METHOD_NAME_RU, TARGET_METHOD_NAME,
-                        TARGET_MODULE_NAME_RU, TARGET_MODULE_NAME) && isDeclaredUsedInParams(declared, invocation);
+                    if (MethodAccessHelper.isNameMatching(invocation, INIT_METHOD_NAME_RU, INIT_METHOD_NAME,
+                        COMMON_USE_NAME_RU, COMMON_USE_NAME)
+                        || MethodAccessHelper.isNameMatching(invocation, INIT_METHOD_NAME_RU, INIT_METHOD_NAME,
+                            COMMON_USE_PL_NAME_RU, COMMON_USE_PL_NAME_RU)) // (RU, RU) it's ok
+                    {
+                        return isDeclaredUsedInParams(declared, invocation);
+                    }
+
+                    return false;
                 }
 
                 if (simple.getLeft() instanceof StaticFeatureAccess staticAccess && staticAccess.getName() != null)
