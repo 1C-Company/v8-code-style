@@ -93,6 +93,11 @@ final class Messages
     public static String MixedTabsAndSpacesInComment_Description;
     public static String MixedTabsAndSpacesInComment_Issue;
 
+    public static String ReturnSectionFieldInNonCollectionCheck_description;
+    public static String ReturnSectionFieldInNonCollectionCheck_Field_only_allowed_for_collection_type_M;
+    public static String ReturnSectionFieldInNonCollectionCheck_title;
+    public static String ReturnSectionFieldInNonCollectionCheck_Collection_types;
+
     static
     {
         // initialize resource bundle
