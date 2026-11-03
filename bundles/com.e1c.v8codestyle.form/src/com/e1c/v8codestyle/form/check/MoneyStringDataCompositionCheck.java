@@ -33,6 +33,7 @@ import com._1c.g5.v8.dt.mcore.NumberQualifiers;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -78,7 +79,7 @@ public class MoneyStringDataCompositionCheck
             .complexity(CheckComplexity.NORMAL)
             .severity(IssueSeverity.MINOR)
             .issueType(IssueType.UI_STYLE)
-            .extension(new StandardCheckExtension(674, getCheckId(), CorePlugin.PLUGIN_ID))
+            .extension(new StandardCheckExtension(778, getCheckId(), CorePlugin.PLUGIN_ID))
             .parameter(MONEY_STRING_NAME, String.class, DEFAULT_NAMES,
                 Messages.MoneyStringDataCompositionCheck_Parameter)
             .topObject(DATA_COMPOSITION_SCHEMA)
@@ -168,7 +169,7 @@ public class MoneyStringDataCompositionCheck
         NumberQualifiers qualifiers = obj.getNumberQualifiers();
         for (TypeItem typeItem : types)
         {
-            if ("Number".equalsIgnoreCase(McoreUtil.getTypeName(typeItem))) //$NON-NLS-1$
+            if (IEObjectTypeNames.NUMBER.equalsIgnoreCase(McoreUtil.getTypeName(typeItem)))
             {
                 if (qualifiers instanceof NumberQualifiers numberQual)
                 {

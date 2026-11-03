@@ -113,7 +113,7 @@ public class MoneyStringLocalizationCheckTest
     @Test
     public void testInlineColumnTypeCorrect() throws Exception
     {
-        SimpleStatement statement = getStatement(VALUE_TABLE_FORM_CORRECT, PROCEDURE_INLINE_COLUMN, 0);
+        SimpleStatement statement = getStatement(VALUE_TABLE_FORM_CORRECT, PROCEDURE_INLINE_COLUMN, 1);
         Marker marker = getFirstMarker(CHECK_ID, statement, getProject());
         assertNull(marker);
     }
@@ -147,7 +147,7 @@ public class MoneyStringLocalizationCheckTest
         Marker marker = getFirstMarker(CHECK_ID, assignment, getProject());
         assertNull(marker);
 
-        SimpleStatement columnAdd = getStatement(VALUE_TABLE_FORM_CORRECT, PROCEDURE_COLUMN_VARIABLE, 1);
+        SimpleStatement columnAdd = getStatement(VALUE_TABLE_FORM_CORRECT, PROCEDURE_COLUMN_VARIABLE, 2);
         marker = getFirstMarker(CHECK_ID, columnAdd, getProject());
         assertNull(marker);
     }

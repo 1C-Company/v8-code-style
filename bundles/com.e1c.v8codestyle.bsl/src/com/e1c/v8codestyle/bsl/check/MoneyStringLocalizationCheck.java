@@ -27,7 +27,10 @@ import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.xtext.EcoreUtil2;
+import org.eclipse.xtext.naming.IQualifiedNameConverter;
 
+import com._1c.g5.v8.bm.core.IBmTransaction;
+import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
@@ -38,24 +41,31 @@ import com._1c.g5.v8.dt.bsl.model.OperatorStyleCreator;
 import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
+import com._1c.g5.v8.dt.core.platform.IBmModelManager;
+import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
+import com._1c.g5.v8.dt.core.platform.IResourceLookup;
+import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
 import com._1c.g5.v8.dt.form.model.DataPathReferredObject;
 import com._1c.g5.v8.dt.form.model.Form;
 import com._1c.g5.v8.dt.form.model.FormAttribute;
 import com._1c.g5.v8.dt.form.model.FormAttributeColumn;
 import com._1c.g5.v8.dt.form.model.FormField;
-import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.form.service.item.FormItemVisitor;
 import com._1c.g5.v8.dt.form.service.item.IFormItemCommand;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
+import com.e1c.g5.dt.core.api.naming.INamingService;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.strict.check.AbstractTypeCheck;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.inject.Inject;
 
 /**
  * Checks that numeric money fields displayed on a form (attributes and value table columns
@@ -65,7 +75,7 @@ import com.e1c.v8codestyle.internal.bsl.BslPlugin;
  * @author Ivan Sergeev
  */
 public class MoneyStringLocalizationCheck
-    extends AbstractModuleStructureCheck
+    extends AbstractTypeCheck
 {
     private static final String MONEYFIELD_TYPE_DESCRIPTION = "ОписаниеТипаДенежногоПоля"; //$NON-NLS-1$
 
@@ -73,9 +83,9 @@ public class MoneyStringLocalizationCheck
 
     private static final String MONEY_STRING_NAME = "Money string name"; //$NON-NLS-1$
 
-    private static final String TYPE_NUMBER = "Number"; //$NON-NLS-1$
+    private static final String TYPE_NUMBER = IEObjectTypeNames.NUMBER;
 
-    private static final String TYPE_VALUE_TABLE = "ValueTable"; //$NON-NLS-1$
+    private static final String TYPE_VALUE_TABLE = IEObjectTypeNames.VALUE_TABLE;
 
     private static final String METHOD_ADD = "Добавить"; //$NON-NLS-1$
 
@@ -88,10 +98,24 @@ public class MoneyStringLocalizationCheck
 
     private static final String DEFAULT_NAMES = String.join(DELIMITER, DEFAULT_MONEY_STRING_NAMES);
 
+    IConfigurationProvider configurationProvider;
+
+    IBmModelManager bmModelManager;
+
+    IV8ProjectManager v8ProjectManager;
+
     @Override
     public String getCheckId()
     {
         return CHECK_ID;
+    }
+
+    @Inject
+    public MoneyStringLocalizationCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
+        IQualifiedNameConverter qualifiedNameConverter, INamingService namingService, IBmModelManager bmModelManager,
+        IV8ProjectManager v8ProjectManager)
+    {
+        super(resourceLookup, bslPreferences, qualifiedNameConverter, namingService, bmModelManager, v8ProjectManager);
     }
 
     @Override
@@ -111,14 +135,17 @@ public class MoneyStringLocalizationCheck
 
     @Override
     protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
-        IProgressMonitor monitor)
+        IBmTransaction bmTransaction, IProgressMonitor monitor)
     {
         Module module = (Module)object;
         if (ModuleType.FORM_MODULE != module.getModuleType() || !(module.getOwner() instanceof Form form))
         {
             return;
         }
-
+        if (!hasStandardSubsystems(bmTransaction))
+        {
+            return;
+        }
         Set<String> moneyNames = parseNames(parameters.getString(MONEY_STRING_NAME));
         Set<String> fieldNames = collectNumericMoneyFieldNames(form, moneyNames);
         if (fieldNames.isEmpty())
@@ -164,10 +191,6 @@ public class MoneyStringLocalizationCheck
             if (entity instanceof FormField field)
             {
                 result.add(field);
-            }
-            else if (entity instanceof Table table)
-            {
-                result.addAll(EcoreUtil2.getAllContentsOfType(table, FormField.class));
             }
         };
         new FormItemVisitor(command).visit(form);
@@ -341,5 +364,11 @@ public class MoneyStringLocalizationCheck
             return null;
         }
         return statement.getRight();
+    }
+
+    private static boolean hasStandardSubsystems(IBmTransaction bmTransaction)
+    {
+        return bmTransaction.getTopObjectByFqn("Subsystem.СтандартныеПодсистемы") != null //$NON-NLS-1$
+            || bmTransaction.getTopObjectByFqn("Subsystem.StandardSubsystems") != null; //$NON-NLS-1$
     }
 }
