@@ -24,6 +24,8 @@ final class Messages
 {
     private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages";
 
+    public static String NotifyDescriptionToServerProcedureFix_Description;
+    
     public static String OverridableModuleOnlyExportMethodsFixTest_Description;
 
     static

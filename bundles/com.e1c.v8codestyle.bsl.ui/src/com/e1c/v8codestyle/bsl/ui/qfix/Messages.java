@@ -76,9 +76,15 @@ final class Messages
     public static String SelfAssignFix_Description;
     public static String SelfAssignFix_Details;
 
+    public static String FormContextServerCallInEventHandlerFix_Description;
+    public static String FormContextServerCallInEventHandlerFix_Details;
+
     public static String LinkPartSpaceFix_Description;
     public static String LinkPartSpaceFix_Details;
 
+    public static String NotifyDescriptionToServerProcedureFix_Description;
+    public static String NotifyDescriptionToServerProcedureFix_Details;
+    
     public static String OverridableModuleOnlyExportMethodsFix_Description;
     public static String OverridableModuleOnlyExportMethodsFix_Details;
 
