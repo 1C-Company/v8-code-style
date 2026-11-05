@@ -15,10 +15,8 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.IdentityHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +55,7 @@ import com._1c.g5.v8.dt.form.service.item.IFormItemCommand;
 import com._1c.g5.v8.dt.mcore.TypeDescription;
 import com._1c.g5.v8.dt.mcore.TypeItem;
 import com._1c.g5.v8.dt.mcore.util.McoreUtil;
+import com._1c.g5.v8.dt.platform.IEObjectTypeNames;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.BasicCheck;
@@ -75,14 +74,7 @@ public class LocalizationFormNstrCheck
 {
     private static final String CHECK_ID = "nstr-form-localization"; //$NON-NLS-1$
 
-    private static final String STRING_TYPE_NAME = "String"; //$NON-NLS-1$
-
-    private record DisplayedStrings(Set<String> attributes, Map<String, Set<String>> columns) {
-        boolean isEmpty()
-        {
-            return attributes.isEmpty() && columns.isEmpty();
-        }
-    }
+    private static final String STRING_TYPE_NAME = IEObjectTypeNames.STRING;
 
     @Override
     public String getCheckId()
@@ -120,14 +112,15 @@ public class LocalizationFormNstrCheck
             return;
         }
 
-        Set<SimpleStatement> reported = Collections.newSetFromMap(new IdentityHashMap<>());
+        Set<SimpleStatement> reported = new HashSet<>();
+        Set<String> moduleVariableNames = collectModuleVariableNames(formModule);
         for (Method method : formModule.allMethods())
         {
             if (monitor.isCanceled())
             {
                 return;
             }
-            checkMethod(method, displayed, resultAcceptor, reported, monitor);
+            checkMethod(method, displayed, resultAcceptor, reported, monitor, moduleVariableNames);
         }
     }
 
@@ -225,10 +218,10 @@ public class LocalizationFormNstrCheck
     }
 
     private void checkMethod(Method method, DisplayedStrings displayed, ResultAcceptor resultAcceptor,
-        Set<SimpleStatement> reported, IProgressMonitor monitor)
+        Set<SimpleStatement> reported, IProgressMonitor monitor, Set<String> moduleVariableNames)
     {
         List<SimpleStatement> statements = EcoreUtil2.getAllContentsOfType(method, SimpleStatement.class);
-        Set<String> localNames = collectLocalNames(method);
+        Set<String> localNames = collectLocalNames(method, moduleVariableNames);
         Map<String, List<SimpleStatement>> assignments = collectAssignments(statements);
 
         for (SimpleStatement statement : statements)
@@ -248,14 +241,27 @@ public class LocalizationFormNstrCheck
         }
     }
 
-    private Set<String> collectLocalNames(Method method)
+    private Set<String> collectLocalNames(Method method, Set<String> moduleVariableNames)
     {
-        Set<String> names = new HashSet<>();
+        Set<String> names = new HashSet<>(moduleVariableNames);
         for (FormalParam param : method.getFormalParams())
         {
             names.add(lower(param.getName()));
         }
-        for (DeclareStatement declare : EcoreUtil2.getAllContentsOfType(method, DeclareStatement.class))
+        for (DeclareStatement declare : method.allDeclareStatements())
+        {
+            for (ExplicitVariable variable : declare.getVariables())
+            {
+                names.add(lower(variable.getName()));
+            }
+        }
+        return names;
+    }
+
+    private Set<String> collectModuleVariableNames(Module module)
+    {
+        Set<String> names = new HashSet<>();
+        for (DeclareStatement declare : module.getDeclareStatements())
         {
             for (ExplicitVariable variable : declare.getVariables())
             {
@@ -277,13 +283,7 @@ public class LocalizationFormNstrCheck
                 {
                     continue;
                 }
-                List<SimpleStatement> statementsForName = result.get(name);
-                if (statementsForName == null)
-                {
-                    statementsForName = new ArrayList<>();
-                    result.put(name, statementsForName);
-                }
-                statementsForName.add(statement);
+                result.computeIfAbsent(name, key -> new ArrayList<>()).add(statement);
             }
         }
         return result;
@@ -401,5 +401,12 @@ public class LocalizationFormNstrCheck
     private static String lower(String name)
     {
         return name == null ? null : name.toLowerCase();
+    }
+
+    private record DisplayedStrings(Set<String> attributes, Map<String, Set<String>> columns) {
+        boolean isEmpty()
+        {
+            return attributes.isEmpty() && columns.isEmpty();
+        }
     }
 }
