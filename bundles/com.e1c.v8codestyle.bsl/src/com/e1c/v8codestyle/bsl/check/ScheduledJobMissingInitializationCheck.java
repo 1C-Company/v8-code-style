@@ -10,13 +10,15 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-
 package com.e1c.v8codestyle.bsl.check;
 
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -31,7 +33,6 @@ import com._1c.g5.v8.dt.bsl.common.IBslPreferences;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.EmptyStatement;
 import com._1c.g5.v8.dt.bsl.model.Expression;
-import com._1c.g5.v8.dt.bsl.model.IndexAccess;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
@@ -55,7 +56,7 @@ import com.e1c.v8codestyle.bsl.SslConfigurationHelper;
 import com.e1c.v8codestyle.bsl.strict.check.AbstractTypeCheck;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
-import com.e1c.v8codestyle.internal.bsl.MethodAccessHelper;
+import com.e1c.v8codestyle.internal.bsl.ExpressionAccessHelper;
 import com.google.inject.Inject;
 
 /**
@@ -69,14 +70,19 @@ public class ScheduledJobMissingInitializationCheck
 {
     private static final String SCHEDULED_JOB_METHOD_NAME_USER_DATA = "methodName"; //$NON-NLS-1$
 
-    private static final String COMMON_USE_NAME = "CommonUse"; //$NON-NLS-1$
-    private static final String COMMON_USE_NAME_RU = "ОбщегоНазначения"; //$NON-NLS-1$
+    private static final String ATTRIBUTE_NAME = "attribute"; //$NON-NLS-1$
+    private static final String DELIMITER = ","; //$NON-NLS-1$
+    private static final String METHOD_SEPARATOR = "\\."; //$NON-NLS-1$
 
-    // no english name
-    private static final String COMMON_USE_PL_NAME_RU = "ОбщегоНазначенияБПО"; //$NON-NLS-1$
+    // @formatter:off
+    private static final List<String> DEFAULT_ATTRIBUTES = List.of(
+        "ОбщегоНазначения.ПриНачалеВыполненияРегламентногоЗадания", //$NON-NLS-1$
+        "ОбщегоНазначенияБПО.ПриНачалеВыполненияРегламентногоЗадания", //$NON-NLS-1$
+        "CommonUse.OnStartScheduledJobExecution", //$NON-NLS-1$
+        "CommonCEL.OnStartScheduledJobExecution"); //$NON-NLS-1$
+    // @formatter:on
 
-    private static final String INIT_METHOD_NAME = "OnStartScheduledJobExecution"; //$NON-NLS-1$
-    private static final String INIT_METHOD_NAME_RU = "ПриНачалеВыполненияРегламентногоЗадания"; //$NON-NLS-1$
+    private static final String DEFAULT_ATTRIBUTE = String.join(DELIMITER, DEFAULT_ATTRIBUTES);
 
     @Inject
     public ScheduledJobMissingInitializationCheck(IResourceLookup resourceLookup, IBslPreferences bslPreferences,
@@ -103,6 +109,8 @@ public class ScheduledJobMissingInitializationCheck
             .extension(new StandardCheckExtension(539, getCheckId(), BslPlugin.PLUGIN_ID))
             .extension(new ModuleTopObjectNameFilterExtension())
             .extension(ModuleTypeFilter.onlyTypes(ModuleType.COMMON_MODULE))
+            .parameter(ATTRIBUTE_NAME, String.class, DEFAULT_ATTRIBUTE,
+                Messages.ScheduledJobMissingInitializationCheck_ParameterTitle)
             .module()
             .checkedObjectType(MODULE);
     }
@@ -127,6 +135,8 @@ public class ScheduledJobMissingInitializationCheck
             return;
         }
 
+        Map<String, Set<String>> paramAttributes = getInitCalls(parameters);
+
         for (Method method : module.allMethods())
         {
             if (progressMonitor.isCanceled())
@@ -135,7 +145,7 @@ public class ScheduledJobMissingInitializationCheck
             }
 
             if (method.getName() != null && scheduledJobMethodNames.contains(method.getName().toLowerCase())
-                && !hasInitCall(method))
+                && !hasInitCall(method, paramAttributes))
             {
                 resultAcceptor.addIssue(Messages.ScheduledJobMissingInitializationCheck_Issue, method,
                     NAMED_ELEMENT__NAME);
@@ -178,7 +188,7 @@ public class ScheduledJobMissingInitializationCheck
         return result;
     }
 
-    private boolean hasInitCall(Method method)
+    private boolean hasInitCall(Method method, Map<String, Set<String>> attributes)
     {
         Set<String> declared = new HashSet<>();
 
@@ -193,15 +203,7 @@ public class ScheduledJobMissingInitializationCheck
             {
                 if (simple.getLeft() instanceof Invocation invocation)
                 {
-                    if (MethodAccessHelper.isNameMatching(invocation, INIT_METHOD_NAME_RU, INIT_METHOD_NAME,
-                        COMMON_USE_NAME_RU, COMMON_USE_NAME)
-                        || MethodAccessHelper.isNameMatching(invocation, INIT_METHOD_NAME_RU, INIT_METHOD_NAME,
-                            COMMON_USE_PL_NAME_RU, COMMON_USE_PL_NAME_RU)) // (RU, RU) it's ok
-                    {
-                        return isDeclaredUsedInParams(declared, invocation);
-                    }
-
-                    return false;
+                    return isCheckedCall(invocation, attributes) && isDeclaredUsedInParams(declared, invocation);
                 }
 
                 if (simple.getLeft() instanceof StaticFeatureAccess staticAccess && staticAccess.getName() != null)
@@ -215,6 +217,32 @@ public class ScheduledJobMissingInitializationCheck
         }
 
         return false;
+    }
+
+    @SuppressWarnings("unused") // unused key on computeIfAbsent line
+    private Map<String, Set<String>> getInitCalls(ICheckParameters parameters)
+    {
+        Map<String, Set<String>> result = new HashMap<>();
+
+        for (String parameter : parameters.getString(ATTRIBUTE_NAME).split(DELIMITER))
+        {
+            String trimmed = parameter.trim();
+
+            if (!trimmed.isBlank())
+            {
+                String[] parts = trimmed.split(METHOD_SEPARATOR);
+
+                if (parts.length >= 2)
+                {
+                    // if no key - put new element in map
+                    // then add value to the set
+                    result.computeIfAbsent(parts[parts.length - 2].toLowerCase(), key -> new HashSet<>())
+                        .add(parts[parts.length - 1].toLowerCase());
+                }
+            }
+        }
+
+        return result;
     }
 
     private Optional<String> getMethodName(String string, String moduleName)
@@ -233,6 +261,21 @@ public class ScheduledJobMissingInitializationCheck
         return Optional.empty();
     }
 
+    private boolean isCheckedCall(Invocation invocation, Map<String, Set<String>> initCalls)
+    {
+        Expression access = invocation.getMethodAccess();
+
+        if (access instanceof DynamicFeatureAccess dynamicAccess
+            && dynamicAccess.getSource() instanceof StaticFeatureAccess sourceAccess && sourceAccess.getName() != null
+            && dynamicAccess.getName() != null)
+        {
+            Set<String> methods = initCalls.get(sourceAccess.getName().toLowerCase());
+            return methods != null && methods.contains(dynamicAccess.getName().toLowerCase());
+        }
+
+        return false;
+    }
+
     private boolean isDeclaredUsedInParams(Set<String> declared, Invocation invocation)
     {
         if (declared.isEmpty())
@@ -243,7 +286,8 @@ public class ScheduledJobMissingInitializationCheck
         Set<String> notUsed = new HashSet<>(declared);
         for (Expression param : invocation.getParams())
         {
-            String name = getBaseVariableName(param);
+            String name =
+                ExpressionAccessHelper.getBaseFeatureAccess(param).map(StaticFeatureAccess::getName).orElse(null);
             if (name != null)
             {
                 notUsed.remove(name.toLowerCase());
@@ -256,33 +300,5 @@ public class ScheduledJobMissingInitializationCheck
         }
 
         return notUsed.isEmpty();
-    }
-
-    private String getBaseVariableName(Expression expression)
-    {
-        Expression current = expression;
-
-        while (current != null)
-        {
-            if (current instanceof StaticFeatureAccess staticAccess)
-            {
-                return staticAccess.getName();
-            }
-
-            if (current instanceof DynamicFeatureAccess dynamicAccess)
-            {
-                current = dynamicAccess.getSource();
-            }
-            else if (current instanceof IndexAccess indexAccess)
-            {
-                current = indexAccess.getSource();
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        return null;
     }
 }

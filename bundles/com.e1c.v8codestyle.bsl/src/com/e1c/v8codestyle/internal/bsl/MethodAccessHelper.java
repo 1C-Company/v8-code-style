@@ -29,11 +29,50 @@ public final class MethodAccessHelper
      * Checks if is method name matching.
      *
      * @param invocation the invocation, can be {@code null}
+     * @param methodName the method name
+     * @return true, if is name matching
+     */
+    public static boolean matchesNames(Invocation invocation, String methodName)
+    {
+        if (invocation == null || methodName == null)
+        {
+            return false;
+        }
+
+        return invocation.getMethodAccess() instanceof StaticFeatureAccess staticAccess
+            && methodName.equalsIgnoreCase(staticAccess.getName());
+    }
+
+    /**
+     * Checks if is method and source name matching (SourceName.MethodName()).
+     *
+     * @param invocation the invocation, can be {@code null}
+     * @param methodName the method name
+     * @param sourceName the source name
+     * @return true, if is name matching
+     */
+    public static boolean matchesNames(Invocation invocation, String methodName, String sourceName)
+    {
+        if (invocation == null || methodName == null || sourceName == null)
+        {
+            return false;
+        }
+
+        return invocation.getMethodAccess() instanceof DynamicFeatureAccess dynamicAccess
+            && dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess
+            && methodName.equalsIgnoreCase(dynamicAccess.getName())
+            && sourceName.equalsIgnoreCase(staticAccess.getName());
+    }
+
+    /**
+     * Checks if is method name matching.
+     *
+     * @param invocation the invocation, can be {@code null}
      * @param methodNameRu the method name ru, can be {@code null}
      * @param methodNameEn the method name en, can be {@code null}
      * @return true, if is name matching
      */
-    public static boolean isNameMatching(Invocation invocation, String methodNameRu, String methodNameEn)
+    public static boolean matchesInterlanguageNames(Invocation invocation, String methodNameRu, String methodNameEn)
     {
         if (invocation == null || methodNameRu == null || methodNameEn == null)
         {
@@ -54,7 +93,7 @@ public final class MethodAccessHelper
      * @param sourceNameEn the module name en, can be {@code null}
      * @return true, if is name matching
      */
-    public static boolean isNameMatching(Invocation invocation, String methodNameRu, String methodNameEn,
+    public static boolean matchesInterlanguageNames(Invocation invocation, String methodNameRu, String methodNameEn,
         String sourceNameRu, String sourceNameEn)
     {
         if (invocation == null || methodNameRu == null || methodNameEn == null || sourceNameRu == null

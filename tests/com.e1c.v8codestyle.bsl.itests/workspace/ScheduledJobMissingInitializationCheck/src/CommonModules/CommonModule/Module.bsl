@@ -61,6 +61,6 @@ EndProcedure
 
 Procedure FirstPosCallPL() Export
 
-	ОбщегоНазначенияБПО.ПриНачалеВыполненияРегламентногоЗадания();
+	CommonCEL.OnStartScheduledJobExecution();
 
 EndProcedure
