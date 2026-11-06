@@ -408,6 +408,9 @@
           class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.OverridableModuleOnlyExportMethodsFix">
     </fix>
     <fix
+          class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.MixedTabsAndSpacesInCommentCheckFix">
+    </fix>
+    <fix
           class="com.e1c.v8codestyle.internal.bsl.ui.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.ui.qfix.FormContextServerCallInEventHandlerFix">
     </fix>
  </extension>
