@@ -45,7 +45,7 @@ public class OverridableModuleOnlyExportMethodsFixTest
         super(OverridableModuleOnlyExportMethodsCheck.class);
     }
 
-    @Ignore
+    @Ignore("G5V8DT-30035")
     @Test
     public void testApplyFix() throws Exception
     {

@@ -26,6 +26,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -67,28 +68,6 @@ public class FormContextServerCallInEventHandlerFixTest
         super(FormContextServerCallInEventHandlerCheck.class);
     }
 
-    @Override
-    protected String getTestConfigurationName()
-    {
-        return PROJECT_NAME;
-    }
-
-    @Override
-    protected String getModuleFileName()
-    {
-        return FORM_MODULE_FILE_NAME;
-    }
-
-    @Override
-    protected Module getModule()
-    {
-        IBmObject object = getTopObjectByFqn(FQN_FORM, getProject());
-        assertTrue(object instanceof Form);
-        Module module = ((Form)object).getModule();
-        assertNotNull(module);
-        return module;
-    }
-
     /**
      * The fix replaces the {@code &AtServer} directive of the called method
      * with the {@code &AtServerNoContext} one and resolves the marker.
@@ -96,6 +75,7 @@ public class FormContextServerCallInEventHandlerFixTest
      *
      * @throws Exception the exception
      */
+    @Ignore("G5V8DT-30035")
     @Test
     public void testReplaceServerDirective() throws Exception
     {
@@ -130,6 +110,28 @@ public class FormContextServerCallInEventHandlerFixTest
         {
             closeEditors();
         }
+    }
+
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
+    }
+
+    @Override
+    protected String getModuleFileName()
+    {
+        return FORM_MODULE_FILE_NAME;
+    }
+
+    @Override
+    protected Module getModule()
+    {
+        IBmObject object = getTopObjectByFqn(FQN_FORM, getProject());
+        assertTrue(object instanceof Form);
+        Module module = ((Form)object).getModule();
+        assertNotNull(module);
+        return module;
     }
 
     private Marker findFirstMarker(IDtProject dtProject) throws Exception

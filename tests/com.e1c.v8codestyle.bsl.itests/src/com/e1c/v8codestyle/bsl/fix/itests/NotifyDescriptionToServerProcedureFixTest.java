@@ -40,7 +40,7 @@ public class NotifyDescriptionToServerProcedureFixTest
         super(NotifyDescriptionToServerProcedureCheck.class);
     }
 
-    @Ignore
+    @Ignore("G5V8DT-30035")
     @Test
     public void testApplyFix() throws Exception
     {
