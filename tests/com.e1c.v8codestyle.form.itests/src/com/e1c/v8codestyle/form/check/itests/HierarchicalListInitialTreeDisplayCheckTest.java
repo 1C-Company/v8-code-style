@@ -15,17 +15,11 @@ package com.e1c.v8codestyle.form.check.itests;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
-import com._1c.g5.v8.bm.core.IBmObject;
-import com._1c.g5.v8.dt.form.model.Form;
-import com._1c.g5.v8.dt.form.model.FormItem;
-import com._1c.g5.v8.dt.form.model.Table;
 import com._1c.g5.v8.dt.validation.marker.Marker;
-import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
 import com.e1c.v8codestyle.form.check.HierarchicalListInitialTreeDisplayCheck;
 
 /**
@@ -34,20 +28,13 @@ import com.e1c.v8codestyle.form.check.HierarchicalListInitialTreeDisplayCheck;
  * @author Artem Samohvalov
  */
 public class HierarchicalListInitialTreeDisplayCheckTest
-    extends SingleProjectReadOnlyCheckTestBase
+    extends AbstractFormMarkerTestBase
 {
-    private static final String CHECK_ID = "hierarchical-list-initial-tree-display";
     private static final String PROJECT_NAME = "HierarchicalListInitialTreeDisplay";
 
     private static final String FQN_FORM = "Catalog.Products.Form.ListForm.Form";
     private static final String FQN_FORM2 = "Catalog.Products.Form.ListForm3.Form";
     private static final String FQN_FORM3 = "Catalog.Products.Form.ListForm2.Form";
-
-    @Override
-    protected String getTestConfigurationName()
-    {
-        return PROJECT_NAME;
-    }
 
     /**
     * Test issue
@@ -58,11 +45,7 @@ public class HierarchicalListInitialTreeDisplayCheckTest
     @Test
     public void testExpandAllLevels() throws Exception
     {
-        IBmObject object = getTopObjectByFqn(FQN_FORM, getProject());
-        assertTrue(object instanceof Form);
-        Form form = (Form)object;
-
-        var markers = getMarkers(form);
+        List<Marker> markers = getItemMarkersByFQN(FQN_FORM);
         assertFalse(markers.isEmpty());
     }
 
@@ -75,11 +58,7 @@ public class HierarchicalListInitialTreeDisplayCheckTest
     @Test
     public void testExpandAllLevelsAndNoHierarchical() throws Exception
     {
-        IBmObject object = getTopObjectByFqn(FQN_FORM2, getProject());
-        assertTrue(object instanceof Form);
-        Form form = (Form)object;
-
-        var markers = getMarkers(form);
+        List<Marker> markers = getItemMarkersByFQN(FQN_FORM2);
         assertTrue(markers.isEmpty());
     }
 
@@ -92,29 +71,19 @@ public class HierarchicalListInitialTreeDisplayCheckTest
     @Test
     public void testNoExpand() throws Exception
     {
-        IBmObject object = getTopObjectByFqn(FQN_FORM3, getProject());
-        assertTrue(object instanceof Form);
-        Form form = (Form)object;
-
-        var markers = getMarkers(form);
+        List<Marker> markers = getItemMarkersByFQN(FQN_FORM3);
         assertTrue(markers.isEmpty());
     }
 
-    private List<Marker> getMarkers(Form form)
+    @Override
+    protected String getCheckId()
     {
-        List<Marker> markers = new ArrayList<>();
-        for (FormItem item : form.getItems())
-        {
-            if (item instanceof Table table)
-            {
-                Marker marker = getFirstMarker(CHECK_ID, table, getProject());
+        return "hierarchical-list-initial-tree-display";
+    }
 
-                if (marker != null)
-                {
-                    markers.add(marker);
-                }
-            }
-        }
-        return markers;
+    @Override
+    protected String getTestConfigurationName()
+    {
+        return PROJECT_NAME;
     }
 }
