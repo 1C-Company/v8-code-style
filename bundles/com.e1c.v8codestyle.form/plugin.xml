@@ -66,6 +66,10 @@
             category="com.e1c.v8codestyle.form"
             class="com.e1c.v8codestyle.form.check.HierarchicalListInitialTreeDisplayCheck">
       </check>
+      <check
+            category="com.e1c.v8codestyle.form"
+            class="com.e1c.v8codestyle.form.check.FormItemsDuplicateTitleCheck">
+      </check>
    </extension>
    <extension
          point="com.e1c.g5.v8.dt.check.fixes">

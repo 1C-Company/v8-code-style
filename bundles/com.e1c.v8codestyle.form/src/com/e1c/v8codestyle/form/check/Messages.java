@@ -62,7 +62,12 @@ final class Messages
     public static String HierarchicalListInitialTreeDisplay_title;
     public static String HierarchicalListInitialTreeDisplay_description;
     public static String HierarchicalListInitialTreeDisplay_issue;
-    
+
+    public static String FormItemsDuplicateTitleCheck_Title;
+    public static String FormItemsDuplicateTitleCheck_Description;
+    public static String FormItemsDuplicateTitleCheck_GroupIssue;
+    public static String FormItemsDuplicateTitleCheck_ButtonIssue;
+
     static
     {
         // initialize resource bundle
