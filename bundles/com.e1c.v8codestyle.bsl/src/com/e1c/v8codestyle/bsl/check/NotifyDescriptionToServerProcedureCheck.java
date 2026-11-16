@@ -215,26 +215,28 @@ public class NotifyDescriptionToServerProcedureCheck
                         && derivedProperty.getSource() instanceof CommonModule)
                     {
                         List<TypeItem> types = derivedProperty.getTypes();
-                        if (types != null && types.size() == 1 && types.get(0) instanceof Type)
+                        if (types != null && types.size() == 1 && types.get(0) instanceof Type type)
                         {
-                            return ((Type)types.get(0)).getContextDef()
-                                .allMethods()
-                                .stream()
-                                .filter(Environmental.class::isInstance)
-                                .filter(item -> methodName.equalsIgnoreCase(item.getName()))
-                                .map(Environmental.class::cast)
-                                .toList();
+                            return type.getContextDef() != null && type.getContextDef().allMethods() != null
+                                ? type.getContextDef()
+                                    .allMethods()
+                                    .stream()
+                                    .filter(Environmental.class::isInstance)
+                                    .filter(item -> methodName.equalsIgnoreCase(item.getName()))
+                                    .map(Environmental.class::cast)
+                                    .toList()
+                                : null;
                         }
                     }
                     else if (entry.getFeature() instanceof Property property && THIS_OBJECT.equals(property.getName())
                         && property.eContainer() instanceof ContextDef contextDef)
                     {
-                        return contextDef.allMethods()
+                        return contextDef.allMethods() != null ? contextDef.allMethods()
                             .stream()
                             .filter(Environmental.class::isInstance)
                             .filter(item -> methodName.equalsIgnoreCase(item.getName()))
                             .map(Environmental.class::cast)
-                            .toList();
+                            .toList() : null;
                     }
                     else if (entry.getFeature() instanceof Variable)
                     {
@@ -242,13 +244,15 @@ public class NotifyDescriptionToServerProcedureCheck
                         if (types != null && types.size() == 1 && types.get(0) instanceof Type type
                             && "CommonModule".equals(McoreUtil.getTypeCategory(type))) //$NON-NLS-1$
                         {
-                            return type.getContextDef()
-                                .allMethods()
-                                .stream()
-                                .filter(Environmental.class::isInstance)
-                                .filter(item -> methodName.equalsIgnoreCase(item.getName()))
-                                .map(Environmental.class::cast)
-                                .toList();
+                            return type.getContextDef() != null && type.getContextDef().allMethods() != null
+                                ? type.getContextDef()
+                                    .allMethods()
+                                    .stream()
+                                    .filter(Environmental.class::isInstance)
+                                    .filter(item -> methodName.equalsIgnoreCase(item.getName()))
+                                    .map(Environmental.class::cast)
+                                    .toList()
+                                : null;
                         }
                     }
                 }
