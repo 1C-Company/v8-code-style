@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
@@ -129,7 +128,7 @@ public class NotifyDescriptionToServerProcedureCheck
         OperatorStyleCreator osc = (OperatorStyleCreator)object;
         String operatorName = McoreUtil.getTypeName(osc.getType());
 
-        if ((!NOTIFICATION_OLD.equals(operatorName) && !NOTIFICATION.equals(operatorName)) || osc.getParams().isEmpty()
+        if ((!NOTIFICATION_OLD.equals(operatorName) && !NOTIFICATION.equals(operatorName)) || osc.getParams().size() < 2
             || !(osc.getParams().get(0) instanceof StringLiteral))
         {
             return;
@@ -142,7 +141,7 @@ public class NotifyDescriptionToServerProcedureCheck
             return;
         }
 
-        Collection<Environmental> methods = getMethods(methodName, osc, monitor);
+        Collection<Environmental> methods = getMethods(methodName, osc.getParams().get(1), monitor);
         if (methods == null)
         {
             return;
@@ -153,123 +152,105 @@ public class NotifyDescriptionToServerProcedureCheck
             resultAceptor.addIssue(
                 Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_should_be_export, param,
                 STRING_LITERAL__LINES);
+            return;
         }
-        else
+
+        for (Environmental method : methods)
         {
-            for (Environmental method : methods)
+            Environments calleeEnv = method.environments();
+            if (calleeEnv.containsAny(Environments.MNG_CLIENTS))
             {
-                Environments calleeEnv = method.environments();
-                if (calleeEnv.containsAny(Environments.MNG_CLIENTS))
-                {
-                    return;
-                }
+                return;
             }
-
-            resultAceptor.addIssue(
-                Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_to_Server_procedure, param,
-                STRING_LITERAL__LINES);
         }
 
+        resultAceptor.addIssue(Messages.NotifyDescriptionToServerProcedureCheck_Notify_description_to_Server_procedure,
+            param, STRING_LITERAL__LINES);
     }
 
-    private Collection<Environmental> getMethods(String methodName, OperatorStyleCreator osc, IProgressMonitor monitor)
+    private Collection<Environmental> getMethods(String methodName, Expression moduleParam, IProgressMonitor monitor)
     {
-        List<Expression> params = osc.getParams();
-        if (params.size() > 1)
+        if (moduleParam instanceof FeatureAccess featureAccess)
         {
-            Expression moduleParam = params.get(1);
-            if (moduleParam instanceof FeatureAccess featureAccess)
+            if (featureAccess instanceof StaticFeatureAccess
+                && (THIS_OBJECT_RU.equalsIgnoreCase(featureAccess.getName())
+                    || THIS_OBJECT.equalsIgnoreCase(featureAccess.getName())
+                    || THIS_FORM_RU.equalsIgnoreCase(featureAccess.getName())
+                    || THIS_FORM.equalsIgnoreCase(featureAccess.getName())))
             {
-                if (featureAccess instanceof StaticFeatureAccess
-                    && (THIS_OBJECT_RU.equalsIgnoreCase(featureAccess.getName())
-                        || THIS_OBJECT.equalsIgnoreCase(featureAccess.getName())
-                        || THIS_FORM_RU.equalsIgnoreCase(featureAccess.getName())
-                        || THIS_FORM.equalsIgnoreCase(featureAccess.getName())))
+                Module module = EcoreUtil2.getContainerOfType(featureAccess, Module.class);
+                MethodsScopeSpec spec = BslFactory.eINSTANCE.createMethodsScopeSpec();
+                spec.setModule(module);
+                spec.setOnlyModuleItems(true);
+                spec.setEnvironments(Environments.ALL_CLIENTS);
+
+                IScope methodScope = scopeProvider.getScope(spec, BslPackage.Literals.METHODS_SCOPE_SPEC__METHOD_REF);
+
+                return StreamSupport
+                    .stream(methodScope.getElements(QualifiedName.create(methodName)).spliterator(), false)
+                    .map(IEObjectDescription::getEObjectOrProxy)
+                    .filter(Method.class::isInstance)
+                    .map(Method.class::cast)
+                    .filter(Method::isExport)
+                    .map(Environmental.class::cast)
+                    .toList();
+            }
+
+            Environmental environmental = EcoreUtil2.getContainerOfType(featureAccess, Environmental.class);
+            List<FeatureEntry> entries = featureAccess instanceof StaticFeatureAccess
+                ? ((StaticFeatureAccess)featureAccess).getFeatureEntries() : dynamicFeatureAccessComputer
+                    .getLastObject((DynamicFeatureAccess)featureAccess, environmental.environments());
+            for (FeatureEntry entry : entries)
+            {
+                if (entry.getFeature() instanceof DerivedProperty derivedProperty
+                    && derivedProperty.getSource() instanceof CommonModule)
                 {
-                    Module module = EcoreUtil2.getContainerOfType(featureAccess, Module.class);
-                    MethodsScopeSpec spec = BslFactory.eINSTANCE.createMethodsScopeSpec();
-                    spec.setModule(module);
-                    spec.setOnlyModuleItems(true);
-                    spec.setEnvironments(Environments.ALL_CLIENTS);
-
-                    IScope methodScope =
-                        scopeProvider.getScope(spec, BslPackage.Literals.METHODS_SCOPE_SPEC__METHOD_REF);
-
-                    return StreamSupport
-                        .stream(methodScope.getElements(QualifiedName.create(methodName)).spliterator(), false)
-                        .map(IEObjectDescription::getEObjectOrProxy)
-                        .filter(Method.class::isInstance)
-                        .map(Method.class::cast)
-                        .filter(Method::isExport)
+                    List<TypeItem> types = derivedProperty.getTypes();
+                    if (types != null && types.size() == 1 && types.get(0) instanceof Type type)
+                    {
+                        return type.getContextDef() != null && type.getContextDef().allMethods() != null
+                            ? type.getContextDef()
+                                .allMethods()
+                                .stream()
+                                .filter(Environmental.class::isInstance)
+                                .filter(item -> methodName.equalsIgnoreCase(item.getName()))
+                                .map(Environmental.class::cast)
+                                .toList()
+                            : null;
+                    }
+                }
+                else if (entry.getFeature() instanceof Property property && THIS_OBJECT.equals(property.getName())
+                    && property.eContainer() instanceof ContextDef contextDef)
+                {
+                    return contextDef.allMethods() != null ? contextDef.allMethods()
+                        .stream()
+                        .filter(Environmental.class::isInstance)
+                        .filter(item -> methodName.equalsIgnoreCase(item.getName()))
                         .map(Environmental.class::cast)
-                        .toList();
+                        .toList() : null;
                 }
-
-                Environmental environmental = EcoreUtil2.getContainerOfType(featureAccess, Environmental.class);
-                List<FeatureEntry> entries = featureAccess instanceof StaticFeatureAccess
-                    ? ((StaticFeatureAccess)featureAccess).getFeatureEntries() : dynamicFeatureAccessComputer
-                        .getLastObject((DynamicFeatureAccess)featureAccess, environmental.environments());
-                for (FeatureEntry entry : entries)
+                else if (entry.getFeature() instanceof Variable)
                 {
-                    if (entry.getFeature() instanceof DerivedProperty derivedProperty
-                        && derivedProperty.getSource() instanceof CommonModule)
+                    List<TypeItem> types = typesComputer.computeTypes(featureAccess, environmental.environments());
+                    if (types != null && types.size() == 1 && types.get(0) instanceof Type type
+                        && "CommonModule".equals(McoreUtil.getTypeCategory(type))) //$NON-NLS-1$
                     {
-                        List<TypeItem> types = derivedProperty.getTypes();
-                        if (types != null && types.size() == 1 && types.get(0) instanceof Type type)
-                        {
-                            return type.getContextDef() != null && type.getContextDef().allMethods() != null
-                                ? type.getContextDef()
-                                    .allMethods()
-                                    .stream()
-                                    .filter(Environmental.class::isInstance)
-                                    .filter(item -> methodName.equalsIgnoreCase(item.getName()))
-                                    .map(Environmental.class::cast)
-                                    .toList()
-                                : null;
-                        }
+                        return type.getContextDef() != null && type.getContextDef().allMethods() != null
+                            ? type.getContextDef()
+                                .allMethods()
+                                .stream()
+                                .filter(Environmental.class::isInstance)
+                                .filter(item -> methodName.equalsIgnoreCase(item.getName()))
+                                .map(Environmental.class::cast)
+                                .toList()
+                            : null;
                     }
-                    else if (entry.getFeature() instanceof Property property && THIS_OBJECT.equals(property.getName())
-                        && property.eContainer() instanceof ContextDef contextDef)
-                    {
-                        return contextDef.allMethods() != null ? contextDef.allMethods()
-                            .stream()
-                            .filter(Environmental.class::isInstance)
-                            .filter(item -> methodName.equalsIgnoreCase(item.getName()))
-                            .map(Environmental.class::cast)
-                            .toList() : null;
-                    }
-                    else if (entry.getFeature() instanceof Variable)
-                    {
-                        List<TypeItem> types = typesComputer.computeTypes(featureAccess, environmental.environments());
-                        if (types != null && types.size() == 1 && types.get(0) instanceof Type type
-                            && "CommonModule".equals(McoreUtil.getTypeCategory(type))) //$NON-NLS-1$
-                        {
-                            return type.getContextDef() != null && type.getContextDef().allMethods() != null
-                                ? type.getContextDef()
-                                    .allMethods()
-                                    .stream()
-                                    .filter(Environmental.class::isInstance)
-                                    .filter(item -> methodName.equalsIgnoreCase(item.getName()))
-                                    .map(Environmental.class::cast)
-                                    .toList()
-                                : null;
-                        }
-                    }
-                }
-
-                // this is just a variable
-                // methods cannot be reliably determined, skip the check
-                if (featureAccess instanceof DynamicFeatureAccess dynamicAccess
-                    && dynamicAccess.getSource() instanceof StaticFeatureAccess source && isVariable(source)
-                    || (featureAccess instanceof StaticFeatureAccess staticAccess && isVariable(staticAccess)))
-                {
-
-                    return null;
                 }
             }
         }
 
-        return List.of();
+        // the module cannot be determined, check skipped.
+        return null;
     }
 
     private String getCalledProcedureName(Expression param)
@@ -284,18 +265,4 @@ public class NotifyDescriptionToServerProcedureCheck
         }
         return null;
     }
-
-    private boolean isVariable(StaticFeatureAccess staticAccess)
-    {
-        for (FeatureEntry entry : staticAccess.getFeatureEntries())
-        {
-            EObject feature = entry.getFeature();
-            if (feature instanceof Variable)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
 }
