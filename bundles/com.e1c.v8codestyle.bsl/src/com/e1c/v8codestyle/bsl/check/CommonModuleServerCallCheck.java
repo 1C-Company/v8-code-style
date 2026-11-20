@@ -122,14 +122,6 @@ public class CommonModuleServerCallCheck
     protected void check(Object object, ResultAcceptor resultAcceptor, ICheckParameters parameters,
         IBmTransaction bmTransaction, IProgressMonitor progressMonitor)
     {
-        try
-        {
-            Thread.sleep(10000);
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
         Module module = (Module)object;
         CommonModule commonModule = (CommonModule)module.getOwner();
         if (commonModule != null && commonModule.isServerCall())
