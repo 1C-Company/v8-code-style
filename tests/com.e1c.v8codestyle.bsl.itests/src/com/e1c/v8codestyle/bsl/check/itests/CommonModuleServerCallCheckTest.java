@@ -36,7 +36,6 @@ public class CommonModuleServerCallCheckTest
 
     private static final String METHOD_USED = "CommonModule.CommonServerCallTestCorrect";
 
-
     private static final String CHECK_ID = "common-module-server-call";
 
     @Override
