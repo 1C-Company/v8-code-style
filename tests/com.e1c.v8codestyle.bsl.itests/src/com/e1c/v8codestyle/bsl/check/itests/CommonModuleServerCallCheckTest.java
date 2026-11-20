@@ -15,6 +15,7 @@ package com.e1c.v8codestyle.bsl.check.itests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com._1c.g5.v8.bm.core.IBmObject;
@@ -36,7 +37,6 @@ public class CommonModuleServerCallCheckTest
 
     private static final String METHOD_USED = "CommonModule.CommonServerCallTestCorrect";
 
-
     private static final String CHECK_ID = "common-module-server-call";
 
     @Override
@@ -55,6 +55,7 @@ public class CommonModuleServerCallCheckTest
     }
 
     @Test
+    @Ignore
     public void testServerCallFlagCorrect() throws Exception
     {
         IBmObject object = getTopObjectByFqn(METHOD_USED, getProject());

@@ -6,6 +6,8 @@ Procedure Noncompliant()
 	Notify = new NotifyDescription("NoncompliantNotify", ThisObject);
 	
 	Notify = new NotifyDescription("NoncompliantNotify2", ThisObject);
+
+	Notify = new NotifyDescription("NoSuchProcedure", ThisObject);
 	
 #EndIf
 

@@ -49,13 +49,13 @@ public class NotifyDescriptionToServerProcedureCheck2Test
         updateModule(FOLDER_RESOURCE + "notify-description-to-server-procedure2.bsl");
 
         List<Marker> markers = getModuleMarkers();
-        assertEquals(4, markers.size());
+        assertEquals(5, markers.size());
         List<Integer> errorLines = markers.stream()
             .map(marker -> marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))
             .map(Integer.class::cast)
             .sorted()
             .collect(Collectors.toList());
-        assertEquals(List.of(6, 8, 18, 20), errorLines);
+        assertEquals(List.of(6, 8, 10, 20, 22), errorLines);
     }
 
     /**
