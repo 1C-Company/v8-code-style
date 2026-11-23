@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 
+import com._1c.g5.v8.dt.dcs.model.core.LocalString;
 import com._1c.g5.v8.dt.dcs.model.core.Presentation;
 import com._1c.g5.v8.dt.dcs.model.schema.DataCompositionSchema;
 import com._1c.g5.v8.dt.dcs.model.settings.SettingsVariant;
@@ -90,7 +91,13 @@ public class DataCompositionNameVariantDefaultCheck
         {
             String name = settingsVariant.getName();
             Presentation presentation = settingsVariant.getPresentation();
-            EMap<String, String> presentationValue = presentation.getLocalValue().getContent();
+            LocalString localString = presentation.getLocalValue();
+            if (localString == null)
+            {
+                return;
+            }
+
+            EMap<String, String> presentationValue = localString.getContent();
             if (parameters.getString(VARIANT_NAME).toLowerCase().contains(name.toLowerCase()))
             {
                 if (presentationValue.isEmpty())
