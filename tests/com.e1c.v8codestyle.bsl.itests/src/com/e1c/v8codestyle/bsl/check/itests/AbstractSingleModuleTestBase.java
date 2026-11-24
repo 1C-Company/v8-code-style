@@ -15,6 +15,8 @@ package com.e1c.v8codestyle.bsl.check.itests;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -181,26 +183,45 @@ public class AbstractSingleModuleTestBase
     }
 
     /**
-     * Update project module file form bundle resource path and wait until validation finished.
+     * Update project module file from bundle resource path and wait until validation finished.
      *
-     * @param pathToResource the path to resource
-     * @throws Exception the exception
+     * @param pathToResource the path to resource, cannot be {@code null}
+     * @throws CoreException the core exception
+     * @throws IOException Signals that an I/O exception has occurred.
      */
-    protected void updateModule(String pathToResource) throws Exception
+    protected void updateModule(String pathToResource) throws CoreException, IOException
+    {
+        try (InputStream inputStream = getClass().getResourceAsStream(pathToResource))
+        {
+            assertNotNull("Resource not found: " + pathToResource, inputStream);
+            writeModuleContent(inputStream.readAllBytes());
+        }
+    }
+
+    /**
+     * Writes the module content, builds the project and waits until validation finished.
+     *
+     * @param content the module content, cannot be {@code null}
+     * @throws CoreException the core exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    protected void writeModuleContent(byte[] content) throws CoreException, IOException
     {
         IProject project = getProject().getWorkspaceProject();
         IFile file = project.getFile(getModuleFileName());
-        try (InputStream in = getClass().getResourceAsStream(pathToResource))
+
+        try (InputStream inputStream = new ByteArrayInputStream(content))
         {
             if (file.exists())
             {
-                file.setContents(in, true, true, new NullProgressMonitor());
+                file.setContents(inputStream, true, true, new NullProgressMonitor());
             }
             else
             {
-                file.create(in, true, new NullProgressMonitor());
+                file.create(inputStream, true, new NullProgressMonitor());
             }
         }
+
         ResourcesPlugin.getWorkspace().build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
 
         // As well as AUTO_BUILD-family job is being scheduled synchronously
