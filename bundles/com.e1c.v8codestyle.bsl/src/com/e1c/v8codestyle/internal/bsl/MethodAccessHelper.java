@@ -13,8 +13,14 @@
 
 package com.e1c.v8codestyle.internal.bsl;
 
+import java.util.List;
+import java.util.Optional;
+
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.FeatureAccess;
+import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
+import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 
 /**
@@ -56,6 +62,39 @@ public final class MethodAccessHelper
             && dynamicAccess.getSource() instanceof StaticFeatureAccess staticAccess
             && matchMethodName(dynamicAccess.getName(), methodNameRu, methodNameEn)
             && matchMethodName(staticAccess.getName(), sourceNameRu, sourceNameEn);
+    }
+
+    /**
+     * Gets the method from current module by invocation.
+     *
+     * @param invocation the invocation, cannot be {@code null}
+     * @return the optional method by invocation, never be {@code null}
+     */
+    public static Optional<Method> getMethodByInvocation(Invocation invocation)
+    {
+        return getFeatureEntries(invocation).stream()
+            .map(FeatureEntry::getFeature)
+            .filter(Method.class::isInstance)
+            .map(Method.class::cast)
+            .findFirst();
+    }
+
+    /**
+     * Gets the feature entries.
+     *
+     * @param invocation the invocation, cannot be {@code null}
+     * @return the feature entries, never be {@code null}
+     */
+    public static List<FeatureEntry> getFeatureEntries(Invocation invocation)
+    {
+        FeatureAccess methodAccess = invocation.getMethodAccess();
+        if (methodAccess == null)
+        {
+            return List.of();
+        }
+
+        return methodAccess instanceof StaticFeatureAccess sfa ? sfa.getFeatureEntries()
+            : methodAccess instanceof DynamicFeatureAccess dfa ? dfa.getFeatureEntries() : List.of();
     }
 
     private static boolean matchMethodName(String name, String methodNameRu, String methodNameEn)

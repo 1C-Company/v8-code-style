@@ -12,17 +12,9 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check.itests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.Marker;
-import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.NotifyCallAfterObjectChangeCheck;
 
 /**
@@ -31,7 +23,7 @@ import com.e1c.v8codestyle.bsl.check.NotifyCallAfterObjectChangeCheck;
  * @author Artem Samohvalov
  */
 public class NotifyCallAfterObjectChangeCheckTest
-    extends AbstractSingleModuleTestBase
+    extends AbstractInlineSingleModuleTestBase
 {
     private static final String PROJECT_NAME = "ObjectChangeNotifyCallCheckTest";
     private static final String MODULE_FILE_NAME = "/src/Catalogs/TestCatalog/Forms/ItemForm/Module.bsl";
@@ -50,49 +42,20 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testNoNotifyCallAndObjectWrite() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "no-notify-call-object-write.bsl");
+        String bsl = """
+            &AtClient
+            Procedure ClientProcedure() // error
+            	ServerProcedure();
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
+            &AtServer
+            Procedure ServerProcedure()
+            	Write();
+            EndProcedure
+            """;
 
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-    }
-
-    /**
-     * Test error
-     * Test no notify call and object variable write.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testNoNotifyCallAndObjectVariableWrite() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "no-notify-call-object-variable-write.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
-
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
-    }
-
-    /**
-     * Test error
-     * Test no notify call and object variable write in submethod.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testNoNotifyCallAndObjectVariableWriteInSubmethod() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "notify-call-object-variable-write-in-submethod.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
-
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        loadModuleCode(bsl);
+        assertMarkerEqual(2);
     }
 
     /**
@@ -104,13 +67,20 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testNoNotifyCallAndObjectDelete() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "no-notify-call-object-delete.bsl");
+        String bsl = """
+            &AtClient
+            Procedure ClientProcedure() // error
+            	ServerProcedure();
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
+            &AtServer
+            Procedure ServerProcedure()
+            	Delete();
+            EndProcedure
+            """;
 
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        loadModuleCode(bsl);
+        assertMarkerEqual(2);
     }
 
     /**
@@ -122,13 +92,22 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testNotifyCallIsNotAtTheEnd() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "notify-call-not-at-the-end.bsl");
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite() // error
+                ServerProcedure();
+                NotifyChanged("RecordChanged");
+                Message("Done");
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
+            &AtServer
+            Procedure ServerProcedure()
+                Write();
+            EndProcedure
+            """;
 
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        loadModuleCode(bsl);
+        assertMarkerEqual(2);
     }
 
     /**
@@ -140,39 +119,21 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testNotifyCallAndObjectWrite() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "notify-call-object-write.bsl");
+        String bsl = """
+            &AtClient
+            Procedure ClientProcedure()
+            	ServerProcedure();
+            	NotifyChanged("SomeData");
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
-    }
+            &AtServer
+            Procedure ServerProcedure()
+            	Write();
+            EndProcedure
+            """;
 
-    /**
-     * Test notify call and object variable write.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testNotifyCallAndObjectVariableWrite() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "notify-call-object-variable-write.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
-    }
-
-    /**
-     * Test no error
-     * Test notify call and object delete.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testNotifyCallAndObjectDelete() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "notify-call-object-delete.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
+        loadModuleCode(bsl);
+        assertMarkersEmpty();
     }
 
     /**
@@ -184,10 +145,20 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testServerMethodDoesNotChangeObject() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "server-method-without-object-change.bsl");
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite()
+                ServerProcedure();
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
+            &AtServer
+            Procedure ServerProcedure()
+                Message("Test");
+            EndProcedure
+            """;
+
+        loadModuleCode(bsl);
+        assertMarkersEmpty();
     }
 
     /**
@@ -199,10 +170,21 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testNotifyCallWithSetDeletionMark() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "notify-call-object-seted-deletion-mark.bsl");
+        String bsl = """
+            &AtClient
+            Procedure ClientProcedure()
+            	ServerProcedure();
+            	NotifyChanged("EventName", "SomeData", ThisObject);
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
+            &AtServer
+            Procedure ServerProcedure()
+            	SetDeletionMark(True);
+            EndProcedure
+            """;
+
+        loadModuleCode(bsl);
+        assertMarkersEmpty();
     }
 
     /**
@@ -214,10 +196,20 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testMethodWithoutServerDirective() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "no-notify-call-at-client-procedure.bsl");
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite()
+                ServerProcedure();
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
+            &AtClient
+            Procedure ServerProcedure()
+                Write();
+            EndProcedure
+            """;
+
+        loadModuleCode(bsl);
+        assertMarkersEmpty();
     }
 
     /**
@@ -229,13 +221,20 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testClientAtServerMethodAndObjectWrite() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "client-at-server-object-write.bsl");
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite() // error
+                ServerProcedure();
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
+            &AtClientAtServerNoContext
+            Procedure ServerProcedure()
+                Write();
+            EndProcedure
+            """;
 
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        loadModuleCode(bsl);
+        assertMarkerEqual(2);
     }
 
     /**
@@ -247,13 +246,26 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testSeveralServerMethodsWithObjectChange() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "several-server-methods-object-change.bsl");
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite() // error
+                ServerMethod1();
+                ServerMethod2();
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
+            &AtServer
+            Procedure ServerMethod1()
+                Message("Test");
+            EndProcedure
 
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+            &AtServer
+            Procedure ServerMethod2()
+                Write();
+            EndProcedure
+            """;
+
+        loadModuleCode(bsl);
+        assertMarkerEqual(2);
     }
 
     /**
@@ -265,13 +277,20 @@ public class NotifyCallAfterObjectChangeCheckTest
     @Test
     public void testNoNotifyCallWithSetDeletionMark() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "no-notify-call-object-seted-deletion-mark.bsl");
+        String bsl = """
+            &AtClient
+            Procedure ClientProcedure() // error
+            	ServerProcedure();
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
+            &AtServer
+            Procedure ServerProcedure()
+            	SetDeletionMark(True);
+            EndProcedure
+            """;
 
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+        loadModuleCode(bsl);
+        assertMarkerEqual(2);
     }
 
     @Override

@@ -39,4 +39,5 @@
     <languageCode>en</languageCode>
   </languages>
   <catalogs>Catalog.TestCatalog</catalogs>
+  <commonModules>CommonModule.CommonModule</commonModules>
 </mdclass:Configuration>

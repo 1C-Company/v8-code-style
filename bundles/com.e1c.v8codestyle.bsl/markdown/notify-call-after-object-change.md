@@ -1,6 +1,6 @@
 # Updating Lists During Interactive User Actions
 
-If a client procedure in a form module calls a server procedure that modifies an object using the Write(), Delete(), or SetDeletionMark() methods, the client procedure must call either the Notify() or NotifyChanged() procedure.
+If a client procedure in a form module calls a server procedure that modifies an object using the Write(), Delete(), or SetDeletionMark() methods, the client procedure must call either the NotifyChanged() procedure.
 
 ## Incorrect
 ```bsl
@@ -30,7 +30,7 @@ Procedure Correct()
 
 	ModifyObjectOnServer();
 	
-	Notify("Write_Invoice", WriteParameters, Object.Ref);
+	NotifyChanged(...);
 
 EndProcedure
 
