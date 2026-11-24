@@ -12,17 +12,9 @@
  *******************************************************************************/
 package com.e1c.v8codestyle.bsl.check.itests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.eclipse.core.runtime.Path;
 import org.junit.Test;
 
-import com._1c.g5.v8.dt.validation.marker.Marker;
-import com._1c.g5.v8.dt.validation.marker.StandardExtraInfo;
 import com.e1c.v8codestyle.bsl.check.NotifyCallInAfterWriteEventCheck;
 
 /**
@@ -31,7 +23,7 @@ import com.e1c.v8codestyle.bsl.check.NotifyCallInAfterWriteEventCheck;
  * @author Artem Samohvalov
  */
 public class NotifyCallInAfterWriteEventCheckTest
-    extends AbstractSingleModuleTestBase
+    extends AbstractInlineSingleModuleTestBase
 {
     private static final String PROJECT_NAME = "ObjectChangeNotifyCallCheckTest";
     private static final String MODULE_FILE_NAME = "/src/Catalogs/TestCatalog/Forms/ItemForm/Module.bsl";
@@ -47,15 +39,24 @@ public class NotifyCallInAfterWriteEventCheckTest
      * @throws Exception
      */
     @Test
-    public void testNoNotifiCall() throws Exception
+    public void testNoNotifyCall() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "object-change-no-notify-call.bsl");
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite(WriteParameters) // error
+            	SomeMethod();
+            EndProcedure
 
-        List<Marker> markers = getModuleMarkers();
-        assertFalse(markers.isEmpty());
+            Procedure SomeMethod()
+            	SomeMethod2();
+            EndProcedure
 
-        Marker marker = markers.get(0);
-        assertEquals(Integer.valueOf(2), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+            Procedure SomeMethod2() // no Notify call
+            EndProcedure
+            """;
+
+        loadModuleCode(bsl);
+        assertMarkerEqual(2);
     }
 
     /**
@@ -66,10 +67,15 @@ public class NotifyCallInAfterWriteEventCheckTest
     @Test
     public void testNotifyCall() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "object-change-notify-call.bsl");
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite(WriteParameters)
+            	Notify("");
+            EndProcedure
+            """;
 
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
+        loadModuleCode(bsl);
+        assertMarkersEmpty();
     }
 
     /**
@@ -78,12 +84,68 @@ public class NotifyCallInAfterWriteEventCheckTest
      * @throws Exception
      */
     @Test
-    public void testNotifiCallNested() throws Exception
+    public void testNotifyCallNested() throws Exception
     {
-        updateModule(FOLDER_RESOURCE + "object-change-notifi-call-nested.bsl");
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite(WriteParameters)
+            	If 1 = 1 Then
+            		#Region Abcde
+            			Notify("");
+                    #EndRegion
+            	EndIf
+            EndProcedure
+            """;
 
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
+        loadModuleCode(bsl);
+        assertMarkersEmpty();
+    }
+
+    /**
+     * test no error
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testNotifyCallInSubMethod() throws Exception
+    {
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite(WriteParameters)
+            	SomeMethod();
+            EndProcedure
+
+            Procedure SomeMethod()
+            	SomeFunction();
+            EndProcedure
+
+            Function SomeFunction()
+            	Notify("");
+            	Return 0;
+            EndFunction
+            """;
+
+        loadModuleCode(bsl);
+        assertMarkersEmpty();
+    }
+
+    /**
+     * test no error
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testNoNotifyCallInExternalSubMethod() throws Exception
+    {
+        String bsl = """
+            &AtClient
+            Procedure AfterWrite(WriteParameters)
+            	CommonModule.MethodInAnotherModule(); // method that can call the notify, no error here
+            EndProcedure
+            """;
+
+        loadModuleCode(bsl);
+        assertMarkersEmpty();
     }
 
     @Override

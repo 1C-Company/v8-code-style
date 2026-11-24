@@ -15,20 +15,20 @@ package com.e1c.v8codestyle.bsl.check;
 import static com._1c.g5.v8.dt.bsl.model.BslPackage.Literals.MODULE;
 import static com._1c.g5.v8.dt.mcore.McorePackage.Literals.NAMED_ELEMENT__NAME;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtext.EcoreUtil2;
 
+import com._1c.g5.v8.dt.bsl.model.BslContextDefMockMethod;
+import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
 import com._1c.g5.v8.dt.bsl.model.Module;
-import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
-import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.form.model.EventHandler;
 import com._1c.g5.v8.dt.form.model.Form;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
@@ -39,6 +39,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.e1c.v8codestyle.internal.bsl.MethodAccessHelper;
 
 /**
  * The Check finds the AfterWrite event handler and adds a issue if the handler doesn't contain a call to Notify()
@@ -84,7 +85,12 @@ public class NotifyCallInAfterWriteEventCheck
             List<Method> checkedHandlers = findCheckedHandlersByForm(form, module);
             for (Method method : checkedHandlers) // loop for all handlers of the AfterWrite event
             {
-                if (!hasNotifyCall(method))
+                if (monitor.isCanceled())
+                {
+                    return;
+                }
+
+                if (!hasNotifyCall(method, new HashSet<>(), module))
                 {
                     resultAcceptor.addIssue(Messages.NotifyCallInAfterWriteEventCheck_Issue, method,
                         NAMED_ELEMENT__NAME);
@@ -122,22 +128,40 @@ public class NotifyCallInAfterWriteEventCheck
             .toList();
     }
 
-    private boolean hasNotifyCall(Method method)
+    private boolean hasNotifyCall(Method method, Set<Method> visited, Module module)
     {
-        TreeIterator<EObject> it = EcoreUtil.getAllContents(method, true);
+        visited.add(method);
+        List<Invocation> invocations = EcoreUtil2.eAllOfType(method, Invocation.class);
 
-        while (it.hasNext())
+        for (Invocation invocation : invocations)
         {
-            EObject element = it.next();
-            if (element instanceof SimpleStatement simpleStatement
-                && simpleStatement.getLeft() instanceof Invocation invocation
-                && invocation.getMethodAccess() instanceof StaticFeatureAccess staticAccess
-                && (NOTIFY_METHOD_NAME_RU.equalsIgnoreCase(staticAccess.getName())
-                    || NOTIFY_METHOD_NAME.equalsIgnoreCase(staticAccess.getName())))
+            if (MethodAccessHelper.isNameMatching(invocation, NOTIFY_METHOD_NAME_RU, NOTIFY_METHOD_NAME))
             {
                 return true;
             }
+
+            List<FeatureEntry> entries = MethodAccessHelper.getFeatureEntries(invocation);
+            for (FeatureEntry entry : entries)
+            {
+                EObject feature = entry.getFeature();
+                if (feature instanceof BslContextDefMockMethod)
+                {
+                    return true;
+                }
+                if (feature instanceof Method calledMethod)
+                {
+                    if (EcoreUtil2.getContainerOfType(calledMethod, Module.class) != module)
+                    {
+                        return true;
+                    }
+                    if (!visited.contains(calledMethod) && hasNotifyCall(calledMethod, visited, module))
+                    {
+                        return true;
+                    }
+                }
+            }
         }
+
         return false;
     }
 }
