@@ -61,6 +61,7 @@ import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.components.ModuleTopObjectNameFilterExtension;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
+import com.e1c.v8codestyle.bsl.SslConfigurationHelper;
 import com.e1c.v8codestyle.bsl.strict.check.AbstractTypeCheck;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
@@ -135,7 +136,7 @@ public class MoneyStringLocalizationCheck
         {
             return;
         }
-        if (!hasStandardSubsystems(bmTransaction))
+        if (!SslConfigurationHelper.hasSSL(bmTransaction))
         {
             return;
         }
@@ -357,11 +358,5 @@ public class MoneyStringLocalizationCheck
             return null;
         }
         return statement.getRight();
-    }
-
-    private static boolean hasStandardSubsystems(IBmTransaction bmTransaction)
-    {
-        return bmTransaction.getTopObjectByFqn("Subsystem.СтандартныеПодсистемы") != null //$NON-NLS-1$
-            || bmTransaction.getTopObjectByFqn("Subsystem.StandardSubsystems") != null; //$NON-NLS-1$
     }
 }
