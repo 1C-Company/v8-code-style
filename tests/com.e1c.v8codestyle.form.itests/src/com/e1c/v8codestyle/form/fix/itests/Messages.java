@@ -23,6 +23,9 @@ final class Messages
     private static final String BUNDLE_NAME = Messages.class.getPackageName() + ".messages"; //$NON-NLS-1$
     public static String DynamicListFieldTitleGenerateFix_Default_title;
     public static String DynamicListItemTitleGenerateFix_title;
+
+    public static String HierarchicalListInitialTreeDisplayFix_description;
+
     static
     {
         // initialize resource bundle

@@ -51,6 +51,18 @@ public class ModuleUnusedMethodCheckTest
         assertEquals(Integer.valueOf(6), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
+    @Test
+    public void testRecursiveMethod() throws Exception
+    {
+
+        updateModule(FOLDER_RESOURCE + "module-unused-method-recursive.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(1), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
     @Override
     protected String getModuleFileName()
     {

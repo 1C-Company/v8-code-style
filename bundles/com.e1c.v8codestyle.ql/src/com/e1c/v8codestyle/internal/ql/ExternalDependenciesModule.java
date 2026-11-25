@@ -18,7 +18,7 @@ import org.eclipse.xtext.resource.IResourceServiceProvider;
 
 import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
-import com._1c.g5.v8.dt.ql.typesystem.IDynamicDbViewFieldComputer;
+import com._1c.g5.v8.dt.ql.typesystem.services.IDynamicDbViewFieldComputer;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 
 /**
