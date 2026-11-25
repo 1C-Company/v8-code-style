@@ -611,7 +611,12 @@ final class Messages
     public static String NotifyCallAfterObjectChange_Title;
     public static String NotifyCallAfterObjectChange_Description;
     public static String NotifyCallAfterObjectChange_Issue;
-        
+
+    public static String ScheduledJobMissingInitializationCheck_Title;
+    public static String ScheduledJobMissingInitializationCheck_Description;
+    public static String ScheduledJobMissingInitializationCheck_Issue;
+    public static String ScheduledJobMissingInitializationCheck_ParameterTitle;
+
     static
     {
         // initialize resource bundle

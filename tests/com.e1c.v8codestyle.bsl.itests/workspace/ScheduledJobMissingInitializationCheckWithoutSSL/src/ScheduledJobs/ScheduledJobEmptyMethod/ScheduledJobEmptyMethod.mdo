@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mdclass:ScheduledJob xmlns:mdclass="http://g5.1c.ru/v8/dt/metadata/mdclass" uuid="f821431e-49f7-49c5-80c1-bd02a8dafe94">
+  <name>ScheduledJobEmptyMethod</name>
+  <synonym>
+    <key>en</key>
+    <value>Scheduled job</value>
+  </synonym>
+  <use>true</use>
+  <methodName>CommonModule.CommonModule.NoInitCall</methodName>
+  <restartCountOnFailure>1</restartCountOnFailure>
+  <restartIntervalOnFailure>1</restartIntervalOnFailure>
+</mdclass:ScheduledJob>

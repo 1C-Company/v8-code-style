@@ -84,7 +84,7 @@ public class BackgroundJobExecuteCallCheck
     {
         Invocation invocation = (Invocation)object;
 
-        if (MethodAccessHelper.isNameMatching(invocation, TARGET_METHOD_NAME_RU, TARGET_METHOD_NAME,
+        if (MethodAccessHelper.matchesInterlanguageNames(invocation, TARGET_METHOD_NAME_RU, TARGET_METHOD_NAME,
             TARGET_MODULE_NAME_RU, TARGET_MODULE_NAME) && SslConfigurationHelper.hasSSL(bmTransaction))
         {
             resultAcceptor.addIssue(Messages.BackgroundJobExecuteCallCheck_Issue, invocation);
