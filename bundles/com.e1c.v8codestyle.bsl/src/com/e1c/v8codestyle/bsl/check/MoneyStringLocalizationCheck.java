@@ -42,7 +42,6 @@ import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.StringLiteral;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
-import com._1c.g5.v8.dt.core.platform.IConfigurationProvider;
 import com._1c.g5.v8.dt.core.platform.IResourceLookup;
 import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.form.model.AbstractDataPath;
@@ -97,12 +96,6 @@ public class MoneyStringLocalizationCheck
     private static final String DELIMITER = ","; //$NON-NLS-1$
 
     private static final String DEFAULT_NAMES = String.join(DELIMITER, DEFAULT_MONEY_STRING_NAMES);
-
-    IConfigurationProvider configurationProvider;
-
-    IBmModelManager bmModelManager;
-
-    IV8ProjectManager v8ProjectManager;
 
     @Override
     public String getCheckId()

@@ -41,7 +41,6 @@ import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.form.CorePlugin;
-import com.google.inject.Inject;
 
 /**
  * Money string localization in data composition schema.
@@ -58,12 +57,6 @@ public class MoneyStringDataCompositionCheck
     private static final String DELIMITER = ","; //$NON-NLS-1$
 
     private static final String DEFAULT_NAMES = String.join(DELIMITER, IMMUTABLE_MAP_MONEY_STRING);
-
-    @Inject
-    public MoneyStringDataCompositionCheck()
-    {
-        super();
-    }
 
     @Override
     public String getCheckId()
