@@ -50,6 +50,10 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.EmptyQueryResultCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.QueryInLoopCheck">
       </check>
       <check
@@ -75,6 +79,18 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormModulePragmaCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormContextServerCallInEventHandlerCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormRowActivationWaitHandlerCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FormDataByValueToServerCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -139,6 +155,10 @@
       <check
             category="com.e1c.v8codestyle.bsl.strict"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.strict.check.TypedValueAddingToUntypedCollectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.DefinitionTypeVariableCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl.strict"
@@ -211,10 +231,14 @@
       <check
             category="com.e1c.v8codestyle.bsl.comment"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.LinkPartSpaceCheck">
-      </check>
+      </check>      
       <check
             category="com.e1c.v8codestyle.bsl.comment"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.TypeDefinitionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FindRowServerCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
@@ -438,6 +462,26 @@
       <check
             category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.DontUseModalityModeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl.comment"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.comment.check.ReturnSectionFieldInNonCollectionCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.FillCheckProcessingPropertiesArrayModificationCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.NotifyCallInAfterWriteEventCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.NotifyCallAfterObjectChangeCheck">
+      </check>
+      <check
+            category="com.e1c.v8codestyle.bsl"
+            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.OverridableModuleOnlyExportMethodsCheck">
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"

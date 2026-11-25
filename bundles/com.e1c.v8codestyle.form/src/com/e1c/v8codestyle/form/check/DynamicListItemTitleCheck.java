@@ -63,7 +63,7 @@ import com._1c.g5.v8.dt.ql.model.QuerySchemaOperator;
 import com._1c.g5.v8.dt.ql.model.QuerySchemaSelectQuery;
 import com._1c.g5.v8.dt.ql.model.StarExpression;
 import com._1c.g5.v8.dt.ql.resource.QlMapper;
-import com._1c.g5.v8.dt.ql.typesystem.IDynamicDbViewFieldComputer;
+import com._1c.g5.v8.dt.ql.typesystem.services.IDynamicDbViewFieldComputer;
 import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckDefinition;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -151,7 +151,7 @@ public class DynamicListItemTitleCheck
             return;
         }
 
-        Form form = (Form)((IBmObject)field).bmGetTopObject();
+        Form form = (Form)field.bmGetTopObject();
         if (!dataSourceInfoAssociationService.isRelatedDynamicList(form, dataPath)
             || !dataSourceInfoAssociationService.isPathResolved(form, dataPath) || monitor.isCanceled())
         {

@@ -1,7 +1,7 @@
 # Calling the BackgroundJobs.Execute procedure
 
 It is not recommended to call the BackgroundJobs.Execute procedure if the SSL (Standard Subsystems Library) is used in the configuration.
-Instead, it is recommended to use the SSL methods: LongActions.ExecuteInBackground, LongActions.ExecuteFunction, LongActions.ExecuteProcedure, etc.
+Instead, it is recommended to use the SSL methods: TimeConsumingOperations.ExecuteInBackground, TimeConsumingOperations.ExecuteFunction, TimeConsumingOperations.ExecuteProcedure, etc.
 
 ## Incorrect 
 
@@ -17,7 +17,7 @@ BackgroundJob = BackgroundJobs.Execute(
 ## Correct
 
 ```bsl
-FunctionResult = LongActions.StartExecutionInBackground(
+FunctionResult = TimeConsumingOperations.StartExecutionInBackground(
     "MyServerProcedures.ExecuteLongCalculation", 
     ProcedureParameters, 
     ExecutionParameters
