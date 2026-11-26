@@ -244,14 +244,7 @@ final class Messages
     public static String LocalizationNstrCheck_Description;
 
     public static String LocalizationNstrCheck_Issue;
-
-    public static String LocalizationNstrCheck_Parameter_Title;
-
-    public static String LocalizationNstrCheck_Parameter_Invocation_Name;
-
-    public static String LocalizationNstrCheck_Parameter_Title_One;
-
-    public static String LocalizationNstrCheck_Parameter_Title_Zero;
+    
     public static String EmptyQueryResultCheck_Title;
 
     public static String EmptyQueryResultCheck_Description;

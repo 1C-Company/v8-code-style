@@ -78,10 +78,6 @@
       </check>
       <check
             category="com.e1c.v8codestyle.bsl"
-            class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.LocalizationNstrCheck">
-      </check>
-      <check
-            category="com.e1c.v8codestyle.bsl"
             class="com.e1c.v8codestyle.internal.bsl.ExecutableExtensionFactory:com.e1c.v8codestyle.bsl.check.LocalizationFormNstrCheck">
       </check>
       <check
