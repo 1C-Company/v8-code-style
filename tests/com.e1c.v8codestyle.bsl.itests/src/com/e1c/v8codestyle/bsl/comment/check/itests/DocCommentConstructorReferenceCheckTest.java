@@ -26,6 +26,8 @@ import com.e1c.v8codestyle.bsl.comment.check.DocCommentConstructorReferenceCheck
 
 /**
  * The test for {@link DocCommentConstructorReferenceCheck}
+ * 
+ * @author Artem Samohvalov
  */
 public class DocCommentConstructorReferenceCheckTest
     extends AbstractSingleModuleTestBase
@@ -45,6 +47,20 @@ public class DocCommentConstructorReferenceCheckTest
     public void testHasRefWithStruct() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "doc-comment-constructor-reference-in-params-struct.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
+     * Test no error.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testHasRefAndTypeWithStruct() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-constructor-reference-and-type-in-params-struct.bsl");
 
         List<Marker> markers = getModuleMarkers();
         assertTrue(markers.isEmpty());
@@ -78,6 +94,22 @@ public class DocCommentConstructorReferenceCheckTest
         assertEquals(1, markers.size());
         Marker marker = markers.get(0);
         assertEquals(Integer.valueOf(3), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
+    }
+
+    /**
+     * Test error. invalid ref to construct
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testInvalidConstructorRefWithStruct() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-constructor-invalid-reference-in-params-struct.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(1, markers.size());
+        Marker marker = markers.get(0);
+        assertEquals(Integer.valueOf(10), marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE));
     }
 
     /**
@@ -127,7 +159,8 @@ public class DocCommentConstructorReferenceCheckTest
     }
 
     /**
-     * Test no error. Structure, value tree and value table are not modified.
+     * Test no error. The structure type has the described keys, so the reference
+     * to the constructor function is not required.
      *
      * @throws Exception the exception
      */

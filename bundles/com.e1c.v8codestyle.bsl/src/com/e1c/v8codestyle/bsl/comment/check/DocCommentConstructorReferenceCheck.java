@@ -27,6 +27,7 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Description;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.ParametersSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.IDescriptionPart;
+import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
@@ -53,6 +54,7 @@ import com.e1c.g5.v8.dt.check.settings.IssueType;
 import com.e1c.v8codestyle.bsl.AbstractBlockProcessor;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
 /**
@@ -109,9 +111,15 @@ public class DocCommentConstructorReferenceCheck
         Map<String, TypeDefinition> checkedVariableMap = new HashMap<>();
         for (FieldDefinition fieldDefinition : parametersSection.getParameterDefinitions())
         {
+            if (Strings.isNullOrEmpty(fieldDefinition.getName()))
+            {
+                continue;
+            }
+
             // if in parameters checked type
             Optional<TypeDefinition> typeOptional = getTypeNamesFromField(fieldDefinition).stream()
-                .filter(td -> isCheckedType(td) && !hasDescriptionExtension(td))
+                .filter(td -> isCheckedType(td) && td.getParent() instanceof TypeSection ts
+                    && !(hasDescriptionExtension(ts) || hasReferenceToConstructor(ts)))
                 .findFirst();
             if (typeOptional.isPresent())
             {
@@ -151,15 +159,22 @@ public class DocCommentConstructorReferenceCheck
         return typeName != null && CHECKED_TYPE_NAMES.contains(typeName.toLowerCase());
     }
 
-    private boolean hasDescriptionExtension(TypeDefinition typeDefinition)
+    private boolean hasDescriptionExtension(TypeSection typeSection)
     {
-        if (!(typeDefinition.getParent() instanceof TypeSection typeSection))
+        Description description = typeSection.getSourceExtensionDescription();
+        return description != null && !description.getParts().isEmpty();
+    }
+
+    private boolean hasReferenceToConstructor(TypeSection typeSection)
+    {
+        Description description = typeSection.getDescription();
+        if (description == null)
         {
             return false;
         }
 
-        Description description = typeSection.getSourceExtensionDescription();
-        return description != null && !description.getParts().isEmpty();
+        List<IDescriptionPart> parts = description.getParts();
+        return !parts.isEmpty() && parts.get(0) instanceof LinkPart;
     }
 
     private Set<String> findPropertyCallKeys(Map<String, TypeDefinition> checkedVariableMap, Method method)

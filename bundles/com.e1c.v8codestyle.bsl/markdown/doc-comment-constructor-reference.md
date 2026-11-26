@@ -29,6 +29,15 @@ Function AcceptStructure(UserStructure)
 
 EndFunction
 
+// Structure acceptance
+// Parameters:
+// 		UserStructure - Structure - See StructureConstructor
+Function AcceptStructure(UserStructure) 
+
+	UserStructure.Insert("Name", "Value");
+
+EndFunction
+
 // Structure acceptance, also correct
 // Parameters:
 // 		UserStructure - Structure:
