@@ -239,6 +239,12 @@ final class Messages
 
     public static String ExtensionMethodPrefixCheck_Title;
 
+    public static String LocalizationNstrCheck_Title;
+
+    public static String LocalizationNstrCheck_Description;
+
+    public static String LocalizationNstrCheck_Issue;
+    
     public static String EmptyQueryResultCheck_Title;
 
     public static String EmptyQueryResultCheck_Description;
