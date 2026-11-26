@@ -10,7 +10,7 @@
  * Contributors:
  *     1C-Soft LLC - initial API and implementation
  *******************************************************************************/
-package com.e1c.v8codestyle.bsl;
+package com.e1c.v8codestyle.internal.bsl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +26,7 @@ public final class DocumentationCommentIndentsHelper
     public static final int COMMENT_PREFIX_LENGTH = COMMENT_PREFIX.length();
     public static final int TABULATION_SPACE_COUNT = 4;
     public static final String TABULATION_SPACE = " ".repeat(TABULATION_SPACE_COUNT); //$NON-NLS-1$
+    public static final char ANNOTATION_PREFIX = '@';
 
     /**
      * Checks if is mixed tabs and spaces.
@@ -86,9 +87,9 @@ public final class DocumentationCommentIndentsHelper
     /**
      * Find mixed lines.
      *
-     * @param lines the lines
+     * @param lines the lines, cannot be {@code null}
      * @param onlyFirst find only first mixed line
-     * @return the list of line numbers 
+     * @return the list of line numbers, never be {@code null}
      */
     public static List<Integer> findMixedLines(List<String> lines, boolean onlyFirst)
     {
@@ -111,7 +112,7 @@ public final class DocumentationCommentIndentsHelper
     /**
      * Gets the indent width.
      *
-     * @param line the line
+     * @param line the line, cannot be @{code null}
      * @return the indent width
      */
     public static int getIndentWidth(String line)
@@ -140,6 +141,24 @@ public final class DocumentationCommentIndentsHelper
         }
 
         return indent;
+    }
+
+    /**
+     * Checks if the comment line contains an annotation, for example \@skip-check
+     *
+     * @param line the line, cannot be {@code null}
+     * @return true, if the line contains an annotation
+     */
+    public static boolean isAnnotationLine(String line)
+    {
+        int i = COMMENT_PREFIX_LENGTH;
+
+        while (i < line.length() && (line.charAt(i) == ' ' || line.charAt(i) == '\t'))
+        {
+            ++i;
+        }
+
+        return i < line.length() && line.charAt(i) == ANNOTATION_PREFIX;
     }
 
     private DocumentationCommentIndentsHelper()

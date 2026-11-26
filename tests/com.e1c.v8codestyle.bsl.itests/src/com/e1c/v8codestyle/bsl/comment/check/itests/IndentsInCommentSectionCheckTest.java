@@ -55,6 +55,22 @@ public class IndentsInCommentSectionCheckTest
     }
 
     /**
+     * Test no error
+     * Test valid indents in sections.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testValidIndentsInSectionsWithSkipCheck() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "valid-indents-and-skip-check.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+
+        assertTrue(markers.isEmpty());
+    }
+
+    /**
      * Test error
      * Test no valid indents in sections.
      *
@@ -194,6 +210,28 @@ public class IndentsInCommentSectionCheckTest
      */
     @Test
     public void testNoIndentsInExampleSection() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "no-indents-in-example-section.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+
+        assertEquals(3, markers.size());
+
+        for (Marker marker : markers)
+        {
+            int val = marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE);
+            assertTrue(val == 3 || val == 12 || val == 21);
+        }
+    }
+
+    /**
+     * Test error
+     * Test no indents in example section.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNoErrorWithSkipCheck() throws Exception
     {
         updateModule(FOLDER_RESOURCE + "no-indents-in-example-section.bsl");
 

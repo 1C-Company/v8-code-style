@@ -37,9 +37,9 @@ import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.bsl.DocumentationCommentIndentsHelper;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.e1c.v8codestyle.internal.bsl.DocumentationCommentIndentsHelper;
 import com.google.inject.Inject;
 
 /**
@@ -214,7 +214,13 @@ public class IndentsInCommentSectionCheck
             return OptionalInt.empty();
         }
 
-        return OptionalInt.of(DocumentationCommentIndentsHelper.getIndentWidth(lines.get(lineNumber)));
+        String line = lines.get(lineNumber);
+        if (DocumentationCommentIndentsHelper.isAnnotationLine(line))
+        {
+            return OptionalInt.empty();
+        }
+
+        return OptionalInt.of(DocumentationCommentIndentsHelper.getIndentWidth(line));
     }
 
     private void addIssue(DocumentationCommentResultAcceptor resultAcceptor, int lineNumber, int offset,
@@ -236,16 +242,6 @@ public class IndentsInCommentSectionCheck
         //@formatter:on
     }
 
-    /**
-     * Check descriptions parts.
-     *
-     * @param descriptionParts the description parts
-     * @param commentTextLines the comment text lines
-     * @param resultAcceptor the result acceptor
-     * @param parentLineNumber the parent line number
-     * @param parentIndent the parent indent
-     * @param oneLevel indents on description parts can be only on one level
-     */
     private void checkDescriptionsParts(List<IDescriptionPart> descriptionParts, List<String> commentTextLines,
         DocumentationCommentResultAcceptor resultAcceptor, int parentLineNumber, int parentIndent, boolean oneLevel)
     {

@@ -26,7 +26,7 @@ import com._1c.g5.v8.dt.bsl.model.Method;
 import com.e1c.g5.v8.dt.bsl.check.qfix.IXtextBslModuleFixModel;
 import com.e1c.g5.v8.dt.bsl.check.qfix.SingleVariantXtextBslModuleFix;
 import com.e1c.g5.v8.dt.check.qfix.components.QuickFix;
-import com.e1c.v8codestyle.bsl.DocumentationCommentIndentsHelper;
+import com.e1c.v8codestyle.internal.bsl.DocumentationCommentIndentsHelper;
 import com.google.inject.Inject;
 
 /**
