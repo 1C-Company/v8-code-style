@@ -1,0 +1,3 @@
+Procedure Recursive()
+	Recursive();
+EndProcedure

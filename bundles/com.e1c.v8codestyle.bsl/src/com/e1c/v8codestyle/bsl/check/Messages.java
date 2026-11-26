@@ -69,6 +69,12 @@ final class Messages
 
     public static String CodeAfterAsyncCallCheck_Title;
 
+    public static String DefinitionTypeVariableCheck_Description;
+
+    public static String DefinitionTypeVariableCheck_Issue;
+
+    public static String DefinitionTypeVariableCheck_Title;
+
     public static String CommitTransactionCheck_Commit_transaction_must_be_in_try_catch;
 
     public static String CommitTransactionCheck_No_begin_transaction_for_commit_transaction;
@@ -165,6 +171,12 @@ final class Messages
 
     public static String ExtensionMethodVisibleModeCheck_Title;
 
+    public static String FindRowServerCheck_Description;
+
+    public static String FindRowServerCheck_Title;
+
+    public static String FindRowServerCheck_Issue;
+
     public static String ReadingAttributesFromDataBaseCheck_Message;
 
     public static String ReadingAttributesFromDataBaseCheck_Description;
@@ -240,6 +252,11 @@ final class Messages
     public static String LocalizationNstrCheck_Parameter_Title_One;
 
     public static String LocalizationNstrCheck_Parameter_Title_Zero;
+    public static String EmptyQueryResultCheck_Title;
+
+    public static String EmptyQueryResultCheck_Description;
+
+    public static String EmptyQueryResultCheck_Issue;
 
     public static String ManagerModuleNamedSelfReferenceCheck_description;
 
@@ -378,7 +395,7 @@ final class Messages
     public static String StructureCtorTooManyKeysCheck_Structure_constructor_has_more_than__0__keys;
     public static String StructureCtorTooManyKeysCheck_title;
 
-	public static String NotSupportGotoOperatorWebCheck_Title;
+    public static String NotSupportGotoOperatorWebCheck_Title;
     public static String NotSupportGotoOperatorWebCheck_Description;
     public static String NotSupportGotoOperatorWebCheck_Issue;
 
@@ -490,6 +507,30 @@ final class Messages
 
     public static String FormModulePragmaCheck_title;
 
+    public static String FormContextServerCallInEventHandlerCheck_Description;
+
+    public static String FormContextServerCallInEventHandlerCheck_Issue;
+
+    public static String FormContextServerCallInEventHandlerCheck_Title;
+
+    public static String FormContextServerCallInEventHandlerCheck_Parameter;
+
+    public static String FormRowActivationWaitHandlerCheck_Description;
+
+    public static String FormRowActivationWaitHandlerCheck_Issue;
+
+    public static String FormRowActivationWaitHandlerCheck_ItemChangeIssue;
+
+    public static String FormRowActivationWaitHandlerCheck_ServerCallIssue;
+
+    public static String FormRowActivationWaitHandlerCheck_Title;
+
+    public static String FormDataByValueToServerCheck_Description;
+
+    public static String FormDataByValueToServerCheck_Issue;
+
+    public static String FormDataByValueToServerCheck_Title;
+
     public static String NotifyDescriptionToServerProcedureCheck_description;
 
     public static String NotifyDescriptionToServerProcedureCheck_Notify_description_procedure_should_be_export;
@@ -559,7 +600,31 @@ final class Messages
     public static String VariableNameInvalidCheck_variable_name_is_invalid;
     public static String VariableNameInvalidCheck_variable_name_must_start_with_a_capital_letter;
     public static String VariableNameInvalidCheck_variable_name_starts_with_an_underline;
+    
+    public static String OverridableModuleOnlyExportMethodsCheck_Title;
+    public static String OverridableModuleOnlyExportMethodsCheck_Description;
+    public static String OverridableModuleOnlyExportMethodsCheck_Procedure_Issue;
+    public static String OverridableModuleOnlyExportMethodsCheck_Function_Issue;
 
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_Title;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_Description;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_DeleteIssue;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_AddIssue;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_IndexSetIssue;
+    public static String FillCheckProcessingPropertiesArrayModificationCheck_CalledMethodChangeArrayIssue;
+
+    public static String BackgroundJobExecuteCallCheck_Title;
+    public static String BackgroundJobExecuteCallCheck_Description;
+    public static String BackgroundJobExecuteCallCheck_Issue;
+
+    public static String NotifyCallInAfterWriteEventCheck_Title;
+    public static String NotifyCallInAfterWriteEventCheck_Description;
+    public static String NotifyCallInAfterWriteEventCheck_Issue;
+
+    public static String NotifyCallAfterObjectChange_Title;
+    public static String NotifyCallAfterObjectChange_Description;
+    public static String NotifyCallAfterObjectChange_Issue;
+        
     static
     {
         // initialize resource bundle

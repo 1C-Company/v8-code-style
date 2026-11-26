@@ -22,7 +22,7 @@ import com._1c.g5.v8.dt.core.platform.IV8ProjectManager;
 import com._1c.g5.v8.dt.form.service.FormItemInformationService;
 import com._1c.g5.v8.dt.form.service.datasourceinfo.IDataSourceInfoAssociationService;
 import com._1c.g5.v8.dt.ql.resource.QlMapper;
-import com._1c.g5.v8.dt.ql.typesystem.IDynamicDbViewFieldComputer;
+import com._1c.g5.v8.dt.ql.typesystem.services.IDynamicDbViewFieldComputer;
 import com._1c.g5.wiring.AbstractServiceAwareModule;
 
 /**
@@ -49,7 +49,7 @@ public class ExternalDependenciesModule
         URI uri = URI.createURI("*.form"); //$NON-NLS-1$
         final IResourceServiceProvider rsp = IResourceServiceProvider.Registry.INSTANCE.getResourceServiceProvider(uri);
         bind(FormItemInformationService.class).toProvider(() -> rsp.get(FormItemInformationService.class));
-        
+
         bind(IV8ProjectManager.class).toService();
         bind(IDataSourceInfoAssociationService.class).toService();
         bind(IBmModelManager.class).toService();

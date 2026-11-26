@@ -29,6 +29,7 @@ import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.dcs.util.DcsUtil;
 import com._1c.g5.v8.dt.ql.model.QuerySchema;
 import com._1c.g5.v8.dt.ql.model.QuerySchemaSelectQuery;
+import com._1c.g5.v8.dt.ql.typesystem.services.DbViewFieldAccessContext;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck;
 import com.e1c.g5.v8.dt.ql.check.QlBasicDelegateCheck.QueryOwner;
 import com.e1c.g5.v8.dt.testing.check.SingleProjectReadOnlyCheckTestBase;
@@ -88,7 +89,7 @@ public class TempTableHasIndexTest
             new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-no-index.ql").readAllBytes(),
                 StandardCharsets.UTF_8);
 
-        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project);
+        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project, new DbViewFieldAccessContext());
         assertNotNull(querySchema);
         assertEquals(2, querySchema.getQueries().size());
 
@@ -117,7 +118,7 @@ public class TempTableHasIndexTest
             new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-no-index-top.ql").readAllBytes(),
                 StandardCharsets.UTF_8);
 
-        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project);
+        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project, new DbViewFieldAccessContext());
         assertNotNull(querySchema);
         assertEquals(2, querySchema.getQueries().size());
 
@@ -152,7 +153,7 @@ public class TempTableHasIndexTest
         String queryText = new String(getClass().getResourceAsStream(FOLDER + "temp-table-has-index.ql").readAllBytes(),
             StandardCharsets.UTF_8);
 
-        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project);
+        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, project, new DbViewFieldAccessContext());
         assertNotNull(querySchema);
         assertEquals(2, querySchema.getQueries().size());
 

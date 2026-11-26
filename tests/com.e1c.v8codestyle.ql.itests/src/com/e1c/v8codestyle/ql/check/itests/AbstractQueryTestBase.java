@@ -37,6 +37,7 @@ import org.osgi.framework.FrameworkUtil;
 import com._1c.g5.v8.dt.core.platform.IDtProject;
 import com._1c.g5.v8.dt.dcs.util.DcsUtil;
 import com._1c.g5.v8.dt.ql.model.QuerySchema;
+import com._1c.g5.v8.dt.ql.typesystem.services.DbViewFieldAccessContext;
 import com.e1c.g5.v8.dt.check.ICheck;
 import com.e1c.g5.v8.dt.check.ICheckDefinition;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
@@ -195,7 +196,7 @@ public class AbstractQueryTestBase
         String queryText =
             new String(getClass().getResourceAsStream(resourcePath).readAllBytes(), StandardCharsets.UTF_8);
 
-        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, getProject());
+        QuerySchema querySchema = DcsUtil.getQuerySchema(queryText, getProject(), new DbViewFieldAccessContext());
         assertNotNull(querySchema);
 
         validateQuery(querySchema);
