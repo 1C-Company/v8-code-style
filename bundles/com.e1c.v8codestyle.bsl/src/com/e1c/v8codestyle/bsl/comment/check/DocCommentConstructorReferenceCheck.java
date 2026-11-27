@@ -13,15 +13,16 @@
 package com.e1c.v8codestyle.bsl.comment.check;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.EcoreUtil2;
 
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment;
 import com._1c.g5.v8.dt.bsl.documentation.comment.BslDocumentationComment.Description;
@@ -31,13 +32,11 @@ import com._1c.g5.v8.dt.bsl.documentation.comment.LinkPart;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.FieldDefinition;
 import com._1c.g5.v8.dt.bsl.documentation.comment.TypeSection.TypeDefinition;
-import com._1c.g5.v8.dt.bsl.model.Block;
 import com._1c.g5.v8.dt.bsl.model.DynamicFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Expression;
+import com._1c.g5.v8.dt.bsl.model.FeatureEntry;
 import com._1c.g5.v8.dt.bsl.model.IndexAccess;
-import com._1c.g5.v8.dt.bsl.model.Invocation;
 import com._1c.g5.v8.dt.bsl.model.Method;
-import com._1c.g5.v8.dt.bsl.model.SimpleStatement;
 import com._1c.g5.v8.dt.bsl.model.StaticFeatureAccess;
 import com._1c.g5.v8.dt.bsl.model.Variable;
 import com._1c.g5.v8.dt.core.platform.IBmModelManager;
@@ -51,15 +50,15 @@ import com.e1c.g5.v8.dt.check.CheckComplexity;
 import com.e1c.g5.v8.dt.check.ICheckParameters;
 import com.e1c.g5.v8.dt.check.settings.IssueSeverity;
 import com.e1c.g5.v8.dt.check.settings.IssueType;
-import com.e1c.v8codestyle.bsl.AbstractBlockProcessor;
 import com.e1c.v8codestyle.check.StandardCheckExtension;
 import com.e1c.v8codestyle.internal.bsl.BslPlugin;
+import com.e1c.v8codestyle.internal.bsl.ExpressionAccessHelper;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 
 /**
  * The Check finds Structure/ValueTree/ValueTable type in parameter section
- * And if has property is changed to Structure/ValueTree/ValueTable the comment should refer to the constructor-function
+ * And if there is access to the variable's properties or methods => the comment should refer to the constructor-function
  * 
  * @author Artem Samohvalov
  */
@@ -179,19 +178,22 @@ public class DocCommentConstructorReferenceCheck
 
     private Set<String> findPropertyCallKeys(Map<String, TypeDefinition> checkedVariableMap, Method method)
     {
-        BlockProcessor blockProcessor =
-            new BlockProcessor(method, (staticAccess) -> isCheckedVariable(staticAccess, checkedVariableMap));
+        Stream<Expression> accesses =
+            Stream.concat(EcoreUtil2.getAllContentsOfType(method, DynamicFeatureAccess.class).stream(),
+                EcoreUtil2.getAllContentsOfType(method, IndexAccess.class).stream());
 
-        blockProcessor.process();
-
-        return blockProcessor.getResult();
+        return accesses.map(ExpressionAccessHelper::getBaseFeatureAccess)
+            .flatMap(Optional::stream)
+            .filter(sfa -> isCheckedVariable(sfa, checkedVariableMap))
+            .map(sfa -> sfa.getName().toLowerCase())
+            .collect(Collectors.toSet());
     }
 
     private boolean isCheckedVariable(StaticFeatureAccess staticAccess, Map<String, TypeDefinition> checkedVariableMap)
     {
-        if (staticAccess.getFeatureEntries() != null && !staticAccess.getFeatureEntries().isEmpty())
+        for (FeatureEntry entry : staticAccess.getFeatureEntries())
         {
-            EObject feature = staticAccess.getFeatureEntries().get(0).getFeature();
+            EObject feature = entry.getFeature();
 
             if (feature instanceof Variable)
             {
@@ -203,61 +205,5 @@ public class DocCommentConstructorReferenceCheck
             }
         }
         return false;
-    }
-
-    private static class BlockProcessor
-        extends AbstractBlockProcessor
-    {
-        private final Predicate<StaticFeatureAccess> callBack;
-        private final Set<String> result = new HashSet<>();
-
-        BlockProcessor(Block block, Predicate<StaticFeatureAccess> callBack)
-        {
-            super(block);
-
-            this.callBack = callBack;
-        }
-
-        Set<String> getResult()
-        {
-            return result;
-        }
-
-        @Override
-        protected void doProcessInternal(SimpleStatement simpleStatement)
-        {
-            Expression left = simpleStatement.getLeft();
-
-            if (left instanceof Invocation invocation)
-            {
-                addResult(invocation.getMethodAccess());
-            }
-            else if (left instanceof DynamicFeatureAccess || left instanceof IndexAccess)
-            {
-                addResult(left);
-            }
-
-            super.doProcessInternal(simpleStatement);
-        }
-
-        private void addResult(EObject source)
-        {
-            while (source instanceof DynamicFeatureAccess || source instanceof IndexAccess)
-            {
-                if (source instanceof DynamicFeatureAccess dynamicAccess)
-                {
-                    source = dynamicAccess.getSource();
-                }
-                else
-                {
-                    source = ((IndexAccess)source).getSource();
-                }
-            }
-
-            if (source instanceof StaticFeatureAccess staticAccess && callBack.test(staticAccess))
-            {
-                result.add(staticAccess.getName().toLowerCase());
-            }
-        }
     }
 }

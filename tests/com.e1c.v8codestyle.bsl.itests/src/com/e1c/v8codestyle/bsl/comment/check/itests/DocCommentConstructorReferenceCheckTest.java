@@ -145,20 +145,6 @@ public class DocCommentConstructorReferenceCheckTest
     }
 
     /**
-     * Test no error. Structure, value tree and value table are not modified.
-     *
-     * @throws Exception the exception
-     */
-    @Test
-    public void testNoModificationInParams() throws Exception
-    {
-        updateModule(FOLDER_RESOURCE + "doc-comment-constructor-no-modification-in-params.bsl");
-
-        List<Marker> markers = getModuleMarkers();
-        assertTrue(markers.isEmpty());
-    }
-
-    /**
      * Test no error. The structure type has the described keys, so the reference
      * to the constructor function is not required.
      *
@@ -190,5 +176,38 @@ public class DocCommentConstructorReferenceCheckTest
 
         assertTrue(markers.stream()
             .allMatch(marker -> errorLines.contains(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))));
+    }
+
+    /**
+     * Test error. The parameters are accessed by methods and properties, so the reference is required.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testAccessInParams() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-constructor-access-in-params.bsl");
+
+        List<Integer> errorLines = List.of(3, 4, 5, 16, 17, 18);
+
+        List<Marker> markers = getModuleMarkers();
+        assertEquals(errorLines.size(), markers.size());
+
+        assertTrue(markers.stream()
+            .allMatch(marker -> errorLines.contains(marker.getExtraInfo().get(StandardExtraInfo.TEXT_LINE))));
+    }
+
+    /**
+     * Test no error. The parameter is used without accessing its methods or properties.
+     *
+     * @throws Exception the exception
+     */
+    @Test
+    public void testNoDotAccessInParams() throws Exception
+    {
+        updateModule(FOLDER_RESOURCE + "doc-comment-constructor-no-dot-access-in-params.bsl");
+
+        List<Marker> markers = getModuleMarkers();
+        assertTrue(markers.isEmpty());
     }
 }
