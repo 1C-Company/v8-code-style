@@ -28,6 +28,8 @@ final class Messages
     
     public static String OverridableModuleOnlyExportMethodsFixTest_Description;
 
+    public static String MixedTabsAndSpacesInCommentCheckFix_Description;
+
     static
     {
         // initialize resource bundle
